@@ -11,8 +11,8 @@ trust_tier: "repo"
 metadata.author: "wyattowalsh"
 metadata.version: "1.1.0"
 research_slug: "harness-master"
-composed_by: "compose-custom-wave-4"
-composed_at: "2026-06-17"
+composed_by: "compose-custom-wave-3"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,19 +26,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Audit harness configs, discover gaps, usage signals, apply approved fixes. Use when tuning Claude, Codex, Copilot, Cursor, Gemini, Grok, OpenCode, or Cherry. NOT agents, MCP, or app telemetry."
   installCommand={`npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/harness-master [discover|audit|usage|apply|install|resume|list] [harness|all] [project|global|both]"
-  badges={[{ text: "harness-master", variant: "note" }, { text: "3133 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "harness-master", variant: "note" }, { text: "3155 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.1.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Audit harness configs, usage/cost signals, and plugin, extension, MCP, or skill improvements. Use when tuning Claude, ChatGPT, Codex, Copilot, Cursor, Gemini, Grok Build, OpenCode, or Cherry. NOT for agents, MCP servers, or general app telemetry.
-**Stack / assumptions:** Dry-run analysis first. Web access recommended for latest-doc checks. Optional Python 3.12+ for the surface discovery script.
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Repo skill (hand-maintained)">
-Composed compose-custom-wave-4 from `skills/harness-master/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+Composed compose-custom-wave-3 from `skills/harness-master/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -127,8 +123,9 @@ Audit AI harness configuration quality, usage posture, and ecosystem options, th
 - **Policy template:** `config/grok-config.toml` merged into `~/.grok/config.toml` via repo Grok platform adapter sync
 - **Ownership:** replace-owned (`models`, `mcp_servers`, `plugins`, `compat`, `telemetry`) vs blend-owned (`ui`, `features`, `session`, `tools`, `toolset`, `subagents`, `memory`)
 - **Skills:** no native Skills CLI adapter; install/sync uses `claude-code` alias + mirror to `~/.grok/skills`; inventory also scans repo `.grok/skills` (project scope)
-- **Plannotator:** CLI + skills + hooks (no Grok npm plugin). Install: `grok plannotator install` (repo CLI). Policy: `config/grok-plannotator-hooks.json` -&gt; `~/.grok/hooks/plannotator.json`; home shim maps `block` -&gt; `deny`. Curated in `config/external-skills.md`. Contrast OpenCode `@plannotator/opencode@latest`.
-- **Env (not in TOML):** `GROK_WEB_FETCH`, `GROK_MEMORY`, `GROK_SUBAGENTS`, `GROK_LSP_TOOLS` — document in `config/grok-env.sh`; check with `grok doctor`
+- **Plannotator:** CLI + skills + hooks (no Grok npm plugin). Install: `grok plannotator install` (repo CLI). Policy: `config/grok-plannotator-hooks.json` -&gt; `~/.grok/hooks/plannotator.json`; home shim maps `block` -&gt; `deny`. Curated in `docs/src/authoring/skills/*.mdx`. Contrast OpenCode `@plannotator/opencode@latest`.
+- **Env (not in TOML):** `GROK_WEB_FETCH`, `GROK_MEMORY`, `GROK_SUBAGENTS`, `GROK_LSP_TOOLS` — document in `config/grok-env.sh`; verify with `/grok-delegate preflight`
+- **Cross-harness delegate:** `/grok-delegate` — native headless `grok -p` / `-r` / worktrees / leader for Codex/OpenCode task graphs (not config sync)
 - **Isolated sync:** repo stack sync with `--platforms grok --targets home` (skips other harness home merges; includes Plannotator hook refresh)
 
 ## Classification Gate
@@ -182,7 +179,7 @@ Audit AI harness configuration quality, usage posture, and ecosystem options, th
 1. **Gate 0 — Discover surfaces**
    - Run:
      ```bash
-     uv run python skills/harness-master/scripts/discover_surfaces.py --repo-root . --level &lt;level&gt; --harness &lt;canonical-harness&gt; [--harness ...]
+     uv run python scripts/discover_surfaces.py --repo-root . --level &lt;level&gt; --harness &lt;canonical-harness&gt; [--harness ...]
      ```
    - Parse the JSON output and classify each surface as `present`, `missing`, `generated`, `merged`, `repo-observed`, or `blind-spot`.
    - If the script cannot run, fall back to manual discovery with `Glob`, `Read`, and `Grep`.
@@ -235,7 +232,7 @@ Use this mode for `usage` or natural-language requests to review token cost, quo
 2. Normalize harnesses, level, and usage window. Default missing window to `14` days.
 3. Run surface discovery plus the safe usage probe:
    ```bash
-   uv run python skills/harness-master/scripts/usage_probe.py --repo-root . --harness <canonical-harness> --level <level> --days <days> --json
+   uv run python scripts/usage_probe.py --repo-root . --harness <canonical-harness> --level <level> --days <days> --json
    ```
 4. Load `references/usage-review.md`, `references/evidence-boundaries.md`, and `references/output-format.md`.
 5. Use runtime tools such as `token_stats`, `token_history`, `token_export`, `insights_collect`, `agent_attribution`, `quota_status`, `gemini_quota`, `workspace-summary`, and `git-smart-status` only when they match the requested harness and privacy class.
@@ -282,16 +279,16 @@ Never claim `latest` without evidence from a current source.
   npx skills add <source> --skill harness-master -y -g --agent <agent>
   ```
 - Do not recommend install commands for native config problems.
-- Do not suggest project-local install by default. Mention `python skills/harness-master/scripts/install_skills.py --local --execute` only if the user explicitly asks for project-local installation.
+- Do not suggest project-local install by default. Mention `python scripts/install_skills.py --local --execute` only if the user explicitly asks for project-local installation.
 
 ## Validation Contract
 
 After changing this skill, run:
 
 ```bash
-python skills/harness-master/scripts/check.py
-uv run python skills/harness-master/scripts/usage_probe.py --repo-root . --harness opencode --level both --days 14 --json
-uv run python skills/harness-master/scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness github-copilot-web --harness github-copilot-cli --harness cursor --harness gemini-cli --harness antigravity --harness opencode --harness perplexity-desktop --harness cherry-studio
+python scripts/check.py
+uv run python scripts/usage_probe.py --repo-root . --harness opencode --level both --days 14 --json
+uv run python scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness github-copilot-web --harness github-copilot-cli --harness cursor --harness gemini-cli --harness antigravity --harness opencode --harness perplexity-desktop --harness cherry-studio
 ```
 
 Completion criteria:
@@ -393,9 +390,9 @@ Use these terms exactly throughout:
 </Tabs>
 
 <details class="source-disclosure">
-<summary>View Full SKILL.md</summary>
+<summary>Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml title="skills/harness-master/SKILL.md"
 ---
 name: harness-master
 description: >-
@@ -410,7 +407,6 @@ metadata:
   author: wyattowalsh
   version: "1.1.0"
 ---
-
 # Harness Master
 
 Audit AI harness configuration quality, usage posture, and ecosystem options, then apply approved config fixes in the same session.
@@ -489,8 +485,9 @@ If the user invokes `/harness-master` with no arguments:
 - **Policy template:** `config/grok-config.toml` merged into `~/.grok/config.toml` via repo Grok platform adapter sync
 - **Ownership:** replace-owned (`models`, `mcp_servers`, `plugins`, `compat`, `telemetry`) vs blend-owned (`ui`, `features`, `session`, `tools`, `toolset`, `subagents`, `memory`)
 - **Skills:** no native Skills CLI adapter; install/sync uses `claude-code` alias + mirror to `~/.grok/skills`; inventory also scans repo `.grok/skills` (project scope)
-- **Plannotator:** CLI + skills + hooks (no Grok npm plugin). Install: `grok plannotator install` (repo CLI). Policy: `config/grok-plannotator-hooks.json` -> `~/.grok/hooks/plannotator.json`; home shim maps `block` -> `deny`. Curated in `config/external-skills.md`. Contrast OpenCode `@plannotator/opencode@latest`.
-- **Env (not in TOML):** `GROK_WEB_FETCH`, `GROK_MEMORY`, `GROK_SUBAGENTS`, `GROK_LSP_TOOLS` — document in `config/grok-env.sh`; check with `grok doctor`
+- **Plannotator:** CLI + skills + hooks (no Grok npm plugin). Install: `grok plannotator install` (repo CLI). Policy: `config/grok-plannotator-hooks.json` -> `~/.grok/hooks/plannotator.json`; home shim maps `block` -> `deny`. Curated in `docs/src/authoring/skills/*.mdx`. Contrast OpenCode `@plannotator/opencode@latest`.
+- **Env (not in TOML):** `GROK_WEB_FETCH`, `GROK_MEMORY`, `GROK_SUBAGENTS`, `GROK_LSP_TOOLS` — document in `config/grok-env.sh`; verify with `/grok-delegate preflight`
+- **Cross-harness delegate:** `/grok-delegate` — native headless `grok -p` / `-r` / worktrees / leader for Codex/OpenCode task graphs (not config sync)
 - **Isolated sync:** repo stack sync with `--platforms grok --targets home` (skips other harness home merges; includes Plannotator hook refresh)
 
 ## Classification Gate
@@ -522,7 +519,7 @@ If the user invokes `/harness-master` with no arguments:
 1. **Gate 0 — Discover surfaces**
    - Run:
      ```bash
-     uv run python skills/harness-master/scripts/discover_surfaces.py --repo-root . --level <level> --harness <canonical-harness> [--harness ...]
+     uv run python scripts/discover_surfaces.py --repo-root . --level <level> --harness <canonical-harness> [--harness ...]
      ```
    - Parse the JSON output and classify each surface as `present`, `missing`, `generated`, `merged`, `repo-observed`, or `blind-spot`.
    - If the script cannot run, fall back to manual discovery with `Glob`, `Read`, and `Grep`.
@@ -575,7 +572,7 @@ Use this mode for `usage` or natural-language requests to review token cost, quo
 2. Normalize harnesses, level, and usage window. Default missing window to `14` days.
 3. Run surface discovery plus the safe usage probe:
    ```bash
-   uv run python skills/harness-master/scripts/usage_probe.py --repo-root . --harness <canonical-harness> --level <level> --days <days> --json
+   uv run python scripts/usage_probe.py --repo-root . --harness <canonical-harness> --level <level> --days <days> --json
    ```
 4. Load `references/usage-review.md`, `references/evidence-boundaries.md`, and `references/output-format.md`.
 5. Use runtime tools such as `token_stats`, `token_history`, `token_export`, `insights_collect`, `agent_attribution`, `quota_status`, `gemini_quota`, `workspace-summary`, and `git-smart-status` only when they match the requested harness and privacy class.
@@ -622,16 +619,16 @@ Never claim `latest` without evidence from a current source.
   npx skills add <source> --skill harness-master -y -g --agent <agent>
   ```
 - Do not recommend install commands for native config problems.
-- Do not suggest project-local install by default. Mention `python skills/harness-master/scripts/install_skills.py --local --execute` only if the user explicitly asks for project-local installation.
+- Do not suggest project-local install by default. Mention `python scripts/install_skills.py --local --execute` only if the user explicitly asks for project-local installation.
 
 ## Validation Contract
 
 After changing this skill, run:
 
 ```bash
-python skills/harness-master/scripts/check.py
-uv run python skills/harness-master/scripts/usage_probe.py --repo-root . --harness opencode --level both --days 14 --json
-uv run python skills/harness-master/scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness github-copilot-web --harness github-copilot-cli --harness cursor --harness gemini-cli --harness antigravity --harness opencode --harness perplexity-desktop --harness cherry-studio
+python scripts/check.py
+uv run python scripts/usage_probe.py --repo-root . --harness opencode --level both --days 14 --json
+uv run python scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness github-copilot-web --harness github-copilot-cli --harness cursor --harness gemini-cli --harness antigravity --harness opencode --harness perplexity-desktop --harness cherry-studio
 ```
 
 Completion criteria:

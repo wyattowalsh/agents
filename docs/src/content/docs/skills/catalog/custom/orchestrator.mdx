@@ -11,76 +11,126 @@ trust_tier: "repo"
 metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "orchestrator"
-composed_by: "compose-rich-hand-wave-1"
-composed_at: "2026-06-17"
+composed_by: "compose-custom-wave-1"
+composed_at: "2026-06-29"
 ---
-
-{/* HAND-MAINTAINED */}
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="orchestrator" variant="note" /> <Badge text="1483 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Review and orchestrate parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination. NOT for single-action tasks.
+<SkillPageHeader
+  name="orchestrator"
+  description="Review and orchestrate parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination. NOT for single-action tasks."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/orchestrator"
+  badges={[{ text: "orchestrator", variant: "note" }, { text: "2535 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
-<div class="quick-start">
+{/* Quick Start is rendered by SkillPageHeader. */}
 
-### Quick Start
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
-```
-
-**Use:** `/orchestrator`
-
-</div>
-
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), and other [agentskills.io](https://agentskills.io)-compatible agents.
+<Aside type="note" title="Repo skill (hand-maintained)">
+Composed compose-custom-wave-1 from `skills/orchestrator/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+</Aside>
 
 ## What It Does
 
-These rules govern ALL parallelization decisions. Apply them on every task. The skill provides the Decomposition Gate, tier selection, subagent/team best practices, failure recovery, and 6 orchestration patterns.
+These rules govern ALL parallelization decisions. Apply them on every task.
 
-<Aside type="caution" title="Decomposition Gate">
-MANDATORY before any tool-mediated work. Decompose the request, classify actions as independent or dependent, then dispatch accordingly. Skipping the gate is never acceptable.
-</Aside>
-
-## Mode routing
+## Modes
 
 | $ARGUMENTS | Action |
 |------------|--------|
-| *(empty)* | Load full orchestration guide; apply Decomposition Gate to current request |
-| `pattern <A-F>` | Show the named pattern from `references/patterns.md` |
+| *(empty)* | Show the empty/help gallery, then apply the Classification Gate and Decomposition Gate to the current request |
+| `pattern &lt;A-F&gt;` | Show the named pattern from `references/patterns.md` |
 | `tier` | Display Tier Selection table and model guidance |
 | `recovery` | Show the Accounting Rule and Recovery Ladder |
 
-## Decomposition Gate
+## Critical Rules
+
+1. Never dispatch independent actions sequentially — all independent Task calls MUST appear in one response.
+2. Always run the Decomposition Gate before any tool-mediated work; skipping it is never acceptable.
+3. Never reduce parallelism or tier when the higher tier criteria are met; follow the documented environment-specific model policy.
+4. Never silently drop a failed subagent — N dispatched = N accounted for; apply the Accounting Rule after every wave.
+5. Never advance to Wave N+1 with unresolved agents — resolve all agents in Wave N first.
+6. Always create TaskCreate entries before dispatching subagent waves or agent teams — silent orchestration is forbidden.
+7. Never assign two teammates overlapping file ownership — overlapping edits cause lost work.
+8. Always include full context in subagent and teammate prompts — they do not inherit conversation history.
+
+---
+
+## Canonical Vocabulary
+
+| Canonical Term | Meaning |
+|----------------|---------|
+| **subagent** | A Task-tool-spawned agent running in parallel within a session |
+| **wave** | A batch of parallel subagents dispatched in a single message |
+| **team** | A TeamCreate-spawned group of teammates coordinated by a lead |
+| **teammate** | A member of an agent team with assigned file ownership |
+| **lead** | The orchestrating agent in a team; never implements directly |
+| **dispatch** | Send one or more subagents/teammates to execute in parallel |
+| **gate** | A mandatory checkpoint that must pass before proceeding |
+| **accounting rule** | N dispatched = N resolved; no agent silently dropped |
+
+## Gating Logic
+
+Use this gate before loading the full orchestration doctrine:
+
+1. If the request has exactly one action, stay in a single session and do not invoke this skill.
+2. If the work has multiple steps but they all edit the same file or depend on strict sequencing, do not force parallelism; keep the sequential constraint explicit.
+3. If decomposition is unclear, run an explore-first pass and then re-enter the gate instead of guessing the topology.
+4. If another active skill has a stricter phase order or dispatch precondition, preserve that skill's control flow and parallelize only inside its allowed boundaries.
+5. If the user explicitly requests a specific execution approach, honor it unless it conflicts with a hard safety constraint.
+
+## Operator Contract
+
+### Empty / Help
+
+1. Show the public entry paths: empty/help, `pattern &lt;A-F&gt;`, `tier`, and `recovery`.
+2. Run the Classification Gate before applying the Decomposition Gate.
+3. Explain the near-miss cases where this skill should not take over: single-action work, same-file sequential work, and phase-gated skills with stricter ordering.
+4. Point to the specific references needed for pattern selection, progress accounting, runtime limits, and misroute examples instead of pasting the entire doctrine.
+
+### `pattern &lt;A-F&gt;`
+
+1. Load `references/patterns.md`.
+2. Present the named pattern, when to use it, when not to use it, and the recovery implications.
+3. Keep Pattern E as the default unless the named pattern is the clear better fit for the actual request.
+
+### `tier`
+
+1. Load `references/runtime-capability-boundaries.md` before discussing mechanism limits or environment-specific tooling constraints.
+2. Show the Tier Selection table and explain why the highest applicable tier wins.
+3. Name the near-miss cases where a lower tier is still correct, such as exactly one action or a single-domain, no-coordination task.
+
+### `recovery`
+
+1. Load `references/progress-accounting.md`.
+2. Present the Accounting Rule, recovery ladder, and reporting contract.
+3. Explain how to handle missing agents, re-spawns, and explicit skips before advancing to the next wave.
+
+## 0. Decomposition Gate (Mandatory Before Any Work)
 
 Before executing any request that involves tool-mediated work:
 
-<Steps>
+1. **DECOMPOSE**: List the actions needed (file reads, edits, searches, commands, analyses).
+2. **CLASSIFY**: Which actions are independent (no data dependency)? Which are dependent?
+3. **MAXIMIZE**: Actively split actions further — find every opportunity to parallelize. Each independent action = its own subagent. Challenge: can any action be split into two?
+4. **CONFLICT CHECK**: Two independent actions editing the same file → make those sequential; all others remain parallel.
+5. **DISPATCH**: Default is Pattern E — TeamCreate with nested subagent waves per teammate. Pre-approve permissions before spawning. Use bare subagent waves only when single domain, no coordination, no context pressure. Single session only when there is literally 1 action.
+6. **TRACK**: For orchestrated work, create TaskCreate entries before dispatch (see Section 7).
 
-1. **DECOMPOSE** -- List the actions needed (file reads, edits, searches, commands, analyses).
+**Fast path**: Single-action requests skip directly to single session.
 
-2. **CLASSIFY** -- Which actions are independent (no data dependency)? Which are dependent?
+**Explore-first path**: Cannot decompose without exploration → spawn parallel exploration team first (Pattern F Wave 1), then re-enter this gate.
 
-3. **MAXIMIZE** -- Actively split actions further — find every opportunity to parallelize. Each independent action = its own subagent. Challenge: can any action be split into two?
+**Transition heuristic**: Subagent waves hitting context limits or agents need to share findings → upgrade to Pattern E (teams + nested waves).
 
-4. **CONFLICT CHECK** -- Two independent actions editing the same file become sequential; all others remain parallel.
-
-5. **DISPATCH** -- Default is Pattern E — TeamCreate with nested subagent waves per teammate. Pre-approve permissions before spawning. Use bare subagent waves only when single domain, no coordination, no context pressure. Single session only when there is literally 1 action.
-
-6. **TRACK** -- For orchestrated work, create TaskCreate entries before dispatch.
-
-</Steps>
-
-**Fast path:** Single-action requests skip directly to single session.
-**Explore-first path:** Cannot decompose without exploration? Dispatch parallel exploration subagents first (Pattern F Wave 1), then re-enter the gate.
-**Transition heuristic:** Subagent waves hitting context limits or agents need to share findings → upgrade to Pattern E (teams + nested waves).
-**User override:** Explicit user requests for a specific execution approach take precedence.
+**User override**: Explicit user requests for a specific execution approach take precedence.
 
 ### Common rationalizations (all invalid)
 - "It's faster to do it myself" — Parallel subagents complete N tasks in time of the slowest 1.
@@ -98,55 +148,59 @@ When a superpowers skill is active, the gate operates WITHIN the skill's executi
 - **Per-task review loop skills**: The skill's sequential structure takes precedence. Parallelize exploration within each task, not across tasks.
 - **Dispatch-precondition skills**: The skill's "Don't use when" conditions remain valid. The gate does not override skill-level safety guards.
 
-## Tier Selection
+See `references/misroute-examples.md` for concrete near-miss cases such as same-file sequential edits, phase-gated review loops, and single-action requests.
 
-Select the highest tier whose criteria are met. Never select a lower tier to reduce cost.
+---
+
+## 1. Tier Selection (Mandatory — Highest Applicable Tier Wins)
 
 | Tier | Mechanism | Use when | Model |
 |------|-----------|----------|-------|
 | **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT | opus (default) / Copilot: Opus 4.6 max thinking; Sonnet 4.6 max thinking only for extremely trivial `/fleet` work |
-| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure | opus (default) / Copilot: Opus 4.6 max thinking; Sonnet 4.6 max thinking only for extremely trivial `/fleet` work |
-| **Single session** | Direct execution | Exactly 1 action | N/A |
+| **Subagent wave** | Task tool, parallel calls | 2+ independent actions in one domain, no coordination pressure, and no same-file linear chain | opus (default) / Copilot: Opus 4.6 max thinking; Sonnet 4.6 max thinking only for extremely trivial `/fleet` work |
+| **Single session** | Direct execution | Exactly 1 action, or any same-file sequential chain that must remain linear | N/A |
 
-## Orchestration Patterns
+Select the highest tier whose criteria are met. Never select a lower tier to
+reduce cost. A count of 2 is not enough on its own; the actions must be
+independent.
 
-| Pattern | Name | Use When |
-|---------|------|----------|
-| A | Parallel subagent wave | 2+ independent subtasks in a session |
-| B | Agent team with file ownership | Cross-domain features, large refactors |
-| C | Competing hypotheses | Debugging, architecture decisions |
-| D | Plan-then-swarm | Large tasks needing human approval |
-| **E** | **Teams of subagent-using teammates (DEFAULT)** | **2+ independent streams — use by default** |
-| F | Multi-wave pipeline | Explore --> implement --> verify phases |
+## Scaling Strategy
 
-See `references/patterns.md` for detailed patterns with ASCII diagrams, key rules, and the recovery ladder.
+| Situation | Recommended shape |
+|-----------|-------------------|
+| Small multi-action task in one domain | Use a subagent wave only if there are 2+ truly independent actions and no coordination pressure. |
+| Cross-domain implementation | Use Pattern E with distinct ownership lanes and nested waves only where verbose work benefits from delegation. |
+| Explore → implement → verify work | Use a multi-wave pipeline and close accounting between waves before advancing. |
+| Same-file or tightly ordered work | Keep the sequential boundary explicit instead of manufacturing parallelism. |
 
-## Model Selection
+---
 
+## 2. Subagent Best Practices
+
+### Spawning
+- **One response, multiple Task calls.** All independent subagents MUST be dispatched in the same message.
+- Use `run_in_background: true` for subagents whose results are not needed immediately.
+- N independent actions = N parallel subagents. Merge only when they share file/directory scope.
+
+### Prompt-tuning
+- Give every subagent a detailed, self-contained prompt with exact file paths, expected output format, and domain context.
+- Do NOT rely on the subagent inheriting conversation history — it does not.
+
+### Model selection
 - Default policy: `opus` for every subagent, teammate, and wave.
 - GitHub Copilot CLI override: all plans should be `/fleet`-optimized per `/orchestrator`. For `/fleet`, use **Claude Opus 4.6 with max thinking** for every non-trivial subagent, teammate, wave, and `/fleet` member.
 - Use **Claude Sonnet 4.6 with max thinking** only for incredibly/extremely trivial `/fleet` subagents. If there is any ambiguity, escalate to Opus.
 - When both policies are present, apply the environment-specific override for the active runtime.
 
-## The Accounting Rule
+### Context management
+- Delegate verbose operations (test suites, log parsing, doc fetching) to subagents.
+- Use subagent resumption (agent ID) for multi-phase work rather than spawning fresh.
+- After a wave completes, apply the Accounting Rule (Section 4) before
+  synthesizing or dispatching the next wave.
 
-MANDATORY after every parallel dispatch. When N agents are dispatched, all N must be accounted for:
+---
 
-<Steps>
-
-1. **COLLECT** -- Wait for all N agents to return. Poll with `TaskOutput` block=false for timeout detection.
-
-2. **TALLY** -- Results received vs dispatched. Missing = unresolved.
-
-3. **RESOLVE** -- All non-successes via the Recovery Ladder (see `references/patterns.md`).
-
-4. **GATE** -- Do NOT advance until every agent has SUCCESS or explicit SKIP.
-
-5. **REPORT** -- Summarize all agent outcomes via TaskUpdate before proceeding.
-
-</Steps>
-
-## Agent Team Best Practices
+## 3. Agent Team Best Practices
 
 - Scale teammates to match the work — no artificial cap. Use as many as needed for maximum parallelism (up to ~50 agents total including nested subagents). Token budget is not a constraint.
 - Pre-approve common permissions before spawning teammates to reduce friction.
@@ -155,54 +209,133 @@ MANDATORY after every parallel dispatch. When N agents are dispatched, all N mus
 - Include all task-specific context in spawn prompts: file paths, architecture decisions, acceptance criteria. Teammates do not inherit conversation history.
 - Use delegate mode to prevent the lead from implementing work itself.
 - Task claiming uses file locking — no race conditions when multiple teammates claim simultaneously.
-- The lead must not proceed to synthesis until all teammate tasks are accounted for.
-
-## Limitations
-
-- No session resumption for teammates (`/resume` and `/rewind` won't restore them)
-- No nested teams (teammates can use subagents but cannot spawn teams)
-- One team per session -- clean up before starting a new one
-- Lead is fixed -- cannot transfer leadership
-- All teammates inherit the lead's permission mode at spawn
-- Subagent resumption may not recover from all failure modes (re-spawn instead)
-- No built-in timeout detection -- orchestrator must poll with `TaskOutput` manually
-- Recovery re-spawns count toward the session's agent budget
-- Display modes: in-process (Shift+Down to cycle) is default; split panes require tmux or iTerm2
-- Teammate interaction: Enter to view session, Escape to interrupt, Ctrl+T for task list
-
-## Critical Rules
-
-1. Never dispatch independent actions sequentially -- all independent Task calls MUST appear in one response.
-2. Always run the Decomposition Gate before any tool-mediated work; skipping it is never acceptable.
-3. Never reduce parallelism, tier, or model quality for any reason -- always use opus, no exceptions. Never downgrade.
-4. Never silently drop a failed subagent -- N dispatched = N accounted for; apply the Accounting Rule after every wave.
-5. Never advance to Wave N+1 with unresolved agents -- resolve all agents in Wave N first.
-6. Always create TaskCreate entries before dispatching subagent waves or agent teams -- silent orchestration is forbidden.
-7. Never assign two teammates overlapping file ownership -- overlapping edits cause lost work.
-8. Always include full context in subagent and teammate prompts -- they do not inherit conversation history.
+- Never assign two teammates overlapping file ownership.
+- The lead must not proceed to synthesis until all teammate tasks are accounted for (Section 4).
 
 ---
 
-### General
+## 4. Quality Gates & Failure Recovery
 
+### The Accounting Rule (MANDATORY after every parallel dispatch)
+
+When N agents are dispatched, all N must be accounted for before proceeding:
+
+1. **COLLECT**: Wait for all N agents to return. Poll with `TaskOutput` block=false for timeout detection.
+2. **TALLY**: Results received vs dispatched. Missing = unresolved.
+3. **RESOLVE** all non-successes via the Recovery Ladder (see `references/patterns.md`).
+4. **GATE**: Do NOT advance until every agent has SUCCESS or explicit SKIP.
+5. **REPORT**: Summarize all agent outcomes via TaskUpdate before proceeding.
+
+### Hooks for automated enforcement
+- **TeammateIdle** hook: prevent teammates from idling before work is verified.
+- **TaskCompleted** hook: prevent tasks from closing before tests pass.
+- Both use exit code 2 to send feedback and keep the teammate/task active.
+
+### Plan approval workflow
+- For risky changes, include "Require plan approval before making changes" in the spawn prompt.
+- Teammate enters read-only plan mode, sends plan_approval_request to lead when ready.
+- Lead approves or rejects with feedback. Teammate revises if rejected.
+- Influence approval criteria in spawn prompt: "only approve plans that include test coverage."
+
+---
+
+## 5. Orchestration Patterns
+
+| Pattern | Name | Use When | Details |
+|---------|------|----------|---------|
+| A | Parallel subagent wave | 2+ independent subtasks in a session | see `references/patterns.md` |
+| B | Agent team with file ownership | Cross-domain features, large refactors | see `references/patterns.md` |
+| C | Competing hypotheses | Debugging, architecture decisions | see `references/patterns.md` |
+| D | Plan-then-swarm | Large tasks needing human approval | see `references/patterns.md` |
+| **E** | **Teams of subagent-using teammates (DEFAULT)** | **2+ independent streams — use by default** | see `references/patterns.md` |
+| F | Multi-wave pipeline | Explore → implement → verify phases | see `references/patterns.md` |
+
+---
+
+## 6. Limitations
+
+- No session resumption for teammates (`/resume` and `/rewind` won't restore them).
+- No nested teams (teammates can use subagents but cannot spawn teams).
+- One team per session. Clean up before starting a new one.
+- Lead is fixed — cannot transfer leadership.
+- All teammates inherit the lead's permission mode at spawn.
+- Subagent resumption may not recover from all failure modes (re-spawn instead).
+- No built-in timeout detection — orchestrator must poll with `TaskOutput` manually.
+- Recovery re-spawns count toward the session's agent budget.
+- Display modes: in-process (Shift+Down to cycle) is default; split panes require tmux or iTerm2.
+- Teammate interaction: Enter to view session, Escape to interrupt, Ctrl+T for task list.
+
+## Progressive Disclosure
+
+- Do not load every orchestration detail by default.
+- Read `references/classification-gate.md` when deciding whether this skill should own the task at all.
+- Read `references/patterns.md` only when the user requests a specific pattern or the topology choice is the main question.
+- Read `references/progress-accounting.md` when discussing reporting, accounting, or recovery behavior.
+- Read `references/runtime-capability-boundaries.md` when tool/runtime limits or environment-specific constraints affect the topology.
+- Read `references/misroute-examples.md` when a request is close to the trigger boundary.
+
+---
+
+## 7. Progress Visibility (Mandatory For Orchestrated Work)
+
+All orchestrated work must produce structured progress indicators via TaskCreate/TaskUpdate.
+
+| Tier | Requirement | Granularity |
+|------|------------|-------------|
+| **Subagent wave** | MUST | One task per subagent, created before dispatch |
+| **Agent team** | MUST | One task per teammate assignment, created during setup |
+| **Single session** (3+ steps) | SHOULD | One task per logical step |
+
+### Rules
+- Create tasks before execution begins, not retroactively.
+- Each task MUST have a descriptive `activeForm` in present continuous tense naming the specific action and target.
+- Update tasks to `in_progress` before starting, `completed` immediately after.
+- After wave completion + accounting, summarize all agent outcomes before dispatching the next wave.
+
+## External Harness Delegation (Grok Build)
+
+When the macro graph assigns nodes to **Grok Build**, the parent still owns waves, gates, and synthesis. Delegate execution via `/grok-delegate` — native `grok -p`, `-r`, worktrees, and leader only (no custom wrapper). Pre-flight: invoke `/grok-delegate` preflight before fleet dispatch (see grok-delegate skill). Parent dispatches parallel Grok nodes as independent bash subprocesses (Pattern A/E). Tune in-flight branches with `-r &lt;sessionId&gt;` after parent gates fail.
+
+**Tier-T trivial offload:** When fast preflight passes and OAuth is healthy, offload bounded leaf tasks (≤3 reads OR ≤1 file ≤80 LOC) via `/grok-delegate trivial` single-node `grok -p`. Parent keeps synthesis. Ineligible for multi-node graphs or overlapping writers.
+
+## Scope Boundaries
+
+**IS for:** decomposition, orchestration topology, pattern selection, progress accounting, recovery/reporting, and multi-agent execution rules.
+
+**NOT for:** single-action requests, same-file sequential work that should stay serialized, or overriding stricter phase-gated skill contracts.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
 | Field | Value |
 | ----- | ----- |
 | Name | `orchestrator` |
 | License | MIT |
 | Version | 1.0.0 |
 | Author | wyattowalsh |
+  </TabItem>
+</Tabs>
 
 ## Related Skills
 
 <CardGrid>
-  <LinkCard title="review" href="/skills/catalog/custom/review/" description="Evidence-first review across session diffs, scoped targets, PRs, full audits, source provenance, simplification, and approved fix passes." />
-  <LinkCard title="wargame" href="/skills/catalog/custom/wargame/" description="Domain-agnostic strategic decision analysis and wargaming." />
+  <LinkCard title="review" href="/skills/catalog/custom/review/" description="Use for session, scoped, PR, range, full audit, simplification, and source/provenance reviews with evidence-first findings." />
+  <LinkCard title="wargame" href="/skills/catalog/custom/wargame/" description="Strategic decision analysis and wargaming. Auto-classifies complexity for analysis or simulation. Use for decisions under uncertainty." />
 </CardGrid>
 
 <details class="source-disclosure">
-<summary>View Full SKILL.md</summary>
+<summary>Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml title="skills/orchestrator/SKILL.md"
 ---
 name: orchestrator
 description: >-
@@ -483,6 +616,12 @@ All orchestrated work must produce structured progress indicators via TaskCreate
 - Each task MUST have a descriptive `activeForm` in present continuous tense naming the specific action and target.
 - Update tasks to `in_progress` before starting, `completed` immediately after.
 - After wave completion + accounting, summarize all agent outcomes before dispatching the next wave.
+
+## External harness delegation (Grok Build)
+
+When the macro graph assigns nodes to **Grok Build**, the parent still owns waves, gates, and synthesis. Delegate execution via `/grok-delegate` — native `grok -p`, `-r`, worktrees, and leader only (no custom wrapper). Pre-flight: invoke `/grok-delegate` preflight before fleet dispatch (see grok-delegate skill). Parent dispatches parallel Grok nodes as independent bash subprocesses (Pattern A/E). Tune in-flight branches with `-r <sessionId>` after parent gates fail.
+
+**Tier-T trivial offload:** When fast preflight passes and OAuth is healthy, offload bounded leaf tasks (≤3 reads OR ≤1 file ≤80 LOC) via `/grok-delegate trivial` single-node `grok -p`. Parent keeps synthesis. Ineligible for multi-node graphs or overlapping writers.
 
 ## Scope Boundaries
 

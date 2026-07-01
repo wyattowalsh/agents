@@ -1,0 +1,10 @@
+{
+  "wave": "W4",
+  "user_gates": [
+    {"task_id": "C-050a", "action": "Cursor Settings → Hooks UI: confirm 0 errors"},
+    {"task_id": "C-050b", "action": "Optional OpenCode smoke: .env read blocked"},
+    {"task_id": "C-050c", "action": "User commit + PR (PR-C1 + PR-C2)"}
+  ],
+  "blocked_until": ["C-041d review closure", "C-050a manual green"],
+  "note": "Do not run sync --apply --targets home until C-050a passes"
+}

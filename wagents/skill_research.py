@@ -322,7 +322,7 @@ def build_repo_grounded_research_body(doc: SkillDocNode) -> str:
 
 
 def build_curated_config_research_body(entry: ExternalSkillEntry) -> str:
-    """Build structured research body from ExternalSkillEntry (config/external-skills.md fields)."""
+    """Build structured research body from ExternalSkillEntry (authoring catalog fields)."""
     purpose = (entry.notes or entry.risk_notes or f"Curated external skill: {entry.name}.").strip()
     harness_list = ", ".join(entry.target_agents) if entry.target_agents else "(see install command -a targets)"
     trust_parts: list[str] = [
@@ -349,7 +349,7 @@ def build_curated_config_research_body(entry: ExternalSkillEntry) -> str:
     if entry.source_url:
         upstream = f"[{entry.source}]({entry.source_url})"
     else:
-        upstream = entry.source or entry.install_source or "config/external-skills.md"
+        upstream = entry.source or entry.install_source or "docs/src/authoring/skills"
 
     comparable = _extract_comparable_alternative(purpose)
 
@@ -378,7 +378,7 @@ def build_curated_config_research_body(entry: ExternalSkillEntry) -> str:
         "",
         comparable,
         "",
-        "> Sourced from curated config/external-skills.md; use /review source for live evidence.",
+        "> Sourced from curated authoring catalog; use /review source for live evidence.",
     ]
     return "\n".join(lines)
 

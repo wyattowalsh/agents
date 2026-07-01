@@ -30,4 +30,4 @@ apollographql (Apollo GraphQL org, github.com/apollographql/skills). MIT license
 
 Other MCP or agent-tooling skills; apollo-router for runtime.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

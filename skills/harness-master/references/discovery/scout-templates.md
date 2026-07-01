@@ -91,7 +91,7 @@ Spawn prompts for coordinator-manifest scouts (Wave 2). Load ONE role at a time 
 
 **Steps:**
 
-1. Read `config/external-skills.md` and planning manifests under `planning/manifests/` when present.
+1. Read `docs/src/authoring/skills` and planning manifests under `planning/manifests/` when present.
 2. Emit candidates matching documented `npx skills add` commands not yet in inventory.
 3. Never auto-edit policy files.
 

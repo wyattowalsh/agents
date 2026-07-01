@@ -325,7 +325,7 @@ def test_curated_external_stub_node_with_curated_trust_gated_tier_emits_curated_
         "Curated external stub",
         {"_skills_trust_tier": "curated-trust-gated"},
         "",
-        "config/external-skills.md",
+        "docs/src/authoring/skills/curated-stub.mdx",
         source="curated-external",
     )
     data = site_data([node])

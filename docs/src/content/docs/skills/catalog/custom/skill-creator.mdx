@@ -11,8 +11,8 @@ trust_tier: "repo"
 metadata.author: "wyattowalsh"
 metadata.version: "2.0.0"
 research_slug: "skill-creator"
-composed_by: "compose-custom-wave-7"
-composed_at: "2026-06-17"
+composed_by: "compose-custom-wave-6"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,19 +26,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills. NOT for agents, MCP servers, or running skills."
   installCommand={`npx skills add github:wyattowalsh/agents --skill skill-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/skill-creator &lt;mode&gt; [name]"
-  badges={[{ text: "skill-creator", variant: "note" }, { text: "1450 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "skill-creator", variant: "note" }, { text: "2086 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v2.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills. NOT for agents, MCP servers, or running skills.
-**Stack / assumptions:** Requires Python 3.13+; optional uv for project tooling; optional Node.js/npm for install commands; hook support varies by agent client.
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Repo skill (hand-maintained)">
-Composed compose-custom-wave-7 from `skills/skill-creator/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+Composed compose-custom-wave-6 from `skills/skill-creator/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -55,7 +51,12 @@ Create, improve, and audit AI agent skills. Every skill follows 14 proven struct
 | `plan &lt;name&gt;` / `plan &lt;path&gt;`       | Plan (existing)              | `/skill-creator plan review`                |
 | `plan --all` / `plan repo`          | Plan (repo-wide)             | `/skill-creator plan --all`                        |
 | `audit &lt;name&gt;`                      | Audit                        | `/skill-creator audit review`               |
+| `audit &lt;name&gt; --security`           | Security Audit               | `/skill-creator audit review --security`           |
 | `audit --all`                       | Audit All                    | `/skill-creator audit --all`                       |
+| `eval &lt;name&gt;`                       | Eval                         | `/skill-creator eval review`                       |
+| `benchmark &lt;name&gt;`                  | Benchmark                    | `/skill-creator benchmark review`                  |
+| `compare &lt;old&gt; &lt;new&gt;`               | Compare                      | `/skill-creator compare review-v1 review-v2`       |
+| `optimize-description &lt;name&gt;`       | Optimize Description         | `/skill-creator optimize-description review`       |
 | `dashboard`                         | Dashboard                    | `/skill-creator dashboard`                         |
 | `package &lt;name&gt;` / `package --all`  | Package                      | `/skill-creator package wargame`                   |
 | Natural language skill idea         | Auto: Develop (new)          | `"tool that audits Python type safety"`            |
@@ -67,10 +68,10 @@ Create, improve, and audit AI agent skills. Every skill follows 14 proven struct
 ## Quick Start
 
 ```bash
-python skills/skill-creator/scripts/scaffold_skill.py <name>  # Scaffold from template
-python scripts/check.py                                        # Validate from skill directory
-uv run python skills/skill-creator/scripts/audit.py skills/<name>/  # Score quality
-python skills/skill-creator/scripts/package.py skills/<name>/ --dry-run  # Portability check
+uv run python skills/skill-creator/scripts/scaffold_skill.py <name>  # Scaffold from template
+uv run python scripts/check.py                                        # Validate from skill directory
+uv run python skills/skill-creator/scripts/audit.py skills/<name>/    # Score quality
+uv run python skills/skill-creator/scripts/package.py skills/<name>/ --dry-run  # Portability check
 ```
 
 ## Skill Development
@@ -99,8 +100,8 @@ Comparative ranking of all repository skills. Load `references/audit-guide.md` �
 Package skills into portable ZIP files for Claude Code Desktop import. Load `references/packaging-guide.md` for ZIP structure, manifest schema, portability checks, and cross-agent compatibility.
 
 ```bash
-python skills/skill-creator/scripts/package.py skills/<name>/ --dry-run  # Check before emitting a ZIP
-python skills/skill-creator/scripts/package.py skills/<name>/            # Single skill → <name>-v<version>.skill.zip
+uv run python skills/skill-creator/scripts/package.py skills/<name>/ --dry-run  # Check before emitting a ZIP
+uv run python skills/skill-creator/scripts/package.py skills/<name>/            # Single skill → <name>-v<version>.skill.zip
 ```
 
 ## Core Principles
@@ -113,9 +114,9 @@ python skills/skill-creator/scripts/package.py skills/<name>/            # Singl
 
 ## Critical Rules
 
-1. Run `python scripts/check.py` from the target skill directory before declaring any skill complete
-2. Re-run `python scripts/check.py` after changing evals and before declaring the skill complete
-3. Run `uv run python skills/skill-creator/scripts/audit.py` after every significant SKILL.md change
+1. Run `uv run python scripts/check.py` from the target skill directory before declaring any skill complete
+2. Re-run `uv run python scripts/check.py` after changing evals and before declaring the skill complete
+3. Run `uv run python scripts/audit.py` after every significant SKILL.md change
 4. Never create a skill without a dispatch table — it is the routing contract
 5. Never create a dispatch table without an empty-args handler — unrouted input is a bug
 6. Every reference file must appear in the Reference File Index — orphan refs are invisible
@@ -132,15 +133,35 @@ python skills/skill-creator/scripts/package.py skills/<name>/            # Singl
 17. Update evals when dispatch behavior or modes change — stale evals are invisible bugs
 18. `plan &lt;name&gt;` and `plan --all` are read-only planning modes — never edit during planning
 19. Repo-wide or multi-skill requests require a ranked plan and standalone refinement-plan output before any implementation begins
-20. Stop hooks must include a `stop_hook_active` guard — recursive hook loops are implementation bugs
+20. Runtime-projected Stop hooks must include a `stop_hook_active` guard — recursive hook loops are implementation bugs
+21. Source-ground new skills in real workflow evidence; generic best-practice generation starts as `needs-evidence`
+22. Benchmark meaningful changes against `without_skill` or `old_skill` before claiming behavioral improvement
+23. Security-governance findings can block release even when static quality score is A
+24. Choose an explicit permission posture for every skill that uses scripts, hooks, tools, network, credentials, or writes
+25. Use OpenSpec before changing public eval schema, validation behavior, hook policy, packaging semantics, or generated-doc workflows
+26. Do not run live installs, live behavioral evals, browser launches, or command-file injection from Plan, Audit, or Security Audit modes
 
 **Canonical terms** (use these exactly throughout):
 
-- Modes: "Develop (new)", "Develop (existing)", "Audit", "Audit All", "Dashboard", "Package", "Gallery"
+- Modes: "Develop (new)", "Develop (existing)", "Plan (existing)", "Plan (repo-wide)", "Audit", "Security Audit", "Audit All", "Eval", "Benchmark", "Compare", "Optimize Description", "Dashboard", "Package", "Gallery"
 - Steps (Development): "Understand", "Plan", "Scaffold", "Build", "Validate", "Iterate"
 - Grade scale: "A" (90-100), "B" (75-89), "C" (60-74), "D" (40-59), "F" (&lt;40)
 - Patterns: "dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "state-management", "scripts", "templates", "hooks", "progressive-disclosure", "body-substitutions", "stop-hooks"
-- Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "reference-quality", "critical-rules", "script-quality", "portability", "conciseness", "canonical-vocabulary", "evaluation-coverage", "validation-contract"
+- Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "reference-quality", "critical-rules", "script-quality", "portability", "conciseness", "canonical-vocabulary", "evaluation-coverage", "validation-contract", "security-governance"
+
+## Scaling Strategy
+
+Use maximum verified independence, not maximum agent count. Load `references/orchestration-graph.md` for the full graph contract.
+
+| Scope | Strategy | Parallelism |
+|-------|----------|-------------|
+| Small | Single-skill edit: inline sequential edit + validation | Lead only |
+| Medium | Single-skill multi-surface edit: stabilize body contract, then split references/evals/scripts by owned file | 2-5 disjoint lanes |
+| Large | Skill cluster or repo-wide plan: inventory, rank, shard by skill or surface, add judge lane | One worker per owned shard |
+| Large | Public workflow/schema/tooling change: OpenSpec first, then workers behind explicit dependencies | Spec, implementation, verifier, docs-steward lanes |
+| Large | Behavioral eval/benchmark program: static gates first, then opt-in eval runner/report lanes | Trigger, output, safety, report, judge lanes |
+
+Every lane must define inputs, owned paths, output artifact, validation command, and accounting state before dispatch. Same-file edits, generated docs, hooks, packaging semantics, and schema decisions are serialized unless an explicit lock/arbiter protocol exists.
 
 ## Repo-Wide / Multi-Skill Planning
 
@@ -158,6 +179,34 @@ For repo-wide planning, produce a ranked queue plus one standalone refinement pl
 
 Load `references/refinement-plan.md` when producing the standalone refinement-plan packet.
 
+## Security Audit
+
+Audit a skill as an executable supply-chain asset. Load `references/security-governance.md`.
+
+Required output:
+
+1. security surface inventory
+2. source/sink threat model
+3. permission posture
+4. hook/script/template/reference findings
+5. adversarial eval recommendations
+6. risk tier: `low`, `medium`, `high`, or `blocked`
+
+Security Audit is read-only. Do not install third-party skills, run untrusted scripts, or modify the audited skill.
+
+## Eval / Benchmark / Compare / Optimize Description
+
+Behavioral proof complements static audit scoring. Load `references/evidence-and-benchmarking.md`.
+
+| Mode | Purpose |
+|------|---------|
+| Eval | Review or author trigger, output, regression, safety, and portability eval cases |
+| Benchmark | Plan or run opt-in with-skill vs without-skill measurement for a skill |
+| Compare | Plan or run opt-in old-skill vs new-skill measurement for an improvement |
+| Optimize Description | Test trigger and near-miss negative queries, then revise the description from evidence |
+
+Default to read-only planning unless the user explicitly approves live eval runs and the target workspace. Store behavioral run artifacts outside committed `skills/` source.
+
 ## Dashboard
 
 Render visual creation process monitor or audit quality dashboard. Load `references/audit-guide.md` § Dashboard.
@@ -167,24 +216,21 @@ Auto-detects mode from data: `phases` field → process monitor; `skills` array 
 ## Gallery (Empty Arguments)
 
 Present skill inventory with scores and available actions.
-Run `uv run python skills/skill-creator/scripts/audit.py --all --format table`, display results, offer mode menu.
+Run `uv run python scripts/audit.py --all --format table`, display results, offer mode menu.
 
-## Hooks
+## Runtime Hook Projection
 
-PreToolUse hooks intercept tool calls during skill execution. The `hooks:` frontmatter field scopes hooks to this skill only — they activate when the skill is loaded and deactivate when it completes.
+This portable skill source does not embed skill-scoped `hooks` frontmatter. Repo-managed hook policy lives in `config/hook-registry.json` and is projected into supported harness settings by the repository sync/rendering workflow.
 
-Post-edit enforcement for this skill:
+Runtime-projected hook enforcement for this skill should preserve these behaviors:
 
 - `SKILL.md` edits trigger `validate_skill.py`
 - `evals/*.json` edits trigger `validate_evals.py`
 - hook-bearing skill/settings edits trigger `validate_hooks.py`
-- failures surface to the agent instead of being swallowed
+- Stop hooks validate dirty skill-definition, eval, and hook surfaces before exit
+- Stop hooks exit immediately when hook input has `stop_hook_active: true` to avoid recursive loops
 
-Stop hook enforcement:
-
-- runs `uv run python skills/skill-creator/scripts/verify.py stop`
-- validates dirty skill-definition, eval, and hook surfaces before exit
-- exits immediately when hook input has `stop_hook_active: true` to avoid recursive Stop-hook loops
+Packaged skills must not depend on repo-root commands such as `uv run python scripts/verify.py ...`. Keep executable hook commands in runtime-specific config, not in portable skill frontmatter.
 
 ## State Management
 
@@ -195,12 +241,12 @@ Creation progress persists at `~/.{gemini\|copilot\|codex\|claude}/skill-progres
 Run from this skill directory before declaring changes complete:
 
 ```bash
-python scripts/check.py
+uv run python scripts/check.py
 ```
 
 Completion criteria:
 
-1. `scripts/check.py` exits 0.
+1. `uv run python scripts/check.py` exits 0.
 2. No portable-CLI violations remain under this skill directory.
 
 <Tabs>
@@ -243,9 +289,9 @@ Completion criteria:
 </CardGrid>
 
 <details class="source-disclosure">
-<summary>View Full SKILL.md</summary>
+<summary>Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml title="skills/skill-creator/SKILL.md"
 ---
 name: skill-creator
 description: >-
@@ -259,22 +305,7 @@ compatibility: "Requires Python 3.13+; optional uv for project tooling; optional
 metadata:
   author: wyattowalsh
   version: "2.0.0"
-hooks:
-  PreToolUse:
-    - matcher: Bash
-      hooks:
-        - command: "echo 'skill-creator: Bash access granted for script execution'"
-  PostToolUse:
-    - matcher: "Write|Edit|MultiEdit"
-      hooks:
-        - type: command
-          command: "uv run python skills/skill-creator/scripts/verify.py post-tool-use"
-  Stop:
-    - hooks:
-        - type: command
-          command: "uv run python skills/skill-creator/scripts/verify.py stop"
 ---
-
 # Skill Creator
 
 Create, improve, and audit AI agent skills. Every skill follows 14 proven structural patterns.
@@ -291,7 +322,12 @@ Create, improve, and audit AI agent skills. Every skill follows 14 proven struct
 | `plan <name>` / `plan <path>`       | Plan (existing)              | `/skill-creator plan review`                |
 | `plan --all` / `plan repo`          | Plan (repo-wide)             | `/skill-creator plan --all`                        |
 | `audit <name>`                      | Audit                        | `/skill-creator audit review`               |
+| `audit <name> --security`           | Security Audit               | `/skill-creator audit review --security`           |
 | `audit --all`                       | Audit All                    | `/skill-creator audit --all`                       |
+| `eval <name>`                       | Eval                         | `/skill-creator eval review`                       |
+| `benchmark <name>`                  | Benchmark                    | `/skill-creator benchmark review`                  |
+| `compare <old> <new>`               | Compare                      | `/skill-creator compare review-v1 review-v2`       |
+| `optimize-description <name>`       | Optimize Description         | `/skill-creator optimize-description review`       |
 | `dashboard`                         | Dashboard                    | `/skill-creator dashboard`                         |
 | `package <name>` / `package --all`  | Package                      | `/skill-creator package wargame`                   |
 | Natural language skill idea         | Auto: Develop (new)          | `"tool that audits Python type safety"`            |
@@ -307,17 +343,20 @@ If no explicit mode keyword is provided:
 1. Path ending in `SKILL.md` or directory under `skills/` → **Develop (existing)**
 2. Existing skill name + modification verb (improve, refactor, enhance, update, fix, rewrite, optimize, polish, revise, change) → **Develop (existing)**
 3. `--from <source>` in arguments → **Develop (new, from exemplar)**
-4. New capability description ("I want to build...", "tool that...", "skill for...") → **Develop (new)** — derive name, confirm before scaffolding
-5. "MCP server", "agent", "run" → refuse gracefully and redirect
-6. Ambiguous → ask the user which mode they want
+4. "benchmark", "A/B", "with skill", "without skill", "old skill", "new skill" → **Benchmark** or **Compare**
+5. "trigger", "false positive", "false negative", "description fires" → **Optimize Description**
+6. "security", "supply chain", "malicious", "unsafe", "permission", "hook" → **Security Audit**
+7. New capability description ("I want to build...", "tool that...", "skill for...") → **Develop (new)** — derive name, confirm before scaffolding
+8. "MCP server", "agent", "run" → refuse gracefully and redirect
+9. Ambiguous → ask the user which mode they want
 
 ## Quick Start
 
 ```bash
-python skills/skill-creator/scripts/scaffold_skill.py <name>  # Scaffold from template
-python scripts/check.py                                        # Validate from skill directory
-uv run python skills/skill-creator/scripts/audit.py skills/<name>/  # Score quality
-python skills/skill-creator/scripts/package.py skills/<name>/ --dry-run  # Portability check
+uv run python skills/skill-creator/scripts/scaffold_skill.py <name>  # Scaffold from template
+uv run python scripts/check.py                                        # Validate from skill directory
+uv run python skills/skill-creator/scripts/audit.py skills/<name>/    # Score quality
+uv run python skills/skill-creator/scripts/package.py skills/<name>/ --dry-run  # Portability check
 ```
 
 ## Skill Development
@@ -332,6 +371,20 @@ Unified process for creating new skills and improving existing ones. Load `refer
 | 4. Build      | Write/edit body, references, scripts, templates, evals    | Same                                            |
 | 5. Validate   | `scripts/check.py` + `audit.py`                           | Same                                            |
 | 6. Iterate    | Test, identify issues, loop to Step 4                     | Same                                            |
+
+## Scaling Strategy
+
+Use maximum verified independence, not maximum agent count. Load `references/orchestration-graph.md` for the full graph contract.
+
+| Scope | Strategy | Parallelism |
+|-------|----------|-------------|
+| Small | Single-skill edit: inline sequential edit + validation | Lead only |
+| Medium | Single-skill multi-surface edit: stabilize body contract, then split references/evals/scripts by owned file | 2-5 disjoint lanes |
+| Large | Skill cluster or repo-wide plan: inventory, rank, shard by skill or surface, add judge lane | One worker per owned shard |
+| Large | Public workflow/schema/tooling change: OpenSpec first, then workers behind explicit dependencies | Spec, implementation, verifier, docs-steward lanes |
+| Large | Behavioral eval/benchmark program: static gates first, then opt-in eval runner/report lanes | Trigger, output, safety, report, judge lanes |
+
+Every lane must define inputs, owned paths, output artifact, validation command, and accounting state before dispatch. Same-file edits, generated docs, hooks, packaging semantics, and schema decisions are serialized unless an explicit lock/arbiter protocol exists.
 
 ## Repo-Wide / Multi-Skill Planning
 
@@ -353,9 +406,37 @@ Load `references/refinement-plan.md` when producing the standalone refinement-pl
 
 Score a skill using deterministic analysis + AI review. Load `references/audit-guide.md`.
 
+## Security Audit
+
+Audit a skill as an executable supply-chain asset. Load `references/security-governance.md`.
+
+Required output:
+
+1. security surface inventory
+2. source/sink threat model
+3. permission posture
+4. hook/script/template/reference findings
+5. adversarial eval recommendations
+6. risk tier: `low`, `medium`, `high`, or `blocked`
+
+Security Audit is read-only. Do not install third-party skills, run untrusted scripts, or modify the audited skill.
+
 ## Audit All
 
 Comparative ranking of all repository skills. Load `references/audit-guide.md` § Audit All.
+
+## Eval / Benchmark / Compare / Optimize Description
+
+Behavioral proof complements static audit scoring. Load `references/evidence-and-benchmarking.md`.
+
+| Mode | Purpose |
+|------|---------|
+| Eval | Review or author trigger, output, regression, safety, and portability eval cases |
+| Benchmark | Plan or run opt-in with-skill vs without-skill measurement for a skill |
+| Compare | Plan or run opt-in old-skill vs new-skill measurement for an improvement |
+| Optimize Description | Test trigger and near-miss negative queries, then revise the description from evidence |
+
+Default to read-only planning unless the user explicitly approves live eval runs and the target workspace. Store behavioral run artifacts outside committed `skills/` source.
 
 ## Dashboard
 
@@ -366,33 +447,30 @@ Auto-detects mode from data: `phases` field → process monitor; `skills` array 
 ## Gallery (Empty Arguments)
 
 Present skill inventory with scores and available actions.
-Run `uv run python skills/skill-creator/scripts/audit.py --all --format table`, display results, offer mode menu.
+Run `uv run python scripts/audit.py --all --format table`, display results, offer mode menu.
 
 ## Package
 
 Package skills into portable ZIP files for Claude Code Desktop import. Load `references/packaging-guide.md` for ZIP structure, manifest schema, portability checks, and cross-agent compatibility.
 
 ```bash
-python skills/skill-creator/scripts/package.py skills/<name>/ --dry-run  # Check before emitting a ZIP
-python skills/skill-creator/scripts/package.py skills/<name>/            # Single skill → <name>-v<version>.skill.zip
+uv run python skills/skill-creator/scripts/package.py skills/<name>/ --dry-run  # Check before emitting a ZIP
+uv run python skills/skill-creator/scripts/package.py skills/<name>/            # Single skill → <name>-v<version>.skill.zip
 ```
 
-## Hooks
+## Runtime Hook Projection
 
-PreToolUse hooks intercept tool calls during skill execution. The `hooks:` frontmatter field scopes hooks to this skill only — they activate when the skill is loaded and deactivate when it completes.
+This portable skill source does not embed skill-scoped `hooks` frontmatter. Repo-managed hook policy lives in `config/hook-registry.json` and is projected into supported harness settings by the repository sync/rendering workflow.
 
-Post-edit enforcement for this skill:
+Runtime-projected hook enforcement for this skill should preserve these behaviors:
 
 - `SKILL.md` edits trigger `validate_skill.py`
 - `evals/*.json` edits trigger `validate_evals.py`
 - hook-bearing skill/settings edits trigger `validate_hooks.py`
-- failures surface to the agent instead of being swallowed
+- Stop hooks validate dirty skill-definition, eval, and hook surfaces before exit
+- Stop hooks exit immediately when hook input has `stop_hook_active: true` to avoid recursive loops
 
-Stop hook enforcement:
-
-- runs `uv run python skills/skill-creator/scripts/verify.py stop`
-- validates dirty skill-definition, eval, and hook surfaces before exit
-- exits immediately when hook input has `stop_hook_active: true` to avoid recursive Stop-hook loops
+Packaged skills must not depend on repo-root commands such as `uv run python scripts/verify.py ...`. Keep executable hook commands in runtime-specific config, not in portable skill frontmatter.
 
 ## State Management
 
@@ -402,7 +480,7 @@ Creation progress persists at `~/.{gemini|copilot|codex|claude}/skill-progress/<
 
 | File                              | Content                                                                              | Read When                                          |
 | --------------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------- |
-| `references/workflow.md`          | Unified 6-step skill development process for new and existing skills                 | Develop (new), Develop (existing)                  |
+| `references/workflow.md`          | Unified skill lifecycle process for new and existing skills                          | Develop (new), Develop (existing), Eval, Benchmark |
 | `references/refinement-plan.md`   | Standalone refinement-plan contract for existing-skill and repo-wide planning output | Plan (existing), Plan (repo-wide)                  |
 | `references/audit-guide.md`       | Audit procedure, Audit All, Dashboard rendering, Gallery, grade thresholds           | Audit, Audit All, Dashboard, Gallery               |
 | `references/proven-patterns.md`   | 14 structural patterns with examples from repo skills                                | Step 4 (Build), gap analysis                       |
@@ -410,6 +488,10 @@ Creation progress persists at `~/.{gemini|copilot|codex|claude}/skill-progress/<
 | `references/frontmatter-spec.md`  | Full field catalog, invocation matrix, decision tree                                 | Step 3 (Scaffold), frontmatter configuration       |
 | `references/packaging-guide.md`   | ZIP structure, manifest schema, portability checks, import instructions              | Package                                            |
 | `references/evaluation-rubric.md` | 13 weighted scoring dimensions normalized to 100, grade thresholds, pressure testing | Audit (pressure testing), scoring targets          |
+| `references/evidence-and-benchmarking.md` | Lifecycle packet, behavioral evals, benchmark artifacts, trigger optimization | Eval, Benchmark, Compare, Optimize Description     |
+| `references/security-governance.md` | Threat model, third-party intake, permission posture, hook/script safety            | Security Audit, Step 2 (Plan), Package             |
+| `references/runtime-compatibility.md` | Portable and runtime-specific fields, install paths, graceful degradation          | Step 3 (Scaffold), Package, Security Audit         |
+| `references/orchestration-graph.md` | Parallel lane graph, ownership, accounting, locks, judge layer                     | Scaling Strategy, repo-wide plans                  |
 
 Read reference files as indicated by the "Read When" column above. Do not rely on memory or prior knowledge of their contents.
 
@@ -426,19 +508,19 @@ Read reference files as indicated by the "Read When" column above. Do not rely o
 Run from this skill directory before declaring changes complete:
 
 ```bash
-python scripts/check.py
+uv run python scripts/check.py
 ```
 
 Completion criteria:
 
-1. `scripts/check.py` exits 0.
+1. `uv run python scripts/check.py` exits 0.
 2. No portable-CLI violations remain under this skill directory.
 
 ## Critical Rules
 
-1. Run `python scripts/check.py` from the target skill directory before declaring any skill complete
-2. Re-run `python scripts/check.py` after changing evals and before declaring the skill complete
-3. Run `uv run python skills/skill-creator/scripts/audit.py` after every significant SKILL.md change
+1. Run `uv run python scripts/check.py` from the target skill directory before declaring any skill complete
+2. Re-run `uv run python scripts/check.py` after changing evals and before declaring the skill complete
+3. Run `uv run python scripts/audit.py` after every significant SKILL.md change
 4. Never create a skill without a dispatch table — it is the routing contract
 5. Never create a dispatch table without an empty-args handler — unrouted input is a bug
 6. Every reference file must appear in the Reference File Index — orphan refs are invisible
@@ -455,16 +537,21 @@ Completion criteria:
 17. Update evals when dispatch behavior or modes change — stale evals are invisible bugs
 18. `plan <name>` and `plan --all` are read-only planning modes — never edit during planning
 19. Repo-wide or multi-skill requests require a ranked plan and standalone refinement-plan output before any implementation begins
-20. Stop hooks must include a `stop_hook_active` guard — recursive hook loops are implementation bugs
+20. Runtime-projected Stop hooks must include a `stop_hook_active` guard — recursive hook loops are implementation bugs
+21. Source-ground new skills in real workflow evidence; generic best-practice generation starts as `needs-evidence`
+22. Benchmark meaningful changes against `without_skill` or `old_skill` before claiming behavioral improvement
+23. Security-governance findings can block release even when static quality score is A
+24. Choose an explicit permission posture for every skill that uses scripts, hooks, tools, network, credentials, or writes
+25. Use OpenSpec before changing public eval schema, validation behavior, hook policy, packaging semantics, or generated-doc workflows
+26. Do not run live installs, live behavioral evals, browser launches, or command-file injection from Plan, Audit, or Security Audit modes
 
 **Canonical terms** (use these exactly throughout):
 
-- Modes: "Develop (new)", "Develop (existing)", "Audit", "Audit All", "Dashboard", "Package", "Gallery"
+- Modes: "Develop (new)", "Develop (existing)", "Plan (existing)", "Plan (repo-wide)", "Audit", "Security Audit", "Audit All", "Eval", "Benchmark", "Compare", "Optimize Description", "Dashboard", "Package", "Gallery"
 - Steps (Development): "Understand", "Plan", "Scaffold", "Build", "Validate", "Iterate"
 - Grade scale: "A" (90-100), "B" (75-89), "C" (60-74), "D" (40-59), "F" (<40)
 - Patterns: "dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "state-management", "scripts", "templates", "hooks", "progressive-disclosure", "body-substitutions", "stop-hooks"
-- Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "reference-quality", "critical-rules", "script-quality", "portability", "conciseness", "canonical-vocabulary", "evaluation-coverage", "validation-contract"
-
+- Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "reference-quality", "critical-rules", "script-quality", "portability", "conciseness", "canonical-vocabulary", "evaluation-coverage", "validation-contract", "security-governance"
 ````
 
 [Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/skill-creator/SKILL.md)

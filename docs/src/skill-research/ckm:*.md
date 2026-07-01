@@ -30,4 +30,4 @@ Not installed by default. Selector unresolved in catalog. Use only if explicitly
 
 The primary `ui-ux-pro-max` skill itself; local or shadcn/figma design skills.
 
-> Per config/external-skills.md and web research on bundle contents. Keep out of install-now.
+> Per docs/src/authoring/skills and web research on bundle contents. Keep out of install-now.

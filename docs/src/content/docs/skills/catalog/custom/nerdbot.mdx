@@ -11,8 +11,8 @@ trust_tier: "repo"
 metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "nerdbot"
-composed_by: "compose-custom-wave-5"
-composed_at: "2026-06-17"
+composed_by: "compose-custom-wave-4"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,19 +26,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Use when creating, repairing, querying, auditing, or migrating Obsidian-native git KBs with raw/wiki layers. NOT for docs sites or generic notes."
   installCommand={`npx skills add github:wyattowalsh/agents --skill nerdbot -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/nerdbot [create|ingest|enrich|audit|query|derive|improve|migrate] [topic|path]"
-  badges={[{ text: "nerdbot", variant: "note" }, { text: "4006 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "nerdbot", variant: "note" }, { text: "4006 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Use when creating, repairing, querying, auditing, or migrating Obsidian-native git KBs with raw/wiki layers. NOT for docs sites or generic notes.
-**Stack / assumptions:** Requires git and Python 3.11+ for the nerdbot CLI and kb_* compatibility scripts.
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Repo skill (hand-maintained)">
-Composed compose-custom-wave-5 from `skills/nerdbot/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+Composed compose-custom-wave-4 from `skills/nerdbot/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -455,9 +451,9 @@ Expected flow:
 </Tabs>
 
 <details class="source-disclosure">
-<summary>View Full SKILL.md</summary>
+<summary>Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml title="skills/nerdbot/SKILL.md"
 ---
 name: nerdbot
 description: >-

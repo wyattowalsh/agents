@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "plan": "review-skill-findings-rv-sa",
+  "wave": "W4",
+  "started_at": "2026-06-29",
+  "completed_at": "2026-06-29",
+  "findings": ["RV-SA-001", "RV-SA-002", "RV-SA-003", "RV-SA-004"],
+  "parallel_groups": {
+    "PG-W0": { "dispatched": 6, "resolved": 6, "failed": [] },
+    "PG-W1": { "dispatched": 7, "resolved": 7, "failed": [] },
+    "PG-W2": { "dispatched": 3, "resolved": 3, "failed": [] },
+    "PG-W3": { "dispatched": 6, "resolved": 6, "failed": [] },
+    "PG-W4": { "dispatched": 4, "resolved": 4, "failed": [] }
+  },
+  "gates": {
+    "G0": "passed",
+    "G1": "passed",
+    "G2": "passed",
+    "G3": "passed",
+    "G4": "passed",
+    "G-CLOSE-1": "passed",
+    "G-CLOSE-2": "passed",
+    "G-CLOSE-3": "passed"
+  },
+  "file_locks": {
+    "skills/review/SKILL.md": null,
+    "skills/review/scripts/check.py": null,
+    "skills/review/references/review-state.md": null,
+    "skills/review/references/specialist-lenses.md": null
+  },
+  "baseline": {
+    "audit_grade": "A",
+    "audit_score": 100,
+    "patterns_not_applicable_pre": ["state-management", "templates", "hooks", "stop-hooks"]
+  },
+  "post": {
+    "audit_grade": "A",
+    "audit_score": 100,
+    "patterns_found": [
+      "dispatch-table",
+      "reference-file-index",
+      "critical-rules",
+      "canonical-vocabulary",
+      "scope-boundaries",
+      "classification-gating",
+      "scaling-strategy",
+      "state-management",
+      "scripts",
+      "progressive-disclosure",
+      "body-substitutions"
+    ],
+    "pytest_review_check": "6 passed",
+    "wagents_validate": "pass"
+  },
+  "evidence": "planning/manifests/review-skill-findings-evidence.md"
+}

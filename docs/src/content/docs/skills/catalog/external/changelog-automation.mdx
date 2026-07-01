@@ -12,7 +12,7 @@ install_command: "npx skills add wshobson/agents --skill openapi-spec-generation
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "changelog-automation"
 composed_by: "compose-external-wave-2"
-composed_at: "2026-06-17"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,8 +26,10 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies."
   installCommand={`npx skills add wshobson/agents --skill openapi-spec-generation --skill uv-package-manager --skill changelog-automation --skill debugging-strategies -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/changelog-automation"
-  badges={[{ text: "changelog-automation", variant: "note" }, { text: "32 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+  badges={[{ text: "changelog-automation", variant: "note" }, { text: "23 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
 />
+
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
@@ -56,7 +58,7 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: `wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies. `changelog-automation` may suggest git/release commands; review generated recipes before running them.
 
-Entry maintained via authoring + research for compose-external-wave-2; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/changelog-automation.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 ## Install Prerequisites
 
@@ -82,9 +84,9 @@ Install: `npx skills add wshobson/agents --skill changelog-automation ... -y -g 
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/changelog-automation.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "changelog-automation"
 description: "`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies. `changelog-automation` may suggest git/release commands; review generated recipes before running them."
@@ -101,14 +103,14 @@ source_url: "https://github.com/wshobson/agents"
 notes: "`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies. `changelog-automation` may suggest git/release commands; review generated recipes before running them."
 risk_notes: "`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies. `changelog-automation` may suggest git/release commands; review generated recipes before running them."
 promotion_policy: "Install only after trust gate; audit again before repo promotion."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in authoring catalog."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=changelog-automation; re-run migration to refresh */}
 
 `wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies. `changelog-automation` may suggest git/release commands; review generated recipes before running them.
 
 ````
+
 
 **Install / provenance (from authoring frontmatter + research):**
 

@@ -11,8 +11,8 @@ trust_tier: "repo"
 metadata.author: "wyattowalsh"
 metadata.version: "0.1.0"
 research_slug: "reasoning-router"
-composed_by: "compose-custom-wave-6"
-composed_at: "2026-06-17"
+composed_by: "compose-custom-wave-5"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,19 +26,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Classify problems and route to optimal thinking MCP (11 available). Monitor confidence, re-route on stall. Use for complex reasoning."
   installCommand={`npx skills add github:wyattowalsh/agents --skill reasoning-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/reasoning-router [problem or question]"
-  badges={[{ text: "reasoning-router", variant: "note" }, { text: "1539 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "reasoning-router", variant: "note" }, { text: "1539 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v0.1.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Classify problems and route to optimal thinking MCP (11 available). Monitor confidence, re-route on stall. Use for complex reasoning. NOT for simple questions (answer directly) or code review (review).
-**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references
-**Comparable alternative:** `answer directly` for simple questions
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Repo skill (hand-maintained)">
-Composed compose-custom-wave-6 from `skills/reasoning-router/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+Composed compose-custom-wave-5 from `skills/reasoning-router/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -77,7 +73,7 @@ Meta-reasoning layer: classify problems, dispatch to the optimal thinking MCP, m
 
 ## Classification
 
-Run `!uv run python skills/reasoning-router/scripts/problem-classifier.py "$ARGUMENTS"`
+Run `!uv run python scripts/problem-classifier.py "$ARGUMENTS"`
 for deterministic pre-scan, then refine with LLM judgment.
 
 ### Axis 1 — Structure (what shape is the reasoning?)
@@ -297,9 +293,9 @@ research (research), debugging implementation (use crash MCP directly).
 </Tabs>
 
 <details class="source-disclosure">
-<summary>View Full SKILL.md</summary>
+<summary>Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml title="skills/reasoning-router/SKILL.md"
 ---
 name: reasoning-router
 description: >-
@@ -313,7 +309,6 @@ metadata:
   author: wyattowalsh
   version: "0.1.0"
 ---
-
 # Reasoning Router
 
 Meta-reasoning layer: classify problems, dispatch to the optimal thinking MCP,
@@ -339,7 +334,7 @@ Always uses the most advanced model (currently Opus 4.6). Meta-reasoning about
 
 ## Classification
 
-Run `!uv run python skills/reasoning-router/scripts/problem-classifier.py "$ARGUMENTS"`
+Run `!uv run python scripts/problem-classifier.py "$ARGUMENTS"`
 for deterministic pre-scan, then refine with LLM judgment.
 
 ### Axis 1 — Structure (what shape is the reasoning?)
@@ -561,7 +556,6 @@ research (research), debugging implementation (use crash MCP directly).
 11. **Respect tool workflows** — creative-thinking: discover→plan→execute.
     lotus-wisdom: start with `tag: begin`. aot: use `atomcommands` for control.
 12. **Track token spend** — note approximate tokens per session to refine routing.
-
 ````
 
 [Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/reasoning-router/SKILL.md)

@@ -1,0 +1,10 @@
+{
+  "wave": "W0",
+  "dispatched": [
+    {"task_id": "C-000a", "agent": "SA-Verify-A", "verify": "pytest tests/hooks/test_opencode_bridge_integration.py tests/hooks/test_enforce_fail_closed.py -q"},
+    {"task_id": "C-000b", "agent": "SA-Verify-B", "verify": "pytest tests/hooks/test_convert.py tests/hooks/test_merge.py -q"},
+    {"task_id": "C-000c", "agent": "SA-Verify-C", "verify": "pytest tests/test_wagents_hook.py -k 'grok_build or opencode or before_read' -q"},
+    {"task_id": "C-000d", "agent": "SA-Verify-D", "verify": "pytest tests/test_grok_platform.py tests/test_opencode_hook_bridge.py -q"}
+  ],
+  "gate_checks": ["C-000e aggregate W0 pass"]
+}

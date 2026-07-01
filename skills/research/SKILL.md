@@ -11,7 +11,6 @@ metadata:
   author: wyattowalsh
   version: "1.0.0"
 ---
-
 # Deep Research
 
 General-purpose deep research with multi-source synthesis, confidence scoring, source-support auditing, and anti-hallucination verification. The design follows current deep-research patterns: plan before retrieval, start broad then narrow, coordinate parallel workers through a lead agent, audit whether cited sources actually support each claim, use perspective expansion for breadth, and synthesize into a report rather than a source dump.
@@ -158,7 +157,7 @@ All non-Quick research follows this 5-wave pipeline. Quick merges Waves 0+1+4 in
 
 ### Wave 0: Triage (always inline, never parallelized)
 
-1. Run `!uv run python skills/research/scripts/research-scanner.py "$ARGUMENTS"` for deterministic pre-scan
+1. Run `!uv run python scripts/research-scanner.py "$ARGUMENTS"` for deterministic pre-scan
 2. Decompose query into 2-5 sub-questions
 3. Score complexity on the 5-dimension rubric
 4. Check tool availability — probe key retrieval, extraction, and delegation capabilities; set degraded mode flags and confidence ceilings per `references/source-selection.md`
@@ -318,7 +317,7 @@ FINDING RR-{seq:03d}: [claim statement]
   GAPS: [none | what additional evidence would strengthen this finding]
 ```
 
-Use `!uv run python skills/research/scripts/finding-formatter.py --format markdown` to normalize.
+Use `!uv run python scripts/finding-formatter.py --format markdown` to normalize.
 
 ## Source Selection
 
@@ -380,7 +379,7 @@ Check every finding against 10 bias categories. Read `references/bias-detection.
 2. `resume N`: Nth journal from `list` output (reverse chronological).
 3. `resume keyword`: search frontmatter `query` and `domain_tags` for match.
 
-Use `!uv run python skills/research/scripts/journal-store.py` for all journal operations.
+Use `!uv run python scripts/journal-store.py` for all journal operations.
 
 **State snapshot** (appended after each wave save):
 ```html
@@ -431,28 +430,24 @@ Read `references/session-commands.md` for full protocols.
 
 ## Stop Hooks
 
-Research-mode stop verification is mandatory when runtime hooks are active. `research_hook.py research-stop-verifier` delegates to `verify.py stop`; it confirms tracked research-source files stayed clean, journal state was saved when required, and no source-file write occurred during research mode. If stop verification fails, report the exact reason and do not claim the run is complete.
+Research-mode stop verification is mandatory when runtime hooks are active. `research_hook.py research-stop-verifier` delegates to `verify.py stop`, which checks that tracked files under `skills/research/` stayed clean in git during the session. Source-file writes are blocked separately by `research-readonly-write-guard`. If stop verification fails, report the exact reason and do not claim the run is complete.
 
 ## Validation Contract
 
 Run from the repository root before declaring changes complete:
 
 ```bash
-uv run python skills/research/scripts/check.py
-uv run python skills/skill-creator/scripts/audit.py skills/research --format json
-uv run python skills/skill-creator/scripts/asset_toolkit/validate_evals.py skills/research --format json
-uv run python skills/skill-creator/scripts/package.py skills/research --dry-run
+(cd skills/research && uv run python scripts/check.py)
 uv run pytest tests/test_wagents_hook.py -q -k "readonly_guard or stop_verifier or shell_write_guard"
 ```
 
 Completion criteria:
 
-1. `scripts/check.py` exits 0.
-2. `audit.py skills/research --format json` remains grade A with explicit eval and validation proof.
-3. `validate_evals.py skills/research --format json` reports zero errors.
-4. `package.py skills/research --dry-run` reports `portable: true`.
-5. Research hook smoke tests pass for readonly guard and stop verifier behavior.
-6. Portable package checks remain free of absolute paths and repo control-plane CLI requirements.
+1. `scripts/check.py` exits 0 after running skill validation, eval validation, package dry-run, and repo audit checks available in the current checkout.
+2. The bundled validator reports valid skill metadata and eval manifests.
+3. The bundled packaging dry-run reports `portable: true`.
+4. Research hook smoke tests pass for readonly guard and stop verifier behavior.
+5. Portable package checks remain free of absolute paths and repo control-plane CLI requirements.
 
 ## Critical Rules
 
@@ -471,6 +466,6 @@ Completion criteria:
 13. **Track mode must load prior journal before searching** — avoid re-researching what is already known
 14. **The synthesis is not a summary** — it must integrate findings into novel analysis, identify patterns across sources, and surface emergent insights not present in any single source
 15. **PreToolUse write guard is non-negotiable** — `research_hook.py research-readonly-write-guard` blocks source-file writes; journals stay under `~/.{gemini|copilot|codex|claude}/research/`
-16. **Stop hook must pass** — `research_hook.py research-stop-verifier` delegates to `verify.py stop` and confirms tracked research-source files stayed clean
+16. **Stop hook must pass** — `research_hook.py research-stop-verifier` delegates to `verify.py stop` and confirms tracked `skills/research/` files stayed git-clean
 17. **Normalize legacy findings before synthesis** — top-level `source_url`, `source_tool`, and `confidence_raw` must be converted into the canonical `evidence[]` + `confidence` shape
 18. **A citation is not proof by itself** — cited source text must support the exact statement; unsupported or merely topical citations lower confidence and appear in the source-support audit

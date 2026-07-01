@@ -2,13 +2,11 @@
 
 from __future__ import annotations
 
-import os
 import re
 import shlex
+from collections.abc import Mapping
 from dataclasses import asdict, dataclass, replace
 from typing import TYPE_CHECKING
-
-import wagents
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -31,7 +29,7 @@ class ExternalSkillEntry:
     risk_notes: str = ""
     promotion_policy: str = ""
     provenance_evidence: str = ""
-    source_path: str = "config/external-skills.md"
+    source_path: str = "docs/src/authoring/skills"
     selector_mode: str = "named"
     unresolved_reason: str = ""
     unsupported_target_agents: tuple[str, ...] = ()
@@ -52,6 +50,7 @@ class ExternalSkillEntry:
     live_action_risk: str = ""
     risk_category: str = ""
     dedupe_notes: str = ""
+    sync_kind: str = ""
 
     def public_dict(self) -> dict[str, object]:
         data = asdict(self)
@@ -125,63 +124,164 @@ SUPPORTED_TARGET_AGENTS = (
     "zencoder",
 )
 
+SYNC_KIND_SKILLS_CLI = "skills-cli"
+SYNC_KIND_EXTERNAL_TOOL = "external-tool"
+SYNC_KIND_NONE = "none"
+SUPPORTED_SYNC_KINDS = {SYNC_KIND_SKILLS_CLI, SYNC_KIND_EXTERNAL_TOOL, SYNC_KIND_NONE}
+CURATED_EXTERNAL_REQUIRED_FIELDS = (
+    "name",
+    "description",
+    "source",
+    "install_source",
+    "status",
+    "trust_tier",
+    "provenance_status",
+    "source_url",
+    "sync_kind",
+)
+INSTALLABLE_STATUSES = {"install-now-after-trust-gate", "inspect-then-install"}
+SYNC_RELEVANT_EXTERNAL_FIELDS = (
+    "name",
+    "source",
+    "install_source",
+    "status",
+    "trust_tier",
+    "provenance_status",
+    "install_command",
+    "target_agents",
+    "selector_mode",
+    "sync_kind",
+)
+CATALOG_REGEN_HINT = "Run uv run wagents docs generate --no-installed."
 
-def read_external_skill_entries(path: Path | None = None) -> list[ExternalSkillEntry]:
-    """Read curated external skill entries.
 
-    Prefer catalog index JSON + authoring external MDX (via skill_index).
-    Fall back to legacy ``config/external-skills.md`` when the index path is empty,
-    or when ``WAGENTS_CATALOG_LEGACY_EXTERNAL_MD=1`` forces legacy reconciliation.
+class ExternalSkillCatalogError(RuntimeError):
+    """Raised when curated external skill catalog data cannot be loaded safely."""
+
+
+def is_skills_cli_install_command(command: str) -> bool:
+    """Return whether *command* is a Skills CLI install command."""
+    try:
+        parts = shlex.split(command)
+    except ValueError:
+        return False
+    return len(parts) >= 4 and parts[:3] == ["npx", "skills", "add"]
+
+
+def infer_sync_kind(sync_kind: str | None, install_command: str) -> str:
+    """Normalize or infer how an external entry participates in harness sync."""
+    normalized = str(sync_kind or "").strip()
+    if normalized in SUPPORTED_SYNC_KINDS:
+        return normalized
+    if not str(install_command or "").strip():
+        return SYNC_KIND_NONE
+    if is_skills_cli_install_command(install_command):
+        return SYNC_KIND_SKILLS_CLI
+    return SYNC_KIND_EXTERNAL_TOOL
+
+
+def is_external_authoring_source_kind(source_kind: object) -> bool:
+    """Return whether an authoring row represents an external catalog entry."""
+    return str(source_kind or "") in {"curated-external", "external"}
+
+
+def _field_present(frontmatter: Mapping[str, object], field: str) -> bool:
+    return field in frontmatter and frontmatter[field] not in (None, "")
+
+
+def _is_installable_authoring(frontmatter: Mapping[str, object]) -> bool:
+    return (
+        str(frontmatter.get("status") or "") in INSTALLABLE_STATUSES
+        and str(frontmatter.get("provenance_status") or "") == "verified-install-command"
+    )
+
+
+def curated_external_authoring_errors(
+    source: str,
+    frontmatter: Mapping[str, object],
+) -> list[dict[str, str]]:
+    """Return validation errors for curated external skill authoring frontmatter."""
+    errors: list[dict[str, str]] = []
+    for field in CURATED_EXTERNAL_REQUIRED_FIELDS:
+        if not _field_present(frontmatter, field):
+            errors.append({"source": source, "message": f"Curated external authoring is missing '{field}'"})
+
+    if "target_agents" not in frontmatter:
+        errors.append({"source": source, "message": "Curated external authoring is missing 'target_agents'"})
+
+    install_command = str(frontmatter.get("install_command") or "")
+    sync_kind = str(frontmatter.get("sync_kind") or "")
+    if sync_kind and sync_kind not in SUPPORTED_SYNC_KINDS:
+        errors.append({"source": source, "message": f"Invalid sync_kind '{sync_kind}'"})
+
+    if _is_installable_authoring(frontmatter) and not install_command:
+        errors.append({"source": source, "message": "Installable curated external authoring is missing 'install_command'"})
+
+    if sync_kind == SYNC_KIND_SKILLS_CLI and not is_skills_cli_install_command(install_command):
+        errors.append({"source": source, "message": "skills-cli authoring rows must use an npx skills add command"})
+
+    if sync_kind == SYNC_KIND_EXTERNAL_TOOL and is_skills_cli_install_command(install_command):
+        errors.append({"source": source, "message": "external-tool authoring rows must not use npx skills add"})
+
+    return errors
+
+
+def read_external_skill_entries(path: Path | None = None, *, strict: bool = False) -> list[ExternalSkillEntry]:
+    """Read curated external skill entries from catalog index + authoring MDX.
+
+    When *path* is set, parse curated markdown from that file (tests and one-off tools only).
     """
-    default_path = wagents.ROOT / "config" / "external-skills.md"
-    if path is not None and path.resolve() != default_path.resolve():
+    if path is not None:
         if path.exists():
-            return parse_external_skill_entries_legacy(path.read_text(encoding="utf-8"))
+            return parse_external_skill_entries(path.read_text(encoding="utf-8"))
         return []
 
-    # Try catalog index + authoring first (bundle-first / dual-read)
-    combined: list[ExternalSkillEntry] = []
     try:
-        seen: set[tuple[str, str]] = set()
-        for entry in (*read_catalog_external_entries(), *_load_authoring_external_entries()):
-            key = (entry.name.lower(), entry.source.lower())
-            if key in seen:
-                continue
-            seen.add(key)
-            combined.append(entry)
-    except Exception:
-        combined = []
-
-    if combined:
-        return combined
-
-    # Legacy fallback while config/external-skills.md remains as projection (W6: remove when index-only)
-    if os.environ.get("WAGENTS_CATALOG_LEGACY_EXTERNAL_MD") == "1" or not combined:
-        source_path = path or default_path
-        if source_path.exists():
-            legacy = parse_external_skill_entries_legacy(source_path.read_text(encoding="utf-8"))
-            if legacy:
-                return legacy
-    return combined
+        authoring_entries = _dedupe_external_entries_first_wins(_load_authoring_external_entries(strict=strict))
+        catalog_entries = _dedupe_external_entries_first_wins(read_catalog_external_entries(strict=strict))
+        if authoring_entries:
+            if strict:
+                _validate_external_index_parity(authoring_entries, catalog_entries)
+            return authoring_entries
+        return catalog_entries
+    except ExternalSkillCatalogError:
+        if strict:
+            raise
+        return []
+    except Exception as exc:
+        if strict:
+            raise ExternalSkillCatalogError(f"Failed to load curated external skill catalog: {exc}") from exc
+        return []
 
 
-def _load_authoring_external_entries() -> list[ExternalSkillEntry]:
+def _load_authoring_external_entries(*, strict: bool = False) -> list[ExternalSkillEntry]:
     """Load external entries from docs/src/authoring/skills mdx (via skill_index)."""
     try:
         from . import skill_index as si
 
-        auths = si.load_authoring_entries()
-        return [si.entry_to_external_skill_entry(e) for e in auths if getattr(e, "source_kind", "custom") != "custom"]
-    except Exception:
+        auths = si.load_authoring_entries(strict=strict)
+        external_auths = [e for e in auths if is_external_authoring_source_kind(getattr(e, "source_kind", "custom"))]
+        if strict:
+            errors: list[dict[str, str]] = []
+            for entry in external_auths:
+                errors.extend(curated_external_authoring_errors(entry.path, entry.frontmatter))
+            if errors:
+                raise ExternalSkillCatalogError(_format_authoring_errors(errors))
+        return [si.entry_to_external_skill_entry(e) for e in external_auths]
+    except Exception as exc:
+        if strict and isinstance(exc, ExternalSkillCatalogError):
+            raise
+        if strict:
+            raise ExternalSkillCatalogError(f"Failed to load authoring skill entries: {exc}") from exc
         return []
 
 
-def read_catalog_external_entries() -> list[ExternalSkillEntry]:
+def read_catalog_external_entries(*, strict: bool = False) -> list[ExternalSkillEntry]:
     """Read external (curated) entries from the catalog index JSON using skill_index."""
     try:
         from . import skill_index as si
 
-        idx = si.read_catalog_index()
+        idx = si.read_catalog_index(strict=strict)
         if not idx:
             return []
         rows = idx.get("externalSkillIndex") or idx.get("allSkillIndex") or []
@@ -229,15 +329,88 @@ def read_catalog_external_entries() -> list[ExternalSkillEntry]:
                     live_action_risk=str(r.get("liveActionRisk") or r.get("live_action_risk") or ""),
                     risk_category=str(r.get("riskCategory") or r.get("risk_category") or ""),
                     dedupe_notes=str(r.get("dedupeNotes") or r.get("dedupe_notes") or ""),
+                    sync_kind=infer_sync_kind(
+                        str(r.get("syncKind") or r.get("sync_kind") or ""),
+                        str(r.get("installCommand") or r.get("install_command") or ""),
+                    ),
                 )
             )
         return entries
-    except Exception:
+    except Exception as exc:
+        if strict:
+            raise ExternalSkillCatalogError(f"Failed to load generated skill catalog index: {exc}") from exc
         return []
 
 
-def parse_external_skill_entries_legacy(markdown: str) -> list[ExternalSkillEntry]:
-    """Parse curated install commands and avoid notes from external-skills.md (legacy MD parser)."""
+def _format_authoring_errors(errors: list[dict[str, str]]) -> str:
+    visible = errors[:10]
+    details = "; ".join(f"{error['source']}: {error['message']}" for error in visible)
+    if len(errors) > len(visible):
+        details = f"{details}; ... {len(errors) - len(visible)} more"
+    return f"Invalid curated external authoring: {details}"
+
+
+def _validate_external_index_parity(
+    authoring_entries: list[ExternalSkillEntry],
+    catalog_entries: list[ExternalSkillEntry],
+) -> None:
+    authoring_by_key = {_external_entry_key(entry): entry for entry in authoring_entries}
+    catalog_by_key = {_external_entry_key(entry): entry for entry in catalog_entries}
+
+    missing = sorted(set(authoring_by_key) - set(catalog_by_key))
+    extra = sorted(set(catalog_by_key) - set(authoring_by_key))
+    mismatches: list[str] = []
+    for key in sorted(set(authoring_by_key) & set(catalog_by_key)):
+        authoring_projection = _external_sync_projection(authoring_by_key[key])
+        catalog_projection = _external_sync_projection(catalog_by_key[key])
+        for field in SYNC_RELEVANT_EXTERNAL_FIELDS:
+            if authoring_projection[field] != catalog_projection[field]:
+                mismatches.append(
+                    f"{_format_external_entry_key(key)} {field} "
+                    f"authoring={authoring_projection[field]!r} index={catalog_projection[field]!r}"
+                )
+
+    if not missing and not extra and not mismatches:
+        return
+
+    problems: list[str] = []
+    if missing:
+        problems.append("missing index rows: " + ", ".join(_format_external_entry_key(key) for key in missing[:10]))
+    if extra:
+        problems.append("extra index rows: " + ", ".join(_format_external_entry_key(key) for key in extra[:10]))
+    if mismatches:
+        problems.append("mismatched index rows: " + "; ".join(mismatches[:10]))
+    if len(missing) > 10 or len(extra) > 10 or len(mismatches) > 10:
+        problems.append("additional drift omitted")
+    raise ExternalSkillCatalogError(
+        "Curated external catalog index is stale relative to authoring; "
+        + "; ".join(problems)
+        + f". {CATALOG_REGEN_HINT}"
+    )
+
+
+def _external_sync_projection(entry: ExternalSkillEntry) -> dict[str, object]:
+    return {
+        "name": entry.name,
+        "source": entry.source.removeprefix("github:"),
+        "install_source": entry.install_source,
+        "status": entry.status,
+        "trust_tier": entry.trust_tier,
+        "provenance_status": entry.provenance_status,
+        "install_command": entry.install_command,
+        "target_agents": tuple(entry.target_agents),
+        "selector_mode": entry.selector_mode,
+        "sync_kind": infer_sync_kind(entry.sync_kind, entry.install_command),
+    }
+
+
+def _format_external_entry_key(key: tuple[str, str]) -> str:
+    name, source = key
+    return f"{source}@{name}" if source else name
+
+
+def parse_external_skill_entries(markdown: str) -> list[ExternalSkillEntry]:
+    """Parse curated install commands and avoid notes from markdown (tests/tools only)."""
     entries: list[ExternalSkillEntry] = []
     current_status: tuple[str, str] | None = None
     in_fence = False
@@ -296,10 +469,6 @@ def parse_external_skill_entries_legacy(markdown: str) -> list[ExternalSkillEntr
     return _dedupe_external_entries(entries)
 
 
-# Alias kept for backward compat and existing tests that import the parser name directly.
-parse_external_skill_entries = parse_external_skill_entries_legacy
-
-
 def _entries_from_command(command: str, status: str, trust_tier: str) -> list[ExternalSkillEntry]:
     try:
         parts = shlex.split(command)
@@ -317,7 +486,7 @@ def _entries_from_command(command: str, status: str, trust_tier: str) -> list[Ex
                 source_url="",
                 notes="Curated command could not be parsed with shell quoting rules.",
                 promotion_policy=_promotion_policy(status),
-                provenance_evidence="Unparsed command in config/external-skills.md.",
+                provenance_evidence="Unparsed curated markdown install command.",
                 selector_mode="unresolved",
                 unresolved_reason="Command could not be parsed with shlex.",
             )
@@ -336,7 +505,7 @@ def _entries_from_command(command: str, status: str, trust_tier: str) -> list[Ex
                 source_url="",
                 notes="Curated command is not a supported `npx skills add ...` invocation.",
                 promotion_policy=_promotion_policy(status),
-                provenance_evidence="Unsupported command in config/external-skills.md.",
+                provenance_evidence="Unsupported curated markdown install command.",
                 selector_mode="unresolved",
                 unresolved_reason="Only `npx skills add ...` commands are installable.",
             )
@@ -432,7 +601,7 @@ def _entry_from_note(note: str, status: str, trust_tier: str) -> ExternalSkillEn
         notes=details.strip(),
         risk_notes=details.strip(),
         promotion_policy=_promotion_policy(status),
-        provenance_evidence="Explicit keep-global/avoid note in config/external-skills.md.",
+        provenance_evidence="Explicit keep-global/avoid note in curated markdown.",
         selector_mode="unresolved",
         unresolved_reason=details.strip(),
     )
@@ -451,7 +620,7 @@ def _entries_with_adjacent_note(entries: list[ExternalSkillEntry], note: str) ->
             notes=note,
             risk_notes=note,
             provenance_evidence=entry.provenance_evidence
-            or "Curated command plus adjacent audit note in config/external-skills.md.",
+            or "Curated command plus adjacent audit note in curated markdown.",
         )
         for entry in entries
     ]
@@ -472,7 +641,7 @@ def _command_provenance_evidence(status: str, *, selector_mode: str) -> str:
         "wildcard": 'wildcard `--skill "*"` selector',
         "unresolved": "unresolved selector",
     }.get(selector_mode, "parsed selector")
-    return f"Curated `npx skills add` command with {selector} under `{status}` in config/external-skills.md."
+    return f"Curated `npx skills add` command with {selector} under `{status}` in authoring catalog."
 
 
 def _source_url(source: str) -> str:
@@ -509,10 +678,21 @@ def _wildcard_name(source: str) -> str:
     return f"{slug}-all" if slug else "all-skills"
 
 
+def _external_entry_key(entry: ExternalSkillEntry) -> tuple[str, str]:
+    return (entry.name.lower(), entry.source.removeprefix("github:").lower())
+
+
+def _dedupe_external_entries_first_wins(entries: list[ExternalSkillEntry]) -> list[ExternalSkillEntry]:
+    deduped_by_key: dict[tuple[str, str], ExternalSkillEntry] = {}
+    for entry in entries:
+        deduped_by_key.setdefault(_external_entry_key(entry), entry)
+    return list(deduped_by_key.values())
+
+
 def _dedupe_external_entries(entries: list[ExternalSkillEntry]) -> list[ExternalSkillEntry]:
     deduped_by_key: dict[tuple[str, str], ExternalSkillEntry] = {}
     for entry in entries:
-        key = (entry.name.lower(), entry.source.removeprefix("github:").lower())
+        key = _external_entry_key(entry)
         existing = deduped_by_key.get(key)
         if existing is None or _entry_priority(entry) > _entry_priority(existing):
             deduped_by_key[key] = entry
@@ -529,13 +709,22 @@ def _entry_priority(entry: ExternalSkillEntry) -> int:
     return 0
 
 
-def desired_install_now_entries(path: Path | None = None) -> list[ExternalSkillEntry]:
+def desired_install_now_entries(
+    path: Path | None = None,
+    *,
+    sync_kind: str | None = SYNC_KIND_SKILLS_CLI,
+    external_entries: list[ExternalSkillEntry] | None = None,
+) -> list[ExternalSkillEntry]:
     """Return Install Now curated entries with verified install commands."""
-    return [
+    source_entries = external_entries if external_entries is not None else read_external_skill_entries(path)
+    entries = [
         entry
-        for entry in read_external_skill_entries(path)
+        for entry in source_entries
         if entry.status == "install-now-after-trust-gate" and entry.provenance_status == "verified-install-command"
     ]
+    if sync_kind is None:
+        return entries
+    return [entry for entry in entries if infer_sync_kind(entry.sync_kind, entry.install_command) == sync_kind]
 
 
 def unsupported_target_agents(entries: list[ExternalSkillEntry]) -> dict[str, tuple[str, ...]]:

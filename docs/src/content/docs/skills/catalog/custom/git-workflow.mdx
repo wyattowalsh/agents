@@ -11,8 +11,8 @@ trust_tier: "repo"
 metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "git-workflow"
-composed_by: "compose-custom-wave-4"
-composed_at: "2026-06-17"
+composed_by: "compose-custom-wave-3"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,19 +26,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Git operations: conventional commits, PR descriptions, branch strategy, conflict resolution, code archaeology, bisect. Use for git workflow tasks. NOT for code review, CI/CD, or changelogs."
   installCommand={`npx skills add github:wyattowalsh/agents --skill git-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/git-workflow &lt;mode&gt; [args]"
-  badges={[{ text: "git-workflow", variant: "note" }, { text: "1356 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "git-workflow", variant: "note" }, { text: "1356 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Git operations: conventional commits, PR descriptions, branch strategy, conflict resolution, code archaeology, bisect. Use for git workflow tasks. NOT for code review, CI/CD, or changelogs.
-**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Repo skill (hand-maintained)">
-Composed compose-custom-wave-4 from `skills/git-workflow/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+Composed compose-custom-wave-3 from `skills/git-workflow/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -99,7 +95,7 @@ Generate a conventional commit message from the current staged diff.
 
 1. Run `git diff --cached` to get staged changes
 2. If nothing staged, run `git diff` and report: "No staged changes. Stage files first with `git add`."
-3. Run `uv run python skills/git-workflow/scripts/diff-summarizer.py` on the diff output
+3. Run `uv run python scripts/diff-summarizer.py` on the diff output
 4. Analyze the diff to determine:
    - **Type**: feat/fix/docs/style/refactor/perf/test/build/ci/chore/revert
    - **Scope**: affected component (from file paths, module names)
@@ -118,9 +114,9 @@ Generate a PR description from the branch diff against the base branch.
 
 1. Detect base branch: `git symbolic-ref refs/remotes/origin/HEAD 2&gt;/dev/null \| sed 's@refs/remotes/origin/@@'` (fallback: `main`)
 2. Run `git log --oneline &lt;base&gt;..HEAD` to list commits
-3. Run `uv run python skills/git-workflow/scripts/commit-parser.py` on git log output
+3. Run `uv run python scripts/commit-parser.py` on git log output
 4. Run `git diff &lt;base&gt;...HEAD --stat` for change statistics
-5. Run `uv run python skills/git-workflow/scripts/diff-summarizer.py` on the diff stat
+5. Run `uv run python scripts/diff-summarizer.py` on the diff stat
 6. Generate PR description with:
    - **Title**: short summary under 70 chars
    - **Summary**: 1-3 bullet points of what changed
@@ -261,9 +257,9 @@ Load ONE reference at a time. Do not preload all references into context.
 </Tabs>
 
 <details class="source-disclosure">
-<summary>View Full SKILL.md</summary>
+<summary>Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml title="skills/git-workflow/SKILL.md"
 ---
 name: git-workflow
 description: >-
@@ -277,7 +273,6 @@ metadata:
   author: wyattowalsh
   version: "1.0.0"
 ---
-
 # Git Workflow
 
 Git operations assistant. Lightweight, high-frequency tool for commit messages, PR descriptions, branch strategy, conflict resolution, code archaeology, and bisect debugging.
@@ -323,7 +318,7 @@ Generate a conventional commit message from the current staged diff.
 
 1. Run `git diff --cached` to get staged changes
 2. If nothing staged, run `git diff` and report: "No staged changes. Stage files first with `git add`."
-3. Run `uv run python skills/git-workflow/scripts/diff-summarizer.py` on the diff output
+3. Run `uv run python scripts/diff-summarizer.py` on the diff output
 4. Analyze the diff to determine:
    - **Type**: feat/fix/docs/style/refactor/perf/test/build/ci/chore/revert
    - **Scope**: affected component (from file paths, module names)
@@ -332,7 +327,10 @@ Generate a conventional commit message from the current staged diff.
    - **Breaking**: whether `BREAKING CHANGE:` footer is needed
 5. Reference `data/conventional-commits.json` rules for type selection
 6. Present the commit message. Ask: "Commit with this message? [yes / edit / cancel]"
-7. If approved, run `git commit -m "$(cat <<'EOF'\n<message>\nEOF\n)"`
+7. If approved, run `git commit -m "$(cat <<'EOF'
+<message>
+EOF
+)"`
 
 ## Mode 2: PR
 
@@ -342,9 +340,9 @@ Generate a PR description from the branch diff against the base branch.
 
 1. Detect base branch: `git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@refs/remotes/origin/@@'` (fallback: `main`)
 2. Run `git log --oneline <base>..HEAD` to list commits
-3. Run `uv run python skills/git-workflow/scripts/commit-parser.py` on git log output
+3. Run `uv run python scripts/commit-parser.py` on git log output
 4. Run `git diff <base>...HEAD --stat` for change statistics
-5. Run `uv run python skills/git-workflow/scripts/diff-summarizer.py` on the diff stat
+5. Run `uv run python scripts/diff-summarizer.py` on the diff stat
 6. Generate PR description with:
    - **Title**: short summary under 70 chars
    - **Summary**: 1-3 bullet points of what changed
@@ -471,7 +469,6 @@ Load ONE reference at a time. Do not preload all references into context.
 10. Scripts output JSON to stdout -- parse programmatically, never regex
 11. Stage-before-commit: if diff --cached is empty, do not fabricate a commit message
 12. Do not generate changelogs or release notes -- redirect to changelog-writer
-
 ````
 
 [Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/git-workflow/SKILL.md)

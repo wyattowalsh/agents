@@ -8,15 +8,15 @@ install_source: "trailofbits/skills"
 status: "inspect-then-install"
 trust_tier: "needs-inspection"
 provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
 install_command: "npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
 source_url: "https://github.com/trailofbits/skills"
 notes: "Curated third-party skill source. Run /review source before repo promotion."
 risk_notes: "Curated third-party skill source. Run /review source before repo promotion."
 promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in authoring catalog."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=codeql; re-run migration to refresh */}
 
 Curated third-party skill source. Run /review source before repo promotion.

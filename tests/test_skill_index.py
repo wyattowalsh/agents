@@ -296,6 +296,7 @@ def test_entry_to_external_skill_entry_maps_fields(tmp_authoring_dir: Path):
             "source": "acme/tools",
             "install_source": "acme/tools@HEAD",
             "install_command": 'npx skills add acme/tools --skill "ext-1"',
+            "sync_kind": "skills-cli",
             "status": "install-now-after-trust-gate",
             "trust_tier": "curated-trust-gated",
             "target_agents": ["claude-code"],
@@ -311,6 +312,7 @@ def test_entry_to_external_skill_entry_maps_fields(tmp_authoring_dir: Path):
     assert ext.trust_tier == "curated-trust-gated"
     assert "acme/tools" in ext.install_command
     assert ext.target_agents == ("claude-code",)
+    assert ext.sync_kind == "skills-cli"
 
 
 # ---------------------------------------------------------------------------

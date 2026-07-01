@@ -30,4 +30,4 @@ apollographql (Apollo GraphQL org, github.com/apollographql/skills). MIT license
 
 graphql-operations, apollo-server (same source); other GraphQL client libs or React Query skills.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

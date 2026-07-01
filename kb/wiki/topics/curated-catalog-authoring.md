@@ -23,7 +23,7 @@ Bucket A catalog semantics use authoring MDX as the human SSOT. Flat files under
 
 - Curated externals stay out of `skills/` unless authoring a new repo-owned skill.
 - The committed index is the runtime SSOT for `skill_index`, `external_skills`, catalog rows, validation quarantine, and `wagents skills sync`.
-- Legacy `config/external-skills.md` remains dual-read fallback only during transition.
+- The committed index is the runtime SSOT for `skill_index`, `external_skills`, catalog rows, validation quarantine, and `wagents skills sync`. Legacy `config/external-skills.md` was removed; do not reintroduce dual-read paths.
 
 **2026-06-25 inventory:** 363 authoring MDX files under `docs/src/authoring/skills/`; committed index bundle lists **363** `allSkillIndex` rows (**56** custom, **307** curated-external). CI enforces `wagents docs generate --no-installed --check` alongside compose 100% gates.
 

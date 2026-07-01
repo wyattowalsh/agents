@@ -11,7 +11,6 @@ metadata:
   author: wyattowalsh
   version: "1.0.0"
 ---
-
 # Shell Scripter
 
 Generate, review, convert, and lint shell scripts. Makefile and justfile generation. References ShellCheck rule IDs with explanations but does NOT run ShellCheck.
@@ -48,7 +47,7 @@ Generate a shell script from a natural language description.
 ### Generation Process
 
 1. Determine target dialect (default: bash)
-2. Run `uv run python skills/shell-scripter/scripts/dialect-converter.py --list-features <dialect>` to confirm available features
+2. Run `uv run python scripts/dialect-converter.py --list-features <dialect>` to confirm available features
 3. Write the script with:
    - Proper shebang (env-based like `env bash`, not hardcoded interpreter paths)
    - `set -euo pipefail` for bash (equivalent for other dialects)
@@ -58,7 +57,7 @@ Generate a shell script from a natural language description.
 
 ### Validation
 
-4. Run `uv run python skills/shell-scripter/scripts/script-analyzer.py --stdin <<< "$SCRIPT"` on the generated script
+4. Run `uv run python scripts/script-analyzer.py --stdin <<< "$SCRIPT"` on the generated script
 5. Fix any issues found, present final script
 
 ## Mode: Review
@@ -68,7 +67,7 @@ Audit a shell script for common pitfalls. Reference ShellCheck rule IDs.
 ### Analysis
 
 1. Read the target script
-2. Run `uv run python skills/shell-scripter/scripts/script-analyzer.py <path>`
+2. Run `uv run python scripts/script-analyzer.py <path>`
 3. Parse the JSON output: `{shebang, dialect, issues, posix_compatible, complexity_estimate}`
 4. For each issue, load `references/shellcheck-rules.md` to explain the rule ID
 
@@ -97,7 +96,7 @@ Convert shell syntax between bash, zsh, and fish.
 
 1. Read the source script
 2. Identify source dialect (from shebang or `--from` flag)
-3. Run `uv run python skills/shell-scripter/scripts/dialect-converter.py <path> --from <source> --to <target>`
+3. Run `uv run python scripts/dialect-converter.py <path> --from <source> --to <target>`
 4. Parse the JSON output: `{converted_script, changes, warnings}`
 5. Present the converted script with a change summary table
 6. Flag any constructs that have no direct equivalent in the target dialect
@@ -107,7 +106,7 @@ Convert shell syntax between bash, zsh, and fish.
 Check a script for POSIX compliance at the pattern level.
 
 1. Read the target script
-2. Run `uv run python skills/shell-scripter/scripts/script-analyzer.py <path> --posix`
+2. Run `uv run python scripts/script-analyzer.py <path> --posix`
 3. Identify bash-isms: `[[ ]]`, `(( ))`, arrays, `local`, `source`, process substitution, `{a..z}`, `$'...'`
 4. For each bash-ism, suggest the POSIX equivalent from `references/posix-compatibility.md`
 5. Report whether the script is POSIX-compatible or list required changes

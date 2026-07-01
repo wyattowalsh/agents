@@ -11,7 +11,6 @@ metadata:
   author: wyattowalsh
   version: "1.0.0"
 ---
-
 # Data Wizard
 
 Full-stack data science and ML engineering — from exploratory data analysis through model deployment strategy. Adapts approach based on complexity classification.
@@ -116,14 +115,14 @@ Present the scoring to the user. User can override tier.
 
 ### EDA (Quick)
 
-1. If file path provided, run: `!uv run python skills/data-wizard/scripts/data-profiler.py "$1"`
+1. If file path provided, run: `!uv run python scripts/data-profiler.py "$1"`
 2. Parse JSON output — present: row/col counts, dtypes, missing patterns, top correlations
 3. Highlight: data quality issues, distribution skews, potential target leakage
 4. Recommend next steps: cleaning, feature engineering, or modeling
 
 ### Model Selection (Standard)
 
-1. Run: `!uv run python skills/data-wizard/scripts/model-recommender.py` with task JSON input
+1. Run: `!uv run python scripts/model-recommender.py` with task JSON input
 2. Present ranked model recommendations with rationale
 3. Read `references/model-selection.md` for detailed guidance by data size and type
 4. Suggest: train/val/test split strategy, evaluation metrics, baseline approach
@@ -137,7 +136,7 @@ Present the scoring to the user. User can override tier.
 
 ### Stats (Quick)
 
-1. Run: `!uv run python skills/data-wizard/scripts/statistical-test-selector.py` with question parameters
+1. Run: `!uv run python scripts/statistical-test-selector.py` with question parameters
 2. Load `data/statistical-tests-tree.json` for decision tree
 3. Read `references/statistical-tests.md` for assumptions and interpretation guidance
 4. Present: recommended test, alternatives, assumptions to verify, interpretation template
@@ -179,7 +178,7 @@ Present the scoring to the user. User can override tier.
 
 ## Data Quality Assessment
 
-Run: `!uv run python skills/data-wizard/scripts/data-quality-scorer.py <path>`
+Run: `!uv run python scripts/data-quality-scorer.py <path>`
 
 Dimensions scored:
 

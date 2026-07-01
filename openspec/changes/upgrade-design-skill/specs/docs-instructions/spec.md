@@ -11,7 +11,7 @@ When per-skill research artifacts exist under `docs/src/skill-research/<name>.md
 - **WHEN** the `design` skill upgrade is implemented
 - **THEN** `docs/src/skill-research/design.md` SHALL document the external UI/design/taste sources reviewed
 - **AND** it SHALL include trust, install, hook, credential, network, overlap, accepted-pattern, rejected-pattern, and implementation-target notes
-- **AND** it SHALL include a fold/retain matrix that preserves repo-owned Chrome DevTools operational skills while documenting overlapping curated UI/design/frontend/browser-proof catalog rows
+- **AND** it SHALL include a fold/retain matrix that preserves official upstream Chrome DevTools curated-external operational rows while documenting overlapping curated UI/design/frontend/browser-proof catalog rows
 - **AND** generated docs SHALL publish the research page for `design`.
 
 ### Requirement: Catalog Authoring MDX Is Human SSOT For Bucket A Skills
@@ -27,6 +27,6 @@ The repository SHALL treat per-skill authoring files under `docs/src/authoring/s
 #### Scenario: Folded non-Chrome skill authoring rows are removed
 
 - **WHEN** overlapping browser-proof and UI/design catalog rows are folded into `design`
-- **THEN** active authoring rows for repo-owned Chrome DevTools skills SHALL remain because those skills are operational browser-debugging skills, not design wrappers
+- **THEN** active authoring rows for official upstream Chrome DevTools curated-external skills SHALL remain because those skills are operational browser-debugging skills, not design wrappers
 - **AND** active authoring rows for folded curated external UI/design/frontend/browser-proof rows SHALL be removed after useful synthesis is captured in `docs/src/skill-research/design.md`
 - **AND** generated catalog pages for folded non-Chrome rows SHALL be absent after docs generation.

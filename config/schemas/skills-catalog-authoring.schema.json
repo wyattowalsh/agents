@@ -10,6 +10,7 @@
     "description": {"type": "string", "minLength": 1},
     "install_command": {"type": "string"},
     "install_source": {"type": "string"},
+    "sync_kind": {"enum": ["skills-cli", "external-tool", "none"]},
     "license": {"type": "string"},
     "license_status": {"type": "string"},
     "author": {"type": "string"},

@@ -11,7 +11,6 @@ metadata:
   author: wyattowalsh
   version: "1.0.0"
 ---
-
 # DevOps Engineer
 
 CI/CD pipeline design, optimization, and deployment strategy. 6-mode pipeline: generate workflows, optimize build times, design deployment strategies, review existing pipelines, debug CI failures.
@@ -67,7 +66,7 @@ Design and generate CI/CD workflow files from requirements.
 3. **Load patterns** -- read `references/github-actions-patterns.md` or `references/gitlab-ci-patterns.md`
 4. **Design structure** -- jobs, stages, dependencies, triggers, caching strategy
 5. **Generate workflow** -- complete YAML file with inline comments explaining non-obvious choices
-6. **Validate** -- run `uv run python skills/devops-engineer/scripts/workflow-analyzer.py <file>` on generated output
+6. **Validate** -- run `uv run python scripts/workflow-analyzer.py <file>` on generated output
 
 ### Output
 
@@ -90,8 +89,8 @@ Analyze and optimize pipeline build times.
 
 ### Analysis
 
-1. **Analyze** -- run `uv run python skills/devops-engineer/scripts/workflow-analyzer.py <workflow>`
-2. **Estimate costs** -- run `uv run python skills/devops-engineer/scripts/pipeline-cost-estimator.py <workflow>`
+1. **Analyze** -- run `uv run python scripts/workflow-analyzer.py <workflow>`
+2. **Estimate costs** -- run `uv run python scripts/pipeline-cost-estimator.py <workflow>`
 3. **Load techniques** -- read `references/pipeline-optimization.md`
 
 ### Optimization Opportunities
@@ -133,7 +132,7 @@ Audit an existing CI/CD pipeline for issues and improvements.
 ### Audit Process
 
 1. **Read workflow** -- parse the target workflow file(s)
-2. **Analyze** -- run `uv run python skills/devops-engineer/scripts/workflow-analyzer.py <workflow>`
+2. **Analyze** -- run `uv run python scripts/workflow-analyzer.py <workflow>`
 3. **Load checklists** -- read `references/pipeline-review-checklist.md`
 
 ### Evaluation Dimensions
@@ -152,7 +151,7 @@ Audit an existing CI/CD pipeline for issues and improvements.
 Analyze CI failure logs to identify root causes and fixes.
 
 1. **Ingest logs** -- read provided log file or inline content. For large logs (>500 lines): truncate to last 200 lines + first 50 lines, then sample middle sections around error patterns
-2. **Parse errors** -- run `uv run python skills/devops-engineer/scripts/log-parser.py <logfile>`
+2. **Parse errors** -- run `uv run python scripts/log-parser.py <logfile>`
 3. **Load triage protocol** -- read `references/ci-failure-triage.md`
 4. **Classify failures** by category:
 

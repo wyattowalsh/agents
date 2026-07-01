@@ -30,4 +30,4 @@ antfu (Anthony Fu, github.com/antfu/skills). 5.3k stars. MIT (skills/scripts); v
 
 Other presentation tools or general docs-writing skills; vitepress (same source); web-design-guidelines.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

@@ -32,4 +32,4 @@ Leonxlnx (github.com/Leonxlnx/taste-skill; tasteskill.dev). X: @lexnlin, @blueem
 
 Same-source variants (e.g. minimalist-ui, high-end-visual-design, gpt-taste, redesign-existing-projects, image-to-code); other curated frontend/UX skills (e.g. from web-quality or design-agent skills); general agent instructions for UI/UX without scoped contract; or direct use of design systems + image reference pipelines.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

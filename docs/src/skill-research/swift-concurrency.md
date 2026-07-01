@@ -54,4 +54,4 @@ AvdLee / Antoine van der Lee (github.com/AvdLee/Swift-Concurrency-Agent-Skill; a
 
 Author's swiftui-expert-skill (same maintainer); general Swift or async programming skills; official Swift docs + Swift 6 migration guides; Xcode Instruments + concurrency linting rules without agent skill; other platform concurrency experts or testing skills.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

@@ -11,7 +11,6 @@ metadata:
   author: wyattowalsh
   version: "1.0.0"
 ---
-
 # Security Scanner
 
 Proactive pre-deployment security assessment. SAST pattern matching, secrets detection,
@@ -82,12 +81,12 @@ Read HIGH and sampled MEDIUM/LOW files. Match against patterns from `references/
 
 ### Step 3: Secrets Scan
 
-Run: `uv run python skills/security-scanner/scripts/secrets-detector.py <path>`
+Run: `uv run python scripts/secrets-detector.py <path>`
 Parse JSON output. Cross-reference findings with `.gitignore` coverage.
 
 ### Step 4: Dependency Check
 
-If lockfiles exist, run: `uv run python skills/security-scanner/scripts/dependency-checker.py <path>`
+If lockfiles exist, run: `uv run python scripts/dependency-checker.py <path>`
 Parse JSON output. Flag outdated or unmaintained dependencies.
 
 ### Step 5: CWE/OWASP Mapping
@@ -125,7 +124,7 @@ Targeted security check on specific files or directories.
 Dependency lockfile analysis.
 
 1. Detect lockfiles: `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `requirements.txt`, `uv.lock`, `Cargo.lock`, `go.sum`, `Gemfile.lock`, `composer.lock`
-2. Run: `uv run python skills/security-scanner/scripts/dependency-checker.py <path>`
+2. Run: `uv run python scripts/dependency-checker.py <path>`
 3. Parse output: dependency names, versions, ecosystem
 4. Flag: outdated packages, packages with known CVE patterns, unusual version pinning
 5. Present dependency health report
@@ -134,7 +133,7 @@ Dependency lockfile analysis.
 
 Secrets-only scan using regex patterns.
 
-1. Run: `uv run python skills/security-scanner/scripts/secrets-detector.py <path>`
+1. Run: `uv run python scripts/secrets-detector.py <path>`
 2. Parse JSON findings
 3. Cross-reference with `.gitignore` — flag secrets in tracked files as CRITICAL
 4. Check git history for previously committed secrets: `git log --diff-filter=D -p -- <file>`
@@ -145,7 +144,7 @@ Secrets-only scan using regex patterns.
 Lightweight compliance heuristic scoring.
 
 1. Validate `<standard>` is one of: `soc2`, `gdpr`, `hipaa`
-2. Run: `uv run python skills/security-scanner/scripts/compliance-scorer.py <path> --standard <standard>`
+2. Run: `uv run python scripts/compliance-scorer.py <path> --standard <standard>`
 3. Read reference checklist from `references/compliance-checklists.md`
 4. Score each control as PASS/FAIL/PARTIAL with evidence
 5. Present compliance scorecard with overall percentage and failing controls
@@ -156,7 +155,7 @@ Generate visual security dashboard.
 
 1. Collect all findings from the current session (or re-run scan if none exist)
 2. Format findings as JSON matching the dashboard schema
-3. Convert to SARIF if requested: `uv run python skills/security-scanner/scripts/sarif-formatter.py`
+3. Convert to SARIF if requested: `uv run python scripts/sarif-formatter.py`
 4. Inject JSON into `templates/dashboard.html`
 5. Copy to a temporary file, open in browser
 

@@ -30,4 +30,4 @@ antfu (Anthony Fu, github.com/antfu/skills). 5.3k stars. MIT (skills/scripts); v
 
 vitest, nuxt, pnpm (same source); other build-tool skills.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

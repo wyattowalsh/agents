@@ -1,5 +1,14 @@
 import pytest
 
+from wagents.context import reset_cli_context
+
+
+@pytest.fixture(autouse=True)
+def _reset_wagents_cli_context():
+    """Prevent CliRunner/bootstrap_cli_context repo_root from leaking across tests."""
+    yield
+    reset_cli_context()
+
 
 @pytest.fixture
 def tmp_repo(tmp_path, monkeypatch):

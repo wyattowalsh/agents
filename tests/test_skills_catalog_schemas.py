@@ -31,6 +31,7 @@ def test_authoring_schema_file_exists_and_loads() -> None:
     assert schema["title"] == "SkillsCatalogAuthoring"
     assert "skill_id" in schema["properties"]
     assert "source_kind" in schema["properties"]
+    assert "sync_kind" in schema["properties"]
     assert "skill_id" not in schema["required"]
 
 
@@ -41,6 +42,7 @@ def test_index_schema_file_exists_and_loads() -> None:
     assert "allSkillIndex" in schema["properties"]
     assert "customSkillIndex" in schema["properties"]
     assert "externalSkillIndex" in schema["properties"]
+    assert "syncKind" in schema["$defs"]["skillRow"]["properties"]
 
 
 def test_authoring_minimal_valid_structural() -> None:
@@ -50,6 +52,7 @@ def test_authoring_minimal_valid_structural() -> None:
         "source_kind": "curated-external",
         "name": "plannotator-review",
         "description": "Review plans with structured critique.",
+        "sync_kind": "skills-cli",
         "audit_date": "2026-06-23",
         "audited_head": "abc123",
         "pin_policy": "pin where practical",
@@ -85,6 +88,7 @@ def test_index_minimal_valid_structural() -> None:
         "sourceKind": "curated-external",
         "sourcePath": "docs/src/authoring/skills/example-skill.mdx",
         "installCommand": "npx skills add owner/repo --skill example-skill",
+        "syncKind": "skills-cli",
         "auditDate": "2026-06-23",
         "auditedHead": "abc123",
         "pinPolicy": "pin where practical",

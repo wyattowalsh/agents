@@ -19,7 +19,7 @@ Use this reference for W2 source-family detail when planning read-only scouts. C
    - `config/harness-surface-registry.json`
    - `config/plugin-extension-registry.json`
    - `config/mcp-registry.json`
-   - `config/external-skills.md`
+   - `docs/src/authoring/skills`
 4. Build a source plan:
    ```bash
    uv run python skills/harness-master/scripts/source_probe.py --harness <harness|all> --source <source-id> --query "<query>" --dry-run --json

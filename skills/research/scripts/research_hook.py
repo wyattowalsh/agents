@@ -342,14 +342,13 @@ def readonly_write_guard(payload: NormalizedPayload) -> int:
 def stop_verifier(payload: NormalizedPayload) -> int:
     if payload.stop_hook_active or not _state_active(payload):
         return 0
-    script = REPO_ROOT / "skills" / "research" / "scripts" / "verify.py"
-    command = ["uv", "run", "python", str(script), "stop"]
+    script = Path(__file__).resolve().parent / "verify.py"
+    command = [sys.executable, str(script), "stop"]
     proc = subprocess.run(
         command,
         input=json.dumps(payload.raw),
         text=True,
         capture_output=True,
-        cwd=REPO_ROOT,
         check=False,
     )
     if proc.returncode == 0:

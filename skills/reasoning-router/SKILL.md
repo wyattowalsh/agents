@@ -11,7 +11,6 @@ metadata:
   author: wyattowalsh
   version: "0.1.0"
 ---
-
 # Reasoning Router
 
 Meta-reasoning layer: classify problems, dispatch to the optimal thinking MCP,
@@ -37,7 +36,7 @@ Always uses the most advanced model (currently Opus 4.6). Meta-reasoning about
 
 ## Classification
 
-Run `!uv run python skills/reasoning-router/scripts/problem-classifier.py "$ARGUMENTS"`
+Run `!uv run python scripts/problem-classifier.py "$ARGUMENTS"`
 for deterministic pre-scan, then refine with LLM judgment.
 
 ### Axis 1 — Structure (what shape is the reasoning?)

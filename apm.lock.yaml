@@ -50,9 +50,6 @@ local_deployed_files:
 - .github/agents/release-manager.agent.md
 - .github/agents/researcher.agent.md
 - .github/agents/security-auditor.agent.md
-- .github/hooks/agents-claude-code.json
-- .github/hooks/agents-cursor.json
-- .github/hooks/agents-github-copilot.json
 - .github/instructions/claude-code.instructions.md
 - .github/instructions/codex.instructions.md
 - .github/instructions/copilot.instructions.md
@@ -118,9 +115,7 @@ local_deployed_file_hashes:
   .github/agents/release-manager.agent.md: sha256:5cfbcc8ce9b9288c18d7ccdd006a0331c3c6ebd6675887fc87324bcb976b63cb
   .github/agents/researcher.agent.md: sha256:bb91b965a0ce0c9ff4e12a42252a22783a310d2137fa2afdd48baabedd118e95
   .github/agents/security-auditor.agent.md: sha256:e7f7e234371dc7f7dd669feeebeb49fad012306b808da90a4d37f80a216080a4
-  .github/hooks/agents-claude-code.json: sha256:7e79ba457e4c1300613e3a066772524fde9ebbf6d2957285dca55320732605ca
-  .github/hooks/agents-cursor.json: sha256:883ac17ead01ab310ee23f9566fe718df1a3d257c5ad089a70c89f7f84be94b1
-  .github/hooks/agents-github-copilot.json: sha256:d8fdfddafee05f2ada01abef5640b4f206fad94c6a83235b4b43d1a361aaad09
+  .github/agents/security-auditor.agent.md: sha256:placeholder
   .github/instructions/claude-code.instructions.md: sha256:42e11d128ced4254547cacc3f8aeba25983998cdd142a88f66e94b194f553ad0
   .github/instructions/codex.instructions.md: sha256:af4733eec0564ee29d6d79111ed7783de957f03fdbda1bfa79b68307655e0ade
   .github/instructions/copilot.instructions.md: sha256:b8990d2d8ff6a463514b2355e620f8cba766100e4f632217cba08fa102d59622

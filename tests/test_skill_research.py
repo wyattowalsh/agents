@@ -146,7 +146,7 @@ def _curated_entry(
         notes=notes or f"Purpose of curated skill {name}.",
         risk_notes=risk_notes or "Review hooks and dedupe.",
         promotion_policy="Install only after trust gate.",
-        provenance_evidence="Curated in config/external-skills.md.",
+        provenance_evidence="Curated in authoring catalog.",
     )
 
 
@@ -166,7 +166,7 @@ def test_build_curated_config_research_body_structured_sections():
     assert "Target agents:" in body
     assert "trust_tier=low" in body
     assert "https://github.com/example/source" in body
-    assert "Sourced from curated config/external-skills.md" in body
+    assert "Sourced from curated authoring catalog" in body
 
 
 def _curated_doc_node(

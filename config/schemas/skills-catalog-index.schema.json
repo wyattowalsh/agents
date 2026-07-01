@@ -36,6 +36,7 @@
         "sourceUrl": { "type": "string" },
         "installCommand": { "type": "string" },
         "installSource": { "type": "string" },
+        "syncKind": { "enum": ["skills-cli", "external-tool", "none"] },
         "useCommand": { "type": "string" },
         "installable": { "type": "boolean" },
         "localInventoryOnly": { "type": "boolean" },

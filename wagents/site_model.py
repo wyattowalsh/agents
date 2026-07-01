@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 
 from wagents import ROOT
+from wagents.external_skills import SYNC_KIND_SKILLS_CLI, infer_sync_kind
 
 if TYPE_CHECKING:
     from wagents.catalog import CatalogNode
@@ -652,6 +653,7 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         install_command = build_install_command(skill=node.id)
         provenance_status = "repo-owned"
         review_status = "reviewed"
+        sync_kind = SYNC_KIND_SKILLS_CLI
     elif source_type == "curated-external":
         raw_source_root = str(fm.get("_skills_source") or node.source_path or REPO_SOURCE)
         source_root = _public_source_label(raw_source_root)
@@ -664,6 +666,7 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         )
         provenance_status = str(fm.get("_skills_provenance_status") or "verified-curated-external")
         review_status = "curated"
+        sync_kind = infer_sync_kind(str(fm.get("_sync_kind") or fm.get("sync_kind") or ""), install_command)
     else:
         raw_source_root = str(fm.get("_skills_source") or node.source_path)
         source_root = _public_source_label(raw_source_root)
@@ -676,6 +679,7 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         )
         provenance_status = str(fm.get("_skills_provenance_status") or "installed-external")
         review_status = "reviewed"
+        sync_kind = infer_sync_kind(str(fm.get("_sync_kind") or fm.get("sync_kind") or ""), install_command)
     installed_agents = (
         fm.get("_skills_installed_agents") if isinstance(fm.get("_skills_installed_agents"), list) else []
     )
@@ -701,6 +705,7 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         "sourcePath": _public_source_path(node.source_path),
         "sourceUrl": _source_url_for_node(node),
         "installCommand": install_command,
+        "syncKind": sync_kind,
         "useCommand": use_command_for_catalog_row(install_command, node.id),
         "provenanceStatus": provenance_status,
         "status": fm.get("_curated_status") or provenance_status,
@@ -760,6 +765,7 @@ def _external_skill_row(entry: ExternalSkillEntry) -> dict[str, Any]:
         "provenanceStatus": entry.provenance_status,
         "reviewStatus": "curated" if entry.provenance_status == "verified-install-command" else "unresolved",
         "selectorMode": entry.selector_mode,
+        "syncKind": infer_sync_kind(entry.sync_kind, entry.install_command),
         "unresolvedReason": entry.unresolved_reason,
         "license": entry.license,
         "licenseStatus": entry.license_status,

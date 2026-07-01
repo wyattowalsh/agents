@@ -29,12 +29,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def _cursor_hook_command(rendered: dict, hook_id: str) -> str:
-    """Find a rendered Cursor hook command by stable hook id substring."""
+    """Find a rendered Cursor hook command by stable hook id substring.
+
+    Cursor renders a flat per-event entry shape (``{command, matcher?, ...}``);
+    the nested ``{"hooks": [...]}`` group lookup is kept as a fallback for any
+    legacy/nested-group harness document passed in.
+    """
     hooks_root = rendered.get("hooks") or {}
     for event_blocks in hooks_root.values():
         if not isinstance(event_blocks, list):
             continue
         for block in event_blocks:
+            command = str(block.get("command") or "")
+            if hook_id in command:
+                return command
             for hook in block.get("hooks") or []:
                 command = str(hook.get("command") or "")
                 if hook_id in command:
@@ -253,7 +261,7 @@ def test_cursor_cloud_agent_repo_evidence_surfaces_exist() -> None:
     rendered = adapter.render_hooks(hook_registry)
     assert rendered is not None
     guard_command = _cursor_hook_command(rendered, "cursor-destructive-shell-guard")
-    assert "${workspaceFolder}" in guard_command
+    assert "$CURSOR_PROJECT_DIR" in guard_command
 
 
 def test_cursor_cloud_subagent_repo_evidence_and_overlay_alignment() -> None:

@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-24",
+  "generated_at": "2026-06-29",
   "surface": "all",
-  "total": 397,
-  "composed": 397,
+  "total": 398,
+  "composed": 398,
   "scaffold": 0,
   "missing": 0,
   "composed_pct": 100.0,
@@ -23,7 +23,7 @@
       "missing": 0
     },
     "hooks": {
-      "composed": 22,
+      "composed": 23,
       "scaffold": 0,
       "missing": 0
     },

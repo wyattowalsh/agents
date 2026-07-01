@@ -25,9 +25,9 @@
        proof, LCP/hero proof, memory/performance-smell checks,
        troubleshooting fallback, and CLI fallback into
        `references/rendered-proof.md` as `/design` proof techniques.
-16. [x] Preserve active custom Chrome DevTools skill directories, authoring
-       rows, research pages, generated catalog pages, and registry rows as
-       standalone operational browser-debugging skills.
+16. [x] Preserve operational Chrome DevTools browser-debugging workflows as
+       official upstream curated-external rows while removing repo-owned
+       `skills/chrome-devtools*` wrapper copies.
 17. [x] Fold overlapping curated external UI/design/frontend/browser-proof
        catalog rows into the design research note, then remove their active
        authoring, generated catalog, and research surfaces.

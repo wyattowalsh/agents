@@ -30,4 +30,4 @@ addyosmani (github.com/addyosmani/web-quality-skills). MIT License. Insights fro
 
 Other skills in same bundle (e.g. web-quality-audit, performance; general security/hardening skills); general Lighthouse/web.dev guidance; framework-specific perf/a11y plugins; other curated quality skills like chrome-devtools-*.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

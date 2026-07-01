@@ -1,8 +1,8 @@
 ---
 name: grok-delegate
 description: >-
-  Use when delegating Grok task nodes via native CLI (-p, -r, worktrees, leader)
-  from Codex/OpenCode waves. NOT for harness sync or wrappers.
+  Use when delegating to native Grok CLI for default Tier-T trivial leaves or
+  wave/tune nodes from parent harnesses. NOT for harness sync or wrappers.
 license: MIT
 metadata:
   author: wyattowalsh
@@ -32,10 +32,11 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 
 1. **Use** when the parent harness owns a multi-node graph and at least one node should run on Grok Build via native CLI.
 2. **Use** when a gate failed and the parent needs `-r <sessionId>` tune passes on an existing ledger row.
-3. **Tier-T** — use `trivial` when fast preflight `ok`, `grok-auth-expiry` is `ok`, and the leaf is bounded (≤3 reads OR ≤1 file ≤80 LOC; no destructive/prod/git-push). Parent keeps synthesis.
-4. **Do not use** for Grok config/MCP sync, skill installs, or nested Grok-in-Grok orchestration.
-5. **Do not use** for multi-node graphs, overlapping file writers, or unbounded parent work better done in-session.
-6. **Malformed dispatch** — `wave` without `0|1|2` is invalid; show valid tiers or the empty-args gallery. Never invent a default wave.
+3. **Tier-T default** — use `trivial` by default when fast preflight `ok`, `grok-auth-expiry` is `ok`, and the leaf is bounded (≤3 reads OR ≤1 file ≤80 LOC; no destructive/prod/git-push/secrets). Parent keeps synthesis.
+4. **Tier-T failure fallback** — if the first native `grok -p` Tier-T dispatch fails for a parent work item, stop Tier-T for that item and continue locally.
+5. **Do not use** for Grok config/MCP sync, skill installs, or nested Grok-in-Grok orchestration.
+6. **Do not use** for multi-node graphs, overlapping file writers, or unbounded parent work better done in-session.
+7. **Malformed dispatch** — `wave` without `0|1|2` is invalid; show valid tiers or the empty-args gallery. Never invent a default wave.
 
 ## Operator Contract
 
@@ -64,6 +65,8 @@ grok --no-auto-update \
   --output-format json \
   --max-turns 10
 ```
+
+4. If the native dispatch fails, record the failure, stop Tier-T for the current parent work item, and continue locally.
 
 ### `wave <0|1|2>`
 
@@ -102,7 +105,7 @@ grok --no-auto-update \
 | Term | Meaning |
 | --- | --- |
 | **parent harness** | Codex, OpenCode, Claude, or Cursor session owning the macro DAG |
-| **Tier-T** | Bounded trivial leaf offload via single `grok -p` after fast preflight |
+| **Tier-T** | Default bounded trivial leaf offload via single `grok -p` after fast preflight and `grok-auth-expiry: ok` |
 | **node** | One `grok` subprocess invocation for a graph task |
 | **wave** | Staged batch of nodes (0 scout, 1 build, 2 verify) |
 | **gate** | Parent checkpoint before the next wave |
@@ -125,13 +128,14 @@ grok --no-auto-update \
 ## When to use
 
 - Parent dispatches independent Grok nodes via bash (Pattern A/E).
-- Tier-T bounded leaf offload when preflight passes.
+- Tier-T bounded leaf offload by default when fast preflight and `grok-auth-expiry` pass.
 - Tune-in-place after gate failure: `-r <sessionId>`.
 - Parallel builders with `-w` worktrees or hypothesis `--best-of-n`.
 
 ## When NOT to use
 
 - Multi-node graphs or overlapping writers (use waves, not Tier-T).
+- Destructive, production, git-push, secret-reading, or broad implementation work.
 - Grok config/MCP sync — `/harness-master`.
 - Skill installs — Skills CLI dry-run preview only (no live `--apply` unless maintainer requests).
 - Nested Grok-in-Grok graphs beyond platform depth 1.

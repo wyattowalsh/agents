@@ -1,0 +1,177 @@
+"""Static checks for the local harness reconciliation evidence packet."""
+
+from __future__ import annotations
+
+import importlib.util
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+MANIFEST = ROOT / "planning" / "manifests" / "harness-reconciliation.json"
+TERMINAL_ACTIONS = {
+    "synced",
+    "repo-source-synced",
+    "local-only-preserve",
+    "curate-external",
+    "catalog-non-sync",
+    "cache-refresh-needed",
+    "home-sync-needed",
+    "blocked-needs-approval",
+    "config-repair-needed",
+}
+SUPPORTED_SKILL_AGENTS = {
+    "antigravity",
+    "claude-code",
+    "codex",
+    "crush",
+    "cursor",
+    "gemini-cli",
+    "github-copilot",
+    "grok",
+    "opencode",
+}
+
+
+def load_manifest() -> dict:
+    return json.loads(MANIFEST.read_text(encoding="utf-8"))
+
+
+def load_generator_module():
+    module_path = ROOT / "scripts" / "generate_harness_reconciliation.py"
+    spec = importlib.util.spec_from_file_location("generate_harness_reconciliation", module_path)
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_harness_reconciliation_manifest_has_terminal_dispositions() -> None:
+    manifest = load_manifest()
+
+    assert manifest["version"] == 1
+    assert manifest["generated_by"] == "scripts/generate_harness_reconciliation.py"
+    assert set(manifest["terminal_actions"]) == TERMINAL_ACTIONS
+    assert manifest["summary"]["row_count"] == len(manifest["matrix"])
+
+    for row in manifest["matrix"]:
+        assert row["action"] in TERMINAL_ACTIONS
+        assert row["classification"] in TERMINAL_ACTIONS
+        assert row["asset_type"] in {"extension", "plugin", "plugin-cache", "skill"}
+        assert row["harness"]
+        assert row["name"]
+        assert row["evidence"]
+        assert row["owner"] in {"catalog", "repo", "unknown", "user-local"}
+
+
+def test_harness_reconciliation_records_full_skill_sync_result() -> None:
+    manifest = load_manifest()
+    skills = manifest["summary"]["skills"]
+
+    assert skills["desired_count"] > 0
+    assert set(skills["default_sync_missing_by_agent"]) == SUPPORTED_SKILL_AGENTS
+    assert set(skills["query_blocked_by_agent"]) == SUPPORTED_SKILL_AGENTS
+    assert all(count == 0 for count in skills["default_sync_missing_by_agent"].values())
+    assert all(count == 0 for count in skills["query_blocked_by_agent"].values())
+    assert skills["include_installed_missing_by_agent"]["grok"] == 4
+
+    anthro_gaps = {
+        row["name"]
+        for row in manifest["matrix"]
+        if row["asset_type"] == "skill"
+        and row.get("source") == "anthropics/skills"
+        and row.get("missing_agents") == ["grok"]
+    }
+    assert anthro_gaps == {"frontend-design", "pdf", "web-artifacts-builder", "webapp-testing"}
+
+
+def test_harness_reconciliation_covers_plugin_drift_and_config_blockers() -> None:
+    manifest = load_manifest()
+    rows = {(row["harness"], row["name"]): row for row in manifest["matrix"]}
+
+    assert rows["codex", "agents@agents"]["action"] == "cache-refresh-needed"
+    assert rows["codex", "agents@agents-cache"]["action"] == "cache-refresh-needed"
+    assert rows["opencode", "opencode-adaptive-thinking@latest"]["action"] == "home-sync-needed"
+    assert rows["opencode", "opencode-claude-auth@latest"]["action"] == "home-sync-needed"
+
+    gemini_extensions = [
+        row for row in manifest["matrix"] if row["harness"] == "gemini-cli" and row["asset_type"] == "extension"
+    ]
+    assert len(gemini_extensions) == 44
+    assert {row["action"] for row in gemini_extensions} == {"config-repair-needed"}
+
+
+def test_harness_reconciliation_records_opencode_plugin_source_surfaces() -> None:
+    manifest = load_manifest()
+    opencode_rows = [
+        row for row in manifest["matrix"] if row["harness"] == "opencode" and row["asset_type"] == "plugin"
+    ]
+    expected_path_by_surface = {
+        "repo": "opencode.json",
+        "live": "~/.config/opencode/opencode.json",
+        "tui": "~/.config/opencode/tui.json",
+    }
+
+    assert opencode_rows
+    for row in opencode_rows:
+        expected_paths = [
+            path for surface, path in expected_path_by_surface.items() if row["installed_state"][surface]
+        ]
+        assert row["source_paths"] == expected_paths
+        assert row["source_path"] == expected_paths[0]
+
+    tui_only = next(row for row in opencode_rows if row["name"] == "@ishaksebsib/opencode-tree@latest")
+    assert tui_only["installed_state"] == {"live": False, "repo": False, "tui": True}
+    assert tui_only["source_path"] == "~/.config/opencode/tui.json"
+    assert tui_only["source_paths"] == ["~/.config/opencode/tui.json"]
+
+
+def test_native_plugin_detection_requires_successful_positive_output() -> None:
+    module = load_generator_module()
+
+    assert not module._native_plugins_reported({"ok": False, "stdout": "", "stderr": "missing command"})
+    assert not module._native_plugins_reported({"ok": False, "stdout": "plugin-a\n", "stderr": "timed out"})
+    assert not module._native_plugins_reported({"ok": True, "stdout": "", "stderr": ""})
+    assert not module._native_plugins_reported({"ok": True, "stdout": "No plugins installed\n", "stderr": ""})
+    assert not module._native_plugins_reported({"ok": True, "stdout": "0 plugins\n", "stderr": ""})
+    assert module._native_plugins_reported({"ok": True, "stdout": "plugin-a installed, enabled\n", "stderr": ""})
+
+
+def test_harness_reconciliation_is_redacted_and_has_parallel_task_graph() -> None:
+    text = MANIFEST.read_text(encoding="utf-8")
+    manifest = json.loads(text)
+
+    assert "/Users/ww" not in text
+    assert "Authorization" not in text
+    assert "auth.json" not in text
+    assert "api_key" not in text.lower()
+    assert "bearer" not in text.lower()
+
+    task_graph = manifest["task_graph"]
+    shard_nodes = [node for node in task_graph if node["id"] not in {"T-000", "T-999"}]
+
+    assert len(task_graph) >= 30
+    assert any(node["parallel"] for node in task_graph)
+    assert sum(node["row_count"] for node in shard_nodes) == manifest["summary"]["row_count"]
+    for node in task_graph:
+        assert node["id"].startswith("T-")
+        assert node["lane"]
+        assert node["files"]
+        assert node["done_when"]
+
+    for node in shard_nodes:
+        assert node["depends_on"] == ["T-000"]
+        assert node["filter"]
+        assert node["manual_inspection"]
+        assert node["terminal_action"] in TERMINAL_ACTIONS
+
+    opencode_plugin_nodes = [
+        node
+        for node in shard_nodes
+        if node["filter"]["harness"] == "opencode" and node["filter"]["asset_type"] == "plugin"
+    ]
+    assert opencode_plugin_nodes
+    assert all("~/.config/opencode/tui.json" in node["files"] for node in opencode_plugin_nodes)
+
+    assert task_graph[-1]["id"] == "T-999"
+    assert set(task_graph[-1]["depends_on"]) == {node["id"] for node in shard_nodes}

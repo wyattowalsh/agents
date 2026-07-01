@@ -13,15 +13,15 @@ from typing import Annotated, Any, cast
 
 import typer
 
-from wagents import KEBAB_CASE_PATTERN, ROOT, VERSION
+from wagents import ROOT, VERSION
 from wagents.catalog import CatalogNode
+from wagents.commands.validate import register_validate_commands, validate_name
 from wagents.context import (
     REPO_ROOT_ENV,
     bootstrap_cli_context,
     detect_install_mode,
     get_repo_root,
     get_repo_root_optional,
-    resolve_repo_script,
 )
 from wagents.docs import docs_app, regenerate_sidebar_and_indexes
 
@@ -31,6 +31,7 @@ from wagents.eval_adequacy import (
     build_adequacy_report,
     filter_high_risk,
 )
+from wagents.external_skills import ExternalSkillCatalogError, ExternalSkillEntry, read_external_skill_entries
 from wagents.installed_inventory import (
     InstalledSkillInventoryRow,
     collect_desired_sync_rows,
@@ -131,6 +132,8 @@ app.add_typer(new_app, name="new")
 app.add_typer(docs_app, name="docs")
 hooks_app = typer.Typer(help="Manage hooks across skills and agents")
 app.add_typer(hooks_app, name="hooks")
+media_app = typer.Typer(help="Optimize model-bound media inputs")
+app.add_typer(media_app, name="media")
 eval_app = typer.Typer(help="Manage and validate skill evals")
 app.add_typer(eval_app, name="eval")
 skills_app = typer.Typer(help="Index and search local skills")
@@ -145,10 +148,13 @@ grok_app = typer.Typer(help="Diagnose Grok Build runtime state")
 plannotator_app = typer.Typer(help="Install and verify Plannotator for Grok Build")
 grok_app.add_typer(plannotator_app, name="plannotator")
 app.add_typer(grok_app, name="grok")
+rtk_app = typer.Typer(help="Diagnose and sync RTK token-saving hooks")
+app.add_typer(rtk_app, name="rtk")
 app.add_typer(self_app, name="self")
 
 apm_app = typer.Typer(help="APM (Microsoft Agent Package Manager) facade: materialize .apm/ from repo SSOT and doctor")
 app.add_typer(apm_app, name="apm")
+register_validate_commands(app)
 
 _PLUGIN_RESULTS = load_command_plugins(app)
 
@@ -935,14 +941,62 @@ def doctor(
         raise typer.Exit(code=1)
 
 
-def validate_name(name: str) -> None:
-    """Validate asset name is kebab-case and within length limit."""
-    if not KEBAB_CASE_PATTERN.match(name):
-        typer.echo(f"Error: name must be kebab-case (got '{name}')", err=True)
-        raise typer.Exit(code=1)
-    if len(name) > 64:
-        typer.echo("Error: name exceeds 64 characters", err=True)
-        raise typer.Exit(code=1)
+@media_app.command("optimize-image")
+def media_optimize_image(
+    image: Annotated[
+        Path,
+        typer.Argument(exists=True, file_okay=True, dir_okay=False, readable=True, help="Image file to optimize"),
+    ],
+    profile: Annotated[
+        str,
+        typer.Option("--profile", help="Profile: auto, general, screenshot-text, transparent"),
+    ] = "auto",
+    context: Annotated[str, typer.Option("--context", help="Short usage hint for profile detection")] = "",
+    cache_dir: Annotated[
+        Path | None,
+        typer.Option("--cache-dir", help="Override optimized image cache directory"),
+    ] = None,
+    max_bytes: Annotated[int | None, typer.Option("--max-bytes", help="Override profile byte ceiling")] = None,
+    check_only: Annotated[bool, typer.Option("--check-only", help="Report whether optimization would run")] = False,
+    format_: Annotated[str, typer.Option("--format", help="Output format: text, json, jsonl")] = "text",
+) -> None:
+    """Resize and compress an image into the wagents cache without mutating the source."""
+    from wagents.image_inputs import ImageOptimizationError, optimize_image_path
+
+    fmt = normalize_output_format(format_)
+    try:
+        result = optimize_image_path(
+            image,
+            profile=profile,
+            context=context,
+            cache_dir=cache_dir,
+            check_only=check_only,
+            max_bytes=max_bytes,
+        ).to_json()
+    except ImageOptimizationError as exc:
+        payload = {"ok": False, "status": "error", "message": str(exc)}
+        emit_structured_output(fmt, text_lines=[f"image optimize: error: {exc}"], json_data=payload)
+        raise typer.Exit(code=2) from exc
+
+    payload = {"ok": bool(result["fits"] or result["status"] == "ok"), **result}
+    if fmt == "text":
+        if result["status"] == "ok":
+            typer.echo(f"image optimize: ok ({result['sourcePath']})")
+        elif result["status"] == "would-optimize":
+            typer.echo(
+                "image optimize: would optimize "
+                f"{result['sourcePath']} to {result['optimizedWidth']}x{result['optimizedHeight']}"
+            )
+        else:
+            typer.echo(
+                "image optimize: "
+                f"{result['sourcePath']} -> {result['optimizedPath']} "
+                f"({result['optimizedWidth']}x{result['optimizedHeight']}, {result['optimizedBytes']} bytes)"
+            )
+    else:
+        emit_structured_output(fmt, json_data=payload, jsonl_records=[payload])
+    if not payload["ok"]:
+        raise typer.Exit(code=2)
 
 
 @new_app.command("skill")
@@ -1154,20 +1208,6 @@ build-backend = "hatchling.build"
         typer.echo("Regenerated sidebar and index pages")
 
 
-@app.command()
-def validate(
-    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
-):
-    """Validate all skills and agents."""
-    script = resolve_repo_script("scripts/validate/validate_repo.py")
-    raise typer.Exit(
-        code=_run_python_script(
-            script,
-            ["--format", format_, "--repo-root", str(ROOT)],
-        )
-    )
-
-
 SUPPORTED_AGENTS = list(SUPPORTED_AGENT_IDS)
 UNRESOLVED_PROVENANCE = frozenset({"curated-unresolved", "read-only-discovered"})
 
@@ -1207,29 +1247,74 @@ def _command_text(argv: list[str]) -> str:
     return " ".join(rendered)
 
 
+def _skills_cli_install_spec(row: InstalledSkillInventoryRow) -> dict[str, object] | None:
+    """Parse a row's audited Skills CLI install command into grouped command parts."""
+    if not row.is_syncable() or not row.install_command:
+        return None
+    try:
+        parts = shlex.split(row.install_command)
+    except ValueError:
+        return None
+    if len(parts) < 4 or parts[:3] != ["npx", "skills", "add"]:
+        return None
+
+    source = parts[3]
+    skills: list[str] = []
+    passthrough: list[str] = []
+    idx = 4
+    while idx < len(parts):
+        part = parts[idx]
+        if part == "--skill" and idx + 1 < len(parts):
+            skills.append(parts[idx + 1])
+            idx += 2
+            continue
+        if part in {"-a", "--agent"}:
+            idx += 1
+            while idx < len(parts) and not parts[idx].startswith("-"):
+                idx += 1
+            continue
+        passthrough.append(part)
+        idx += 1
+
+    if row.selector_mode == "source-spec":
+        skills = []
+    elif row.selector_mode == "wildcard" and not skills:
+        skills = ["*"]
+    elif row.selector_mode == "named" and not skills:
+        skills = [row.name]
+
+    return {
+        "source": source,
+        "selector_mode": row.selector_mode,
+        "skills": tuple(skills),
+        "passthrough": tuple(passthrough),
+    }
+
+
 def _sync_command_groups(rows: list[InstalledSkillInventoryRow], agent_id: str) -> list[dict[str, object]]:
     """Group missing skills into exact install commands for one harness."""
-    grouped_named: dict[str, list[str]] = {}
-    grouped_modes: dict[tuple[str, str], InstalledSkillInventoryRow] = {}
-    commands: list[dict[str, object]] = []
+    grouped: dict[tuple[str, str, tuple[str, ...]], set[str]] = {}
     for row in rows:
-        if row.selector_mode == "named":
-            grouped_named.setdefault(row.install_source, []).append(row.name)
+        spec = _skills_cli_install_spec(row)
+        if spec is None:
             continue
-        grouped_modes[row.install_source, row.selector_mode] = row
+        key = (
+            cast("str", spec["source"]),
+            cast("str", spec["selector_mode"]),
+            cast("tuple[str, ...]", spec["passthrough"]),
+        )
+        grouped.setdefault(key, set()).update(cast("tuple[str, ...]", spec["skills"]))
 
-    for install_source, names in sorted(grouped_named.items()):
+    commands: list[dict[str, object]] = []
+    for (install_source, selector_mode, passthrough), skills in sorted(grouped.items()):
         argv = ["npx", "skills", "add", install_source]
-        for name in sorted(set(names)):
-            argv.extend(["--skill", name])
-        argv.extend(["-y", "-g", "-a", skills_cli_agent_id(agent_id)])
-        commands.append({"argv": argv, "text": _command_text(argv)})
-
-    for (_, selector_mode), row in sorted(grouped_modes.items()):
-        argv = ["npx", "skills", "add", row.install_source]
         if selector_mode == "wildcard":
             argv.extend(["--skill", "*"])
-        argv.extend(["-y", "-g", "-a", skills_cli_agent_id(agent_id)])
+        elif selector_mode != "source-spec":
+            for name in sorted(skills):
+                argv.extend(["--skill", name])
+        argv.extend(passthrough)
+        argv.extend(["-a", skills_cli_agent_id(agent_id)])
         commands.append({"argv": argv, "text": _command_text(argv)})
 
     return commands
@@ -1251,22 +1336,28 @@ def _build_sync_report(
     target_agents: tuple[str, ...],
     *,
     include_installed: bool,
+    external_entries: list[ExternalSkillEntry] | None = None,
 ) -> dict[str, object]:
     """Build dry-run/apply data for additive skill sync."""
     # Always collect the full cross-harness inventory so a skill present in any
     # harness is visible when checking what is missing in the requested targets.
-    snapshot = collect_installed_inventory()
-    merged = merge_desired_with_installed(snapshot, collect_desired_sync_rows())
+    snapshot = collect_installed_inventory(external_entries=external_entries)
+    merged = merge_desired_with_installed(
+        snapshot,
+        collect_desired_sync_rows(external_entries=external_entries),
+    )
     report_agents: list[dict[str, object]] = []
     query_by_agent = {query.agent_id: query for query in snapshot.queries}
 
     verified_rows = [row for row in merged.rows if row.is_repo_owned() or row.is_verified_curated()]
     optional_installed = [row for row in merged.rows if row.provenance_status == "installed-external"]
     unresolved_rows = [row for row in merged.rows if row.provenance_status in UNRESOLVED_PROVENANCE]
+    hard_error_agents: list[str] = []
 
     for agent_id in target_agents:
         query = query_by_agent.get(agent_id)
         if query is not None and not query.ok:
+            hard_error_agents.append(agent_id)
             report_agents.append({
                 "agent": agent_id,
                 "error": query.error,
@@ -1285,6 +1376,9 @@ def _build_sync_report(
         skipped: list[InstalledSkillInventoryRow] = []
 
         for row in verified_rows:
+            if not row.is_syncable():
+                skipped.append(row)
+                continue
             if not _row_targets_agent(row, agent_id):
                 skipped.append(row)
                 continue
@@ -1323,10 +1417,26 @@ def _build_sync_report(
             "_command_argvs": [command["argv"] for command in command_groups],
         })
 
-    return {
+    report: dict[str, object] = {
+        "ok": not hard_error_agents,
         "inventory_count": len(merged.rows),
         "include_installed": include_installed,
         "agents": report_agents,
+    }
+    if hard_error_agents:
+        report["error"] = "Target harness inventory failed for: " + ", ".join(sorted(hard_error_agents))
+        report["error_type"] = "inventory"
+    return report
+
+
+def _sync_error_report(error: str, *, include_installed: bool) -> dict[str, object]:
+    return {
+        "ok": False,
+        "inventory_count": None,
+        "include_installed": include_installed,
+        "agents": [],
+        "error": error,
+        "error_type": "external-skill-catalog",
     }
 
 
@@ -1335,6 +1445,7 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
     mode = "dry-run" if dry_run else "apply"
     agent_reports = cast("list[dict[str, object]]", report.get("agents") or [])
     json_payload: dict[str, object] = {
+        "ok": bool(report.get("ok", True)),
         "mode": mode,
         "inventory_count": report.get("inventory_count"),
         "include_installed": report.get("include_installed"),
@@ -1343,6 +1454,10 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
             for agent_payload in agent_reports
         ],
     }
+    if "error" in report:
+        json_payload["error"] = report.get("error")
+    if "error_type" in report:
+        json_payload["error_type"] = report.get("error_type")
     if format_ != "text":
         _emit_structured_output(
             format_,
@@ -1352,6 +1467,12 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
         return
 
     typer.echo(f"wagents skills sync ({mode})")
+    top_level_error = str(report.get("error") or "")
+    if top_level_error and not agent_reports:
+        typer.echo(f"error: {top_level_error}")
+        return
+    if top_level_error:
+        typer.echo(f"error: {top_level_error}")
     typer.echo(f"Inventory rows: {report['inventory_count']}")
     typer.echo("")
     for agent_payload in agent_reports:
@@ -1550,6 +1671,91 @@ def grok_doctor(
         raise typer.Exit(code=1)
 
 
+@rtk_app.command("doctor")
+def rtk_doctor(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+) -> None:
+    """Report RTK binary, command capability, and per-harness posture."""
+    from wagents.rtk import collect_rtk_doctor_checks, rtk_doctor_report
+
+    format_ = _normalize_output_format(format_)
+
+    if format_ in {"json", "jsonl"}:
+        report = rtk_doctor_report()
+        checks = report["checks"]
+        _emit_doctor_report(format_, checks)
+        if not report["ok"]:
+            raise typer.Exit(code=1)
+        return
+
+    checks = collect_rtk_doctor_checks()
+    _emit_doctor_report(format_, checks)
+    if any(check["status"] == "fail" for check in checks):
+        raise typer.Exit(code=1)
+
+
+@rtk_app.command("sync")
+def rtk_sync(
+    platforms: str | None = typer.Option(
+        None,
+        "--platforms",
+        help="Comma-separated RTK platform ids from config/rtk-integration.json",
+    ),
+    dry_run: bool = typer.Option(True, "--dry-run/--apply", help="Print the plan or execute RTK init commands"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+) -> None:
+    """Preview or apply RTK init commands from repo policy."""
+    from wagents.rtk import build_rtk_sync_plan, run_rtk_sync_plan
+
+    format_ = _normalize_output_format(format_)
+    try:
+        plan = build_rtk_sync_plan(platforms=platforms, dry_run=dry_run)
+    except ValueError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(code=2) from exc
+
+    results = run_rtk_sync_plan(plan)
+    exit_code = max((int(result.get("returncode", 0)) for result in results), default=0)
+    payload = {**plan, "results": results}
+    text_lines = [f"RTK sync plan: {len(plan['commands'])} command(s), {len(plan['skipped'])} skipped"]
+    for command in plan["commands"]:
+        prefix = "Would run" if dry_run else "Ran"
+        text_lines.append(f"{prefix} [{command['platform']}]: {command['command']}")
+    for skipped in plan["skipped"]:
+        text_lines.append(f"Skip [{skipped['platform']}]: {skipped['reason']}")
+    if not dry_run:
+        for result in results:
+            text_lines.append(f"Result [{result['platform']}]: exit={result['returncode']}")
+
+    _emit_structured_output(
+        format_,
+        text_lines=text_lines,
+        json_data=payload,
+        jsonl_records=[{"type": "rtk-sync-command", **item} for item in plan["commands"]]
+        + [{"type": "rtk-sync-skip", **item} for item in plan["skipped"]]
+        + [{"type": "rtk-sync-result", **item} for item in results],
+    )
+    raise typer.Exit(code=exit_code)
+
+
+@rtk_app.command("gain")
+def rtk_gain(
+    history: bool = typer.Option(False, "--history", "-H", help="Show recent command history"),
+    project: bool = typer.Option(False, "--project", "-p", help="Filter to the current project"),
+    graph: bool = typer.Option(False, "--graph", "-g", help="Show RTK's ASCII graph"),
+    rtk_format: str = typer.Option("text", "--rtk-format", help="RTK output format: text, json, csv"),
+) -> None:
+    """Run `rtk gain` with common reporting flags."""
+    from wagents.rtk import run_rtk_gain
+
+    result = run_rtk_gain(history=history, project=project, graph=graph, rtk_format=rtk_format)
+    if result.stdout:
+        typer.echo(result.stdout.rstrip())
+    if result.stderr:
+        typer.echo(result.stderr.rstrip(), err=True)
+    raise typer.Exit(code=result.returncode)
+
+
 @app.command()
 def update(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
@@ -1652,10 +1858,27 @@ def skills_sync(
         raise typer.Exit(code=1)
 
     target_agents = _select_sync_agents(agent, all_agents)
-    typer.echo("Collecting cross-harness skill inventory...", err=True)
-    report = _build_sync_report(target_agents, include_installed=include_installed)
+    try:
+        external_entries = read_external_skill_entries(strict=True)
+    except ExternalSkillCatalogError as exc:
+        _emit_sync_report(
+            _sync_error_report(str(exc), include_installed=include_installed),
+            dry_run=dry_run,
+            format_=format_,
+        )
+        raise typer.Exit(code=1) from exc
+
+    if format_ == "text":
+        typer.echo("Collecting cross-harness skill inventory...", err=True)
+    report = _build_sync_report(
+        target_agents,
+        include_installed=include_installed,
+        external_entries=external_entries,
+    )
     agent_reports = cast("list[dict[str, object]]", report.get("agents") or [])
     _emit_sync_report(report, dry_run=dry_run, format_=format_)
+    if not bool(report.get("ok", True)):
+        raise typer.Exit(code=1)
     if dry_run:
         return
 
@@ -2514,10 +2737,46 @@ def hooks_list(
 @hooks_app.command("validate")
 def hooks_validate(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+    harness: str = typer.Option(
+        "all",
+        "--harness",
+        help="Harness filter: all, codex, claude-code, cursor, github-copilot, gemini-cli",
+    ),
 ):
     """Validate all hooks across skills, agents, and settings."""
     script = _skill_creator_scripts() / "asset_toolkit" / "validate_hooks.py"
-    raise typer.Exit(code=_run_python_script(script, ["--format", format_, "--repo-root", str(ROOT)]))
+    raise typer.Exit(
+        code=_run_python_script(script, ["--format", format_, "--repo-root", str(ROOT), "--harness", harness])
+    )
+
+
+@hooks_app.command("convert")
+def hooks_convert(
+    source: str = typer.Option(..., "--source", help="Source harness shape"),
+    target: str = typer.Option(..., "--target", help="Target harness shape"),
+    input_: str = typer.Option("-", "--input", help="Path to rendered hook JSON document, or '-' for stdin"),
+):
+    """Convert a rendered hook document between harness projection shapes.
+
+    Cursor-only native events (BeforeReadFile, BeforeShellExecution, etc.) are
+    dropped when the target harness has no matching event map entry.
+    """
+    from wagents.hooks.convert import SUPPORTED_HARNESSES, convert_hooks
+
+    unknown = {source, target} - SUPPORTED_HARNESSES
+    if unknown:
+        typer.echo(f"Unsupported harness(es): {', '.join(sorted(unknown))}", err=True)
+        raise typer.Exit(code=2)
+
+    raw = sys.stdin.read() if input_ == "-" else Path(input_).read_text(encoding="utf-8")
+    try:
+        doc = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        typer.echo(f"Invalid JSON input: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    converted = convert_hooks(doc, source=source, target=target)
+    typer.echo(json.dumps(converted, indent=2))
 
 
 # ---------------------------------------------------------------------------
@@ -2834,7 +3093,10 @@ def run() -> None:
     """Console entry point with opt-in telemetry recording."""
     exit_code = 0
     try:
-        app(standalone_mode=False)
+        result = app(standalone_mode=False)
+        if isinstance(result, int) and result != 0:
+            exit_code = result
+            raise SystemExit(result)
     except typer.Exit as exc:
         exit_code = exc.exit_code
         raise SystemExit(exc.exit_code) from exc

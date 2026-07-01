@@ -30,4 +30,4 @@ apollographql (Apollo GraphQL org, github.com/apollographql/skills). MIT. Experi
 
 apollo-federation, apollo-server, graphql-operations (same source); other schema design or API modeling skills.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

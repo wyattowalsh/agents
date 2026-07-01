@@ -61,6 +61,72 @@ def test_validate_repo_success_json(mini_repo: Path) -> None:
     assert payload["errors"] == []
 
 
+def _write_curated_authoring(
+    repo: Path,
+    *,
+    name: str = "demo-external",
+    sync_kind: str | None = "skills-cli",
+    install_command: str = "npx skills add example/demo-skills --skill demo-external -y -g -a codex",
+) -> Path:
+    authoring_dir = repo / "docs" / "src" / "authoring" / "skills"
+    authoring_dir.mkdir(parents=True, exist_ok=True)
+    sync_kind_line = f"sync_kind: {sync_kind}\n" if sync_kind is not None else ""
+    path = authoring_dir / f"{name}.mdx"
+    path.write_text(
+        f"""---
+name: {name}
+description: Curated external demo skill.
+source_kind: curated-external
+source: example/demo-skills
+install_source: example/demo-skills
+status: install-now-after-trust-gate
+trust_tier: curated-trust-gated
+provenance_status: verified-install-command
+source_url: https://github.com/example/demo-skills
+target_agents:
+  - codex
+{sync_kind_line}install_command: {install_command}
+---
+
+Audit notes.
+""",
+        encoding="utf-8",
+    )
+    return path
+
+
+def test_validate_repo_accepts_curated_authoring_frontmatter(mini_repo: Path) -> None:
+    _write_curated_authoring(mini_repo)
+    result = _run_validate_repo(cwd=mini_repo)
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_validate_repo_rejects_curated_authoring_missing_sync_kind(mini_repo: Path) -> None:
+    _write_curated_authoring(mini_repo, sync_kind=None)
+    result = _run_validate_repo(cwd=mini_repo)
+    assert result.returncode == 1
+    assert "Curated external authoring is missing 'sync_kind'" in result.stdout
+
+
+def test_strict_sync_rejects_same_missing_sync_kind_shape(mini_repo: Path, monkeypatch) -> None:
+    from wagents.external_skills import ExternalSkillCatalogError, read_external_skill_entries
+
+    _write_curated_authoring(mini_repo, sync_kind=None)
+    authoring_dir = mini_repo / "docs" / "src" / "authoring" / "skills"
+    monkeypatch.setattr("wagents.skill_index.AUTHORING_SKILLS_DIR", authoring_dir)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", mini_repo / "missing-index.json")
+
+    with pytest.raises(ExternalSkillCatalogError, match="Curated external authoring is missing 'sync_kind'"):
+        read_external_skill_entries(strict=True)
+
+
+def test_validate_repo_rejects_external_tool_with_skills_cli_command(mini_repo: Path) -> None:
+    _write_curated_authoring(mini_repo, sync_kind="external-tool")
+    result = _run_validate_repo(cwd=mini_repo)
+    assert result.returncode == 1
+    assert "external-tool authoring rows must not use npx skills add" in result.stdout
+
+
 def test_validate_repo_bad_skill_jsonl(mini_repo: Path) -> None:
     bad_skill = mini_repo / "skills" / "bad-skill"
     bad_skill.mkdir()
@@ -222,8 +288,8 @@ def test_path_leak_other_user(mini_repo: Path) -> None:
     assert "Portable-path leak" in combined
 
 
-def test_quarantine_slug_in_external_skills(mini_repo: Path) -> None:
-    """Hard-quarantined repo slug in config/external-skills.md must fail validate."""
+def test_quarantine_slug_in_catalog_index(mini_repo: Path) -> None:
+    """Hard-quarantined repo slug in catalog index must fail validate."""
     qreg = mini_repo / "planning" / "manifests" / "security-quarantine-register.json"
     qreg.parent.mkdir(parents=True, exist_ok=True)
     qreg.write_text(
@@ -237,9 +303,61 @@ def test_quarantine_slug_in_external_skills(mini_repo: Path) -> None:
         }),
         encoding="utf-8",
     )
-    ext = mini_repo / "config" / "external-skills.md"
-    ext.parent.mkdir(parents=True, exist_ok=True)
-    ext.write_text("Curated: npx skills add snailsploit/claude-red --skill foo -y -g", encoding="utf-8")
+    index_dir = mini_repo / "docs" / "public" / "generated-registries"
+    index_dir.mkdir(parents=True, exist_ok=True)
+    index_dir.joinpath("skills-catalog-index.json").write_text(
+        json.dumps({
+            "externalSkillIndex": [
+                {
+                    "name": "foo",
+                    "source": "snailsploit/claude-red",
+                    "installSource": "snailsploit/claude-red",
+                }
+            ]
+        }),
+        encoding="utf-8",
+    )
+    result = _run_validate_repo(cwd=mini_repo)
+    assert result.returncode == 1
+    combined = (result.stdout + result.stderr).lower()
+    assert "quarantined" in combined or "snailsploit/claude-red" in combined
+
+
+def test_quarantine_slug_in_authoring_mdx(mini_repo: Path) -> None:
+    """Hard-quarantined repo slug in authoring MDX must fail validate even without index."""
+    qreg = mini_repo / "planning" / "manifests" / "security-quarantine-register.json"
+    qreg.parent.mkdir(parents=True, exist_ok=True)
+    qreg.write_text(
+        json.dumps({
+            "external_repo_records": [
+                {
+                    "repo": "snailsploit/claude-red",
+                    "default_action": "quarantine",
+                }
+            ]
+        }),
+        encoding="utf-8",
+    )
+    authoring_dir = mini_repo / "docs" / "src" / "authoring" / "skills"
+    authoring_dir.mkdir(parents=True, exist_ok=True)
+    authoring_dir.joinpath("bad-skill.mdx").write_text(
+        """---
+name: bad-skill
+description: test
+source_kind: curated-external
+source: snailsploit/claude-red
+install_source: snailsploit/claude-red
+status: avoid
+trust_tier: curated-trust-gated
+provenance_status: verified-install-command
+source_url: https://example.com
+sync_kind: skills-cli
+target_agents: [claude-code]
+---
+body
+""",
+        encoding="utf-8",
+    )
     result = _run_validate_repo(cwd=mini_repo)
     assert result.returncode == 1
     combined = (result.stdout + result.stderr).lower()

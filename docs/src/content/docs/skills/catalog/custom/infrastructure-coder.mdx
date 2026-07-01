@@ -12,7 +12,7 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "infrastructure-coder"
 composed_by: "compose-custom-wave-4"
-composed_at: "2026-06-17"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,14 +26,10 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Infrastructure-as-Code: Terraform, Kubernetes, Docker. Generate, review, cost-compare, security-scan. Use for IaC work. NOT for CI/CD (devops-engineer), application code, or actual pricing."
   installCommand={`npx skills add github:wyattowalsh/agents --skill infrastructure-coder -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/infrastructure-coder &lt;mode&gt; &lt;requirements&gt;"
-  badges={[{ text: "infrastructure-coder", variant: "note" }, { text: "1273 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "infrastructure-coder", variant: "note" }, { text: "1273 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Infrastructure-as-Code: Terraform, Kubernetes, Docker. Generate, review, cost-compare, security-scan. Use for IaC work. NOT for CI/CD (devops-engineer), application code, or actual pricing.
-**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
-**Comparable alternative:** `devops-engineer` for ci/cd
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
@@ -97,7 +93,7 @@ Generate production-ready Terraform/OpenTofu modules.
 ### Terraform Steps
 
 1. Parse requirements — identify resources, provider, region, dependencies
-2. Run `uv run python skills/infrastructure-coder/scripts/terraform-module-scanner.py &lt;path&gt;` on any existing `.tf` files to understand current state
+2. Run `uv run python scripts/terraform-module-scanner.py &lt;path&gt;` on any existing `.tf` files to understand current state
 3. Generate module structure:
    - `main.tf` — resource definitions
    - `variables.tf` — input variables with descriptions, types, defaults, validation
@@ -121,7 +117,7 @@ Generate Kubernetes manifests or Helm charts.
 ### Manifest Steps
 
 1. Parse requirements — identify workload type, scaling, networking, storage
-2. Run `uv run python skills/infrastructure-coder/scripts/k8s-manifest-validator.py &lt;path&gt;` on existing manifests
+2. Run `uv run python scripts/k8s-manifest-validator.py &lt;path&gt;` on existing manifests
 3. Generate manifests with best practices:
    - Resource limits and requests on every container
    - Health checks (liveness, readiness, startup probes)
@@ -138,7 +134,7 @@ Generate Kubernetes manifests or Helm charts.
 
 Optimize Dockerfiles for size, build speed, and security.
 
-1. Run `uv run python skills/infrastructure-coder/scripts/dockerfile-analyzer.py &lt;path&gt;` on existing Dockerfile
+1. Run `uv run python scripts/dockerfile-analyzer.py &lt;path&gt;` on existing Dockerfile
 2. Parse JSON output for issues and optimization opportunities
 3. Apply optimizations:
    - Multi-stage builds separating build and runtime
@@ -275,9 +271,9 @@ Load ONE reference at a time. Do not preload all references.
 </Tabs>
 
 <details class="source-disclosure">
-<summary>View Full SKILL.md</summary>
+<summary>Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml title="skills/infrastructure-coder/SKILL.md"
 ---
 name: infrastructure-coder
 description: >-
@@ -291,7 +287,6 @@ metadata:
   author: wyattowalsh
   version: "1.0.0"
 ---
-
 # Infrastructure Coder
 
 Generate, review, and analyze Infrastructure-as-Code. Terraform/OpenTofu modules, Kubernetes manifests, Dockerfiles.
@@ -332,7 +327,7 @@ Generate production-ready Terraform/OpenTofu modules.
 ### Terraform Steps
 
 1. Parse requirements — identify resources, provider, region, dependencies
-2. Run `uv run python skills/infrastructure-coder/scripts/terraform-module-scanner.py <path>` on any existing `.tf` files to understand current state
+2. Run `uv run python scripts/terraform-module-scanner.py <path>` on any existing `.tf` files to understand current state
 3. Generate module structure:
    - `main.tf` — resource definitions
    - `variables.tf` — input variables with descriptions, types, defaults, validation
@@ -356,7 +351,7 @@ Generate Kubernetes manifests or Helm charts.
 ### Manifest Steps
 
 1. Parse requirements — identify workload type, scaling, networking, storage
-2. Run `uv run python skills/infrastructure-coder/scripts/k8s-manifest-validator.py <path>` on existing manifests
+2. Run `uv run python scripts/k8s-manifest-validator.py <path>` on existing manifests
 3. Generate manifests with best practices:
    - Resource limits and requests on every container
    - Health checks (liveness, readiness, startup probes)
@@ -373,7 +368,7 @@ Generate Kubernetes manifests or Helm charts.
 
 Optimize Dockerfiles for size, build speed, and security.
 
-1. Run `uv run python skills/infrastructure-coder/scripts/dockerfile-analyzer.py <path>` on existing Dockerfile
+1. Run `uv run python scripts/dockerfile-analyzer.py <path>` on existing Dockerfile
 2. Parse JSON output for issues and optimization opportunities
 3. Apply optimizations:
    - Multi-stage builds separating build and runtime
@@ -499,7 +494,6 @@ Load ONE reference at a time. Do not preload all references.
 13. Refuse CI/CD pipeline requests — redirect to devops-engineer skill
 14. Refuse application code requests — this skill is IaC only
 15. Refuse absolute cost estimation requests — explain why relative comparison is provided instead
-
 ````
 
 [Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/infrastructure-coder/SKILL.md)

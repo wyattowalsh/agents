@@ -4,7 +4,7 @@
   "canonical_sources": [
     "skills/",
     "docs/src/authoring/skills/",
-    "config/external-skills.md",
+    "docs/public/generated-registries/skills-catalog-index.json",
     "planning/manifests/external-repo-evaluation-final.json",
     "planning/manifests/external-repo-evaluation-summary.json",
     "planning/manifests/external-skills/"

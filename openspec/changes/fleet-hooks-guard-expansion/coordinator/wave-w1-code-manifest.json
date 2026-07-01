@@ -1,0 +1,12 @@
+{
+  "wave": "W1",
+  "dispatched": [
+    {"task_id": "C-010b", "agent": "SA-Dispatcher", "files": ["hooks/wagents-hook.py"]},
+    {"task_id": "C-010c-e", "agent": "SA-Tests", "files": ["tests/hooks/test_enforce_fail_closed.py", "tests/hooks/test_opencode_bridge_integration.py", "tests/test_wagents_hook.py"]},
+    {"task_id": "C-020a-f", "agent": "SA-Tests", "files": ["tests/test_wagents_hook.py"]}
+  ],
+  "artifacts": ["openspec/changes/fleet-hooks-guard-expansion/design.md RV-004 section"],
+  "gate_checks": [
+    "uv run pytest tests/hooks/ tests/test_wagents_hook.py tests/test_grok_platform.py tests/test_opencode_hook_bridge.py -q"
+  ]
+}

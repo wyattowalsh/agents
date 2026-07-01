@@ -30,4 +30,4 @@ aws (Amazon Web Services, github.com/aws/agent-toolkit-for-aws). Apache-2.0. Off
 
 Official AWS docs + CDK/CloudFormation/SAM/Serverless Framework guidance without agent layer; other cloud provider agent toolkits or IaC skills (e.g. terraform-skill); general devops or security skills focused on IAM/policies; direct use of AWS CLI/Console + agent code intelligence.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

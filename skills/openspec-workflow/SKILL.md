@@ -7,7 +7,6 @@ metadata:
   author: Wyatt Walsh
   version: 1.0.0
 ---
-
 # OpenSpec Workflow
 
 Use OpenSpec as the spec/change control plane for non-trivial changes to this repository's portable agent assets, downstream tooling, docs generation, hooks, bundle metadata, or validation behavior.
@@ -139,7 +138,7 @@ Completion criteria:
 
 1. Use OpenSpec for non-trivial changes to public asset formats, downstream tooling, docs generation, hooks, bundle metadata, or validation behavior.
 2. Do not use OpenSpec for isolated typo fixes or single-file local edits where repo conventions fully determine the outcome.
-3. Prefer `uv run python skills/openspec-workflow/scripts/openspec_cli.py ... --format json` when another AI tool needs machine-readable state or instructions.
+3. Prefer `uv run python scripts/openspec_cli.py ... --format json` when another AI tool needs machine-readable state or instructions.
 4. Do not commit generated `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.crush`, `.codex`, or `.gemini` OpenSpec artifacts unless explicitly promoted.
 5. Validate before archive; never archive a change that has unresolved task, spec, or validation gaps.
 6. Keep downstream generated skills and commands local by default.

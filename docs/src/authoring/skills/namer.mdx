@@ -74,7 +74,7 @@ Present the classification and preset to the user. User can override with `--sty
 
 ### Phase -1: Memory Load (runs once per session)
 
-`!uv run python skills/namer/scripts/memory.py load`
+`!uv run python scripts/memory.py load`
 
 If memory exists, integrate into session:
 
@@ -113,7 +113,7 @@ Generate 40-60 candidates across **6 naming archetypes**:
 
 **Hard filters** (binary pass/fail, run BEFORE availability checking):
 
-Run `!uv run python skills/namer/scripts/generate.py filter --input candidates.json` for automated filters, then apply AI-only filters inline:
+Run `!uv run python scripts/generate.py filter --input candidates.json` for automated filters, then apply AI-only filters inline:
 
 1. Profanity/vulgarity in English (script: `generate.py filter`)
 2. Offensive meaning in top 10 world languages (AI-only: use `brave_web_search`)
@@ -123,7 +123,7 @@ Run `!uv run python skills/namer/scripts/generate.py filter --input candidates.j
 6. Reserved word in major programming languages (script: `generate.py filter`)
 7. Contains hyphens/special chars (for package names) (script: `generate.py filter`)
 
-Score **intrinsic dimensions** (phonetics, semantics, memorability, morphological flexibility, visual quality). Use `!uv run python skills/namer/scripts/generate.py analyze <name>` for phonetic breakdown to inform phonetic quality scoring. Select **top 20-25** for availability checking.
+Score **intrinsic dimensions** (phonetics, semantics, memorability, morphological flexibility, visual quality). Use `!uv run python scripts/generate.py analyze <name>` for phonetic breakdown to inform phonetic quality scoring. Select **top 20-25** for availability checking.
 
 `--thorough` mode: Run multiple generation passes with varied prompting for more diversity.
 
@@ -158,7 +158,7 @@ Dispatch **4 parallel subagents**, each checking ALL candidates in its category:
 - Trademark (--thorough): `brave_web_search "USPTO TESS {name}"`
 
 Or run deterministic checks via script:
-`!uv run python skills/namer/scripts/check.py check-all candidate1 candidate2 ...`
+`!uv run python scripts/availability.py check-all candidate1 candidate2 ...`
 
 **Scaling:**
 
@@ -194,7 +194,7 @@ Load `references/scoring-rubric.md` for detailed criteria.
 
 **Composite**: `(0.4 × intrinsic_avg) + (0.6 × extrinsic_avg)` — user can adjust split.
 
-Run `!uv run python skills/namer/scripts/score.py score --input candidates.json` for deterministic scoring. Input JSON must have `{"candidates": [{"name": "...", "intrinsic": {...}, "availability": {...}}], "preset": "cli-tool"}`.
+Run `!uv run python scripts/score.py score --input candidates.json` for deterministic scoring. Input JSON must have `{"candidates": [{"name": "...", "intrinsic": {...}, "availability": {...}}], "preset": "cli-tool"}`.
 
 ### Phase 4: Present (inline)
 
@@ -235,7 +235,7 @@ Save memories at natural decision points. NEVER slow down a phase for a memory w
 | Refinement: "shorter" / "longer"      | `memory.py save-preference --type length --value "max=5"` or `"min=8"`                            |
 | Any: User rejects a style             | `memory.py save-rejection --pattern "..." --type archetype --reason "..."`                        |
 
-Batch multiple saves in a SINGLE message when a session produces several memories. All `memory.py` commands are prefixed with `!uv run python skills/namer/scripts/`.
+Batch multiple saves in a SINGLE message when a session produces several memories. All `memory.py` commands are prefixed with `!uv run python scripts/`.
 
 ## Canonical Vocabulary
 

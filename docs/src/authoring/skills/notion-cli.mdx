@@ -8,15 +8,15 @@ install_source: "makenotion/skills"
 status: "inspect-then-install"
 trust_tier: "needs-inspection"
 provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
 install_command: "npx skills add makenotion/skills --skill notion-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
 source_url: "https://github.com/makenotion/skills"
 notes: "Official Notion CLI skill from `makenotion/skills`. Wraps the `ntn` CLI and requires API token handling."
 risk_notes: "Official Notion CLI skill from `makenotion/skills`. Wraps the `ntn` CLI and requires API token handling."
 promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in authoring catalog."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=notion-cli; re-run migration to refresh */}
 
 Official Notion CLI skill from `makenotion/skills`. Wraps the `ntn` CLI and requires API token handling.

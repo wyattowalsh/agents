@@ -10,7 +10,6 @@ metadata:
   author: wyattowalsh
   version: "1.0.0"
 ---
-
 # Agent Conventions
 
 Apply these conventions when creating or modifying AI agent definitions.
@@ -97,7 +96,7 @@ Update the corresponding `README.md` index in the same directory:
 3. Include both `name` and `description` in frontmatter -- they are required
 4. Never duplicate agent functionality -- check existing agents first
 5. Keep agent system prompts under 500 lines for maintainability
-6. Run `python skills/agent-conventions/scripts/validate_agent.py --check-index` after any agent frontmatter change
+6. Run `python scripts/validate_agent.py --check-index` after any agent frontmatter change
 7. Use imperative voice throughout the agent body text
 
 **Canonical terms** (use these exactly):

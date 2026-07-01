@@ -15,7 +15,6 @@ hooks:
       hooks:
         - command: "git diff --quiet HEAD -- README.md 2>/dev/null || echo 'WARNING: README.md has uncommitted changes that may be overwritten'"
 ---
-
 # Add Badges
 
 Generate and update README badge blocks without drifting into general README editing.
@@ -149,7 +148,7 @@ If `--dark-mode`, wrap each badge in `<picture>` elements per style-guide.md.
 
 Preserve any manual content outside markers.
 
-After insertion, optionally run `uv run python skills/add-badges/scripts/validate-badges.py <readme-path>` via Bash to verify all badge URLs return valid responses. Report any broken or slow badges to the user.
+After insertion, optionally run `uv run python scripts/validate-badges.py <readme-path>` via Bash to verify all badge URLs return valid responses. Report any broken or slow badges to the user.
 
 ## Stop Hooks
 

@@ -9,8 +9,8 @@ docs_density: standard
 trust_tier: "global-only-or-avoid"
 curated_status: "global-only-or-avoid"
 research_slug: "microsoft-azure-skills-all"
-composed_by: "compose-external-wave-8"
-composed_at: "2026-06-17"
+composed_by: "compose-external-wave-7"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -24,13 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote."
   installCommand={`npx skills add microsoft/azure-skills --skill microsoft-azure-skills-all -y -g`}
   usage="/microsoft-azure-skills-all"
-  badges={[{ text: "microsoft-azure-skills-all", variant: "note" }, { text: "23 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
+  badges={[{ text: "microsoft-azure-skills-all", variant: "note" }, { text: "14 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
 />
+
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed compose-external-wave-8 using authoring SSOT (`docs/src/authoring/skills/microsoft-azure-skills-all.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
+Composed compose-external-wave-7 using authoring SSOT (`docs/src/authoring/skills/microsoft-azure-skills-all.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
 </Aside>
 
 ## What It Does
@@ -54,7 +56,7 @@ Curated status: `global-only-or-avoid`
 
 Risk notes: massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote.
 
-Entry maintained via authoring + research for compose-external-wave-8; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/microsoft-azure-skills-all.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 ## Install Prerequisites
 
@@ -79,9 +81,9 @@ npx skills add microsoft/azure-skills (but keep global-only; avoid bulk in curat
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/microsoft-azure-skills-all.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "microsoft-azure-skills-all"
 description: "massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote."
@@ -96,16 +98,16 @@ source_url: "https://github.com/microsoft/azure-skills"
 notes: "massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote."
 risk_notes: "massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote."
 promotion_policy: "Keep global-only or avoid unless explicitly approved."
-provenance_evidence: "Explicit keep-global/avoid note in config/external-skills.md."
+provenance_evidence: "Explicit keep-global/avoid note in authoring catalog."
 selector_mode: "unresolved"
 unresolved_reason: "massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=microsoft-azure-skills-all; re-run migration to refresh */}
 
 massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote.
 
 ````
+
 
 **Install / provenance (from authoring frontmatter + research):**
 

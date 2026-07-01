@@ -14,6 +14,8 @@ Usage:
   python journal-store.py diff journal1.md journal2.md
   python journal-store.py archive --days 90
   python journal-store.py delete 1 --force
+  python journal-store.py export 1
+  python journal-store.py export --output /tmp/dashboard.html 1
 """
 
 from __future__ import annotations
@@ -40,6 +42,14 @@ def get_agent_dir(skill_name: str) -> Path:
 
 JOURNAL_DIR = get_agent_dir("research")
 ARCHIVE_DIR = JOURNAL_DIR / "archive"
+EXPORT_DIR = JOURNAL_DIR / "exports"
+SKILL_DIR = Path(__file__).resolve().parent.parent
+DASHBOARD_TEMPLATE = SKILL_DIR / "templates" / "dashboard.html"
+
+_DATA_SCRIPT_PATTERN = re.compile(
+    r'(<script id="data" type="application/json">\s*)(.*?)(\s*</script>)',
+    re.DOTALL,
+)
 
 # --- YAML frontmatter parsing (stdlib only, no pyyaml) ---
 
@@ -647,6 +657,216 @@ def cmd_archive(args: argparse.Namespace) -> None:
     print()
 
 
+def journal_slug_from_filename(filename: str) -> str:
+    """Derive export slug from journal filename (strip date, domain, version suffix)."""
+    stem = Path(filename).stem
+    stem = re.sub(r"-v\d+$", "", stem)
+    match = re.match(r"^\d{4}-\d{2}-\d{2}-[^-]+-(.+)$", stem)
+    if match:
+        return match.group(1)
+    return stem
+
+
+def _confidence_band(confidence: float) -> str:
+    if confidence >= 0.8:
+        return "high"
+    if confidence >= 0.5:
+        return "medium"
+    if confidence >= 0.3:
+        return "low"
+    return "uncertain"
+
+
+def _normalize_cross_validation(value: Any) -> str:
+    raw = str(value or "unverified").lower()
+    if raw.startswith("agree") or raw == "agrees":
+        return "agrees"
+    if "contradict" in raw:
+        return "contradicts"
+    if "partial" in raw:
+        return "partial"
+    if raw in {"agrees", "contradicts", "partial", "unverified"}:
+        return raw
+    return "unverified"
+
+
+def _normalize_export_evidence(finding: dict[str, Any]) -> list[dict[str, Any]]:
+    raw_evidence = finding.get("evidence", [])
+    evidence: list[dict[str, Any]] = []
+    if isinstance(raw_evidence, list):
+        evidence = [dict(item) for item in raw_evidence if isinstance(item, dict)]
+
+    legacy_url = finding.get("source_url") or finding.get("url")
+    legacy_tool = finding.get("source_tool") or finding.get("tool")
+    if legacy_url and not evidence:
+        evidence.append({
+            "tool": legacy_tool or "unknown",
+            "url": legacy_url,
+            "timestamp": finding.get("timestamp", "N/A"),
+            "excerpt": finding.get("excerpt", ""),
+        })
+
+    normalized: list[dict[str, Any]] = []
+    for item in evidence:
+        normalized.append({
+            "tool": item.get("tool") or item.get("source_tool") or "unknown",
+            "url": item.get("url") or item.get("source_url") or "N/A",
+            "timestamp": item.get("timestamp", "N/A"),
+            "excerpt": item.get("excerpt", ""),
+        })
+    return normalized
+
+
+def _normalize_export_finding(raw: dict[str, Any], seq: int) -> dict[str, Any]:
+    evidence = _normalize_export_evidence(raw)
+    raw_conf = raw.get("confidence", raw.get("confidence_raw"))
+    confidence = max(0.0, min(1.0, float(raw_conf))) if isinstance(raw_conf, (int, float)) else 0.0
+    return {
+        "id": f"RR-{seq:03d}",
+        "claim": str(raw.get("claim", "")),
+        "confidence": confidence,
+        "evidence": evidence,
+        "cross_validation": _normalize_cross_validation(raw.get("cross_validation")),
+        "bias_markers": list(raw.get("bias_markers") or []),
+        "gaps": list(raw.get("gaps") or []),
+    }
+
+
+def build_dashboard_data(
+    meta: dict[str, Any],
+    findings_blocks: dict[int, Any],
+    state_blocks: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Build dashboard JSON from journal metadata and embedded blocks."""
+    raw_findings: list[dict[str, Any]] = []
+    for wave in sorted(findings_blocks):
+        block = findings_blocks[wave]
+        if isinstance(block, list):
+            raw_findings.extend(item for item in block if isinstance(item, dict))
+        elif isinstance(block, dict):
+            raw_findings.append(block)
+
+    findings = [_normalize_export_finding(item, index) for index, item in enumerate(raw_findings, 1)]
+
+    sources_map: dict[str, dict[str, Any]] = {}
+    for finding in findings:
+        for ev in finding["evidence"]:
+            url = str(ev.get("url") or "").strip()
+            if not url or url == "N/A":
+                continue
+            if url not in sources_map:
+                sources_map[url] = {
+                    "url": url,
+                    "tool": ev.get("tool", "unknown"),
+                    "timestamp": ev.get("timestamp", ""),
+                    "title": ev.get("title", ""),
+                    "referenced_by": [],
+                }
+            sources_map[url]["referenced_by"].append(finding["id"])
+
+    distribution = {"high": 0, "medium": 0, "low": 0, "uncertain": 0}
+    for finding in findings:
+        distribution[_confidence_band(finding["confidence"])] += 1
+
+    gaps: list[str] = []
+    for state in state_blocks:
+        state_gaps = state.get("gaps")
+        if isinstance(state_gaps, list):
+            gaps.extend(str(gap) for gap in state_gaps if gap)
+        elif isinstance(state_gaps, str) and state_gaps.strip():
+            gaps.append(state_gaps.strip())
+    gaps = list(dict.fromkeys(gaps))
+
+    sub_questions = meta.get("sub_questions") or []
+    if not isinstance(sub_questions, list):
+        sub_questions = []
+
+    created = str(meta.get("created", ""))
+    date_str = created[:10] if len(created) >= 10 else datetime.now(UTC).strftime("%Y-%m-%d")
+    mean_confidence = meta.get("mean_confidence", meta.get("confidence_mean", 0)) or 0
+    if not mean_confidence and findings:
+        mean_confidence = round(sum(item["confidence"] for item in findings) / len(findings), 2)
+
+    metadata: dict[str, Any] = {
+        "query": meta.get("query", ""),
+        "tier": meta.get("tier", "standard"),
+        "mode": meta.get("mode", "investigate"),
+        "date": date_str,
+        "sources_count": meta.get("sources_consulted") or len(sources_map),
+        "findings_count": meta.get("findings_count") or len(findings),
+        "mean_confidence": mean_confidence,
+    }
+    if meta.get("last_wave") is not None:
+        metadata["waves_completed"] = meta.get("last_wave")
+    tools_used = meta.get("tools_used")
+    if isinstance(tools_used, list) and tools_used:
+        metadata["tools_used"] = tools_used
+
+    contradictions = meta.get("contradictions")
+    if not isinstance(contradictions, list):
+        contradictions = []
+
+    return {
+        "metadata": metadata,
+        "findings": findings,
+        "contradictions": contradictions,
+        "sources": list(sources_map.values()),
+        "confidence_distribution": distribution,
+        "gaps": gaps,
+        "sub_questions": sub_questions,
+    }
+
+
+def inject_dashboard_data(template: str, data: dict[str, Any]) -> str:
+    """Replace the dashboard template JSON payload with exported journal data."""
+    if not _DATA_SCRIPT_PATTERN.search(template):
+        raise ValueError("dashboard template missing <script id=\"data\"> block")
+
+    payload = json.dumps(data, indent=2)
+
+    def _replace(match: re.Match[str]) -> str:
+        return f"{match.group(1)}\n{payload}\n{match.group(3)}"
+
+    return _DATA_SCRIPT_PATTERN.sub(_replace, template, count=1)
+
+
+def cmd_export(args: argparse.Namespace) -> None:
+    """Render an HTML dashboard for a journal."""
+    path = _resolve_path(args.target)
+    if path is None:
+        print(f"Error: journal not found: {args.target}", file=sys.stderr)
+        sys.exit(1)
+
+    if not DASHBOARD_TEMPLATE.is_file():
+        print(f"Error: dashboard template not found: {DASHBOARD_TEMPLATE}", file=sys.stderr)
+        sys.exit(1)
+
+    text = path.read_text(encoding="utf-8")
+    meta, body = parse_frontmatter(text)
+    data = build_dashboard_data(meta, parse_findings_blocks(body), parse_state_blocks(body))
+
+    try:
+        html = inject_dashboard_data(DASHBOARD_TEMPLATE.read_text(encoding="utf-8"), data)
+    except ValueError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+    slug = journal_slug_from_filename(path.name)
+    out_path = Path(args.output).expanduser() if args.output else EXPORT_DIR / f"{slug}.html"
+    if not args.output:
+        EXPORT_DIR.mkdir(parents=True, exist_ok=True)
+
+    try:
+        _atomic_write(out_path, html)
+    except OSError as exc:
+        print(f"Error: could not write dashboard: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+    result = {"action": "exported", "path": str(out_path), "slug": slug, "metadata": data["metadata"]}
+    json.dump(result, sys.stdout, indent=2)
+    print()
+
+
 def cmd_delete(args: argparse.Namespace) -> None:
     """Delete a journal with confirmation."""
     path = _resolve_path(args.target)
@@ -757,6 +977,11 @@ def main() -> None:
     sp_delete.add_argument("target", help="Journal path or number.")
     sp_delete.add_argument("--force", action="store_true", help="Skip confirmation prompt.")
 
+    # export
+    sp_export = sub.add_parser("export", help="Render an HTML dashboard for a journal.")
+    sp_export.add_argument("target", nargs="?", default="1", help="Journal path, number, or keyword.")
+    sp_export.add_argument("--output", default=None, help="Optional output HTML path.")
+
     args = ap.parse_args()
 
     dispatch = {
@@ -766,6 +991,7 @@ def main() -> None:
         "diff": cmd_diff,
         "archive": cmd_archive,
         "delete": cmd_delete,
+        "export": cmd_export,
     }
     dispatch[args.command](args)
 

@@ -1,6 +1,6 @@
 ---
 title: "link-workspace-packages"
-description: "Curated third-party skill source. Run `/review source` before repo promotion."
+description: "Curated third-party skill source. Run /review source before repo promotion."
 page_kind: "skill"
 source_kind: "curated-external"
 asset_id: "link-workspace-packages"
@@ -12,7 +12,7 @@ install_command: "npx skills add nrwl/nx-ai-agents-config --skill nx-generate --
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "link-workspace-packages"
 composed_by: "compose-external-wave-7"
-composed_at: "2026-06-17"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -23,11 +23,13 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 <SkillPageHeader
   name="link-workspace-packages"
-  description="Curated third-party skill source. Run `/review source` before repo promotion."
+  description="Curated third-party skill source. Run /review source before repo promotion."
   installCommand={`npx skills add nrwl/nx-ai-agents-config --skill nx-generate --skill link-workspace-packages -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/link-workspace-packages"
-  badges={[{ text: "link-workspace-packages", variant: "note" }, { text: "18 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+  badges={[{ text: "link-workspace-packages", variant: "note" }, { text: "10 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
 />
+
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
@@ -54,9 +56,9 @@ Trust tier: **Inspect first** (`needs-inspection`)
 
 Curated status: `inspect-then-install`
 
-Risk notes: Curated third-party skill source. Run `/review source` before repo promotion.
+Risk notes: Curated third-party skill source. Run /review source before repo promotion.
 
-Entry maintained via authoring + research for compose-external-wave-7; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/link-workspace-packages.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 ## Install Prerequisites
 
@@ -82,12 +84,12 @@ Install: `npx skills add nrwl/nx-ai-agents-config --skill link-workspace-package
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/link-workspace-packages.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "link-workspace-packages"
-description: "Curated third-party skill source. Run `/review source` before repo promotion."
+description: "Curated third-party skill source. Run /review source before repo promotion."
 title: "Link Workspace Packages"
 source_kind: "curated-external"
 source: "nrwl/nx-ai-agents-config"
@@ -98,17 +100,17 @@ provenance_status: "verified-install-command"
 install_command: "npx skills add nrwl/nx-ai-agents-config --skill nx-generate --skill link-workspace-packages -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
 source_url: "https://github.com/nrwl/nx-ai-agents-config"
-notes: "Curated third-party skill source. Run `/review source` before repo promotion."
-risk_notes: "Curated third-party skill source. Run `/review source` before repo promotion."
+notes: "Curated third-party skill source. Run /review source before repo promotion."
+risk_notes: "Curated third-party skill source. Run /review source before repo promotion."
 promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in authoring catalog."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=link-workspace-packages; re-run migration to refresh */}
 
-Curated third-party skill source. Run `/review source` before repo promotion.
+Curated third-party skill source. Run /review source before repo promotion.
 
 ````
+
 
 **Install / provenance (from authoring frontmatter + research):**
 

@@ -2,6 +2,8 @@
 
 Nerdbot is a local-first, Obsidian-compatible knowledge-base toolkit. Keep all work additive-first and preserve the existing script compatibility layer unless a change explicitly requires a breaking migration.
 
+For repository-wide asset standards (skills, agents, catalog SSOT, validation gates), follow the repo root [`AGENTS.md`](../../../AGENTS.md) and [`instructions/global.md`](../../../instructions/global.md). Nerdbot-specific rules below take precedence when working inside `skills/nerdbot/`.
+
 ## Safety Model
 
 - Run inventory before any mutating KB action.

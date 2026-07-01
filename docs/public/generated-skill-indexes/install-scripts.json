@@ -22,30 +22,6 @@
       "name": "changelog-writer"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-      "name": "chrome-devtools"
-    },
-    {
-      "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-a11y-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-      "name": "chrome-devtools-a11y-debugging"
-    },
-    {
-      "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-cli -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-      "name": "chrome-devtools-cli"
-    },
-    {
-      "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-debug-optimize-lcp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-      "name": "chrome-devtools-debug-optimize-lcp"
-    },
-    {
-      "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-memory-leak-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-      "name": "chrome-devtools-memory-leak-debugging"
-    },
-    {
-      "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-troubleshooting -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-      "name": "chrome-devtools-troubleshooting"
-    },
-    {
       "command": "npx skills add github:wyattowalsh/agents --skill data-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "data-pipeline-architect"
     },
@@ -227,6 +203,21 @@
     }
   ],
   "externalCommands": [
+    {
+      "command": "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "a11y-debugging",
+        "chrome-devtools",
+        "chrome-devtools-cli",
+        "debug-optimize-lcp",
+        "memory-leak-debugging",
+        "troubleshooting"
+      ],
+      "source": "ChromeDevTools/chrome-devtools-mcp",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
     {
       "command": "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [

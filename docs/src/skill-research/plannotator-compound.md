@@ -30,4 +30,4 @@ backnotprop (github.com/backnotprop/plannotator/apps/skills). Skills under apps/
 
 Core Plannotator skills (required prerequisite); other planning/roadmap or goal-setting skills (e.g. create-implementation-plan, brainstorm variants); general agent planning or visual explainer skills; native agent task decomposition without Plannotator-specific extras.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

@@ -160,13 +160,13 @@
       "validation_command": "uv run pytest tests/test_distribution_metadata.py"
     },
     {
-      "path": "${REPO_ROOT}/config/external-skills.md",
+      "path": "${REPO_ROOT}/docs/public/generated-registries/skills-catalog-index.json",
       "expected_mode": "generated",
       "current_state": "tracked-dirty",
       "drift_risk": "medium",
-      "owner_change": "add-audited-external-skills",
+      "owner_change": "agents-c08-docs-instructions",
       "next_action": "validate-before-sync",
-      "validation_command": "uv run wagents docs generate"
+      "validation_command": "uv run wagents docs generate --no-installed"
     },
     {
       "path": "${REPO_ROOT}/config/grok-config.toml",
@@ -210,6 +210,15 @@
       "current_state": "not-checked",
       "drift_risk": "medium",
       "owner_change": "agents-c06-config-safety",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/config/image-input-optimizer.json",
+      "expected_mode": "canonical",
+      "current_state": "not-checked",
+      "drift_risk": "medium",
+      "owner_change": "agents-c08-docs-instructions",
       "next_action": "validate-before-sync",
       "validation_command": "uv run wagents validate"
     },

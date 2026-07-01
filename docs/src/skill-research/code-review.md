@@ -30,4 +30,4 @@ PaulRBerg (github.com/PaulRBerg/agent-skills @d3f5540ed2fc0fa07f802bd925e06b9387
 
 code-polish, code-simplify (same source); other review skills e.g. from getsentry or general differential-review; native agent review capabilities or CodeRabbit integration skill from same repo.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

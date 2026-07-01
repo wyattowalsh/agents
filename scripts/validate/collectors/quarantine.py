@@ -60,33 +60,73 @@ def _register_policy_errors(path: Path, payload: dict) -> list[dict[str, str]]:
     return errors
 
 
-def collect_quarantine_errors(repo_root: Path) -> list[dict[str, str]]:
-    """Fail when curated external skill sources reference hard-quarantined repos.
+def _slug_hits_value(slug: str, val: str) -> bool:
+    return bool(slug and slug in val.lower())
 
-    Dual-read (W2): scan catalog index JSON entry fields (install_source, source, name, camel variants)
-    + legacy md.
-    """
-    _register_path, payload, errors = _load_quarantine_register(repo_root)
+
+def _scan_text_for_slugs(
+    text: str,
+    slugs: list[str],
+    *,
+    source: str,
+    label: str,
+) -> list[dict[str, str]]:
+    errors: list[dict[str, str]] = []
+    lowered = text.lower()
+    for slug in slugs:
+        if _slug_hits_value(slug, lowered):
+            errors.append({
+                "source": source,
+                "message": (
+                    f"Hard-quarantined source '{slug}' must not appear in {label}"
+                ),
+            })
+    return errors
+
+
+def _scan_authoring_for_slugs(repo_root: Path, slugs: list[str]) -> list[dict[str, str]]:
+    authoring_dir = repo_root / "docs" / "src" / "authoring" / "skills"
+    if not authoring_dir.is_dir():
+        return []
+
+    from wagents.parsing import parse_frontmatter
+
+    errors: list[dict[str, str]] = []
+    for path in sorted(authoring_dir.glob("*.mdx")):
+        try:
+            frontmatter, body = parse_frontmatter(path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        fields = (
+            str(frontmatter.get("source") or ""),
+            str(frontmatter.get("install_source") or ""),
+            str(frontmatter.get("install_command") or ""),
+            str(frontmatter.get("source_url") or ""),
+            body,
+        )
+        combined = " ".join(fields)
+        errors.extend(
+            _scan_text_for_slugs(
+                combined,
+                slugs,
+                source=str(path),
+                label=f"authoring entry {frontmatter.get('name') or path.stem}",
+            )
+        )
+    return errors
+
+
+def collect_quarantine_errors(repo_root: Path) -> list[dict[str, str]]:
+    """Fail when curated external skill sources reference hard-quarantined repos."""
+    register_path, payload, errors = _load_quarantine_register(repo_root)
     if payload is None:
         return errors
 
-    errors.extend(_register_policy_errors(_register_path, payload))
+    errors.extend(_register_policy_errors(register_path, payload))
     slugs = sorted(_quarantined_repo_slugs(payload))
     if not slugs:
         return errors
 
-    # legacy md
-    external_path = repo_root / "config/external-skills.md"
-    if external_path.is_file():
-        text = external_path.read_text(encoding="utf-8").lower()
-        for slug in slugs:
-            if slug in text:
-                errors.append({
-                    "source": "config/external-skills.md",
-                    "message": f"Hard-quarantined source '{slug}' must not appear in curated external skills",
-                })
-
-    # catalog index JSON (dual-read)
     cat_index = repo_root / "docs" / "public" / "generated-registries" / "skills-catalog-index.json"
     if cat_index.is_file():
         try:
@@ -99,7 +139,7 @@ def collect_quarantine_errors(repo_root: Path) -> list[dict[str, str]]:
                     for fld in ("install_source", "source", "name", "installSource", "sourceRoot", "source_url"):
                         val = str(row.get(fld) or "").lower()
                         for slug in slugs:
-                            if slug and slug in val:
+                            if _slug_hits_value(slug, val):
                                 name = row.get("name") or row.get("id") or "?"
                                 errors.append({
                                     "source": str(cat_index),
@@ -108,8 +148,13 @@ def collect_quarantine_errors(repo_root: Path) -> list[dict[str, str]]:
                                         f"{name} (field {fld})"
                                     ),
                                 })
-        except Exception:
-            pass
+        except Exception as exc:
+            errors.append({
+                "source": str(cat_index),
+                "message": f"Invalid catalog index JSON during quarantine scan: {exc}",
+            })
+
+    errors.extend(_scan_authoring_for_slugs(repo_root, slugs))
 
     # dedupe identical messages
     seen_msgs: set[str] = set()

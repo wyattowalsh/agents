@@ -1,0 +1,151 @@
+---
+title: "memory-leak-debugging"
+description: "Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "memory-leak-debugging"
+composed: true
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "memory-leak-debugging"
+composed_by: "compose-external-wave-1"
+composed_at: "2026-06-29"
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="memory-leak-debugging"
+  description="Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces."
+  installCommand={`npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/memory-leak-debugging"
+  badges={[{ text: "memory-leak-debugging", variant: "note" }, { text: "187 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-1 using authoring SSOT (`docs/src/authoring/skills/memory-leak-debugging.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Heap snapshots are sensitive and large; memlab requires explicit user approval before running auxiliary commands.
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/memory-leak-debugging.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `ChromeDevTools/chrome-devtools-mcp` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `memory-leak-debugging` |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "memory-leak-debugging"
+description: "Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces. NOT for generic profiling, CPU regressions, or reading raw heap snapshots."
+title: "Memory Leak Debugging"
+source_kind: "curated-external"
+source: "ChromeDevTools/chrome-devtools-mcp"
+install_source: "ChromeDevTools/chrome-devtools-mcp"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+install_command: "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+sync_kind: "skills-cli"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/ChromeDevTools/chrome-devtools-mcp"
+notes: "Official Google `memory-leak-debugging` skill for heap snapshots, retainer traces, and optional memlab workflows via Chrome DevTools MCP."
+risk_notes: "Heap snapshots are sensitive and large; memlab requires explicit user approval before running auxiliary commands."
+promotion_policy: "Install only after trust gate; audit again before repo promotion."
+provenance_evidence: "Audited `npx skills add` command with named `--skill` selectors and commit pin in planning/manifests/external-skills/chrome-devtools-mcp.json."
+---
+
+
+Official Google `memory-leak-debugging` skill (formerly repo-prefixed `chrome-devtools-memory-leak-debugging`). Use for JavaScript, browser, or Node.js memory leak audits with heap snapshots, repeated interactions, retainer traces, and optional memlab.
+
+## Audit evidence
+
+- **Source:** [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp)
+- **Pinned commit:** `a90378adf3226e8b27a05cdcfdd801c199acaa93`
+- **License:** Apache-2.0
+- **Author:** Google LLC
+- **Package:** `chrome-devtools-mcp` 0.23.0 (per `planning/manifests/external-skills/chrome-devtools-mcp.json`)
+- **Source-list evidence:** `npx skills add github:ChromeDevTools/chrome-devtools-mcp --list` lists upstream skill `memory-leak-debugging`
+
+## Dedupe
+
+This curated install **replaces repo-vendored** `skills/chrome-devtools-memory-leak-debugging/` copies. Upstream publishes the skill as `memory-leak-debugging`; install the six-skill bundle once globally and drop prefixed repo trees after migration.
+
+## Hooks, scripts, and credentials
+
+Audited upstream skills at the pinned commit are guidance-only Markdown. **No hooks, bundled scripts, or credential requests** were identified in the skill bundle. Optional memlab usage is operator-invoked and requires explicit user approval.
+
+## Network access
+
+Browser and Node memory workflows may navigate to target pages or attach to local runtimes. Repo-managed MCP config disables usage statistics and update checks where applicable.
+
+## Artifact hygiene
+
+Save heap snapshots and comparison reports to explicit paths outside version control. **Do not read raw heap snapshots** into conversation context or commit memory-debug artifacts to the repository.
+
+````
+
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `ChromeDevTools/chrome-devtools-mcp` |
+| source_url | `https://github.com/ChromeDevTools/chrome-devtools-mcp` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

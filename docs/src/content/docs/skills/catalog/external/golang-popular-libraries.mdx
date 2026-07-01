@@ -11,8 +11,8 @@ curated_status: "inspect-then-install"
 install_command: "npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "golang-popular-libraries"
-composed_by: "compose-external-wave-6"
-composed_at: "2026-06-17"
+composed_by: "compose-external-wave-5"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,13 +26,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset."
   installCommand={`npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/golang-popular-libraries"
-  badges={[{ text: "golang-popular-libraries", variant: "note" }, { text: "30 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+  badges={[{ text: "golang-popular-libraries", variant: "note" }, { text: "21 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
 />
+
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed compose-external-wave-6 using authoring SSOT (`docs/src/authoring/skills/golang-popular-libraries.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
+Composed compose-external-wave-5 using authoring SSOT (`docs/src/authoring/skills/golang-popular-libraries.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
 </Aside>
 
 ## What It Does
@@ -56,7 +58,7 @@ Curated status: `inspect-then-install`
 
 Risk notes: Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset. Keep `golang-google-wire`, `golang-uber-fx`, `golang-uber-dig`, and `golang-samber-do` global-only unless explicitly requested.
 
-Entry maintained via authoring + research for compose-external-wave-6; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/golang-popular-libraries.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 ## Install Prerequisites
 
@@ -82,9 +84,9 @@ Install: `npx skills add samber/cc-skills-golang --skill golang-popular-librarie
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/golang-popular-libraries.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "golang-popular-libraries"
 description: "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset. Keep `golang-google-wire`, `golang-uber-fx`, `golang-uber-dig`, and `golang-samber-do` global-only unless explicitly requested."
@@ -101,14 +103,14 @@ source_url: "https://github.com/samber/cc-skills-golang"
 notes: "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset. Keep `golang-google-wire`, `golang-uber-fx`, `golang-uber-dig`, and `golang-samber-do` global-only unless explicitly requested."
 risk_notes: "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset. Keep `golang-google-wire`, `golang-uber-fx`, `golang-uber-dig`, and `golang-samber-do` global-only unless explicitly requested."
 promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in authoring catalog."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=golang-popular-libraries; re-run migration to refresh */}
 
 Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset. Keep `golang-google-wire`, `golang-uber-fx`, `golang-uber-dig`, and `golang-samber-do` global-only unless explicitly requested.
 
 ````
+
 
 **Install / provenance (from authoring frontmatter + research):**
 

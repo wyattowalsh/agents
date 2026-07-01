@@ -9,6 +9,7 @@ status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 install_command: "pip install apm-cli"
+sync_kind: "external-tool"
 target_agents: [claude-code, codex, cursor, gemini-cli, github-copilot, opencode]
 source_url: "https://github.com/microsoft/apm"
 notes: "Remote third-party packages only. This repo bundle: uv tool install wagents --from git+https://github.com/wyattowalsh/agents or apm install wyattowalsh/agents. MCP stays MCPHub/wagents-owned."

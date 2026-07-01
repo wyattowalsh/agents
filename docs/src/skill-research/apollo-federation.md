@@ -30,4 +30,4 @@ apollographql (Apollo GraphQL org, github.com/apollographql/skills). MIT license
 
 graphql-schema, apollo-server, rover (same source); other federation/subgraph patterns.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

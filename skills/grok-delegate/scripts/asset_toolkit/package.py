@@ -28,9 +28,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 ASSET_TOOLKIT_SRC = SCRIPT_DIR / "asset_toolkit"
 PORTABLE_TOOLKIT_MODULES = frozenset({
     "__init__.py",
-    "_shared.py",
     "common.py",
-    "package.py",
     "validate_skill.py",
     "validate_evals.py",
     "validate_hooks.py",
@@ -233,6 +231,16 @@ def check_frontmatter_commands_portable(fm: dict) -> dict:
     }
 
 
+def check_body_operator_paths_portable(body: str) -> dict:
+    """Check body prose for repo-root skill script path assumptions."""
+    issues = find_nonportable_body_operator_lines(body)
+    return {
+        "check": "body_operator_paths_portable",
+        "passed": len(issues) == 0,
+        "details": format_body_operator_issues(issues),
+    }
+
+
 def check_no_wagents_reference(body: str) -> dict:
     """Check for wagents CLI references in skill body (outside code fences)."""
     matches = []
@@ -277,16 +285,6 @@ def check_no_at_imports(body: str) -> dict:
     }
 
 
-def check_body_operator_commands_portable(body: str) -> dict:
-    """Check SKILL.md body for repo-root skills/*/scripts/ operator paths."""
-    issues = find_nonportable_body_operator_lines(body)
-    return {
-        "check": "body_operator_commands_portable",
-        "passed": len(issues) == 0,
-        "details": format_body_operator_issues(issues),
-    }
-
-
 def check_name_directory_match(fm: dict, dir_name: str) -> dict:
     """Check that frontmatter name matches the directory name."""
     fm_name = fm.get("name", "")
@@ -320,9 +318,9 @@ def run_portability_checks(skill_dir: Path, fm: dict, body: str) -> list[dict]:
     checks.append(check_frontmatter_commands_portable(fm))
     checks.append(check_no_absolute_paths(body))
     checks.append(check_referenced_files(skill_dir, body))
+    checks.append(check_body_operator_paths_portable(body))
     checks.append(check_no_wagents_reference(body))
     checks.append(check_no_at_imports(body))
-    checks.append(check_body_operator_commands_portable(body))
     checks.append(check_name_directory_match(fm, skill_dir.name))
     return checks
 

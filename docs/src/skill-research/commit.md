@@ -30,4 +30,4 @@ PaulRBerg (github.com/PaulRBerg/agent-skills, pinned commit d3f5540). MIT Licens
 
 Other commit conventional guidance; bump-release or yeet skills (same source for release/contribution flows); general git agent skills or changelog-automation.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

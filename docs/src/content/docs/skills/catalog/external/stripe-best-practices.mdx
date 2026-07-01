@@ -9,8 +9,8 @@ docs_density: standard
 trust_tier: "global-only-or-avoid"
 curated_status: "global-only-or-avoid"
 research_slug: "stripe-best-practices"
-composed_by: "compose-external-wave-12"
-composed_at: "2026-06-17"
+composed_by: "compose-external-wave-11"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -24,13 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="registry syntax and provenance still need verification before automated sync/install."
   installCommand={`npx skills add docs.stripe.com@stripe-best-practices --skill stripe-best-practices -y -g`}
   usage="/stripe-best-practices"
-  badges={[{ text: "stripe-best-practices", variant: "note" }, { text: "19 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
+  badges={[{ text: "stripe-best-practices", variant: "note" }, { text: "10 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
 />
+
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed compose-external-wave-12 using authoring SSOT (`docs/src/authoring/skills/stripe-best-practices.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
+Composed compose-external-wave-11 using authoring SSOT (`docs/src/authoring/skills/stripe-best-practices.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
 </Aside>
 
 ## What It Does
@@ -54,7 +56,7 @@ Curated status: `global-only-or-avoid`
 
 Risk notes: registry syntax and provenance still need verification before automated sync/install.
 
-Entry maintained via authoring + research for compose-external-wave-12; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/stripe-best-practices.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 ## Install Prerequisites
 
@@ -79,9 +81,9 @@ Install: `npx skills add stripe/ai --skill stripe-best-practices -y -g -a antigr
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/stripe-best-practices.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "stripe-best-practices"
 description: "registry syntax and provenance still need verification before automated sync/install."
@@ -96,16 +98,16 @@ source_url: "https://docs.stripe.com"
 notes: "registry syntax and provenance still need verification before automated sync/install."
 risk_notes: "registry syntax and provenance still need verification before automated sync/install."
 promotion_policy: "Keep global-only or avoid unless explicitly approved."
-provenance_evidence: "Explicit keep-global/avoid note in config/external-skills.md."
+provenance_evidence: "Explicit keep-global/avoid note in authoring catalog."
 selector_mode: "unresolved"
 unresolved_reason: "registry syntax and provenance still need verification before automated sync/install."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=stripe-best-practices; re-run migration to refresh */}
 
 registry syntax and provenance still need verification before automated sync/install.
 
 ````
+
 
 **Install / provenance (from authoring frontmatter + research):**
 

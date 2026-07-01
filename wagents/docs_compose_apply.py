@@ -129,7 +129,7 @@ def compose_skill_mdx(node, edges, all_nodes, *, wave_id: str) -> str:
             1,
         )
 
-    trust_marker = "Entry maintained in `config/external-skills.md`"
+    trust_marker = "Entry maintained in authoring catalog"
     if trust_marker in body:
         body = body.replace(
             trust_marker,

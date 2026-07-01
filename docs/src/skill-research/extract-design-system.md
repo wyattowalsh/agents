@@ -32,4 +32,4 @@ arvindrk (github.com/arvindrk/extract-design-system). MIT. Skills-first design w
 
 Same-ecosystem design skills (e.g. design-taste-frontend, web-design-guidelines from antfu, baseline-ui); manual token extraction or design system audits; other CLI token extractors or Figma/brand kit importers; general design-md or ui-audit skills without web fetch.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

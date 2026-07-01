@@ -16,7 +16,7 @@ Security scan agents.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Rule creation surface (potential for overly broad rules); triage burden on FPs; assumes semgrep available. policy=Inspect.; evidence=trailofbits/skills + config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Rule creation surface (potential for overly broad rules); triage burden on FPs; assumes semgrep available. policy=Inspect.; evidence=trailofbits/skills + docs/src/authoring/skills.
 
 ## Install Prerequisites
 

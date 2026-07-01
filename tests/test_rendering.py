@@ -153,20 +153,16 @@ class TestRenderSkillPage:
         assert "my-agent" in result
 
     def test_curated_stub_skips_raw_skill_collapsible(self, tmp_repo):
-        config_path = tmp_repo / "config" / "external-skills.md"
-        config_path.parent.mkdir(parents=True, exist_ok=True)
-        config_path.write_text("# Curated config bulk content that must not appear on stub pages\n")
         node = _make_node(
             "skill",
             id="curated-skill",
             source="curated-external",
             body="",
-            source_path="config/external-skills.md",
+            source_path="docs/src/authoring/skills/curated-skill.mdx",
             metadata={"_is_stub": True, "_curated_status": "install-now-after-trust-gate"},
         )
         result = render_skill_page(node, [], [node])
         assert "View Full SKILL.md" not in result
-        assert "Curated config bulk content" not in result
         assert "SKILL.md is not available locally" in result
         # Harness / trust sections now emitted for curated-external (even non-enriched stubs)
         assert "## Harness Coverage" in result
@@ -187,7 +183,7 @@ class TestRenderSkillPage:
             id="curated-enrich",
             source="curated-external",
             body="",
-            source_path="config/external-skills.md",
+            source_path="docs/src/authoring/skills/curated-enrich.mdx",
             metadata={
                 "_is_stub": True,
                 "_curated_status": "install-now-after-trust-gate",

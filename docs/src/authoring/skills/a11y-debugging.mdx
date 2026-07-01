@@ -1,0 +1,47 @@
+---
+name: "a11y-debugging"
+description: "Use when auditing web accessibility through Chrome DevTools MCP: semantic HTML, ARIA labels, focus order, keyboard navigation, tap targets, contrast, and Lighthouse failures. NOT for generic page debugging, non-browser policy writing, or performance optimization."
+title: "A11y Debugging"
+source_kind: "curated-external"
+source: "ChromeDevTools/chrome-devtools-mcp"
+install_source: "ChromeDevTools/chrome-devtools-mcp"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+install_command: "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+sync_kind: "skills-cli"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/ChromeDevTools/chrome-devtools-mcp"
+notes: "Official Google `a11y-debugging` skill for browser-grounded accessibility audits via Chrome DevTools MCP and Lighthouse."
+risk_notes: "Accessibility audits require live page navigation; save Lighthouse and snapshot artifacts outside version control."
+promotion_policy: "Install only after trust gate; audit again before repo promotion."
+provenance_evidence: "Audited `npx skills add` command with named `--skill` selectors and commit pin in planning/manifests/external-skills/chrome-devtools-mcp.json."
+---
+
+
+Official Google `a11y-debugging` skill (formerly repo-prefixed `chrome-devtools-a11y-debugging`). Use for semantic HTML, ARIA, focus order, keyboard navigation, tap targets, contrast, and Lighthouse accessibility failures through Chrome DevTools MCP.
+
+## Audit evidence
+
+- **Source:** [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp)
+- **Pinned commit:** `a90378adf3226e8b27a05cdcfdd801c199acaa93`
+- **License:** Apache-2.0
+- **Author:** Google LLC
+- **Package:** `chrome-devtools-mcp` 0.23.0 (per `planning/manifests/external-skills/chrome-devtools-mcp.json`)
+- **Source-list evidence:** `npx skills add github:ChromeDevTools/chrome-devtools-mcp --list` lists upstream skill `a11y-debugging`
+
+## Dedupe
+
+This curated install **replaces repo-vendored** `skills/chrome-devtools-a11y-debugging/` copies. Upstream publishes the skill as `a11y-debugging`; install the six-skill bundle once globally and drop prefixed repo trees after migration.
+
+## Hooks, scripts, and credentials
+
+Audited upstream skills at the pinned commit are guidance-only Markdown. **No hooks, bundled scripts, or credential requests** were identified in the skill bundle.
+
+## Network access
+
+Requires Chrome DevTools MCP navigation to target pages and Lighthouse audit tooling. Repo-managed MCP config disables usage statistics and update checks where applicable. Treat audited page content as untrusted input.
+
+## Artifact hygiene
+
+Save Lighthouse reports, snapshots, and screenshots to explicit paths outside version control. Do not commit accessibility audit artifacts or load large reports into conversation context.

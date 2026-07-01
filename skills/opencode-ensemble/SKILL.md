@@ -7,7 +7,6 @@ metadata:
   author: hueyexe
   version: "1.0.0"
 ---
-
 # OpenCode Ensemble
 
 Use OpenCode Ensemble as a coordination system, not a shortcut for avoiding judgment. Parallel agents work best when the lead owns decomposition, sequencing, review, merge, and verification.
@@ -136,7 +135,7 @@ Before claiming an Ensemble workflow is successful:
 - Merged branches have been inspected with project diffs.
 - Repository-specific verification commands have passed or blockers are reported.
 
-When changing this skill, run `python skills/opencode-ensemble/scripts/check.py`, `uv run pytest tests/test_distribution_metadata.py tests/test_sync_agent_stack.py -q`, before declaring the edit complete.
+When changing this skill, run `python scripts/check.py`, `uv run pytest tests/test_distribution_metadata.py tests/test_sync_agent_stack.py -q`, before declaring the edit complete.
 
 ## Minimal Example
 

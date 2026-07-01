@@ -1688,8 +1688,8 @@ def write_catalog_external_index(nodes: list) -> None:
         *imports,
         "",
         "External skills are authored in `docs/src/authoring/skills/*.mdx` and emitted to "
-        "`docs/public/generated-registries/skills-catalog-index.json`. Legacy `config/external-skills.md` "
-        "remains dual-read during migration. With `--include-installed`, local harness inventory may add rows.",
+        "`docs/public/generated-registries/skills-catalog-index.json`. With `--include-installed`, "
+        "local harness inventory may add rows.",
         "",
         '<Aside type="note" title="Trust and provenance">',
         "Audit third-party skills before install. Use [review source](/skills/catalog/custom/review/) "
@@ -2473,7 +2473,7 @@ def docs_research(
     seed_from_config: bool = typer.Option(
         False,
         "--seed-from-config",
-        help="Write research artifacts for curated-external from config/external-skills.md fields (W1)",
+        help="Write research artifacts for curated-external from authoring catalog fields",
     ),
     curated_status: str | None = typer.Option(
         None,

@@ -11,8 +11,8 @@ trust_tier: "repo"
 metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "namer"
-composed_by: "compose-custom-wave-5"
-composed_at: "2026-06-17"
+composed_by: "compose-custom-wave-4"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,19 +26,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Name anything: projects, products, companies, packages."
   installCommand={`npx skills add github:wyattowalsh/agents --skill namer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/namer &lt;thing to name&gt; [--context description] [--style playful|serious|technical|abstract] [--thorough]"
-  badges={[{ text: "namer", variant: "note" }, { text: "2242 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "namer", variant: "note" }, { text: "2242 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Name anything: projects, products, companies, packages. Generates creative names across linguistic archetypes, checks handle/username availability across platforms, checks domain availability with pricing, and ranks options with scored rationales. Use when naming projects, products, startups, packages, or brands. NOT for domain management (infrastructure-coder) or branding strategy beyond naming (host-panel).
-**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
-**Comparable alternative:** `infrastructure-coder` for domain management
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Repo skill (hand-maintained)">
-Composed compose-custom-wave-5 from `skills/namer/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+Composed compose-custom-wave-4 from `skills/namer/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -100,7 +96,7 @@ Present the classification and preset to the user. User can override with `--sty
 
 ### Phase -1: Memory Load (runs once per session)
 
-`!uv run python skills/namer/scripts/memory.py load`
+`!uv run python scripts/memory.py load`
 
 If memory exists, integrate into session:
 
@@ -139,7 +135,7 @@ Generate 40-60 candidates across **6 naming archetypes**:
 
 **Hard filters** (binary pass/fail, run BEFORE availability checking):
 
-Run `!uv run python skills/namer/scripts/generate.py filter --input candidates.json` for automated filters, then apply AI-only filters inline:
+Run `!uv run python scripts/generate.py filter --input candidates.json` for automated filters, then apply AI-only filters inline:
 
 1. Profanity/vulgarity in English (script: `generate.py filter`)
 2. Offensive meaning in top 10 world languages (AI-only: use `brave_web_search`)
@@ -149,7 +145,7 @@ Run `!uv run python skills/namer/scripts/generate.py filter --input candidates.j
 6. Reserved word in major programming languages (script: `generate.py filter`)
 7. Contains hyphens/special chars (for package names) (script: `generate.py filter`)
 
-Score **intrinsic dimensions** (phonetics, semantics, memorability, morphological flexibility, visual quality). Use `!uv run python skills/namer/scripts/generate.py analyze &lt;name&gt;` for phonetic breakdown to inform phonetic quality scoring. Select **top 20-25** for availability checking.
+Score **intrinsic dimensions** (phonetics, semantics, memorability, morphological flexibility, visual quality). Use `!uv run python scripts/generate.py analyze &lt;name&gt;` for phonetic breakdown to inform phonetic quality scoring. Select **top 20-25** for availability checking.
 
 `--thorough` mode: Run multiple generation passes with varied prompting for more diversity.
 
@@ -184,7 +180,7 @@ Dispatch **4 parallel subagents**, each checking ALL candidates in its category:
 - Trademark (--thorough): `brave_web_search "USPTO TESS {name}"`
 
 Or run deterministic checks via script:
-`!uv run python skills/namer/scripts/check.py check-all candidate1 candidate2 ...`
+`!uv run python scripts/availability.py check-all candidate1 candidate2 ...`
 
 **Scaling:**
 
@@ -220,7 +216,7 @@ Load `references/scoring-rubric.md` for detailed criteria.
 
 **Composite**: `(0.4 × intrinsic_avg) + (0.6 × extrinsic_avg)` — user can adjust split.
 
-Run `!uv run python skills/namer/scripts/score.py score --input candidates.json` for deterministic scoring. Input JSON must have `{"candidates": [{"name": "...", "intrinsic": {...}, "availability": {...}}], "preset": "cli-tool"}`.
+Run `!uv run python scripts/score.py score --input candidates.json` for deterministic scoring. Input JSON must have `{"candidates": [{"name": "...", "intrinsic": {...}, "availability": {...}}], "preset": "cli-tool"}`.
 
 ### Phase 4: Present (inline)
 
@@ -261,7 +257,7 @@ Save memories at natural decision points. NEVER slow down a phase for a memory w
 | Refinement: "shorter" / "longer"      | `memory.py save-preference --type length --value "max=5"` or `"min=8"`                            |
 | Any: User rejects a style             | `memory.py save-rejection --pattern "..." --type archetype --reason "..."`                        |
 
-Batch multiple saves in a SINGLE message when a session produces several memories. All `memory.py` commands are prefixed with `!uv run python skills/namer/scripts/`.
+Batch multiple saves in a SINGLE message when a session produces several memories. All `memory.py` commands are prefixed with `!uv run python scripts/`.
 
 ## Canonical Vocabulary
 
@@ -310,9 +306,9 @@ Batch multiple saves in a SINGLE message when a session produces several memorie
 </Tabs>
 
 <details class="source-disclosure">
-<summary>View Full SKILL.md</summary>
+<summary>Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml title="skills/namer/SKILL.md"
 ---
 name: namer
 description: >-
@@ -334,7 +330,6 @@ hooks:
       hooks:
         - command: 'bash -c "echo BLOCKED: namer skill is read-only — no file edits permitted >&2; exit 1"'
 ---
-
 # Namer
 
 Generate, evaluate, and validate names across linguistic, technical, and platform dimensions. Produces ranked options with availability matrices and actionable next steps.
@@ -401,7 +396,7 @@ Present the classification and preset to the user. User can override with `--sty
 
 ### Phase -1: Memory Load (runs once per session)
 
-`!uv run python skills/namer/scripts/memory.py load`
+`!uv run python scripts/memory.py load`
 
 If memory exists, integrate into session:
 
@@ -440,7 +435,7 @@ Generate 40-60 candidates across **6 naming archetypes**:
 
 **Hard filters** (binary pass/fail, run BEFORE availability checking):
 
-Run `!uv run python skills/namer/scripts/generate.py filter --input candidates.json` for automated filters, then apply AI-only filters inline:
+Run `!uv run python scripts/generate.py filter --input candidates.json` for automated filters, then apply AI-only filters inline:
 
 1. Profanity/vulgarity in English (script: `generate.py filter`)
 2. Offensive meaning in top 10 world languages (AI-only: use `brave_web_search`)
@@ -450,7 +445,7 @@ Run `!uv run python skills/namer/scripts/generate.py filter --input candidates.j
 6. Reserved word in major programming languages (script: `generate.py filter`)
 7. Contains hyphens/special chars (for package names) (script: `generate.py filter`)
 
-Score **intrinsic dimensions** (phonetics, semantics, memorability, morphological flexibility, visual quality). Use `!uv run python skills/namer/scripts/generate.py analyze <name>` for phonetic breakdown to inform phonetic quality scoring. Select **top 20-25** for availability checking.
+Score **intrinsic dimensions** (phonetics, semantics, memorability, morphological flexibility, visual quality). Use `!uv run python scripts/generate.py analyze <name>` for phonetic breakdown to inform phonetic quality scoring. Select **top 20-25** for availability checking.
 
 `--thorough` mode: Run multiple generation passes with varied prompting for more diversity.
 
@@ -485,7 +480,7 @@ Dispatch **4 parallel subagents**, each checking ALL candidates in its category:
 - Trademark (--thorough): `brave_web_search "USPTO TESS {name}"`
 
 Or run deterministic checks via script:
-`!uv run python skills/namer/scripts/check.py check-all candidate1 candidate2 ...`
+`!uv run python scripts/availability.py check-all candidate1 candidate2 ...`
 
 **Scaling:**
 
@@ -521,7 +516,7 @@ Load `references/scoring-rubric.md` for detailed criteria.
 
 **Composite**: `(0.4 × intrinsic_avg) + (0.6 × extrinsic_avg)` — user can adjust split.
 
-Run `!uv run python skills/namer/scripts/score.py score --input candidates.json` for deterministic scoring. Input JSON must have `{"candidates": [{"name": "...", "intrinsic": {...}, "availability": {...}}], "preset": "cli-tool"}`.
+Run `!uv run python scripts/score.py score --input candidates.json` for deterministic scoring. Input JSON must have `{"candidates": [{"name": "...", "intrinsic": {...}, "availability": {...}}], "preset": "cli-tool"}`.
 
 ### Phase 4: Present (inline)
 
@@ -562,7 +557,7 @@ Save memories at natural decision points. NEVER slow down a phase for a memory w
 | Refinement: "shorter" / "longer"      | `memory.py save-preference --type length --value "max=5"` or `"min=8"`                            |
 | Any: User rejects a style             | `memory.py save-rejection --pattern "..." --type archetype --reason "..."`                        |
 
-Batch multiple saves in a SINGLE message when a session produces several memories. All `memory.py` commands are prefixed with `!uv run python skills/namer/scripts/`.
+Batch multiple saves in a SINGLE message when a session produces several memories. All `memory.py` commands are prefixed with `!uv run python scripts/`.
 
 ## Canonical Vocabulary
 
@@ -611,7 +606,6 @@ Load ONE reference at a time per the "Read When" column.
 11. Context classification before generation — weights and platforms depend on it
 12. Intrinsic and extrinsic scores shown separately — user needs to see the trade-off
 13. Load user memory before Phase 0 (Phase -1). Save memories AFTER delivering primary output — never block a phase for a memory write
-
 ````
 
 [Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/namer/SKILL.md)

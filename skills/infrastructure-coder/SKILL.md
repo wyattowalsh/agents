@@ -11,7 +11,6 @@ metadata:
   author: wyattowalsh
   version: "1.0.0"
 ---
-
 # Infrastructure Coder
 
 Generate, review, and analyze Infrastructure-as-Code. Terraform/OpenTofu modules, Kubernetes manifests, Dockerfiles.
@@ -52,7 +51,7 @@ Generate production-ready Terraform/OpenTofu modules.
 ### Terraform Steps
 
 1. Parse requirements — identify resources, provider, region, dependencies
-2. Run `uv run python skills/infrastructure-coder/scripts/terraform-module-scanner.py <path>` on any existing `.tf` files to understand current state
+2. Run `uv run python scripts/terraform-module-scanner.py <path>` on any existing `.tf` files to understand current state
 3. Generate module structure:
    - `main.tf` — resource definitions
    - `variables.tf` — input variables with descriptions, types, defaults, validation
@@ -76,7 +75,7 @@ Generate Kubernetes manifests or Helm charts.
 ### Manifest Steps
 
 1. Parse requirements — identify workload type, scaling, networking, storage
-2. Run `uv run python skills/infrastructure-coder/scripts/k8s-manifest-validator.py <path>` on existing manifests
+2. Run `uv run python scripts/k8s-manifest-validator.py <path>` on existing manifests
 3. Generate manifests with best practices:
    - Resource limits and requests on every container
    - Health checks (liveness, readiness, startup probes)
@@ -93,7 +92,7 @@ Generate Kubernetes manifests or Helm charts.
 
 Optimize Dockerfiles for size, build speed, and security.
 
-1. Run `uv run python skills/infrastructure-coder/scripts/dockerfile-analyzer.py <path>` on existing Dockerfile
+1. Run `uv run python scripts/dockerfile-analyzer.py <path>` on existing Dockerfile
 2. Parse JSON output for issues and optimization opportunities
 3. Apply optimizations:
    - Multi-stage builds separating build and runtime

@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, cast
 
-from wagents.platforms.base import HOME, REPO_ROOT, PlatformAdapter, SyncContext
+from wagents.hooks.render import enabled_hooks_for_harness, render_hook_command
+from wagents.platforms.base import HOME, REPO_ROOT, PlatformAdapter, SyncContext, load_json, merge_hook_groups
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -12,6 +13,7 @@ if TYPE_CHECKING:
 GEMINI_SETTINGS_PATH = HOME / ".gemini" / "settings.json"
 GEMINI_ENTRYPOINT_PATH = HOME / ".gemini" / "GEMINI.md"
 GEMINI_GLOBAL_MD = REPO_ROOT / "instructions" / "gemini-cli-global.md"
+GEMINI_REPO_SETTINGS_PATH = REPO_ROOT / ".gemini" / "settings.json"
 
 
 class Adapter(PlatformAdapter):
@@ -20,14 +22,33 @@ class Adapter(PlatformAdapter):
     def home_config_paths(self) -> list[Path]:
         return [GEMINI_SETTINGS_PATH]
 
-    def render_hooks(self, hook_registry: dict[str, Any]) -> dict[str, Any] | None:
+    def render_hooks(self, hook_registry: dict[str, Any], *, repo_relative: bool = False) -> dict[str, Any] | None:
         event_map = {
+            "SessionStart": "sessionStart",
             "UserPromptSubmit": "BeforeAgent",
             "PreToolUse": "BeforeTool",
             "PostToolUse": "AfterTool",
+            "SessionEnd": "sessionEnd",
             "Stop": "AfterAgent",
         }
-        return self._render_standard_hooks(hook_registry, event_map)
+        repo_root = "." if repo_relative else str(REPO_ROOT)
+        rendered: dict[str, list[dict[str, Any]]] = {}
+        for hook in enabled_hooks_for_harness(hook_registry, self.name):
+            event = event_map.get(str(hook.get("logical_event")))
+            if not event:
+                continue
+            config: dict[str, Any] = {
+                "type": "command",
+                "command": render_hook_command(hook, self.name, repo_root=repo_root),
+                "name": hook["id"],
+                "timeout": int(hook.get("timeout", 5)) * 1000,
+                "description": hook.get("description", hook["id"]),
+            }
+            group: dict[str, Any] = {"hooks": [config], "sequential": True}
+            if hook.get("matcher"):
+                group["matcher"] = hook["matcher"]
+            rendered.setdefault(event, []).append(group)
+        return {"hooks": rendered} if rendered else None
 
     def sync_repo(
         self,
@@ -36,7 +57,11 @@ class Adapter(PlatformAdapter):
         hook_registry: dict[str, Any],
         policy: dict[str, Any],
     ) -> None:
-        pass
+        settings = load_json(GEMINI_REPO_SETTINGS_PATH) if GEMINI_REPO_SETTINGS_PATH.exists() else {}
+        rendered = self.render_hooks(hook_registry, repo_relative=True)
+        if rendered:
+            settings["hooks"] = merge_hook_groups(settings.get("hooks", {}), rendered)
+        ctx.write_json(GEMINI_REPO_SETTINGS_PATH, settings)
 
     def sync_home(
         self,

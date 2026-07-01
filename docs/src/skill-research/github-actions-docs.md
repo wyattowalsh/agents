@@ -16,7 +16,7 @@ CI/docs (global only).
 
 ## Trust And Risks
 
-trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=High volume install surface for reference material; prefer cherry-pick if needed. policy=Keep global-only.; evidence=Explicit in config/external-skills.md Keep section (xixu-me/skills@github-actions-docs).
+trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=High volume install surface for reference material; prefer cherry-pick if needed. policy=Keep global-only.; evidence=Explicit in authoring catalog Keep section (xixu-me/skills@github-actions-docs).
 
 ## Install Prerequisites
 

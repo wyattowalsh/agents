@@ -16,7 +16,7 @@ global-only per policy.
 
 ## Trust And Risks
 
-trust_tier unspecified in row; status=keep-global-only-or-avoid (per external-skills.md); official Microsoft but scope is very large (hundreds of ref files); risk of over-broad exposure or duplication with focused skills. Massive size noted.
+trust_tier unspecified in row; status=keep-global-only-or-avoid (per catalog); official Microsoft but scope is very large (hundreds of ref files); risk of over-broad exposure or duplication with focused skills. Massive size noted.
 
 ## Install Prerequisites
 

@@ -64,7 +64,7 @@
       "mode": "generated",
       "owner_change": "agents-c08-docs-instructions",
       "must_not_hand_edit": true,
-      "validation": "uv run wagents docs generate --no-installed --check"
+      "validation": "uv run wagents docs compose --check-composed --min-pct 100"
     },
     {
       "path": "docs/src/content/docs/agents/",

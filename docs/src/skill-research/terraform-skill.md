@@ -32,4 +32,4 @@ antonbabenko (github.com/antonbabenko/terraform-skill). Apache 2.0. Based on fie
 
 Official HashiCorp Terraform docs + testing guides; community awesome-terraform lists; other IaC skills (e.g. for Pulumi/CDK or cloud-specific); general devops-engineer or compliance skills; direct use of terraform-ls + agent code intelligence without domain skill.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

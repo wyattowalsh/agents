@@ -11,7 +11,6 @@ metadata:
   author: wyattowalsh
   version: "2.0.0"
 ---
-
 # MCP Creator — FastMCP v3
 
 Build production-ready MCP servers with FastMCP v3 (3.0.0rc2). This skill guides through research, scaffolding, implementation, testing, and deployment. All first-party output follows this repo's conventions: `mcp/<name>/` directory, `fastmcp.json` config, exact `uv` workspace member, imperative voice, kebab-case naming. Reserve `mcp/servers/` for machine-local third-party MCP installs; it is gitignored.
@@ -122,7 +121,7 @@ Produce a tool/resource/prompt inventory table before proceeding:
 
 ### 2.1 Create Project Structure
 
-Run `python skills/mcp-creator/scripts/scaffold_mcp.py <name>` to scaffold:
+Run `python scripts/scaffold_mcp.py <name>` to scaffold:
 
 ```
 mcp/<name>/
@@ -512,4 +511,4 @@ python skills/mcp-creator/scripts/check.py
 Completion criteria:
 
 1. `scripts/check.py` exits 0.
-2. MCP scaffold smoke-check: `python skills/mcp-creator/scripts/scaffold_mcp.py --dry-run example-server`.
+2. MCP scaffold smoke-check: `python scripts/scaffold_mcp.py --dry-run example-server`.

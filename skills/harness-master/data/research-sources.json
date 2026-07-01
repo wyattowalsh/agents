@@ -22,7 +22,7 @@
       "category": "local-registry",
       "authority_tier": "primary",
       "access_method": "local-file",
-      "base_url_or_command": "config/harness-surface-registry.json config/plugin-extension-registry.json config/mcp-registry.json config/external-skills.md",
+      "base_url_or_command": "config/harness-surface-registry.json config/plugin-extension-registry.json config/mcp-registry.json docs/src/authoring/skills",
       "auth_env": [],
       "rate_limit_notes": "Local filesystem only.",
       "query_templates": {
@@ -30,7 +30,7 @@
           "config/harness-surface-registry.json",
           "config/plugin-extension-registry.json",
           "config/mcp-registry.json",
-          "config/external-skills.md"
+          "docs/src/authoring/skills"
         ]
       },
       "evidence_fields": ["canonical home", "support tier", "owner surface", "generated output", "known local policy"],

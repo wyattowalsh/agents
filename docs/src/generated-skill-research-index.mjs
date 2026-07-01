@@ -321,54 +321,6 @@ export const skillResearchIndex = [
     "stale": false
   },
   {
-    "mean_confidence": 0.78,
-    "name": "chrome-devtools-a11y-debugging",
-    "research_tier": "quick",
-    "researched_at": "2026-06-16T01:14:01Z",
-    "source_type": "custom",
-    "stale": false
-  },
-  {
-    "mean_confidence": 0.78,
-    "name": "chrome-devtools-cli",
-    "research_tier": "quick",
-    "researched_at": "2026-06-16T01:14:01Z",
-    "source_type": "custom",
-    "stale": false
-  },
-  {
-    "mean_confidence": 0.78,
-    "name": "chrome-devtools-debug-optimize-lcp",
-    "research_tier": "quick",
-    "researched_at": "2026-06-16T01:14:01Z",
-    "source_type": "custom",
-    "stale": false
-  },
-  {
-    "mean_confidence": 0.78,
-    "name": "chrome-devtools-memory-leak-debugging",
-    "research_tier": "quick",
-    "researched_at": "2026-06-16T01:14:01Z",
-    "source_type": "custom",
-    "stale": false
-  },
-  {
-    "mean_confidence": 0.78,
-    "name": "chrome-devtools-troubleshooting",
-    "research_tier": "quick",
-    "researched_at": "2026-06-16T01:14:01Z",
-    "source_type": "custom",
-    "stale": false
-  },
-  {
-    "mean_confidence": 0.78,
-    "name": "chrome-devtools",
-    "research_tier": "quick",
-    "researched_at": "2026-06-16T01:14:01Z",
-    "source_type": "custom",
-    "stale": false
-  },
-  {
     "mean_confidence": 0.74,
     "name": "churn-prevention",
     "research_tier": "standard",

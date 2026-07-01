@@ -12,7 +12,7 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.1.0"
 research_slug: "files-buddy"
 composed_by: "compose-custom-wave-3"
-composed_at: "2026-06-17"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,14 +26,10 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders."
   installCommand={`npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/files-buddy &lt;mode&gt; &lt;path-or-all-local&gt; [options]"
-  badges={[{ text: "files-buddy", variant: "note" }, { text: "2001 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "files-buddy", variant: "note" }, { text: "2001 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.1.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders. NOT for shell script generation, CI/CD, databases, or non-macOS platform cleanup.
-**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
@@ -277,9 +273,9 @@ Completion criteria:
 </Tabs>
 
 <details class="source-disclosure">
-<summary>View Full SKILL.md</summary>
+<summary>Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml title="skills/files-buddy/SKILL.md"
 ---
 name: files-buddy
 description: >-

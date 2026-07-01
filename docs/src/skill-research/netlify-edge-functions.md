@@ -16,7 +16,7 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect before install.; evidence=config/external-skills.md. Web-aug: Same official Netlify repo as netlify-deploy (MIT, active, factual references only). No persistent state or broad FS; edge functions execute in Netlify Deno sandbox on deploy. Inspect for any custom scripts in bundle.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect before install.; evidence=docs/src/authoring/skills. Web-aug: Same official Netlify repo as netlify-deploy (MIT, active, factual references only). No persistent state or broad FS; edge functions execute in Netlify Deno sandbox on deploy. Inspect for any custom scripts in bundle.
 
 ## Install Prerequisites
 

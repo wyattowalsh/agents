@@ -12,7 +12,7 @@ install_command: "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill 
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "ctf-pwn"
 composed_by: "compose-external-wave-3"
-composed_at: "2026-06-17"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,8 +26,10 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work."
   installCommand={`npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/ctf-pwn"
-  badges={[{ text: "ctf-pwn", variant: "note" }, { text: "56 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+  badges={[{ text: "ctf-pwn", variant: "note" }, { text: "47 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
 />
+
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
@@ -56,7 +58,7 @@ Curated status: `inspect-then-install`
 
 Risk notes: Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it.
 
-Entry maintained via authoring + research for compose-external-wave-3; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/ctf-pwn.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 ## Install Prerequisites
 
@@ -82,9 +84,9 @@ npx skills add ljagiello/ctf-skills --skill ctf-pwn ... ; or full group; pre-run
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/ctf-pwn.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "ctf-pwn"
 description: "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it."
@@ -101,14 +103,14 @@ source_url: "https://github.com/ljagiello/ctf-skills"
 notes: "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it."
 risk_notes: "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it."
 promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in authoring catalog."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=ctf-pwn; re-run migration to refresh */}
 
 Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it.
 
 ````
+
 
 **Install / provenance (from authoring frontmatter + research):**
 

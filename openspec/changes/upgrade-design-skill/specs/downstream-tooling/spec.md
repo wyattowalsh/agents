@@ -15,6 +15,6 @@ Automation SHALL consume OpenSpec JSON commands instead of scraping markdown or 
 #### Scenario: Downstream surfaces preserve Chrome DevTools operational skills
 
 - **WHEN** downstream install, sync, README, or docs surfaces are generated after the `/design` upgrade
-- **THEN** they SHALL continue to advertise repo-owned custom skill commands for active `chrome-devtools*` operational skills
+- **THEN** they SHALL advertise official upstream curated-external Chrome DevTools skill commands for active operational skills
 - **AND** they SHALL NOT advertise active curated install rows for folded UI/design/frontend/browser-proof external rows
 - **AND** they SHALL continue to preserve the underlying Chrome DevTools MCP registry/config surfaces unchanged.

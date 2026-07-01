@@ -150,12 +150,6 @@ def _infer_risk_tier(skill_dir: Path) -> str:
     # Name-based hard rules for known high-risk
     r4_names = {"email-whiz"}
     r3_names = {
-        "chrome-devtools",
-        "chrome-devtools-a11y-debugging",
-        "chrome-devtools-cli",
-        "chrome-devtools-debug-optimize-lcp",
-        "chrome-devtools-memory-leak-debugging",
-        "chrome-devtools-troubleshooting",
         "mcp-creator",
         "opencode-ensemble",
         "openspec-workflow",
@@ -357,12 +351,6 @@ def filter_high_risk(report: dict[str, Any]) -> list[dict[str, Any]]:
     """Return only the high-risk skill reports."""
     high_names = {
         "email-whiz",
-        "chrome-devtools",
-        "chrome-devtools-a11y-debugging",
-        "chrome-devtools-cli",
-        "chrome-devtools-debug-optimize-lcp",
-        "chrome-devtools-memory-leak-debugging",
-        "chrome-devtools-troubleshooting",
         "mcp-creator",
         "opencode-ensemble",
         "openspec-workflow",

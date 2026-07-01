@@ -1,0 +1,51 @@
+---
+name: "troubleshooting"
+description: "Use when auditing Chrome DevTools MCP setup failures: initialization, connection, page listing, navigation, missing tools, or wrong Chrome profile. NOT for application debugging after MCP is healthy or unrelated browser automation."
+title: "Troubleshooting"
+source_kind: "curated-external"
+source: "ChromeDevTools/chrome-devtools-mcp"
+install_source: "ChromeDevTools/chrome-devtools-mcp"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+install_command: "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+sync_kind: "skills-cli"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/ChromeDevTools/chrome-devtools-mcp"
+notes: "Official Google `troubleshooting` skill for Chrome DevTools MCP setup and connection failures only—not general application debugging."
+risk_notes: "Setup troubleshooting may inspect local MCP configuration; do not mutate harness config without explicit user approval."
+promotion_policy: "Install only after trust gate; audit again before repo promotion."
+provenance_evidence: "Audited `npx skills add` command with named `--skill` selectors and commit pin in planning/manifests/external-skills/chrome-devtools-mcp.json."
+---
+
+
+Official Google `troubleshooting` skill for **Chrome DevTools MCP setup only** (formerly repo-prefixed `chrome-devtools-troubleshooting`). Use when MCP initialization, connection, page listing, navigation, missing tools, or Chrome profile selection fails.
+
+## Name disambiguation
+
+This skill is **`troubleshooting` from `ChromeDevTools/chrome-devtools-mcp`**—MCP server setup and harness wiring only. It is **not** [`golang-troubleshooting`](./golang-troubleshooting) from `samber/cc-skills-golang` or other generic troubleshooting skills in this catalog.
+
+## Audit evidence
+
+- **Source:** [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp)
+- **Pinned commit:** `a90378adf3226e8b27a05cdcfdd801c199acaa93`
+- **License:** Apache-2.0
+- **Author:** Google LLC
+- **Package:** `chrome-devtools-mcp` 0.23.0 (per `planning/manifests/external-skills/chrome-devtools-mcp.json`)
+- **Source-list evidence:** `npx skills add github:ChromeDevTools/chrome-devtools-mcp --list` lists upstream skill `troubleshooting`
+
+## Dedupe
+
+This curated install **replaces repo-vendored** `skills/chrome-devtools-troubleshooting/` copies. Upstream publishes the skill as `troubleshooting`; install the six-skill bundle once globally and drop prefixed repo trees after migration.
+
+## Hooks, scripts, and credentials
+
+Audited upstream skills at the pinned commit are guidance-only Markdown. **No hooks, bundled scripts, or credential requests** were identified in the skill bundle.
+
+## Network access
+
+Setup diagnostics may reference `npx chrome-devtools-mcp@latest --help` and local MCP endpoints. Application debugging after MCP is healthy belongs in `chrome-devtools` or the specialized skills in this bundle.
+
+## Artifact hygiene
+
+Do not commit local MCP config snapshots or diagnostic logs into the repository. Keep any exported diagnostics outside version control.

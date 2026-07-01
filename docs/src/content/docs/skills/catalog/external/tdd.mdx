@@ -11,8 +11,8 @@ curated_status: "install-now-after-trust-gate"
 install_command: "npx skills add mattpocock/skills --skill grill-me --skill tdd --skill to-prd --skill improve-codebase-architecture -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "tdd"
-composed_by: "compose-external-wave-12"
-composed_at: "2026-06-17"
+composed_by: "compose-external-wave-11"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,13 +26,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Product-engineering workflow skills beyond the curated `obsidian-vault` row."
   installCommand={`npx skills add mattpocock/skills --skill grill-me --skill tdd --skill to-prd --skill improve-codebase-architecture -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/tdd"
-  badges={[{ text: "tdd", variant: "note" }, { text: "17 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+  badges={[{ text: "tdd", variant: "note" }, { text: "8 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
 />
+
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed compose-external-wave-12 using authoring SSOT (`docs/src/authoring/skills/tdd.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
+Composed compose-external-wave-11 using authoring SSOT (`docs/src/authoring/skills/tdd.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
 </Aside>
 
 ## What It Does
@@ -56,7 +58,7 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: Product-engineering workflow skills beyond the curated `obsidian-vault` row.
 
-Entry maintained via authoring + research for compose-external-wave-12; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/tdd.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 ## Install Prerequisites
 
@@ -82,9 +84,9 @@ npx skills add mattpocock/skills --skill tdd -y -g -a [agents]; often with setup
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/tdd.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "tdd"
 description: "Product-engineering workflow skills beyond the curated `obsidian-vault` row."
@@ -101,14 +103,14 @@ source_url: "https://github.com/mattpocock/skills"
 notes: "Product-engineering workflow skills beyond the curated `obsidian-vault` row."
 risk_notes: "Product-engineering workflow skills beyond the curated `obsidian-vault` row."
 promotion_policy: "Install only after trust gate; audit again before repo promotion."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in authoring catalog."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=tdd; re-run migration to refresh */}
 
 Product-engineering workflow skills beyond the curated `obsidian-vault` row.
 
 ````
+
 
 **Install / provenance (from authoring frontmatter + research):**
 

@@ -11,8 +11,8 @@ trust_tier: "repo"
 metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "docs-steward"
-composed_by: "compose-custom-wave-3"
-composed_at: "2026-06-17"
+composed_by: "compose-custom-wave-2"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,19 +26,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks, README, and AGENTS.md. Use when docs change."
   installCommand={`npx skills add github:wyattowalsh/agents --skill docs-steward -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/docs-steward [auto|init|sync|enhance|maintain|research|matrix|migrate|generate api|generate adr|generate runbook|generate onboard|generate glossary|framework &lt;name&gt; &lt;action&gt;]"
-  badges={[{ text: "docs-steward", variant: "note" }, { text: "2719 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "docs-steward", variant: "note" }, { text: "2719 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks, README, and AGENTS.md. Use when docs change. NOT for backend code, skill definition edits (skill-creator), or MCP servers (mcp-creator).
-**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
-**Comparable alternative:** `skill-creator` for backend code, skill definition edits
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Repo skill (hand-maintained)">
-Composed compose-custom-wave-3 from `skills/docs-steward/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+Composed compose-custom-wave-2 from `skills/docs-steward/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -227,7 +223,7 @@ Bring generated docs artifacts into a consistent state.
 
 ### C.1 Astro + Starlight
 - Verify Astro config and Starlight integration.
-- Regenerate docs artifacts with project commands (for this repo: `python skills/docs-steward/scripts/docs_sync.py generate`).
+- Regenerate docs artifacts with project commands (for this repo: `python scripts/docs_sync.py generate`).
 - Build-check docs output.
 
 ### C.2 Docusaurus
@@ -431,8 +427,8 @@ Completion criteria:
 2. Mutating modes run the relevant framework build, docs generation, or health check.
 3. Maintain mode remains read-only and reports next commands instead of editing.
 4. Skill changes pass these proof commands when applicable:
-   - `python skills/docs-steward/scripts/check.py`
-   - `python skills/docs-steward/scripts/docs_sync.py` when generated docs surfaces change
+   - `python scripts/check.py`
+   - `python scripts/docs_sync.py` when generated docs surfaces change
 
 ---
 
@@ -464,9 +460,9 @@ Completion criteria:
 </Tabs>
 
 <details class="source-disclosure">
-<summary>View Full SKILL.md</summary>
+<summary>Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml title="skills/docs-steward/SKILL.md"
 ---
 name: docs-steward
 description: >-
@@ -481,7 +477,6 @@ metadata:
   author: wyattowalsh
   version: "1.0.0"
 ---
-
 # Docs Steward
 
 Maintain docs quality, architecture, and framework currency in project-local repositories.
@@ -629,7 +624,7 @@ Bring generated docs artifacts into a consistent state.
 
 ### C.1 Astro + Starlight
 - Verify Astro config and Starlight integration.
-- Regenerate docs artifacts with project commands (for this repo: `python skills/docs-steward/scripts/docs_sync.py generate`).
+- Regenerate docs artifacts with project commands (for this repo: `python scripts/docs_sync.py generate`).
 - Build-check docs output.
 
 ### C.2 Docusaurus
@@ -855,8 +850,8 @@ Completion criteria:
 2. Mutating modes run the relevant framework build, docs generation, or health check.
 3. Maintain mode remains read-only and reports next commands instead of editing.
 4. Skill changes pass these proof commands when applicable:
-   - `python skills/docs-steward/scripts/check.py`
-   - `python skills/docs-steward/scripts/docs_sync.py` when generated docs surfaces change
+   - `python scripts/check.py`
+   - `python scripts/docs_sync.py` when generated docs surfaces change
 
 ---
 
@@ -872,7 +867,6 @@ Completion criteria:
 8. Refuse out-of-scope requests and route to the correct specialized skill.
 9. Init mode is non-destructive in existing repos: create missing files only unless user explicitly requests overwrite.
 10. Generate mode must extract from source code; never fabricate signatures, docstrings, or API details.
-
 ````
 
 [Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/docs-steward/SKILL.md)

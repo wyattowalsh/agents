@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "plan": "repo-cleanup-session-review-v2",
+  "wave": "W5",
+  "parent": "repo-cleanup-refinement-v2",
+  "bundles": {
+    "A": "repo-cleanup+fixes",
+    "B": "review-skill-collateral"
+  },
+  "parallel_groups": {
+    "PG-W0": { "dispatched": 12, "resolved": 12, "status": "pass" },
+    "PG-W1": { "dispatched": 19, "resolved": 19, "status": "pass" },
+    "PG-W2": { "dispatched": 5, "resolved": 5, "status": "pass" },
+    "PG-W3": { "dispatched": 5, "resolved": 5, "status": "pass" },
+    "PG-W4": { "dispatched": 14, "resolved": 14, "status": "pass" }
+  },
+  "gates": {
+    "G-RC-0": "pass",
+    "G-RC-1": "pass",
+    "G-RC-2": "pass",
+    "G-RC-3": "pass",
+    "G-RC-4": "pass"
+  },
+  "file_locks": {
+    "skills/harness-master/evals/evals.json": "W-F2-drift",
+    "skills/harness-master/evals/skills-source-audit-route.json": "W-F2-drift",
+    "scripts/validate/collectors/quarantine.py": "W-F1-validate",
+    "scripts/validate/collectors/authoring.py": "W-F4-hygiene"
+  },
+  "evidence": "planning/manifests/repo-cleanup-review-evidence.md",
+  "findings": "planning/manifests/repo-cleanup-review-findings.md",
+  "diff_stats": {
+    "files_changed": 1384,
+    "bundle_a_paths": 1490,
+    "bundle_b_paths": 9
+  }
+}

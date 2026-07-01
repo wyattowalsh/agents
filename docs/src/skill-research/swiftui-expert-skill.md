@@ -54,4 +54,4 @@ AvdLee / Antoine van der Lee + Omar Elsayed (github.com/AvdLee/SwiftUI-Agent-Ski
 
 Author's swift-concurrency (same maintainer); other SwiftUI or iOS UI skills (e.g. from Dimillian or antfu web-design); official Apple SwiftUI / Human Interface Guidelines docs + sample code; Instruments + SwiftUI inspector without agent skill layer; general mobile UI or design system skills.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

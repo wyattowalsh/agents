@@ -1,3 +1,4 @@
+minimum_pre_commit_version: '3.0.0'
 repos:
   - repo: local
     hooks:
@@ -49,12 +50,30 @@ repos:
         language: system
         pass_filenames: false
         files: ^(docs/src/authoring/skills/.*\.mdx|skills/.*/SKILL\.md)$
-      - id: docs-build-check
-        name: "Verify docs build"
-        entry: sh -c 'uv run wagents docs build'
+      - id: readme-check
+        name: Check README freshness
+        entry: uv run wagents readme --check
         language: system
-        files: '^(docs/.*\.(mdx|css|mjs|astro)|skills/|agents/|mcp/)'
         pass_filenames: false
+        files: ^(README\.md|wagents/readme\.py|docs/src/authoring/|skills/.*/SKILL\.md|agents/)
+      - id: docs-generate-check
+        name: Check docs generate freshness
+        entry: uv run wagents docs generate --no-installed --check
+        language: system
+        pass_filenames: false
+        files: ^(docs/|skills/|agents/|wagents/docs)
+      - id: docs-compose-check
+        name: Check composed docs freshness
+        entry: uv run wagents docs compose --check-composed --min-pct 100
+        language: system
+        pass_filenames: false
+        files: ^(docs/src/content/docs/skills/|skills/.*/SKILL\.md)
+      - id: sync-stack-check
+        name: Check agent stack sync freshness
+        entry: uv run python scripts/check_agent_stack.py
+        language: system
+        pass_filenames: false
+        files: ^(instructions/|config/sync-manifest\.json|\.claude/rules/|wagents/platforms/)
       - id: actionlint
         name: Lint GitHub Actions workflows
         entry: actionlint

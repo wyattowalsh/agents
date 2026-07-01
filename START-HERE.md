@@ -42,7 +42,20 @@ uv run wagents docs dev
 
 1. Read [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md)
 2. For non-trivial changes, use OpenSpec: `uv run wagents openspec doctor`
-3. Before PR: `uv run wagents validate && uv run pytest && uv run wagents readme --check`
+3. Before PR: `uv run wagents validate && uv run wagents hooks validate --harness all && uv run pytest && uv run wagents readme --check`
+4. Optional: `pre-commit install` then `pre-commit run --all-files` (see [CONTRIBUTING.md](CONTRIBUTING.md#pre-commit-and-ci-parity))
+
+## Maintainer edit map
+
+| Asset | Edit here | Regenerate / sync |
+| --- | --- | --- |
+| Repo skill | `skills/<name>/SKILL.md` | `wagents docs generate`, `wagents readme` |
+| Curated external | `docs/src/authoring/skills/<id>.mdx` | `wagents docs generate`, `wagents catalog index --check` |
+| Agent | `agents/<name>.md` | `wagents docs generate`, `wagents validate` |
+| Instructions | `instructions/global.md` (+ platform overlays) | `sync_agent_stack.py --apply --targets repo` |
+| MCP | `config/mcp-registry.json` | regenerate `mcp/mcphub/mcp_settings.json` |
+| Hooks | `config/hook-registry.json` | `sync_agent_stack.py --apply --targets repo`; `wagents hooks validate --harness all` |
+| Generated surfaces | never hand-edit | see `config/docs-artifact-registry.json` |
 
 ## Harness support honesty
 

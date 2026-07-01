@@ -236,3 +236,105 @@ def test_journal_delete_requires_confirmation(journal_dir, capsys, monkeypatch):
     journal.cmd_delete(argparse.Namespace(target=str(path), force=True))
     json.loads(capsys.readouterr().out)
     assert not path.exists()
+
+
+def test_scanner_detects_factcheck_mode_from_verify_phrasing():
+    result = scanner.scan("verify that 90% of startups fail in year one")
+
+    assert result["suggested_mode"] == "factcheck"
+    assert result["question_type"] == "factual"
+
+
+def test_scanner_suggests_survey_for_academic_landscape_queries():
+    result = scanner.scan("What does the peer-reviewed literature say about mindfulness interventions?")
+
+    assert result["suggested_mode"] == "survey"
+    assert "academic" in result["domain_signals"]
+
+
+def test_formatter_validate_finding_reports_missing_claim():
+    warnings = formatter.validate_finding({"confidence": 0.5, "evidence": [{"url": "https://example.com"}]}, 1)
+
+    assert any("missing required field 'claim'" in warning for warning in warnings)
+
+
+def test_formatter_sorts_by_confidence_descending():
+    raw = [
+        {"claim": "Lower confidence", "confidence": 0.4, "evidence": [{"url": "https://a.example"}]},
+        {"claim": "Higher confidence", "confidence": 0.9, "evidence": [{"url": "https://b.example"}]},
+    ]
+    normalized = [formatter.normalize_finding(item, index) for index, item in enumerate(raw, 1)]
+    normalized.sort(key=lambda finding: finding["confidence"], reverse=True)
+    for index, finding in enumerate(normalized, 1):
+        finding["id"] = f"RR-{index:03d}"
+
+    assert normalized[0]["id"] == "RR-001"
+    assert normalized[0]["claim"] == "Higher confidence"
+    rendered = formatter.format_html(normalized)
+    assert "Higher confidence" in rendered
+    assert "<table>" in rendered
+
+
+def test_journal_slug_strips_date_domain_and_version_suffix():
+    assert journal.journal_slug_from_filename("2026-02-27-tech-llm-agent-patterns.md") == "llm-agent-patterns"
+    assert journal.journal_slug_from_filename("2026-02-27-tech-llm-agent-patterns-v2.md") == "llm-agent-patterns"
+
+
+def test_journal_export_injects_dashboard_json(journal_dir, capsys, tmp_path, monkeypatch):
+    monkeypatch.setattr(journal, "DASHBOARD_TEMPLATE", ROOT / "skills/research/templates/dashboard.html")
+    monkeypatch.setattr(journal, "EXPORT_DIR", journal_dir / "exports")
+
+    findings = [
+        {
+            "claim": "PostgreSQL uses MVCC",
+            "confidence": 0.82,
+            "cross_validation": "agrees",
+            "evidence": [
+                {
+                    "tool": "docs",
+                    "url": "https://www.postgresql.org/docs/current/mvcc.html",
+                    "timestamp": "2026-02-27T10:00:00",
+                    "excerpt": "MVCC overview",
+                }
+            ],
+        }
+    ]
+    created = _cmd_save(
+        argparse.Namespace(
+            query="What is PostgreSQL MVCC?",
+            tier="standard",
+            mode="investigate",
+            status="In Progress",
+            findings=None,
+            update=None,
+            wave=None,
+            state=None,
+        ),
+        capsys,
+    )
+    path = Path(created["path"])
+    _cmd_save(
+        argparse.Namespace(
+            query=None,
+            tier="standard",
+            mode="investigate",
+            status="Complete",
+            findings=json.dumps(findings),
+            update=str(path),
+            wave=1,
+            state=None,
+        ),
+        capsys,
+    )
+
+    journal.cmd_export(argparse.Namespace(target=str(path), output=None))
+    result = json.loads(capsys.readouterr().out)
+
+    out_path = Path(result["path"])
+    html = out_path.read_text(encoding="utf-8")
+    assert result["action"] == "exported"
+    assert result["slug"] == journal.journal_slug_from_filename(path.name)
+    assert 'id="data" type="application/json"' in html
+    assert "PostgreSQL uses MVCC" in html
+    assert '"mean_confidence": 0.82' in html
+    assert out_path.parent == journal_dir / "exports"

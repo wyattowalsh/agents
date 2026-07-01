@@ -20,7 +20,7 @@ global-only-or-avoid / global-only-or-avoid. Massive official Anthropic repo (15
 
 ## Install Prerequisites
 
-No direct curated install command for the -all wildcard in this status section (see config/external-skills.md for explicit avoid note). General install via Claude Code plugin marketplace (anthropic-agent-skills), document-skills or example-skills sub-plugins, or skills.sh. Selector would be wildcard or broad. Status explicitly global-only-or-avoid.
+No direct curated install command for the -all wildcard in this status section (see docs/src/authoring/skills for explicit avoid note). General install via Claude Code plugin marketplace (anthropic-agent-skills), document-skills or example-skills sub-plugins, or skills.sh. Selector would be wildcard or broad. Status explicitly global-only-or-avoid.
 
 ## Upstream Maintainer
 
@@ -30,4 +30,4 @@ Anthropic (github.com/anthropics/skills; anthropic.com). Official. Includes part
 
 Local or repo-owned skills for document handling, creative tasks, or specific workflows; narrower curated skills from other sources; direct use of Claude native document features or MCP where applicable instead of broad third-party skill bundles; custom skills built from the included template/spec.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

@@ -172,6 +172,7 @@ Load references only when the selected mode needs them.
 | simplification taxonomy | `references/simplification-taxonomy.md` |
 | source/provenance lens | `references/source-provenance-lens.md` |
 | approval-gated fixes | `references/auto-fix-protocol.md` |
+| review state, history, delta, learnings | `references/review-state.md` |
 
 ## Simplification Lens
 
@@ -211,6 +212,20 @@ This `SKILL.md` is portable and prompt-first. It deliberately omits a root model
 | Grok Build CLI | Uses Claude-compatible skill mirroring and `.grok/skills` discovery where available. |
 | Generic Skills CLI targets | Core prompt must install cleanly through `npx skills add` and repo sync dry-runs. |
 
+## State Management
+
+Review history, deltas, and false-positive learnings **persist** in the active harness home directory, not in the repository.
+
+- **Base path:** `~/.{gemini|copilot|codex|claude}/reviews/` (harness-dependent; Claude Code defaults to `.claude`).
+- **State file naming:** `{YYYY-MM-DD}-{project-slug}-{mode}[-{run_id}].json` under the reviews directory.
+- **Learnings:** `{reviews}/learnings/{project-slug}.json` for false-positive dismissals.
+- **Slug rule:** lowercase project names with non-alphanumeric runs replaced by hyphens; empty slugs become `unnamed`.
+- **Collision:** same-day reruns use distinct `run_id` suffixes; saves do not silently overwrite prior review state files.
+- **Operations:** use `scripts/review-store.py` for save/load/list/diff and `scripts/learnings-store.py` for add/check/list/clear.
+- **Read-only modes:** `history`, `delta`, and `learnings list` never edit reviewed source files.
+- **Cleanup:** user-owned; no automatic pruning. Do not commit review JSON into the repo.
+- **Details:** load `references/review-state.md` for envelope fields, diff semantics, and harness path table.
+
 ## Script Index
 
 | Script | Purpose |
@@ -241,10 +256,14 @@ This `SKILL.md` is portable and prompt-first. It deliberately omits a root model
 Before considering changes complete, run the focused checks relevant to this skill:
 
 ```bash
-uv run python skills/review/scripts/check.py
-uv run python skills/skill-creator/scripts/audit.py skills/review
-uv run python skills/skill-creator/scripts/asset_toolkit/validate_evals.py skills/review
-uv run python skills/skill-creator/scripts/package.py skills/review --dry-run
+uv run python scripts/check.py
 ```
 
-Completion criteria: checks pass, package dry-run is portable, eval schemas validate, script smoke checks pass, generated docs/catalog surfaces are refreshed when source changes require it, and any remaining legacy-name references are classified as wrappers, migration notes, generated evidence, or historical research.
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. Bundled `validate_skill` and `validate_evals` pass when evals are present.
+3. Bundled `package.py --dry-run` reports portable.
+4. Repo-only `audit.py` grade remains at or above the prior baseline when run from the monorepo (optional for portable installs; degraded mode is acceptable elsewhere).
+5. Regenerate docs/catalog surfaces when `SKILL.md`, references, or evals change.
+6. Any remaining legacy-name references are classified as wrappers, migration notes, generated evidence, or historical research.

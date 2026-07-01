@@ -22,11 +22,9 @@ Do not widen a review to every skill just because one skill file is present. Sta
 Prefer deterministic evidence before judgment:
 
 1. Read the target `SKILL.md` frontmatter and body.
-2. Run or cite `uv run python skills/skill-creator/scripts/audit.py skills/<name> --format json` when the target is a repo skill.
-3. Run or cite `uv run python skills/skill-creator/scripts/asset_toolkit/validate_evals.py skills/<name> --format json` when evals changed.
-4. Run or cite `uv run python skills/skill-creator/scripts/package.py skills/<name> --dry-run` for portability-sensitive findings.
-5. Run the skill's own `scripts/check.py` when present and trusted.
-6. For public docs/catalog drift, check generated outputs against authoring/source; fix source, not generated pages.
+2. Run or cite `uv run python scripts/check.py` from the target skill directory when present (covers validate, evals, bundled package dry-run, and repo audit when available).
+3. For repo maintainers without the skill's bundled toolkit, override with `audit.py skills/<name>`, `validate_evals.py`, or `package.py --dry-run` on the target path when `skill-creator` is available.
+4. For public docs/catalog drift, check generated outputs against authoring/source; fix source, not generated pages.
 
 If a command is unavailable or out of scope, state degraded mode and continue with line-based source evidence.
 

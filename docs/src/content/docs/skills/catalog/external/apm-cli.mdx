@@ -11,8 +11,8 @@ curated_status: "install-now-after-trust-gate"
 install_command: "pip install apm-cli"
 target_agents: ["claude-code", "codex", "cursor", "gemini-cli", "github-copilot", "opencode"]
 research_slug: "apm-cli"
-composed_by: "phase4-skill-compose"
-composed_at: "2026-06-24"
+composed_by: "compose-external-wave-1"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -34,7 +34,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 Standalone **CLI tool** for supported agent harnesses (see Harness Coverage). Not an [agentskills.io](https://agentskills.io) slash skill.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed phase4-skill-compose using authoring SSOT (`docs/src/authoring/skills/apm-cli.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
+Composed compose-external-wave-1 using authoring SSOT (`docs/src/authoring/skills/apm-cli.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
 </Aside>
 
 ## Harness Coverage
@@ -76,9 +76,9 @@ Entry maintained in authoring SSOT `docs/src/authoring/skills/apm-cli.mdx` and `
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/apm-cli.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "apm-cli"
 description: "Microsoft Agent Package Manager for remote agent packages—install, sync, audit, harness deploy. NOT observability APM. Repo bundle uses wagents/Skills CLI."
@@ -90,6 +90,7 @@ status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 install_command: "pip install apm-cli"
+sync_kind: "external-tool"
 target_agents: [claude-code, codex, cursor, gemini-cli, github-copilot, opencode]
 source_url: "https://github.com/microsoft/apm"
 notes: "Remote third-party packages only. This repo bundle: uv tool install wagents --from git+https://github.com/wyattowalsh/agents or apm install wyattowalsh/agents. MCP stays MCPHub/wagents-owned."
@@ -124,6 +125,19 @@ apm update
 ```
 
 ````
+
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `pip install apm-cli` |
+| source | `microsoft/apm` |
+| source_url | `https://github.com/microsoft/apm` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `claude-code, codex, cursor, gemini-cli, github-copilot, opencode` |
+
 </details>
 
 ## Resources

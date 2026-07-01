@@ -84,7 +84,7 @@ def test_entry_to_public_row_includes_full_external_fields_and_badges():
         promotion_policy="Install only after trust gate; audit again before repo promotion.",
         provenance_evidence=(
             "Curated `npx skills add` command with named `--skill` selectors "
-            "under `install-now-after-trust-gate` in config/external-skills.md."
+            "under `install-now-after-trust-gate` in authoring catalog."
         ),
         selector_mode="named",
         unresolved_reason="",
@@ -117,6 +117,7 @@ def test_entry_to_public_row_includes_full_external_fields_and_badges():
     assert row["trustBadgeVariant"] == "note"
     assert row["installable"] is True
     assert row["selectorMode"] == "named"
+    assert row["syncKind"] == "skills-cli"
     assert row["installedAgents"] == []
     assert "Install only after trust gate" in str(row.get("promotionPolicy", ""))
     assert row.get("riskNotes", "").startswith("Dynamic inputs")

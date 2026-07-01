@@ -16,7 +16,7 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=High impact CI context abuse and injection if workflows integrate AI agents with write perms; focus is detection not exploitation. Review triggers, allowed tools, and env flows before trusting in prod repos. policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `inspect-then-install` batch for trailofbits/skills in config/external-skills.md; live repo https://github.com/trailofbits/skills (5.7k stars, CC-BY-SA-4.0, security research org).
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=High impact CI context abuse and injection if workflows integrate AI agents with write perms; focus is detection not exploitation. Review triggers, allowed tools, and env flows before trusting in prod repos. policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `inspect-then-install` batch for trailofbits/skills in authoring catalog; live repo https://github.com/trailofbits/skills (5.7k stars, CC-BY-SA-4.0, security research org).
 
 ## Install Prerequisites
 
@@ -30,4 +30,4 @@ Install: `npx skills add trailofbits/skills --skill agentic-actions-auditor -y -
 
 `differential-review` for security PR/diff analysis with history; `static-analysis` (codeql/semgrep) or `insecure-defaults` for other vuln classes; general `review`. A general-purpose agent instruction without a scoped skill contract for GitHub Actions AI agent security audits.
 
-> Web evidence from github.com/trailofbits/skills README + plugin/agentic-actions-auditor/README.md + SKILL structure (fetched 2026-06); cross-ref config/external-skills.md. Evidence only; not an endorsement.
+> Web evidence from github.com/trailofbits/skills README + plugin/agentic-actions-auditor/README.md + SKILL structure (fetched 2026-06); cross-ref docs/src/authoring/skills. Evidence only; not an endorsement.

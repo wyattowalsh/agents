@@ -16,7 +16,7 @@ Deploy / Vercel agents. Install targets include antigravity etc.
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Requires auth to Vercel account implicitly via deploy; network upload of project tarball; ownership transfer flow. Review before broad use. policy=Install after trust gate.; evidence=vercel-labs/agent-skills row + config/external-skills.md (grouped with vercel-optimize).
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Requires auth to Vercel account implicitly via deploy; network upload of project tarball; ownership transfer flow. Review before broad use. policy=Install after trust gate.; evidence=vercel-labs/agent-skills row + docs/src/authoring/skills (grouped with vercel-optimize).
 
 ## Install Prerequisites
 

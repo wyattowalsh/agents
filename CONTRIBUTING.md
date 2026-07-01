@@ -13,7 +13,7 @@ Edit source files first, then regenerate derived output.
 | MCP registry and config | `config/mcp-registry.json`, `mcp.json`, `mcp/` | `uv run python scripts/sync_agent_stack.py --targets repo --check`, docs generation when public docs change |
 | Public docs | `docs/src/content/docs/`, `wagents/docs.py`, `wagents/rendering.py`, `wagents/site_model.py` | `uv run wagents docs generate`, `cd docs && pnpm exec astro check` |
 | README | `wagents/cli.py` and catalog inputs | `uv run wagents readme`, `uv run wagents readme --check` |
-| Curated external skills | `docs/src/authoring/skills/*.mdx` (+ `skills-catalog-index.json` via generate), `config/external-skills.md` (legacy), `wagents/external_skills.py` / `skill_index.py` | `uv run wagents skills sync --dry-run`, `uv run wagents docs generate`, docs generation |
+| Curated external skills | `docs/src/authoring/skills/*.mdx` (+ `skills-catalog-index.json` via generate), `wagents/external_skills.py` / `skill_index.py` | `uv run wagents skills sync --dry-run`, `uv run wagents docs generate`, docs generation |
 | Distribution metadata | `agent-bundle.json`, plugin manifests, `opencode.json`, harness config sources | `uv run pytest tests/test_distribution_metadata.py` |
 | Non-trivial workflow changes | `openspec/changes/<change>/` | `uv run wagents openspec validate` |
 
@@ -29,9 +29,28 @@ Follow [START-HERE.md](START-HERE.md) for the 30-minute clone-to-PR path, then r
 
 ```bash
 uv sync
+pre-commit install   # optional but recommended
 uv run wagents validate
 uv run wagents docs generate --no-installed
 ```
+
+## Pre-commit and CI parity
+
+Local hooks mirror CI staleness checks (not the full docs build):
+
+| Check | Pre-commit | CI |
+| --- | --- | --- |
+| ruff / ty | yes | yes |
+| wagents validate | yes (skills/agents paths) | yes |
+| readme --check | yes | yes |
+| docs generate --check | yes | yes |
+| docs compose --check-composed | yes | yes |
+| sync_agent_stack --check | yes | yes |
+| full pytest + pnpm build | no | yes |
+
+PR gate: `uv run wagents validate && uv run wagents hooks validate --harness all && uv run pytest && uv run wagents readme --check`
+
+Sync projection drift: `make sync-check` or `uv run python scripts/check_agent_stack.py`
 
 Docs use pnpm from the `docs/` directory:
 
@@ -47,8 +66,9 @@ pnpm build
 - Skills or agents: `uv run wagents validate`; add focused tests when parser, packaging, or docs behavior changes.
 - Docs generators or generated indexes: `uv run pytest tests/test_site_model.py tests/test_docs.py`; `uv run wagents docs generate --no-installed`; `cd docs && pnpm exec astro check`.
 - README generator changes: `uv run pytest tests/test_readme.py`; `uv run wagents readme --check`.
-- External skill curation: update `config/external-skills.md`, run `uv run wagents skills sync --dry-run`, and do not run `--apply` unless the maintainer explicitly asks for live installs.
+- External skill curation: update `docs/src/authoring/skills/<id>.mdx`, run `uv run wagents docs generate --no-installed`, then `uv run wagents skills sync --dry-run`. Do not run `--apply` unless the maintainer explicitly asks for live installs.
 - Distribution or harness metadata: run `uv run pytest tests/test_distribution_metadata.py` and the relevant sync/check command.
+- Hook registry or policy changes: edit `config/hook-registry.json` and `wagents/hooks/policies/`; run `uv run python scripts/sync_agent_stack.py --apply --targets repo`, then `uv run wagents hooks validate --harness all` and `uv run python scripts/check_hook_discovery_parity.py`.
 - OpenSpec-controlled behavior: create or update an OpenSpec change and run `uv run wagents openspec validate`.
 
 ## External Skills
@@ -56,7 +76,7 @@ pnpm build
 Follow `AGENTS.md` §2.7 **Curated External Skills** for the full promotion workflow. Summary:
 
 1. Audit with `/review source` and `npx skills add <source> --list` (read-only).
-2. Record audited install commands or avoid notes in `config/external-skills.md` — do not copy third-party trees into `skills/`.
+2. Author: create or update `docs/src/authoring/skills/<id>.mdx` with audited install metadata, trust tier, and provenance evidence. Do not vendor copies into `skills/`.
 3. Run `uv run wagents validate` (includes quarantine checks on curated sources).
 4. Preview with `uv run wagents skills sync --dry-run`; do not run `--apply` unless the maintainer explicitly requests live installs.
 5. Regenerate `uv run wagents readme`, `uv run wagents docs generate` (default `--no-installed`), and `uv run wagents docs build`.

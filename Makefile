@@ -80,6 +80,9 @@ ci-check:                 ## Lint GitHub Actions workflows (actionlint + analyze
 		print("workflow-analyzer OK:", d["file"])'; \
 	done
 
+sync-check:               ## Verify agent stack sync projections are fresh
+	uv run python scripts/check_agent_stack.py
+
 audit:                    ## Audit all skill quality scores
 	uv run python skills/skill-creator/scripts/audit.py --all --format table
 
@@ -154,9 +157,15 @@ help:                     ## Show this help
 .PHONY: install install-agent install-skill list update help \
         install-claude install-cursor install-copilot install-gemini \
         install-codex install-opencode install-crush install-antigravity \
-        validate test lint format typecheck check-python ci-check audit package openspec-doctor \
+        validate test lint format typecheck check-python ci-check sync-check audit package openspec-doctor \
         openspec-validate openspec-update readme \
         mcphub-up mcphub-down mcphub-logs mcphub-doctor mcphub-validate \
         mcphub-openapi mcphub-smoke mcphub-install-launch-agent \
         mcphub-uninstall-launch-agent \
         apm-materialize apm-install apm-compile apm-audit apm-doctor
+
+skill-portability-check:  ## Run portable skill CI checks
+	SKILL_PORTABLE_CI=1 uv run pytest tests/test_skill_portability.py tests/test_skill_bundled_toolkit.py tests/test_skills_no_wagents.py tests/test_skills_p7_operator_paths.py tests/test_namer_catalog_parity.py tests/test_composed_catalog_script_parity.py tests/test_package.py -q --tb=line
+
+skill-toolkit-sync-check:  ## Verify bundled asset_toolkit SSOT
+	uv run python scripts/sync_skill_portability.py --check

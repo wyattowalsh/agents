@@ -2,17 +2,23 @@
 
 from __future__ import annotations
 
+import json
+import subprocess
+from pathlib import Path
+
 import pytest
 
 from scripts.sync_agent_stack import MCP_REGISTRY_PATH, load_json
 from wagents.platforms.base import SyncContext
 from wagents.platforms.grok import (
     GROK_CONFIG_POLICY_PATH,
+    GROK_FLEET_HOOKS_PATH,
     GROK_LSP_POLICY_PATH,
     GROK_PLANNOTATOR_HOOKS_PATH,
     PLANNOTATOR_CORE_SKILLS,
     PLANNOTATOR_EXIT_PLAN_HOOK_HOME_NAME,
     PLANNOTATOR_EXIT_PLAN_HOOK_PY_PATH,
+    PLANNOTATOR_HOOKS_POLICY_LEGACY_PATH,
     PLANNOTATOR_HOOKS_POLICY_PATH,
     Adapter,
     GrokConfigDropError,
@@ -27,13 +33,129 @@ from wagents.platforms.grok import (
     plannotator_exit_plan_hook_home_path,
     registry_mcp_server_names,
     render_grok_config,
+    render_grok_fleet_hooks_json,
+    render_grok_hooks,
     render_grok_plannotator_hooks,
     render_preserved_grok_config,
     resolve_plannotator_binary,
     strip_registry_mcp_tables,
+    sync_grok_fleet_hooks,
     sync_grok_lsp,
     sync_grok_plannotator,
 )
+
+
+def _fleet_registry() -> dict[str, object]:
+    return {
+        "version": 1,
+        "hooks": [
+            {
+                "id": "codex-destructive-shell-guard",
+                "logical_event": "PreToolUse",
+                "matcher": "Bash|bash",
+                "mode": "enforce",
+                "command": (
+                    "python3 {repo_root}/hooks/wagents-hook.py "
+                    "codex-destructive-shell-guard --harness {harness}"
+                ),
+                "timeout": 5,
+                "harnesses": ["codex"],
+            },
+            {
+                "id": "image-input-optimizer-guard",
+                "logical_event": "PreToolUse",
+                "matcher": ".*",
+                "mode": "enforce",
+                "command": "{hook_runner} image-input-optimizer-guard --harness {harness}",
+                "timeout": 60,
+                "harnesses": ["codex", "claude-code", "cursor"],
+            },
+            {
+                "id": "verify-before-stop",
+                "logical_event": "Stop",
+                "mode": "enforce",
+                "command": "{repo_root}/hooks/verify-before-stop.sh",
+                "timeout": 60,
+                "harnesses": ["claude-code"],
+            },
+            {
+                "id": "cursor-only",
+                "logical_event": "PreToolUse",
+                "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-only --harness {harness}",
+                "harnesses": ["cursor"],
+            },
+        ],
+    }
+
+
+def test_grok_build_subprocess_destructive_shell_emits_block_json():
+    runner = Path(__file__).resolve().parents[1] / "hooks" / "run-wagents-hook"
+    completed = subprocess.run(
+        [str(runner), "cursor-destructive-shell-guard", "--harness", "grok-build"],
+        input=json.dumps(
+            {
+                "hook_event_name": "PreToolUse",
+                "tool_name": "bash",
+                "tool_input": {"command": "rm -rf /"},
+            }
+        ),
+        text=True,
+        capture_output=True,
+        cwd=Path(__file__).resolve().parents[1],
+        check=False,
+    )
+    assert completed.returncode == 0
+    payload = json.loads(completed.stdout)
+    assert payload["decision"] == "block"
+
+
+def test_render_grok_hooks_projects_dispatcher_policies_as_deny_adapter():
+    rendered = render_grok_hooks(_fleet_registry(), repo_root="/repo")
+    groups = rendered["hooks"]["PreToolUse"]
+    commands = [group["hooks"][0]["command"] for group in groups]
+    # Codex-sourced dispatcher policies are projected with the grok-build harness.
+    assert any("codex-destructive-shell-guard --harness grok-build" in cmd for cmd in commands)
+    assert any("image-input-optimizer-guard --harness grok-build" in cmd for cmd in commands)
+    assert all(cmd.startswith("/repo/hooks/run-wagents-hook ") for cmd in commands)
+    # Nested Claude-style group shape (not Cursor flat).
+    for group in groups:
+        assert "hooks" in group
+        assert group["hooks"][0]["type"] == "command"
+
+
+def test_render_grok_hooks_excludes_shell_scripts_and_other_harnesses():
+    rendered = render_grok_hooks(_fleet_registry(), repo_root="/repo")
+    flattened = json.dumps(rendered)
+    # Non-dispatcher shell script row is not projected.
+    assert "verify-before-stop.sh" not in flattened
+    # cursor-only row (not in codex source harness) is excluded.
+    assert "cursor-only" not in flattened
+
+
+def test_render_grok_fleet_hooks_json_real_registry_is_nonempty():
+    text = render_grok_fleet_hooks_json("/repo")
+    assert text.endswith("\n")
+    data = json.loads(text)
+    assert data["hooks"]
+
+
+def test_sync_grok_fleet_hooks_writes_home_file(tmp_path):
+    hooks_dir = tmp_path / "grok-hooks"
+    ctx = SyncContext(apply=True)
+    sync_grok_fleet_hooks(ctx, repo_root="/repo", hooks_dir=hooks_dir)
+    written = hooks_dir / GROK_FLEET_HOOKS_PATH.name
+    assert written.is_file()
+    assert json.loads(written.read_text(encoding="utf-8"))["hooks"]
+
+
+def test_grok_plannotator_policy_unified_source_and_legacy_parity():
+    # The default policy source is the unified harness-neutral file.
+    assert PLANNOTATOR_HOOKS_POLICY_PATH.name == "plannotator-hooks.policy.json"
+    # The legacy grok-specific file is a byte-identical re-export (no drift).
+    assert (
+        PLANNOTATOR_HOOKS_POLICY_LEGACY_PATH.read_text(encoding="utf-8")
+        == PLANNOTATOR_HOOKS_POLICY_PATH.read_text(encoding="utf-8")
+    )
 
 
 def test_is_grok_owned_header_matches_policy_tables():

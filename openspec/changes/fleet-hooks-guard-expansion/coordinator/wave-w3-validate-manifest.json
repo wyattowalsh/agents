@@ -1,0 +1,18 @@
+{
+  "wave": "W3",
+  "dispatched": [
+    {"task_id": "C-040a", "agent": "SA-Verify-A", "verify": "pytest tests/hooks/ -q"},
+    {"task_id": "C-040b", "agent": "SA-Verify-B", "verify": "pytest tests/test_wagents_hook.py -q"},
+    {"task_id": "C-040c", "agent": "SA-Verify-C", "verify": "pytest tests/test_grok_platform.py tests/test_opencode_hook_bridge.py -q"},
+    {"task_id": "C-040d", "agent": "SA-Verify-D", "verify": "pytest tests/test_sync_agent_stack.py -k hook -q"}
+  ],
+  "gate_checks": [
+    "uv run wagents validate",
+    "uv run wagents hooks validate --harness all",
+    "uv run wagents apm materialize --check",
+    "uv run python scripts/sync_agent_stack.py --check --targets repo",
+    "uv run python scripts/check_hook_discovery_parity.py",
+    "uv run ruff check hooks/wagents-hook.py tests/hooks/",
+    "uv run wagents openspec validate"
+  ]
+}

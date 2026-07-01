@@ -52,6 +52,20 @@ def test_self_doctor_includes_apm_cli():
     assert "apm-cli" in names
 
 
+def test_self_doctor_includes_rtk(monkeypatch):
+    monkeypatch.setattr("wagents.rtk.shutil.which", lambda name: "/usr/local/bin/rtk" if name == "rtk" else None)
+    monkeypatch.setattr(
+        "wagents.rtk.subprocess.run",
+        lambda argv, **_kwargs: __import__("subprocess").CompletedProcess(argv, 0, "rtk 0.43.0\n", ""),
+    )
+
+    result = runner.invoke(app, ["self", "doctor", "--format", "json"])
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.output)
+    names = {check["name"] for check in payload["checks"]}
+    assert "rtk" in names
+
+
 def test_self_doctor_includes_apm_surface_when_manifest_present(tmp_path: Path, monkeypatch):
     (tmp_path / "skills").mkdir()
     (tmp_path / "agents").mkdir()

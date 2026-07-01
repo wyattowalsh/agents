@@ -156,7 +156,7 @@ def build_dedup_candidates(inventory_rows: list[dict], external_policy: list[dic
                 "count": len(matching),
                 "sources": [m.get("source") for m in matching],
                 "canonical_provenance": "verified-curated-external",
-                "note": "policy collision — pick one source in external-skills.md",
+                "note": "policy collision - pick one source in the authoring catalog",
                 "action": "dedupe_source",
             })
     return candidates

@@ -1,0 +1,10 @@
+{
+  "wave": "G1",
+  "dispatched": [
+    {"task_id": "T-010a-c", "agent": "SA-Dispatcher", "files": ["hooks/wagents-hook.py"]},
+    {"task_id": "T-012a", "agent": "SA-Bridge", "files": ["platforms/opencode/plugins/wagents-hook-bridge.ts"]}
+  ],
+  "gate_checks": [
+    "uv run pytest tests/hooks/test_opencode_bridge_integration.py tests/test_wagents_hook.py -k 'grok_build or opencode or before_read' -q"
+  ]
+}

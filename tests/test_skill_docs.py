@@ -51,19 +51,19 @@ def test_collect_skill_doc_nodes_marks_curated_stubs(monkeypatch):
                 description="Curated external",
                 metadata={"_is_stub": True, "_curated_status": "install-now-after-trust-gate"},
                 body="",
-                source_path="config/external-skills.md",
+                source_path="docs/src/authoring/skills/curated-skill.mdx",
                 source="curated-external",
             )
         ],
     )
 
-    # Force the legacy stub path (no authoring mdx) for this test; real AUTHORING_SKILLS_DIR
-    # now contains files post W3 sync/migrate, which would take the collect_authoring branch instead.
+    # Force the stub-node path; the real authoring dir contains catalog files and would
+    # take the collect_authoring branch instead.
     from pathlib import Path
 
     monkeypatch.setattr(
         "wagents.skill_index.AUTHORING_SKILLS_DIR",
-        Path("/nonexistent/forcing-legacy-stub-path-in-test"),
+        Path("/nonexistent/forcing-stub-path-in-test"),
     )
 
     nodes = collect_skill_doc_nodes(include_installed=False, include_curated=True)

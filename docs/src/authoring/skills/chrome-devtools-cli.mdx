@@ -1,99 +1,46 @@
 ---
 name: "chrome-devtools-cli"
 description: "Use when auditing, writing, or running bounded shell commands that drive Chrome DevTools through the `chrome-devtools` CLI. NOT for MCP tool-call workflows, broad browser QA, unattended package installation, or replacing harness MCP configuration."
-license: "Apache-2.0"
-source_kind: "custom"
+title: "Chrome DevTools CLI"
+source_kind: "curated-external"
+source: "ChromeDevTools/chrome-devtools-mcp"
+install_source: "ChromeDevTools/chrome-devtools-mcp"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+install_command: "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+sync_kind: "skills-cli"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/ChromeDevTools/chrome-devtools-mcp"
+notes: "Official Google `chrome-devtools-cli` skill for bounded terminal-driven Chrome DevTools CLI workflows."
+risk_notes: "CLI workflows can execute local commands and produce large browser artifacts; inspect commands before running and keep artifacts outside version control."
+promotion_policy: "Install only after trust gate; audit again before repo promotion."
+provenance_evidence: "Audited `npx skills add` command with named `--skill` selectors and commit pin in planning/manifests/external-skills/chrome-devtools-mcp.json."
 ---
 
-{/* GENERATED-AUTHORING: source=skills/chrome-devtools-cli/SKILL.md; edit SKILL.md then re-run authoring sync */}
+Official Google `chrome-devtools-cli` skill. Use when the user explicitly needs bounded shell commands or scripts that drive Chrome DevTools through the `chrome-devtools` CLI.
 
-# Chrome DevTools CLI
+## Audit evidence
 
-Use the `chrome-devtools` CLI for terminal-driven browser automation when the user explicitly needs shell commands or scripts. Prefer MCP tools directly when the current harness already exposes Chrome DevTools MCP tools.
+- **Source:** [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp)
+- **Pinned commit:** `a90378adf3226e8b27a05cdcfdd801c199acaa93`
+- **License:** Apache-2.0
+- **Author:** Google LLC
+- **Package:** `chrome-devtools-mcp` 0.23.0 (per `planning/manifests/external-skills/chrome-devtools-mcp.json`)
+- **Source-list evidence:** `npx skills add github:ChromeDevTools/chrome-devtools-mcp --list` lists upstream skill `chrome-devtools-cli`
 
-## Dispatch
+## Dedupe
 
-| $ARGUMENTS | Action |
-| --- | --- |
-| Empty | Ask what page or CLI task should be automated |
-| CLI examples | Provide bounded `chrome-devtools <tool>` commands with expected outputs |
-| Shell script request | Write a script that calls `chrome-devtools` commands and handles failures |
-| First-time setup | Surface installation guidance from `references/installation.md`; do not install automatically |
-| Large output | Use CLI output files or JSON parsing instead of printing huge snapshots or traces |
-| Service lifecycle | Use `start`, `status`, and `stop` only when diagnosing the CLI service itself |
+This curated install replaces the repo-vendored `skills/chrome-devtools-cli/` copy. The upstream skill keeps the same slash command after installation: `/chrome-devtools-cli`.
 
-## Guardrails
+## Hooks, scripts, and credentials
 
-- Do not run `npm i -g` or mutate global package state unless the user explicitly asks.
-- Run `chrome-devtools <tool> --help` before using unfamiliar flags.
-- Use `--output-format=json` when a script needs stable parsing.
-- Do not read raw trace, screenshot, or heap snapshot artifacts into the context.
-- Quote file paths and URLs in shell commands.
+Audited upstream skills at the pinned commit are guidance-only Markdown. No hooks, bundled scripts, or credential requests were identified in the skill bundle.
 
-## Command Shape
+## Network access
 
-```sh
-chrome-devtools <tool> [arguments] [flags]
-```
+CLI workflows can navigate target pages and inspect browser evidence through Chrome DevTools. Repo-managed MCP config disables usage statistics and update checks where applicable.
 
-## Common Commands
+## Artifact hygiene
 
-```bash
-chrome-devtools list_pages
-chrome-devtools new_page "https://example.com"
-chrome-devtools navigate_page --url "https://example.com"
-chrome-devtools take_snapshot
-chrome-devtools click "uid"
-chrome-devtools fill "uid" "text"
-chrome-devtools press_key "Enter"
-chrome-devtools list_console_messages --types error
-chrome-devtools list_network_requests --pageSize 50 --pageIdx 0
-chrome-devtools lighthouse_audit --mode "navigation" --device "desktop"
-chrome-devtools performance_start_trace true true --filePath "trace.json.gz"
-chrome-devtools take_screenshot --fullPage true --filePath "page.png"
-```
-
-## Workflow
-
-1. Verify the CLI exists with `chrome-devtools --help` or provide setup guidance if it does not.
-2. Navigate or select a page.
-3. Take a snapshot to obtain `uid`s.
-4. Act with focused commands such as `click`, `fill`, `press_key`, or `upload_file`.
-5. Verify with a fresh snapshot, console messages, network requests, or screenshot.
-
-## Reference File Index
-
-| File | Content | Read When |
-| --- | --- | --- |
-| `references/installation.md` | Optional global CLI install guidance and troubleshooting | The `chrome-devtools` binary is missing and the user wants CLI usage |
-| `references/provenance.md` | Upstream source, commit, license, and adaptation notes | Before modifying this skill or auditing provenance |
-
-## Critical Rules
-
-1. Do not install or update global npm packages unless the user explicitly asks.
-2. Prefer MCP tools directly unless the user specifically needs CLI commands or scripts.
-3. Use `--help` before unfamiliar CLI flags.
-4. Use JSON output for scripts that need stable parsing.
-5. Keep trace, screenshot, and snapshot artifacts out of version control.
-
-## Canonical Vocabulary
-
-| Term | Meaning |
-| --- | --- |
-| CLI | The `chrome-devtools` executable installed from `chrome-devtools-mcp` |
-| Tool command | A bounded `chrome-devtools <tool>` invocation |
-| JSON output | Stable machine-readable CLI output for scripts |
-| Service lifecycle | `start`, `status`, and `stop` commands for diagnosing the CLI service |
-
-## Validation Contract
-
-Run from this skill directory before declaring changes complete:
-
-```bash
-python scripts/check.py
-```
-
-Completion criteria:
-
-1. `scripts/check.py` exits 0.
-2. No portable-CLI violations remain under this skill directory.
+Use JSON output and file paths for large outputs. Do not commit traces, screenshots, snapshots, or local CLI diagnostics.

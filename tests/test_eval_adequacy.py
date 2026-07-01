@@ -113,17 +113,17 @@ def test_assess_r4_email_like_e4(patched_repo):
     assert rep["needs_e4"] is False
 
 
-def test_assess_r3_chrome_lacks_e4_fails_strict(patched_repo):
+def test_assess_r3_mcp_creator_lacks_e4_fails_strict(patched_repo):
     sd = _make_skill(
         patched_repo,
-        "chrome-devtools",
-        'allowed-tools: "chrome navigate take_snapshot" Write\n',
+        "mcp-creator",
+        'allowed-tools: "mcp server configure" Write\n',
     )
     _write_evals(
         sd,
         [
-            {"id": "explicit-empty", "prompt": "/chrome-devtools", "expected_output": "asks url"},
-            {"id": "implicit-trigger", "prompt": "debug the login form", "expected_output": "plans debug"},
+            {"id": "explicit-empty", "prompt": "/mcp-creator", "expected_output": "asks target"},
+            {"id": "implicit-trigger", "prompt": "add an MCP server", "expected_output": "plans scaffold"},
             # missing negative + refusal for full E3, but will trigger R3
         ],
     )

@@ -16,7 +16,7 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Heavy resource use (full DB builds can take time/memory); build quality critical (LoC/extractor errors); macOS Apple Silicon arm64e mismatches (exit 137, needs Rosetta/Homebrew); noisy/false-neg without data extensions; requires external `codeql` binary. Zero findings must be investigated. policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated trailofbits/skills inspect-then-install group in config/external-skills.md + https://github.com/trailofbits/skills (static-analysis plugin).
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Heavy resource use (full DB builds can take time/memory); build quality critical (LoC/extractor errors); macOS Apple Silicon arm64e mismatches (exit 137, needs Rosetta/Homebrew); noisy/false-neg without data extensions; requires external `codeql` binary. Zero findings must be investigated. policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated trailofbits/skills inspect-then-install group in authoring catalog + https://github.com/trailofbits/skills (static-analysis plugin).
 
 ## Install Prerequisites
 

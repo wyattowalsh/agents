@@ -12,7 +12,6 @@ metadata:
   author: wyattowalsh
   version: "2.0.0"
 ---
-
 # Skill Creator
 
 Create, improve, and audit AI agent skills. Every skill follows 14 proven structural patterns.
@@ -154,7 +153,7 @@ Auto-detects mode from data: `phases` field → process monitor; `skills` array 
 ## Gallery (Empty Arguments)
 
 Present skill inventory with scores and available actions.
-Run `uv run python skills/skill-creator/scripts/audit.py --all --format table`, display results, offer mode menu.
+Run `uv run python scripts/audit.py --all --format table`, display results, offer mode menu.
 
 ## Package
 
@@ -177,7 +176,7 @@ Runtime-projected hook enforcement for this skill should preserve these behavior
 - Stop hooks validate dirty skill-definition, eval, and hook surfaces before exit
 - Stop hooks exit immediately when hook input has `stop_hook_active: true` to avoid recursive loops
 
-Packaged skills must not depend on repo-root commands such as `uv run python skills/skill-creator/scripts/verify.py ...`. Keep executable hook commands in runtime-specific config, not in portable skill frontmatter.
+Packaged skills must not depend on repo-root commands such as `uv run python scripts/verify.py ...`. Keep executable hook commands in runtime-specific config, not in portable skill frontmatter.
 
 ## State Management
 
@@ -227,7 +226,7 @@ Completion criteria:
 
 1. Run `uv run python scripts/check.py` from the target skill directory before declaring any skill complete
 2. Re-run `uv run python scripts/check.py` after changing evals and before declaring the skill complete
-3. Run `uv run python skills/skill-creator/scripts/audit.py` after every significant SKILL.md change
+3. Run `uv run python scripts/audit.py` after every significant SKILL.md change
 4. Never create a skill without a dispatch table — it is the routing contract
 5. Never create a dispatch table without an empty-args handler — unrouted input is a bug
 6. Every reference file must appear in the Reference File Index — orphan refs are invisible

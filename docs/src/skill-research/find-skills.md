@@ -16,7 +16,7 @@ Vercel find-skills; overlaps with harness-master Discover for systematic gap exp
 
 ## Trust And Risks
 
-trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=dupe of harness-master Discover; high install count for docs ref. policy=Keep global-only.; evidence=Keep Global section in config/external-skills.md (vercel-labs/skills@find-skills).
+trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=dupe of harness-master Discover; high install count for docs ref. policy=Keep global-only.; evidence=Keep Global section in authoring catalog (vercel-labs/skills@find-skills).
 
 ## Install Prerequisites
 

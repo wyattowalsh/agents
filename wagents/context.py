@@ -151,6 +151,11 @@ def resolve_repo_script(relative: str | Path) -> Path:
     return script
 
 
+def reset_cli_context() -> None:
+    """Clear per-invocation CLI context (used by tests after CliRunner invocations)."""
+    _CLI_CONTEXT.set(None)
+
+
 def set_cli_context(
     *,
     repo_root: Path | None,

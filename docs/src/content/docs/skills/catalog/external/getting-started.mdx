@@ -12,7 +12,7 @@ install_command: "npx skills add crewaiinc/skills --skill getting-started -y -g 
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "getting-started"
 composed_by: "compose-external-wave-4"
-composed_at: "2026-06-23"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,7 +26,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Curated third-party skill source. Run /review source before repo promotion."
   installCommand={`npx skills add crewaiinc/skills --skill getting-started -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/getting-started"
-  badges={[{ text: "getting-started", variant: "note" }, { text: "19 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+  badges={[{ text: "getting-started", variant: "note" }, { text: "10 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
@@ -58,7 +58,7 @@ Curated status: `inspect-then-install`
 
 Risk notes: Curated third-party skill source. Run /review source before repo promotion.
 
-Entry maintained via authoring + research for compose-external-wave-4; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/getting-started.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 ## Install Prerequisites
 
@@ -84,9 +84,9 @@ Same crewaiinc/skills bundle.
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/getting-started.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "getting-started"
 description: "Curated third-party skill source. Run /review source before repo promotion."
@@ -103,14 +103,14 @@ source_url: "https://github.com/crewaiinc/skills"
 notes: "Curated third-party skill source. Run /review source before repo promotion."
 risk_notes: "Curated third-party skill source. Run /review source before repo promotion."
 promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in authoring catalog."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=getting-started; re-run migration to refresh */}
 
 Curated third-party skill source. Run /review source before repo promotion.
 
 ````
+
 
 **Install / provenance (from authoring frontmatter + research):**
 

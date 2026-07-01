@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS_DIR = ROOT / ".github" / "workflows"
 WORKFLOW_FILES = ("ci.yml", "release-skills.yml")
 SHA_PIN_RE = re.compile(r"^[0-9a-f]{40}$")
+CHECKOUT_REF = "11bd71901bbe5b1635ceea3d9b4d4f8b53728782"
 
 
 def _load_workflow(name: str) -> dict:
@@ -21,6 +22,16 @@ def _load_workflow(name: str) -> dict:
 
 def _action_ref(uses: str) -> str:
     return uses.split("@", 1)[1].split("#", 1)[0].strip()
+
+
+def _is_checkout_step(step: dict) -> bool:
+    uses = step.get("uses", "")
+    return isinstance(uses, str) and uses.startswith("actions/checkout@")
+
+
+def _is_local_action_step(step: dict) -> bool:
+    uses = step.get("uses", "")
+    return isinstance(uses, str) and uses.startswith("./")
 
 
 def test_workflows_declare_top_level_permissions() -> None:
@@ -46,3 +57,28 @@ def test_third_party_actions_are_sha_pinned() -> None:
                     continue
                 ref = _action_ref(uses)
                 assert SHA_PIN_RE.match(ref), f"{name} job '{job_name}' uses unpinned action ref '{ref}' in '{uses}'"
+
+
+def test_local_actions_run_after_checkout() -> None:
+    for name in WORKFLOW_FILES:
+        jobs = _load_workflow(name).get("jobs", {})
+        for job_name, job in jobs.items():
+            seen_checkout = False
+            for step in job.get("steps", []):
+                if _is_checkout_step(step):
+                    seen_checkout = True
+                if _is_local_action_step(step):
+                    uses = step.get("uses")
+                    assert seen_checkout, f"{name} job '{job_name}' uses local action '{uses}' before checkout"
+
+
+def test_checkout_actions_use_canonical_ref() -> None:
+    for name in WORKFLOW_FILES:
+        jobs = _load_workflow(name).get("jobs", {})
+        for job_name, job in jobs.items():
+            for step in job.get("steps", []):
+                if not _is_checkout_step(step):
+                    continue
+                uses = step.get("uses", "")
+                ref = _action_ref(uses)
+                assert ref == CHECKOUT_REF, f"{name} job '{job_name}' uses non-canonical checkout ref '{ref}'"

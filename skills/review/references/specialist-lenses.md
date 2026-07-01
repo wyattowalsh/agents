@@ -19,6 +19,35 @@ Use specialist lenses as overlays on a concrete review scope. A lens changes wha
 | `skill-assets` | `SKILL.md`, `skills/<name>/**`, skill evals, package output, skill catalog/research docs | skill-creator structural patterns, dispatch coverage, reference integrity, eval proof, package portability, generated-surface drift |
 | `docs` | docs, README, generated sites, API references | accuracy, freshness, source of truth, generated/manual boundaries, examples, broken links |
 
+## Evidence Prompts
+
+| Lens | Gather before claiming a finding |
+| --- | --- |
+| `security` | Trace untrusted input to sinks; grep secrets/API keys; read authz checks on mutating paths |
+| `supply-chain` | Read lockfiles, install scripts, `package.json`/`pyproject.toml` deps; run `scripts/check.py` or package dry-run when reviewing skills |
+| `ci` | Read workflow YAML permissions, `pull_request_target`, artifact upload steps, cache keys, secret references |
+| `sql` | Read migration files and raw query strings; check parameterization, transaction boundaries, index usage |
+| `data` | Inspect schema contracts, null handling, idempotency keys, train/eval splits, aggregation denominators |
+| `frontend` | Reproduce user flow; read state transitions, error boundaries, loading states; prefer browser snapshots when UI-dependent |
+| `a11y` | Check semantic HTML, focus order, labels, contrast, keyboard traps; use Chrome DevTools a11y tree when available |
+| `web-quality` | Check metadata, CWV signals, crawlability, PWA manifest, broken links, trust/content accuracy |
+| `mcp` | Read tool schemas, auth config, side-effect gates; grep network/credential usage in server code |
+| `agentic` | Read SKILL.md hooks, tool allowlists, memory paths, instruction hierarchy; inspect executable surfaces |
+| `skill-assets` | Run `scripts/check.py`; read dispatch table, evals, reference index; compare generated catalog vs authoring source |
+| `docs` | Diff docs against code/API; grep stale commands; verify generated vs hand-authored boundaries |
+
+## Deep References
+
+| Lens | Read for depth |
+| --- | --- |
+| `supply-chain` | `references/supply-chain-security.md` |
+| `skill-assets` | `references/skill-asset-review.md` |
+| `docs` | `references/checklists.md` |
+| simplification | `references/simplification-lens.md`, `references/simplification-taxonomy.md` |
+| source/provenance | `references/source-provenance-lens.md` |
+| SARIF / Conventional Comments | `references/sarif-output.md`, `references/conventional-comments.md` |
+| browser-grounded UI | Browser-Grounded Review section in `SKILL.md` |
+
 ## Lens Rules
 
 1. Pick lenses from evidence: file types, changed paths, user request, public surfaces, and risk triggers.

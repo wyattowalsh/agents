@@ -55,7 +55,7 @@ See also `config/config-transaction-registry.json` for preview/backup/rollback p
 
 ## AGENTS.md Sections
 
-- [§2.7 Curated External Skills (Bucket B)](https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#27-curated-external-skills-catalog-semantics--bucket-a): explicitly calls out `sync-manifest.json` as part of machine-first registry surfaces (Bucket B) that stay canonical under `config/`.
+- [§2.7 Curated External Skills (Bucket A)](https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#27-curated-external-skills-catalog--bucket-a): catalog authoring SSOT and generated index; `sync-manifest.json` tracks Bucket B registry surfaces under `config/`.
 - [§6 Supported Agents](https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#6-supported-agents): documents per-harness read/generated sources that are realized via this manifest.
 - OpenCode / Grok / Codex specific notes reference generated vs canonical paths tracked here.
 
@@ -66,7 +66,7 @@ See also `config/config-transaction-registry.json` for preview/backup/rollback p
 - Harness support matrix: `/harness-support/`
 
 <CardGrid>
-  <LinkCard title="AGENTS.md §2.7" href="https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#27-curated-external-skills-catalog-semantics--bucket-a" description="Bucket B classification for sync/harness registries." />
+  <LinkCard title="AGENTS.md §2.7" href="https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#27-curated-external-skills-catalog--bucket-a" description="Catalog authoring SSOT and Bucket B registry classification." />
   <LinkCard title="sync script" href="https://github.com/wyattowalsh/agents/blob/main/scripts/sync_agent_stack.py" description="Primary consumer of the manifest for apply/check flows." />
   <LinkCard title="Harness Support" href="/harness-support/" description="Per-harness support tiers and validation status." />
   <LinkCard title="Hooks Catalog" href="/hooks/" description="Related lifecycle hooks also managed via registry + sync." />
@@ -116,7 +116,7 @@ See also `config/config-transaction-registry.json` for preview/backup/rollback p
       "mode": "canonical"
     },
     {
-      "path": "${REPO_ROOT}/config/external-skills.md",
+      "path": "${REPO_ROOT}/docs/public/generated-registries/skills-catalog-index.json",
       "mode": "generated"
     },
     {

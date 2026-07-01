@@ -241,6 +241,7 @@ def _catalog_nodes_from_inventory(rows, existing_ids: set[str]) -> list[CatalogN
         metadata["_skills_trust_tier"] = row.trust_tier
         metadata["_skills_installed_agents"] = list(row.installed_agents)
         metadata["_skills_target_agents"] = list(row.target_agents)
+        metadata["_sync_kind"] = row.sync_kind
         if row.selector_mode:
             metadata["_skills_selector_mode"] = row.selector_mode
         seen_ids.add(row.name)

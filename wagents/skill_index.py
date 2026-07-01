@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Any
 
 import wagents
 from wagents.catalog import CatalogNode
-from wagents.external_skills import ExternalSkillEntry
+from wagents.external_skills import SYNC_KIND_SKILLS_CLI, ExternalSkillEntry, infer_sync_kind
 from wagents.parsing import parse_frontmatter, to_title
 from wagents.site_model import use_command_for_catalog_row
 
@@ -76,6 +76,7 @@ class CatalogAuthoringEntry:
     live_action_risk: str = ""
     risk_category: str = ""
     dedupe_notes: str = ""
+    sync_kind: str = ""
     # Raw frontmatter for extensibility (any extra keys)
     frontmatter: dict[str, Any] = field(default_factory=dict)
 
@@ -99,7 +100,7 @@ def _as_tuple_strs(v: Any) -> tuple[str, ...]:
     return (str(v),)
 
 
-def load_authoring_entries(dir_path: Path | None = None) -> list[CatalogAuthoringEntry]:
+def load_authoring_entries(dir_path: Path | None = None, *, strict: bool = False) -> list[CatalogAuthoringEntry]:
     """Glob *.mdx under the authoring skills dir and parse frontmatter into entries."""
     base = dir_path or AUTHORING_SKILLS_DIR
     if not base.exists():
@@ -109,7 +110,9 @@ def load_authoring_entries(dir_path: Path | None = None) -> list[CatalogAuthorin
         try:
             content = mdx.read_text(encoding="utf-8")
             fm, body = parse_frontmatter(content)
-        except Exception:
+        except Exception as exc:
+            if strict:
+                raise RuntimeError(f"Invalid authoring frontmatter in {mdx}: {exc}") from exc
             # Skip unparsable authoring files (non-fatal; authoring may be partial)
             continue
         name = str(fm.get("name") or mdx.stem)
@@ -155,6 +158,7 @@ def load_authoring_entries(dir_path: Path | None = None) -> list[CatalogAuthorin
             live_action_risk=str(_frontmatter_get(fm, "live_action_risk", "liveActionRisk", default="")),
             risk_category=str(_frontmatter_get(fm, "risk_category", "riskCategory", default="")),
             dedupe_notes=str(_frontmatter_get(fm, "dedupe_notes", "dedupeNotes", default="")),
+            sync_kind=str(_frontmatter_get(fm, "sync_kind", "syncKind", default="")),
             frontmatter=dict(fm),
         )
         entries.append(entry)
@@ -169,6 +173,10 @@ def build_catalog_index(entries: list[CatalogAuthoringEntry]) -> dict[str, Any]:
     custom_rows: list[dict[str, Any]] = []
     external_rows: list[dict[str, Any]] = []
     for e in entries:
+        if e.source_kind == "custom" and not e.sync_kind:
+            sync_kind = SYNC_KIND_SKILLS_CLI
+        else:
+            sync_kind = infer_sync_kind(e.sync_kind, e.install_command)
         row: dict[str, Any] = {
             "name": e.name,
             "title": e.title or to_title(e.name),
@@ -219,6 +227,7 @@ def build_catalog_index(entries: list[CatalogAuthoringEntry]) -> dict[str, Any]:
             "riskCategory": e.risk_category,
             "dedupeNotes": e.dedupe_notes,
             "selectorMode": e.selector_mode,
+            "syncKind": sync_kind,
             "unresolvedReason": e.unresolved_reason,
             "unsupportedTargetAgents": list(e.unsupported_target_agents),
             "license": e.frontmatter.get("license", ""),
@@ -270,14 +279,16 @@ def write_catalog_index(index: dict[str, Any], path: Path | None = None) -> Path
     return out
 
 
-def read_catalog_index(path: Path | None = None) -> dict[str, Any] | None:
+def read_catalog_index(path: Path | None = None, *, strict: bool = False) -> dict[str, Any] | None:
     """Read the catalog index JSON if present."""
     p = path or CATALOG_INDEX_PATH
     if not p.exists():
         return None
     try:
         return json.loads(p.read_text(encoding="utf-8"))
-    except Exception:
+    except Exception as exc:
+        if strict:
+            raise RuntimeError(f"Invalid catalog index JSON in {p}: {exc}") from exc
         return None
 
 
@@ -355,6 +366,7 @@ def entry_to_external_skill_entry(entry: CatalogAuthoringEntry) -> ExternalSkill
         live_action_risk=entry.live_action_risk,
         risk_category=entry.risk_category,
         dedupe_notes=entry.dedupe_notes,
+        sync_kind=infer_sync_kind(entry.sync_kind, entry.install_command),
     )
 
 
@@ -382,6 +394,7 @@ def authoring_entry_to_catalog_node(entry: CatalogAuthoringEntry) -> CatalogNode
             metadata["_skills_source"] = entry.source
         if entry.install_source:
             metadata["_skills_install_source"] = entry.install_source
+        metadata["_sync_kind"] = infer_sync_kind(entry.sync_kind, entry.install_command)
         metadata["_curated_status"] = entry.status or ""
         metadata["_is_stub"] = not bool((entry.body or "").strip())
         if entry.promotion_policy:

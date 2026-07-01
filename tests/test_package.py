@@ -319,6 +319,22 @@ Body content here.
         failed_checks = {c["check"] for c in result["portability_checks"] if not c["passed"]}
         assert "frontmatter_commands_portable" not in failed_checks
 
+    def test_dry_run_blocks_nonportable_body_operator_path(self, tmp_path: Path):
+        skill_md = VALID_SKILL_MD.replace(
+            "Body content here.",
+            "Use skills/test-pkg/scripts/check.py before packaging.",
+        )
+        skill_dir = _make_skill(tmp_path, skill_md)
+        output_dir = tmp_path / "dist"
+
+        result = package_skill(skill_dir, output_dir, dry_run=True)
+
+        failed_checks = {c["check"]: c for c in result["portability_checks"] if not c["passed"]}
+        assert result["blocked"] is True
+        assert result["portable"] is False
+        assert "body_operator_paths_portable" in failed_checks
+        assert "skills/test-pkg/scripts/check.py" in failed_checks["body_operator_paths_portable"]["details"]
+
 
 # ---------------------------------------------------------------------------
 # Missing fields

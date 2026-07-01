@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ImageInputOptimizerConfig",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "cache_dir", "default_profile", "profiles", "profile_detection", "harnesses"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "version": {"type": "integer", "minimum": 1},
+    "cache_dir": {"type": "string", "minLength": 1},
+    "default_profile": {"type": "string", "minLength": 1},
+    "profiles": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/profile"}
+    },
+    "profile_detection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["screenshot_text_patterns", "transparent_requires_alpha"],
+      "properties": {
+        "screenshot_text_patterns": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1
+        },
+        "transparent_requires_alpha": {"type": "boolean"}
+      }
+    },
+    "harnesses": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/harness"},
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "max_long_edge", "max_pixels", "max_bytes", "quality_steps", "output_format"],
+      "properties": {
+        "description": {"type": "string", "minLength": 1},
+        "max_long_edge": {"type": "integer", "minimum": 1},
+        "max_pixels": {"type": "integer", "minimum": 1},
+        "max_bytes": {"type": "integer", "minimum": 1},
+        "quality_steps": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1, "maximum": 100},
+          "minItems": 1
+        },
+        "output_format": {"type": "string", "enum": ["jpeg", "png"]}
+      }
+    },
+    "harness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "tier", "enforcement", "owner", "assurance", "repo_surfaces"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "tier": {
+          "type": "string",
+          "enum": ["native-transform", "hook-rewrite", "hook-block", "specified-only", "instruction-only"]
+        },
+        "enforcement": {"type": "string", "minLength": 1},
+        "owner": {"type": "string", "minLength": 1},
+        "assurance": {"type": "string", "minLength": 1},
+        "repo_surfaces": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

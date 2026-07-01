@@ -96,7 +96,7 @@ def collect_authoring_skill_nodes() -> list[CatalogNode]:
 
 
 def curated_entry_to_node(entry: ExternalSkillEntry) -> CatalogNode:
-    """Build a stub catalog node from a curated external-skills.md entry."""
+    """Build a stub catalog node from a curated external authoring entry."""
     description = entry.notes.strip() or f"Curated external skill: {entry.name}"
     if len(description) > 1024:
         description = description[:1021] + "..."
@@ -109,6 +109,7 @@ def curated_entry_to_node(entry: ExternalSkillEntry) -> CatalogNode:
         "_skills_target_agents": list(entry.target_agents),
         "_skills_source": entry.source,
         "_skills_install_source": entry.install_source,
+        "_sync_kind": entry.sync_kind,
         "_curated_status": entry.status,
         "_is_stub": True,
         "_promotion_policy": entry.promotion_policy,

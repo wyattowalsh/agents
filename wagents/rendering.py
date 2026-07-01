@@ -714,8 +714,6 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
             "`docs/public/generated-registries/skills-catalog-index.json` by "
             "`wagents docs generate`."
         )
-        if not _is_pip_cli_catalog_row(node):
-            parts.append(" Legacy projection `config/external-skills.md` remains dual-read during migration.")
         if node.metadata.get("_is_stub"):
             if is_enriched_stub:
                 parts.append(

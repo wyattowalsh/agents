@@ -150,19 +150,19 @@ The repository SHALL treat per-skill authoring files under `docs/src/authoring/s
 - **THEN** it SHALL write `skills-catalog-index.json` with versioned structure validated by `config/schemas/skills-catalog-index.schema.json`
 - **AND** catalog MDX pages SHALL be regenerated from the index without changing public URL shapes.
 
-#### Scenario: Dual-read fallback during migration
+#### Scenario: Index-only catalog reads
 
-- **WHEN** the catalog index or authoring directory is absent or empty
-- **THEN** consumers SHALL fall back to parsing `config/external-skills.md` via the legacy parser
-- **AND** operators MAY force legacy reads with `WAGENTS_CATALOG_LEGACY_EXTERNAL_MD=1`.
+- **WHEN** `read_external_skill_entries()` is called without an explicit path
+- **THEN** consumers SHALL return rows from the catalog index JSON and authoring MDX only
+- **AND** legacy `config/external-skills.md` dual-read SHALL NOT be used.
 
-### Requirement: External Skills Registry Projection Is Derived
+### Requirement: External Skills Registry Uses Authoring MDX
 
-`config/external-skills.md` SHALL be treated as a deprecated legacy projection during the Bucket A inversion. New curation work SHALL target authoring MDX; the flat markdown file MAY be regenerated from authoring for compatibility but SHALL NOT be the authoritative edit surface.
+`config/external-skills.md` was removed. New curation work SHALL target `docs/src/authoring/skills/<id>.mdx`; the committed `skills-catalog-index.json` bundle emitted by `wagents docs generate` is the machine SSOT.
 
-#### Scenario: Legacy projection remains parseable
+#### Scenario: Catalog index and authoring are authoritative
 
-- **WHEN** tooling reads curated external install commands before full cutover
-- **THEN** `read_external_skill_entries()` SHALL return rows from the index or authoring sources first
-- **AND** legacy markdown parsing SHALL remain available as a fallback until an explicit cutover change removes it.
+- **WHEN** tooling reads curated external install commands
+- **THEN** `read_external_skill_entries()` SHALL return rows from the index and authoring sources
+- **AND** operators SHALL regenerate the index with `uv run wagents docs generate --no-installed` after authoring edits.
 

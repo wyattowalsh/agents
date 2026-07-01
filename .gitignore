@@ -50,6 +50,9 @@ skills-lock.json
 skills/prospector/webapp/frontend/node_modules/
 skills/prospector/webapp/frontend/dist/
 
+# Agent session scratch logs at repo root
+tmp-log*.md
+
 # Local ideation / research scratchpad (intentionally untracked)
 /IDEAS/
 /agents-overhaul-planning/

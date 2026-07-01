@@ -12,7 +12,7 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "devops-engineer"
 composed_by: "compose-custom-wave-2"
-composed_at: "2026-06-17"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,14 +26,10 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work. NOT for infrastructure provisioning (infrastructure-coder) or app code."
   installCommand={`npx skills add github:wyattowalsh/agents --skill devops-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/devops-engineer &lt;mode&gt; [target]"
-  badges={[{ text: "devops-engineer", variant: "note" }, { text: "1429 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "devops-engineer", variant: "note" }, { text: "1429 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work. NOT for infrastructure provisioning (infrastructure-coder) or app code.
-**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
-**Comparable alternative:** `infrastructure-coder` for infrastructure provisioning
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
@@ -111,7 +107,7 @@ Design and generate CI/CD workflow files from requirements.
 3. **Load patterns** -- read `references/github-actions-patterns.md` or `references/gitlab-ci-patterns.md`
 4. **Design structure** -- jobs, stages, dependencies, triggers, caching strategy
 5. **Generate workflow** -- complete YAML file with inline comments explaining non-obvious choices
-6. **Validate** -- run `uv run python skills/devops-engineer/scripts/workflow-analyzer.py &lt;file&gt;` on generated output
+6. **Validate** -- run `uv run python scripts/workflow-analyzer.py &lt;file&gt;` on generated output
 
 ### Output
 
@@ -134,8 +130,8 @@ Analyze and optimize pipeline build times.
 
 ### Analysis
 
-1. **Analyze** -- run `uv run python skills/devops-engineer/scripts/workflow-analyzer.py &lt;workflow&gt;`
-2. **Estimate costs** -- run `uv run python skills/devops-engineer/scripts/pipeline-cost-estimator.py &lt;workflow&gt;`
+1. **Analyze** -- run `uv run python scripts/workflow-analyzer.py &lt;workflow&gt;`
+2. **Estimate costs** -- run `uv run python scripts/pipeline-cost-estimator.py &lt;workflow&gt;`
 3. **Load techniques** -- read `references/pipeline-optimization.md`
 
 ### Optimization Opportunities
@@ -177,7 +173,7 @@ Audit an existing CI/CD pipeline for issues and improvements.
 ### Audit Process
 
 1. **Read workflow** -- parse the target workflow file(s)
-2. **Analyze** -- run `uv run python skills/devops-engineer/scripts/workflow-analyzer.py &lt;workflow&gt;`
+2. **Analyze** -- run `uv run python scripts/workflow-analyzer.py &lt;workflow&gt;`
 3. **Load checklists** -- read `references/pipeline-review-checklist.md`
 
 ### Evaluation Dimensions
@@ -196,7 +192,7 @@ Audit an existing CI/CD pipeline for issues and improvements.
 Analyze CI failure logs to identify root causes and fixes.
 
 1. **Ingest logs** -- read provided log file or inline content. For large logs (&gt;500 lines): truncate to last 200 lines + first 50 lines, then sample middle sections around error patterns
-2. **Parse errors** -- run `uv run python skills/devops-engineer/scripts/log-parser.py &lt;logfile&gt;`
+2. **Parse errors** -- run `uv run python scripts/log-parser.py &lt;logfile&gt;`
 3. **Load triage protocol** -- read `references/ci-failure-triage.md`
 4. **Classify failures** by category:
 
@@ -263,9 +259,9 @@ Load ONE reference at a time. Do not preload all references into context.
 </Tabs>
 
 <details class="source-disclosure">
-<summary>View Full SKILL.md</summary>
+<summary>Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml title="skills/devops-engineer/SKILL.md"
 ---
 name: devops-engineer
 description: >-
@@ -279,7 +275,6 @@ metadata:
   author: wyattowalsh
   version: "1.0.0"
 ---
-
 # DevOps Engineer
 
 CI/CD pipeline design, optimization, and deployment strategy. 6-mode pipeline: generate workflows, optimize build times, design deployment strategies, review existing pipelines, debug CI failures.
@@ -335,7 +330,7 @@ Design and generate CI/CD workflow files from requirements.
 3. **Load patterns** -- read `references/github-actions-patterns.md` or `references/gitlab-ci-patterns.md`
 4. **Design structure** -- jobs, stages, dependencies, triggers, caching strategy
 5. **Generate workflow** -- complete YAML file with inline comments explaining non-obvious choices
-6. **Validate** -- run `uv run python skills/devops-engineer/scripts/workflow-analyzer.py <file>` on generated output
+6. **Validate** -- run `uv run python scripts/workflow-analyzer.py <file>` on generated output
 
 ### Output
 
@@ -358,8 +353,8 @@ Analyze and optimize pipeline build times.
 
 ### Analysis
 
-1. **Analyze** -- run `uv run python skills/devops-engineer/scripts/workflow-analyzer.py <workflow>`
-2. **Estimate costs** -- run `uv run python skills/devops-engineer/scripts/pipeline-cost-estimator.py <workflow>`
+1. **Analyze** -- run `uv run python scripts/workflow-analyzer.py <workflow>`
+2. **Estimate costs** -- run `uv run python scripts/pipeline-cost-estimator.py <workflow>`
 3. **Load techniques** -- read `references/pipeline-optimization.md`
 
 ### Optimization Opportunities
@@ -401,7 +396,7 @@ Audit an existing CI/CD pipeline for issues and improvements.
 ### Audit Process
 
 1. **Read workflow** -- parse the target workflow file(s)
-2. **Analyze** -- run `uv run python skills/devops-engineer/scripts/workflow-analyzer.py <workflow>`
+2. **Analyze** -- run `uv run python scripts/workflow-analyzer.py <workflow>`
 3. **Load checklists** -- read `references/pipeline-review-checklist.md`
 
 ### Evaluation Dimensions
@@ -420,7 +415,7 @@ Audit an existing CI/CD pipeline for issues and improvements.
 Analyze CI failure logs to identify root causes and fixes.
 
 1. **Ingest logs** -- read provided log file or inline content. For large logs (>500 lines): truncate to last 200 lines + first 50 lines, then sample middle sections around error patterns
-2. **Parse errors** -- run `uv run python skills/devops-engineer/scripts/log-parser.py <logfile>`
+2. **Parse errors** -- run `uv run python scripts/log-parser.py <logfile>`
 3. **Load triage protocol** -- read `references/ci-failure-triage.md`
 4. **Classify failures** by category:
 
@@ -475,7 +470,6 @@ Load ONE reference at a time. Do not preload all references into context.
 12. Load ONE reference file at a time -- do not preload all references into context
 13. Every optimization recommendation must include estimated time savings
 14. Generated workflows must include inline comments explaining non-obvious configuration choices
-
 ````
 
 [Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/devops-engineer/SKILL.md)

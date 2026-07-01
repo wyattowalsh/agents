@@ -11,8 +11,8 @@ trust_tier: "repo"
 metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "tech-debt-analyzer"
-composed_by: "compose-custom-wave-7"
-composed_at: "2026-06-17"
+composed_by: "compose-custom-wave-6"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,19 +26,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (review) or refactoring."
   installCommand={`npx skills add github:wyattowalsh/agents --skill tech-debt-analyzer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/tech-debt-analyzer &lt;mode&gt; [path]"
-  badges={[{ text: "tech-debt-analyzer", variant: "note" }, { text: "1330 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "tech-debt-analyzer", variant: "note" }, { text: "1330 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (review) or refactoring.
-**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
-**Comparable alternative:** `review` for code review
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Repo skill (hand-maintained)">
-Composed compose-custom-wave-7 from `skills/tech-debt-analyzer/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+Composed compose-custom-wave-6 from `skills/tech-debt-analyzer/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -96,22 +92,22 @@ Full codebase debt inventory. Run all 4 analysis scripts, aggregate results, ass
 
 ### Scan Step 1: Project Profile
 
-Run `uv run python skills/tech-debt-analyzer/scripts/complexity-scanner.py &lt;path&gt;` to get complexity metrics.
+Run `uv run python scripts/complexity-scanner.py &lt;path&gt;` to get complexity metrics.
 Parse JSON output. Flag functions with cyclomatic_complexity &gt; 10 as HIGH, &gt; 5 as MEDIUM.
 
 ### Scan Step 2: Dead Code Detection
 
-Run `uv run python skills/tech-debt-analyzer/scripts/dead-code-detector.py &lt;path&gt;` to find unused code.
+Run `uv run python scripts/dead-code-detector.py &lt;path&gt;` to find unused code.
 Parse JSON output. Each unused item becomes a debt item (category: design, severity by confidence).
 
 ### Scan Step 3: Dependency Staleness
 
-Run `uv run python skills/tech-debt-analyzer/scripts/dependency-staleness-checker.py &lt;path&gt;` to check outdated packages.
+Run `uv run python scripts/dependency-staleness-checker.py &lt;path&gt;` to check outdated packages.
 Parse JSON output. Deprecated packages are CRITICAL. Staleness &gt; 365 days is HIGH.
 
 ### Scan Step 4: Pattern Consistency
 
-Run `uv run python skills/tech-debt-analyzer/scripts/pattern-consistency-checker.py &lt;path&gt;` to detect inconsistencies.
+Run `uv run python scripts/pattern-consistency-checker.py &lt;path&gt;` to detect inconsistencies.
 Parse JSON output. Each inconsistency becomes a debt item (category: design).
 
 ### Scan Step 5: AI-Augmented Analysis
@@ -260,9 +256,9 @@ Every debt item follows this format:
 </Tabs>
 
 <details class="source-disclosure">
-<summary>View Full SKILL.md</summary>
+<summary>Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml title="skills/tech-debt-analyzer/SKILL.md"
 ---
 name: tech-debt-analyzer
 description: >-
@@ -276,7 +272,6 @@ metadata:
   author: wyattowalsh
   version: "1.0.0"
 ---
-
 # Tech Debt Analyzer
 
 Systematic technical debt inventory, prioritization, and remediation planning.
@@ -320,22 +315,22 @@ Full codebase debt inventory. Run all 4 analysis scripts, aggregate results, ass
 
 ### Scan Step 1: Project Profile
 
-Run `uv run python skills/tech-debt-analyzer/scripts/complexity-scanner.py <path>` to get complexity metrics.
+Run `uv run python scripts/complexity-scanner.py <path>` to get complexity metrics.
 Parse JSON output. Flag functions with cyclomatic_complexity > 10 as HIGH, > 5 as MEDIUM.
 
 ### Scan Step 2: Dead Code Detection
 
-Run `uv run python skills/tech-debt-analyzer/scripts/dead-code-detector.py <path>` to find unused code.
+Run `uv run python scripts/dead-code-detector.py <path>` to find unused code.
 Parse JSON output. Each unused item becomes a debt item (category: design, severity by confidence).
 
 ### Scan Step 3: Dependency Staleness
 
-Run `uv run python skills/tech-debt-analyzer/scripts/dependency-staleness-checker.py <path>` to check outdated packages.
+Run `uv run python scripts/dependency-staleness-checker.py <path>` to check outdated packages.
 Parse JSON output. Deprecated packages are CRITICAL. Staleness > 365 days is HIGH.
 
 ### Scan Step 4: Pattern Consistency
 
-Run `uv run python skills/tech-debt-analyzer/scripts/pattern-consistency-checker.py <path>` to detect inconsistencies.
+Run `uv run python scripts/pattern-consistency-checker.py <path>` to detect inconsistencies.
 Parse JSON output. Each inconsistency becomes a debt item (category: design).
 
 ### Scan Step 5: AI-Augmented Analysis
@@ -470,7 +465,6 @@ Every debt item follows this format:
 10. Track mode must show delta (new/resolved/changed) — raw numbers without comparison are useless
 11. Dead code detection requires high confidence (>= 0.8) — false positives erode trust
 12. Load ONE reference file at a time — do not preload all references
-
 ````
 
 [Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/tech-debt-analyzer/SKILL.md)

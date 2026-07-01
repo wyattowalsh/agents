@@ -11,8 +11,8 @@ curated_status: "inspect-then-install"
 install_command: "npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "otel-collector"
-composed_by: "compose-external-wave-9"
-composed_at: "2026-06-17"
+composed_by: "compose-external-wave-8"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,13 +26,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines."
   installCommand={`npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/otel-collector"
-  badges={[{ text: "otel-collector", variant: "note" }, { text: "32 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+  badges={[{ text: "otel-collector", variant: "note" }, { text: "23 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
 />
+
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed compose-external-wave-9 using authoring SSOT (`docs/src/authoring/skills/otel-collector.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
+Composed compose-external-wave-8 using authoring SSOT (`docs/src/authoring/skills/otel-collector.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
 </Aside>
 
 ## What It Does
@@ -56,7 +58,7 @@ Curated status: `inspect-then-install`
 
 Risk notes: Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export.
 
-Entry maintained via authoring + research for compose-external-wave-9; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/otel-collector.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 ## Install Prerequisites
 
@@ -84,9 +86,9 @@ Requires the otelcol binary or contrib image and proper auth for the target back
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/otel-collector.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "otel-collector"
 description: "Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export."
@@ -103,14 +105,14 @@ source_url: "https://github.com/dash0hq/agent-skills"
 notes: "Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export."
 risk_notes: "Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export."
 promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in authoring catalog."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=otel-collector; re-run migration to refresh */}
 
 Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export.
 
 ````
+
 
 **Install / provenance (from authoring frontmatter + research):**
 

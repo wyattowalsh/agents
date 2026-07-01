@@ -30,4 +30,4 @@ PaulRBerg (github.com/PaulRBerg/agent-skills at pinned d3f5540). MIT License. Pr
 
 Other CLI runners in same source (e.g. cli-gh, cli-cast); general just/make guidance skills; commit + code-review from same bundle for TS workflow coverage; native just CLI docs or other agent skills like work/end-to-end-task.
 
-> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+> Web-augmented research; evidence only, not authority. Authoring catalog MDX is authoritative for install metadata.

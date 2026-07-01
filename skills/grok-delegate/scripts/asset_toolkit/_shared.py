@@ -11,9 +11,8 @@ ABSOLUTE_PATH_RE = re.compile(r"(?<!:/)(/(?:usr|tmp|home|etc|var|opt|Users|mnt|r
 FRONTMATTER_COMMAND_KEYS = frozenset({"command", "cmd", "entrypoint", "run", "shell"})
 FRONTMATTER_COMMAND_CONTAINER_KEYS = frozenset({"commands"})
 FRONTMATTER_SKILLS_PATH_RE = re.compile(r"(?<![A-Za-z0-9_./-])(?:\./)?skills/[a-z0-9][a-z0-9-]*/[^\s'\"`)]*")
-BODY_OPERATOR_SKILLS_PATH_RE = re.compile(
-    r"(?<![A-Za-z0-9_./-])(?:\./)?skills/[a-z0-9][a-z0-9-]*/scripts/[^\s'\"`)]*"
-)
+
+BODY_OPERATOR_SKILLS_PATH_RE = re.compile(r"(?<![A-Za-z0-9_./-])(?:\./)?skills/[a-z0-9][a-z0-9-]*/scripts/[^\s'\"`)]*")
 FRONTMATTER_WORKSPACE_TOKEN_RE = re.compile(r"\{repo_root\}|\$\{workspaceFolder\}")
 
 

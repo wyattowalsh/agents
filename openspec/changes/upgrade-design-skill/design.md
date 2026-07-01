@@ -40,24 +40,25 @@ must be historical evidence, approved redirect text, or a bug.
 ## Chrome DevTools Boundary Model
 
 Chrome DevTools workflows are integrated into `/design` as proof techniques,
-not absorbed as ownership. Repo-owned Chrome DevTools skills remain active
-operational browser debugging skills with their directories, authoring rows,
-generated pages, research pages, and catalog rows intact:
+not absorbed as ownership. Operational Chrome DevTools workflows remain active
+as official upstream curated-external skills from
+`ChromeDevTools/chrome-devtools-mcp`; repo-owned custom
+`skills/chrome-devtools*` copies are removed:
 
 - `chrome-devtools`
-- `chrome-devtools-a11y-debugging`
 - `chrome-devtools-cli`
-- `chrome-devtools-debug-optimize-lcp`
-- `chrome-devtools-memory-leak-debugging`
-- `chrome-devtools-troubleshooting`
+- `a11y-debugging`
+- `debug-optimize-lcp`
+- `memory-leak-debugging`
+- `troubleshooting`
 
 `/design` uses available Chrome DevTools MCP tools for UI-facing rendered proof
 and records blockers when those tools are unavailable. Non-design browser
 debugging, MCP setup repair, generic browser automation, deep LCP/performance
 profiling, CLI automation, and memory-leak investigations remain valid
-handoffs to the Chrome DevTools skills or adjacent operational skills. The
-`/design` upgrade does not remove or weaken Chrome DevTools MCP registry or
-harness configuration.
+handoffs to the official upstream Chrome DevTools skills or adjacent
+operational skills. The `/design` upgrade does not remove or weaken Chrome
+DevTools MCP registry or harness configuration.
 
 ## Research Model
 

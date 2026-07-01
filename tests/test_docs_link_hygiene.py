@@ -9,8 +9,8 @@ _BAD_LINK = re.compile(r"(?<![`])\[[^\]]+\]\((?:#|references/|assets/|[^)/\s#]+\
 
 
 def _prose_outside_details(mdx: str) -> str:
-    if "<details>" in mdx:
-        return mdx.split("<details>", 1)[0]
+    if "<details" in mdx:
+        return mdx.split("<details", 1)[0]
     return mdx
 
 

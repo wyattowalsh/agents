@@ -150,6 +150,15 @@ def _apm_self_doctor_checks(repo_root) -> list[dict[str, str]]:
     return rows
 
 
+def _rtk_self_doctor_checks(repo_root) -> list[dict[str, str]]:
+    """Non-fatal RTK row for wagents self doctor."""
+    try:
+        from wagents.rtk import rtk_self_doctor_check
+    except Exception as exc:  # pragma: no cover - import failure is a warning row
+        return [{"name": "rtk", "status": "warn", "summary": f"RTK doctor unavailable: {exc}"}]
+    return [rtk_self_doctor_check(repo_root)]
+
+
 @self_app.command("doctor")
 def self_doctor(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
@@ -186,6 +195,7 @@ def self_doctor(
         },
     ]
     checks.extend(_apm_self_doctor_checks(repo_root))
+    checks.extend(_rtk_self_doctor_checks(repo_root))
     emit_structured_output(
         format_,
         text_lines=[f"{item['name']}: {item['status']} — {item['summary']}" for item in checks],

@@ -16,7 +16,7 @@ Target agents: (see install; broad). Global-only to prevent sync bloat.
 
 ## Trust And Risks
 
-trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=broad operational scope, overlaps browser automation skills; potential high privilege in browser context. policy=Keep global-only or avoid unless explicitly approved.; evidence=Explicit note in config/external-skills.md Keep Global Only section.
+trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=broad operational scope, overlaps browser automation skills; potential high privilege in browser context. policy=Keep global-only or avoid unless explicitly approved.; evidence=Explicit note in authoring catalog Keep Global Only section.
 
 ## Install Prerequisites
 

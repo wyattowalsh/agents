@@ -12,7 +12,7 @@ install_command: "npx skills add microsoft/playwright-cli --skill playwright-cli
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "playwright-cli"
 composed_by: "compose-external-wave-9"
-composed_at: "2026-06-17"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,8 +26,10 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control."
   installCommand={`npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/playwright-cli"
-  badges={[{ text: "playwright-cli", variant: "note" }, { text: "23 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+  badges={[{ text: "playwright-cli", variant: "note" }, { text: "14 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
 />
+
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
@@ -56,7 +58,7 @@ Curated status: `inspect-then-install`
 
 Risk notes: Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control.
 
-Entry maintained via authoring + research for compose-external-wave-9; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/playwright-cli.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 ## Install Prerequisites
 
@@ -82,9 +84,9 @@ npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a [agents]
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/playwright-cli.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "playwright-cli"
 description: "Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control."
@@ -101,14 +103,14 @@ source_url: "https://github.com/microsoft/playwright-cli"
 notes: "Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control."
 risk_notes: "Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control."
 promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in authoring catalog."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=playwright-cli; re-run migration to refresh */}
 
 Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control.
 
 ````
+
 
 **Install / provenance (from authoring frontmatter + research):**
 

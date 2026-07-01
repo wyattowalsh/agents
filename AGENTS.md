@@ -206,35 +206,31 @@ Smart Routing is opt-in only and requires local PostgreSQL with pgvector plus
 embedding configuration. Use OpenSpec for topology, sync, client projection,
 validation, or public docs changes in this area.
 
-## 2.7 Curated External Skills (Catalog Semantics — Bucket A)
+## 2.7 Curated External Skills (Catalog — Bucket A)
 
-Third-party skills stay **out of** `skills/` unless you are authoring a new
-repo-owned skill.
+Third-party skills stay **out of** `skills/` unless you are authoring a new repo-owned skill. There is **no** legacy `config/external-skills.md` surface — authoring MDX and the generated catalog index are the only SSOT paths.
 
-**W5+ mental model (phased SSOT invert, Bucket A only):**
+**Catalog semantics:**
 
-- **Bucket A (catalog semantics)**: Human authoring SSOT lives in per-skill files under `docs/src/authoring/skills/*.mdx` (flat; one `.mdx` per skill) carrying YAML frontmatter (per `skills-catalog-authoring.schema.json`: name, description, source_kind ("custom" | "curated-external"), install_command, install_source, trust_tier, status/curated_status, target_agents, provenance_*, risk_notes, promotion_policy, provenance_evidence, notes, ...) + markdown body (prose, audit notes, evidence snippets). `wagents docs generate` (default `--no-installed`) emits the committed machine bundle `docs/public/generated-registries/skills-catalog-index.json` (shape per `skills-catalog-index.schema.json`, includes body_path) which serves as the runtime/consumer SSOT for skill_index, external_skills (dual-read), catalog rows, site_model, validate, discover, etc. Generated catalog MDX pages remain derived output.
+- **Human SSOT:** Flat per-skill files under `docs/src/authoring/skills/*.mdx` with YAML frontmatter (`skills-catalog-authoring.schema.json`: `name`, `description`, `source_kind` (`custom` | `curated-external`), `install_command`, `install_source`, `trust_tier`, `status` / `curated_status`, `target_agents`, provenance fields, `risk_notes`, `promotion_policy`, `provenance_evidence`, `notes`, …) plus a markdown body for audit notes and evidence.
+- **Machine SSOT:** `wagents docs generate` (default `--no-installed`) emits `docs/public/generated-registries/skills-catalog-index.json` (`skills-catalog-index.schema.json`). Runtime consumers (`skill_index`, `external_skills`, catalog rows, `site_model`, validate quarantine, `wagents skills sync`) read the index and/or authoring MDX only.
+- **Bucket B (registries):** MCP, hooks, `sync-manifest.json`, harness-surface-registry, tool policy, and related `config/` entries stay machine-first under `config/` and are outside this catalog authoring model.
 
-- **Bucket B (MCP/hooks/sync/harness registries)**: Unchanged. MCP, hooks, `sync-manifest.json`, harness-surface-registry, tool policy, support tiers, and related config/ entries stay canonical under `config/` (machine-first / sync-projection model, not part of the catalog semantics authoring invert).
-
-- **config/external-skills.md**: Deprecated/legacy projection. Dual-read supported in `wagents/external_skills.py` and callers (prefer authoring MDX + index; fall back to legacy MD parse of `config/external-skills.md` only if index missing or `WAGENTS_CATALOG_LEGACY_EXTERNAL_MD=1`). Treat as read-only evidence/compat during transition; new curation work targets authoring MDX.
-
-**Maintainer loop (Bucket A):** Author/edit `docs/src/authoring/skills/<id>.mdx` (or use one-time migration from legacy for bulk); run `uv run wagents docs generate` to emit index + catalog pages (CI default); `uv run wagents skills sync --dry-run`; research waves optional. Repo custom skills typically flow skills/*/SKILL.md → authoring sync → *.mdx. Do not hand-author the index.
+**Maintainer loop:** Edit `docs/src/authoring/skills/<id>.mdx` → `uv run wagents docs generate --no-installed` → `uv run wagents skills sync --dry-run` → optional research waves. Repo-owned customs typically flow `skills/*/SKILL.md` → authoring sync → `*.mdx`. Never hand-edit the index or generated catalog pages.
 
 | Surface | Role |
 | --- | --- |
 | `docs/src/authoring/skills/*.mdx` | Human SSOT for Bucket A (custom + curated-external catalog entries via frontmatter + body) |
 | `docs/public/generated-registries/skills-catalog-index.json` | Committed generated machine bundle (index + metadata; emitted by docs generate; SSOT for code) |
-| `config/external-skills.md` | Deprecated/legacy projection (audited commands + notes); dual-read fallback only |
 | `planning/manifests/security-quarantine-register.json` | Hard-quarantine blocklist enforced by `wagents validate` |
 | Generated `/skills/catalog/...` pages | Public catalog (generated from index + research; do not hand-edit) |
-| `wagents skills sync` | Additive reconciliation across harnesses (consumes index or legacy) |
+| `wagents skills sync` | Additive reconciliation across harnesses (consumes catalog index + authoring) |
 
 ### Adding / updating a curated external (or custom catalog) entry
 
 1. **Audit before record** — Use `/review source` (or `/harness-master discover` for gap research). Require read-only `npx skills add <source> --list` evidence. Inspect hooks, scripts, command substitutions, `allowed-tools`, credential handling, network egress, license, and dedupe against repo `skills/` plus existing authored catalog rows.
 2. **Choose outcome** — `install now` / endorse → set appropriate status + trust_tier (e.g. install-now-after-trust-gate + curated-trust-gated) in the authoring frontmatter. `keep global only` / `avoid` → set status + notes with rationale. Do not copy third-party trees into `skills/`.
-3. **Author the mdx** — Create/update `docs/src/authoring/skills/<skill-id>.mdx` (kebab id matches name). Populate YAML frontmatter with the structured fields (install_command using standard target suffix, pinned @commit when practical, source, provenance_evidence, etc.). Document audited HEAD, license, executable-surface notes, dedupe, harness caveats in the body or notes field. (During transition: may still append temporarily to legacy `config/external-skills.md` then migrate via script to authoring mdx.)
+3. **Author the mdx** — Create/update `docs/src/authoring/skills/<skill-id>.mdx` (kebab id matches name). Populate YAML frontmatter with the structured fields (install_command using standard target suffix, pinned @commit when practical, source, provenance_evidence, etc.). Document audited HEAD, license, executable-surface notes, dedupe, harness caveats in the body or notes field.
 4. **OpenSpec when non-trivial** — Create or update an OpenSpec change when the work touches public catalog shape, sync behavior, trust tiers, validation, or multi-harness install policy.
 5. **Validate** — `uv run wagents validate` (includes quarantine checks; now covers authoring sources). Add or update tests when parser, sync, or docs behavior changes.
 6. **Preview installs** — `uv run wagents skills sync --dry-run` (optionally `-a <harness>`). Do **not** run `wagents skills sync --apply` or live `npx skills add ...` unless the maintainer explicitly requests live installs.
@@ -242,6 +238,15 @@ repo-owned skill.
 
 Do not hand-edit generated `docs/src/content/docs/skills/catalog/custom/*.mdx`,
 `docs/src/content/docs/skills/catalog/external/*.mdx`, `docs/src/content/docs/external-skills.mdx`, the emitted `skills-catalog-index.json`, or install-script indexes. Do not expose machine-local absolute paths as public source labels.
+
+## 2.8 Fleet Hooks
+
+Portable hook policies live in `config/hook-registry.json` and dispatch through `hooks/wagents-hook.py`. Repo and home projections are rendered by `uv run python scripts/sync_agent_stack.py --apply --targets repo` (and `--targets home` when home parity is needed).
+
+- **Cursor:** Native events render into a flat `.cursor/hooks.json` shape (not nested per-event objects). Project hooks resolve via `$CURSOR_PROJECT_DIR/hooks/run-wagents-hook`.
+- **Enforce tier:** Guards are fail-closed; shell guards deny dangerous git commands when policy modules cannot load (RV-004).
+- **Validate:** `uv run wagents hooks validate --harness all` and `uv run python scripts/check_hook_discovery_parity.py`.
+- **Docs hub:** `/hooks/` on the docs site; registry SSOT is `config/hook-registry.json`.
 
 ---
 
@@ -272,6 +277,10 @@ wagents new mcp <name>              # → mcp/<name>/ (server.py + pyproject.tom
 
 # Validate all assets
 wagents validate             # Checks frontmatter of all skills and agents
+wagents hooks validate --harness all   # Per-harness hook projection checks
+
+# Sync harness projections (instructions, hooks, MCP mirrors)
+uv run python scripts/sync_agent_stack.py --apply --targets repo
 
 # Regenerate README
 wagents readme               # Fully regenerates README.md from repo contents
@@ -315,8 +324,7 @@ make help                                    # Show all make targets
 > **CI/CD:** The `release-skills.yml` workflow validates on every PR and automatically packages + releases skills when a version tag (`v*.*.*`) is pushed.
 
 Curated third-party skills follow **§2.7 Curated External Skills**: audit with
-`/review source`, author the entry under `docs/src/authoring/skills/<id>.mdx`
-(legacy: may record in `config/external-skills.md` during transition), preview with
+`/review source`, author the entry under `docs/src/authoring/skills/<id>.mdx`, preview with
 `wagents skills sync --dry-run`, then `wagents docs generate` (emits index) + README/docs
 as needed.
 

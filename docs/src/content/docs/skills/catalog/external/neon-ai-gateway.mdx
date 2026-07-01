@@ -1,6 +1,6 @@
 ---
 title: "neon-ai-gateway"
-description: "Curated third-party skill source. Run `/review source` before repo promotion."
+description: "Curated third-party skill source. Run /review source before repo promotion."
 page_kind: "skill"
 source_kind: "curated-external"
 asset_id: "neon-ai-gateway"
@@ -11,8 +11,8 @@ curated_status: "inspect-then-install"
 install_command: "npx skills add neondatabase/agent-skills --skill neon-functions --skill neon-ai-gateway --skill claimable-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "neon-ai-gateway"
-composed_by: "compose-external-wave-8"
-composed_at: "2026-06-17"
+composed_by: "compose-external-wave-7"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -23,16 +23,18 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 <SkillPageHeader
   name="neon-ai-gateway"
-  description="Curated third-party skill source. Run `/review source` before repo promotion."
+  description="Curated third-party skill source. Run /review source before repo promotion."
   installCommand={`npx skills add neondatabase/agent-skills --skill neon-functions --skill neon-ai-gateway --skill claimable-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/neon-ai-gateway"
-  badges={[{ text: "neon-ai-gateway", variant: "note" }, { text: "18 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+  badges={[{ text: "neon-ai-gateway", variant: "note" }, { text: "10 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
 />
+
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed compose-external-wave-8 using authoring SSOT (`docs/src/authoring/skills/neon-ai-gateway.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
+Composed compose-external-wave-7 using authoring SSOT (`docs/src/authoring/skills/neon-ai-gateway.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
 </Aside>
 
 ## What It Does
@@ -54,9 +56,9 @@ Trust tier: **Inspect first** (`needs-inspection`)
 
 Curated status: `inspect-then-install`
 
-Risk notes: Curated third-party skill source. Run `/review source` before repo promotion.
+Risk notes: Curated third-party skill source. Run /review source before repo promotion.
 
-Entry maintained via authoring + research for compose-external-wave-8; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/neon-ai-gateway.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 ## Install Prerequisites
 
@@ -82,12 +84,12 @@ npx skills add neondatabase/agent-skills --skill neon-ai-gateway ... (separate r
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/neon-ai-gateway.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "neon-ai-gateway"
-description: "Curated third-party skill source. Run `/review source` before repo promotion."
+description: "Curated third-party skill source. Run /review source before repo promotion."
 title: "Neon Ai Gateway"
 source_kind: "curated-external"
 source: "neondatabase/agent-skills"
@@ -98,17 +100,17 @@ provenance_status: "verified-install-command"
 install_command: "npx skills add neondatabase/agent-skills --skill neon-functions --skill neon-ai-gateway --skill claimable-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
 source_url: "https://github.com/neondatabase/agent-skills"
-notes: "Curated third-party skill source. Run `/review source` before repo promotion."
-risk_notes: "Curated third-party skill source. Run `/review source` before repo promotion."
+notes: "Curated third-party skill source. Run /review source before repo promotion."
+risk_notes: "Curated third-party skill source. Run /review source before repo promotion."
 promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in authoring catalog."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=neon-ai-gateway; re-run migration to refresh */}
 
-Curated third-party skill source. Run `/review source` before repo promotion.
+Curated third-party skill source. Run /review source before repo promotion.
 
 ````
+
 
 **Install / provenance (from authoring frontmatter + research):**
 

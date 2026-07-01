@@ -12,7 +12,7 @@ install_command: "npx skills add wshobson/agents --skill k8s-security-policies -
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "k8s-manifest-generator"
 composed_by: "compose-external-wave-6"
-composed_at: "2026-06-23"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,7 +26,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Curated third-party skill source. Run /review source before repo promotion."
   installCommand={`npx skills add wshobson/agents --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/k8s-manifest-generator"
-  badges={[{ text: "k8s-manifest-generator", variant: "note" }, { text: "19 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+  badges={[{ text: "k8s-manifest-generator", variant: "note" }, { text: "10 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
@@ -58,7 +58,7 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: Curated third-party skill source. Run /review source before repo promotion.
 
-Entry maintained via authoring + research for compose-external-wave-6; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/k8s-manifest-generator.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 ## Install Prerequisites
 
@@ -84,9 +84,9 @@ Install: `npx skills add wshobson/agents --skill k8s-manifest-generator -y -g -a
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/k8s-manifest-generator.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "k8s-manifest-generator"
 description: "Curated third-party skill source. Run /review source before repo promotion."
@@ -103,14 +103,14 @@ source_url: "https://github.com/wshobson/agents"
 notes: "Curated third-party skill source. Run /review source before repo promotion."
 risk_notes: "Curated third-party skill source. Run /review source before repo promotion."
 promotion_policy: "Install only after trust gate; audit again before repo promotion."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in authoring catalog."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=k8s-manifest-generator; re-run migration to refresh */}
 
 Curated third-party skill source. Run /review source before repo promotion.
 
 ````
+
 
 **Install / provenance (from authoring frontmatter + research):**
 

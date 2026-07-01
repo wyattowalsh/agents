@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "min_rtk_version": "0.42.0",
+  "telemetry_env": {
+    "RTK_TELEMETRY_DISABLED": "1"
+  },
+  "install": {
+    "macos": "brew install rtk",
+    "fallback": "curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/master/install.sh | sh"
+  },
+  "verify_binary": [
+    "rtk --version",
+    "rtk gain"
+  ],
+  "policy": {
+    "dry_run_default": true,
+    "apply_requires_explicit_command": true,
+    "no_global_instruction_include": true,
+    "no_opencode_json_plugin_entry": true,
+    "run_after_repo_hook_projection": true
+  },
+  "exclude_commands": [
+    "git push",
+    "git reset --hard",
+    "rm -rf"
+  ],
+  "harnesses": {
+    "claude-code": {
+      "tier": "A",
+      "mode": "full-hook",
+      "init": [
+        "rtk init -g --auto-patch"
+      ],
+      "show": [
+        "rtk init --show"
+      ],
+      "expected_show_any": [
+        "Hook:",
+        "settings.json"
+      ],
+      "notes": "RTK owns ~/.claude/RTK.md, CLAUDE.md include, and settings.json hook patching."
+    },
+    "cursor": {
+      "tier": "A",
+      "mode": "full-hook",
+      "init": [
+        "rtk init -g --agent cursor --auto-patch"
+      ],
+      "show": [
+        "rtk init --show"
+      ],
+      "expected_show_any": [
+        "Cursor hook:"
+      ],
+      "notes": "Current RTK cursor init may also touch Claude RTK assets; keep sync dry-run first."
+    },
+    "opencode": {
+      "tier": "B",
+      "mode": "plugin",
+      "init": [
+        "rtk init -g --opencode --auto-patch"
+      ],
+      "show": [
+        "rtk init --show"
+      ],
+      "expected_show_any": [
+        "OpenCode: plugin installed"
+      ],
+      "notes": "Keep RTK out of opencode.json; RTK owns ~/.config/opencode/plugins/rtk.ts."
+    },
+    "codex": {
+      "tier": "D",
+      "mode": "prompt-rules",
+      "init": [
+        "rtk init -g --codex"
+      ],
+      "show": [
+        "rtk init --show --codex"
+      ],
+      "expected_show_any": [
+        "Global RTK.md",
+        "Global AGENTS.md"
+      ],
+      "notes": "No shell hook surface; use global Codex RTK awareness only, never shared-corpus @RTK.md includes."
+    },
+    "gemini-cli": {
+      "tier": "A",
+      "mode": "full-hook",
+      "init": [
+        "rtk init -g --gemini --auto-patch"
+      ],
+      "show": [
+        "rtk init --show"
+      ],
+      "expected_show_any": [
+        "Hook:",
+        "RTK.md"
+      ],
+      "notes": "RTK writes Gemini hook and settings surfaces outside repo."
+    },
+    "antigravity": {
+      "tier": "D",
+      "mode": "rules-or-agent-target",
+      "init": [
+        "rtk init -g --agent antigravity --auto-patch"
+      ],
+      "show": [
+        "rtk init --show"
+      ],
+      "expected_show_any": [
+        "RTK"
+      ],
+      "notes": "Verify live Antigravity behavior before treating this as a full hook tier."
+    },
+    "github-copilot": {
+      "tier": "C",
+      "mode": "deny-suggest",
+      "init": [
+        "rtk init -g --copilot --auto-patch"
+      ],
+      "show": [
+        "rtk init --show"
+      ],
+      "expected_show_any": [
+        "RTK"
+      ],
+      "notes": "Copilot CLI may deny with suggestion rather than rewrite automatically."
+    },
+    "grok-build": {
+      "tier": "custom",
+      "mode": "repo-shim",
+      "init": [
+        "repo:scripts/grok/rtk-rewrite-hook.sh"
+      ],
+      "show": [
+        "rtk init --show"
+      ],
+      "expected_show_any": [
+        "RTK"
+      ],
+      "notes": "No upstream RTK --grok target yet; keep custom hook work behind an explicit follow-up."
+    },
+    "crush": {
+      "tier": "D",
+      "mode": "prompt-rules",
+      "init": [
+        "rtk init --codex --dry-run"
+      ],
+      "show": [
+        "rtk init --show --codex"
+      ],
+      "expected_show_any": [
+        "AGENTS.md"
+      ],
+      "notes": "Piggyback Codex-style AGENTS.md awareness; do not write repo AGENTS.md during fleet sync."
+    },
+    "cherry-studio": {
+      "tier": "E",
+      "mode": "not-applicable",
+      "init": [],
+      "show": [],
+      "expected_show_any": [],
+      "notes": "MCP-only harness; no shell hook surface for RTK."
+    },
+    "chatgpt": {
+      "tier": "E",
+      "mode": "not-applicable",
+      "init": [],
+      "show": [],
+      "expected_show_any": [],
+      "notes": "Remote app surface has no local shell hook for RTK."
+    }
+  }
+}

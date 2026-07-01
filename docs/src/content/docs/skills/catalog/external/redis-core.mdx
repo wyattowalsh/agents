@@ -11,8 +11,8 @@ curated_status: "install-now-after-trust-gate"
 install_command: "npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "redis-core"
-composed_by: "compose-external-wave-10"
-composed_at: "2026-06-17"
+composed_by: "compose-external-wave-9"
+composed_at: "2026-06-29"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -26,13 +26,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list."
   installCommand={`npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/redis-core"
-  badges={[{ text: "redis-core", variant: "note" }, { text: "30 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+  badges={[{ text: "redis-core", variant: "note" }, { text: "21 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
 />
+
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed compose-external-wave-10 using authoring SSOT (`docs/src/authoring/skills/redis-core.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
+Composed compose-external-wave-9 using authoring SSOT (`docs/src/authoring/skills/redis-core.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
 </Aside>
 
 ## What It Does
@@ -56,7 +58,7 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list.
 
-Entry maintained via authoring + research for compose-external-wave-10; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/redis-core.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 ## Install Prerequisites
 
@@ -82,9 +84,9 @@ Install (core example): `npx skills add redis/agent-skills --skill redis-core -y
 </Tabs>
 
 <details class="source-disclosure">
-<summary>Curated catalog entry</summary>
+<summary>View Full SKILL.md</summary>
 
-````mdx title="docs/src/authoring/skills/redis-core.mdx (full SSOT excerpt)"
+````yaml title="SKILL.md"
 ---
 name: "redis-core"
 description: "Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list."
@@ -101,14 +103,14 @@ source_url: "https://github.com/redis/agent-skills"
 notes: "Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list."
 risk_notes: "Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list."
 promotion_policy: "Install only after trust gate; audit again before repo promotion."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in authoring catalog."
 ---
 
-{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=redis-core; re-run migration to refresh */}
 
 Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list.
 
 ````
+
 
 **Install / provenance (from authoring frontmatter + research):**
 

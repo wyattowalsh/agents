@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
+from wagents.external_skills import ExternalSkillEntry, infer_sync_kind, read_external_skill_entries
 from wagents.site_model import (
     _promotion_policy_for_external_status,
     _public_source_path,
@@ -84,6 +84,7 @@ def entry_to_public_row(entry: ExternalSkillEntry) -> dict[str, Any]:
         "provenanceStatus": entry.provenance_status,
         "reviewStatus": "curated" if entry.provenance_status == "verified-install-command" else "unresolved",
         "selectorMode": entry.selector_mode,
+        "syncKind": infer_sync_kind(entry.sync_kind, entry.install_command),
         "unresolvedReason": entry.unresolved_reason,
         "license": entry.license,
         "licenseStatus": entry.license_status,

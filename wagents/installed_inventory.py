@@ -9,14 +9,21 @@ import subprocess
 import tempfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextlib import suppress
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, cast
 
 from wagents import ROOT
-from wagents.external_skills import ExternalSkillEntry, desired_install_now_entries, read_external_skill_entries
+from wagents.external_skills import (
+    SYNC_KIND_NONE,
+    SYNC_KIND_SKILLS_CLI,
+    ExternalSkillEntry,
+    desired_install_now_entries,
+    infer_sync_kind,
+    read_external_skill_entries,
+)
 
-# desired_install_now_entries (and callers) continue to work by delegating to (dual-read) read_external_skill_entries
+# desired_install_now_entries (and callers) delegate to read_external_skill_entries (catalog index + authoring).
 from wagents.parsing import parse_frontmatter
 
 DEFAULT_HARNESS_QUERY_TIMEOUT_SEC = 120
@@ -94,6 +101,7 @@ class InstalledSkillInventoryRow:
     discovered_in: tuple[str, ...]
     target_agents: tuple[str, ...]
     unresolved_reason: str = ""
+    sync_kind: str = ""
 
     def is_repo_owned(self) -> bool:
         return self.provenance_status == "repo-owned"
@@ -102,10 +110,13 @@ class InstalledSkillInventoryRow:
         return self.provenance_status == "verified-curated-external"
 
     def is_installable(self) -> bool:
-        return bool(self.install_command) and self.provenance_status not in {
+        return self.is_syncable() and bool(self.install_command) and self.provenance_status not in {
             "curated-unresolved",
             "read-only-discovered",
         }
+
+    def is_syncable(self) -> bool:
+        return infer_sync_kind(self.sync_kind, self.install_command) == SYNC_KIND_SKILLS_CLI
 
     def public_dict(self) -> dict[str, object]:
         return {
@@ -128,6 +139,7 @@ class InstalledSkillInventoryRow:
             "discovered_in": list(self.discovered_in),
             "target_agents": list(self.target_agents),
             "unresolved_reason": self.unresolved_reason,
+            "sync_kind": infer_sync_kind(self.sync_kind, self.install_command),
         }
 
 
@@ -201,7 +213,7 @@ def collect_installed_inventory(
     """Build one normalized installed-skill inventory snapshot."""
     repo_root = root or ROOT
     home_dir = home or Path.home()
-    curated = external_entries or read_external_skill_entries()
+    curated = external_entries if external_entries is not None else read_external_skill_entries()
     curated_by_name: dict[str, ExternalSkillEntry] = {}
     for entry in curated:
         existing = curated_by_name.get(entry.name)
@@ -251,6 +263,7 @@ def collect_installed_inventory(
         source_path = str((resolved_dir / "SKILL.md") if (resolved_dir / "SKILL.md").exists() else skill_dir)
 
         repo_owned = _is_repo_owned_skill(resolved_dir, repo_root, name)
+        install_command_override = ""
         if repo_owned:
             source = _repo_source()
             install_source = _repo_source()
@@ -259,6 +272,7 @@ def collect_installed_inventory(
             selector_mode = "named"
             target_agents = supported_agent_ids()
             unresolved_reason = ""
+            sync_kind = SYNC_KIND_SKILLS_CLI
         elif curated_entry is not None and curated_entry.provenance_status == "verified-install-command":
             source = curated_entry.source
             install_source = curated_entry.install_source
@@ -267,6 +281,8 @@ def collect_installed_inventory(
             selector_mode = curated_entry.selector_mode
             target_agents = curated_entry.target_agents
             unresolved_reason = ""
+            install_command_override = curated_entry.install_command
+            sync_kind = infer_sync_kind(curated_entry.sync_kind, curated_entry.install_command)
         elif curated_entry is not None:
             source = curated_entry.source
             install_source = curated_entry.install_source
@@ -275,6 +291,8 @@ def collect_installed_inventory(
             selector_mode = curated_entry.selector_mode
             target_agents = curated_entry.target_agents
             unresolved_reason = curated_entry.unresolved_reason or curated_entry.notes
+            install_command_override = curated_entry.install_command
+            sync_kind = infer_sync_kind(curated_entry.sync_kind, curated_entry.install_command)
         elif isinstance(lock_meta, dict) and lock_meta.get("source"):
             source = str(lock_meta["source"])
             install_source = source
@@ -283,6 +301,7 @@ def collect_installed_inventory(
             selector_mode = "named"
             target_agents = ()
             unresolved_reason = ""
+            sync_kind = ""
         else:
             source = str(fm.get("_skills_source") or "")
             install_source = source
@@ -291,8 +310,12 @@ def collect_installed_inventory(
             selector_mode = "named"
             target_agents = ()
             unresolved_reason = "No lockfile or curated source was found for this installed skill."
+            sync_kind = SYNC_KIND_NONE
 
-        install_command = _canonical_install_command(name, install_source, selector_mode, provenance_status)
+        install_command = install_command_override or _canonical_install_command(
+            name, install_source, selector_mode, provenance_status
+        )
+        sync_kind = infer_sync_kind(sync_kind, install_command)
         rows.append(
             InstalledSkillInventoryRow(
                 name=name,
@@ -314,6 +337,7 @@ def collect_installed_inventory(
                 discovered_in=discovered_in,
                 target_agents=tuple(target_agents),
                 unresolved_reason=unresolved_reason,
+                sync_kind=sync_kind,
             )
         )
 
@@ -680,7 +704,7 @@ def cast_set(value: object) -> set[Any]:
 
 
 def external_entry_to_inventory_row(entry: ExternalSkillEntry) -> InstalledSkillInventoryRow:
-    """Build a desired sync row from a curated external-skills.md entry."""
+    """Build a desired sync row from a curated external authoring entry."""
     provenance_status = "verified-curated-external"
     install_command = entry.install_command or _canonical_install_command(
         entry.name,
@@ -708,6 +732,7 @@ def external_entry_to_inventory_row(entry: ExternalSkillEntry) -> InstalledSkill
         discovered_in=(),
         target_agents=entry.target_agents,
         unresolved_reason="",
+        sync_kind=infer_sync_kind(entry.sync_kind, install_command),
     )
 
 
@@ -751,15 +776,23 @@ def collect_repo_owned_desired_rows(*, root: Path | None = None) -> list[Install
                 discovered_in=(),
                 target_agents=supported_agent_ids(),
                 unresolved_reason="",
+                sync_kind=SYNC_KIND_SKILLS_CLI,
             )
         )
     return rows
 
 
-def collect_desired_sync_rows(*, root: Path | None = None) -> tuple[InstalledSkillInventoryRow, ...]:
+def collect_desired_sync_rows(
+    *,
+    root: Path | None = None,
+    external_entries: list[ExternalSkillEntry] | None = None,
+) -> tuple[InstalledSkillInventoryRow, ...]:
     """Return the full desired sync set: repo-owned plus Install Now curated skills."""
     rows = collect_repo_owned_desired_rows(root=root)
-    rows.extend(external_entry_to_inventory_row(entry) for entry in desired_install_now_entries())
+    rows.extend(
+        external_entry_to_inventory_row(entry)
+        for entry in desired_install_now_entries(external_entries=external_entries)
+    )
     return tuple(rows)
 
 
@@ -767,9 +800,25 @@ def merge_desired_with_installed(
     snapshot: InstalledInventorySnapshot,
     desired: tuple[InstalledSkillInventoryRow, ...] | list[InstalledSkillInventoryRow],
 ) -> InstalledInventorySnapshot:
-    """Overlay desired rows onto an installed snapshot without replacing installed rows."""
+    """Overlay desired rows onto installed evidence while preserving install state."""
     by_name = {row.name: row for row in snapshot.rows}
     for row in desired:
-        by_name.setdefault(row.name, row)
+        existing = by_name.get(row.name)
+        if existing is None:
+            by_name[row.name] = row
+            continue
+        by_name[row.name] = replace(
+            existing,
+            source=row.source or existing.source,
+            install_source=row.install_source or existing.install_source,
+            source_url=row.source_url or existing.source_url,
+            install_command=row.install_command or existing.install_command,
+            provenance_status=row.provenance_status or existing.provenance_status,
+            trust_tier=row.trust_tier or existing.trust_tier,
+            selector_mode=row.selector_mode or existing.selector_mode,
+            target_agents=row.target_agents or existing.target_agents,
+            unresolved_reason=row.unresolved_reason or existing.unresolved_reason,
+            sync_kind=row.sync_kind or existing.sync_kind,
+        )
     merged_rows = tuple(sorted(by_name.values(), key=lambda item: item.name))
     return InstalledInventorySnapshot(rows=merged_rows, queries=snapshot.queries)

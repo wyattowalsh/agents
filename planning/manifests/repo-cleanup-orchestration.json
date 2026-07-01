@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "plan": "repo-cleanup-refinement-v2",
+  "wave": "W8",
+  "started_at": "2026-06-29",
+  "completed_at": "2026-06-29",
+  "parallel_groups": {
+    "PG-W1": { "dispatched": 4, "resolved": 4, "failed": [] },
+    "PG-W2": { "dispatched": 3, "resolved": 3, "failed": [] },
+    "PG-W3-SHARDS": { "dispatched": 27, "resolved": 27, "failed": [] },
+    "PG-W4-CUSTOM": { "dispatched": 9, "resolved": 9, "failed": [] },
+    "PG-W4-EXTERNAL": { "dispatched": 48, "resolved": 48, "failed": [] },
+    "PG-W5": { "dispatched": 4, "resolved": 3, "failed": [] },
+    "PG-W6": { "dispatched": 5, "resolved": 5, "failed": [] },
+    "PG-W7": { "dispatched": 3, "resolved": 2, "failed": [] }
+  },
+  "gates": {
+    "G0": "passed",
+    "G1": "passed",
+    "G2": "passed",
+    "G3": "passed",
+    "G4": "passed",
+    "G5": "partial",
+    "G6": "passed",
+    "G7": "partial",
+    "G8": "passed"
+  },
+  "file_locks": {
+    "wagents/external_skills.py": null,
+    "wagents/cli.py": null,
+    "wagents/docs.py": null,
+    "scripts/sync_agent_stack.py": null,
+    ".pre-commit-config.yaml": null,
+    ".github/workflows/ci.yml": null
+  },
+  "baseline": {
+    "ruff": "pass",
+    "ty": "pass",
+    "pytest": "pass",
+    "validate": "pass",
+    "compose_pct": 100.0,
+    "tmp_log_files": 0,
+    "dirty_tree": true
+  },
+  "evidence": "planning/manifests/public-release-readiness-evidence.md"
+}

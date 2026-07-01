@@ -51,22 +51,22 @@ Full codebase debt inventory. Run all 4 analysis scripts, aggregate results, ass
 
 ### Scan Step 1: Project Profile
 
-Run `uv run python skills/tech-debt-analyzer/scripts/complexity-scanner.py <path>` to get complexity metrics.
+Run `uv run python scripts/complexity-scanner.py <path>` to get complexity metrics.
 Parse JSON output. Flag functions with cyclomatic_complexity > 10 as HIGH, > 5 as MEDIUM.
 
 ### Scan Step 2: Dead Code Detection
 
-Run `uv run python skills/tech-debt-analyzer/scripts/dead-code-detector.py <path>` to find unused code.
+Run `uv run python scripts/dead-code-detector.py <path>` to find unused code.
 Parse JSON output. Each unused item becomes a debt item (category: design, severity by confidence).
 
 ### Scan Step 3: Dependency Staleness
 
-Run `uv run python skills/tech-debt-analyzer/scripts/dependency-staleness-checker.py <path>` to check outdated packages.
+Run `uv run python scripts/dependency-staleness-checker.py <path>` to check outdated packages.
 Parse JSON output. Deprecated packages are CRITICAL. Staleness > 365 days is HIGH.
 
 ### Scan Step 4: Pattern Consistency
 
-Run `uv run python skills/tech-debt-analyzer/scripts/pattern-consistency-checker.py <path>` to detect inconsistencies.
+Run `uv run python scripts/pattern-consistency-checker.py <path>` to detect inconsistencies.
 Parse JSON output. Each inconsistency becomes a debt item (category: design).
 
 ### Scan Step 5: AI-Augmented Analysis

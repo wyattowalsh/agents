@@ -1,15 +1,83 @@
+import json
 from pathlib import Path
 
 import pytest
 
 # Retargeted after discovery move to harness-master; dedupe string
 # (historical duplicate-of discover-skills) is preserved as test data.
-from wagents.external_skills import (  # minimal for W2 dual-read compat
+from wagents.external_skills import (
+    ExternalSkillCatalogError,
     parse_external_skill_entries,
+    read_external_skill_entries,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-EXTERNAL_SKILLS_PATH = REPO_ROOT / "config" / "external-skills.md"
+
+
+def _write_authoring_mdx(
+    authoring_dir: Path,
+    name: str,
+    *,
+    install_command: str,
+    sync_kind: str | None = "skills-cli",
+    source: str = "owner/repo",
+    install_source: str | None = None,
+) -> Path:
+    install_source = install_source or source
+    sync_kind_line = f"sync_kind: {sync_kind}\n" if sync_kind is not None else ""
+    path = authoring_dir / f"{name}.mdx"
+    path.write_text(
+        f"""---
+name: {name}
+description: Demo curated skill.
+source_kind: curated-external
+source: {source}
+install_source: {install_source}
+status: install-now-after-trust-gate
+trust_tier: curated-trust-gated
+provenance_status: verified-install-command
+source_url: https://github.com/{source}
+target_agents: [codex]
+{sync_kind_line}selector_mode: named
+install_command: {install_command}
+---
+
+Audit notes.
+""",
+        encoding="utf-8",
+    )
+    return path
+
+
+def _catalog_row(
+    name: str = "demo-skill",
+    *,
+    source: str = "owner/repo",
+    install_source: str | None = None,
+    install_command: str | None = None,
+    target_agents: list[str] | None = None,
+    sync_kind: str = "skills-cli",
+) -> dict[str, object]:
+    install_source = install_source or source
+    install_command = install_command or f"npx skills add {install_source} --skill {name} -y -g -a codex"
+    return {
+        "name": name,
+        "description": "Generated row.",
+        "sourceType": "curated-external",
+        "sourceRoot": source,
+        "installSource": install_source,
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated",
+        "provenanceStatus": "verified-install-command",
+        "targetAgents": target_agents or ["codex"],
+        "selectorMode": "named",
+        "syncKind": sync_kind,
+        "installCommand": install_command,
+    }
+
+
+def _write_catalog_index(index_path: Path, rows: list[dict[str, object]]) -> None:
+    index_path.write_text(json.dumps({"externalSkillIndex": rows}, indent=2), encoding="utf-8")
 
 
 def test_parse_external_skill_entries_from_curated_markdown():
@@ -191,11 +259,148 @@ npx skills add example/skills --skill demo -y -g -a codex windsurf augment openh
     assert entries[0].unsupported_target_agents == ()
 
 
-def test_curated_plannotator_entries_include_grok_target():
-    if not EXTERNAL_SKILLS_PATH.exists():
-        pytest.skip("external-skills.md missing")
+def test_read_external_skill_entries_prefers_authoring_over_stale_index(tmp_path, monkeypatch):
+    authoring_dir = tmp_path / "authoring" / "skills"
+    authoring_dir.mkdir(parents=True)
+    _write_authoring_mdx(
+        authoring_dir,
+        "demo-skill",
+        install_command="npx skills add owner/repo --skill demo-skill -y -g -a codex",
+        sync_kind="skills-cli",
+    )
+    index_path = tmp_path / "skills-catalog-index.json"
+    _write_catalog_index(
+        index_path,
+        [
+            _catalog_row(
+                install_command="pip install stale-demo",
+                sync_kind="external-tool",
+            )
+        ],
+    )
+    monkeypatch.setattr("wagents.skill_index.AUTHORING_SKILLS_DIR", authoring_dir)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", index_path)
 
-    entries = parse_external_skill_entries(EXTERNAL_SKILLS_PATH.read_text(encoding="utf-8"))
+    entries = read_external_skill_entries()
+
+    assert len(entries) == 1
+    assert entries[0].install_command.startswith("npx skills add owner/repo")
+    assert entries[0].sync_kind == "skills-cli"
+
+
+def test_read_external_skill_entries_strict_rejects_stale_index_extra_row(tmp_path, monkeypatch):
+    authoring_dir = tmp_path / "authoring" / "skills"
+    authoring_dir.mkdir(parents=True)
+    _write_authoring_mdx(
+        authoring_dir,
+        "demo-skill",
+        install_command="npx skills add owner/repo --skill demo-skill -y -g -a codex",
+    )
+    index_path = tmp_path / "skills-catalog-index.json"
+    _write_catalog_index(
+        index_path,
+        [
+            _catalog_row(),
+            _catalog_row(
+                "stale-skill",
+                source="owner/stale",
+                install_command="npx skills add owner/stale --skill stale-skill -y -g -a codex",
+            ),
+        ],
+    )
+    monkeypatch.setattr("wagents.skill_index.AUTHORING_SKILLS_DIR", authoring_dir)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", index_path)
+
+    with pytest.raises(ExternalSkillCatalogError, match="stale-skill.*docs generate"):
+        read_external_skill_entries(strict=True)
+
+
+def test_read_external_skill_entries_strict_rejects_index_mismatch(tmp_path, monkeypatch):
+    authoring_dir = tmp_path / "authoring" / "skills"
+    authoring_dir.mkdir(parents=True)
+    _write_authoring_mdx(
+        authoring_dir,
+        "demo-skill",
+        install_command="npx skills add owner/repo --skill demo-skill -y -g -a codex",
+    )
+    index_path = tmp_path / "skills-catalog-index.json"
+    _write_catalog_index(
+        index_path,
+        [
+            _catalog_row(
+                install_command="npx skills add owner/repo --skill demo-skill -y -g -a claude-code",
+                target_agents=["claude-code"],
+            )
+        ],
+    )
+    monkeypatch.setattr("wagents.skill_index.AUTHORING_SKILLS_DIR", authoring_dir)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", index_path)
+
+    with pytest.raises(ExternalSkillCatalogError, match="mismatched index rows.*demo-skill"):
+        read_external_skill_entries(strict=True)
+
+
+def test_read_external_skill_entries_falls_back_to_index_without_authoring(tmp_path, monkeypatch):
+    authoring_dir = tmp_path / "authoring" / "skills"
+    authoring_dir.mkdir(parents=True)
+    index_path = tmp_path / "skills-catalog-index.json"
+    _write_catalog_index(index_path, [_catalog_row()])
+    monkeypatch.setattr("wagents.skill_index.AUTHORING_SKILLS_DIR", authoring_dir)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", index_path)
+
+    entries = read_external_skill_entries(strict=True)
+
+    assert [entry.name for entry in entries] == ["demo-skill"]
+
+
+def test_read_external_skill_entries_strict_rejects_missing_sync_kind(tmp_path, monkeypatch):
+    authoring_dir = tmp_path / "authoring" / "skills"
+    authoring_dir.mkdir(parents=True)
+    _write_authoring_mdx(
+        authoring_dir,
+        "demo-skill",
+        install_command="npx skills add owner/repo --skill demo-skill -y -g -a codex",
+        sync_kind=None,
+    )
+    monkeypatch.setattr("wagents.skill_index.AUTHORING_SKILLS_DIR", authoring_dir)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", tmp_path / "missing-index.json")
+
+    with pytest.raises(ExternalSkillCatalogError, match="sync_kind"):
+        read_external_skill_entries(strict=True)
+
+
+def test_read_external_skill_entries_strict_reports_bad_authoring(tmp_path, monkeypatch):
+    authoring_dir = tmp_path / "authoring" / "skills"
+    authoring_dir.mkdir(parents=True)
+    bad_file = authoring_dir / "bad.mdx"
+    bad_file.write_text("not frontmatter", encoding="utf-8")
+    monkeypatch.setattr("wagents.skill_index.AUTHORING_SKILLS_DIR", authoring_dir)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", tmp_path / "missing-index.json")
+
+    with pytest.raises(ExternalSkillCatalogError, match=str(bad_file)):
+        read_external_skill_entries(strict=True)
+
+
+def test_read_external_skill_entries_strict_reports_bad_index_but_default_uses_authoring(tmp_path, monkeypatch):
+    authoring_dir = tmp_path / "authoring" / "skills"
+    authoring_dir.mkdir(parents=True)
+    _write_authoring_mdx(
+        authoring_dir,
+        "demo-skill",
+        install_command="npx skills add owner/repo --skill demo-skill -y -g -a codex",
+    )
+    index_path = tmp_path / "skills-catalog-index.json"
+    index_path.write_text("{not json", encoding="utf-8")
+    monkeypatch.setattr("wagents.skill_index.AUTHORING_SKILLS_DIR", authoring_dir)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", index_path)
+
+    assert [entry.name for entry in read_external_skill_entries()] == ["demo-skill"]
+    with pytest.raises(ExternalSkillCatalogError, match=str(index_path)):
+        read_external_skill_entries(strict=True)
+
+
+def test_curated_plannotator_entries_include_grok_target():
+    entries = read_external_skill_entries()
     by_name = {entry.name: entry for entry in entries}
 
     for skill_name in (

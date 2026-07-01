@@ -16,7 +16,7 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated npx command in config/external-skills.md. Web-aug: Official netlify org (github.com/netlify/context-and-tools, MIT, ~18 stars, very active 2026 commits/workflows, plugin support for multiple harnesses incl. dedicated MCP server). Skills are read-only references + generated adapters; deploy flow requires user Netlify auth (OAuth or NETLIFY_AUTH_TOKEN) and network. Low risk for info skills; deploy steps surface creds to CLI only. Run `/review source` for script/hooks audit.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated npx command in authoring catalog. Web-aug: Official netlify org (github.com/netlify/context-and-tools, MIT, ~18 stars, very active 2026 commits/workflows, plugin support for multiple harnesses incl. dedicated MCP server). Skills are read-only references + generated adapters; deploy flow requires user Netlify auth (OAuth or NETLIFY_AUTH_TOKEN) and network. Low risk for info skills; deploy steps surface creds to CLI only. Run `/review source` for script/hooks audit.
 
 ## Install Prerequisites
 

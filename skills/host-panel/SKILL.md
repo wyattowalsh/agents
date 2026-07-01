@@ -10,7 +10,6 @@ metadata:
   author: wyattowalsh
   version: "1.0.0"
 ---
-
 # Host Panel
 
 Facilitate research-grounded deliberation across simulated intellectual positions. Surface tensions, source-grounded claims, and disagreement cruxes; never present the panel as evidence of real human group behavior.
@@ -59,7 +58,7 @@ Load only what the invocation requires:
 4. Load `references/synthesis.md` before the final product.
 5. Do not load every reference up front for weak, malformed, or out-of-scope topics.
 
-Optional parser: run `uv run python skills/host-panel/scripts/parse_args.py $ARGUMENTS` when shell access is available. Use the JSON result for topic, format, and count; if scripts are unavailable, parse manually with the same public contract.
+Optional parser: run `uv run python scripts/parse_args.py $ARGUMENTS` when shell access is available. Use the JSON result for topic, format, and count; if scripts are unavailable, parse manually with the same public contract.
 
 ## Classification Gate
 

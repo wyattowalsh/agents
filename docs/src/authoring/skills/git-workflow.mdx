@@ -53,7 +53,7 @@ Generate a conventional commit message from the current staged diff.
 
 1. Run `git diff --cached` to get staged changes
 2. If nothing staged, run `git diff` and report: "No staged changes. Stage files first with `git add`."
-3. Run `uv run python skills/git-workflow/scripts/diff-summarizer.py` on the diff output
+3. Run `uv run python scripts/diff-summarizer.py` on the diff output
 4. Analyze the diff to determine:
    - **Type**: feat/fix/docs/style/refactor/perf/test/build/ci/chore/revert
    - **Scope**: affected component (from file paths, module names)
@@ -72,9 +72,9 @@ Generate a PR description from the branch diff against the base branch.
 
 1. Detect base branch: `git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@refs/remotes/origin/@@'` (fallback: `main`)
 2. Run `git log --oneline <base>..HEAD` to list commits
-3. Run `uv run python skills/git-workflow/scripts/commit-parser.py` on git log output
+3. Run `uv run python scripts/commit-parser.py` on git log output
 4. Run `git diff <base>...HEAD --stat` for change statistics
-5. Run `uv run python skills/git-workflow/scripts/diff-summarizer.py` on the diff stat
+5. Run `uv run python scripts/diff-summarizer.py` on the diff stat
 6. Generate PR description with:
    - **Title**: short summary under 70 chars
    - **Summary**: 1-3 bullet points of what changed
