@@ -2,6 +2,7 @@
 
 import importlib.util
 import json
+import shutil
 import sys
 from pathlib import Path
 
@@ -10,6 +11,8 @@ from typer.testing import CliRunner
 
 from wagents.cli import app
 from wagents.parsing import KNOWN_HOOK_EVENTS, extract_hooks
+
+REAL_REPO_ROOT = Path(__file__).resolve().parents[1]
 
 _VERIFY_PATH = Path(__file__).parent.parent / "skills" / "skill-creator" / "scripts" / "verify.py"
 _VERIFY_SPEC = importlib.util.spec_from_file_location("skill_creator_verify", _VERIFY_PATH)
@@ -36,6 +39,26 @@ def patched_repo(tmp_path, monkeypatch):
     (tmp_path / "agents").mkdir()
     (tmp_path / "mcp").mkdir()
     (tmp_path / ".claude").mkdir()
+    pyproject = '[project]\nname = "wagents"\nrequires-python = ">=3.13"\n'
+    (tmp_path / "pyproject.toml").write_text(pyproject, encoding="utf-8")
+    shutil.copytree(REAL_REPO_ROOT / "scripts" / "validate", tmp_path / "scripts" / "validate")
+    shutil.copytree(REAL_REPO_ROOT / "skills" / "skill-creator", tmp_path / "skills" / "skill-creator")
+    shutil.copytree(REAL_REPO_ROOT / "wagents", tmp_path / "wagents")
+    (tmp_path / "config").mkdir(exist_ok=True)
+    for rel in (
+        "config/mcp-registry.json",
+        "config/sync-manifest.json",
+        "config/tooling-policy.json",
+        "config/harness-surface-registry.json",
+        "planning/manifests/security-quarantine-register.json",
+        "AGENTS.md",
+    ):
+        src = REAL_REPO_ROOT / rel
+        if src.is_file():
+            dest = tmp_path / rel
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dest)
+    monkeypatch.setenv("WAGENTS_REPO_ROOT", str(tmp_path))
     return tmp_path
 
 
@@ -280,6 +303,82 @@ class TestHooksValidate:
         result = runner.invoke(app, ["hooks", "validate"])
         assert result.exit_code == 0
 
+    def test_cursor_harness_accepts_flat_project_hooks(self, patched_repo):
+        cursor_dir = patched_repo / ".cursor"
+        cursor_dir.mkdir()
+        (cursor_dir / "hooks.json").write_text(
+            json.dumps({
+                "version": 1,
+                "hooks": {
+                    "preToolUse": [
+                        {
+                            "command": '"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook" demo --harness cursor',
+                            "matcher": "Bash",
+                            "timeout": 5,
+                        }
+                    ]
+                },
+            }),
+            encoding="utf-8",
+        )
+
+        result = runner.invoke(app, ["hooks", "validate", "--harness", "cursor"])
+
+        assert result.exit_code == 0
+        assert "All hooks valid" in result.output
+
+    def test_cursor_harness_rejects_nested_project_hooks(self, patched_repo):
+        cursor_dir = patched_repo / ".cursor"
+        cursor_dir.mkdir()
+        (cursor_dir / "hooks.json").write_text(
+            json.dumps({
+                "version": 1,
+                "hooks": {
+                    "preToolUse": [
+                        {
+                            "matcher": "Bash",
+                            "hooks": [
+                                {
+                                    "type": "command",
+                                    "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py demo",
+                                }
+                            ],
+                        }
+                    ]
+                },
+            }),
+            encoding="utf-8",
+        )
+
+        result = runner.invoke(app, ["hooks", "validate", "--harness", "cursor"])
+
+        assert result.exit_code == 1
+        assert "Cursor hook entries must be flat" in result.output
+        assert "Cursor hook entry command is required" in result.output
+
+    def test_cursor_harness_rejects_workspacefolder_commands(self, patched_repo):
+        cursor_dir = patched_repo / ".cursor"
+        cursor_dir.mkdir()
+        (cursor_dir / "hooks.json").write_text(
+            json.dumps({
+                "version": 1,
+                "hooks": {
+                    "preToolUse": [
+                        {
+                            "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py demo",
+                            "matcher": "Bash",
+                        }
+                    ]
+                },
+            }),
+            encoding="utf-8",
+        )
+
+        result = runner.invoke(app, ["hooks", "validate", "--harness", "cursor"])
+
+        assert result.exit_code == 1
+        assert "$CURSOR_PROJECT_DIR" in result.output
+
     def test_hooks_validate_real_repo(self):
         """Running hooks validate against the real repo should pass."""
         result = runner.invoke(app, ["hooks", "validate"])
@@ -291,7 +390,7 @@ class TestKnownEvents:
     """Verify KNOWN_HOOK_EVENTS completeness."""
 
     def test_event_count(self):
-        assert len(KNOWN_HOOK_EVENTS) == 21
+        assert len(KNOWN_HOOK_EVENTS) == 25
 
     def test_key_events_present(self):
         for event in [

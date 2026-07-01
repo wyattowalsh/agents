@@ -1,17 +1,26 @@
 {
   "hooks": {
-    "UserPromptSubmit": [
+    "PreToolUse": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ./hooks/wagents-hook.py research-prompt-triage-context --harness claude-code",
+            "command": "python3 ./hooks/wagents-hook.py git-commit-push-guard --harness claude-code",
             "timeout": 5
           }
-        ]
-      }
-    ],
-    "PreToolUse": [
+        ],
+        "matcher": "Bash|bash|run_shell_command|shell|terminal"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/run-wagents-hook image-input-optimizer-guard --harness claude-code",
+            "timeout": 60
+          }
+        ],
+        "matcher": ".*"
+      },
       {
         "hooks": [
           {
@@ -33,6 +42,17 @@
         "matcher": "Bash|bash|run_shell_command"
       }
     ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./hooks/wagents-hook.py research-prompt-triage-context --harness claude-code",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "hooks": [
@@ -52,6 +72,35 @@
             "type": "command",
             "command": "python3 ./hooks/wagents-hook.py research-stop-verifier --harness claude-code",
             "timeout": 30
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/verify-before-stop.sh",
+            "timeout": 60
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/task-completed-gate.sh",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/teammate-idle-gate.sh",
+            "timeout": 120
           }
         ]
       }

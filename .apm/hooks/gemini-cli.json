@@ -1,0 +1,101 @@
+{
+  "hooks": {
+    "BeforeTool": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./hooks/wagents-hook.py git-commit-push-guard --harness gemini-cli",
+            "name": "git-commit-push-guard",
+            "timeout": 5000,
+            "description": "Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites across the fleet."
+          }
+        ],
+        "sequential": true,
+        "matcher": "Bash|bash|run_shell_command|shell|terminal"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/run-wagents-hook image-input-optimizer-guard --harness gemini-cli",
+            "name": "image-input-optimizer-guard",
+            "timeout": 60000,
+            "description": "Resize and compress oversized local image inputs before harnesses consume them."
+          }
+        ],
+        "sequential": true,
+        "matcher": ".*"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./hooks/wagents-hook.py research-readonly-write-guard --harness gemini-cli",
+            "name": "research-readonly-write-guard",
+            "timeout": 5000,
+            "description": "Prevent source-file write tools during active research sessions."
+          }
+        ],
+        "sequential": true,
+        "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./hooks/wagents-hook.py research-dangerous-shell-guard --harness gemini-cli",
+            "name": "research-dangerous-shell-guard",
+            "timeout": 5000,
+            "description": "Block dangerous shell side effects during active research sessions."
+          }
+        ],
+        "sequential": true,
+        "matcher": "Bash|bash|run_shell_command"
+      }
+    ],
+    "BeforeAgent": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./hooks/wagents-hook.py research-prompt-triage-context --harness gemini-cli",
+            "name": "research-prompt-triage-context",
+            "timeout": 5000,
+            "description": "Activate research hook state and inject research-method reminders."
+          }
+        ],
+        "sequential": true
+      }
+    ],
+    "AfterTool": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./hooks/wagents-hook.py research-evidence-ledger --harness gemini-cli",
+            "name": "research-evidence-ledger",
+            "timeout": 5000,
+            "description": "Append lightweight provenance metadata for research retrieval tools."
+          }
+        ],
+        "sequential": true,
+        "matcher": "WebSearch|web_search|fetch|fetcher|trafilatura|docling|mcp__.*|mcp_.*"
+      }
+    ],
+    "AfterAgent": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./hooks/wagents-hook.py research-stop-verifier --harness gemini-cli",
+            "name": "research-stop-verifier",
+            "timeout": 30000,
+            "description": "Verify research skill invariants before an active research session completes."
+          }
+        ],
+        "sequential": true
+      }
+    ]
+  }
+}

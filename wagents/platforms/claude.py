@@ -11,9 +11,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
+from wagents.context import get_repo_root
 from wagents.platforms.base import (
     HOME,
-    REPO_ROOT,
     PlatformAdapter,
     SyncContext,
     enabled_registry_servers,
@@ -21,16 +21,20 @@ from wagents.platforms.base import (
     managed_registry_server_names,
     merge_hook_groups,
     merge_server_maps,
+    strip_foreign_claude_hook_entries,
 )
 
 if TYPE_CHECKING:
     from pathlib import Path
+
+REPO_ROOT = get_repo_root()
 
 CLAUDE_SETTINGS_PATH = HOME / ".claude" / "settings.json"
 CLAUDE_SETTINGS_LOCAL_PATH = HOME / ".claude" / "settings.local.json"
 CLAUDE_DESKTOP_CONFIG_PATH = HOME / "Library" / "Application Support" / "Claude" / "claude_desktop_config.json"
 CLAUDE_ENTRYPOINT_PATH = HOME / ".claude" / "CLAUDE.md"
 GLOBAL_MD = REPO_ROOT / "instructions" / "global.md"
+CLAUDE_REPO_SETTINGS_PATH = REPO_ROOT / ".claude" / "settings.json"
 HOOK_COMMAND_MARKER = "wagents-hook.py"
 
 
@@ -40,14 +44,18 @@ class Adapter(PlatformAdapter):
     def home_config_paths(self) -> list[Path]:
         return [CLAUDE_SETTINGS_PATH, CLAUDE_DESKTOP_CONFIG_PATH]
 
-    def render_hooks(self, hook_registry: dict[str, Any]) -> dict[str, Any] | None:
+    def render_hooks(self, hook_registry: dict[str, Any], *, repo_relative: bool = False) -> dict[str, Any] | None:
         event_map = {
+            "SessionStart": "SessionStart",
             "UserPromptSubmit": "UserPromptSubmit",
             "PreToolUse": "PreToolUse",
+            "PermissionRequest": "PermissionRequest",
             "PostToolUse": "PostToolUse",
+            "SubagentStart": "SubagentStart",
+            "SubagentStop": "SubagentStop",
             "Stop": "Stop",
         }
-        return self._render_standard_hooks(hook_registry, event_map)
+        return self._render_standard_hooks(hook_registry, event_map, repo_relative=repo_relative)
 
     def sync_repo(
         self,
@@ -56,8 +64,12 @@ class Adapter(PlatformAdapter):
         hook_registry: dict[str, Any],
         policy: dict[str, Any],
     ) -> None:
-        """Claude has no repo-local config files beyond the root entrypoint."""
-        pass
+        settings = load_json(CLAUDE_REPO_SETTINGS_PATH) if CLAUDE_REPO_SETTINGS_PATH.exists() else {}
+        rendered = self.render_hooks(hook_registry, repo_relative=True)
+        if rendered:
+            existing_hooks = strip_foreign_claude_hook_entries(settings.get("hooks", {}))
+            settings["hooks"] = merge_hook_groups(existing_hooks, rendered)
+        ctx.write_json(CLAUDE_REPO_SETTINGS_PATH, settings)
 
     def sync_home(
         self,
@@ -96,7 +108,8 @@ class Adapter(PlatformAdapter):
         # Hooks
         rendered = self.render_hooks(hook_registry)
         if rendered:
-            settings["hooks"] = merge_hook_groups(settings.get("hooks", {}), rendered)
+            existing_hooks = strip_foreign_claude_hook_entries(settings.get("hooks", {}))
+            settings["hooks"] = merge_hook_groups(existing_hooks, rendered)
             # Rewrite legacy .claude/hooks/ paths to repo hooks/
             for hook_groups in settings.get("hooks", {}).values():
                 for group in hook_groups:

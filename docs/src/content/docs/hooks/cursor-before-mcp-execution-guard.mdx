@@ -1,0 +1,74 @@
+---
+title: "cursor-before-mcp-execution-guard"
+description: "Block destructive MCP tool calls (shell passthroughs, out-of-workspace deletes) before execution in Cursor."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "cursor-before-mcp-execution-guard"
+composed: true
+composed_at: "2026-06-29"
+composed_by: "compose-hooks-fleet-g3b-g4"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="BeforeMCPExecution" variant="caution" /> <Badge text="cursor" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+
+> Block destructive MCP tool calls (shell passthroughs, out-of-workspace deletes) before execution in Cursor.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `cursor-before-mcp-execution-guard` |
+| status_message | `Checking MCP-execution safety` |
+| mode | `enforce` |
+| logical_event | `BeforeMCPExecution` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py cursor-before-mcp-execution-guard --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["cursor"]` |
+
+<Aside type="note">
+Maps to Cursor's native `beforeMCPExecution` event. Decision logic in `wagents/hooks/policies/before_mcp_execution.py` (`evaluate_before_mcp_execution`) inspects the tool name + params for dangerous shell passthroughs and absolute/traversal delete paths. Invoked by `_policy_cursor_before_mcp_execution_guard`; fail-closed.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + policy reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "cursor-before-mcp-execution-guard",
+  "description": "Block destructive MCP tool calls (shell passthroughs, out-of-workspace deletes) before execution in Cursor.",
+  "status_message": "Checking MCP-execution safety",
+  "mode": "enforce",
+  "logical_event": "BeforeMCPExecution",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-before-mcp-execution-guard --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "cursor"
+  ]
+}
+```
+
+```python title="wagents/hooks/policies/before_mcp_execution.py (decision)"
+def evaluate_before_mcp_execution(tool_name: str, params: dict[str, Any] | None) -> str | None:
+    """Return a deny reason for dangerous MCP calls, else None."""
+    # Blocks destructive commands passed through MCP shell tools and
+    # absolute / path-traversal deletes that escape the workspace.
+    ...
+```
+
+Command: `python3 .../wagents-hook.py cursor-before-mcp-execution-guard --harness cursor`
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

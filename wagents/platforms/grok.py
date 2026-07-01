@@ -5,10 +5,12 @@ from __future__ import annotations
 import json
 import os
 import re
+import shlex
 import shutil
 from pathlib import Path
 from typing import Any
 
+from wagents.hooks.render import enabled_hooks_for_harness
 from wagents.platforms.base import (
     HOME,
     REPO_ROOT,
@@ -33,9 +35,28 @@ GROK_BINARY_PATH = HOME / ".grok" / "bin" / "grok"
 GROK_AGENTS_HOME_DIR = HOME / ".grok" / "agents"
 GROK_HOOKS_DIR = HOME / ".grok" / "hooks"
 GROK_PLANNOTATOR_HOOKS_PATH = GROK_HOOKS_DIR / "plannotator.json"
+GROK_FLEET_HOOKS_PATH = GROK_HOOKS_DIR / "wagents-fleet.json"
+# Grok Build is a Codex-family CLI; project the canonical Codex superset of the
+# dispatcher-backed fleet policies and run them through the repo runner as a Grok
+# deny adapter (``--harness grok-build`` -> dispatcher default deny shape).
+GROK_FLEET_SOURCE_HARNESS = "codex"
+GROK_EVENT_MAP: dict[str, str] = {
+    "SessionStart": "SessionStart",
+    "UserPromptSubmit": "UserPromptSubmit",
+    "PreToolUse": "PreToolUse",
+    "PermissionRequest": "PermissionRequest",
+    "PostToolUse": "PostToolUse",
+    "SubagentStart": "SubagentStart",
+    "SubagentStop": "SubagentStop",
+    "Stop": "Stop",
+}
 AGENTS_DIR = REPO_ROOT / "agents"
 PLANNOTATOR_BIN_PATH = HOME / ".local" / "bin" / "plannotator"
-PLANNOTATOR_HOOKS_POLICY_PATH = REPO_ROOT / "config" / "grok-plannotator-hooks.json"
+# Unified, harness-neutral Plannotator hook policy (single source of truth).
+PLANNOTATOR_HOOKS_POLICY_PATH = REPO_ROOT / "config" / "plannotator-hooks.policy.json"
+# Deprecated Grok-specific copy, kept as a byte-identical re-export for
+# backwards compatibility; parity is enforced by tests so it never drifts.
+PLANNOTATOR_HOOKS_POLICY_LEGACY_PATH = REPO_ROOT / "config" / "grok-plannotator-hooks.json"
 PLANNOTATOR_EXIT_PLAN_HOOK_REL = Path("scripts") / "grok" / "plannotator-exit-plan-hook.sh"
 PLANNOTATOR_EXIT_PLAN_HOOK_PY_REL = Path("scripts") / "grok" / "plannotator-exit-plan-hook.py"
 PLANNOTATOR_EXIT_PLAN_HOOK_PATH = REPO_ROOT / PLANNOTATOR_EXIT_PLAN_HOOK_REL
@@ -453,6 +474,85 @@ def plannotator_exit_plan_hook_home_path(*, hooks_dir: Path | None = None) -> Pa
     return (hooks_dir or GROK_HOOKS_DIR) / PLANNOTATOR_EXIT_PLAN_HOOK_HOME_NAME
 
 
+def _grok_policy_id(hook: dict[str, Any]) -> str:
+    command = str(hook.get("command") or "")
+    try:
+        parts = shlex.split(command)
+    except ValueError:
+        parts = command.split()
+    for index, part in enumerate(parts):
+        if (
+            part == "{hook_runner}" or part.endswith("/run-wagents-hook") or part.endswith("/wagents-hook.py")
+        ) and index + 1 < len(parts):
+            return parts[index + 1]
+    return str(hook.get("logical_policy") or hook["id"])
+
+
+def _is_dispatcher_backed(hook: dict[str, Any]) -> bool:
+    command = str(hook.get("command") or "")
+    return any(token in command for token in ("wagents-hook.py", "run-wagents-hook", "{hook_runner}"))
+
+
+def render_grok_hooks(
+    hook_registry: dict[str, Any],
+    *,
+    repo_root: str,
+    source_harness: str = GROK_FLEET_SOURCE_HARNESS,
+) -> dict[str, Any]:
+    """Project dispatcher-backed fleet policies into Grok's nested deny-adapter shape.
+
+    Grok Build consumes Claude-style nested hook groups. Each projected policy is
+    rewritten to invoke the repo runner with ``--harness grok-build`` so the
+    dispatcher emits its Grok deny payload on a block.
+    """
+    runner = f"{repo_root}/hooks/run-wagents-hook"
+    rendered: dict[str, list[dict[str, Any]]] = {}
+    for hook in enabled_hooks_for_harness(hook_registry, source_harness):
+        if not _is_dispatcher_backed(hook):
+            continue
+        event = GROK_EVENT_MAP.get(str(hook.get("logical_event")))
+        if not event:
+            continue
+        policy_id = _grok_policy_id(hook)
+        config: dict[str, Any] = {
+            "type": "command",
+            "command": f"{runner} {shlex.quote(policy_id)} --harness grok-build",
+            "timeout": int(hook.get("timeout", 5)),
+            "wagentsPolicy": policy_id,
+        }
+        group: dict[str, Any] = {"hooks": [config]}
+        if hook.get("matcher"):
+            group["matcher"] = hook["matcher"]
+        rendered.setdefault(event, []).append(group)
+    return {"hooks": rendered}
+
+
+def render_grok_fleet_hooks_json(repo_root: Path | str) -> str:
+    """Render the Grok fleet hooks file (``wagents-fleet.json``) text, or ``""`` when empty."""
+    registry_path = REPO_ROOT / "config" / "hook-registry.json"
+    if not registry_path.is_file():
+        return ""
+    try:
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return ""
+    rendered = render_grok_hooks(registry, repo_root=str(repo_root))
+    if not rendered.get("hooks"):
+        return ""
+    return json.dumps(rendered, indent=2) + "\n"
+
+
+def sync_grok_fleet_hooks(ctx: SyncContext, *, repo_root: Path | str, hooks_dir: Path | None = None) -> None:
+    """Write the Grok fleet deny-adapter hooks file under the home hooks dir."""
+    rendered = render_grok_fleet_hooks_json(repo_root)
+    if not rendered:
+        return
+    destination = (hooks_dir or GROK_HOOKS_DIR) / GROK_FLEET_HOOKS_PATH.name
+    if ctx.apply:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+    ctx.write_text(destination, rendered)
+
+
 def render_grok_plannotator_hooks(*, hooks_dir: Path | None = None) -> str:
     """Render managed Plannotator hook JSON with home-local absolute paths."""
     policy_path = PLANNOTATOR_HOOKS_POLICY_PATH
@@ -598,5 +698,6 @@ class Adapter(PlatformAdapter):
         ctx.write_text(GROK_CONFIG_PATH, rendered)
         sync_grok_lsp(ctx)
         sync_grok_agents(ctx)
+        sync_grok_fleet_hooks(ctx, repo_root=get_repo_root())
         if ctx.grok_plannotator_hooks:
             sync_grok_plannotator(ctx)

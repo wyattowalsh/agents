@@ -10,6 +10,10 @@
 			"mode": "canonical"
 		},
 		{
+			"path": "${REPO_ROOT}/config/image-input-optimizer.json",
+			"mode": "canonical"
+		},
+		{
 			"path": "${REPO_ROOT}/config/cursor-agents.json",
 			"mode": "canonical"
 		},
@@ -42,7 +46,7 @@
 			"mode": "canonical"
 		},
 		{
-			"path": "${REPO_ROOT}/config/external-skills.md",
+			"path": "${REPO_ROOT}/docs/public/generated-registries/skills-catalog-index.json",
 			"mode": "generated"
 		},
 		{
@@ -247,6 +251,10 @@
 		},
 		{
 			"path": "~/.cursor/mcp.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.cursor/hooks.json",
 			"mode": "merged"
 		},
 		{

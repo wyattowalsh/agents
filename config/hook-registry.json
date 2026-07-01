@@ -1,4 +1,5 @@
 {
+  "$schema": "./schemas/hook-registry.schema.json",
   "version": 1,
   "hooks": [
     {
@@ -50,7 +51,7 @@
       "logical_event": "PostToolUse",
       "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace",
       "command": "./hooks/auto-format.sh",
-      "timeout": 30,
+      "timeout": 60,
       "harnesses": [
         "github-copilot"
       ]
@@ -207,6 +208,101 @@
       ]
     },
     {
+      "id": "cursor-before-read-file-guard",
+      "description": "Block reads of secret-bearing files (.env, keys, credential stores) before they enter Cursor context.",
+      "status_message": "Checking file-read safety",
+      "mode": "enforce",
+      "logical_event": "BeforeReadFile",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-before-read-file-guard --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "cursor"
+      ]
+    },
+    {
+      "id": "cursor-before-shell-execution-guard",
+      "description": "Block destructive shell commands and unsafe git history rewrites on Cursor's beforeShellExecution event.",
+      "status_message": "Checking shell-execution safety",
+      "mode": "enforce",
+      "logical_event": "BeforeShellExecution",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-before-shell-execution-guard --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "cursor"
+      ]
+    },
+    {
+      "id": "cursor-before-mcp-execution-guard",
+      "description": "Block destructive MCP tool calls (shell passthroughs, out-of-workspace deletes) before execution in Cursor.",
+      "status_message": "Checking MCP-execution safety",
+      "mode": "enforce",
+      "logical_event": "BeforeMCPExecution",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-before-mcp-execution-guard --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "cursor"
+      ]
+    },
+    {
+      "id": "cursor-after-file-edit-context",
+      "description": "Return lightweight post-edit quality context after Cursor file edits.",
+      "status_message": "Checking post-edit quality",
+      "mode": "context",
+      "logical_event": "AfterFileEdit",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-after-file-edit-context --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "cursor"
+      ]
+    },
+    {
+      "id": "cursor-subagent-start-context",
+      "description": "Inject repository conventions and session context when a Cursor subagent starts.",
+      "status_message": "Gathering subagent context",
+      "mode": "context",
+      "logical_event": "SubagentStart",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-subagent-start-context --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "cursor"
+      ]
+    },
+    {
+      "id": "git-commit-push-guard",
+      "description": "Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites across the fleet.",
+      "status_message": "Checking git commit/push safety",
+      "mode": "enforce",
+      "logical_event": "PreToolUse",
+      "matcher": "Bash|bash|run_shell_command|shell|terminal",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py git-commit-push-guard --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "codex",
+        "claude-code",
+        "cursor",
+        "github-copilot",
+        "gemini-cli"
+      ]
+    },
+    {
+      "id": "image-input-optimizer-guard",
+      "description": "Resize and compress oversized local image inputs before harnesses consume them.",
+      "status_message": "Optimizing image inputs",
+      "mode": "enforce",
+      "degraded_behavior": "block with an optimized retry path when the harness cannot safely accept updated input",
+      "logical_event": "PreToolUse",
+      "matcher": ".*",
+      "command": "{hook_runner} image-input-optimizer-guard --harness {harness}",
+      "timeout": 60,
+      "harnesses": [
+        "codex",
+        "claude-code",
+        "cursor",
+        "github-copilot",
+        "gemini-cli"
+      ]
+    },
+    {
       "id": "research-prompt-triage-context",
       "description": "Activate research hook state and inject research-method reminders.",
       "mode": "context",
@@ -282,7 +378,41 @@
         "codex",
         "claude-code",
         "cursor",
-        "gemini-cli"
+        "gemini-cli",
+        "github-copilot"
+      ]
+    },
+    {
+      "id": "verify-before-stop",
+      "description": "Block stopping when modified files carry debug artifacts or fail fast lint/type checks.",
+      "mode": "enforce",
+      "logical_event": "Stop",
+      "command": "{repo_root}/hooks/verify-before-stop.sh",
+      "timeout": 60,
+      "harnesses": [
+        "claude-code"
+      ]
+    },
+    {
+      "id": "task-completed-gate",
+      "description": "Block task completion when modified files have syntax errors, incomplete markers, or failing tests.",
+      "mode": "enforce",
+      "logical_event": "Stop",
+      "command": "{repo_root}/hooks/task-completed-gate.sh",
+      "timeout": 120,
+      "harnesses": [
+        "claude-code"
+      ]
+    },
+    {
+      "id": "teammate-idle-gate",
+      "description": "Block a subagent from going idle with broken syntax, critical lint, type, or test failures.",
+      "mode": "enforce",
+      "logical_event": "SubagentStop",
+      "command": "{repo_root}/hooks/teammate-idle-gate.sh",
+      "timeout": 120,
+      "harnesses": [
+        "claude-code"
       ]
     }
   ]

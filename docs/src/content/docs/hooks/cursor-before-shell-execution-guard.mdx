@@ -1,0 +1,80 @@
+---
+title: "cursor-before-shell-execution-guard"
+description: "Block destructive shell commands and unsafe git history rewrites on Cursor's beforeShellExecution event."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "cursor-before-shell-execution-guard"
+composed: true
+composed_at: "2026-06-29"
+composed_by: "compose-hooks-fleet-g3b-g4"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="BeforeShellExecution" variant="caution" /> <Badge text="cursor" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+
+> Block destructive shell commands and unsafe git history rewrites on Cursor's beforeShellExecution event.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `cursor-before-shell-execution-guard` |
+| status_message | `Checking shell-execution safety` |
+| mode | `enforce` |
+| logical_event | `BeforeShellExecution` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py cursor-before-shell-execution-guard --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["cursor"]` |
+
+<Aside type="note">
+Maps to Cursor's native `beforeShellExecution` event. Dispatcher policy `_policy_cursor_before_shell_execution_guard` reuses the shared destructive-shell matcher plus `git-commit-push-guard` history-rewrite checks. Enforce-tier fail-closed: unreadable payloads block execution; when `evaluate_git_commit_push` cannot load, dangerous git commands (`push`, `commit`, `reset`, `rebase`, etc.) are denied while read-only commands such as `git status` remain allowed.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + policy reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "cursor-before-shell-execution-guard",
+  "description": "Block destructive shell commands and unsafe git history rewrites on Cursor's beforeShellExecution event.",
+  "status_message": "Checking shell-execution safety",
+  "mode": "enforce",
+  "logical_event": "BeforeShellExecution",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-before-shell-execution-guard --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "cursor"
+  ]
+}
+```
+
+```python title="hooks/wagents-hook.py (dispatcher policy)"
+def _policy_cursor_before_shell_execution_guard(payload: NormalizedPayload) -> int:
+    reason = _destructive_shell_reason(payload.command)
+    if not reason:
+        if evaluate_git_commit_push is None:
+            if _SHELL_GIT_DANGEROUS_RE.search(payload.command or ""):
+                return _enforce_module_load_failure(
+                    payload, "cursor-before-shell-execution-guard"
+                )
+        else:
+            reason = evaluate_git_commit_push(payload.command)
+    ...
+```
+
+Command: `python3 .../wagents-hook.py cursor-before-shell-execution-guard --harness cursor`
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

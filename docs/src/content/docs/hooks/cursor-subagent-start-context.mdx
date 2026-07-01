@@ -1,0 +1,72 @@
+---
+title: "cursor-subagent-start-context"
+description: "Inject repository conventions and session context when a Cursor subagent starts."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "cursor-subagent-start-context"
+composed: true
+composed_at: "2026-06-29"
+composed_by: "compose-hooks-fleet-g3b-g4"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="SubagentStart" variant="success" /> <Badge text="cursor" variant="default" /> <Badge text="mode: context" variant="tip" />
+
+> Inject repository conventions and session context when a Cursor subagent starts.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `cursor-subagent-start-context` |
+| status_message | `Gathering subagent context` |
+| mode | `context` |
+| logical_event | `SubagentStart` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py cursor-subagent-start-context --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["cursor"]` |
+
+<Aside type="note">
+Maps to Cursor's native `subagentStart` event. Context-tier (never blocks): `subagent_start_context` in `wagents/hooks/policies/subagent_start.py` formats a short message with git context and the managed-hook source, surfaced to the spawned subagent.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + policy reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "cursor-subagent-start-context",
+  "description": "Inject repository conventions and session context when a Cursor subagent starts.",
+  "status_message": "Gathering subagent context",
+  "mode": "context",
+  "logical_event": "SubagentStart",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-subagent-start-context --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "cursor"
+  ]
+}
+```
+
+```python title="wagents/hooks/policies/subagent_start.py (context)"
+def subagent_start_context(git_context: str, *, source: str = "config/hook-registry.json") -> str:
+    """Build the informational context message for a starting subagent."""
+    ...
+```
+
+Command: `python3 .../wagents-hook.py cursor-subagent-start-context --harness cursor`
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

@@ -11,6 +11,13 @@ from typing import TYPE_CHECKING, Any
 
 import yaml
 
+from wagents.hooks.render import (
+    render_claude_hooks,
+    render_codex_hooks,
+    render_copilot_hooks,
+    render_cursor_hooks,
+    render_gemini_hooks,
+)
 from wagents.parsing import parse_frontmatter
 
 if TYPE_CHECKING:
@@ -241,95 +248,36 @@ def materialize_instructions(repo_root: Path, *, check: bool = False) -> list[Pa
     return sorted(set(written))
 
 
-def _enabled_hooks_for_harness(registry: dict[str, Any], harness: str) -> list[dict[str, Any]]:
-    hooks = registry.get("hooks", [])
-    if not isinstance(hooks, list):
-        return []
-    return [h for h in hooks if isinstance(h, dict) and h.get("command") and harness in set(h.get("harnesses", []))]
+def _render_codex_hooks_shape(registry: dict[str, Any]) -> dict[str, Any]:
+    return render_codex_hooks(registry, repo_root=".")
 
 
 def _render_claude_hooks_shape(registry: dict[str, Any]) -> dict[str, Any]:
-    """Return Claude hooks shape consumed under .apm/hooks/."""
-    # Shape: { "hooks": { "Event": [ { "matcher"?, "hooks": [ {"type":"command", ...} ] } ] } }
-    event_map = {
-        "SessionStart": "SessionStart",
-        "UserPromptSubmit": "UserPromptSubmit",
-        "PreToolUse": "PreToolUse",
-        "PostToolUse": "PostToolUse",
-        "Stop": "Stop",
-        "PermissionRequest": "PermissionRequest",
-    }
-    rendered: dict[str, list[dict[str, Any]]] = {}
-    for h in _enabled_hooks_for_harness(registry, "claude-code"):
-        ev = event_map.get(str(h.get("logical_event", "")))
-        if not ev:
-            continue
-        cmd = str(h["command"]).format(repo_root=".", harness="claude-code")
-        entry = {"type": "command", "command": cmd}
-        if h.get("timeout"):
-            entry["timeout"] = int(h["timeout"])
-        group: dict[str, Any] = {"hooks": [entry]}
-        if h.get("matcher"):
-            group["matcher"] = h["matcher"]
-        rendered.setdefault(ev, []).append(group)
-    return {"hooks": rendered} if rendered else {"hooks": {}}
+    """Return Claude hooks shape consumed under ``.apm/hooks/claude-code.json``."""
+    return render_claude_hooks(registry, repo_root=".")
 
 
-def _render_cursor_hooks_shape(registry: dict[str, Any]) -> dict[str, Any]:
-    """Cursor shape similar to copilot but with cursor event names."""
-    event_map = {
-        "SessionStart": "sessionStart",
-        "UserPromptSubmit": "beforeSubmitPrompt",
-        "PreToolUse": "preToolUse",
-        "PostToolUse": "postToolUse",
-        "Stop": "stop",
-        "SessionEnd": "sessionEnd",
-    }
-    rendered: dict[str, list[dict[str, Any]]] = {}
-    for h in _enabled_hooks_for_harness(registry, "cursor"):
-        ev = event_map.get(str(h.get("logical_event", "")))
-        if not ev:
-            continue
-        cmd = str(h["command"]).format(repo_root="${workspaceFolder}", harness="cursor")
-        entry: dict[str, Any] = {"type": "command", "command": cmd}
-        if h.get("timeout"):
-            entry["timeout"] = int(h["timeout"])
-        if h.get("mode") == "enforce" and ev.startswith("pre"):
-            entry["failClosed"] = True
-        group: dict[str, Any] = {"hooks": [entry]}
-        if h.get("matcher"):
-            group["matcher"] = h["matcher"]
-        rendered.setdefault(ev, []).append(group)
-    return {"version": 1, "hooks": rendered} if rendered else {"version": 1, "hooks": {}}
+def _render_cursor_hooks_shape(registry: dict[str, Any], *, repo_root: str = "$CURSOR_PROJECT_DIR") -> dict[str, Any]:
+    """Cursor flat hook shape consumed under ``.apm/hooks/cursor.json``.
+
+    Delegates to the shared renderer so APM output matches the Cursor adapter's
+    project ``.cursor/hooks.json`` shape exactly (flat ``{command, matcher?,
+    timeout?, failClosed?}`` entries, not nested ``hooks`` groups).
+    """
+    rendered = render_cursor_hooks(registry, repo_root=repo_root)
+    return rendered if rendered is not None else {"version": 1, "hooks": {}}
 
 
 def _render_copilot_hooks_shape(registry: dict[str, Any]) -> dict[str, Any]:
-    event_map = {
-        "SessionStart": "sessionStart",
-        "UserPromptSubmit": "userPromptSubmitted",
-        "PreToolUse": "preToolUse",
-        "PostToolUse": "postToolUse",
-        "SessionEnd": "sessionEnd",
-    }
-    rendered: dict[str, list[dict[str, Any]]] = {}
-    for h in _enabled_hooks_for_harness(registry, "github-copilot"):
-        ev = event_map.get(str(h.get("logical_event", "")))
-        if not ev:
-            continue
-        cmd = str(h["command"]).format(repo_root=".", harness="github-copilot")
-        entry: dict[str, Any] = {
-            "type": "command",
-            "bash": cmd,
-            "cwd": ".",
-            "timeoutSec": int(h.get("timeout", 5)),
-            "comment": h.get("description", h.get("id", "")),
-        }
-        rendered.setdefault(ev, []).append(entry)
-    return {"version": int(registry.get("version", 1)), "hooks": rendered}
+    return render_copilot_hooks(registry, repo_root=".")
+
+
+def _render_gemini_hooks_shape(registry: dict[str, Any]) -> dict[str, Any]:
+    return render_gemini_hooks(registry, repo_root=".")
 
 
 def materialize_hooks(repo_root: Path, *, check: bool = False) -> list[Path]:
-    """Emit .apm/hooks/*.json for claude/cursor/copilot using shapes from hook-registry.json."""
+    """Emit .apm/hooks/*.json using shapes from hook-registry.json."""
     reg_path = repo_root / "config" / "hook-registry.json"
     if not reg_path.exists():
         return []
@@ -341,6 +289,14 @@ def materialize_hooks(repo_root: Path, *, check: bool = False) -> list[Path]:
     dst = repo_root / ".apm" / "hooks"
     written: list[Path] = []
 
+    # Codex
+    codex = _render_codex_hooks_shape(registry)
+    if codex.get("hooks"):
+        tgt = dst / "codex.json"
+        content = json.dumps(codex, indent=2) + "\n"
+        if _write_text_if_changed(tgt, content, check=check):
+            written.append(tgt)
+
     # Claude
     claude = _render_claude_hooks_shape(registry)
     if claude.get("hooks"):
@@ -350,7 +306,7 @@ def materialize_hooks(repo_root: Path, *, check: bool = False) -> list[Path]:
             written.append(tgt)
 
     # Cursor
-    cursor = _render_cursor_hooks_shape(registry)
+    cursor = _render_cursor_hooks_shape(registry, repo_root="$CURSOR_PROJECT_DIR")
     if cursor.get("hooks"):
         tgt = dst / "cursor.json"
         content = json.dumps(cursor, indent=2) + "\n"
@@ -362,6 +318,14 @@ def materialize_hooks(repo_root: Path, *, check: bool = False) -> list[Path]:
     if cop.get("hooks"):
         tgt = dst / "github-copilot.json"
         content = json.dumps(cop, indent=2) + "\n"
+        if _write_text_if_changed(tgt, content, check=check):
+            written.append(tgt)
+
+    # Gemini CLI
+    gemini = _render_gemini_hooks_shape(registry)
+    if gemini.get("hooks"):
+        tgt = dst / "gemini-cli.json"
+        content = json.dumps(gemini, indent=2) + "\n"
         if _write_text_if_changed(tgt, content, check=check):
             written.append(tgt)
 

@@ -1,0 +1,80 @@
+---
+title: "git-commit-push-guard"
+description: "Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites across the fleet."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "git-commit-push-guard"
+composed: true
+composed_at: "2026-06-29"
+composed_by: "compose-hooks-fleet-g3b-g4"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="PreToolUse" variant="caution" /> <Badge text="multi-harness" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+
+> Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites across the fleet.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `git-commit-push-guard` |
+| status_message | `Checking git commit/push safety` |
+| mode | `enforce` |
+| logical_event | `PreToolUse` |
+| matcher | `Bash\|bash\|run_shell_command\|shell\|terminal` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py git-commit-push-guard --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["codex", "claude-code", "cursor", "github-copilot", "gemini-cli"]` |
+
+<Aside type="caution">
+Cross-harness Tier B policy. Decision logic in `wagents/hooks/policies/git_commit_push_guard.py` (`evaluate_git_commit_push`) blocks force-pushes to protected branches, history rewrites, and hook-skipping commits (`--no-verify`, `--no-gpg-sign`). Each harness renders its own native deny shape; Grok consumes it via the fleet deny adapter.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + policy reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "git-commit-push-guard",
+  "description": "Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites across the fleet.",
+  "status_message": "Checking git commit/push safety",
+  "mode": "enforce",
+  "logical_event": "PreToolUse",
+  "matcher": "Bash|bash|run_shell_command|shell|terminal",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py git-commit-push-guard --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "codex",
+    "claude-code",
+    "cursor",
+    "github-copilot",
+    "gemini-cli"
+  ]
+}
+```
+
+```python title="wagents/hooks/policies/git_commit_push_guard.py (decision)"
+def evaluate_git_commit_push(command: str) -> str | None:
+    """Return a deny reason for unsafe git commit/push commands, else None."""
+    # Force push (--force / -f / --force-with-lease bypass) to protected
+    # branches, history rewrites, and --no-verify / --no-gpg-sign commits.
+    ...
+```
+
+Command: `python3 .../wagents-hook.py git-commit-push-guard --harness <name>`
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

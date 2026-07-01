@@ -14,7 +14,7 @@ import { Card, CardGrid, Badge, Aside } from '@astrojs/starlight/components';
 
 > Repo-managed, portable lifecycle hooks declared in `config/hook-registry.json`. These provide safety, context, formatting, lint, research guards, and audit surfaces across harnesses. Hand-maintained catalog pages (composed).
 
-<Badge text="17 hooks" variant="note" size="large" />
+<Badge text="32 hooks" variant="note" size="large" />
 
 <Aside type="tip" title="Source of truth">
 All hooks are defined in `config/hook-registry.json`. Use `wagents hooks list` and `wagents hooks validate` to inspect at runtime. Individual hook pages live under `/hooks/<id>/`.
@@ -70,6 +70,74 @@ Codex harness uses the Python dispatcher (`wagents-hook.py`) for richer policy +
   </Card>
 </CardGrid>
 
+## Cursor-specific
+
+Cursor uses the Python dispatcher (`wagents-hook.py`) plus its own native lifecycle events (`beforeReadFile`, `beforeShellExecution`, `beforeMCPExecution`, `afterFileEdit`, `subagentStart`). Enforce-tier native events are rendered fail-closed.
+
+<CardGrid>
+  <Card title="cursor-session-start-context">
+    <Badge text="SessionStart" variant="success" /> <Badge text="context" variant="tip" /> Lightweight Cursor session + repo context.
+  </Card>
+  <Card title="cursor-destructive-shell-guard">
+    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Block critical destructive shell commands in Cursor.
+  </Card>
+  <Card title="cursor-protected-file-guard">
+    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Block protected files, secret paths, git internals, traversal, and lockfile edits.
+  </Card>
+  <Card title="cursor-post-tool-verify-context">
+    <Badge text="PostToolUse" variant="success" /> <Badge text="context" variant="tip" /> Lightweight post-edit quality checks + verification guidance.
+  </Card>
+  <Card title="cursor-stop-truth-gate">
+    <Badge text="Stop" variant="caution" /> <Badge text="enforce" variant="tip" /> Ask for one more pass when final claims omit validation evidence.
+  </Card>
+  <Card title="cursor-before-read-file-guard">
+    <Badge text="BeforeReadFile" variant="caution" /> <Badge text="enforce" variant="tip" /> Block reads of secret-bearing files before they enter Cursor context.
+  </Card>
+  <Card title="cursor-before-shell-execution-guard">
+    <Badge text="BeforeShellExecution" variant="caution" /> <Badge text="enforce" variant="tip" /> Block destructive shell + unsafe git history rewrites pre-execution.
+  </Card>
+
+> **Shell guard layering:** `cursor-destructive-shell-guard` on `preToolUse` and `cursor-before-shell-execution-guard` on `beforeShellExecution` intentionally overlap for defense-in-depth — legacy preToolUse coverage plus native pre-execution hooks (including cloud agents that lack `stop`).
+  <Card title="cursor-before-mcp-execution-guard">
+    <Badge text="BeforeMCPExecution" variant="caution" /> <Badge text="enforce" variant="tip" /> Block destructive MCP tool calls before execution.
+  </Card>
+  <Card title="cursor-after-file-edit-context">
+    <Badge text="AfterFileEdit" variant="success" /> <Badge text="context" variant="tip" /> Lightweight post-edit quality context after file edits.
+  </Card>
+  <Card title="cursor-subagent-start-context">
+    <Badge text="SubagentStart" variant="success" /> <Badge text="context" variant="tip" /> Inject repo conventions + session context when a subagent starts.
+  </Card>
+</CardGrid>
+
+## Cross-harness safety & optimization
+
+Tier B policies that span codex, claude-code, cursor, github-copilot, and gemini-cli via the shared dispatcher. Grok consumes them through the fleet deny adapter (`~/.grok/hooks/wagents-fleet.json`).
+
+<CardGrid>
+  <Card title="git-commit-push-guard">
+    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites.
+  </Card>
+  <Card title="image-input-optimizer-guard">
+    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Resize + compress oversized local image inputs before harnesses consume them.
+  </Card>
+</CardGrid>
+
+## Claude-specific
+
+Claude Code uses Stop / SubagentStop quality gates wired through `.claude/settings.json`.
+
+<CardGrid>
+  <Card title="verify-before-stop">
+    <Badge text="Stop" variant="caution" /> <Badge text="enforce" variant="tip" /> Block stopping when modified files carry debug artifacts or fail fast lint/type checks.
+  </Card>
+  <Card title="task-completed-gate">
+    <Badge text="Stop" variant="caution" /> <Badge text="enforce" variant="tip" /> Block completion on syntax errors, incomplete markers, or failing tests.
+  </Card>
+  <Card title="teammate-idle-gate">
+    <Badge text="SubagentStop" variant="caution" /> <Badge text="enforce" variant="tip" /> Block a subagent from going idle with broken syntax or critical failures.
+  </Card>
+</CardGrid>
+
 ## Research guards (multi-harness)
 
 Activated by research prompts. Span codex, claude-code, github-copilot, gemini-cli. Use state machine + ledger for invariants.
@@ -95,7 +163,10 @@ Activated by research prompts. Span codex, claude-code, github-copilot, gemini-c
 ## Dispatcher & Implementation Notes
 
 - GitHub Copilot direct `.sh` handlers under `./hooks/`.
-- Codex + multi-harness research use `hooks/wagents-hook.py <policy-id> --harness <name>`. Payload normalization, state, ledger, and degraded modes live here.
+- Codex, Cursor + multi-harness policies use `hooks/wagents-hook.py <policy-id> --harness <name>`. Payload normalization, state, ledger, and degraded modes live here.
+- Cursor native events (`beforeReadFile`, `beforeShellExecution`, `beforeMCPExecution`, `afterFileEdit`, `subagentStart`) are rendered into the flat `.cursor/hooks.json` shape; enforce-tier guards are fail-closed.
+- Decision logic is being migrated into pure modules under `wagents/hooks/policies/` (e.g. `git_commit_push_guard`, `before_read_file_guard`, `before_mcp_execution`, `subagent_start`, `grok_deny_adapter`) so the dispatcher stays thin and unit-testable.
+- Grok consumes the dispatcher-backed fleet via a deny adapter (`render_grok_hooks` → `~/.grok/hooks/wagents-fleet.json`); OpenCode bridges enforce-tier PreToolUse guards through `platforms/opencode/plugins/wagents-hook-bridge.ts`.
 - Research policies also delegate to `skills/research/scripts/research_hook.py` for the full state machine and stop verifier.
 - All entries are validated by `wagents hooks validate` and `scripts/validate/validate_repo.py`.
 

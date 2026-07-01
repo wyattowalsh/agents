@@ -43,6 +43,20 @@
       },
       {
         "type": "command",
+        "bash": "python3 ./hooks/wagents-hook.py git-commit-push-guard --harness github-copilot",
+        "cwd": ".",
+        "timeoutSec": 5,
+        "comment": "Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites across the fleet."
+      },
+      {
+        "type": "command",
+        "bash": "./hooks/run-wagents-hook image-input-optimizer-guard --harness github-copilot",
+        "cwd": ".",
+        "timeoutSec": 60,
+        "comment": "Resize and compress oversized local image inputs before harnesses consume them."
+      },
+      {
+        "type": "command",
         "bash": "python3 ./hooks/wagents-hook.py research-readonly-write-guard --harness github-copilot",
         "cwd": ".",
         "timeoutSec": 5,
@@ -61,7 +75,7 @@
         "type": "command",
         "bash": "./hooks/auto-format.sh",
         "cwd": ".",
-        "timeoutSec": 30,
+        "timeoutSec": 60,
         "comment": "Run best-effort formatter after edits."
       },
       {

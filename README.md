@@ -6,7 +6,7 @@
     <a href="https://github.com/wyattowalsh/agents/actions/workflows/CI"><img src="https://github.com/wyattowalsh/agents/actions/workflows/CI/badge.svg" alt="CI"></a>
     <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE"><img src="https://img.shields.io/github/license/wyattowalsh/agents?style=flat-square&color=5D6D7E" alt="License"></a>
     <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=2E86C1" alt="Release"></a>
-    <a href="https://agents.w4w.dev/skills/catalog/"><img src="https://img.shields.io/badge/skills-56-0f766e?style=flat-square" alt="Skills"></a>
+    <a href="https://agents.w4w.dev/skills/catalog/"><img src="https://img.shields.io/badge/skills-50-0f766e?style=flat-square" alt="Skills"></a>
     <a href="https://agents.w4w.dev"><img src="https://img.shields.io/badge/docs-agents.w4w.dev-00b4d8?style=flat-square&logo=read-the-docs&logoColor=white" alt="Docs"></a>
   </p>
   <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/docs/public/social-card.png" alt="Agents social preview" width="640">
@@ -67,12 +67,6 @@ Reusable actions and knowledge bases for AI agents.
 | agent-runtime-governance | Audit runtime controls for tool permissions, approvals, memory, telemetry, evals, rollout, and containment. Use when reviewing tool-bearing agent systems. NOT for security scans, prompt-only work, or static code review. |
 | api-designer | Contract-first API design for REST, GraphQL, gRPC. Design, spec, review, version, compat, sdk. Use for API architecture and OpenAPI specs. NOT for MCP servers (mcp-creator) or frontend API calls. |
 | changelog-writer | Generate changelogs, release notes, and migration guides from git history. Parse conventional commits. Use for releases. NOT for git ops (git-workflow) or doc sites (docs-steward). |
-| chrome-devtools | Use when debugging web pages with Chrome DevTools MCP: navigation, snapshots, screenshots, console issues, network requests, traces, or extensions. NOT for CLI-only automation, a11y audits, LCP deep dives, memory leaks, or MCP setup troubleshooting. |
-| chrome-devtools-a11y-debugging | Use when auditing web accessibility through Chrome DevTools MCP: semantic HTML, ARIA labels, focus order, keyboard navigation, tap targets, contrast, and Lighthouse failures. NOT for generic page debugging, non-browser policy writing, or performance optimization. |
-| chrome-devtools-cli | Use when auditing, writing, or running bounded shell commands that drive Chrome DevTools through the `chrome-devtools` CLI. NOT for MCP tool-call workflows, broad browser QA, unattended package installation, or replacing harness MCP configuration. |
-| chrome-devtools-debug-optimize-lcp | Use when auditing or optimizing Largest Contentful Paint with Chrome DevTools MCP: traces, element discovery, waterfalls, render blocking, and fix verification. NOT for non-LCP performance work, generic browser automation, or SEO copy advice. |
-| chrome-devtools-memory-leak-debugging | Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces. NOT for generic profiling, CPU regressions, or reading raw heap snapshots. |
-| chrome-devtools-troubleshooting | Use when auditing Chrome DevTools MCP setup failures: initialization, connection, page listing, navigation, missing tools, or wrong Chrome profile. NOT for application debugging after MCP is healthy or unrelated browser automation. |
 | data-pipeline-architect | Analyzes and designs batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems. NOT for ad-hoc analysis or schema design. |
 | data-wizard | Analyze data and guide ML: EDA, model selection, feature engineering, stats, visualization, MLOps. Use for data work. NOT for ETL, database design (database-architect), or frontend viz code. |
 | database-architect | Design schemas, plan migrations, and optimize queries. Six modes from modeling to evolution. Use for database architecture. NOT for DBA ops, backups, or deployment (devops-engineer). |
@@ -85,7 +79,7 @@ Reusable actions and knowledge bases for AI agents.
 | event-driven-architect | Design event-driven systems: contracts, topics, consumers, retries, idempotency, and sagas. Use for asynchronous workflows. NOT for CRUD APIs or ETL pipelines. |
 | files-buddy | Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders. NOT for shell script generation, CI/CD, databases, or non-macOS platform cleanup. |
 | git-workflow | Git operations: conventional commits, PR descriptions, branch strategy, conflict resolution, code archaeology, bisect. Use for git workflow tasks. NOT for code review, CI/CD, or changelogs. |
-| grok-delegate | Use when delegating Grok Build task-graph nodes via native headless CLI (-p, resume, worktrees, leader) from Codex/OpenCode parallel waves and tune loops. NOT for config sync (harness-master) or custom wrappers. |
+| grok-delegate | Use when delegating to native Grok CLI for default Tier-T trivial leaves or wave/tune nodes from parent harnesses. NOT for harness sync or wrappers. |
 | harness-master | Audit harness configs, discover gaps, usage signals, apply approved fixes. Use when tuning Claude, Codex, Copilot, Cursor, Gemini, Grok, OpenCode, or Cherry. NOT agents, MCP, or app telemetry. |
 | host-panel | Facilitate research-grounded panels in roundtable, Oxford, and Socratic formats. Use when exploring contested topics from multiple angles. NOT for Q&A, code review, or real human opinion simulation. |
 | i18n-localization | Plan and review localization changes across app, docs, and web surfaces. Use for string extraction, locale routing, plural/date/number formatting, RTL, pseudo-locale QA, message catalogs, and translation readiness. NOT for generic copy editing, frontend visual design, SEO, or JavaScript conventions. |

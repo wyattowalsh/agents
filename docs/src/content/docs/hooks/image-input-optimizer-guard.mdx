@@ -1,0 +1,95 @@
+---
+title: "image-input-optimizer-guard"
+description: "Resize and compress oversized local image inputs before harnesses consume them."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "image-input-optimizer-guard"
+composed: true
+composed_at: "2026-06-29"
+composed_by: "codex-implementation-pass"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="PreToolUse" variant="caution" /> <Badge text="multi-harness" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+
+> Resize and compress oversized local image inputs before harnesses consume them.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `image-input-optimizer-guard` |
+| status_message | `Optimizing image inputs` |
+| mode | `enforce` |
+| degraded_behavior | `block with an optimized retry path when the harness cannot safely accept updated input` |
+| logical_event | `PreToolUse` |
+| matcher | `.*` |
+| command | `{hook_runner} image-input-optimizer-guard --harness {harness}` |
+| timeout | `60` |
+| harnesses | `["codex", "claude-code", "cursor", "github-copilot", "gemini-cli"]` |
+
+<Aside type="note">
+The hook optimizes only local image file inputs that are inside trusted working roots (repo workspace, cwd, Desktop/Documents/Downloads/Pictures, and safe temp dirs) and likely to be consumed by the pending tool call. Generic tools such as `Read` are gated only when the target path is an image file. Rewrites are emitted only for harnesses that can safely accept updated input; other harnesses receive a block message with optimized retry paths.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "image-input-optimizer-guard",
+  "description": "Resize and compress oversized local image inputs before harnesses consume them.",
+  "status_message": "Optimizing image inputs",
+  "mode": "enforce",
+  "degraded_behavior": "block with an optimized retry path when the harness cannot safely accept updated input",
+  "logical_event": "PreToolUse",
+  "matcher": ".*",
+  "command": "{hook_runner} image-input-optimizer-guard --harness {harness}",
+  "timeout": 60,
+  "harnesses": [
+    "codex",
+    "claude-code",
+    "cursor",
+    "github-copilot",
+    "gemini-cli"
+  ]
+}
+```
+
+```python title="hooks/wagents-hook.py (policy)"
+def _policy_image_input_optimizer_guard(payload: NormalizedPayload) -> int:
+    if not _tool_may_consume_image(payload):
+        return 0
+    candidates, candidate_errors = _image_candidate_paths(payload)
+    if candidate_errors:
+        return _deny(payload, "Image input optimizer rejected unsafe image root(s): ...")
+    if not candidates:
+        return 0
+    if len(candidates) > IMAGE_OPTIMIZER_MAX_CANDIDATES:
+        return _deny(payload, "Image input optimizer found too many image candidates.")
+    # Optimize a bounded batch with wagents.image_inputs using a sanitized
+    # context/env and source identity checks, then rewrite updatedInput for
+    # rewrite-capable harnesses or deny with retry paths.
+    ...
+```
+
+Command: `./hooks/run-wagents-hook image-input-optimizer-guard --harness codex`
+
+The registry timeout is `60s`; the optimizer subprocess budget is `50s`, leaving
+hook overhead for payload normalization and result emission.
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="Image Optimizer Policy" href="/harness-config/sync-manifest/" description="Sync surfaces and hook projection context." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

@@ -1,0 +1,64 @@
+---
+title: "teammate-idle-gate"
+description: "Block a subagent from going idle with broken syntax, critical lint, type, or test failures."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "teammate-idle-gate"
+composed: true
+composed_at: "2026-06-29"
+composed_by: "compose-hooks-fleet-g3b-g4"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="SubagentStop" variant="caution" /> <Badge text="claude-code" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+
+> Block a subagent from going idle with broken syntax, critical lint, type, or test failures.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `teammate-idle-gate` |
+| mode | `enforce` |
+| logical_event | `SubagentStop` |
+| command | `{repo_root}/hooks/teammate-idle-gate.sh` |
+| timeout | `120` |
+| harnesses | `["claude-code"]` |
+
+<Aside type="note">
+Claude Code SubagentStop gate implemented as a direct shell handler (`hooks/teammate-idle-gate.sh`). Wired through `.claude/settings.json`; blocks a subagent from going idle while syntax is broken or critical lint/type/test failures remain.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "teammate-idle-gate",
+  "description": "Block a subagent from going idle with broken syntax, critical lint, type, or test failures.",
+  "mode": "enforce",
+  "logical_event": "SubagentStop",
+  "command": "{repo_root}/hooks/teammate-idle-gate.sh",
+  "timeout": 120,
+  "harnesses": [
+    "claude-code"
+  ]
+}
+```
+
+Command: `.../hooks/teammate-idle-gate.sh`
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

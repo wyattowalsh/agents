@@ -15,6 +15,13 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from wagents.context import REPO_ROOT_PROXY, get_repo_root
+from wagents.hooks.merge import (  # re-exported for adapters that import from base
+    HOOK_COMMAND_MARKERS as HOOK_COMMAND_MARKERS,
+    merge_cursor_flat_hooks as merge_cursor_flat_hooks,
+    merge_hook_groups as merge_hook_groups,
+    strip_foreign_claude_hook_entries as strip_foreign_claude_hook_entries,
+    strip_generated_hook_entries as strip_generated_hook_entries,
+)
 from wagents.repo_paths import render_portable_path, resolve_portable_path
 
 if TYPE_CHECKING:
@@ -47,7 +54,6 @@ REMOVED_MCP_SERVERS: set[str] = {
 }
 
 MANAGED_HEADER = "<!-- Managed by wagents. Do not edit directly. -->\n"
-HOOK_COMMAND_MARKER = "wagents-hook.py"
 MCPHUB_DEFAULT_URL = "http://127.0.0.1:46683/mcp"
 MCPHUB_PROJECTION_MODES = {"http", "remote-stdio"}
 
@@ -197,40 +203,6 @@ def normalize_existing_server_name(name: str, known_names: set[str]) -> str:
     if lowered in known_names or lowered in REMOVED_MCP_SERVERS:
         return lowered
     return normalized
-
-
-def strip_generated_hook_entries(hooks: dict[str, Any]) -> dict[str, Any]:
-    if not isinstance(hooks, dict):
-        return {}
-    stripped: dict[str, list[Any]] = {}
-    for event, entries in hooks.items():
-        if not isinstance(entries, list):
-            continue
-        kept = []
-        for entry in entries:
-            if not isinstance(entry, dict):
-                kept.append(entry)
-                continue
-            hook_configs = entry.get("hooks") if isinstance(entry.get("hooks"), list) else [entry]
-            commands = [
-                str(config.get("command") or config.get("bash") or "")
-                for config in hook_configs
-                if isinstance(config, dict)
-            ]
-            if any(HOOK_COMMAND_MARKER in command for command in commands):
-                continue
-            kept.append(entry)
-        if kept:
-            stripped[event] = kept
-    return stripped
-
-
-def merge_hook_groups(existing: dict[str, Any], generated: dict[str, Any]) -> dict[str, Any]:
-    merged = strip_generated_hook_entries(existing)
-    for event, entries in generated.get("hooks", {}).items():
-        merged.setdefault(event, [])
-        merged[event].extend(entries)
-    return merged
 
 
 def merge_server_maps(
@@ -623,6 +595,8 @@ class PlatformAdapter(ABC):
         self,
         hook_registry: dict[str, Any],
         event_map: dict[str, str],
+        *,
+        repo_relative: bool = False,
     ) -> dict[str, Any] | None:
         """Render generic command hooks using a logical-event → platform-event map."""
         hooks = hook_registry.get("hooks", [])
@@ -637,10 +611,17 @@ class PlatformAdapter(ABC):
             event = event_map.get(str(hook.get("logical_event")))
             if not event:
                 continue
+            repo_root = "." if repo_relative else str(get_repo_root())
             config: dict[str, Any] = {
                 "type": "command",
-                "command": str(hook["command"]).format(repo_root=str(get_repo_root()), harness=self.name),
+                "command": str(hook["command"]).format(
+                    repo_root=repo_root,
+                    hook_runner=f"{repo_root}/hooks/run-wagents-hook",
+                    harness=self.name,
+                ),
             }
+            if hook.get("timeout"):
+                config["timeout"] = int(hook["timeout"])
             group: dict[str, Any] = {"hooks": [config]}
             if hook.get("matcher"):
                 group["matcher"] = hook["matcher"]

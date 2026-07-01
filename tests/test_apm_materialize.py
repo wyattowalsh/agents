@@ -4,6 +4,8 @@ No real apm CLI or install required.
 """
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 from wagents.apm import (
@@ -59,15 +61,15 @@ def _write_hook_registry(tmp: Path) -> Path:
                 "logical_event": "SessionStart",
                 "command": "echo start",
                 "timeout": 5,
-                "harnesses": ["claude-code", "cursor", "github-copilot"],
+                "harnesses": ["codex", "claude-code", "cursor", "github-copilot", "gemini-cli"],
             },
             {
                 "id": "pre",
                 "logical_event": "PreToolUse",
-                "command": "python check.py",
+                "command": "python3 {repo_root}/hooks/check.py --harness {harness}",
                 "matcher": "Write",
                 "timeout": 5,
-                "harnesses": ["cursor"],
+                "harnesses": ["cursor", "gemini-cli"],
             },
         ],
     }
@@ -176,15 +178,23 @@ def test_materialize_hooks_emits_shapes(tmp_path: Path):
     touched = materialize_hooks(tmp_path)
     apm_h = tmp_path / ".apm" / "hooks"
     names = [p.name for p in touched]
+    assert "codex.json" in names
     assert "claude-code.json" in names
     assert "cursor.json" in names
     assert "github-copilot.json" in names
+    assert "gemini-cli.json" in names
+    codex = json.loads((apm_h / "codex.json").read_text())
+    assert "SessionStart" in codex["hooks"]
     claude = json.loads((apm_h / "claude-code.json").read_text())
     assert "hooks" in claude
     cur = json.loads((apm_h / "cursor.json").read_text())
     assert cur.get("version") == 1
+    assert "${workspaceFolder}" not in json.dumps(cur)
+    assert "$CURSOR_PROJECT_DIR/hooks/run-wagents-hook" in json.dumps(cur)
     cop = json.loads((apm_h / "github-copilot.json").read_text())
     assert "hooks" in cop
+    gemini = json.loads((apm_h / "gemini-cli.json").read_text())
+    assert "BeforeTool" in gemini["hooks"]
 
 
 def test_materialize_orchestrates_and_updates_apm_yml(tmp_path: Path):
@@ -260,3 +270,23 @@ def test_apm_materialize_cli_check_exits_stale(tmp_path: Path, monkeypatch):
     result = runner.invoke(app, ["apm", "materialize", "--check"])
     assert result.exit_code == 1, result.output
     assert "stale" in result.output.lower() or "Would update" in result.output
+
+
+def test_cli_run_propagates_nonzero_app_return_code():
+    repo_root = Path(__file__).resolve().parents[1]
+    code = (
+        "import wagents.cli as cli; "
+        "cli.app = lambda **kwargs: 7; "
+        "cli.end_command_telemetry = lambda code: None; "
+        "cli.run()"
+    )
+
+    proc = subprocess.run(
+        [sys.executable, "-c", code],
+        cwd=repo_root,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert proc.returncode == 7, proc.stderr or proc.stdout

@@ -1,0 +1,66 @@
+---
+title: "cursor-after-file-edit-context"
+description: "Return lightweight post-edit quality context after Cursor file edits."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "cursor-after-file-edit-context"
+composed: true
+composed_at: "2026-06-29"
+composed_by: "compose-hooks-fleet-g3b-g4"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="AfterFileEdit" variant="success" /> <Badge text="cursor" variant="default" /> <Badge text="mode: context" variant="tip" />
+
+> Return lightweight post-edit quality context after Cursor file edits.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `cursor-after-file-edit-context` |
+| status_message | `Checking post-edit quality` |
+| mode | `context` |
+| logical_event | `AfterFileEdit` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py cursor-after-file-edit-context --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["cursor"]` |
+
+<Aside type="note">
+Maps to Cursor's native `afterFileEdit` event. Context-tier (never blocks): the dispatcher reuses `_policy_codex_post_tool_verify_context` with a harness-aware label so post-edit quality hints are surfaced as additional context for Cursor.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + policy reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "cursor-after-file-edit-context",
+  "description": "Return lightweight post-edit quality context after Cursor file edits.",
+  "status_message": "Checking post-edit quality",
+  "mode": "context",
+  "logical_event": "AfterFileEdit",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-after-file-edit-context --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "cursor"
+  ]
+}
+```
+
+Command: `python3 .../wagents-hook.py cursor-after-file-edit-context --harness cursor`
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

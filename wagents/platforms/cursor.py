@@ -8,6 +8,8 @@ from typing import Any
 import yaml
 
 from wagents.context import get_repo_root
+from wagents.hooks.merge import merge_cursor_flat_hooks
+from wagents.hooks.render import render_cursor_global_hooks, render_cursor_hooks
 from wagents.parsing import parse_frontmatter
 from wagents.platforms.base import (
     HOME,
@@ -23,6 +25,7 @@ from wagents.platforms.base import (
 )
 
 CURSOR_HOME_MCP_PATH = HOME / ".cursor" / "mcp.json"
+CURSOR_HOME_HOOKS_PATH = HOME / ".cursor" / "hooks.json"
 CURSOR_MANAGED_AGENT_MARKER = "<!-- Managed by wagents. Source: agents/"
 
 
@@ -218,7 +221,7 @@ class Adapter(PlatformAdapter):
         ]
 
     def home_config_paths(self) -> list[Path]:
-        return [CURSOR_HOME_MCP_PATH]
+        return [CURSOR_HOME_MCP_PATH, CURSOR_HOME_HOOKS_PATH]
 
     def sync_repo(
         self,
@@ -228,7 +231,7 @@ class Adapter(PlatformAdapter):
         policy: dict[str, Any],
     ) -> None:
         ctx.write_json(cursor_mcp_path(), self.render_mcp(registry, {}, harness="cursor"))
-        hooks = self.render_hooks(hook_registry)
+        hooks = self.render_hooks(hook_registry, repo_root="$CURSOR_PROJECT_DIR")
         if hooks is not None:
             ctx.write_json(cursor_hooks_path(), hooks)
         ctx.write_json(cursor_permissions_path(), self.render_permissions(policy))
@@ -245,17 +248,31 @@ class Adapter(PlatformAdapter):
         fallbacks: dict[str, str],
         hook_registry: dict[str, Any],
     ) -> None:
-        if not CURSOR_HOME_MCP_PATH.exists():
+        if CURSOR_HOME_MCP_PATH.exists():
+            data = load_json(CURSOR_HOME_MCP_PATH)
+            rendered = self.render_mcp(registry, fallbacks)["mcpServers"]
+            existing = data.get("mcpServers")
+            data["mcpServers"] = merge_server_maps(
+                rendered,
+                existing if isinstance(existing, dict) else {},
+                managed_registry_server_names(registry, self.name),
+            )
+            ctx.write_json(CURSOR_HOME_MCP_PATH, data)
+
+        rendered_global = render_cursor_global_hooks()
+        if rendered_global is None:
             return
-        data = load_json(CURSOR_HOME_MCP_PATH)
-        rendered = self.render_mcp(registry, fallbacks)["mcpServers"]
-        existing = data.get("mcpServers")
-        data["mcpServers"] = merge_server_maps(
-            rendered,
-            existing if isinstance(existing, dict) else {},
-            managed_registry_server_names(registry, self.name),
+        existing_hooks: dict[str, Any] = {}
+        if CURSOR_HOME_HOOKS_PATH.exists():
+            existing_payload = load_json(CURSOR_HOME_HOOKS_PATH)
+            raw_hooks = existing_payload.get("hooks")
+            if isinstance(raw_hooks, dict):
+                existing_hooks = raw_hooks
+        merged_hooks = merge_cursor_flat_hooks(existing_hooks, rendered_global.get("hooks", {}))
+        ctx.write_json(
+            CURSOR_HOME_HOOKS_PATH,
+            {"version": int(rendered_global.get("version", 1)), "hooks": merged_hooks},
         )
-        ctx.write_json(CURSOR_HOME_MCP_PATH, data)
 
     def render_mcp(
         self,
@@ -299,43 +316,19 @@ class Adapter(PlatformAdapter):
             servers[name] = server
         return {"mcpServers": servers}
 
-    def render_hooks(self, hook_registry: dict[str, Any]) -> dict[str, Any] | None:
-        event_map = {
-            "SessionStart": "sessionStart",
-            "UserPromptSubmit": "beforeSubmitPrompt",
-            "PreToolUse": "preToolUse",
-            "PostToolUse": "postToolUse",
-            "SubagentStop": "subagentStop",
-            "Stop": "stop",
-            "PreCompact": "preCompact",
-            "SessionEnd": "sessionEnd",
-        }
-        hooks = hook_registry.get("hooks", [])
-        if not isinstance(hooks, list):
-            return None
-        rendered: dict[str, list[dict[str, Any]]] = {}
-        for hook in hooks:
-            if not isinstance(hook, dict) or not hook.get("command"):
-                continue
-            if self.name not in set(hook.get("harnesses", [])):
-                continue
-            event = event_map.get(str(hook.get("logical_event")))
-            if not event:
-                continue
-            command = str(hook["command"]).format(repo_root="${workspaceFolder}", harness=self.name)
-            config: dict[str, Any] = {
-                "type": "command",
-                "command": _cursor_render_string(command),
-            }
-            if hook.get("timeout"):
-                config["timeout"] = hook["timeout"]
-            if hook.get("mode") == "enforce" and event.startswith("pre"):
-                config["failClosed"] = True
-            group: dict[str, Any] = {"hooks": [config]}
-            if hook.get("matcher"):
-                group["matcher"] = hook["matcher"]
-            rendered.setdefault(event, []).append(group)
-        return {"version": 1, "hooks": rendered} if rendered else None
+    def render_hooks(
+        self,
+        hook_registry: dict[str, Any],
+        *,
+        repo_root: str = "$CURSOR_PROJECT_DIR",
+    ) -> dict[str, Any] | None:
+        """Render Cursor's flat hook shape: ``{event: [{command, matcher?, timeout?, failClosed?}]}``.
+
+        Cursor expects flat per-event entries, *not* the nested Claude-style
+        ``{"hooks": [{"type": "command", ...}]}`` group shape. See
+        ``wagents.hooks.render.render_cursor_hooks`` for the authoritative shape.
+        """
+        return render_cursor_hooks(hook_registry, harness=self.name, repo_root=repo_root)
 
     def render_permissions(self, policy: dict[str, Any]) -> dict[str, Any]:
         return {

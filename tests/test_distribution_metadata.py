@@ -229,6 +229,31 @@ def test_opencode_large_image_optimizer_config_enables_openai():
     }
 
 
+def test_image_input_optimizer_config_validates_and_declares_harness_tiers():
+    config = load_json("config/image-input-optimizer.json")
+    schema = load_json("config/schemas/image-input-optimizer.schema.json")
+
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.Draft202012Validator(schema).validate(config)
+    harnesses = {row["id"]: row for row in config["harnesses"]}
+
+    assert harnesses["opencode"]["enforcement"] == "native-transform"
+    assert harnesses["codex"]["tier"] == "hook-block"
+    assert harnesses["codex"]["enforcement"] == "pretool-mcp-image-paths-only"
+    assert "blocked with optimized retry paths" in harnesses["codex"]["assurance"]
+    assert ".codex/hooks.json" in harnesses["codex"]["repo_surfaces"]
+    assert harnesses["claude-code"]["tier"] == "hook-rewrite"
+    assert ".claude/settings.json" in harnesses["claude-code"]["repo_surfaces"]
+    assert harnesses["cursor"]["tier"] == "hook-block"
+    assert ".cursor/hooks.json" in harnesses["cursor"]["repo_surfaces"]
+    assert harnesses["gemini-cli"]["tier"] == "hook-block"
+    assert ".gemini/settings.json" in harnesses["gemini-cli"]["repo_surfaces"]
+    assert harnesses["github-copilot-cli"]["tier"] == "hook-block"
+    assert ".github/hooks/policy.json" in harnesses["github-copilot-cli"]["repo_surfaces"]
+    assert harnesses["chatgpt"]["tier"] == "instruction-only"
+    assert harnesses["grok-build"]["tier"] == "specified-only"
+
+
 def test_opencode_ignore_patterns_cover_secret_and_generated_paths():
     ignore_text = (ROOT / ".ignore").read_text(encoding="utf-8")
 
@@ -374,6 +399,8 @@ def test_platform_overhaul_registries_validate_against_schemas():
         ("config/skill-registry-policy.json", "config/schemas/skill-registry-policy.schema.json"),
         ("config/mcp-registry.json", "config/schemas/mcp-registry.schema.json"),
         ("config/plugin-extension-registry.json", "config/schemas/plugin-extension-registry.schema.json"),
+        ("config/hook-registry.json", "config/schemas/hook-registry.schema.json"),
+        ("config/external-hooks-registry.json", "config/schemas/external-hooks-registry.schema.json"),
         (
             "planning/manifests/mcp-conformance-requirements.json",
             "config/schemas/mcp-conformance-requirements.schema.json",

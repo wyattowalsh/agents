@@ -1,0 +1,32 @@
+{
+  "$schema": "./schemas/external-hooks-registry.schema.json",
+  "version": 1,
+  "hooks": [
+    {
+      "id": "plannotator-plan-review",
+      "name": "Plannotator plan review",
+      "description": "Third-party plan-review hooks for entering and exiting plan mode.",
+      "source": "https://github.com/wyattowalsh/plannotator",
+      "trust_tier": "repo-managed-external",
+      "status": "global-only-existing-policy",
+      "logical_events": [
+        "PreToolUse"
+      ],
+      "matchers": [
+        "exit_plan_mode|ExitPlanMode",
+        "enter_plan_mode|EnterPlanMode"
+      ],
+      "policy_source": "config/plannotator-hooks.policy.json",
+      "harnesses": [
+        "grok-build",
+        "cursor"
+      ],
+      "owner": "plannotator",
+      "risk_notes": [
+        "Exit-plan hook can run for long plan review windows.",
+        "Policy remains separate from repo-owned hook-registry rows until the G1 unification task."
+      ],
+      "notes": "First curated external row. The unified harness-neutral policy lives in config/plannotator-hooks.policy.json (G1 T-012a). config/grok-plannotator-hooks.json remains the Grok render template; later waves may collapse it into a derived projection."
+    }
+  ]
+}

@@ -37,6 +37,7 @@ from scripts.sync_agent_stack import (
     sync_repo_targets,
 )
 from wagents.platforms import base as platform_base
+from wagents.platforms import codex as codex_platform
 from wagents.platforms import cursor as cursor_platform
 from wagents.platforms import opencode as opencode_platform
 from wagents.platforms import vscode as vscode_platform
@@ -542,6 +543,41 @@ def test_standard_hook_renderers_use_harness_specific_events():
     assert "PreToolUse" not in gemini["hooks"]
 
 
+def test_image_optimizer_hook_command_uses_portable_runner_placeholder():
+    registry = json.loads((sync_agent_stack.REPO_ROOT / "config" / "hook-registry.json").read_text(encoding="utf-8"))
+    [hook] = [entry for entry in registry["hooks"] if entry["id"] == "image-input-optimizer-guard"]
+
+    assert hook["command"] == "{hook_runner} image-input-optimizer-guard --harness {harness}"
+    codex = render_codex_hooks({"hooks": [hook]}, repo_relative=True)
+    command = codex["hooks"]["PreToolUse"][0]["hooks"][0]["command"]
+    assert command == "./hooks/run-wagents-hook image-input-optimizer-guard --harness codex"
+
+
+def test_image_optimizer_hook_projects_to_all_declared_repo_surfaces():
+    registry = json.loads((sync_agent_stack.REPO_ROOT / "config" / "hook-registry.json").read_text(encoding="utf-8"))
+    [hook] = [entry for entry in registry["hooks"] if entry["id"] == "image-input-optimizer-guard"]
+    expected = {
+        "codex": sync_agent_stack.REPO_ROOT / ".codex" / "hooks.json",
+        "claude-code": sync_agent_stack.REPO_ROOT / ".claude" / "settings.json",
+        "cursor": sync_agent_stack.REPO_ROOT / ".cursor" / "hooks.json",
+        "github-copilot": sync_agent_stack.REPO_ROOT / ".github" / "hooks" / "policy.json",
+        "gemini-cli": sync_agent_stack.REPO_ROOT / ".gemini" / "settings.json",
+    }
+
+    assert set(hook["harnesses"]) == set(expected)
+    for harness, path in expected.items():
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        commands = json.dumps(payload)
+        assert f"image-input-optimizer-guard --harness {harness}" in commands
+
+    for harness in expected:
+        path = sync_agent_stack.REPO_ROOT / ".apm" / "hooks" / f"{harness}.json"
+        if harness == "github-copilot":
+            path = sync_agent_stack.REPO_ROOT / ".apm" / "hooks" / "github-copilot.json"
+        assert path.exists(), f"missing APM hook bundle for {harness}"
+        assert f"image-input-optimizer-guard --harness {harness}" in path.read_text(encoding="utf-8")
+
+
 def test_codex_hook_renderer_supports_current_official_events():
     registry = {
         "version": 1,
@@ -656,7 +692,23 @@ def test_merge_codex_hooks_preserves_local_and_replaces_generated(tmp_path, monk
     assert payload["hooks"]["UserPromptSubmit"][0]["hooks"][0]["command"] == "echo local"
     assert len(payload["hooks"]["PreToolUse"]) == 1
     assert "--harness codex" in payload["hooks"]["PreToolUse"][0]["hooks"][0]["command"]
+    assert str(sync_agent_stack.REPO_ROOT) in payload["hooks"]["PreToolUse"][0]["hooks"][0]["command"]
     assert "/old/hooks/wagents-hook.py" not in json.dumps(payload)
+
+
+def test_codex_repo_adapter_renders_absolute_hook_commands(monkeypatch):
+    calls: list[dict[str, object]] = []
+
+    monkeypatch.setattr("scripts.sync_agent_stack.generate_codex_global_instructions", lambda _ctx: None)
+
+    def fake_merge_codex_hooks(_ctx, _hook_registry, **kwargs):
+        calls.append(kwargs)
+
+    monkeypatch.setattr("scripts.sync_agent_stack.merge_codex_hooks", fake_merge_codex_hooks)
+
+    codex_platform.Adapter().sync_repo(SyncContext(apply=False), {}, {}, {})
+
+    assert calls == [{"path": codex_platform.CODEX_REPO_HOOKS_PATH}]
 
 
 def test_merge_server_root_config_uses_opencode_mcp_root(tmp_path):
@@ -1540,7 +1592,7 @@ def test_sync_repo_targets_delegates_vscode_and_opencode_adapters(tmp_path, monk
 
     assert json.loads(registry_path.read_text(encoding="utf-8")) == registry
     assert json.loads(hook_path.read_text(encoding="utf-8")) == hook_registry
-    assert called == ["vscode", "cursor", "opencode", "grok"]
+    assert called == ["vscode", "cursor", "codex", "claude-code", "gemini-cli", "opencode", "grok"]
 
 
 def test_vscode_adapter_render_mcp_preserves_env_placeholders(monkeypatch):
@@ -1727,18 +1779,13 @@ def test_cursor_adapter_render_hooks_uses_native_event_names():
         "hooks": {
             "preToolUse": [
                 {
+                    "command": (
+                        '"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook" '
+                        "cursor-destructive-shell-guard --harness cursor"
+                    ),
                     "matcher": "Bash",
-                    "hooks": [
-                        {
-                            "type": "command",
-                            "command": (
-                                "python3 ${workspaceFolder}/hooks/wagents-hook.py "
-                                "cursor-destructive-shell-guard --harness cursor"
-                            ),
-                            "timeout": 5,
-                            "failClosed": True,
-                        }
-                    ],
+                    "timeout": 5,
+                    "failClosed": True,
                 }
             ]
         },
@@ -1756,7 +1803,10 @@ def test_cursor_agent_overlay_matches_portable_agents():
 
 
 def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_path, monkeypatch):
-    config_path = tmp_path / "mcp.json"
+    home_cursor = tmp_path / ".cursor"
+    home_cursor.mkdir(parents=True)
+    config_path = home_cursor / "mcp.json"
+    hooks_path = home_cursor / "hooks.json"
     config_path.write_text(
         json.dumps({
             "mcpServers": {"custom": {"command": "custom-mcp"}},
@@ -1765,7 +1815,40 @@ def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_pat
         + "\n",
         encoding="utf-8",
     )
+    hooks_path.write_text(
+        json.dumps({
+            "version": 1,
+            "hooks": {
+                "preToolUse": [
+                    {
+                        "matcher": "exit_plan_mode|ExitPlanMode",
+                        "hooks": [{"type": "command", "command": "/old/plannotator", "timeout": 1}],
+                    },
+                    {"command": "/usr/local/bin/custom-hook.sh"},
+                ]
+            },
+        })
+        + "\n",
+        encoding="utf-8",
+    )
     monkeypatch.setattr(cursor_platform, "CURSOR_HOME_MCP_PATH", config_path)
+    monkeypatch.setattr(cursor_platform, "CURSOR_HOME_HOOKS_PATH", hooks_path)
+    monkeypatch.setattr(
+        cursor_platform,
+        "render_cursor_global_hooks",
+        lambda **_: {
+            "version": 1,
+            "hooks": {
+                "preToolUse": [
+                    {
+                        "matcher": "exit_plan_mode|ExitPlanMode",
+                        "command": "/new/plannotator",
+                        "timeout": 345600,
+                    }
+                ]
+            },
+        },
+    )
 
     adapter = cursor_platform.Adapter()
     ctx = cursor_platform.SyncContext(apply=True)
@@ -1781,6 +1864,7 @@ def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_pat
 
     adapter.sync_home(ctx, registry, {}, {}, {})
     payload = json.loads(config_path.read_text(encoding="utf-8"))
+    hooks_payload = json.loads(hooks_path.read_text(encoding="utf-8"))
 
     assert payload["other"] is True
     assert payload["mcpServers"] == {
@@ -1793,6 +1877,10 @@ def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_pat
             "args": ["managed-mcp"],
         },
     }
+    commands = [entry["command"] for entry in hooks_payload["hooks"]["preToolUse"]]
+    assert commands == ["/usr/local/bin/custom-hook.sh", "/new/plannotator"]
+    for entry in hooks_payload["hooks"]["preToolUse"]:
+        assert "hooks" not in entry
 
 
 def test_opencode_adapter_sync_home_adds_lmstudio_provider_and_preserves_custom_models(tmp_path, monkeypatch):

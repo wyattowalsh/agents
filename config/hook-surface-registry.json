@@ -289,18 +289,28 @@
           "notes": "Grok reads per-event hook groups from ~/.grok/hooks/<event>.json or individual *.json files under the dir."
         },
         {
+          "level": "global",
+          "label": "wagents fleet deny adapter hooks",
+          "path": "~/.grok/hooks/wagents-fleet.json",
+          "kind": "hooks",
+          "role": "authoritative",
+          "notes": "Fleet projection of dispatcher-backed policies (Codex superset) rendered by render_grok_hooks and executed via hooks/run-wagents-hook --harness grok-build as a deny adapter; written during home sync."
+        },
+        {
           "level": "repo",
           "label": "plannotator hook policy",
-          "path": "config/grok-plannotator-hooks.json",
+          "path": "config/plannotator-hooks.policy.json",
           "kind": "hooks",
           "role": "repo-observed",
-          "notes": "Repo-curated Plannotator exit-plan / pre-tool hooks; rendered and synced to ~/.grok/hooks/plannotator.json during home sync (placeholders resolved at sync time)."
+          "notes": "Unified, harness-neutral Plannotator exit-plan / pre-tool hook policy (single source of truth); config/grok-plannotator-hooks.json is a byte-identical re-export. Rendered and synced to ~/.grok/hooks/plannotator.json during home sync (placeholders resolved at sync time)."
         }
       ],
       "blind_spots": [],
       "repo_evidence": [
+        "config/plannotator-hooks.policy.json",
         "config/grok-plannotator-hooks.json",
         "wagents/platforms/grok.py:render_grok_plannotator_hooks",
+        "wagents/platforms/grok.py:render_grok_hooks",
         "scripts/sync_agent_stack.py",
         "instructions/grok-global.md"
       ]
@@ -312,7 +322,16 @@
       "surface_kind": "cli-tui",
       "owner_change": "agents-c04-opencode-gemini-harness",
       "support_tier": "repo-present-validation-required",
-      "hook_surfaces": [],
+      "hook_surfaces": [
+        {
+          "level": "global",
+          "label": "wagents hook bridge plugin",
+          "path": "~/.config/opencode/plugins/wagents-hook-bridge.ts",
+          "kind": "hooks",
+          "role": "repo-observed",
+          "notes": "Repo-managed OpenCode plugin bridging enforce-tier PreToolUse guards to hooks/run-wagents-hook via the tool.execute.before event; deployed from platforms/opencode/plugins/ during home sync (fail-open if the repo runner is unavailable)."
+        }
+      ],
       "blind_spots": [
         {
           "level": "project",

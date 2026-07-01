@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HookRegistry",
+  "type": "object",
+  "required": ["version", "hooks"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "version": {"const": 1},
+    "hooks": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/hook"},
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "hook": {
+      "type": "object",
+      "required": ["id", "logical_event", "command", "harnesses"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "description": {"type": "string", "minLength": 1},
+        "status_message": {"type": "string", "minLength": 1},
+        "mode": {"enum": ["context", "enforce", "audit"]},
+        "degraded_behavior": {"type": "string", "minLength": 1},
+        "logical_event": {"type": "string", "minLength": 1},
+        "logical_policy": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "matcher": {"type": "string", "minLength": 1},
+        "command": {"type": "string", "minLength": 1},
+        "commandWindows": {"type": "string", "minLength": 1},
+        "command_windows": {"type": "string", "minLength": 1},
+        "timeout": {"type": "integer", "minimum": 1},
+        "harnesses": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "projection": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "harness_overrides": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "logical_event": {"type": "string", "minLength": 1},
+              "matcher": {"type": "string", "minLength": 1},
+              "mode": {"enum": ["context", "enforce", "audit"]},
+              "timeout": {"type": "integer", "minimum": 1},
+              "command": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

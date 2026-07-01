@@ -1,0 +1,74 @@
+---
+title: "cursor-before-read-file-guard"
+description: "Block reads of secret-bearing files (.env, keys, credential stores) before they enter Cursor context."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "cursor-before-read-file-guard"
+composed: true
+composed_at: "2026-06-29"
+composed_by: "compose-hooks-fleet-g3b-g4"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="BeforeReadFile" variant="caution" /> <Badge text="cursor" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+
+> Block reads of secret-bearing files (.env, keys, credential stores) before they enter Cursor context.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `cursor-before-read-file-guard` |
+| status_message | `Checking file-read safety` |
+| mode | `enforce` |
+| logical_event | `BeforeReadFile` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py cursor-before-read-file-guard --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["cursor"]` |
+
+<Aside type="note">
+Maps to Cursor's native `beforeReadFile` event. The decision logic lives in `wagents/hooks/policies/before_read_file_guard.py` (`evaluate_before_read_file`) and is invoked by dispatcher policy `_policy_cursor_before_read_file_guard`. Denials are fail-closed: an unparseable payload still blocks the read.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + policy reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "cursor-before-read-file-guard",
+  "description": "Block reads of secret-bearing files (.env, keys, credential stores) before they enter Cursor context.",
+  "status_message": "Checking file-read safety",
+  "mode": "enforce",
+  "logical_event": "BeforeReadFile",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-before-read-file-guard --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "cursor"
+  ]
+}
+```
+
+```python title="wagents/hooks/policies/before_read_file_guard.py (decision)"
+def evaluate_before_read_file(path: str) -> str | None:
+    """Return a deny reason if `path` looks secret-bearing, else None."""
+    # .env / .env.* files, private-key + credential basenames,
+    # and sensitive suffixes (.pem, .key, .p12, ...) are blocked.
+    ...
+```
+
+Command: `python3 .../wagents-hook.py cursor-before-read-file-guard --harness cursor`
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

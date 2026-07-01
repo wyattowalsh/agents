@@ -11,6 +11,22 @@ import tomllib
 from pathlib import Path
 from typing import Any
 
+from wagents.hooks.merge import merge_hook_groups, strip_foreign_claude_hook_entries
+from wagents.hooks.render import (
+    render_claude_hooks as _render_claude_hooks,
+)
+from wagents.hooks.render import (
+    render_codex_hooks as _render_codex_hooks_shared,
+)
+from wagents.hooks.render import (
+    render_copilot_hooks as _render_copilot_hooks_shared,
+)
+from wagents.hooks.render import (
+    render_gemini_hooks as _render_gemini_hooks_shared,
+)
+from wagents.hooks.render import (
+    render_hook_command as _render_hook_command,
+)
 from wagents.platforms.base import assert_no_config_drops
 from wagents.platforms.grok import (
     render_grok_config as _render_grok_config,
@@ -129,7 +145,6 @@ CODEX_MCP_BEGIN = "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 CODEX_MCP_END = "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 GROK_MCP_BEGIN = "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 GROK_MCP_END = "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS"
-HOOK_COMMAND_MARKER = "wagents-hook.py"
 MANAGED_HEADER = "<!-- Managed by scripts/sync_agent_stack.py. Do not edit directly. -->\n"
 TOML_TABLE_RE = re.compile(r"^\[(?P<header>[^\]]+)\]\s*$")
 CODEX_CONFIG_SCHEMA_COMMENT = "#:schema https://developers.openai.com/codex/config-schema.json"
@@ -1098,166 +1113,56 @@ def render_grok_config(current: str, registry: dict[str, Any], *, repo_only: boo
 
 def render_hook_command(entry: dict[str, Any], harness: str, *, repo_relative: bool) -> str:
     repo_root = "." if repo_relative else str(REPO_ROOT)
-    return str(entry["command"]).format(repo_root=repo_root, harness=harness)
+    return _render_hook_command(entry, harness, repo_root=repo_root)
 
 
-def enabled_hooks_for_harness(hook_registry: dict[str, Any], harness: str) -> list[dict[str, Any]]:
-    hooks = hook_registry.get("hooks", [])
-    if not isinstance(hooks, list):
-        return []
-    return [
-        hook
-        for hook in hooks
-        if isinstance(hook, dict) and hook.get("command") and harness in set(hook.get("harnesses", []))
-    ]
+def _hook_repo_root(repo_relative: bool) -> str:
+    return "." if repo_relative else str(REPO_ROOT)
 
 
 def render_copilot_hooks(hook_registry: dict[str, Any]) -> dict[str, Any]:
-    event_map = {
-        "SessionStart": "sessionStart",
-        "UserPromptSubmit": "userPromptSubmitted",
-        "PreToolUse": "preToolUse",
-        "PostToolUse": "postToolUse",
-        "SessionEnd": "sessionEnd",
-    }
-    rendered: dict[str, list[dict[str, Any]]] = {}
-    for hook in enabled_hooks_for_harness(hook_registry, "github-copilot"):
-        event = event_map.get(str(hook.get("logical_event")))
-        if not event:
-            continue
-        rendered.setdefault(event, []).append({
-            "type": "command",
-            "bash": render_hook_command(hook, "github-copilot", repo_relative=True),
-            "cwd": ".",
-            "timeoutSec": int(hook.get("timeout", 5)),
-            "comment": hook.get("description", hook["id"]),
-        })
-    return {"version": int(hook_registry.get("version", 1)), "hooks": rendered}
+    # Copilot hooks always run with the repo as cwd, so commands stay repo-relative.
+    return _render_copilot_hooks_shared(hook_registry, repo_root=".")
 
 
-CODEX_HOOK_EVENT_MAP = {
-    "SessionStart": "SessionStart",
-    "UserPromptSubmit": "UserPromptSubmit",
-    "PreToolUse": "PreToolUse",
-    "PermissionRequest": "PermissionRequest",
-    "PostToolUse": "PostToolUse",
-    "PreCompact": "PreCompact",
-    "PostCompact": "PostCompact",
-    "SubagentStart": "SubagentStart",
-    "SubagentStop": "SubagentStop",
-    "Stop": "Stop",
-}
+def render_codex_hooks(hook_registry: dict[str, Any], *, repo_relative: bool = False) -> dict[str, Any]:
+    return _render_codex_hooks_shared(hook_registry, repo_root=_hook_repo_root(repo_relative))
 
 
-def _codex_status_message(hook: dict[str, Any]) -> str:
-    return str(hook.get("statusMessage") or hook.get("status_message") or hook.get("description") or hook["id"])
-
-
-def render_codex_hooks(hook_registry: dict[str, Any]) -> dict[str, Any]:
-    rendered: dict[str, list[dict[str, Any]]] = {}
-    for hook in enabled_hooks_for_harness(hook_registry, "codex"):
-        event = CODEX_HOOK_EVENT_MAP.get(str(hook.get("logical_event")))
-        if not event:
-            continue
-        config: dict[str, Any] = {
-            "type": "command",
-            "command": render_hook_command(hook, "codex", repo_relative=False),
-            "timeout": int(hook.get("timeout", 5)),
-            "statusMessage": _codex_status_message(hook),
-        }
-        command_windows = hook.get("commandWindows") or hook.get("command_windows")
-        if command_windows:
-            config["commandWindows"] = str(command_windows).format(repo_root=str(REPO_ROOT), harness="codex")
-        group: dict[str, Any] = {"hooks": [config]}
-        if hook.get("matcher"):
-            group["matcher"] = hook["matcher"]
-        rendered.setdefault(event, []).append(group)
-    return {"hooks": rendered}
-
-
-def render_standard_hooks(hook_registry: dict[str, Any], harness: str) -> dict[str, Any]:
+def render_standard_hooks(
+    hook_registry: dict[str, Any],
+    harness: str,
+    *,
+    repo_relative: bool = False,
+) -> dict[str, Any]:
+    repo_root = _hook_repo_root(repo_relative)
     if harness == "codex":
-        return render_codex_hooks(hook_registry)
-    event_map = {
-        "claude-code": {
-            "UserPromptSubmit": "UserPromptSubmit",
-            "PreToolUse": "PreToolUse",
-            "PostToolUse": "PostToolUse",
-            "Stop": "Stop",
-        },
-        "gemini-cli": {
-            "UserPromptSubmit": "BeforeAgent",
-            "PreToolUse": "BeforeTool",
-            "PostToolUse": "AfterTool",
-            "Stop": "AfterAgent",
-        },
-    }[harness]
-    rendered: dict[str, list[dict[str, Any]]] = {}
-    for hook in enabled_hooks_for_harness(hook_registry, harness):
-        event = event_map.get(str(hook.get("logical_event")))
-        if not event:
-            continue
-        config: dict[str, Any] = {
-            "type": "command",
-            "command": render_hook_command(hook, harness, repo_relative=False),
-        }
-        if harness == "gemini-cli":
-            config.update({
-                "name": hook["id"],
-                "timeout": int(hook.get("timeout", 5)) * 1000,
-                "description": hook.get("description", hook["id"]),
-            })
-        group: dict[str, Any] = {"hooks": [config]}
-        if hook.get("matcher"):
-            group["matcher"] = hook["matcher"]
-        if harness == "gemini-cli":
-            group["sequential"] = True
-        rendered.setdefault(event, []).append(group)
-    return {"hooks": rendered}
+        return _render_codex_hooks_shared(hook_registry, repo_root=repo_root)
+    if harness == "claude-code":
+        return _render_claude_hooks(hook_registry, repo_root=repo_root)
+    if harness == "gemini-cli":
+        return _render_gemini_hooks_shared(hook_registry, repo_root=repo_root)
+    raise ValueError(f"render_standard_hooks does not support harness {harness!r}")
 
 
-def strip_generated_hook_entries(hooks: dict[str, Any]) -> dict[str, Any]:
-    if not isinstance(hooks, dict):
-        return {}
-    stripped: dict[str, list[Any]] = {}
-    for event, entries in hooks.items():
-        if not isinstance(entries, list):
-            continue
-        kept = []
-        for entry in entries:
-            if not isinstance(entry, dict):
-                kept.append(entry)
-                continue
-            hook_configs = entry.get("hooks") if isinstance(entry.get("hooks"), list) else [entry]
-            commands = [
-                str(config.get("command") or config.get("bash") or "")
-                for config in hook_configs
-                if isinstance(config, dict)
-            ]
-            if any(HOOK_COMMAND_MARKER in command for command in commands):
-                continue
-            kept.append(entry)
-        if kept:
-            stripped[event] = kept
-    return stripped
-
-
-def merge_hook_groups(existing: dict[str, Any], generated: dict[str, Any]) -> dict[str, Any]:
-    merged = strip_generated_hook_entries(existing)
-    for event, entries in generated.get("hooks", {}).items():
-        merged.setdefault(event, [])
-        merged[event].extend(entries)
-    return merged
-
-
-def merge_codex_hooks(ctx: SyncContext, hook_registry: dict[str, Any]) -> None:
+def merge_codex_hooks(
+    ctx: SyncContext,
+    hook_registry: dict[str, Any],
+    *,
+    path: Path | None = None,
+    repo_relative: bool = False,
+) -> None:
+    hooks_path = path or CODEX_HOOKS_PATH
     existing: dict[str, Any] = {}
-    if CODEX_HOOKS_PATH.exists():
-        existing = load_json(CODEX_HOOKS_PATH)
+    if hooks_path.exists():
+        existing = load_json(hooks_path)
     existing_hooks_raw = existing.get("hooks")
     existing_hooks: dict[str, Any] = existing_hooks_raw if isinstance(existing_hooks_raw, dict) else {}
-    existing["hooks"] = merge_hook_groups(existing_hooks, render_codex_hooks(hook_registry))
-    write_json(ctx, CODEX_HOOKS_PATH, existing)
+    existing["hooks"] = merge_hook_groups(
+        existing_hooks,
+        render_codex_hooks(hook_registry, repo_relative=repo_relative),
+    )
+    write_json(ctx, hooks_path, existing)
 
 
 def render_codex_global_instructions() -> str:
@@ -1663,7 +1568,7 @@ def merge_claude_settings(ctx: SyncContext, policy: dict[str, Any], hook_registr
         if token not in allow:
             allow.append(token)
     settings["hooks"] = merge_hook_groups(
-        settings.get("hooks", {}),
+        strip_foreign_claude_hook_entries(settings.get("hooks", {})),
         render_standard_hooks(hook_registry, "claude-code"),
     )
     for hook_groups in settings.get("hooks", {}).values():
@@ -1780,8 +1685,13 @@ def sync_repo_targets(
         sync_platform_repo_target("vscode", ctx, registry, hook_registry, policy)
     if platform_filter_allows(platforms_filter, "cursor"):
         sync_platform_repo_target("cursor", ctx, registry, hook_registry, policy)
+    if platform_filter_allows(platforms_filter, "codex"):
+        sync_platform_repo_target("codex", ctx, registry, hook_registry, policy)
+    if platform_filter_allows(platforms_filter, "claude-code"):
+        sync_platform_repo_target("claude-code", ctx, registry, hook_registry, policy)
+    if platform_filter_allows(platforms_filter, "gemini-cli"):
+        sync_platform_repo_target("gemini-cli", ctx, registry, hook_registry, policy)
     if platform_filter_allows(platforms_filter, "repo-core"):
-        generate_codex_global_instructions(ctx)
         generate_copilot_repo_instructions(ctx)
         generate_copilot_rule_instructions(ctx)
         generate_copilot_hooks(ctx, hook_registry)
@@ -2799,8 +2709,12 @@ def sync_home_targets(
     platforms_filter: set[str] | None = None,
 ) -> None:
     if not platform_filter_allows(platforms_filter, "shared"):
+        if platform_filter_allows(platforms_filter, "cursor"):
+            sync_platform_home_target("cursor", ctx, registry, policy, fallbacks, hook_registry)
         if platform_filter_allows(platforms_filter, "grok"):
             sync_platform_home_target("grok", ctx, registry, policy, fallbacks, hook_registry)
+        if platform_filter_allows(platforms_filter, "opencode"):
+            sync_platform_home_target("opencode", ctx, registry, policy, fallbacks, hook_registry)
         return
     sync_codex_entrypoint(ctx)
     ensure_symlink(ctx, CLAUDE_ENTRYPOINT_PATH, GLOBAL_MD)
