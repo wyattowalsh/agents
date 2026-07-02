@@ -5,6 +5,7 @@
     {
       "id": "session-start",
       "description": "Report basic session environment and repository state.",
+      "logical_policy": "session-start",
       "logical_event": "SessionStart",
       "matcher": "startup|resume|clear",
       "command": "./hooks/session-start.sh",
@@ -16,6 +17,7 @@
     {
       "id": "prompt-log",
       "description": "Write local prompt audit entries with short retention.",
+      "logical_policy": "prompt-log",
       "logical_event": "UserPromptSubmit",
       "command": "./hooks/log-prompt.sh",
       "timeout": 5,
@@ -26,6 +28,7 @@
     {
       "id": "destructive-shell-guard",
       "description": "Block high-risk shell commands.",
+      "logical_policy": "destructive-shell-guard",
       "logical_event": "PreToolUse",
       "matcher": "Bash|bash|run_shell_command",
       "command": "./hooks/guard-destructive.sh",
@@ -37,6 +40,7 @@
     {
       "id": "protected-file-guard",
       "description": "Block edits to protected paths and secret-bearing files.",
+      "logical_policy": "protected-file-guard",
       "logical_event": "PreToolUse",
       "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace",
       "command": "./hooks/protect-files.sh",
@@ -48,10 +52,13 @@
     {
       "id": "post-edit-format",
       "description": "Run best-effort formatter after edits.",
+      "logical_policy": "post-edit-format",
       "logical_event": "PostToolUse",
       "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace",
       "command": "./hooks/auto-format.sh",
       "timeout": 60,
+      "bundle_group": "copilot-post-edit-quality",
+      "bundle_mode": "context-chain",
       "harnesses": [
         "github-copilot"
       ]
@@ -59,10 +66,13 @@
     {
       "id": "post-edit-lint",
       "description": "Return concise lint/type context after edits.",
+      "logical_policy": "post-edit-lint",
       "logical_event": "PostToolUse",
       "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace",
       "command": "./hooks/lint-check.sh",
       "timeout": 30,
+      "bundle_group": "copilot-post-edit-quality",
+      "bundle_mode": "context-chain",
       "harnesses": [
         "github-copilot"
       ]
@@ -72,9 +82,10 @@
       "description": "Report lightweight Codex session and repository context.",
       "status_message": "Gathering Codex session context",
       "mode": "context",
+      "logical_policy": "codex-session-start-context",
       "logical_event": "SessionStart",
       "matcher": "startup|resume|clear",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py codex-session-start-context --harness {harness}",
+      "command": "{hook_runner} codex-session-start-context --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "codex"
@@ -85,10 +96,13 @@
       "description": "Block critical destructive shell commands in Codex.",
       "status_message": "Checking shell safety",
       "mode": "enforce",
+      "logical_policy": "codex-destructive-shell-guard",
       "logical_event": "PreToolUse",
       "matcher": "Bash|bash|run_shell_command|shell|terminal",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py codex-destructive-shell-guard --harness {harness}",
+      "command": "{hook_runner} codex-destructive-shell-guard --harness {harness}",
       "timeout": 5,
+      "bundle_group": "codex-shell-file-guards",
+      "bundle_mode": "enforce-chain",
       "harnesses": [
         "codex"
       ]
@@ -98,10 +112,13 @@
       "description": "Block protected files, secret-bearing paths, git internals, traversal, and direct lockfile edits in Codex.",
       "status_message": "Checking protected paths",
       "mode": "enforce",
+      "logical_policy": "codex-protected-file-guard",
       "logical_event": "PreToolUse",
       "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py codex-protected-file-guard --harness {harness}",
+      "command": "{hook_runner} codex-protected-file-guard --harness {harness}",
       "timeout": 5,
+      "bundle_group": "codex-shell-file-guards",
+      "bundle_mode": "enforce-chain",
       "harnesses": [
         "codex"
       ]
@@ -111,8 +128,9 @@
       "description": "Deny high-risk Codex permission requests and otherwise preserve the normal approval flow.",
       "status_message": "Checking approval request safety",
       "mode": "enforce",
+      "logical_policy": "codex-permission-request-guard",
       "logical_event": "PermissionRequest",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py codex-permission-request-guard --harness {harness}",
+      "command": "{hook_runner} codex-permission-request-guard --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "codex"
@@ -123,9 +141,10 @@
       "description": "Run lightweight context-only post-edit quality checks and return verification guidance after Codex tool use.",
       "status_message": "Checking post-edit quality",
       "mode": "context",
+      "logical_policy": "codex-post-tool-verify-context",
       "logical_event": "PostToolUse",
       "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py codex-post-tool-verify-context --harness {harness}",
+      "command": "{hook_runner} codex-post-tool-verify-context --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "codex"
@@ -136,8 +155,9 @@
       "description": "Ask Codex for one more pass when final code-change claims omit validation evidence.",
       "status_message": "Checking final-answer evidence",
       "mode": "enforce",
+      "logical_policy": "codex-stop-truth-gate",
       "logical_event": "Stop",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py codex-stop-truth-gate --harness {harness}",
+      "command": "{hook_runner} codex-stop-truth-gate --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "codex"
@@ -148,9 +168,10 @@
       "description": "Report lightweight Cursor session and repository context.",
       "status_message": "Gathering Cursor session context",
       "mode": "context",
+      "logical_policy": "cursor-session-start-context",
       "logical_event": "SessionStart",
       "matcher": "startup|resume|clear",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-session-start-context --harness {harness}",
+      "command": "{hook_runner} cursor-session-start-context --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "cursor"
@@ -161,10 +182,13 @@
       "description": "Block critical destructive shell commands in Cursor.",
       "status_message": "Checking shell safety",
       "mode": "enforce",
+      "logical_policy": "cursor-destructive-shell-guard",
       "logical_event": "PreToolUse",
       "matcher": "Bash|bash|run_shell_command|shell|terminal",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-destructive-shell-guard --harness {harness}",
+      "command": "{hook_runner} cursor-destructive-shell-guard --harness {harness}",
       "timeout": 5,
+      "bundle_group": "cursor-shell-file-guards",
+      "bundle_mode": "enforce-chain",
       "harnesses": [
         "cursor"
       ]
@@ -174,10 +198,13 @@
       "description": "Block protected files, secret-bearing paths, git internals, traversal, and direct lockfile edits in Cursor.",
       "status_message": "Checking protected paths",
       "mode": "enforce",
+      "logical_policy": "cursor-protected-file-guard",
       "logical_event": "PreToolUse",
       "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-protected-file-guard --harness {harness}",
+      "command": "{hook_runner} cursor-protected-file-guard --harness {harness}",
       "timeout": 5,
+      "bundle_group": "cursor-shell-file-guards",
+      "bundle_mode": "enforce-chain",
       "harnesses": [
         "cursor"
       ]
@@ -187,9 +214,10 @@
       "description": "Run lightweight context-only post-edit quality checks and return verification guidance after Cursor tool use.",
       "status_message": "Checking post-edit quality",
       "mode": "context",
+      "logical_policy": "cursor-post-tool-verify-context",
       "logical_event": "PostToolUse",
       "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-post-tool-verify-context --harness {harness}",
+      "command": "{hook_runner} cursor-post-tool-verify-context --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "cursor"
@@ -200,8 +228,9 @@
       "description": "Ask Cursor for one more pass when final code-change claims omit validation evidence.",
       "status_message": "Checking final-answer evidence",
       "mode": "enforce",
+      "logical_policy": "cursor-stop-truth-gate",
       "logical_event": "Stop",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-stop-truth-gate --harness {harness}",
+      "command": "{hook_runner} cursor-stop-truth-gate --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "cursor"
@@ -212,8 +241,9 @@
       "description": "Block reads of secret-bearing files (.env, keys, credential stores) before they enter Cursor context.",
       "status_message": "Checking file-read safety",
       "mode": "enforce",
+      "logical_policy": "cursor-before-read-file-guard",
       "logical_event": "BeforeReadFile",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-before-read-file-guard --harness {harness}",
+      "command": "{hook_runner} cursor-before-read-file-guard --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "cursor"
@@ -224,8 +254,9 @@
       "description": "Block destructive shell commands and unsafe git history rewrites on Cursor's beforeShellExecution event.",
       "status_message": "Checking shell-execution safety",
       "mode": "enforce",
+      "logical_policy": "cursor-before-shell-execution-guard",
       "logical_event": "BeforeShellExecution",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-before-shell-execution-guard --harness {harness}",
+      "command": "{hook_runner} cursor-before-shell-execution-guard --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "cursor"
@@ -236,8 +267,9 @@
       "description": "Block destructive MCP tool calls (shell passthroughs, out-of-workspace deletes) before execution in Cursor.",
       "status_message": "Checking MCP-execution safety",
       "mode": "enforce",
+      "logical_policy": "cursor-before-mcp-execution-guard",
       "logical_event": "BeforeMCPExecution",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-before-mcp-execution-guard --harness {harness}",
+      "command": "{hook_runner} cursor-before-mcp-execution-guard --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "cursor"
@@ -248,8 +280,9 @@
       "description": "Return lightweight post-edit quality context after Cursor file edits.",
       "status_message": "Checking post-edit quality",
       "mode": "context",
+      "logical_policy": "cursor-after-file-edit-context",
       "logical_event": "AfterFileEdit",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-after-file-edit-context --harness {harness}",
+      "command": "{hook_runner} cursor-after-file-edit-context --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "cursor"
@@ -260,8 +293,9 @@
       "description": "Inject repository conventions and session context when a Cursor subagent starts.",
       "status_message": "Gathering subagent context",
       "mode": "context",
+      "logical_policy": "cursor-subagent-start-context",
       "logical_event": "SubagentStart",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-subagent-start-context --harness {harness}",
+      "command": "{hook_runner} cursor-subagent-start-context --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "cursor"
@@ -272,9 +306,10 @@
       "description": "Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites across the fleet.",
       "status_message": "Checking git commit/push safety",
       "mode": "enforce",
+      "logical_policy": "git-commit-push-guard",
       "logical_event": "PreToolUse",
       "matcher": "Bash|bash|run_shell_command|shell|terminal",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py git-commit-push-guard --harness {harness}",
+      "command": "{hook_runner} git-commit-push-guard --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "codex",
@@ -290,8 +325,9 @@
       "status_message": "Optimizing image inputs",
       "mode": "enforce",
       "degraded_behavior": "block with an optimized retry path when the harness cannot safely accept updated input",
+      "logical_policy": "image-input-optimizer-guard",
       "logical_event": "PreToolUse",
-      "matcher": ".*",
+      "matcher": "analyze_image|attach_image|screenshot|upload_image|view_image|Read|read|.*[Ii]mage.*|.*[Vv]ision.*|.*[Ss]creenshot.*|.*[Aa]ttach.*|.*[Uu]pload.*",
       "command": "{hook_runner} image-input-optimizer-guard --harness {harness}",
       "timeout": 60,
       "harnesses": [
@@ -306,8 +342,9 @@
       "id": "research-prompt-triage-context",
       "description": "Activate research hook state and inject research-method reminders.",
       "mode": "context",
+      "logical_policy": "research-prompt-triage-context",
       "logical_event": "UserPromptSubmit",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py research-prompt-triage-context --harness {harness}",
+      "command": "{hook_runner} research-prompt-triage-context --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "codex",
@@ -322,10 +359,13 @@
       "description": "Prevent source-file write tools during active research sessions.",
       "mode": "enforce",
       "degraded_behavior": "audit when the harness payload does not expose a tool name or writable path",
+      "logical_policy": "research-readonly-write-guard",
       "logical_event": "PreToolUse",
       "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py research-readonly-write-guard --harness {harness}",
+      "command": "{hook_runner} research-readonly-write-guard --harness {harness}",
       "timeout": 5,
+      "bundle_group": "research-shell-guards",
+      "bundle_mode": "enforce-chain",
       "harnesses": [
         "codex",
         "claude-code",
@@ -339,10 +379,13 @@
       "description": "Block dangerous shell side effects during active research sessions.",
       "mode": "enforce",
       "degraded_behavior": "audit when the harness payload does not expose a shell command",
+      "logical_policy": "research-dangerous-shell-guard",
       "logical_event": "PreToolUse",
       "matcher": "Bash|bash|run_shell_command",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py research-dangerous-shell-guard --harness {harness}",
+      "command": "{hook_runner} research-dangerous-shell-guard --harness {harness}",
       "timeout": 5,
+      "bundle_group": "research-shell-guards",
+      "bundle_mode": "enforce-chain",
       "harnesses": [
         "codex",
         "claude-code",
@@ -355,9 +398,10 @@
       "id": "research-evidence-ledger",
       "description": "Append lightweight provenance metadata for research retrieval tools.",
       "mode": "audit",
+      "logical_policy": "research-evidence-ledger",
       "logical_event": "PostToolUse",
       "matcher": "WebSearch|web_search|fetch|fetcher|trafilatura|docling|mcp__.*|mcp_.*",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py research-evidence-ledger --harness {harness}",
+      "command": "{hook_runner} research-evidence-ledger --harness {harness}",
       "timeout": 5,
       "harnesses": [
         "codex",
@@ -371,8 +415,9 @@
       "id": "research-stop-verifier",
       "description": "Verify research skill invariants before an active research session completes.",
       "mode": "enforce",
+      "logical_policy": "research-stop-verifier",
       "logical_event": "Stop",
-      "command": "python3 {repo_root}/hooks/wagents-hook.py research-stop-verifier --harness {harness}",
+      "command": "{hook_runner} research-stop-verifier --harness {harness}",
       "timeout": 30,
       "harnesses": [
         "codex",
@@ -386,6 +431,7 @@
       "id": "verify-before-stop",
       "description": "Block stopping when modified files carry debug artifacts or fail fast lint/type checks.",
       "mode": "enforce",
+      "logical_policy": "verify-before-stop",
       "logical_event": "Stop",
       "command": "{repo_root}/hooks/verify-before-stop.sh",
       "timeout": 60,
@@ -397,6 +443,7 @@
       "id": "task-completed-gate",
       "description": "Block task completion when modified files have syntax errors, incomplete markers, or failing tests.",
       "mode": "enforce",
+      "logical_policy": "task-completed-gate",
       "logical_event": "Stop",
       "command": "{repo_root}/hooks/task-completed-gate.sh",
       "timeout": 120,
@@ -408,6 +455,7 @@
       "id": "teammate-idle-gate",
       "description": "Block a subagent from going idle with broken syntax, critical lint, type, or test failures.",
       "mode": "enforce",
+      "logical_policy": "teammate-idle-gate",
       "logical_event": "SubagentStop",
       "command": "{repo_root}/hooks/teammate-idle-gate.sh",
       "timeout": 120,

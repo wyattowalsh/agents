@@ -60,5 +60,8 @@
 	],
 	"trusted_roots": [
 		"${REPO_ROOT}"
-	]
+	],
+	"hook_perf": {
+		"tier": "legacy"
+	}
 }

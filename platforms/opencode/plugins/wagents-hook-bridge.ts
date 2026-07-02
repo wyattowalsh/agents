@@ -18,6 +18,18 @@ import path from "node:path"
  */
 
 const HOOK_RUNNER_REL = path.join("hooks", "run-wagents-hook")
+const BUNDLE_PERF_TIERS = new Set(["bundle", "worker"])
+const SINGLE_POLICY_TIMEOUT_MS = 5000
+const BUNDLE_TIMEOUT_SECONDS = 30
+const BUNDLE_TIMEOUT_MARGIN_MS = 1000
+
+function resolvePerfTier(): string {
+  return process.env.WAGENTS_HOOK_PERF_TIER || "legacy"
+}
+
+function shouldUseBundleDispatch(): boolean {
+  return BUNDLE_PERF_TIERS.has(resolvePerfTier())
+}
 
 // tool name -> ordered list of enforce-tier policy ids to consult (first deny wins).
 const POLICY_MAP: Record<string, string[]> = {
@@ -77,13 +89,33 @@ function denyReason(decision: Record<string, unknown>): string {
   )
 }
 
-function runPolicy(repoRoot: string, policyId: string, payload: unknown): void {
+function runPolicy(repoRoot: string, policyId: string, payload: unknown, options?: { bundle?: boolean }): void {
+  const runnerPath = path.join(repoRoot, HOOK_RUNNER_REL)
+  const isBundle = Boolean(options?.bundle && policyId.includes(","))
+  let args = isBundle
+    ? [
+        "--bundle",
+        policyId,
+        "--harness",
+        "opencode",
+        "--bundle-mode",
+        "enforce-chain",
+        "--bundle-timeout",
+        String(BUNDLE_TIMEOUT_SECONDS),
+      ]
+    : [policyId, "--harness", "opencode"]
+  if (resolvePerfTier() === "worker" && isBundle) {
+    args = ["--worker-socket", process.env.WAGENTS_HOOK_WORKER_SOCKET || "", ...args]
+  }
+  const commandTimeoutMs = isBundle
+    ? BUNDLE_TIMEOUT_SECONDS * 1000 + BUNDLE_TIMEOUT_MARGIN_MS
+    : SINGLE_POLICY_TIMEOUT_MS
   let stdout = ""
   try {
-    stdout = execFileSync(path.join(repoRoot, HOOK_RUNNER_REL), [policyId, "--harness", "opencode"], {
+    stdout = execFileSync(runnerPath, args, {
       input: JSON.stringify(payload),
       encoding: "utf8",
-      timeout: 5000,
+      timeout: commandTimeoutMs,
       cwd: repoRoot,
     })
   } catch {
@@ -121,6 +153,10 @@ export const WagentsHookBridgePlugin: Plugin = async ({ directory }) => {
         tool_name: input.tool,
         tool_input: output.args ?? {},
         cwd: repoRoot,
+      }
+      if (shouldUseBundleDispatch() && policies.length > 1) {
+        runPolicy(repoRoot, policies.join(","), payload, { bundle: true })
+        return
       }
       for (const policyId of policies) {
         runPolicy(repoRoot, policyId, payload)

@@ -170,6 +170,27 @@ Activated by research prompts. Span codex, claude-code, github-copilot, gemini-c
 - Research policies also delegate to `skills/research/scripts/research_hook.py` for the full state machine and stop verifier.
 - All entries are validated by `wagents hooks validate` and `scripts/validate/validate_repo.py`.
 
+## Runtime performance tiers
+
+Fleet hook rendering supports staged performance tiers via `config/tooling-policy.json`:
+
+```json
+"hook_perf": { "tier": "legacy" }
+```
+
+| Tier | Behavior |
+| --- | --- |
+| `legacy` (default) | One rendered entry per registry row — byte-identical to pre-performance baselines. |
+| `g1` | Registry quick wins (matcher narrowing, dispatcher caches) without bundling. |
+| `bundle` | Consecutive `bundle_group` rows collapse to a single `{hook_runner} --bundle ...` spawn. |
+| `worker` | Bundle groups render through `hooks/wagents-hook-worker.py` (optional warm-process path). |
+
+The worker daemon (`python3 hooks/wagents-hook-worker.py --serve --socket PATH`) handles **one socket connection at a time**: its accept loop serves each NDJSON request to completion before accepting the next client. Parallel harness hook events queue at the socket backlog; this is acceptable for enforce-chain bundle semantics. **Start the daemon and set `WAGENTS_HOOK_WORKER_SOCKET` to the socket path before** promoting `hook_perf.tier` to `worker` and running `sync_agent_stack.py --apply` — rendered commands forward through `wagents-hook.py --worker-socket` and will fail closed or fall back if the socket is absent.
+
+Observability: set `WAGENTS_HOOK_TIMING=1` on a hook invocation to append JSON timing lines to `~/.cache/wagents/hook-timing.jsonl`. Worker-tier forwards (`--worker-socket`) record the same sidecar with `"forwarded": true` so hyperfine runs can distinguish warm socket paths from cold spawns. Bundle worker forwards use a socket wait budget of `bundle_timeout + 1s` (aligned with the OpenCode bridge margin). Inventory spawn counts with `uv run python scripts/hooks/hook_perf_inventory.py --json`.
+
+Promote a tier only after hyperfine validation documented in `openspec/changes/fleet-hooks-performance/validation-matrix.md`.
+
 ## Related
 
 - CLI: `wagents hooks list --format json`, `wagents hooks validate`
