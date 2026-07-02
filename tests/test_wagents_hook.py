@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import shlex
 import shutil
 import subprocess
 import sys
 from pathlib import Path
+from typing import cast
 
 HOOK_PATH = Path(__file__).parent.parent / "hooks" / "wagents-hook.py"
 SPEC = importlib.util.spec_from_file_location("wagents_hook", HOOK_PATH)
@@ -62,6 +64,11 @@ def test_image_optimizer_registry_timeout_covers_subprocess_budget():
 
     assert hook["timeout"] == wagents_hook.IMAGE_OPTIMIZER_REGISTRY_TIMEOUT_SECONDS
     assert hook["timeout"] > wagents_hook.IMAGE_OPTIMIZER_TIMEOUT_SECONDS
+    forward_budget = (
+        wagents_hook.IMAGE_OPTIMIZER_REGISTRY_TIMEOUT_SECONDS
+        + wagents_hook._FORWARD_TIMEOUT_MARGIN_SECONDS
+    )
+    assert forward_budget >= wagents_hook.IMAGE_OPTIMIZER_TIMEOUT_SECONDS
 
 
 def test_codex_session_start_context_returns_additional_context(monkeypatch, tmp_path):
@@ -491,6 +498,7 @@ def test_image_input_optimizer_blocks_codex_with_retry_path(monkeypatch, tmp_pat
     optimized = work / "cache" / "optimized.jpg"
     source.write_bytes(b"placeholder")
     monkeypatch.setattr(wagents_hook, "_uv_executable", lambda: "/opt/homebrew/bin/uv")
+    monkeypatch.setattr(wagents_hook, "_run_image_optimizer_batch_inprocess", lambda *_args, **_kwargs: (None, None))
 
     def fake_run(*_args, **_kwargs):
         return type(
@@ -535,6 +543,40 @@ def test_image_input_optimizer_blocks_codex_with_retry_path(monkeypatch, tmp_pat
     assert stderr == ""
     assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
     assert str(optimized) in payload["hookSpecificOutput"]["permissionDecisionReason"]
+
+
+def test_image_input_optimizer_preserves_inprocess_error_without_subprocess(monkeypatch, tmp_path):
+    home = tmp_path / "home"
+    work = tmp_path / "work"
+    work.mkdir()
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: home)
+    source = work / "screenshot.png"
+    source.write_bytes(b"placeholder")
+    error = "Image optimizer exhausted the hook execution budget."
+    monkeypatch.setattr(wagents_hook, "_run_image_optimizer_batch_inprocess", lambda *_args, **_kwargs: (None, error))
+
+    def fail_subprocess_fallback(*_args, **_kwargs):
+        raise AssertionError("subprocess fallback should not run after an in-process optimizer error")
+
+    monkeypatch.setattr(wagents_hook, "_run_image_optimizer_batch", fail_subprocess_fallback)
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PreToolUse",
+            "tool_name": "view_image",
+            "tool_input": {"image_path": str(source)},
+            "cwd": str(work),
+        },
+        ["image-input-optimizer-guard", "--harness", "codex"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert stderr == ""
+    assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
+    assert error in payload["hookSpecificOutput"]["permissionDecisionReason"]
 
 
 def test_image_input_optimizer_command_uses_uv_project(monkeypatch, tmp_path):
@@ -585,6 +627,7 @@ def test_image_input_optimizer_batch_command_omits_secret_context(monkeypatch, t
     source = work / "screenshot.png"
     optimized = work / "cache" / "optimized.jpg"
     source.write_bytes(b"placeholder")
+    monkeypatch.setattr(wagents_hook, "_run_image_optimizer_batch_inprocess", lambda *_args, **_kwargs: (None, None))
     captured: dict[str, object] = {}
     secret = "sk-review-secret"
 
@@ -641,13 +684,14 @@ def test_image_input_optimizer_batch_command_omits_secret_context(monkeypatch, t
     input_text = json.dumps(input_payload)
     env = captured["env"]
     assert isinstance(env, dict)
+    env_map = cast("dict[str, str]", env)
     assert secret not in command_text
     assert secret not in input_text
     assert "Authorization" not in command_text
     assert "Authorization" not in input_text
-    assert env["PYTHONPATH"] == str(wagents_hook.REPO_ROOT)
-    assert "BASH_ENV" not in env
-    assert "UV_CACHE_DIR" not in env
+    assert env_map["PYTHONPATH"] == str(wagents_hook.REPO_ROOT)
+    assert "BASH_ENV" not in env_map
+    assert "UV_CACHE_DIR" not in env_map
     assert input_payload["images"][0]["identity"]["size"] == source.stat().st_size
 
 
@@ -657,6 +701,7 @@ def test_image_input_optimizer_denies_with_uv_remediation_when_uv_missing(monkey
     work.mkdir()
     monkeypatch.setattr(wagents_hook.Path, "home", lambda: home)
     monkeypatch.setattr(wagents_hook, "_uv_executable", lambda: None)
+    monkeypatch.setattr(wagents_hook, "_run_image_optimizer_batch_inprocess", lambda *_args, **_kwargs: (None, None))
     source = work / "screenshot.png"
     source.write_bytes(b"placeholder")
 
@@ -689,6 +734,7 @@ def test_image_input_optimizer_blocks_cursor_with_retry_path(monkeypatch, tmp_pa
     optimized = work / "cache" / "screen.jpg"
     source.write_bytes(b"placeholder")
     monkeypatch.setattr(wagents_hook, "_uv_executable", lambda: "/opt/homebrew/bin/uv")
+    monkeypatch.setattr(wagents_hook, "_run_image_optimizer_batch_inprocess", lambda *_args, **_kwargs: (None, None))
 
     def fake_run(*_args, **_kwargs):
         return type(
@@ -744,6 +790,7 @@ def test_image_input_optimizer_rewrites_duplicate_path_spellings_for_claude(monk
     optimized = work / "cache" / "screen.jpg"
     source.write_bytes(b"placeholder")
     monkeypatch.setattr(wagents_hook, "_uv_executable", lambda: "/opt/homebrew/bin/uv")
+    monkeypatch.setattr(wagents_hook, "_run_image_optimizer_batch_inprocess", lambda *_args, **_kwargs: (None, None))
 
     def fake_run(*_args, **_kwargs):
         return type(
@@ -846,6 +893,13 @@ def test_image_input_optimizer_blocks_read_on_oversized_repo_image(monkeypatch, 
     source = repo / "screenshot.png"
     Image.new("RGB", (4200, 2800), (32, 96, 160)).save(source, format="PNG")
     monkeypatch.setattr(wagents_hook, "_uv_executable", lambda: "/opt/homebrew/bin/uv")
+    # Exercise the subprocess fallback path (deny message shape) rather than the
+    # in-process optimizer, which writes to the global wagents image-input cache.
+    monkeypatch.setattr(
+        wagents_hook,
+        "_run_image_optimizer_batch_inprocess",
+        lambda *_args, **_kwargs: (None, None),
+    )
 
     def fake_run(*_args, **_kwargs):
         optimized = repo / "cache" / "optimized.jpg"
@@ -1054,8 +1108,39 @@ def test_image_input_optimizer_wrapper_command_uses_uv_environment(monkeypatch, 
         parent.chmod(0o700)
     real_uv = shutil.which("uv")
     assert real_uv is not None
+    helper = bin_dir / "fake_uv_optimizer.py"
+    helper.write_text(
+        """
+from __future__ import annotations
+
+import json
+import os
+import shutil
+import sys
+from pathlib import Path
+
+payload = json.loads(sys.stdin.read() or "{}")
+cache_root = Path(os.environ["HOME"]) / ".cache" / "wagents" / "image-inputs" / "test"
+cache_root.mkdir(parents=True, exist_ok=True)
+results = []
+for index, item in enumerate(payload["images"]):
+    source = Path(item["path"])
+    optimized = cache_root / f"{source.stem}-{index}{source.suffix}"
+    shutil.copyfile(source, optimized)
+    results.append({
+        "optimizedPath": str(optimized),
+        "fits": True,
+        "changed": True,
+    })
+print(json.dumps({"status": "ok", "results": results}, separators=(",", ":")))
+""".lstrip(),
+        encoding="utf-8",
+    )
     uv = bin_dir / "uv"
-    uv.write_text(f"#!/bin/sh\nexec {real_uv} \"$@\"\n", encoding="utf-8")
+    uv.write_text(
+        f"#!/bin/sh\nexec {shlex.quote(sys.executable)} {shlex.quote(str(helper))} \"$@\"\n",
+        encoding="utf-8",
+    )
     uv.chmod(0o755)
     monkeypatch.setenv("HOME", str(home))
     payload = {

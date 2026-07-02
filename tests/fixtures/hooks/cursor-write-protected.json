@@ -1,0 +1,7 @@
+{
+  "session_id": "fixture-cursor-write-protected",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "write",
+  "tool_input": {"file_path": ".env"},
+  "cwd": "/tmp"
+}

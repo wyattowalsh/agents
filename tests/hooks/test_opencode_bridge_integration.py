@@ -8,6 +8,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RUNNER = REPO_ROOT / "hooks" / "run-wagents-hook"
+BRIDGE = REPO_ROOT / "platforms" / "opencode" / "plugins" / "wagents-hook-bridge.ts"
 
 
 def _run_policy(policy_id: str, payload: dict) -> tuple[int, str]:
@@ -80,3 +81,17 @@ def test_bridge_git_push_force_denies_via_git_commit_push_guard() -> None:
     assert code == 0
     decision = json.loads(stdout)
     assert decision["permission"] == "deny"
+
+
+def test_bridge_source_dispatches_bundle_path_through_runner() -> None:
+    """T-031c: OpenCode bridge keeps bundle dispatch on the repo runner path."""
+    source = BRIDGE.read_text(encoding="utf-8")
+
+    assert '"--bundle"' in source
+    assert '"--bundle-mode"' in source
+    assert '"enforce-chain"' in source
+    assert '"--bundle-timeout"' in source
+    assert "String(BUNDLE_TIMEOUT_SECONDS)" in source
+    assert "run-wagents-hook" in source
+    assert 'runPolicy(repoRoot, policies.join(",")' in source
+    assert "{ bundle: true }" in source
