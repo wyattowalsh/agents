@@ -1825,7 +1825,9 @@ def _policy_git_commit_push_guard(payload: NormalizedPayload) -> int:
 POLICIES = {
     "codex-session-start-context": _policy_codex_session_start_context,
     "codex-destructive-shell-guard": _policy_codex_destructive_shell_guard,
+    "destructive-shell-guard": _policy_codex_destructive_shell_guard,
     "codex-protected-file-guard": _policy_codex_protected_file_guard,
+    "protected-file-guard": _policy_codex_protected_file_guard,
     "codex-permission-request-guard": _policy_codex_permission_request_guard,
     "codex-post-tool-verify-context": _policy_codex_post_tool_verify_context,
     "codex-stop-truth-gate": _policy_codex_stop_truth_gate,
