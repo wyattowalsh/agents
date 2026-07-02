@@ -69,10 +69,41 @@
     "shape": "Secondary categorical (max 5-6 shapes)",
     "opacity": "Density or certainty"
   },
+  "default_palette": "viridis",
   "color_palettes": {
     "categorical": ["Set2", "Paired", "Dark2", "tab10"],
     "sequential": ["viridis", "plasma", "inferno", "Blues", "Greens"],
     "diverging": ["RdBu", "coolwarm", "BrBG", "PiYG"],
     "accessibility": "Always include colorblind-safe palette option. Viridis is safest default."
+  },
+  "dashboard_views": {
+    "description": "Composable dashboard view types for data-wizard EDA reports (wargame-style schema subset)",
+    "required_fields": ["view", "title"],
+    "views": {
+      "summary": {
+        "description": "Top-level dataset metrics and dtype breakdown",
+        "fields": ["file", "rows", "columns", "memory_mb", "dtype_summary"]
+      },
+      "quality": {
+        "description": "Data quality dimension scores from data-quality-scorer",
+        "fields": ["dimensions", "overall"]
+      },
+      "columns": {
+        "description": "Per-column statistical profiles",
+        "fields": ["column_profiles"]
+      },
+      "correlations": {
+        "description": "Notable numeric correlations",
+        "fields": ["correlations"]
+      },
+      "missing": {
+        "description": "Missing data patterns and duplicate summary",
+        "fields": ["missing_patterns", "duplicates"]
+      },
+      "charts": {
+        "description": "Visualization plan and rendered chart assets",
+        "fields": ["viz_plan", "chart_outputs", "chart_output_dir"]
+      }
+    }
   }
 }

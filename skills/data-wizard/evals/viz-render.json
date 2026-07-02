@@ -1,0 +1,13 @@
+{
+  "skills": ["data-wizard"],
+  "query": "/data-wizard viz render viz-plan.json sales_data.csv as PNG charts",
+  "files": ["sales_data.csv", "viz-plan.json"],
+  "expected_behavior": [
+    "Agent activates data-wizard skill",
+    "Agent routes to Viz Render sub-mode from 'viz render' keyword",
+    "Agent runs scripts/viz-renderer.py with plan JSON and sales_data.csv",
+    "Agent uses --format png unless user requests interactive HTML",
+    "Agent presents rendered output paths from JSON stdout",
+    "Agent surfaces matplotlib/plotly dependency errors as JSON if deps missing"
+  ]
+}

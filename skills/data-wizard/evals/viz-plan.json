@@ -1,0 +1,13 @@
+{
+  "skills": ["data-wizard"],
+  "query": "/data-wizard viz plan sales_data.csv compare revenue across regions",
+  "files": ["sales_data.csv"],
+  "expected_behavior": [
+    "Agent activates data-wizard skill",
+    "Agent routes to Viz Plan sub-mode from 'viz plan' keyword",
+    "Agent runs scripts/viz-planner.py on sales_data.csv with compare/regions goal",
+    "Agent presents JSON chart plan with goal_category, encodings, and rationale",
+    "Agent references data/visualization-grammar.json chart types in recommendations",
+    "Agent confirms column mappings before suggesting render step"
+  ]
+}

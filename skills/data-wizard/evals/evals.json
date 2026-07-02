@@ -55,6 +55,39 @@
         "Explicitly flags features derived from post-outcome data as leakage.",
         "Rejects invalid feature proposals."
       ]
+    },
+    {
+      "id": "viz-plan-pipeline",
+      "prompt": "/data-wizard viz plan metrics.csv show trend over time",
+      "files": ["metrics.csv"],
+      "expected_output": "Runs viz-planner.py; returns JSON plan with trend charts and encodings.",
+      "assertions": [
+        "Runs viz-planner.py on actual data path.",
+        "Presents goal_category and chart encodings from JSON output.",
+        "Uses visualization-grammar.json chart types."
+      ]
+    },
+    {
+      "id": "viz-render-artifacts",
+      "prompt": "/data-wizard viz render plan.json metrics.csv",
+      "files": ["plan.json", "metrics.csv"],
+      "expected_output": "Runs viz-renderer.py; reports PNG/HTML output paths.",
+      "assertions": [
+        "Runs viz-renderer.py with plan and data arguments.",
+        "Reports rendered file paths from JSON stdout.",
+        "Handles missing matplotlib/plotly with JSON error messages."
+      ]
+    },
+    {
+      "id": "viz-dashboard-html",
+      "prompt": "/data-wizard viz dashboard profile.json",
+      "files": ["profile.json"],
+      "expected_output": "Runs dashboard-builder.py; produces composable HTML without reading template.",
+      "assertions": [
+        "Runs dashboard-builder.py on profile JSON.",
+        "Does not inline-read templates/dashboard.html.",
+        "Includes wargame-style view schema subset from grammar."
+      ]
     }
   ]
 }

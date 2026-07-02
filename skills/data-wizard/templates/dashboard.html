@@ -1,3 +1,15 @@
+<!--
+JSON DATA CONTRACT — <script id="data" type="application/json"> schema.
+Required: view (space-separated view names), title.
+Legacy: view "eda" renders all sections.
+
+VIEW: summary → file, rows, columns, memory_mb, dtype_summary
+VIEW: quality → dimensions, overall
+VIEW: columns → column_profiles
+VIEW: correlations → correlations
+VIEW: missing → missing_patterns, duplicates
+VIEW: charts → viz_plan, chart_outputs, chart_output_dir
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,13 +32,14 @@
   }
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; padding: 2rem; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; padding: 2rem; max-width: 1280px; margin: 0 auto; }
 h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
 h2 { font-size: 1.1rem; margin: 1.5rem 0 0.75rem; color: var(--accent); }
 h3 { font-size: 0.95rem; margin: 1rem 0 0.5rem; color: var(--dim); }
 .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
 .meta { color: var(--dim); font-size: 0.85rem; }
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.grid-charts { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
 .card-value { font-size: 1.8rem; font-weight: 600; }
 .card-label { font-size: 0.8rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.05em; }
@@ -47,30 +60,50 @@ th { color: var(--dim); font-weight: 500; font-size: 0.75rem; text-transform: up
 .corr-neg { background: var(--red); }
 .section { margin-bottom: 2rem; }
 .empty { color: var(--dim); font-style: italic; padding: 1rem; text-align: center; }
+.chart-card img { width: 100%; height: auto; border-radius: 4px; border: 1px solid var(--border); }
+.chart-card a { color: var(--accent); font-size: 0.85rem; }
+.chart-meta { font-size: 0.8rem; color: var(--dim); margin-top: 0.5rem; }
 </style>
 </head>
 <body>
-<script id="data" type="application/json">{"view":"eda","file":"sample.csv","rows":0,"columns":0}</script>
+<script id="data" type="application/json">{"view":"summary","title":"EDA Report","file":"sample.csv","rows":0,"columns":0}</script>
 <div id="app"></div>
 <script>
 (function(){
   function escH(s){var d=document.createElement('div');d.textContent=String(s);return d.innerHTML;}
   function grade(s){return s>=90?'A':s>=75?'B':s>=60?'C':s>=40?'D':'F';}
-  function pct(v,t){return t>0?((v/t)*100).toFixed(1):0;}
+  function hasView(D,v){
+    if(!D.view)return true;
+    if(D.view==='eda')return true;
+    return (' '+D.view+' ').indexOf(' '+v+' ')>=0;
+  }
 
   var raw=document.getElementById('data').textContent;
   var D;
   try{D=JSON.parse(raw);}catch(e){document.getElementById('app').innerHTML='<p class="empty">Failed to parse data: '+escH(e.message)+'</p>';return;}
 
   var h='';
+  var title=D.title||'EDA Report';
 
-  // Header
-  h+='<div class="header"><div><h1>EDA Report</h1><div class="meta">'+escH(D.file||'Unknown file')+' &mdash; '+escH(D.rows||0)+' rows &times; '+escH(D.columns||0)+' columns</div></div>';
+  // Header (always)
+  h+='<div class="header"><div><h1>'+escH(title)+'</h1><div class="meta">'+escH(D.file||'Unknown file')+' &mdash; '+escH(D.rows||0)+' rows &times; '+escH(D.columns||0)+' columns</div></div>';
   if(D.memory_mb)h+='<div class="meta">'+escH(D.memory_mb)+' MB</div>';
   h+='</div>';
 
-  // Quality scores (if present)
-  if(D.dimensions){
+  // Summary view
+  if(hasView(D,'summary')&&D.dtype_summary){
+    h+='<div class="section"><h2>Summary</h2><div class="grid">';
+    h+='<div class="card"><div class="card-value">'+escH(D.rows||0)+'</div><div class="card-label">Rows</div></div>';
+    h+='<div class="card"><div class="card-value">'+escH(D.columns||0)+'</div><div class="card-label">Columns</div></div>';
+    var dtypes=D.dtype_summary;
+    for(var dt in dtypes){
+      h+='<div class="card"><div class="card-value">'+escH(dtypes[dt])+'</div><div class="card-label">'+escH(dt)+'</div></div>';
+    }
+    h+='</div></div>';
+  }
+
+  // Quality view
+  if(hasView(D,'quality')&&D.dimensions){
     var ov=D.overall||{};
     var g=ov.grade||grade(ov.overall_score||0);
     h+='<div class="section"><h2>Data Quality</h2><div class="grid">';
@@ -85,18 +118,8 @@ th { color: var(--dim); font-weight: 500; font-size: 0.75rem; text-transform: up
     h+='</div></div>';
   }
 
-  // Summary stats
-  if(D.dtype_summary){
-    h+='<div class="section"><h2>Data Types</h2><div class="grid">';
-    var dtypes=D.dtype_summary;
-    for(var dt in dtypes){
-      h+='<div class="card"><div class="card-value">'+escH(dtypes[dt])+'</div><div class="card-label">'+escH(dt)+'</div></div>';
-    }
-    h+='</div></div>';
-  }
-
-  // Column profiles
-  if(D.column_profiles){
+  // Columns view
+  if(hasView(D,'columns')&&D.column_profiles){
     h+='<div class="section"><h2>Column Profiles</h2><table><thead><tr><th>Column</th><th>Type</th><th>Nulls</th><th>Unique</th><th>Details</th></tr></thead><tbody>';
     var cols=D.column_profiles;
     for(var c in cols){
@@ -110,7 +133,7 @@ th { color: var(--dim); font-weight: 500; font-size: 0.75rem; text-transform: up
         var tv=p.top_values;var tvs=[];for(var k in tv){tvs.push(escH(k)+'('+tv[k]+')');if(tvs.length>=3)break;}
         details='top: '+tvs.join(', ');
       }else if(p.min_date){
-        details=escH(p.min_date)+' to '+escH(p.max_date);
+        details=escH(p.min_date)+' to '+escH(p.max_date||p.min_date);
       }
       h+='<tr><td><strong>'+escH(c)+'</strong>'+(p.is_potential_id?' <span class="tag">ID?</span>':'')+'</td>';
       h+='<td>'+escH(p.dtype)+'</td>';
@@ -121,8 +144,8 @@ th { color: var(--dim); font-weight: 500; font-size: 0.75rem; text-transform: up
     h+='</tbody></table></div>';
   }
 
-  // Correlations
-  if(D.correlations&&D.correlations.length>0){
+  // Correlations view
+  if(hasView(D,'correlations')&&D.correlations&&D.correlations.length>0){
     h+='<div class="section"><h2>Notable Correlations</h2><table><thead><tr><th>Column 1</th><th>Column 2</th><th>Correlation</th><th></th></tr></thead><tbody>';
     for(var i=0;i<D.correlations.length&&i<15;i++){
       var cr=D.correlations[i];
@@ -135,12 +158,12 @@ th { color: var(--dim); font-weight: 500; font-size: 0.75rem; text-transform: up
     h+='</tbody></table></div>';
   }
 
-  // Missing patterns
-  if(D.missing_patterns){
+  // Missing view
+  if(hasView(D,'missing')&&D.missing_patterns){
     var mp=D.missing_patterns;
-    if(mp.high_missing&&mp.high_missing.length>0){
+    if((mp.high_missing&&mp.high_missing.length>0)||(mp.moderate_missing&&mp.moderate_missing.length>0)){
       h+='<div class="section"><h2>Missing Data Patterns</h2>';
-      if(mp.high_missing.length>0){
+      if(mp.high_missing&&mp.high_missing.length>0){
         h+='<h3>High Missing (&gt;50%)</h3><table><thead><tr><th>Column</th><th>Count</th><th>%</th></tr></thead><tbody>';
         for(var i=0;i<mp.high_missing.length;i++){
           var m=mp.high_missing[i];
@@ -158,13 +181,43 @@ th { color: var(--dim); font-weight: 500; font-size: 0.75rem; text-transform: up
       }
       h+='</div>';
     }
+    if(D.duplicates&&D.duplicates.duplicate_rows>0){
+      h+='<div class="section"><h2>Duplicates</h2><div class="grid">';
+      h+='<div class="card"><div class="card-value" style="color:var(--yellow)">'+escH(D.duplicates.duplicate_rows)+'</div><div class="card-label">Duplicate Rows ('+D.duplicates.duplicate_pct+'%)</div></div>';
+      h+='</div></div>';
+    }
   }
 
-  // Duplicates
-  if(D.duplicates&&D.duplicates.duplicate_rows>0){
-    h+='<div class="section"><h2>Duplicates</h2><div class="grid">';
-    h+='<div class="card"><div class="card-value" style="color:var(--yellow)">'+escH(D.duplicates.duplicate_rows)+'</div><div class="card-label">Duplicate Rows ('+D.duplicates.duplicate_pct+'%)</div></div>';
-    h+='</div></div>';
+  // Charts view
+  if(hasView(D,'charts')){
+    var outputs=D.chart_outputs||[];
+    var planCharts=(D.viz_plan&&D.viz_plan.charts)||[];
+    if(outputs.length>0||planCharts.length>0){
+      h+='<div class="section"><h2>Visualizations</h2>';
+      if(D.viz_plan&&D.viz_plan.goal){
+        h+='<p class="meta">Goal: '+escH(D.viz_plan.goal)+' ('+escH(D.viz_plan.goal_category||'')+')</p>';
+      }
+      h+='<div class="grid grid-charts">';
+      if(outputs.length>0){
+        for(var j=0;j<outputs.length;j++){
+          var ch=outputs[j];
+          h+='<div class="card chart-card"><h3>'+escH(ch.title||ch.chart_id||'Chart')+'</h3>';
+          if(ch.format==='png'){
+            h+='<img src="file://'+escH(ch.path)+'" alt="'+escH(ch.title||'')+'">';
+          }else if(ch.format==='html'){
+            h+='<p><a href="file://'+escH(ch.path)+'" target="_blank" rel="noopener">Open interactive chart</a></p>';
+          }
+          h+='<div class="chart-meta">'+escH(ch.type||'')+' &middot; '+escH(ch.engine||'')+'</div></div>';
+        }
+      }else{
+        for(var k=0;k<planCharts.length&&k<6;k++){
+          var pc=planCharts[k];
+          h+='<div class="card"><h3>'+escH(pc.title||pc.id)+'</h3>';
+          h+='<div class="chart-meta">'+escH(pc.type)+' &mdash; '+escH(pc.rationale||'')+'</div></div>';
+        }
+      }
+      h+='</div></div>';
+    }
   }
 
   if(!h||h.indexOf('section')===-1)h+='<p class="empty">No data to display.</p>';

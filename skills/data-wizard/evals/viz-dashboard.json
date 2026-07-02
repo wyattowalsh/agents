@@ -1,0 +1,13 @@
+{
+  "skills": ["data-wizard"],
+  "query": "/data-wizard viz dashboard profile.json with charts from the viz pipeline",
+  "files": ["profile.json"],
+  "expected_behavior": [
+    "Agent activates data-wizard skill",
+    "Agent routes to Viz Dashboard sub-mode from 'viz dashboard' keyword",
+    "Agent verifies profile JSON exists or runs scripts/data-profiler.py first",
+    "Agent runs scripts/dashboard-builder.py with profile and optional viz plan/render artifacts",
+    "Agent does not read templates/dashboard.html into context",
+    "Agent opens or reports file:// path to generated HTML dashboard"
+  ]
+}
