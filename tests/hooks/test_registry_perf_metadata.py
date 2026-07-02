@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from wagents.hooks.render import enabled_hooks_for_harness
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 REGISTRY_PATH = REPO_ROOT / "config" / "hook-registry.json"
 
@@ -26,16 +28,24 @@ def test_every_hook_row_has_logical_policy():
 
 
 def test_bundle_groups_include_mode_and_are_contiguous():
-    seen_groups: dict[str, list[int]] = {}
-    for index, hook in enumerate(_hooks()):
-        group = hook.get("bundle_group")
-        if not group:
-            continue
-        assert hook.get("bundle_mode"), f"{hook['id']} missing bundle_mode"
-        seen_groups.setdefault(str(group), []).append(index)
+    registry = _registry()
+    harnesses: set[str] = set()
+    for hook in _hooks():
+        for harness in hook.get("harnesses", []):
+            harnesses.add(str(harness))
 
-    for group, indexes in seen_groups.items():
-        assert indexes == list(range(indexes[0], indexes[-1] + 1)), f"{group} rows are not contiguous"
+    for harness in sorted(harnesses):
+        seen_groups: dict[str, list[int]] = {}
+        for index, hook in enumerate(enabled_hooks_for_harness(registry, harness)):
+            group = hook.get("bundle_group")
+            if not group:
+                continue
+            assert hook.get("bundle_mode"), f"{hook['id']} missing bundle_mode"
+            seen_groups.setdefault(str(group), []).append(index)
+
+        for group, indexes in seen_groups.items():
+            expected = list(range(indexes[0], indexes[-1] + 1))
+            assert indexes == expected, f"{harness}/{group} rows are not contiguous"
 
 
 def test_image_optimizer_matcher_is_not_catch_all():
