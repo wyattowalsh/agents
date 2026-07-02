@@ -9,7 +9,9 @@ import pytest
 from wagents.hooks.policies import (
     evaluate_before_mcp_execution,
     evaluate_before_read_file,
+    evaluate_destructive_shell,
     evaluate_git_commit_push,
+    evaluate_protected_file,
     grok_deny_payload,
     quality_gate_command,
     subagent_start_context,
@@ -138,3 +140,16 @@ def test_quality_gate_command_resolves_repo_script() -> None:
         assert command[0] == "bash"
         assert command[1].endswith("hooks/verify-before-stop.sh")
     assert quality_gate_command("/nonexistent-root-xyz") is None
+
+
+def test_destructive_shell_blocks():
+    assert evaluate_destructive_shell('rm -rf /') is not None
+
+
+def test_protected_file_blocks_env():
+    assert evaluate_protected_file(".env") is not None
+
+
+def test_protected_file_allows_src():
+    assert evaluate_protected_file("src/main.py") is None
+
