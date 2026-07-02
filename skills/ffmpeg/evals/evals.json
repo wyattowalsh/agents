@@ -1,0 +1,149 @@
+{
+	"skill_name": "ffmpeg",
+	"evals": [
+		{
+			"id": "explicit-probe",
+			"prompt": "/ffmpeg probe ~/Movies/demo.mp4",
+			"expected_output": "Runs doctor if needed, executes probe_media.py, and summarizes duration, codecs, and stream counts without mutating the file.",
+			"files": [
+				"skills/ffmpeg/SKILL.md",
+				"skills/ffmpeg/references/probe-fields.md",
+				"scripts/probe_media.py"
+			],
+			"assertions": [
+				"Agent runs uv run python scripts/probe_media.py with the provided path.",
+				"Agent reports duration_seconds and video/audio codec information from probe output.",
+				"Agent does not run ffmpeg mutation commands during probe-only dispatch.",
+				"Agent cites probe-before-mutate for any follow-up edit suggestion."
+			]
+		},
+		{
+			"id": "trim-dispatch-copy-vs-reencode",
+			"prompt": "/ffmpeg trim ~/Movies/demo.mp4 00:00:05 00:00:20",
+			"expected_output": "Probes first, chooses an approved trim recipe, writes a new output file, and explains copy vs re-encode tradeoff.",
+			"files": [
+				"skills/ffmpeg/SKILL.md",
+				"skills/ffmpeg/references/safety.md",
+				"skills/ffmpeg/references/recipes-trim-transcode.md",
+				"scripts/probe_media.py"
+			],
+			"assertions": [
+				"Agent runs probe_media.py on the source file before ffmpeg trim.",
+				"Agent uses a recipe from references/recipes-trim-transcode.md rather than an ad-hoc command.",
+				"Agent writes to a new output path and does not overwrite demo.mp4 in place by default.",
+				"Agent states whether stream copy or re-encode was chosen and why."
+			]
+		},
+		{
+			"id": "negative-control-generative",
+			"prompt": "/ffmpeg generate a cinematic brass robot reading a field guide",
+			"expected_output": "Refuses generative imagery and redirects to draw-thing; does not pretend ffmpeg creates AI art.",
+			"files": ["skills/ffmpeg/SKILL.md"],
+			"assertions": [
+				"Agent does not propose ffmpeg filters to synthesize new AI imagery.",
+				"Agent cites the NOT for AI image generation scope boundary.",
+				"Agent redirects to draw-thing for generative image or local AI media work."
+			]
+		},
+		{
+			"id": "negative-control-ui-design",
+			"prompt": "/ffmpeg design a React landing page hero layout for our product video",
+			"expected_output": "Refuses UI design work and redirects to design; offers thumbnail extraction only if user meant a video still.",
+			"files": ["skills/ffmpeg/SKILL.md"],
+			"assertions": [
+				"Agent does not generate React or UI implementation code under ffmpeg.",
+				"Agent cites the NOT for UI design scope boundary.",
+				"Agent redirects to design or clarifies whether the user wanted a video thumbnail instead."
+			]
+		},
+		{
+			"id": "doctor-preflight",
+			"prompt": "/ffmpeg doctor",
+			"expected_output": "Runs doctor.py JSON check for ffmpeg and ffprobe on PATH and reports remediation if missing.",
+			"files": [
+				"skills/ffmpeg/SKILL.md",
+				"scripts/doctor.py"
+			],
+			"assertions": [
+				"Agent runs uv run python scripts/doctor.py --format json.",
+				"Agent interprets JSON ok and per-check status fields.",
+				"Agent stops mutation guidance when ffmpeg-binary or ffprobe-binary is fail."
+			]
+		},
+		{
+			"id": "concat-dispatch",
+			"prompt": "/ffmpeg concat ~/Movies/part1.mp4 ~/Movies/part2.mp4",
+			"expected_output": "Probes every segment, uses approved concat demuxer recipe, writes a new concat output path.",
+			"files": [
+				"skills/ffmpeg/SKILL.md",
+				"skills/ffmpeg/references/recipes-trim-transcode.md",
+				"scripts/probe_media.py"
+			],
+			"assertions": [
+				"Agent runs probe_media.py on each input segment before concat.",
+				"Agent uses a recipe from references/recipes-trim-transcode.md for concat demuxer.",
+				"Agent writes to a new output path and warns when codecs are incompatible for stream copy.",
+				"Agent does not overwrite source files in place by default."
+			]
+		},
+		{
+			"id": "gif-dispatch",
+			"prompt": "/ffmpeg gif ~/Movies/clip.mp4 00:00:02 4",
+			"expected_output": "Probes first, applies palette GIF recipe with duration cap, writes clip.gif as a new file.",
+			"files": [
+				"skills/ffmpeg/SKILL.md",
+				"skills/ffmpeg/references/recipes-thumbnail-gif.md",
+				"scripts/probe_media.py"
+			],
+			"assertions": [
+				"Agent runs probe_media.py before building the GIF.",
+				"Agent uses a recipe from references/recipes-thumbnail-gif.md.",
+				"Agent caps GIF duration unless user explicitly expands it.",
+				"Agent writes a new GIF output path and does not overwrite the source video."
+			]
+		},
+		{
+			"id": "transcode-dispatch",
+			"prompt": "/ffmpeg transcode ~/Movies/clip.mov",
+			"expected_output": "Probes MOV source, chooses copy or H.264/AAC recipe, writes new MP4 with faststart when appropriate.",
+			"files": [
+				"skills/ffmpeg/SKILL.md",
+				"skills/ffmpeg/references/recipes-trim-transcode.md",
+				"scripts/probe_media.py"
+			],
+			"assertions": [
+				"Agent runs probe_media.py on the source file before transcode.",
+				"Agent uses an approved transcode recipe rather than an ad-hoc ffmpeg command.",
+				"Agent writes to a new output path and explains copy vs re-encode choice.",
+				"Agent mentions -movflags +faststart for MP4 web delivery unless user forbids it."
+			]
+		},
+		{
+			"id": "help-empty-gallery",
+			"prompt": "/ffmpeg",
+			"expected_output": "Help/gallery with dispatch table, critical rules, doctor/probe commands, and example invocations.",
+			"files": ["skills/ffmpeg/SKILL.md"],
+			"assertions": [
+				"Agent dispatches to empty/help handler.",
+				"Agent shows doctor, probe, trim, transcode, concat, extract-audio, thumbnail, and gif modes.",
+				"Agent cites probe-before-mutate and recipe-only mutation rules.",
+				"Agent offers gallery examples including concat, transcode, and gif."
+			]
+		},
+		{
+			"id": "implicit-probe-intent",
+			"prompt": "How long is ~/Movies/demo.mp4 and what codec is it?",
+			"expected_output": "Auto-detects probe intent, runs probe_media.py read-only, summarizes duration and codecs without mutating.",
+			"files": [
+				"skills/ffmpeg/SKILL.md",
+				"scripts/probe_media.py"
+			],
+			"assertions": [
+				"Agent classifies metadata/duration/codec language as probe mode.",
+				"Agent runs uv run python scripts/probe_media.py with the provided path.",
+				"Agent reports duration_seconds and codec information from probe output.",
+				"Agent does not run ffmpeg mutation commands for metadata-only questions."
+			]
+		}
+	]
+}
