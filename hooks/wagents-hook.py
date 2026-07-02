@@ -2,10 +2,12 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import hashlib
 import json
 import os
 import py_compile
+import random
 import re
 import shlex
 import stat
@@ -31,16 +33,27 @@ def _load_policy_attr(module_name: str, attr: str):
     deliberately dependency-free, so we load them by file path to share logic with
     the unit tests without triggering the package import chain. Returns ``None`` on
     any failure so the dispatcher fails open.
+
+    Loaded modules are cached in ``sys.modules`` keyed by module name so a
+    ``--bundle`` run that resolves the same underlying module for more than one
+    policy id (or re-enters this loader for any reason within one process)
+    reuses the already-executed module instead of re-reading and re-exec'ing
+    the file from disk.
     """
     import importlib.util
 
+    cache_key = f"_wagents_policy_{module_name}"
+    module = sys.modules.get(cache_key)
+    if module is not None:
+        return getattr(module, attr, None)
     path = REPO_ROOT / "wagents" / "hooks" / "policies" / f"{module_name}.py"
     try:
-        spec = importlib.util.spec_from_file_location(f"_wagents_policy_{module_name}", path)
+        spec = importlib.util.spec_from_file_location(cache_key, path)
         if spec is None or spec.loader is None:
             return None
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
+        sys.modules[cache_key] = module
         return getattr(module, attr, None)
     except Exception:  # pragma: no cover - keep the dispatcher standalone-safe
         return None
@@ -53,6 +66,7 @@ subagent_start_context = _load_policy_attr("subagent_start", "subagent_start_con
 _grok_deny_payload = _load_policy_attr("grok_deny_adapter", "grok_deny_payload")
 
 
+@lru_cache(maxsize=1)
 def _load_enforce_policy_ids() -> frozenset[str]:
     path = REPO_ROOT / "config" / "hook-registry.json"
     try:
@@ -66,7 +80,31 @@ def _load_enforce_policy_ids() -> frozenset[str]:
     )
 
 
-ENFORCE_POLICY_IDS = _load_enforce_policy_ids()
+class _LazyEnforcePolicyIds:
+    """Argv fast-path: defer the registry disk read+parse until first membership check.
+
+    ``config/hook-registry.json`` is only consulted on the rare
+    module-load-failure path (``_enforce_module_load_failure``); the vast
+    majority of hook invocations never touch it. Behaves like a ``frozenset``
+    for the ``in`` operator and iteration so existing call sites (including
+    ``wagents_hook.ENFORCE_POLICY_IDS`` introspection in tests) keep working
+    without any disk I/O until something actually asks a membership question.
+    """
+
+    def __contains__(self, item: object) -> bool:
+        return item in _load_enforce_policy_ids()
+
+    def __iter__(self):
+        return iter(_load_enforce_policy_ids())
+
+    def __len__(self) -> int:
+        return len(_load_enforce_policy_ids())
+
+    def __repr__(self) -> str:  # pragma: no cover - debugging aid only
+        return repr(_load_enforce_policy_ids())
+
+
+ENFORCE_POLICY_IDS = _LazyEnforcePolicyIds()
 
 RESEARCH_HOOK_PATH = REPO_ROOT / "skills" / "research" / "scripts" / "research_hook.py"
 RESEARCH_STATE_TTL = timedelta(hours=12)
@@ -208,9 +246,10 @@ QUALITY_PATH_LIMIT = 8
 # ``beforeMCPExecution`` enforce hooks as fail-closed: empty stdout (or a crash)
 # is treated as a *block*. These permission-decision policies therefore must
 # emit an explicit ``{"permission": "allow"}`` when they allow an action so a
-# clean pass does not silently block the tool call. The catch-all image
-# optimizer renders ``failClosed: false`` (matcher ``.*``) and is intentionally
-# excluded so it fails open with empty stdout.
+# clean pass does not silently block the tool call. The image optimizer is
+# intentionally excluded (see ``CURSOR_FAIL_OPEN_HOOK_IDS`` in
+# ``wagents/hooks/render.py``) so it fails open with empty stdout regardless
+# of matcher shape.
 CURSOR_FAIL_CLOSED_ALLOW_POLICIES = {
     "cursor-destructive-shell-guard",
     "cursor-protected-file-guard",
@@ -223,6 +262,9 @@ CURSOR_FAIL_CLOSED_ALLOW_POLICIES = {
 }
 
 _STDOUT_EMITTED = False
+
+HOOK_TIMING_ENV = "WAGENTS_HOOK_TIMING"
+HOOK_TIMING_PATH = Path.home() / ".cache" / "wagents" / "hook-timing.jsonl"
 
 
 @dataclass
@@ -350,23 +392,76 @@ def _audit_path(payload: NormalizedPayload) -> Path:
     return _agent_home(payload.harness) / "hook-ledger" / f"{_state_path(payload).stem}.jsonl"
 
 
+AUDIT_SAMPLE_ENV = "WAGENTS_HOOK_AUDIT_SAMPLE"
+# Decisions that always bypass sampling regardless of WAGENTS_HOOK_AUDIT_SAMPLE:
+# denies/blocks and content rewrites are the audit trail's whole point, so only
+# routine "allow" records are ever eligible for sampling.
+_AUDIT_ALWAYS_RECORD_DECISIONS = frozenset({"deny", "rewrite"})
+
+
+def _audit_sample_rate() -> float:
+    raw = os.environ.get(AUDIT_SAMPLE_ENV)
+    if not raw:
+        return 1.0
+    try:
+        rate = float(raw)
+    except ValueError:
+        return 1.0
+    return min(max(rate, 0.0), 1.0)
+
+
+def _should_record_audit(decision: str) -> bool:
+    """Return True when this decision should be written to the audit ledger.
+
+    Unset (default) ``WAGENTS_HOOK_AUDIT_SAMPLE`` records everything, matching
+    today's behavior exactly. Setting it to a value in ``[0, 1)`` samples only
+    routine "allow"/"context" records to cut disk I/O under high-frequency
+    context hooks (e.g. session-start git status) while every deny/rewrite is
+    always recorded for the audit trail.
+    """
+    if decision in _AUDIT_ALWAYS_RECORD_DECISIONS:
+        return True
+    rate = _audit_sample_rate()
+    if rate >= 1.0:
+        return True
+    if rate <= 0.0:
+        return False
+    return random.random() < rate
+
+
+def _best_effort_os() -> contextlib.AbstractContextManager[None]:
+    """Swallow ``OSError`` from best-effort disk I/O (mkdir/open/write/chmod).
+
+    Mirrors the try/except guard already used by ``_record_hook_timing``: a
+    write failure (read-only filesystem, permission error, disk full,
+    concurrent writers) must never raise out of a policy function and must
+    never change the hook's stdout or exit code. Callers that need a flag such
+    as ``decision_recorded`` to be set even when the guarded write fails must
+    set that flag *before* entering this context manager.
+    """
+    return contextlib.suppress(OSError)
+
+
 def _record_decision(payload: NormalizedPayload, policy_id: str, decision: str, reason: str = "") -> None:
-    path = _audit_path(payload)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    record = {
-        "timestamp": _now().isoformat(),
-        "policy": policy_id,
-        "decision": decision,
-        "reason": reason[:500],
-        "event": payload.event,
-        "tool": payload.tool_name or "unknown",
-        "cwd": payload.cwd,
-        "session_id_hash": _state_path(payload).stem,
-    }
-    with path.open("a", encoding="utf-8") as handle:
-        handle.write(json.dumps(record, sort_keys=True) + "\n")
-    path.chmod(0o600)
     payload.decision_recorded = True
+    if not _should_record_audit(decision):
+        return
+    with _best_effort_os():
+        path = _audit_path(payload)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        record = {
+            "timestamp": _now().isoformat(),
+            "policy": policy_id,
+            "decision": decision,
+            "reason": reason[:500],
+            "event": payload.event,
+            "tool": payload.tool_name or "unknown",
+            "cwd": payload.cwd,
+            "session_id_hash": _state_path(payload).stem,
+        }
+        with path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(record, sort_keys=True) + "\n")
+        path.chmod(0o600)
 
 
 def _now() -> datetime:
@@ -375,32 +470,34 @@ def _now() -> datetime:
 
 def _write_state(payload: NormalizedPayload) -> None:
     path = _state_path(payload)
-    path.parent.mkdir(parents=True, exist_ok=True)
     data = {
         "active": True,
         "session_id_hash": path.stem,
         "updated_at": _now().isoformat(),
         "cwd": payload.cwd,
     }
-    path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-    path.chmod(0o600)
+    with _best_effort_os():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+        path.chmod(0o600)
 
 
 def _clear_state(payload: NormalizedPayload) -> None:
     path = _state_path(payload)
-    if not path.exists():
-        return
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        data = {}
-    data.update({
-        "active": False,
-        "cleared_at": _now().isoformat(),
-        "clear_reason": "implementation-handoff",
-    })
-    path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-    path.chmod(0o600)
+    with _best_effort_os():
+        if not path.exists():
+            return
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            data = {}
+        data.update({
+            "active": False,
+            "cleared_at": _now().isoformat(),
+            "clear_reason": "implementation-handoff",
+        })
+        path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+        path.chmod(0o600)
 
 
 def _forced_research_active() -> bool:
@@ -853,6 +950,34 @@ def _image_optimizer_batch_payload(payload: NormalizedPayload, candidates: list[
     return json.dumps(batch, separators=(",", ":"))
 
 
+def _run_image_optimizer_batch_inprocess(
+    candidates: list[ImageCandidate],
+    payload: NormalizedPayload,
+) -> tuple[list[dict[str, Any]] | None, str | None]:
+    """Try in-process batch optimization before falling back to ``uv run``."""
+    try:
+        from wagents.image_inputs import ImageOptimizationError, optimize_image_batch_inprocess
+    except ImportError:
+        return None, None
+    started = time.monotonic()
+    try:
+        data = optimize_image_batch_inprocess(json.loads(_image_optimizer_batch_payload(payload, candidates)))
+    except ImageOptimizationError as exc:
+        return None, str(exc)
+    except Exception:
+        return None, None
+    elapsed = time.monotonic() - started
+    if elapsed >= IMAGE_OPTIMIZER_TIMEOUT_SECONDS:
+        return None, "Image optimizer exhausted the hook execution budget."
+    if isinstance(data, dict) and data.get("status") != "error":
+        results = data.get("results")
+        if isinstance(results, list) and all(isinstance(result, dict) for result in results):
+            return results, None
+    if isinstance(data, dict):
+        return None, _redact_optimizer_message(str(data.get("message") or data))
+    return None, None
+
+
 def _run_image_optimizer_batch(
     candidates: list[ImageCandidate],
     payload: NormalizedPayload,
@@ -950,6 +1075,13 @@ def _image_retry_reason(results: list[dict[str, Any]]) -> str:
 def _policy_image_input_optimizer_guard(payload: NormalizedPayload) -> int:
     if not _tool_may_consume_image(payload):
         return 0
+    # Fast-exit before any filesystem stat/resolve work (and well before the
+    # `uv run` subprocess): a tool call with zero path-shaped values anywhere
+    # in its payload cannot possibly reference an image, so skip
+    # `_image_candidate_paths()`'s per-candidate stat/symlink/root checks
+    # entirely rather than discovering that after doing the filesystem work.
+    if not _candidate_paths(payload):
+        return 0
     candidates, candidate_errors = _image_candidate_paths(payload)
     if candidate_errors:
         return _deny(
@@ -973,7 +1105,9 @@ def _policy_image_input_optimizer_guard(payload: NormalizedPayload) -> int:
 
     replacements: dict[str, str] = {}
     changed_results: list[dict[str, Any]] = []
-    results, error = _run_image_optimizer_batch(candidates, payload)
+    results, error = _run_image_optimizer_batch_inprocess(candidates, payload)
+    if results is None and error is None:
+        results, error = _run_image_optimizer_batch(candidates, payload)
     if error is not None or results is None:
         return _deny(
             payload,
@@ -1259,6 +1393,19 @@ def _patch_paths(text: str) -> list[str]:
 
 
 def _candidate_paths(payload: NormalizedPayload) -> list[str]:
+    """Return de-duplicated candidate path strings found anywhere in ``payload``.
+
+    Memoized on the payload instance: several policy/context functions (the
+    protected-file guard, quality-check path resolution, image-candidate
+    scanning) each call this for the same normalized payload, and a bundled
+    chain runs more than one of them per process. The payload walk itself
+    (recursive dict/list traversal plus patch-text regex scanning) is the
+    expensive part, so caching it here is pure upside with no correctness
+    change since the payload is never mutated after normalization.
+    """
+    cached = getattr(payload, "_candidate_paths_cache", None)
+    if cached is not None:
+        return cached
     paths = []
     if payload.file_path:
         paths.append(payload.file_path)
@@ -1274,6 +1421,7 @@ def _candidate_paths(payload: NormalizedPayload) -> list[str]:
         cleaned = path.strip().strip("'\"")
         if cleaned and cleaned not in deduped:
             deduped.append(cleaned)
+    payload._candidate_paths_cache = deduped
     return deduped
 
 
@@ -1341,7 +1489,15 @@ def _destructive_shell_reason(command: str) -> str | None:
     return None
 
 
+@lru_cache(maxsize=8)
 def _git_session_context(cwd: str) -> str:
+    """Return a one-line git status summary for ``cwd``, cached per process.
+
+    ``lru_cache`` only helps within a single dispatcher run (e.g. a
+    ``--bundle`` chain that touches session-start *and* subagent-start
+    context for the same cwd), never across process spawns; the underlying
+    ``git status`` subprocess is unavoidable for a fresh process either way.
+    """
     repo_cwd = cwd or str(REPO_ROOT)
     proc = subprocess.run(
         ["git", "status", "--short", "--branch"],
@@ -1374,6 +1530,7 @@ def _truncate(text: str, limit: int = 400) -> str:
     return compact[: limit - 3] + "..."
 
 
+@lru_cache(maxsize=8)
 def _repo_root_for_cwd(cwd: str) -> Path:
     start = Path(cwd or os.getcwd()).expanduser()
     proc = subprocess.run(
@@ -1693,27 +1850,265 @@ POLICIES = {
 }
 
 
+def _hook_timing_enabled() -> bool:
+    return os.environ.get(HOOK_TIMING_ENV) == "1"
+
+
+def _record_hook_timing(
+    policy_id: str,
+    harness: str,
+    event: str,
+    duration_ms: float,
+    exit_code: int,
+    *,
+    degraded: str | None = None,
+    forwarded: bool = False,
+) -> None:
+    """Append one best-effort timing record when ``WAGENTS_HOOK_TIMING=1``.
+
+    Purely observational: any failure (missing cache dir, permission error,
+    concurrent writers) is swallowed so this never changes a hook's stdout or
+    exit code. Behavior-neutral by default because the env var is unset in
+    every rendered harness command.
+    """
+    if not _hook_timing_enabled():
+        return
+    record = {
+        "timestamp": _now().isoformat(),
+        "policy_id": policy_id,
+        "harness": harness,
+        "event": event,
+        "duration_ms": round(duration_ms, 3),
+        "exit_code": exit_code,
+    }
+    if degraded:
+        record["degraded"] = degraded
+    if forwarded:
+        record["forwarded"] = True
+    try:
+        HOOK_TIMING_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with HOOK_TIMING_PATH.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(record, sort_keys=True) + "\n")
+    except OSError:
+        pass
+
+
+def _finalize_single_policy_dispatch(
+    payload: NormalizedPayload,
+    policy_id: str,
+    *,
+    harness: str,
+    code: int,
+) -> int:
+    """Shared post-policy tail for a single (non-bundle) dispatch.
+
+    Both the CLI dispatcher (``main()``) and the warm-process worker
+    (``hooks/wagents-hook-worker.py::_run_request``) must apply the exact same
+    tail after a single policy function returns: record an implicit "allow"
+    decision when the policy did not already record one, then emit an
+    explicit ``{"permission": "allow"}`` on Cursor's fail-closed
+    pre-execution events when nothing was already written to stdout.
+    Centralizing it here keeps the dispatcher and the worker from drifting
+    (RV-005) the way they previously did with two independently maintained
+    copies of this logic.
+    """
+    if code == 0 and not payload.decision_recorded and policy_id != "research-evidence-ledger":
+        _record_decision(payload, policy_id, "allow")
+    if (
+        code == 0
+        and harness == "cursor"
+        and not _STDOUT_EMITTED
+        and policy_id in CURSOR_FAIL_CLOSED_ALLOW_POLICIES
+    ):
+        _emit_json({"permission": "allow"})
+    return code
+
+
+def _load_bundle_module():
+    """Load ``wagents/hooks/bundle.py`` by file path, mirroring ``_load_policy_attr``.
+
+    Cached in ``sys.modules`` for the lifetime of the process (there is only
+    ever one bundle CLI invocation per process, but caching keeps the loader
+    consistent with every other by-path module load in this file).
+    """
+    import importlib.util
+
+    cache_key = "_wagents_hooks_bundle"
+    module = sys.modules.get(cache_key)
+    if module is not None:
+        return module
+    path = REPO_ROOT / "wagents" / "hooks" / "bundle.py"
+    spec = importlib.util.spec_from_file_location(cache_key, path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"unable to load bundle module from {path}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[cache_key] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def _load_worker_client_module():
+    """Load ``hooks/wagents-hook-client.py`` by file path for standalone dispatch."""
+    import importlib.util
+
+    cache_key = "_wagents_hook_client"
+    module = sys.modules.get(cache_key)
+    if module is not None:
+        return module
+    path = REPO_ROOT / "hooks" / "wagents-hook-client.py"
+    spec = importlib.util.spec_from_file_location(cache_key, path)
+    if spec is None or spec.loader is None:
+        return None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[cache_key] = module
+    try:
+        spec.loader.exec_module(module)
+    except Exception:
+        sys.modules.pop(cache_key, None)
+        return None
+    return module
+
+
+_FORWARD_TIMEOUT_MARGIN_SECONDS = 1.0
+
+
+def _forward_to_worker(
+    *,
+    socket_path: str | None,
+    request: dict[str, Any],
+    timeout: float | None = None,
+) -> dict[str, Any] | None:
+    if socket_path is None:
+        return None
+    client = _load_worker_client_module()
+    if client is None:
+        return None
+    try:
+        default_timeout = float(getattr(client, "DEFAULT_FORWARD_TIMEOUT_SECONDS", 5.0))
+        return client.forward_request(
+            socket_path,
+            request,
+            timeout=default_timeout if timeout is None else timeout,
+        )
+    except Exception:
+        return None
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run repo-managed wagents hook policies.")
-    parser.add_argument("policy_id", choices=sorted(POLICIES))
+    parser.add_argument("policy_id", nargs="?", default=None, choices=sorted(POLICIES))
+    parser.add_argument(
+        "--bundle",
+        default=None,
+        metavar="ID1,ID2,...",
+        help="Comma-separated registry policy ids to run as a single bundled dispatch.",
+    )
+    parser.add_argument(
+        "--bundle-mode",
+        default="enforce-chain",
+        choices=("enforce-chain", "context-chain", "mixed"),
+        help="Bundle chain semantics; see wagents/hooks/bundle.py.",
+    )
+    parser.add_argument(
+        "--bundle-timeout",
+        type=float,
+        default=30.0,
+        help="Wall-clock budget (seconds) for the whole --bundle chain.",
+    )
+    parser.add_argument(
+        "--worker-socket",
+        nargs="?",
+        const="",
+        default=None,
+        help="Optional warm worker Unix socket; falls back to local dispatch when unavailable.",
+    )
+    parser.add_argument(
+        "--forward-timeout",
+        type=float,
+        default=None,
+        help="Registry-derived forward budget (seconds) for single-policy --worker-socket forwards.",
+    )
     parser.add_argument("--harness", default="auto")
     args = parser.parse_args(argv)
+
+    if bool(args.policy_id) == bool(args.bundle):
+        parser.error("provide exactly one of a positional policy_id or --bundle")
 
     global _STDOUT_EMITTED
     _STDOUT_EMITTED = False
     raw = _load_payload()
     harness = _detect_harness(raw, args.harness)
     payload = _normalize(raw, harness)
+    started = time.monotonic()
+
+    if args.bundle:
+        policy_ids = [token.strip() for token in args.bundle.split(",") if token.strip()]
+        forwarded = _forward_to_worker(
+            socket_path=args.worker_socket,
+            request={
+                "bundle": policy_ids,
+                "harness": harness,
+                "payload": raw,
+                "bundle_mode": args.bundle_mode,
+                "bundle_timeout": args.bundle_timeout,
+            },
+            timeout=float(args.bundle_timeout) + _FORWARD_TIMEOUT_MARGIN_SECONDS,
+        )
+        if forwarded is not None:
+            stdout = str(forwarded.get("stdout") or "")
+            if stdout:
+                sys.stdout.write(stdout if stdout.endswith("\n") else stdout + "\n")
+            code = int(forwarded.get("exit_code") or 0)
+            _record_hook_timing(
+                "bundle:" + "+".join(policy_ids),
+                harness,
+                payload.event,
+                (time.monotonic() - started) * 1000,
+                code,
+                forwarded=True,
+            )
+            return code
+        bundle_module = _load_bundle_module()
+        code = bundle_module.run_bundle(
+            policy_ids,
+            harness,
+            payload,
+            mode=args.bundle_mode,
+            timeout_seconds=args.bundle_timeout,
+            dispatcher=sys.modules[__name__],
+        )
+        _record_hook_timing(
+            "bundle:" + "+".join(policy_ids), harness, payload.event, (time.monotonic() - started) * 1000, code
+        )
+        return code
+
+    forwarded = _forward_to_worker(
+        socket_path=args.worker_socket,
+        request={"policy_id": args.policy_id, "harness": harness, "payload": raw},
+        timeout=(
+            float(args.forward_timeout) + _FORWARD_TIMEOUT_MARGIN_SECONDS
+            if args.forward_timeout is not None
+            else None
+        ),
+    )
+    if forwarded is not None:
+        stdout = str(forwarded.get("stdout") or "")
+        if stdout:
+            sys.stdout.write(stdout if stdout.endswith("\n") else stdout + "\n")
+        code = int(forwarded.get("exit_code") or 0)
+        _record_hook_timing(
+            args.policy_id,
+            harness,
+            payload.event,
+            (time.monotonic() - started) * 1000,
+            code,
+            forwarded=True,
+        )
+        return code
+
     code = POLICIES[args.policy_id](payload)
-    if code == 0 and not payload.decision_recorded and args.policy_id != "research-evidence-ledger":
-        _record_decision(payload, args.policy_id, "allow")
-    if (
-        code == 0
-        and harness == "cursor"
-        and not _STDOUT_EMITTED
-        and args.policy_id in CURSOR_FAIL_CLOSED_ALLOW_POLICIES
-    ):
-        _emit_json({"permission": "allow"})
+    code = _finalize_single_policy_dispatch(payload, args.policy_id, harness=harness, code=code)
+    _record_hook_timing(args.policy_id, harness, payload.event, (time.monotonic() - started) * 1000, code)
     return code
 
 
