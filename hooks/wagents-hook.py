@@ -62,6 +62,8 @@ def _load_policy_attr(module_name: str, attr: str):
 evaluate_git_commit_push = _load_policy_attr("git_commit_push_guard", "evaluate_git_commit_push")
 evaluate_before_read_file = _load_policy_attr("before_read_file_guard", "evaluate_before_read_file")
 evaluate_before_mcp_execution = _load_policy_attr("before_mcp_execution", "evaluate_before_mcp_execution")
+evaluate_destructive_shell = _load_policy_attr("destructive_shell_guard", "evaluate_destructive_shell")
+evaluate_protected_file = _load_policy_attr("proteged_file_guard", "evaluate_protected_file")
 subagent_start_context = _load_policy_attr("subagent_start", "subagent_start_context")
 _grok_deny_payload = _load_policy_attr("grok_deny_adapter", "grok_deny_payload")
 
@@ -1809,6 +1811,28 @@ def _policy_cursor_subagent_start_context(payload: NormalizedPayload) -> int:
     else:
         message = subagent_start_context(git_context)
     return _additional_context(payload, message, "cursor-subagent-start-context")
+
+
+def _policy_destructive_shell_guard(payload: NormalizedPayload) -> int:
+    if evaluate_destructive_shell is None:
+        return _enforce_module_load_failure(payload, 'destructive-shell-guard')
+    if _tool_name(payload) not in SHELL_TOOL_NAMES and not payload.command:
+        return 0
+    reason = evaluate_destructive_shell(payload.command)
+    if reason:
+        return _deny(payload, reason, 'destructive-shell-guard')
+    return 0
+    return 0
+
+
+def _policy_protected_file_guard(payload: NormalizedPayload) -> int:
+    if evaluate_protected_file is None:
+        return _enforce_module_load_failure(payload, 'protected-file-guard')
+    for path in _candidate_paths(payload):
+        reason = evaluate_protected_file(path)
+        if reason:
+            return _deny(payload, reason, 'protected-file-guard')
+    return 0
 
 
 def _policy_git_commit_push_guard(payload: NormalizedPayload) -> int:

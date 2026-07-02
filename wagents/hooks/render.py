@@ -227,8 +227,6 @@ def dedupe_logical_policy_across_events(
     ]
 
 
-
-
 def group_hooks_by_logical_event(hooks: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Preserve registry order within each ``logical_event`` block.
 
