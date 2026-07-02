@@ -1,0 +1,27 @@
+{
+  "wave": "RW0",
+  "program": "review-remediation-v2",
+  "dispatched": [
+    {"task_id": "T-RV-000a", "agent": "SA-L0", "files": [
+      "openspec/changes/fleet-hooks-performance/coordinator/wave-rw0-scaffold.json",
+      "openspec/changes/fleet-hooks-performance/coordinator/wave-rw1-rv001.json",
+      "openspec/changes/fleet-hooks-performance/coordinator/wave-rw2-rv002.json",
+      "openspec/changes/fleet-hooks-performance/coordinator/wave-rw3-rv005.json",
+      "openspec/changes/fleet-hooks-performance/coordinator/wave-rw4-rv003.json",
+      "openspec/changes/fleet-hooks-performance/coordinator/wave-rw5-rv004.json",
+      "openspec/changes/fleet-hooks-performance/coordinator/wave-rw6-close.json"
+    ]},
+    {"task_id": "T-RV-000b", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-performance/tasks.md"]},
+    {"task_id": "T-RV-000c", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-performance/validation-matrix.md"]},
+    {"task_id": "T-RV-000d", "agent": "SA-L0", "files": [
+      "openspec/changes/fleet-hooks-performance/affected-surfaces.md",
+      "hooks/wagents-hook-client.py"
+    ]},
+    {"task_id": "T-RV-000e", "agent": "SA-INT", "files": []}
+  ],
+  "gate_checks": [
+    "uv run wagents openspec validate"
+  ],
+  "blocked_until": [],
+  "note": "Review remediation v2 corrects v1 gaps: stdlib hook-client forwarder, OpenCode bridge worker-socket wiring, content-aware sync fingerprinting, RV-001/RV-005 serial gate on wagents-hook.py, and explicit coordinator manifests."
+}

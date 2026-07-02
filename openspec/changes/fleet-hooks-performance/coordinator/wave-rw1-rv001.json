@@ -1,0 +1,19 @@
+{
+  "wave": "RW1",
+  "finding": "RV-001",
+  "severity": "P0",
+  "dispatched": [
+    {"task_id": "T-RV-010a", "agent": "SA-D", "files": ["hooks/wagents-hook.py"]},
+    {"task_id": "T-RV-010b", "agent": "SA-T", "files": ["tests/hooks/test_performance_baseline.py"]},
+    {"task_id": "T-RV-010c", "agent": "SA-T", "files": ["tests/hooks/test_performance_baseline.py"]},
+    {"task_id": "T-RV-010d", "agent": "SA-T", "files": ["tests/hooks/test_performance_baseline.py"]},
+    {"task_id": "T-RV-010e", "agent": "SA-T", "files": ["tests/hooks/test_performance_baseline.py"]},
+    {"task_id": "T-RV-010f", "agent": "SA-INT", "files": []}
+  ],
+  "gate_checks": [
+    "uv run pytest tests/hooks/test_performance_baseline.py -q"
+  ],
+  "blocked_until": ["RW0"],
+  "collision_note": "One SA-D owner on hooks/wagents-hook.py at a time; RW3 (RV-005) must wait for T-RV-010a to land before touching this file again.",
+  "semantics": "decision_recorded=True is set before the best-effort try block; a write/mkdir/chmod failure never changes stdout or exit code."
+}

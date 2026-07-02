@@ -1,0 +1,23 @@
+{
+  "wave": "RW2",
+  "finding": "RV-002",
+  "severity": "P1-bundled-to-P0",
+  "parallel_with": ["RW1"],
+  "dispatched": [
+    {"task_id": "T-RV-020a", "agent": "SA-P", "files": ["wagents/hooks/render.py"]},
+    {"task_id": "T-RV-020b", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-performance/design.md"]},
+    {"task_id": "T-RV-020c", "agent": "SA-T", "files": ["tests/hooks/test_render_bundle_matchers.py"]},
+    {"task_id": "T-RV-020d", "agent": "SA-T", "files": ["tests/hooks/test_render_bundle_matchers.py"]},
+    {"task_id": "T-RV-020e", "agent": "SA-T", "files": ["tests/hooks/test_render_bundle_matchers.py"]},
+    {"task_id": "T-RV-020f", "agent": "SA-T", "files": ["tests/hooks/test_render_bundle_matchers.py"]},
+    {"task_id": "T-RV-020g", "agent": "SA-T", "files": ["tests/hooks/test_bundle_dispatch.py"]},
+    {"task_id": "T-RV-020h", "agent": "SA-T", "files": ["tests/hooks/test_render_bundle_matchers.py"]},
+    {"task_id": "T-RV-020i", "agent": "SA-INT", "files": []}
+  ],
+  "gate_checks": [
+    "uv run pytest tests/hooks/test_render_bundle_matchers.py -q",
+    "uv run pytest tests/hooks/test_bundle_dispatch.py -q"
+  ],
+  "blocked_until": ["RW0"],
+  "bug_summary": "_synthetic_bundle_hook() previously copied only members[0]'s matcher into the collapsed bundle entry. cursor-shell-file-guards, codex-shell-file-guards, and research-shell-guards each pair a Bash-only matcher with a Write+Bash matcher, so the bundled entry silently lost Write/Edit coverage under bundle/worker tiers. union_bundle_matchers() fixes this by unioning all member matchers (split on `|`, case-sensitive dedupe, first-seen order)."
+}

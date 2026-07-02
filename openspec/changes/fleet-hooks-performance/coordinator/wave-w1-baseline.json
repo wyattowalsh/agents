@@ -1,0 +1,20 @@
+{
+  "wave": "W1",
+  "gate": "G0",
+  "dispatched": [
+    {"task_id": "T-010a", "agent": "SA-D", "files": ["hooks/wagents-hook.py"]},
+    {"task_id": "T-010b", "agent": "SA-T", "files": ["tests/fixtures/hooks/*.json"]},
+    {"task_id": "T-010c", "agent": "SA-T", "files": ["tests/hooks/test_performance_baseline.py"]},
+    {"task_id": "T-010d", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-performance/validation-matrix.md"]},
+    {"task_id": "T-010e", "agent": "SA-D", "files": ["scripts/hooks/hook_perf_inventory.py"]},
+    {"task_id": "T-010f", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-performance/design.md"]}
+  ],
+  "gate_checks": [
+    "uv run pytest tests/hooks/test_performance_baseline.py -q",
+    "uv run pytest tests/hooks/ tests/test_wagents_hook.py tests/test_opencode_hook_bridge.py tests/test_grok_platform.py -q",
+    "uv run python scripts/hooks/hook_perf_inventory.py --json",
+    "uv run ruff check hooks/wagents-hook.py scripts/hooks/hook_perf_inventory.py"
+  ],
+  "behavior_neutral": true,
+  "note": "WAGENTS_HOOK_TIMING is opt-in only; no rendered harness command sets it. Baseline captured: 60 enabled dispatcher rows, max 6 spawns/event on cursor+codex+github-copilot PreToolUse."
+}

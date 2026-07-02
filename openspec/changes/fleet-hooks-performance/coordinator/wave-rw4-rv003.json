@@ -1,0 +1,24 @@
+{
+  "wave": "RW4",
+  "finding": "RV-003",
+  "severity": "P2",
+  "parallel_with": ["RW5"],
+  "dispatched": [
+    {"task_id": "T-RV-040a", "agent": "SA-D", "files": ["hooks/wagents-hook-client.py"]},
+    {"task_id": "T-RV-040b", "agent": "SA-D", "files": ["hooks/wagents-hook-worker.py"]},
+    {"task_id": "T-RV-040c", "agent": "SA-D", "files": ["hooks/wagents-hook.py"]},
+    {"task_id": "T-RV-040d", "agent": "SA-P", "files": ["wagents/hooks/render.py"]},
+    {"task_id": "T-RV-040e", "agent": "SA-B", "files": ["platforms/opencode/plugins/wagents-hook-bridge.ts"]},
+    {"task_id": "T-RV-040f", "agent": "SA-T", "files": ["tests/hooks/test_hook_worker.py"]},
+    {"task_id": "T-RV-040g", "agent": "SA-T", "files": ["tests/hooks/test_hook_worker.py"]},
+    {"task_id": "T-RV-040h", "agent": "SA-T", "files": ["tests/hooks/test_hook_worker.py"]},
+    {"task_id": "T-RV-040i", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-performance/design.md"]},
+    {"task_id": "T-RV-040j", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-performance/validation-matrix.md"]},
+    {"task_id": "T-RV-040k", "agent": "SA-INT", "files": []}
+  ],
+  "gate_checks": [
+    "uv run pytest tests/hooks/test_hook_worker.py -q"
+  ],
+  "blocked_until": ["T-RV-030c"],
+  "architecture_correction": "v1 planned the forwarder inside hooks/run-wagents-hook (POSIX /bin/sh), which cannot speak Unix-socket NDJSON. v2 adds a stdlib-only hooks/wagents-hook-client.py (default_socket_path(), forward_request()) invoked from hooks/wagents-hook.py's --worker-socket path; hooks/run-wagents-hook stays an unmodified `exec ... \"$@\"` passthrough. The OpenCode bridge is corrected to invoke the runner with --worker-socket instead of cold-spawning wagents-hook-worker.py per tool call."
+}

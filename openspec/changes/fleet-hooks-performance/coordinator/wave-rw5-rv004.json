@@ -1,0 +1,27 @@
+{
+  "wave": "RW5",
+  "finding": "RV-004",
+  "severity": "P3",
+  "parallel_with": ["RW4"],
+  "dispatched": [
+    {"task_id": "T-RV-050a", "agent": "SA-S", "files": ["wagents/hooks/registry.py"]},
+    {"task_id": "T-RV-050b", "agent": "SA-S", "files": ["scripts/sync_agent_stack.py"]},
+    {"task_id": "T-RV-050c", "agent": "SA-A", "files": ["wagents/platforms/cursor.py"]},
+    {"task_id": "T-RV-050d", "agent": "SA-A", "files": ["scripts/sync_agent_stack.py"]},
+    {"task_id": "T-RV-050e", "agent": "SA-A", "files": ["wagents/platforms/codex.py"]},
+    {"task_id": "T-RV-050f", "agent": "SA-A", "files": ["scripts/sync_agent_stack.py"]},
+    {"task_id": "T-RV-050g", "agent": "SA-A", "files": ["scripts/sync_agent_stack.py"]},
+    {"task_id": "T-RV-050h", "agent": "SA-A", "files": ["wagents/platforms/grok.py"]},
+    {"task_id": "T-RV-050i", "agent": "SA-A", "files": ["platforms/opencode/plugins/wagents-hook-bridge.ts"]},
+    {"task_id": "T-RV-050j", "agent": "SA-T", "files": ["tests/test_sync_hook_fingerprint.py"]},
+    {"task_id": "T-RV-050k", "agent": "SA-T", "files": ["tests/test_sync_hook_fingerprint.py"]},
+    {"task_id": "T-RV-050m", "agent": "SA-INT", "files": []}
+  ],
+  "gate_checks": [
+    "uv run pytest tests/test_sync_hook_fingerprint.py -q",
+    "uv run python scripts/sync_agent_stack.py --check --targets repo"
+  ],
+  "blocked_until": ["RW0"],
+  "bug_summary": "v1's sync skip gate compared only the registry hash, so a corrupted/hand-edited on-disk projection would still be silently skipped on the next --check/--apply. RENDER_FINGERPRINT_VERSION + hook_render_fingerprint() key the cache on {registry sha256, render version, harness, perf tier}; the cache record also stores content_sha256 of the last-written file so should_skip_hook_render() re-renders whenever the on-disk file's hash no longer matches what wagents last wrote, even if the registry itself is unchanged.",
+  "scope_note": "Wired into the three fully-owned (non-merge) hook projection writers: Cursor repo hooks.json, Codex repo/home hooks.json, and GitHub Copilot .github/hooks/policy.json. Claude/Gemini settings merges keep their existing full read-merge-write idempotency (write_json byte comparison) since they interleave hooks with MCP/other managed keys and cannot safely skip the read step."
+}

@@ -1,0 +1,27 @@
+{
+  "wave": "ship-close",
+  "gate": "closure",
+  "branch": "feat/fleet-hooks-performance",
+  "dispatched": [
+    {"lane": "L-VERIFY", "task_ids": ["T-010", "T-011", "T-012", "T-013", "T-014", "T-015", "T-016", "T-017", "T-018"], "files": []},
+    {"lane": "L-HARDEN", "task_ids": ["T-020", "T-021", "T-022", "T-023", "T-024"], "files": ["hooks/wagents-hook.py", "tests/hooks/test_hook_worker.py", "tests/test_wagents_hook.py", "wagents/hooks/render.py"]},
+    {"lane": "L-DOCS", "task_ids": ["T-030", "T-031", "T-032"], "files": ["openspec/changes/fleet-hooks-performance/design.md", "docs/src/content/docs/hooks/index.mdx"]},
+    {"lane": "L-REPO", "task_ids": ["T-040"], "files": [], "conditional": "V-04 or V-06 red"},
+    {"lane": "L-SHIP", "task_ids": ["T-070", "T-071", "T-072", "T-073", "T-074", "T-080", "T-081"], "files": []}
+  ],
+  "shards": {
+    "H1": ["hooks/wagents-hook.py", "hooks/wagents-hook-worker.py", "hooks/wagents-hook-client.py", "hooks/post-edit-quality.sh"],
+    "H2": ["wagents/hooks/bundle.py", "wagents/hooks/registry.py", "wagents/hooks/render.py", "wagents/hooks/merge.py"],
+    "H3": ["tests/hooks/", "tests/fixtures/hooks/", "tests/test_opencode_hook_bridge.py", "tests/hooks/test_opencode_bridge_integration.py", "tests/test_sync_hook_fingerprint.py", "tests/test_wagents_hook.py"],
+    "H4": ["platforms/opencode/plugins/wagents-hook-bridge.ts"],
+    "H5": ["openspec/changes/fleet-hooks-performance/", "openspec/specs/hooks-runtime-performance/"],
+    "H6": ["config/hook-registry.json", "docs/src/content/docs/hooks/index.mdx", "config/tooling-policy.json"]
+  },
+  "excluded_from_pr": [
+    "docs/src/authoring/skills/",
+    ".apm/agents/",
+    "AGENTS.md bulk edits",
+    "catalog index regeneration"
+  ],
+  "note": "hook_perf.tier stays legacy. No sync --apply --targets home. Hyperfine tier promotion deferred to Phase 6 post-merge."
+}

@@ -1,0 +1,18 @@
+{
+  "wave": "W0",
+  "dispatched": [
+    {"task_id": "T-000a-g", "agent": "SA-L0", "files": [
+      "openspec/changes/fleet-hooks-performance/proposal.md",
+      "openspec/changes/fleet-hooks-performance/affected-surfaces.md",
+      "openspec/changes/fleet-hooks-performance/design.md",
+      "openspec/changes/fleet-hooks-performance/validation-matrix.md",
+      "openspec/changes/fleet-hooks-performance/tasks.md",
+      "openspec/changes/fleet-hooks-performance/specs/hooks-runtime-performance/spec.md"
+    ]}
+  ],
+  "gate_checks": [
+    "uv run wagents openspec validate"
+  ],
+  "blocked_until": [],
+  "note": "Canonical task graph now lives in this change's tasks.md; the Cursor plan file (.cursor/plans/fleet_hooks_performance_v2_b354f4b6.plan.md) remains read-only reference."
+}

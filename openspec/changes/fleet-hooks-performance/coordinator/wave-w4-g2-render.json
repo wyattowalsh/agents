@@ -1,0 +1,23 @@
+{
+  "wave": "W4",
+  "gate": "G2-render",
+  "dispatched": [
+    {"task_id": "T-040a", "agent": "SA-P", "files": ["wagents/hooks/render.py"]},
+    {"task_id": "T-040b", "agent": "SA-P", "files": ["wagents/hooks/render.py", "openspec/changes/fleet-hooks-performance/design.md"]},
+    {"task_id": "T-041a", "agent": "SA-A", "files": ["wagents/hooks/render.py", "scripts/sync_agent_stack.py"]},
+    {"task_id": "T-041b", "agent": "SA-A", "files": ["wagents/hooks/render.py", "wagents/platforms/cursor.py"]},
+    {"task_id": "T-041c", "agent": "SA-A", "files": ["wagents/hooks/render.py"]},
+    {"task_id": "T-041d", "agent": "SA-A", "files": ["wagents/hooks/render.py"]},
+    {"task_id": "T-041e", "agent": "SA-A", "files": ["wagents/hooks/render.py"]},
+    {"task_id": "T-041f", "agent": "SA-A", "files": ["wagents/platforms/grok.py"]},
+    {"task_id": "T-042a", "agent": "SA-B", "files": ["platforms/opencode/plugins/wagents-hook-bridge.ts"]},
+    {"task_id": "T-042b-g", "agent": "SA-T", "files": ["tests/hooks/test_render_bundle_matchers.py", "tests/test_opencode_hook_bridge.py"]},
+    {"task_id": "T-043a", "agent": "SA-INT", "files": []}
+  ],
+  "gate_checks": [
+    "uv run pytest tests/hooks/test_bundle_dispatch.py tests/hooks/test_render_bundle_matchers.py tests/hooks/test_opencode_bridge_integration.py tests/test_opencode_hook_bridge.py -q",
+    "uv run python scripts/sync_agent_stack.py --check --targets repo",
+    "uv run wagents hooks validate --harness all"
+  ],
+  "done_when": "Cursor Bash chain renders fewer preToolUse rows under bundle tier and OpenCode bundle dispatch keeps deny propagation through the repo runner."
+}

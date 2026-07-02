@@ -1,0 +1,25 @@
+{
+  "wave": "W2",
+  "gate": "G1",
+  "dispatched": [
+    {"task_id": "T-020a", "agent": "SA-R", "files": ["config/hook-registry.json"]},
+    {"task_id": "T-020b", "agent": "SA-R", "files": ["config/schemas/hook-registry.schema.json"]},
+    {"task_id": "T-021a", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-performance/design.md"]},
+    {"task_id": "T-021b", "agent": "SA-R", "files": ["config/hook-registry.json"]},
+    {"task_id": "T-021c", "agent": "SA-R", "files": ["config/hook-registry.json", "openspec/changes/fleet-hooks-performance/design.md"]},
+    {"task_id": "T-021d", "agent": "SA-T", "files": ["tests/hooks/test_registry_perf_metadata.py"]},
+    {"task_id": "T-022a-d", "agent": "SA-D", "files": ["hooks/wagents-hook.py"]},
+    {"task_id": "T-023a-c", "agent": "SA-D", "files": ["hooks/wagents-hook.py"]},
+    {"task_id": "T-024a", "agent": "SA-C", "files": ["wagents/image_inputs.py"]},
+    {"task_id": "T-024b", "agent": "SA-P", "files": ["wagents/hooks/render.py"]},
+    {"task_id": "T-024c", "agent": "SA-T", "files": ["tests/hooks/test_registry_perf_metadata.py", "tests/hooks/test_render_bundle_matchers.py"]},
+    {"task_id": "T-025a", "agent": "SA-INT", "files": []}
+  ],
+  "gate_checks": [
+    "uv run pytest tests/hooks/test_registry_perf_metadata.py tests/hooks/test_render_bundle_matchers.py -q",
+    "uv run python scripts/hooks/hook_perf_inventory.py --json",
+    "uv run python scripts/sync_agent_stack.py --check --targets repo",
+    "uv run wagents hooks validate --harness all"
+  ],
+  "note": "T-021c narrowed only protected-file rows already covered by a separate shell hook. Codex/Cursor protected-file rows retain shell tokens because they catch shell writes to protected paths that destructive-shell guards do not cover."
+}

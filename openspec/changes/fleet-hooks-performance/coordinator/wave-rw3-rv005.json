@@ -1,0 +1,18 @@
+{
+  "wave": "RW3",
+  "finding": "RV-005",
+  "severity": "P3",
+  "dispatched": [
+    {"task_id": "T-RV-030a", "agent": "SA-D", "files": ["hooks/wagents-hook.py"]},
+    {"task_id": "T-RV-030b", "agent": "SA-D", "files": ["hooks/wagents-hook.py"]},
+    {"task_id": "T-RV-030c", "agent": "SA-D", "files": ["hooks/wagents-hook-worker.py"]},
+    {"task_id": "T-RV-030d", "agent": "SA-T", "files": ["tests/hooks/test_hook_worker.py"]}
+  ],
+  "gate_checks": [
+    "uv run pytest tests/hooks/test_hook_worker.py -q",
+    "uv run pytest tests/hooks/test_performance_baseline.py -q"
+  ],
+  "blocked_until": ["T-RV-010a"],
+  "collision_note": "Serial after RV-001 lands on hooks/wagents-hook.py (single SA-D owner rule); RV-003 (RW4) is serial after this wave for the same file.",
+  "note": "_finalize_single_policy_dispatch() extracts the shared post-policy record/allow-emit logic from main() so the worker's single-policy _run_request() path applies the identical allow-record + Cursor fail-closed-allow-emit semantics instead of a hand-duplicated copy that could silently drift."
+}

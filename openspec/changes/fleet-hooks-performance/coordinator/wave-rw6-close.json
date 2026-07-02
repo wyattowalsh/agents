@@ -1,0 +1,20 @@
+{
+  "wave": "RW6",
+  "gate": "closure",
+  "dispatched": [
+    {"task_id": "T-RV-060a", "agent": "SA-INT", "files": []},
+    {"task_id": "T-RV-060b", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-performance/tasks.md"]},
+    {"task_id": "T-RV-060c", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-performance/validation-matrix.md"]},
+    {"task_id": "T-RV-060d", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-performance/validation-matrix.md"]}
+  ],
+  "gate_checks": [
+    "uv run pytest tests/hooks/ tests/test_wagents_hook.py tests/test_opencode_hook_bridge.py tests/test_grok_platform.py -q",
+    "uv run wagents validate",
+    "uv run wagents hooks validate --harness all",
+    "uv run python scripts/sync_agent_stack.py --check --targets repo",
+    "uv run wagents openspec validate",
+    "uv run ruff check hooks/ wagents/hooks/ scripts/sync_agent_stack.py"
+  ],
+  "blocked_until": ["RW1", "RW2", "RW3", "RW4", "RW5"],
+  "note": "hook_perf.tier stays legacy in config/tooling-policy.json after this wave. Tier promotion to bundle/worker remains a separate manual maintainer action per the tier promotion gate (post-RW6 hyperfine smoke), never auto-applied by this wave."
+}
