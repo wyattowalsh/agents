@@ -61,27 +61,14 @@ def validate_evals(skills_dir: Path) -> list[dict[str, str]]:
                 add_error(path, "'evals' must be a non-empty list")
                 continue
 
-            seen_prompts: dict[str, int] = {}
             for index, item in enumerate(evals, start=1):
                 case_label = f"eval {index}"
                 if not isinstance(item, dict):
                     add_error(path, f"{case_label} must be an object")
                     continue
-                prompt = item.get("prompt")
-                if not isinstance(prompt, str) or not prompt.strip():
+                if not isinstance(item.get("prompt"), str) or not item["prompt"].strip():
                     add_error(path, f"{case_label} missing required non-empty string 'prompt'")
-                else:
-                    normalized_prompt = prompt.strip()
-                    if normalized_prompt in seen_prompts:
-                        add_error(
-                            path,
-                            f"{case_label} duplicates prompt from eval {seen_prompts[normalized_prompt]}: "
-                            f"{normalized_prompt!r}",
-                        )
-                    else:
-                        seen_prompts[normalized_prompt] = index
-                expected_output = item.get("expected_output")
-                if not isinstance(expected_output, str) or not expected_output.strip():
+                if not isinstance(item.get("expected_output"), str) or not item["expected_output"].strip():
                     add_error(path, f"{case_label} missing required non-empty string 'expected_output'")
             continue
 

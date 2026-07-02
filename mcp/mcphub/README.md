@@ -37,9 +37,9 @@ print("JWT_SECRET=" + secrets.token_urlsafe(48))
 print("MCPHUB_BEARER_TOKEN=" + secrets.token_urlsafe(48))
 PY
 # Replace the placeholders in .env.mcphub with those generated values.
-make mcphub-up
-make mcphub-doctor
-make mcphub-smoke
+just mcphub-up
+just mcphub-doctor
+just mcphub-smoke
 ```
 
 ## Public ChatGPT URL

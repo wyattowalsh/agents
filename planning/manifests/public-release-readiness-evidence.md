@@ -24,7 +24,7 @@ Generated: 2026-06-29; refreshed: 2026-07-02
 | `uv run pytest tests/test_authoring_sync.py tests/test_skills_catalog_schemas.py tests/test_catalog_index_parity.py tests/test_external_skills.py tests/test_sync_desired_skills.py -q` | 53 passed |
 | `uv run wagents eval validate --format json` | pass; canonical manifests reject duplicate stripped prompts |
 | repo duplicate prompt scanner | pass; `duplicate_prompts 0` |
-| bundled `validate_evals.py` parity check | pass; all bundled copies match canonical `skill-creator` source |
+| bundled `validate_evals.py` parity check | pass; eligible bundled copies match canonical `skill-creator` source, with guarded `skills/research/scripts/asset_toolkit/validate_evals.py` intentionally excluded |
 | `uv run pytest tests/test_eval_cli.py tests/test_skill_creator_audit.py tests/test_skill_bundled_toolkit.py -q` | 84 passed |
 | `uv run pytest tests/test_eval_adequacy.py tests/test_eval_cli.py tests/test_eval_ci_flagship.py tests/mcp/test_eval_results.py -q` | 55 passed |
 
@@ -34,7 +34,7 @@ Refresh notes:
 - `uv run wagents skills sync --dry-run` emitted an Antigravity fallback inventory timeout warning; the dry-run completed without applying installs.
 - Grok Tier-T preflight was healthy. The bounded read-only dispatch completed and returned a result, but it emitted local MCPHub/GitHub MCP auth/tool-name errors during tool discovery; parent-side validation remains authoritative.
 - `uv run wagents eval coverage --format json` exits 0 with 65/65 skills carrying eval manifests and zero skills below the five-case floor.
-- `enforce-unique-eval-prompts` adds within-manifest duplicate stripped-prompt rejection, audit feedback, docs text, real-repo duplicate scanning, and bundled validator parity coverage.
+- `enforce-unique-eval-prompts` adds within-manifest duplicate stripped-prompt rejection, audit feedback, docs text, real-repo duplicate scanning, and bundled validator parity coverage for eligible non-guarded copies.
 
 ## 2026-06-29 Gate Matrix (Historical)
 

@@ -10,7 +10,7 @@
 
 ## Generated Outputs
 
-- Existing bundled `skills/*/scripts/asset_toolkit/validate_evals.py` copies were synchronized with the canonical validator.
+- Existing bundled `skills/*/scripts/asset_toolkit/validate_evals.py` copies were synchronized with the canonical validator, except the guarded `skills/research/scripts/asset_toolkit/validate_evals.py` copy while the research source-write guard is active.
 - `README.md` and generated docs artifacts were refreshed through `uv run wagents readme` and `uv run wagents docs generate --no-installed`.
 - `planning/manifests/public-release-readiness-evidence.md` records duplicate-prompt-specific validation evidence.
 
@@ -23,7 +23,7 @@
 
 - `tests/test_eval_cli.py` covers duplicate stripped prompt rejection and scans real repo manifests for duplicate stripped prompts.
 - `tests/test_skill_creator_audit.py` covers audit feedback for duplicate prompt coverage debt.
-- Existing bundled toolkit tests verify asset toolkit copy surfaces remain present.
+- Existing bundled toolkit tests verify asset toolkit copy surfaces remain present and eligible `validate_evals.py` copies exactly match the canonical `skill-creator` source. The guarded research copy is intentionally excluded from parity while research source writes are blocked.
 
 ## Validation Commands
 
