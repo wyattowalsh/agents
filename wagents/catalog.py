@@ -54,6 +54,12 @@ RELATED_SKILLS = {
     "schema-evolution-planner": ["database-architect", "api-designer", "data-pipeline-architect"],
     "event-driven-architect": ["api-designer", "orchestrator", "data-pipeline-architect"],
     "data-pipeline-architect": ["data-wizard", "database-architect", "event-driven-architect"],
+    "ffmpeg": ["draw-thing", "yt-dlp"],
+    "yt-dlp": ["ffmpeg", "research"],
+    "pentest": ["security-scanner", "review", "ctf-web"],
+    "security-scanner": ["pentest", "review", "incident-response-engineer"],
+    "draw-thing": ["ffmpeg", "design"],
+    "data-wizard": ["wargame", "performance-profiler"],
 }
 
 

@@ -206,16 +206,31 @@ def test_collect_edges_from_agent_metadata():
 # ---------------------------------------------------------------------------
 
 
-def test_related_skills_keys_are_valid_skill_dirs():
-    """Every key and value in RELATED_SKILLS must be a real skill directory."""
-    repo_root = Path(__file__).resolve().parent.parent
+def _known_skill_ids(repo_root: Path) -> set[str]:
     skills_dir = repo_root / "skills"
+    ids = {d.name for d in skills_dir.iterdir() if d.is_dir()}
+    authoring = repo_root / "docs" / "src" / "authoring" / "skills"
+    if authoring.is_dir():
+        ids.update(path.stem for path in authoring.glob("*.mdx"))
+    return ids
 
-    existing_skill_dirs = {d.name for d in skills_dir.iterdir() if d.is_dir()}
+
+def test_related_skills_keys_are_valid_skill_dirs():
+    """Every key and value in RELATED_SKILLS must be a repo or authoring skill id."""
+    repo_root = Path(__file__).resolve().parent.parent
+    known_skill_ids = _known_skill_ids(repo_root)
 
     for key, values in RELATED_SKILLS.items():
-        assert key in existing_skill_dirs, f"RELATED_SKILLS key '{key}' does not match any skill directory"
+        assert key in known_skill_ids, f"RELATED_SKILLS key '{key}' does not match any skill id"
         for val in values:
-            assert val in existing_skill_dirs, (
-                f"RELATED_SKILLS value '{val}' (under key '{key}') does not match any skill directory"
+            assert val in known_skill_ids, (
+                f"RELATED_SKILLS value '{val}' (under key '{key}') does not match any skill id"
             )
+
+
+def test_related_skills_media_pentest_integration_edges():
+    """Media and pentest skills cross-link for catalog graph navigation."""
+    assert "pentest" in RELATED_SKILLS["security-scanner"]
+    assert "ffmpeg" in RELATED_SKILLS["draw-thing"]
+    assert "security-scanner" in RELATED_SKILLS["pentest"]
+    assert "draw-thing" in RELATED_SKILLS["ffmpeg"]

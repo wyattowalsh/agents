@@ -29,7 +29,7 @@ Clear delineation between security-scanner and adjacent skills/activities.
 | Activity | Why Not | Redirect To |
 |----------|---------|-------------|
 | Code review (quality, design, efficiency) | Different scope — reactive per-change review | review |
-| Penetration testing | Requires runtime testing, not static analysis | External tooling (Burp Suite, OWASP ZAP) |
+| Penetration testing | Requires runtime testing, not static analysis | `/pentest` with signed ROE (planning-only); operator runs approved tools |
 | Runtime security monitoring | Requires deployed infrastructure | External tooling (Falco, Datadog) |
 | Supply chain deep analysis | Requires runtime dependency resolution | External tooling (Snyk, Dependabot) |
 | Writing code or fixing bugs | Read-only analysis only | Direct coding |
@@ -66,7 +66,7 @@ When a user request falls outside scope, respond with:
 | Request Pattern | Response |
 |----------------|----------|
 | "Review this code" / "What do you think of this PR" | "For code review, use `/review`. Security-scanner is for pre-deployment security audits." |
-| "Pen test this" / "Try to hack this" | "Security-scanner performs static analysis only. For penetration testing, use dedicated tools like Burp Suite or OWASP ZAP." |
+| "Pen test this" / "Try to hack this" | "Security-scanner performs static analysis only. For authorized penetration testing, use `/pentest` after passing `scope_check.py` with a signed ROE." |
 | "Monitor for attacks" | "Security-scanner is a pre-deployment tool. For runtime monitoring, consider Falco, Datadog, or similar." |
 | "Fix this vulnerability" | Present the finding and remediation guidance, but do not modify files. State: "This skill is read-only. Apply the suggested fix manually or ask for implementation assistance." |
 | "Is this SOC2 certified?" | "Compliance mode provides heuristic indicators only. Code-level checks are necessary but not sufficient for certification. Consult a certified auditor." |

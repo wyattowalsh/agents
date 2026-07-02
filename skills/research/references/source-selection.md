@@ -73,6 +73,15 @@ Tool names below are preferred implementations, not hard dependencies. If a name
 | Research team | Claude `TeamCreate`, Codex coordinated worker set, or equivalent | Lead agent runs each wave serially and reduces breadth |
 | Nested waves | Teammates spawn bounded internal subagents | One follow-up batch per wave; record skipped breadth in gaps |
 
+### Repo CLI skills (skill-first)
+
+| Domain signal | Preferred | Secondary / fallback | Notes |
+|---------------|-----------|----------------------|-------|
+| Local media transform (trim, transcode, concat, thumbnails) | `/ffmpeg` skill + system `ffmpeg`/`ffprobe` | `ffmpeg` MCP only when shell-less | Probe-first recipes; MCP disabled by default in `media-work` |
+| Video/audio URL probe, captions, download | `/yt-dlp` skill + system `yt-dlp` | Fetch MCP / `curl` for static pages | Transcript-first protocol; not for multi-source research synthesis |
+| Authorized live offensive testing (signed ROE) | `/pentest` skill + `scope_check.py` | Operator-owned CLIs after scope gate | Planning/checklists only — no automated exploitation |
+| Pentest tool taxonomy / MCP offload | `/pentest` playbooks + findings schema | `hexstrike` MCP | Prefer skill-first synthesis; avoid hexstrike MCP unless harness has no shell and user explicitly opts in |
+
 ## Domain-to-Tool Mapping
 
 Select tools based on the domain signals detected in the query.

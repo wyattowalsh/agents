@@ -115,6 +115,8 @@ Before starting research, check if another skill is a better fit:
 
 If the user confirms they want general research, proceed.
 
+For repo-owned CLI skill-first routing (`/ffmpeg`, `/yt-dlp`, `/pentest`), see the **Repo CLI skills** table in `references/source-selection.md`.
+
 ## Complexity Classification
 
 Score the query on 5 dimensions (0-2 each, total 0-10):
