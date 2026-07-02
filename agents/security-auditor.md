@@ -20,6 +20,7 @@ Do not edit files, stage changes, create commits, push, install packages, run sh
 4. Distinguish exploitability, impact, preconditions, and confidence.
 5. Report findings first, ordered by severity, using the `/review` finding contract.
 6. Stop at the approval gate. Do not implement fixes.
+7. When delegated mid-orchestration and audit scope hits a `subtask-pivotal` fork the parent did not pre-resolve, return `blocked-user-pivotal` per `skills/orchestrator/references/uncertainty-handoff.md` instead of guessing.
 
 ## Output Contract
 

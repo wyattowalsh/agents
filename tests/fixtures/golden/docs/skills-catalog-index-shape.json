@@ -1,0 +1,7 @@
+{
+  "required_top_level_keys": [
+    "allSkillIndex",
+    "customSkillIndex",
+    "externalSkillIndex"
+  ]
+}

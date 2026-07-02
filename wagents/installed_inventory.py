@@ -7,11 +7,13 @@ import os
 import signal
 import subprocess
 import tempfile
+import tomllib
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextlib import suppress
 from dataclasses import dataclass, replace
+from hashlib import sha256
 from pathlib import Path
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from wagents import ROOT
 from wagents.external_skills import (
@@ -26,7 +28,54 @@ from wagents.external_skills import (
 # desired_install_now_entries (and callers) delegate to read_external_skill_entries (catalog index + authoring).
 from wagents.parsing import parse_frontmatter
 
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
 DEFAULT_HARNESS_QUERY_TIMEOUT_SEC = 120
+
+EXPOSURE_OWNER_PLUGIN = "plugin"
+EXPOSURE_OWNER_DIRECT_REPO_PATH = "direct-repo-path"
+EXPOSURE_OWNER_PROJECT_LOCAL = "project-local"
+EXPOSURE_OWNER_SKILLS_CLI = "skills-cli"
+EXPOSURE_OWNER_USER_LOCAL = "user-local"
+
+DUPLICATE_CLASS_NONE = "none"
+DUPLICATE_CLASS_SAME_REALPATH = "same-realpath"
+DUPLICATE_CLASS_SAME_BODY = "same-body"
+DUPLICATE_CLASS_DIVERGENT_BODY = "divergent-body"
+
+CLEANUP_ACTION_NONE = "none"
+CLEANUP_ACTION_REMOVE_GENERATED_SYMLINK = "remove-generated-symlink"
+CLEANUP_ACTION_REFRESH_PLUGIN_CACHE = "refresh-plugin-cache"
+CLEANUP_ACTION_SYNC_HOME_CONFIG = "sync-home-config"
+CLEANUP_ACTION_PRESERVE = "preserve"
+CLEANUP_ACTION_MANUAL_REVIEW = "manual-review"
+
+DOCS_STATUS_DOCUMENTED = "documented"
+DOCS_STATUS_GENERATED_MISSING = "generated-missing"
+DOCS_STATUS_NOT_APPLICABLE = "not-applicable"
+
+DUPLICATE_CLASS_PRIORITY = {
+    DUPLICATE_CLASS_NONE: 0,
+    DUPLICATE_CLASS_SAME_BODY: 10,
+    DUPLICATE_CLASS_SAME_REALPATH: 20,
+    DUPLICATE_CLASS_DIVERGENT_BODY: 30,
+}
+
+CLEANUP_ACTION_PRIORITY = {
+    CLEANUP_ACTION_NONE: 0,
+    CLEANUP_ACTION_PRESERVE: 10,
+    CLEANUP_ACTION_SYNC_HOME_CONFIG: 20,
+    CLEANUP_ACTION_REFRESH_PLUGIN_CACHE: 20,
+    CLEANUP_ACTION_REMOVE_GENERATED_SYMLINK: 30,
+    CLEANUP_ACTION_MANUAL_REVIEW: 40,
+}
+
+DOCS_STATUS_PRIORITY = {
+    DOCS_STATUS_NOT_APPLICABLE: 0,
+    DOCS_STATUS_DOCUMENTED: 10,
+    DOCS_STATUS_GENERATED_MISSING: 20,
+}
 
 AGENT_LABEL_TO_ID = {
     "Antigravity": "antigravity",
@@ -49,12 +98,58 @@ GROK_SKILL_SCAN_SOURCES: tuple[tuple[Path, str], ...] = (
 )
 
 LOCAL_SKILL_ROOT_FALLBACKS: dict[str, tuple[tuple[Path, str], ...]] = {
+    "antigravity": ((Path(".agents") / "skills", "Antigravity"),),
     "claude-code": ((Path(".claude") / "skills", "Claude Code"),),
     "codex": ((Path(".codex") / "skills", "Codex"),),
+    "crush": (
+        (Path(".config") / "crush" / "skills", "Crush"),
+        (Path(".agents") / "skills", "Crush"),
+    ),
+    "cursor": (
+        (Path(".cursor") / "skills", "Cursor"),
+        (Path(".agents") / "skills", "Cursor"),
+    ),
     "gemini-cli": ((Path(".gemini") / "skills", "Gemini CLI"),),
     "github-copilot": ((Path(".copilot") / "skills", "GitHub Copilot"),),
     "opencode": ((Path(".config") / "opencode" / "skills", "OpenCode"),),
 }
+
+SKILL_EXPOSURE_ROOTS: tuple[tuple[str, Path, str, str], ...] = (
+    ("multi-harness", Path(".agents") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
+    ("claude-code", Path(".claude") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
+    ("codex", Path(".codex") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
+    ("opencode", Path(".config") / "opencode" / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
+    ("crush", Path(".config") / "crush" / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
+    ("gemini-cli", Path(".gemini") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
+    ("github-copilot", Path(".copilot") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
+    ("grok", Path(".grok") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
+    ("cursor", Path(".cursor") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
+)
+
+PROJECT_SKILL_EXPOSURE_ROOTS: tuple[tuple[str, Path, str, str], ...] = (
+    ("cursor", Path(".cursor") / "skills", EXPOSURE_OWNER_PROJECT_LOCAL, "project"),
+    ("cursor", Path(".cursor") / "skills" / "repo", EXPOSURE_OWNER_PROJECT_LOCAL, "project"),
+    ("grok", Path(".grok") / "skills", EXPOSURE_OWNER_PROJECT_LOCAL, "project"),
+    ("claude-code", Path(".claude") / "skills", EXPOSURE_OWNER_PROJECT_LOCAL, "project"),
+)
+
+TREE_HASH_ALWAYS_FILES = ("SKILL.md", "metadata.json")
+TREE_HASH_INCLUDED_DIRS = frozenset(("evals", "examples", "references", "scripts", "templates"))
+TREE_HASH_IGNORED_DIRS = frozenset(
+    (
+        ".cache",
+        ".git",
+        ".mypy_cache",
+        ".pytest_cache",
+        ".ruff_cache",
+        ".tox",
+        ".venv",
+        "__pycache__",
+        "build",
+        "dist",
+        "node_modules",
+    )
+)
 
 
 @dataclass(frozen=True)
@@ -102,6 +197,10 @@ class InstalledSkillInventoryRow:
     target_agents: tuple[str, ...]
     unresolved_reason: str = ""
     sync_kind: str = ""
+    exposure_owner: str = ""
+    duplicate_class: str = DUPLICATE_CLASS_NONE
+    cleanup_action: str = CLEANUP_ACTION_NONE
+    docs_status: str = DOCS_STATUS_NOT_APPLICABLE
 
     def is_repo_owned(self) -> bool:
         return self.provenance_status == "repo-owned"
@@ -140,6 +239,52 @@ class InstalledSkillInventoryRow:
             "target_agents": list(self.target_agents),
             "unresolved_reason": self.unresolved_reason,
             "sync_kind": infer_sync_kind(self.sync_kind, self.install_command),
+            "exposure_owner": self.exposure_owner,
+            "duplicate_class": self.duplicate_class,
+            "cleanup_action": self.cleanup_action,
+            "docs_status": self.docs_status,
+        }
+
+
+@dataclass(frozen=True)
+class SkillExposure:
+    """One filesystem skill exposure discovered during cleanup planning."""
+
+    name: str
+    harness: str
+    root: str
+    path: str
+    source_path: str
+    resolved_path: str
+    scope: str
+    exposure_owner: str
+    canonical_owner: str
+    repo_owned: bool
+    is_symlink: bool
+    skill_hash: str
+    tree_hash: str
+    duplicate_class: str = DUPLICATE_CLASS_NONE
+    cleanup_action: str = CLEANUP_ACTION_NONE
+    docs_status: str = DOCS_STATUS_NOT_APPLICABLE
+
+    def public_dict(self) -> dict[str, object]:
+        return {
+            "name": self.name,
+            "harness": self.harness,
+            "root": self.root,
+            "path": self.path,
+            "source_path": self.source_path,
+            "resolved_path": self.resolved_path,
+            "scope": self.scope,
+            "exposure_owner": self.exposure_owner,
+            "canonical_owner": self.canonical_owner,
+            "repo_owned": self.repo_owned,
+            "is_symlink": self.is_symlink,
+            "skill_hash": self.skill_hash,
+            "tree_hash": self.tree_hash,
+            "duplicate_class": self.duplicate_class,
+            "cleanup_action": self.cleanup_action,
+            "docs_status": self.docs_status,
         }
 
 
@@ -338,6 +483,8 @@ def collect_installed_inventory(
                 target_agents=tuple(target_agents),
                 unresolved_reason=unresolved_reason,
                 sync_kind=sync_kind,
+                exposure_owner=EXPOSURE_OWNER_SKILLS_CLI if provenance_status == "repo-owned" else "",
+                docs_status=_docs_status_for_skill(name, repo_owned=provenance_status == "repo-owned", root=repo_root),
             )
         )
 
@@ -676,6 +823,414 @@ def _source_url(source: str) -> str:
     return ""
 
 
+def repo_skill_exposure_owner_for_agent(
+    agent_id: str,
+    *,
+    home: Path | None = None,
+    root: Path | None = None,
+) -> str:
+    """Return the preferred owner for repo-owned skills in one harness."""
+    home_dir = home or Path.home()
+    repo_root = root or ROOT
+    if agent_id == "codex" and _codex_agents_plugin_enabled(home_dir):
+        return EXPOSURE_OWNER_PLUGIN
+    if agent_id == "opencode" and _opencode_repo_skills_path_configured(home_dir, repo_root):
+        return EXPOSURE_OWNER_DIRECT_REPO_PATH
+    return EXPOSURE_OWNER_SKILLS_CLI
+
+
+def repo_skill_owner_covered_agents(
+    row: InstalledSkillInventoryRow,
+    agent_ids: Sequence[str],
+    *,
+    home: Path | None = None,
+    root: Path | None = None,
+) -> tuple[str, ...]:
+    """Return target agents whose repo skill exposure is owned outside Skills CLI."""
+    if not row.is_repo_owned():
+        return ()
+    return tuple(
+        agent_id
+        for agent_id in agent_ids
+        if repo_skill_exposure_owner_for_agent(agent_id, home=home, root=root) != EXPOSURE_OWNER_SKILLS_CLI
+    )
+
+
+def _codex_agents_plugin_enabled(home: Path) -> bool:
+    config_path = home / ".codex" / "config.toml"
+    try:
+        payload = tomllib.loads(config_path.read_text(encoding="utf-8"))
+    except (OSError, tomllib.TOMLDecodeError):
+        return False
+    plugins = payload.get("plugins")
+    if not isinstance(plugins, dict):
+        return False
+    agents_plugin = plugins.get("agents@agents")
+    return isinstance(agents_plugin, dict) and bool(agents_plugin.get("enabled"))
+
+
+def _opencode_repo_skills_path_configured(home: Path, repo_root: Path) -> bool:
+    candidate_paths = (repo_root / "opencode.json", home / ".config" / "opencode" / "opencode.json")
+    repo_skills = (repo_root / "skills").resolve(strict=False)
+    for config_path in candidate_paths:
+        try:
+            payload = json.loads(config_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        skills = payload.get("skills")
+        if not isinstance(skills, dict):
+            continue
+        paths = skills.get("paths")
+        if not isinstance(paths, list):
+            continue
+        for raw_path in paths:
+            resolved = _resolve_config_path(str(raw_path), base=config_path.parent, home=home)
+            if resolved.resolve(strict=False) == repo_skills:
+                return True
+    return False
+
+
+def _resolve_config_path(raw_path: str, *, base: Path, home: Path) -> Path:
+    path = raw_path.replace("~", str(home), 1) if raw_path == "~" or raw_path.startswith("~/") else raw_path
+    candidate = Path(path)
+    if not candidate.is_absolute():
+        candidate = base / candidate
+    return candidate
+
+
+def _docs_status_for_skill(name: str, *, repo_owned: bool, root: Path) -> str:
+    if not repo_owned:
+        return DOCS_STATUS_NOT_APPLICABLE
+    docs_candidates = (
+        root / "docs" / "src" / "authoring" / "skills" / f"{name}.mdx",
+        root / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "custom" / f"{name}.mdx",
+    )
+    if any(path.exists() for path in docs_candidates):
+        return DOCS_STATUS_DOCUMENTED
+    return DOCS_STATUS_GENERATED_MISSING
+
+
+def _file_hash(path: Path) -> str:
+    if not path.exists() or not path.is_file():
+        return ""
+    digest = sha256()
+    try:
+        with path.open("rb") as handle:
+            for chunk in iter(lambda: handle.read(1024 * 128), b""):
+                digest.update(chunk)
+    except OSError:
+        return ""
+    return digest.hexdigest()
+
+
+def _tree_hash(skill_dir: Path) -> str:
+    if not skill_dir.exists():
+        return ""
+    digest = sha256()
+    try:
+        for path in _tree_hash_paths(skill_dir):
+            if not path.is_file():
+                continue
+            relative = path.relative_to(skill_dir).as_posix()
+            digest.update(relative.encode("utf-8", errors="replace"))
+            digest.update(b"\0")
+            digest.update(_file_hash(path).encode("ascii"))
+            digest.update(b"\0")
+    except OSError:
+        return ""
+    return digest.hexdigest()
+
+
+def _tree_hash_paths(skill_dir: Path) -> list[Path]:
+    paths = [skill_dir / name for name in TREE_HASH_ALWAYS_FILES]
+    extra_paths: list[Path] = []
+    for item in sorted(skill_dir.iterdir(), key=lambda item: item.name):
+        if item.name in TREE_HASH_ALWAYS_FILES:
+            continue
+        if item.is_file():
+            extra_paths.append(item)
+        elif item.name in TREE_HASH_INCLUDED_DIRS and item.is_dir() and not item.is_symlink():
+            for current, dirnames, filenames in os.walk(item, followlinks=False):
+                dirnames[:] = sorted(name for name in dirnames if name not in TREE_HASH_IGNORED_DIRS)
+                for filename in sorted(filenames):
+                    extra_paths.append(Path(current) / filename)
+    paths.extend(sorted(extra_paths, key=lambda path: path.relative_to(skill_dir).as_posix()))
+    return paths
+
+
+def _iter_skill_exposures(*, root: Path, home: Path) -> list[SkillExposure]:
+    exposures: list[SkillExposure] = []
+    root_specs = [
+        *(
+            (harness, home / relative_root, owner, scope)
+            for harness, relative_root, owner, scope in SKILL_EXPOSURE_ROOTS
+        ),
+        *(
+            (harness, root / relative_root, owner, scope)
+            for harness, relative_root, owner, scope in PROJECT_SKILL_EXPOSURE_ROOTS
+        ),
+    ]
+    seen_paths: set[tuple[str, str, str]] = set()
+    for harness, skill_root, owner, scope in root_specs:
+        skill_root = skill_root.expanduser()
+        if not skill_root.is_dir():
+            continue
+        for skill_dir in sorted(skill_root.iterdir()):
+            skill_file = skill_dir / "SKILL.md"
+            if not skill_dir.is_dir() or not skill_file.exists():
+                continue
+            key = (harness, scope, str(skill_dir))
+            if key in seen_paths:
+                continue
+            seen_paths.add(key)
+            frontmatter, _ = _read_skill_metadata(skill_dir)
+            name = str(frontmatter.get("name") or skill_dir.name).strip()
+            if not name:
+                continue
+            resolved_dir = skill_dir.resolve(strict=False)
+            resolved_skill_file = resolved_dir / "SKILL.md"
+            repo_owned = _is_repo_owned_skill(resolved_dir, root, name)
+            canonical_owner = (
+                repo_skill_exposure_owner_for_agent(harness, home=home, root=root) if repo_owned else owner
+            )
+            exposures.append(
+                SkillExposure(
+                    name=name,
+                    harness=harness,
+                    root=str(skill_root),
+                    path=str(skill_dir),
+                    source_path=str(resolved_skill_file if resolved_skill_file.exists() else skill_file),
+                    resolved_path=str(resolved_dir),
+                    scope=scope,
+                    exposure_owner=owner,
+                    canonical_owner=canonical_owner,
+                    repo_owned=repo_owned,
+                    is_symlink=skill_dir.is_symlink(),
+                    skill_hash=_file_hash(resolved_skill_file if resolved_skill_file.exists() else skill_file),
+                    tree_hash=_tree_hash(resolved_dir),
+                    docs_status=_docs_status_for_skill(name, repo_owned=repo_owned, root=root),
+                )
+            )
+    return exposures
+
+
+def _duplicate_class_for_group(exposures: list[SkillExposure]) -> str:
+    if len(exposures) <= 1:
+        return DUPLICATE_CLASS_NONE
+    realpaths = {item.resolved_path for item in exposures if item.resolved_path}
+    if len(realpaths) <= 1:
+        return DUPLICATE_CLASS_SAME_REALPATH
+    tree_hashes = {item.tree_hash for item in exposures if item.tree_hash}
+    if len(tree_hashes) <= 1:
+        return DUPLICATE_CLASS_SAME_BODY
+    return DUPLICATE_CLASS_DIVERGENT_BODY
+
+
+def _cleanup_action_for_exposure(exposure: SkillExposure, duplicate_class: str) -> str:
+    if duplicate_class == DUPLICATE_CLASS_DIVERGENT_BODY:
+        return CLEANUP_ACTION_MANUAL_REVIEW
+    if (
+        exposure.repo_owned
+        and exposure.is_symlink
+        and exposure.exposure_owner != exposure.canonical_owner
+        and exposure.canonical_owner in {EXPOSURE_OWNER_PLUGIN, EXPOSURE_OWNER_DIRECT_REPO_PATH}
+    ):
+        return CLEANUP_ACTION_REMOVE_GENERATED_SYMLINK
+    if exposure.repo_owned:
+        return CLEANUP_ACTION_NONE
+    return CLEANUP_ACTION_PRESERVE
+
+
+def collect_skill_cleanup_exposures(*, root: Path | None = None, home: Path | None = None) -> tuple[SkillExposure, ...]:
+    """Return read-only skill exposures annotated with duplicate and cleanup classes."""
+    repo_root = root or ROOT
+    home_dir = home or Path.home()
+    exposures = _iter_skill_exposures(root=repo_root, home=home_dir)
+    by_name: dict[str, list[SkillExposure]] = {}
+    for exposure in exposures:
+        by_name.setdefault(exposure.name, []).append(exposure)
+    annotated: list[SkillExposure] = []
+    for group in by_name.values():
+        duplicate_class = _duplicate_class_for_group(group)
+        for exposure in group:
+            annotated.append(
+                replace(
+                    exposure,
+                    duplicate_class=duplicate_class,
+                    cleanup_action=_cleanup_action_for_exposure(exposure, duplicate_class),
+                )
+            )
+    return tuple(sorted(annotated, key=lambda item: (item.name, item.harness, item.scope, item.path)))
+
+
+def _highest_priority(values: set[str], priorities: dict[str, int], default: str) -> str:
+    if not values:
+        return default
+    return max(values, key=lambda value: (priorities.get(value, -1), value))
+
+
+def skill_cleanup_metadata_for_exposures(
+    exposures: Sequence[SkillExposure],
+    *,
+    fallback_docs_status: str = DOCS_STATUS_NOT_APPLICABLE,
+    fallback_exposure_owner: str = EXPOSURE_OWNER_SKILLS_CLI,
+) -> dict[str, str]:
+    """Summarize per-exposure cleanup data for one skill-level reconciliation row."""
+    if not exposures:
+        return {
+            "exposure_owner": fallback_exposure_owner,
+            "duplicate_class": DUPLICATE_CLASS_NONE,
+            "cleanup_action": CLEANUP_ACTION_NONE,
+            "docs_status": fallback_docs_status or DOCS_STATUS_NOT_APPLICABLE,
+        }
+
+    duplicate_classes = {exposure.duplicate_class for exposure in exposures}
+    cleanup_actions = {exposure.cleanup_action for exposure in exposures}
+    docs_statuses = {exposure.docs_status for exposure in exposures}
+    owners = {
+        str(exposure.canonical_owner or exposure.exposure_owner)
+        for exposure in exposures
+        if exposure.canonical_owner or exposure.exposure_owner
+    }
+    return {
+        "exposure_owner": sorted(owners)[0] if len(owners) == 1 else "multi-owner",
+        "duplicate_class": _highest_priority(
+            duplicate_classes,
+            DUPLICATE_CLASS_PRIORITY,
+            DUPLICATE_CLASS_NONE,
+        ),
+        "cleanup_action": _highest_priority(
+            cleanup_actions,
+            CLEANUP_ACTION_PRIORITY,
+            CLEANUP_ACTION_NONE,
+        ),
+        "docs_status": _highest_priority(
+            docs_statuses,
+            DOCS_STATUS_PRIORITY,
+            fallback_docs_status or DOCS_STATUS_NOT_APPLICABLE,
+        ),
+    }
+
+
+def _git_head(path: Path) -> str:
+    if not (path / ".git").exists():
+        return ""
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=path,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=5,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return ""
+    return result.stdout.strip() if result.returncode == 0 else ""
+
+
+def _plugin_cleanup_rows(*, root: Path, home: Path) -> list[dict[str, object]]:
+    rows: list[dict[str, object]] = []
+    codex_cache = home / ".codex" / "plugins" / "cache" / "agents" / "agents" / "local"
+    cache_head = _git_head(codex_cache)
+    repo_head = _git_head(root)
+    if _codex_agents_plugin_enabled(home):
+        stale = bool(cache_head and repo_head and cache_head != repo_head)
+        cache_missing = bool(repo_head and not cache_head)
+        repo_unreadable = not repo_head
+        cleanup_action = CLEANUP_ACTION_NONE
+        evidence = "Codex agents plugin owns repo skills when enabled; cache refresh is approval-gated."
+        if repo_unreadable:
+            cleanup_action = CLEANUP_ACTION_MANUAL_REVIEW
+            evidence = "Codex agents plugin is enabled, but the repo HEAD could not be read."
+        elif stale or cache_missing:
+            cleanup_action = CLEANUP_ACTION_REFRESH_PLUGIN_CACHE
+            if cache_missing:
+                evidence = "Codex agents plugin is enabled, but its local cache has no readable HEAD."
+            else:
+                evidence = "Codex agents plugin cache HEAD differs from the repo HEAD."
+        rows.append({
+            "asset_type": "plugin-cache",
+            "harness": "codex",
+            "name": "agents@agents-cache",
+            "exposure_owner": EXPOSURE_OWNER_PLUGIN,
+            "cleanup_action": cleanup_action,
+            "risk": "approval-required" if cleanup_action != CLEANUP_ACTION_NONE else "none",
+            "source_path": str(codex_cache),
+            "installed_state": {"cache_head": cache_head[:12], "repo_head": repo_head[:12]},
+            "docs_status": DOCS_STATUS_DOCUMENTED,
+            "evidence": evidence,
+        })
+
+    repo_config = _safe_json(root / "opencode.json")
+    live_config = _safe_json(home / ".config" / "opencode" / "opencode.json")
+    repo_plugins = {_plugin_name(item) for item in repo_config.get("plugin", []) if _plugin_name(item)}
+    live_plugins = {_plugin_name(item) for item in live_config.get("plugin", []) if _plugin_name(item)}
+    for name in sorted(repo_plugins - live_plugins):
+        rows.append({
+            "asset_type": "plugin",
+            "harness": "opencode",
+            "name": name,
+            "exposure_owner": EXPOSURE_OWNER_DIRECT_REPO_PATH,
+            "cleanup_action": CLEANUP_ACTION_SYNC_HOME_CONFIG,
+            "risk": "approval-required",
+            "source_path": "opencode.json",
+            "installed_state": {"repo": True, "live": False},
+            "docs_status": DOCS_STATUS_DOCUMENTED,
+            "evidence": "Repo-managed OpenCode plugin is absent from live config; sync is approval-gated.",
+        })
+    return rows
+
+
+def _safe_json(path: Path) -> dict[str, Any]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _plugin_name(spec: Any) -> str:
+    if isinstance(spec, str):
+        return spec
+    if isinstance(spec, list) and spec:
+        return str(spec[0])
+    return ""
+
+
+def build_skill_cleanup_report(*, root: Path | None = None, home: Path | None = None) -> dict[str, object]:
+    """Build a read-only cleanup plan for local harness skill/plugin exposure."""
+    repo_root = root or ROOT
+    home_dir = home or Path.home()
+    exposures = collect_skill_cleanup_exposures(root=repo_root, home=home_dir)
+    skill_rows = [exposure.public_dict() for exposure in exposures]
+    plugin_rows = _plugin_cleanup_rows(root=repo_root, home=home_dir)
+    action_counts: dict[str, int] = {}
+    duplicate_counts: dict[str, int] = {}
+    docs_counts: dict[str, int] = {}
+    for row in [*skill_rows, *plugin_rows]:
+        action = str(row.get("cleanup_action") or CLEANUP_ACTION_NONE)
+        action_counts[action] = action_counts.get(action, 0) + 1
+        docs_status = str(row.get("docs_status") or DOCS_STATUS_NOT_APPLICABLE)
+        docs_counts[docs_status] = docs_counts.get(docs_status, 0) + 1
+        if row.get("asset_type") != "plugin" and row.get("asset_type") != "plugin-cache":
+            duplicate_class = str(row.get("duplicate_class") or DUPLICATE_CLASS_NONE)
+            duplicate_counts[duplicate_class] = duplicate_counts.get(duplicate_class, 0) + 1
+    return {
+        "ok": True,
+        "mode": "dry-run",
+        "summary": {
+            "skill_exposure_count": len(skill_rows),
+            "plugin_row_count": len(plugin_rows),
+            "cleanup_action_counts": dict(sorted(action_counts.items())),
+            "duplicate_class_counts": dict(sorted(duplicate_counts.items())),
+            "docs_status_counts": dict(sorted(docs_counts.items())),
+        },
+        "skills": skill_rows,
+        "plugins": plugin_rows,
+    }
+
+
 def _load_installed_skill_sources(*, home: Path) -> dict[str, dict[str, object]]:
     merged: dict[str, dict[str, object]] = {}
     candidates = [
@@ -706,12 +1261,7 @@ def cast_set(value: object) -> set[Any]:
 def external_entry_to_inventory_row(entry: ExternalSkillEntry) -> InstalledSkillInventoryRow:
     """Build a desired sync row from a curated external authoring entry."""
     provenance_status = "verified-curated-external"
-    install_command = entry.install_command or _canonical_install_command(
-        entry.name,
-        entry.install_source,
-        entry.selector_mode,
-        provenance_status,
-    )
+    install_command = entry.install_command
     return InstalledSkillInventoryRow(
         name=entry.name,
         path="",
@@ -733,6 +1283,7 @@ def external_entry_to_inventory_row(entry: ExternalSkillEntry) -> InstalledSkill
         target_agents=entry.target_agents,
         unresolved_reason="",
         sync_kind=infer_sync_kind(entry.sync_kind, install_command),
+        docs_status=DOCS_STATUS_DOCUMENTED,
     )
 
 
@@ -777,6 +1328,8 @@ def collect_repo_owned_desired_rows(*, root: Path | None = None) -> list[Install
                 target_agents=supported_agent_ids(),
                 unresolved_reason="",
                 sync_kind=SYNC_KIND_SKILLS_CLI,
+                exposure_owner=EXPOSURE_OWNER_SKILLS_CLI,
+                docs_status=_docs_status_for_skill(name, repo_owned=True, root=repo_root),
             )
         )
     return rows

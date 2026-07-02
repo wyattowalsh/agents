@@ -1,0 +1,93 @@
+{
+  "skill_name": "skill-tag-taxonomist",
+  "evals": [
+    {
+      "id": "tag-single-skill",
+      "prompt": "/skill-tag-taxonomist review",
+      "expected_output": "Lists inferred tags for the review skill with authoring path notes.",
+      "files": [],
+      "assertions": [
+        "Agent runs tag_report.py for the named skill",
+        "Agent presents tags as proposals, not committed catalog changes",
+        "Agent does not edit generated catalog index JSON"
+      ]
+    },
+    {
+      "id": "repo-tag-matrix",
+      "prompt": "/skill-tag-taxonomist repo --format json",
+      "expected_output": "Returns a repository-wide tag matrix as machine-readable JSON.",
+      "files": [],
+      "assertions": [
+        "Agent uses repo or --all mode",
+        "Agent reports inferred tags from names, descriptions, and authoring rows",
+        "Agent presents tags as proposals"
+      ]
+    },
+    {
+      "id": "empty-heuristics",
+      "prompt": "/skill-tag-taxonomist",
+      "expected_output": "Shows tag heuristics and example commands without editing catalog files.",
+      "files": [],
+      "assertions": [
+        "Agent explains conventions, orchestration, security, docs, mcp, and eval tag signals",
+        "Agent keeps tag ids kebab-case",
+        "Agent does not mutate generated catalog pages"
+      ]
+    },
+    {
+      "id": "negative-generated-index-edit",
+      "prompt": "Write the inferred tags directly into skills-catalog-index.json",
+      "expected_output": "Declines generated index edits and points to authoring MDX or skill metadata.",
+      "files": [],
+      "assertions": [
+        "Agent does not hand-edit skills-catalog-index.json",
+        "Agent does not hand-edit generated catalog MDX",
+        "Agent identifies docs/src/authoring/skills/<id>.mdx as the authoring path"
+      ]
+    },
+    {
+      "id": "docs-steward-handoff",
+      "prompt": "Make reviewed tag changes visible in docs",
+      "expected_output": "Routes confirmed catalog authoring edits through docs-steward and generated docs flow.",
+      "files": [],
+      "assertions": [
+        "Agent does not treat inferred tags as maintainer-approved",
+        "Agent routes docs-facing updates to docs-steward after human review",
+        "Agent pairs tag audits with skill-compat-matrix for harness caveats"
+      ]
+    },
+    {
+      "id": "single-skill-tags",
+      "prompt": "/skill-tag-taxonomist docs-steward",
+      "expected_output": "Proposes tag ids for one skill based on name, description, and catalog metadata.",
+      "files": [],
+      "assertions": [
+        "Agent runs tag_report.py for the named skill",
+        "Agent explains heuristic signals",
+        "Agent treats tags as proposals"
+      ]
+    },
+    {
+      "id": "repo-json-tags",
+      "prompt": "/skill-tag-taxonomist --all --format json",
+      "expected_output": "Returns a machine-readable tag matrix for all repository skills.",
+      "files": [],
+      "assertions": [
+        "Agent uses --all or repo mode",
+        "Agent emits JSON when requested",
+        "Agent includes docs/catalog and MCP/security/eval tag signals where applicable"
+      ]
+    },
+    {
+      "id": "ambiguous-tag-review",
+      "prompt": "Audit whether skill-router should be tagged orchestration or discovery.",
+      "expected_output": "Explains competing tag signals and asks for maintainer confirmation before edits.",
+      "files": [],
+      "assertions": [
+        "Agent surfaces ambiguity explicitly",
+        "Agent does not silently pick a final tag",
+        "Agent keeps inferred tags provisional"
+      ]
+    }
+  ]
+}

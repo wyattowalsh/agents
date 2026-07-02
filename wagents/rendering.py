@@ -307,6 +307,11 @@ def _catalog_compatibility_blurb(node: CatalogNode) -> str:
 
 def _installed_install_command(node: CatalogNode) -> str:
     metadata = node.metadata if isinstance(node.metadata, dict) else {}
+    sync_kind = str(metadata.get("_sync_kind") or metadata.get("sync_kind") or "").strip()
+    selector_mode = str(metadata.get("_selector_mode") or metadata.get("selector_mode") or "").strip()
+    curated_status = str(metadata.get("_curated_status") or metadata.get("status") or "").strip()
+    if sync_kind == "none" or selector_mode == "unresolved" or curated_status == "global-only-or-avoid":
+        return ""
     command = str(metadata.get("_skills_install_command") or "").strip()
     if command and not _contains_local_path(command):
         return command

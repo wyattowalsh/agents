@@ -18,7 +18,9 @@ scripts:
   materialize: uv run wagents apm materialize
   doctor: uv run wagents apm doctor
   compile-validate: apm compile --validate
-  install-all: apm install
+  refresh-lock: uv run wagents apm refresh-lock
+  compile-opencode: apm compile -t opencode && uv run python scripts/sync_agent_stack.py --apply --targets repo --platforms opencode && uv run wagents apm refresh-lock
+  install-all: apm install && uv run python scripts/sync_agent_stack.py --apply --targets repo --platforms opencode && uv run wagents apm refresh-lock
 compilation:
   agents_md:
     mode: managed_section

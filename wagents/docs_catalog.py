@@ -1,0 +1,453 @@
+"""Unified catalog discovery pages (/catalog/*) and architecture docs (W5).
+
+Generates maintainer-facing discovery IA under `docs/src/content/docs/catalog/`:
+- `/catalog/` landing
+- `/catalog/agents/` — agent discovery (links to `/agents/<id>/`)
+- `/catalog/mcp/` — MCP discovery with empty-state when no servers
+- `/catalog/tags/`, `/catalog/platforms/`, `/catalog/tooling/` — facet indexes
+
+Also emits architecture explainers:
+- `/architecture/progressive-disclosure/`
+- `/architecture/instruction-loading/`
+"""
+
+from __future__ import annotations
+
+import json
+from collections import defaultdict
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+from wagents import CONTENT_DIR, ROOT
+from wagents.catalog import CatalogNode, collect_nodes
+from wagents.parsing import escape_attr, truncate_sentence
+from wagents.skill_index import read_catalog_index
+
+CATALOG_CONTENT_DIR = CONTENT_DIR / "catalog"
+ARCHITECTURE_CONTENT_DIR = CONTENT_DIR / "architecture"
+
+# Harness ids surfaced on platform index pages (from harness-surface-registry when present).
+_DEFAULT_PLATFORMS = (
+    "claude-code",
+    "cursor",
+    "codex",
+    "opencode",
+    "gemini-cli",
+    "github-copilot",
+    "grok",
+)
+
+
+def _load_harness_labels() -> dict[str, str]:
+    path = ROOT / "config" / "harness-surface-registry.json"
+    if not path.is_file():
+        return {h: h.replace("-", " ").title() for h in _DEFAULT_PLATFORMS}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {h: h.replace("-", " ").title() for h in _DEFAULT_PLATFORMS}
+    labels: dict[str, str] = {}
+    for record in data.get("harnesses", []):
+        hid = str(record.get("id") or "")
+        if hid:
+            labels[hid] = str(record.get("label") or hid)
+    return labels or {h: h.replace("-", " ").title() for h in _DEFAULT_PLATFORMS}
+
+
+def _skills_catalog_index() -> dict[str, Any]:
+    index = read_catalog_index()
+    return index if isinstance(index, dict) else {"skills": []}
+
+
+def _skill_rows_for_topology() -> list[dict[str, str]]:
+    index = _skills_catalog_index()
+    rows: list[dict[str, str]] = []
+    for entry in index.get("skills", []):
+        if not isinstance(entry, dict):
+            continue
+        name = str(entry.get("name") or entry.get("id") or "")
+        if not name:
+            continue
+        source_kind = str(entry.get("source_kind") or "custom")
+        source_type = "curated-external" if source_kind == "curated-external" else "custom"
+        rows.append({
+            "name": name,
+            "sourceType": source_type,
+            "trustTier": str(entry.get("trust_tier") or "unknown"),
+        })
+    return sorted(rows, key=lambda r: r["name"])
+
+
+def _collect_tag_index(skills_index: dict[str, Any]) -> dict[str, list[str]]:
+    by_tag: dict[str, list[str]] = defaultdict(list)
+    for entry in skills_index.get("skills", []):
+        if not isinstance(entry, dict):
+            continue
+        name = str(entry.get("name") or "")
+        if not name:
+            continue
+        tags = entry.get("tags") or entry.get("metadata", {}).get("tags") or []
+        if isinstance(tags, str):
+            tags = [t.strip() for t in tags.split(",") if t.strip()]
+        if not isinstance(tags, list):
+            continue
+        for tag in tags:
+            tag_s = str(tag).strip()
+            if tag_s:
+                by_tag[tag_s].append(name)
+    return dict(sorted(by_tag.items()))
+
+
+def _collect_platform_index(skills_index: dict[str, Any]) -> dict[str, list[str]]:
+    by_platform: dict[str, list[str]] = defaultdict(list)
+    for entry in skills_index.get("skills", []):
+        if not isinstance(entry, dict):
+            continue
+        name = str(entry.get("name") or "")
+        if not name:
+            continue
+        targets = entry.get("target_agents") or entry.get("target_harnesses") or []
+        if isinstance(targets, str):
+            targets = [t.strip() for t in targets.split(",") if t.strip()]
+        if not isinstance(targets, list):
+            continue
+        for platform in targets:
+            plat = str(platform).strip()
+            if plat:
+                by_platform[plat].append(name)
+    return dict(sorted(by_platform.items()))
+
+
+def _collect_tooling_index(nodes: list[CatalogNode]) -> dict[str, list[str]]:
+    """Group assets by coarse tooling lane (skill / agent / mcp)."""
+    lanes: dict[str, list[str]] = {"skills": [], "agents": [], "mcp-servers": []}
+    for node in nodes:
+        if node.kind == "skill":
+            lanes["skills"].append(node.id)
+        elif node.kind == "agent":
+            lanes["agents"].append(node.id)
+        elif node.kind == "mcp":
+            lanes["mcp-servers"].append(node.id)
+    return {k: sorted(v) for k, v in lanes.items() if v}
+
+
+def _write_mdx(path: Path, frontmatter: dict[str, str], body_lines: list[str]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    parts = ["---"]
+    for key, value in frontmatter.items():
+        parts.append(f"{key}: {value}")
+    parts.extend(["---", ""])
+    parts.extend(body_lines)
+    if parts[-1] != "":
+        parts.append("")
+    path.write_text("\n".join(parts), encoding="utf-8")
+
+
+def write_catalog_landing() -> None:
+    """Write /catalog/ discovery hub."""
+    body = [
+        "import { CardGrid, LinkCard } from '@astrojs/starlight/components';",
+        "",
+        "Unified discovery for skills, agents, MCP servers, and maintainer tooling indexes.",
+        "",
+        "<CardGrid>",
+        '  <LinkCard title="Skills" href="/skills/catalog/" description="Custom + curated external skill catalog." />',
+        '  <LinkCard title="Agents" href="/catalog/agents/" description="Portable agent configurations." />',
+        '  <LinkCard title="MCP Servers" href="/catalog/mcp/" description="First-party MCP servers in this repo." />',
+        '  <LinkCard title="Tags" href="/catalog/tags/" description="Skill catalog grouped by tag." />',
+        '  <LinkCard title="Platforms" href="/catalog/platforms/" description="Skills by target harness." />',
+        '  <LinkCard title="Tooling" href="/catalog/tooling/" description="Skills, agents, and MCP tooling lanes." />',
+        '  <LinkCard title="Architecture" href="/architecture/progressive-disclosure/" '
+        'description="Progressive disclosure and instruction loading." />',
+        "</CardGrid>",
+    ]
+    _write_mdx(
+        CATALOG_CONTENT_DIR / "index.mdx",
+        {
+            "title": "Catalog",
+            "description": "Unified discovery hub for skills, agents, MCP, and maintainer indexes",
+        },
+        body,
+    )
+
+
+def write_catalog_agents_index(agents: list[CatalogNode]) -> None:
+    """Write /catalog/agents/ with links to detail pages under /agents/."""
+    body = [
+        "import { CardGrid, LinkCard } from '@astrojs/starlight/components';",
+        "",
+        "Portable agents from `agents/*.md`. Detail pages live under [`/agents/`](/agents/).",
+        "",
+        '<div class="stats-bar">',
+        f'  <span class="stat stat-agent">{len(agents)} agents indexed</span>',
+        "</div>",
+        "",
+        "<CardGrid>",
+    ]
+    for node in sorted(agents, key=lambda n: n.id):
+        desc = escape_attr(truncate_sentence(node.description, 160))
+        body.append(
+            f'  <LinkCard title="{escape_attr(node.id)}" href="/agents/{node.id}/" description="{desc}" />'
+        )
+    body.extend(["</CardGrid>"])
+    _write_mdx(
+        CATALOG_CONTENT_DIR / "agents" / "index.mdx",
+        {
+            "title": "Agent Catalog",
+            "description": "Browse portable agent configurations with links to detail pages",
+        },
+        body,
+    )
+
+
+def write_catalog_mcp_index(mcps: list[CatalogNode]) -> None:
+    """Write /catalog/mcp/ with empty-state when no MCP packages exist."""
+    body = [
+        "import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';",
+        "",
+        "First-party MCP servers authored under `mcp/<name>/`. Detail pages: [`/mcp/`](/mcp/).",
+        "",
+    ]
+    if not mcps:
+        body.extend([
+            '<Aside type="note" title="No MCP servers yet">',
+            "This repository has no first-party MCP packages indexed. Run `wagents new mcp <name>` "
+            "to scaffold a server, then `wagents docs generate` to refresh this catalog.",
+            "</Aside>",
+        ])
+    else:
+        body.extend([
+            '<div class="stats-bar">',
+            f'  <span class="stat stat-mcp">{len(mcps)} MCP servers indexed</span>',
+            "</div>",
+            "",
+            "<CardGrid>",
+        ])
+        for node in sorted(mcps, key=lambda n: n.id):
+            desc = escape_attr(truncate_sentence(node.description, 160))
+            body.append(
+                f'  <LinkCard title="{escape_attr(node.id)}" href="/mcp/{node.id}/" description="{desc}" />'
+            )
+        body.append("</CardGrid>")
+    _write_mdx(
+        CATALOG_CONTENT_DIR / "mcp" / "index.mdx",
+        {
+            "title": "MCP Catalog",
+            "description": "Browse first-party MCP servers with empty-state when none are registered",
+        },
+        body,
+    )
+
+
+def write_catalog_tags_index(skills_index: dict[str, Any]) -> None:
+    by_tag = _collect_tag_index(skills_index)
+    body = [
+        "import { CardGrid, LinkCard } from '@astrojs/starlight/components';",
+        "",
+        "Skills grouped by catalog tag from authoring frontmatter / generated index.",
+        "",
+    ]
+    if not by_tag:
+        body.append("_No tags indexed yet. Add `tags` to skill authoring MDX or catalog index entries._")
+    else:
+        body.append("<CardGrid>")
+        for tag, skill_ids in by_tag.items():
+            sample = ", ".join(skill_ids[:4])
+            if len(skill_ids) > 4:
+                sample += f", +{len(skill_ids) - 4} more"
+            body.append(
+                f'  <LinkCard title="{escape_attr(tag)}" href="/skills/catalog/" '
+                f'description="{escape_attr(f"{len(skill_ids)} skills — e.g. {sample}")}" />'
+            )
+        body.append("</CardGrid>")
+    _write_mdx(
+        CATALOG_CONTENT_DIR / "tags" / "index.mdx",
+        {"title": "Catalog Tags", "description": "Skill catalog grouped by tag"},
+        body,
+    )
+
+
+def write_catalog_platforms_index(skills_index: dict[str, Any]) -> None:
+    by_platform = _collect_platform_index(skills_index)
+    harness_labels = _load_harness_labels()
+    body = [
+        "import { CardGrid, LinkCard } from '@astrojs/starlight/components';",
+        "",
+        "Skills grouped by `target_agents` / harness from the generated catalog index.",
+        "",
+        "<CardGrid>",
+    ]
+    if not by_platform:
+        for _hid, label in sorted(harness_labels.items()):
+            body.append(
+                f'  <LinkCard title="{escape_attr(label)}" href="/harness-support/" '
+                f'description="Harness support matrix — no indexed skills tagged yet." />'
+            )
+    else:
+        for platform, skill_ids in by_platform.items():
+            label = harness_labels.get(platform, platform)
+            body.append(
+                f'  <LinkCard title="{escape_attr(label)}" href="/skills/catalog/" '
+                f'description="{escape_attr(f"{len(skill_ids)} skills for {platform}")}" />'
+            )
+    body.append("</CardGrid>")
+    _write_mdx(
+        CATALOG_CONTENT_DIR / "platforms" / "index.mdx",
+        {
+            "title": "Catalog Platforms",
+            "description": "Skills indexed by target agent harness",
+        },
+        body,
+    )
+
+
+def write_catalog_tooling_index(nodes: list[CatalogNode]) -> None:
+    lanes = _collect_tooling_index(nodes)
+    body = [
+        "import { CardGrid, LinkCard } from '@astrojs/starlight/components';",
+        "",
+        "Coarse tooling lanes for maintainer navigation.",
+        "",
+        "<CardGrid>",
+        f'  <LinkCard title="Skills ({len(lanes.get("skills", []))})" href="/skills/catalog/" '
+        'description="Repo-owned + curated external skills." />',
+        f'  <LinkCard title="Agents ({len(lanes.get("agents", []))})" href="/catalog/agents/" '
+        'description="Portable agent definitions." />',
+        f'  <LinkCard title="MCP ({len(lanes.get("mcp-servers", []))})" href="/catalog/mcp/" '
+        'description="First-party MCP servers." />',
+        '  <LinkCard title="Reports" href="/reports/" description="Generated maintainer observability." />',
+        '  <LinkCard title="CLI" href="/cli/" description="wagents command reference." />',
+        "</CardGrid>",
+    ]
+    _write_mdx(
+        CATALOG_CONTENT_DIR / "tooling" / "index.mdx",
+        {"title": "Tooling Index", "description": "Skills, agents, MCP, reports, and CLI lanes"},
+        body,
+    )
+
+
+def write_architecture_pages(*, skill_topology_rows: list[dict[str, str]]) -> None:
+    """Write progressive-disclosure and instruction-loading architecture pages."""
+    topology_import = ""
+    topology_block = ""
+    if skill_topology_rows:
+        topology_import = "import SkillTopology from '../../../components/SkillTopology.astro';"
+        topology_block = (
+            "<SkillTopology skills={"
+            + json.dumps(skill_topology_rows[:96])
+            + "} />"
+        )
+
+    pd_body = [
+        "import { Aside } from '@astrojs/starlight/components';",
+        topology_import,
+        "",
+        "This repository uses **progressive disclosure** so agents load the minimum standing context, "
+        "then pull depth on demand via skills, scoped rules, and generated docs.",
+        "",
+        "## Layers",
+        "",
+        "| Layer | Owner | Loads when |",
+        "| ----- | ----- | ---------- |",
+        "| Global instructions | `instructions/global.md` | Always (cross-harness) |",
+        "| Skill descriptions | `skills/*/SKILL.md` frontmatter | Always (descriptions only) |",
+        "| Scoped rules | `.claude/rules/`, `.cursor/rules/` | Path match |",
+        "| Skill bodies | `skills/*/SKILL.md` body | Skill invoked |",
+        "| Generated docs | `wagents docs generate` | Human browse / MCP docs-index |",
+        "",
+        '<Aside type="tip" title="Token efficacy">',
+        "See [Harness config — token efficacy](/harness-config/token-efficacy/) for one-tool-per-layer policy.",
+        "</Aside>",
+        "",
+    ]
+    if topology_block:
+        pd_body.extend(["## Skill topology", "", topology_block, ""])
+
+    _write_mdx(
+        ARCHITECTURE_CONTENT_DIR / "progressive-disclosure.mdx",
+        {
+            "title": "Progressive Disclosure",
+            "description": "How standing context, skills, rules, and docs layers compose",
+        },
+        pd_body,
+    )
+
+    il_body = [
+        "import { Aside } from '@astrojs/starlight/components';",
+        "",
+        "**Instruction loading** is harness-specific projection of the same canonical sources:",
+        "",
+        "| Harness | Entry | Bridge |",
+        "| ------- | ----- | ------ |",
+        "| Claude Code | `CLAUDE.md` | `@AGENTS.md` → `@instructions/global.md` |",
+        "| Cursor / Codex / OpenCode | `AGENTS.md` | `@instructions/global.md` |",
+        "| GitHub Copilot | `.github/copilot-instructions.md` | Generated from `instructions/copilot-global.md` |",
+        "| Grok | `.grok/config.toml` + skills dirs | `instructions/grok-global.md` |",
+        "",
+        "Platform overlays may add runtime guidance but must not weaken safety or secret-handling rules.",
+        "",
+        '<Aside type="caution" title="Generated vs hand-authored">',
+        "Regenerate mirrors with `uv run python scripts/sync_agent_stack.py --apply --targets repo` "
+        "after editing canonical instruction sources.",
+        "</Aside>",
+        "",
+        "## Maintainer loop",
+        "",
+        "1. Edit `instructions/global.md` or platform overlay.",
+        "2. Run stack sync for harness mirrors.",
+        "3. Run `uv run wagents validate` and `uv run wagents docs generate --check`.",
+    ]
+    _write_mdx(
+        ARCHITECTURE_CONTENT_DIR / "instruction-loading.mdx",
+        {
+            "title": "Instruction Loading",
+            "description": "Harness entrypoints and sync for cross-platform instructions",
+        },
+        il_body,
+    )
+
+
+def write_catalog_pages(*, nodes: list[CatalogNode] | None = None) -> None:
+    """Generate all W5 catalog and architecture pages."""
+    nodes = nodes if nodes is not None else collect_nodes()
+    agents = [n for n in nodes if n.kind == "agent"]
+    mcps = [n for n in nodes if n.kind == "mcp"]
+    skills_index = _skills_catalog_index()
+    topology_rows = _skill_rows_for_topology()
+
+    write_catalog_landing()
+    write_catalog_agents_index(agents)
+    write_catalog_mcp_index(mcps)
+    write_catalog_tags_index(skills_index)
+    write_catalog_platforms_index(skills_index)
+    write_catalog_tooling_index(nodes)
+    write_architecture_pages(skill_topology_rows=topology_rows)
+
+
+def catalog_sidebar_entries() -> list[str]:
+    """Return sidebar module lines for catalog + architecture groups."""
+    lines = [
+        "  {",
+        "    label: 'Catalog',",
+        "    collapsed: true,",
+        "    items: [",
+        "      { slug: 'catalog', label: 'Overview' },",
+        "      { slug: 'catalog/agents', label: 'Agents' },",
+        "      { slug: 'catalog/mcp', label: 'MCP' },",
+        "      { slug: 'catalog/tags', label: 'Tags' },",
+        "      { slug: 'catalog/platforms', label: 'Platforms' },",
+        "      { slug: 'catalog/tooling', label: 'Tooling' },",
+        "    ],",
+        "  },",
+        "  {",
+        "    label: 'Architecture',",
+        "    collapsed: true,",
+        "    items: [",
+        "      { slug: 'architecture/progressive-disclosure', label: 'Progressive disclosure' },",
+        "      { slug: 'architecture/instruction-loading', label: 'Instruction loading' },",
+        "    ],",
+        "  },",
+    ]
+    return lines  # noqa: RET504 — sidebar fragment list built incrementally

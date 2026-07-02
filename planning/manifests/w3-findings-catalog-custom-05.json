@@ -1,0 +1,88 @@
+{
+  "shard_id": "w3-catalog-custom-05",
+  "count": 10,
+  "skill_ids": [
+    "schema-evolution-planner",
+    "security-scanner",
+    "shell-conventions",
+    "shell-scripter",
+    "skill-creator",
+    "skill-router",
+    "tech-debt-analyzer",
+    "test-architect",
+    "things-manager",
+    "wargame"
+  ],
+  "entries": [
+    {
+      "skill_id": "schema-evolution-planner",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "security-scanner",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "shell-conventions",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "shell-scripter",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "skill-creator",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "skill-router",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "tech-debt-analyzer",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "test-architect",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "things-manager",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "wargame",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    }
+  ]
+}

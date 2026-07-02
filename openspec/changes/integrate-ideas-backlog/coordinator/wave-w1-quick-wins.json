@@ -1,0 +1,26 @@
+{
+  "wave": "W1",
+  "dispatched": [
+    {"task_id": "T-110a-c", "agent": "SA-WF", "files": ["justfile"]},
+    {"task_id": "T-120a", "agent": "SA-WF", "files": ["docs/runbooks/pre-commit-optimization.md"]},
+    {"task_id": "T-121a", "agent": "SA-WF", "files": ["docs/runbooks/asset-authoring-workflow.md"]},
+    {"task_id": "T-122a", "agent": "SA-WF", "files": ["docs/runbooks/research-refresh-playbook.md"]},
+    {"task_id": "T-130a-d", "agent": "SA-WF", "files": [
+      ".github/PULL_REQUEST_TEMPLATE/skill.md",
+      ".github/PULL_REQUEST_TEMPLATE/agent.md",
+      ".github/PULL_REQUEST_TEMPLATE/mcp.md",
+      ".github/PULL_REQUEST_TEMPLATE/docs-infra.md"
+    ]},
+    {"task_id": "T-140a", "agent": "SA-CI", "files": [".github/workflows/dependency-review.yml"]}
+  ],
+  "blocked": [
+    {"task_id": "T-100a-c", "agent": "SA-CI", "files": [".github/workflows/ci.yml"], "reason": "ci.yml has an uncommitted in-flight diff from fleet-hooks-performance (hook-perf job); serial SA-CI owner must rebase before applying eval/hooks gate additions. Exact diff spec recorded in design.md."}
+  ],
+  "gate_checks": [
+    "uv run wagents validate",
+    "uv run wagents openspec validate",
+    "just verify-fast",
+    "uv run ruff check"
+  ],
+  "blocked_until": ["ci.yml stabilizes (fleet-hooks-performance lands or SA-CI rebases)"]
+}

@@ -1,0 +1,301 @@
+{
+  "$schema": "./schemas/opencode-agents.schema.json",
+  "version": 1,
+  "agents": [
+    {
+      "name": "researcher",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "primary",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "ls *": "allow",
+          "rg *": "allow",
+          "git log*": "allow"
+        },
+        "webfetch": "allow"
+      }
+    },
+    {
+      "name": "orchestrator",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "primary",
+      "permission": {
+        "edit": "deny",
+        "bash": "ask",
+        "webfetch": "ask",
+        "task": {
+          "*": "deny",
+          "general": "allow",
+          "explore": "allow",
+          "planner": "allow",
+          "researcher": "allow",
+          "code-reviewer": "allow",
+          "docs-writer": "allow",
+          "security-auditor": "allow",
+          "release-manager": "allow",
+          "performance-profiler": "allow"
+        }
+      }
+    },
+    {
+      "name": "planner",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "info",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "ls *": "allow",
+          "rg *": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow"
+        },
+        "webfetch": "ask"
+      }
+    },
+    {
+      "name": "code-reviewer",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "warning",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "rg *": "allow"
+        },
+        "webfetch": "deny"
+      }
+    },
+    {
+      "name": "security-auditor",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "error",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "rg *": "allow"
+        },
+        "webfetch": "allow"
+      }
+    },
+    {
+      "name": "performance-profiler",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "secondary",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "git diff*": "allow",
+          "rg *": "allow"
+        },
+        "webfetch": "ask"
+      }
+    },
+    {
+      "name": "release-manager",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "success",
+      "permission": {
+        "bash": {
+          "*": "ask",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "git tag*": "ask",
+          "gh release*": "ask"
+        },
+        "webfetch": "ask"
+      }
+    },
+    {
+      "name": "docs-writer",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "color": "accent",
+      "permission": {
+        "bash": {
+          "*": "ask",
+          "ls *": "allow",
+          "rg *": "allow"
+        },
+        "webfetch": "ask"
+      }
+    },
+    {
+      "name": "agent-change-recorder",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "info",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "git diff*": "allow",
+          "git status*": "allow",
+          "rg *": "allow"
+        },
+        "webfetch": "deny"
+      }
+    },
+    {
+      "name": "agent-eval-runner",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "success",
+      "permission": {
+        "edit": "deny",
+        "bash": "ask",
+        "webfetch": "deny"
+      }
+    },
+    {
+      "name": "agent-permission-simulator",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "warning",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny"
+      }
+    },
+    {
+      "name": "agent-registry-publisher",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "secondary",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny"
+      }
+    },
+    {
+      "name": "agent-transpiler",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "primary",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny"
+      }
+    },
+    {
+      "name": "bridge-consistency-checker",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "info",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "uv run python scripts/check_bridge_consistency.py*": "allow",
+          "uv run python scripts/check_hook_discovery_parity.py*": "allow",
+          "git diff*": "allow",
+          "rg *": "allow"
+        },
+        "webfetch": "deny"
+      }
+    },
+    {
+      "name": "mcp-capability-mapper",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "secondary",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny"
+      }
+    },
+    {
+      "name": "mcp-template-maintainer",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "accent",
+      "permission": {
+        "edit": "ask",
+        "bash": "ask",
+        "webfetch": "ask"
+      }
+    },
+    {
+      "name": "permission-policy-auditor",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "error",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny"
+      }
+    },
+    {
+      "name": "prompt-optimizer",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "primary",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny"
+      }
+    },
+    {
+      "name": "skill-author",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "success",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny"
+      }
+    },
+    {
+      "name": "triage-lead",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "warning",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "git status*": "allow",
+          "rg *": "allow"
+        },
+        "webfetch": "deny",
+        "task": {
+          "*": "deny",
+          "general": "allow",
+          "explore": "allow",
+          "planner": "allow",
+          "researcher": "allow",
+          "code-reviewer": "allow",
+          "docs-writer": "allow",
+          "security-auditor": "allow",
+          "release-manager": "allow",
+          "performance-profiler": "allow"
+        }
+      }
+    }
+  ]
+}

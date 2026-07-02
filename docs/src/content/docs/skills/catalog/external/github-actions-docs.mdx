@@ -22,14 +22,14 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="github-actions-docs"
   description="high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface."
-  installCommand={`npx skills add xixu-me/skills@github-actions-docs --skill github-actions-docs -y -g`}
+  installCommand={`No portable install command is recorded; keep global-only or avoid unless explicitly approved.`}
   usage="/github-actions-docs"
   badges={[{ text: "github-actions-docs", variant: "note" }, { text: "12 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Cataloged for audit and dedupe only. This global-only/avoid row is not published as a portable install.
 
 <Aside type="note" title="Curated external (hand-maintained)">
 Composed compose-external-wave-5 using authoring SSOT (`docs/src/authoring/skills/github-actions-docs.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
@@ -41,12 +41,7 @@ High-install CI/docs reference skill. Marked global-only-or-avoid to prevent blo
 
 ## Harness Coverage
 
-Targets all supported agent harnesses via the install command below.
-
-**Portable multi-harness install command:**
-```bash
-npx skills add xixu-me/skills@github-actions-docs --skill github-actions-docs -y -g
-```
+No portable install command is published for this global-only/avoid row.
 
 ## Trust / Audit
 
@@ -69,7 +64,7 @@ status=global-only-or-avoid; selector=unresolved.
 | Source Type | `curated-external` |
 | Display Source | `xixu-me/skills` |
 | Source Kind | `github` |
-| Installability | portable command |
+| Installability | not installable by default |
 | Review State | curated |
 | Trust Tier | `global-only-or-avoid` |
   </TabItem>

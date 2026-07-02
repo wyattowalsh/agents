@@ -1,0 +1,130 @@
+{
+  "shard_id": "w3-catalog-ext-08",
+  "count": 24,
+  "skill_ids": [
+    "multi-stage-dockerfile",
+    "mysql",
+    "neon-ai-gateway",
+    "neon-functions",
+    "neon-postgres-branches",
+    "neon-postgres-egress-optimizer",
+    "neon-postgres",
+    "netlify-deploy",
+    "netlify-edge-functions",
+    "netlify-functions",
+    "next-best-practices",
+    "next-cache-components",
+    "next-upgrade",
+    "nodejs-backend-patterns",
+    "notion-api",
+    "notion-cli",
+    "nx-generate",
+    "nx-workspace-patterns",
+    "obsidian-cli",
+    "obsidian-markdown",
+    "obsidian-vault",
+    "on-call-handoff-patterns",
+    "onboarding",
+    "openapi-spec-generation"
+  ],
+  "entries": [
+    {
+      "skill_id": "multi-stage-dockerfile",
+      "issues": []
+    },
+    {
+      "skill_id": "mysql",
+      "issues": []
+    },
+    {
+      "skill_id": "neon-ai-gateway",
+      "issues": []
+    },
+    {
+      "skill_id": "neon-functions",
+      "issues": []
+    },
+    {
+      "skill_id": "neon-postgres-branches",
+      "issues": []
+    },
+    {
+      "skill_id": "neon-postgres-egress-optimizer",
+      "issues": []
+    },
+    {
+      "skill_id": "neon-postgres",
+      "issues": []
+    },
+    {
+      "skill_id": "netlify-deploy",
+      "issues": []
+    },
+    {
+      "skill_id": "netlify-edge-functions",
+      "issues": []
+    },
+    {
+      "skill_id": "netlify-functions",
+      "issues": []
+    },
+    {
+      "skill_id": "next-best-practices",
+      "issues": []
+    },
+    {
+      "skill_id": "next-cache-components",
+      "issues": []
+    },
+    {
+      "skill_id": "next-upgrade",
+      "issues": []
+    },
+    {
+      "skill_id": "nodejs-backend-patterns",
+      "issues": []
+    },
+    {
+      "skill_id": "notion-api",
+      "issues": [
+        "missing frontmatter field: install_command"
+      ]
+    },
+    {
+      "skill_id": "notion-cli",
+      "issues": []
+    },
+    {
+      "skill_id": "nx-generate",
+      "issues": []
+    },
+    {
+      "skill_id": "nx-workspace-patterns",
+      "issues": []
+    },
+    {
+      "skill_id": "obsidian-cli",
+      "issues": []
+    },
+    {
+      "skill_id": "obsidian-markdown",
+      "issues": []
+    },
+    {
+      "skill_id": "obsidian-vault",
+      "issues": []
+    },
+    {
+      "skill_id": "on-call-handoff-patterns",
+      "issues": []
+    },
+    {
+      "skill_id": "onboarding",
+      "issues": []
+    },
+    {
+      "skill_id": "openapi-spec-generation",
+      "issues": []
+    }
+  ]
+}

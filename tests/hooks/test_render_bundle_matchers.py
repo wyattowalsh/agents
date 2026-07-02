@@ -59,7 +59,7 @@ def test_union_bundle_matchers_case_sensitive_no_collapse():
     assert union_bundle_matchers(members) == "bash|Bash"
 
 
-def test_cursor_shell_file_guards_bundle_matcher_covers_shell_and_write_tokens():
+def test_fleet_pre_tool_enforce_cursor_bundle_matcher_covers_shell_and_write_tokens():
     registry = _registry()
     rendered = render_cursor_hooks(registry, perf_tier="bundle")
     assert rendered is not None
@@ -71,7 +71,7 @@ def test_cursor_shell_file_guards_bundle_matcher_covers_shell_and_write_tokens()
         assert token in matcher.split("|"), f"missing write token {token!r} in {matcher!r}"
 
 
-def test_codex_shell_file_guards_bundle_matcher_covers_shell_and_write_tokens():
+def test_fleet_pre_tool_enforce_codex_bundle_matcher_covers_shell_and_write_tokens():
     registry = _registry()
     rendered = render_codex_hooks(registry, repo_root="/repo", perf_tier="bundle")
     groups = rendered["hooks"].get("PreToolUse", [])
@@ -155,7 +155,7 @@ def test_worker_tier_matcher_matches_bundle_tier():
 
 
 def test_bundle_tier_reduces_cursor_pre_tool_use_entry_count():
-    """T-042b-g: bundle tier collapses cursor-shell-file-guards into fewer preToolUse rows."""
+    """T-042b-g: bundle tier collapses fleet-pre-tool-enforce into fewer preToolUse rows."""
     registry = _registry()
     legacy = render_cursor_hooks(registry, perf_tier="legacy")
     bundle = render_cursor_hooks(registry, perf_tier="bundle")
@@ -208,3 +208,10 @@ def test_copilot_bundle_tier_collapses_post_edit_quality_shell_scripts():
     assert commands.count("./hooks/post-edit-quality.sh") == 1
     assert all("./hooks/auto-format.sh" not in command for command in commands)
     assert all("./hooks/lint-check.sh" not in command for command in commands)
+
+
+def test_fleet_pre_tool_enforce_mega_bundle_includes_git_commit_push_guard():
+    registry = _registry()
+    rendered = render_copilot_hooks(registry, repo_root=".", perf_tier="bundle")
+    cmds = [entry.get("bash", "") for entry in rendered["hooks"]["preToolUse"]]
+    assert any("git-commit-push-guard" in cmd and "--bundle" in cmd for cmd in cmds)

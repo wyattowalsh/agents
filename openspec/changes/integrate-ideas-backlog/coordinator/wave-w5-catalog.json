@@ -1,0 +1,13 @@
+{
+  "wave": "W5",
+  "gate": "G5",
+  "theme": "Catalog + architecture IA",
+  "status": "done",
+  "lanes": ["SA-CAT", "SA-DOC"],
+  "artifacts": [
+    "wagents/docs_catalog.py",
+    "docs/src/content/docs/catalog/",
+    "docs/src/content/docs/architecture/"
+  ],
+  "gate_checks": ["uv run wagents docs generate --no-installed", "V-040"]
+}

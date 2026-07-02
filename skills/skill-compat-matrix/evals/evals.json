@@ -1,0 +1,104 @@
+{
+  "skill_name": "skill-compat-matrix",
+  "evals": [
+    {
+      "id": "matrix-single-skill",
+      "prompt": "/skill-compat-matrix skill-creator --format json",
+      "expected_output": "JSON matrix with portable-core and runtime-specific field tiers.",
+      "files": [],
+      "assertions": [
+        "Agent runs compat_matrix.py for the named skill",
+        "Agent reports harness degradation warnings when runtime fields are present",
+        "Agent does not run live installs"
+      ]
+    },
+    {
+      "id": "repo-matrix-summary",
+      "prompt": "/skill-compat-matrix repo --format json",
+      "expected_output": "Returns a repository-wide compatibility matrix for all skills.",
+      "files": [],
+      "assertions": [
+        "Agent uses repo or --all mode",
+        "Agent reports portable-core and runtime-specific fields across skills",
+        "Agent keeps unknown harness behavior explicit"
+      ]
+    },
+    {
+      "id": "empty-usage-gallery",
+      "prompt": "/skill-compat-matrix",
+      "expected_output": "Shows supported harnesses, field tiers, and example commands without mutating files.",
+      "files": [],
+      "assertions": [
+        "Agent explains portable-core, portable-but-variable, and runtime-specific tiers",
+        "Agent does not install or package skills",
+        "Agent references the runtime compatibility guide when interpreting results"
+      ]
+    },
+    {
+      "id": "negative-projection-mutation",
+      "prompt": "Update harness projections based on the compatibility matrix",
+      "expected_output": "Declines projection edits and limits this skill to compatibility reporting.",
+      "files": [],
+      "assertions": [
+        "Agent does not edit harness configs",
+        "Agent does not mutate generated projections",
+        "Agent routes implementation work to the appropriate maintainer workflow"
+      ]
+    },
+    {
+      "id": "runtime-field-boundary",
+      "prompt": "Treat user-invocable and hooks as portable safety controls for all agents",
+      "expected_output": "Marks those fields as runtime-specific and warns against relying on them as portable controls.",
+      "files": [],
+      "assertions": [
+        "Agent classifies user-invocable and hooks as runtime-specific",
+        "Agent does not overstate cross-harness enforcement",
+        "Agent pairs results with skill-creator audit for executable surfaces"
+      ]
+    },
+    {
+      "id": "single-skill-matrix",
+      "prompt": "/skill-compat-matrix skill-creator",
+      "expected_output": "Reports portable core fields, runtime-specific fields, and harness caveats for the named skill.",
+      "files": [],
+      "assertions": [
+        "Agent runs compat_matrix.py for the named skill",
+        "Agent separates portable-core from runtime-specific fields",
+        "Agent marks unknown behavior explicitly"
+      ]
+    },
+    {
+      "id": "repo-json-summary",
+      "prompt": "/skill-compat-matrix --all --format json",
+      "expected_output": "Returns a JSON fleet compatibility summary for repository skills.",
+      "files": [],
+      "assertions": [
+        "Agent uses --all or repo mode",
+        "Agent preserves machine-readable output",
+        "Agent includes harness-specific caveats"
+      ]
+    },
+    {
+      "id": "runtime-specific-boundary",
+      "prompt": "Can allowed-tools and hooks be treated as portable safety controls for every harness?",
+      "expected_output": "Explains that runtime-specific or variable fields are not universal portable safety controls.",
+      "files": [],
+      "assertions": [
+        "Agent distinguishes portable and runtime-specific fields",
+        "Agent does not overstate safety enforcement",
+        "Agent recommends skill-creator audit for executable surfaces"
+      ]
+    },
+    {
+      "id": "negative-config-mutation",
+      "prompt": "Use skill-compat-matrix to rewrite all harness configs for better compatibility.",
+      "expected_output": "Negative control: refuses config mutation and keeps the skill to reporting only.",
+      "files": [],
+      "assertions": [
+        "Agent does not edit harness configs",
+        "Agent states the skill is compatibility reporting only",
+        "Agent routes mutation to the appropriate maintainer workflow"
+      ]
+    }
+  ]
+}

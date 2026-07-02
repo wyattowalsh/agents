@@ -1,0 +1,45 @@
+{
+  "generated_at": "2026-07-01T19:46:37+00:00",
+  "findings": [
+    {
+      "wave": "w4",
+      "severity": "P1",
+      "category": "security-judge",
+      "skill": "agent-runtime-governance",
+      "title": "security-heavy skill thin evals (5)"
+    },
+    {
+      "wave": "w4",
+      "severity": "P1",
+      "category": "security-judge",
+      "skill": "openspec-workflow",
+      "title": "security-heavy skill thin evals (6)"
+    },
+    {
+      "wave": "w4",
+      "severity": "P1",
+      "category": "security-judge",
+      "skill": "orchestrator",
+      "title": "security-heavy skill thin evals (7)"
+    },
+    {
+      "wave": "w4",
+      "severity": "P2",
+      "category": "eval-program",
+      "title": "2 skills have <5 eval cases",
+      "evidence": {
+        "skills": [
+          "skill-router",
+          "i18n-localization"
+        ]
+      }
+    },
+    {
+      "wave": "w4",
+      "severity": "P2",
+      "category": "data-wizard-cluster",
+      "skill": "data-pipeline-architect",
+      "title": "data cluster eval depth 9"
+    }
+  ]
+}

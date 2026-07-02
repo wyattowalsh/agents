@@ -1,0 +1,130 @@
+{
+  "shard_id": "w3-catalog-ext-07",
+  "count": 24,
+  "skill_ids": [
+    "langchain-dependencies",
+    "langchain-fundamentals",
+    "langchain-middleware",
+    "langchain-rag",
+    "langfuse",
+    "langgraph-fundamentals",
+    "langgraph-human-in-the-loop",
+    "langgraph-persistence",
+    "langsmith-dataset",
+    "langsmith-evaluator",
+    "langsmith-trace",
+    "launch",
+    "link-workspace-packages",
+    "llm-evaluation",
+    "logfire-instrumentation",
+    "logging-best-practices",
+    "managed-deep-agents",
+    "marketing-ideas",
+    "marketing-psychology",
+    "mcp-builder",
+    "mcp-security-audit",
+    "memory-leak-debugging",
+    "microsoft-azure-skills-all",
+    "modern-python"
+  ],
+  "entries": [
+    {
+      "skill_id": "langchain-dependencies",
+      "issues": []
+    },
+    {
+      "skill_id": "langchain-fundamentals",
+      "issues": []
+    },
+    {
+      "skill_id": "langchain-middleware",
+      "issues": []
+    },
+    {
+      "skill_id": "langchain-rag",
+      "issues": []
+    },
+    {
+      "skill_id": "langfuse",
+      "issues": []
+    },
+    {
+      "skill_id": "langgraph-fundamentals",
+      "issues": []
+    },
+    {
+      "skill_id": "langgraph-human-in-the-loop",
+      "issues": []
+    },
+    {
+      "skill_id": "langgraph-persistence",
+      "issues": []
+    },
+    {
+      "skill_id": "langsmith-dataset",
+      "issues": []
+    },
+    {
+      "skill_id": "langsmith-evaluator",
+      "issues": []
+    },
+    {
+      "skill_id": "langsmith-trace",
+      "issues": []
+    },
+    {
+      "skill_id": "launch",
+      "issues": []
+    },
+    {
+      "skill_id": "link-workspace-packages",
+      "issues": []
+    },
+    {
+      "skill_id": "llm-evaluation",
+      "issues": []
+    },
+    {
+      "skill_id": "logfire-instrumentation",
+      "issues": []
+    },
+    {
+      "skill_id": "logging-best-practices",
+      "issues": []
+    },
+    {
+      "skill_id": "managed-deep-agents",
+      "issues": []
+    },
+    {
+      "skill_id": "marketing-ideas",
+      "issues": []
+    },
+    {
+      "skill_id": "marketing-psychology",
+      "issues": []
+    },
+    {
+      "skill_id": "mcp-builder",
+      "issues": []
+    },
+    {
+      "skill_id": "mcp-security-audit",
+      "issues": []
+    },
+    {
+      "skill_id": "memory-leak-debugging",
+      "issues": []
+    },
+    {
+      "skill_id": "microsoft-azure-skills-all",
+      "issues": [
+        "missing frontmatter field: install_command"
+      ]
+    },
+    {
+      "skill_id": "modern-python",
+      "issues": []
+    }
+  ]
+}

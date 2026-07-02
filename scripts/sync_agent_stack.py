@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from wagents.hooks.merge import merge_hook_groups, strip_foreign_claude_hook_entries
+from wagents.hooks.registry import sync_hook_projection
 from wagents.hooks.render import (
     render_claude_hooks as _render_claude_hooks,
 )
@@ -26,6 +27,18 @@ from wagents.hooks.render import (
 )
 from wagents.hooks.render import (
     render_hook_command as _render_hook_command,
+)
+from wagents.hooks.render import (
+    resolve_hook_perf_tier as _resolve_hook_perf_tier,
+)
+from wagents.mcphub.endpoints import (
+    mcphub_bearer_env_var,
+    mcphub_config,
+    mcphub_enabled,
+    mcphub_endpoint_specs,
+    mcphub_projection_mode,
+    mcphub_spec_enabled_for_harness,
+    render_mcphub_stdio_server,
 )
 from wagents.platforms.base import assert_no_config_drops
 from wagents.platforms.grok import (
@@ -119,9 +132,6 @@ CHERRY_PRESETS_DIR = CHERRY_STUDIO_DIR / "presets"
 ANTIGRAVITY_RULES_DIR = HOME / ".gemini" / "antigravity" / "rules"
 OPENCODE_PLUGIN_MANIFEST_PATH = OPENCODE_PLUGINS_DIR / "agents" / "plugin.json"
 CHROME_DEVTOOLS_OPENCODE_LAUNCHER = "~/.config/opencode/tools/chrome-devtools-launcher.sh"
-MCPHUB_DEFAULT_URL = "http://127.0.0.1:46683/mcp"
-MCPHUB_PROJECTION_MODES = {"http", "remote-stdio"}
-MCPHUB_REMOTE_STDIO = REPO_ROOT / "scripts" / "mcphub" / "remote-stdio.sh"
 MCPHUB_CHROME_DEVTOOLS_LAUNCHER = REPO_ROOT / "scripts" / "mcphub" / "chrome-devtools-browser-url.sh"
 OPENCODE_LOCAL_PLUGIN_SPECS = [
     "./plugins/opencode-context-cache.mjs",
@@ -709,7 +719,9 @@ def load_registry(ctx: SyncContext) -> dict[str, Any]:
 
 
 def load_hook_registry() -> dict[str, Any]:
-    return load_json(HOOK_REGISTRY_PATH)
+    from wagents.hooks.registry import load_hook_registry as _load_hook_registry
+
+    return _load_hook_registry(HOOK_REGISTRY_PATH)
 
 
 def server_enabled_for_harness(entry: dict[str, Any], harness: str | None) -> bool:
@@ -729,209 +741,6 @@ def managed_registry_server_names(registry: dict[str, Any], harness: str | None 
         names.update(spec["name"] for spec in mcphub_endpoint_specs(registry, None))
     names.update(normalize_name(name) for name in list(names))
     return names
-
-
-def mcphub_config(registry: dict[str, Any]) -> dict[str, Any]:
-    config = registry.get("mcphub")
-    return config if isinstance(config, dict) else {}
-
-
-def mcphub_enabled(registry: dict[str, Any]) -> bool:
-    return mcphub_config(registry).get("enabled") is True
-
-
-def mcphub_mcp_url(raw_url: str) -> str:
-    url = raw_url.rstrip("/")
-    return url if url.endswith("/mcp") else f"{url}/mcp"
-
-
-def mcphub_url(registry: dict[str, Any], harness: str | None = None) -> str:
-    config = mcphub_config(registry)
-    client = mcphub_client_config(registry, harness)
-    client_url = client.get("url") if isinstance(client, dict) else None
-    if isinstance(client_url, str) and client_url:
-        return mcphub_mcp_url(client_url)
-    if client.get("url_source") == "public":
-        public_url = config.get("public_url")
-        if isinstance(public_url, str) and public_url:
-            return mcphub_mcp_url(public_url)
-    raw_url = config.get("url")
-    if isinstance(raw_url, str) and raw_url:
-        return mcphub_mcp_url(raw_url)
-    base_url = str(config.get("base_url", MCPHUB_DEFAULT_URL.removesuffix("/mcp"))).rstrip("/")
-    return mcphub_mcp_url(base_url)
-
-
-def mcphub_projection_mode(registry: dict[str, Any], harness: str | None, default: str) -> str:
-    config = mcphub_config(registry)
-    adapters = config.get("projection_adapters")
-    raw_mode = adapters.get(harness) if isinstance(adapters, dict) and harness else None
-    if raw_mode is None:
-        raw_mode = config.get("mode", default)
-    mode = str(raw_mode)
-    return mode if mode in MCPHUB_PROJECTION_MODES else default
-
-
-def mcphub_bearer_env_var(registry: dict[str, Any]) -> str:
-    return str(mcphub_config(registry).get("bearer_token_env_var", "MCPHUB_BEARER_TOKEN"))
-
-
-def mcphub_client_config(registry: dict[str, Any], harness: str | None) -> dict[str, Any]:
-    clients = mcphub_config(registry).get("clients")
-    if not isinstance(clients, dict):
-        return {}
-    default = clients.get("default")
-    config = clients.get(harness) if harness else None
-    merged: dict[str, Any] = default.copy() if isinstance(default, dict) else {}
-    if isinstance(config, dict):
-        merged.update(config)
-    return merged
-
-
-def mcphub_endpoint_name(registry: dict[str, Any], harness: str | None, kind: str, name: str = "") -> str:
-    client = mcphub_client_config(registry, harness)
-    if kind == "server" and client.get("server_endpoint_name_style") == "base":
-        return name
-    if kind == "group":
-        return f"mcphub_group_{name}"
-    if kind == "server":
-        return f"mcphub_server_{name}"
-    if kind == "smart":
-        return f"mcphub_smart_group_{name}" if name else "mcphub_smart_all"
-    return "mcphub_all"
-
-
-def mcphub_spec_enabled_for_harness(registry: dict[str, Any], harness: str | None, spec: dict[str, Any]) -> bool:
-    if harness != "opencode":
-        return bool(spec["enabled"])
-    client = mcphub_client_config(registry, harness)
-    endpoint_kinds = client.get("enabled_endpoint_kinds")
-    enabled_kinds = set(endpoint_kinds) if isinstance(endpoint_kinds, list) else {"all", "group"}
-    kind = str(spec.get("kind", ""))
-    if kind == "server" and client.get("enable_server_endpoints") is False:
-        return False
-    if kind == "group":
-        enabled_groups_raw = client.get("enabled_groups")
-        enabled_groups = set(enabled_groups_raw) if isinstance(enabled_groups_raw, list) else set()
-        if enabled_groups and spec.get("group") not in enabled_groups:
-            return False
-    return bool(spec["enabled"]) and kind in enabled_kinds
-
-
-def mcphub_endpoint_enabled(registry: dict[str, Any], harness: str | None, kind: str, name: str = "") -> bool:
-    client = mcphub_client_config(registry, harness)
-    enabled_raw = client.get("enabled_endpoint_kinds")
-    enabled_kinds = set(enabled_raw) if isinstance(enabled_raw, list) else {"all", "group"}
-    if kind not in enabled_kinds:
-        return False
-    if kind == "server" and client.get("enable_server_endpoints") is False:
-        return False
-    if kind == "group":
-        enabled_groups_raw = client.get("enabled_groups")
-        enabled_groups = set(enabled_groups_raw) if isinstance(enabled_groups_raw, list) else set()
-        if enabled_groups and name not in enabled_groups:
-            return False
-    return True
-
-
-def mcphub_groups(registry: dict[str, Any], harness: str | None = None) -> dict[str, dict[str, Any]]:
-    groups = mcphub_config(registry).get("groups", {})
-    if not isinstance(groups, dict):
-        return {}
-    enabled_servers = set(enabled_registry_servers(registry, harness))
-    rendered: dict[str, dict[str, Any]] = {}
-    for name, group in groups.items():
-        if not isinstance(group, dict) or group.get("enabled") is False:
-            continue
-        servers = [server for server in group.get("servers", []) if server in enabled_servers]
-        if not servers:
-            continue
-        rendered[str(name)] = {**group, "servers": servers}
-    return rendered
-
-
-def mcphub_endpoint_specs(registry: dict[str, Any], harness: str | None = None) -> list[dict[str, Any]]:
-    if not mcphub_enabled(registry):
-        return []
-    client = mcphub_client_config(registry, harness)
-    included_raw = client.get("included_endpoint_kinds")
-    included = set(included_raw) if isinstance(included_raw, list) else None
-
-    def should_include(kind: str) -> bool:
-        return included is None or kind in included
-
-    hub_url = mcphub_url(registry, harness)
-    included_groups_raw = client.get("included_groups")
-    included_groups = set(included_groups_raw) if isinstance(included_groups_raw, list) else None
-    included_servers_raw = client.get("included_servers")
-    included_servers = set(included_servers_raw) if isinstance(included_servers_raw, list) else None
-    specs: list[dict[str, Any]] = []
-    if should_include("all"):
-        specs.append({
-            "name": mcphub_endpoint_name(registry, harness, "all"),
-            "url": hub_url,
-            "enabled": mcphub_endpoint_enabled(registry, harness, "all"),
-            "kind": "all",
-        })
-    for group in sorted(mcphub_groups(registry, harness)):
-        if not should_include("group"):
-            continue
-        if included_groups is not None and group not in included_groups:
-            continue
-        specs.append({
-            "name": mcphub_endpoint_name(registry, harness, "group", group),
-            "url": f"{hub_url}/{group}",
-            "enabled": mcphub_endpoint_enabled(registry, harness, "group", group),
-            "kind": "group",
-            "group": group,
-        })
-    for server in sorted(enabled_registry_servers(registry, harness)):
-        if not should_include("server"):
-            continue
-        if included_servers is not None and server not in included_servers:
-            continue
-        specs.append({
-            "name": mcphub_endpoint_name(registry, harness, "server", server),
-            "url": f"{hub_url}/{server}",
-            "enabled": mcphub_endpoint_enabled(registry, harness, "server", server),
-            "kind": "server",
-            "server": server,
-        })
-    smart = mcphub_config(registry).get("smart_routing", {})
-    if isinstance(smart, dict):
-        smart_path = str(smart.get("path", smart.get("base_path", "$smart"))).strip("/")
-        if smart_path.startswith("mcp/"):
-            smart_path = smart_path.removeprefix("mcp/")
-    else:
-        smart_path = "$smart"
-    if should_include("smart"):
-        specs.append({
-            "name": mcphub_endpoint_name(registry, harness, "smart"),
-            "url": f"{hub_url}/{smart_path}",
-            "enabled": mcphub_endpoint_enabled(registry, harness, "smart"),
-            "kind": "smart",
-        })
-    for group in sorted(mcphub_groups(registry, harness)):
-        if not should_include("smart"):
-            continue
-        specs.append({
-            "name": mcphub_endpoint_name(registry, harness, "smart", group),
-            "url": f"{hub_url}/{smart_path}/{group}",
-            "enabled": mcphub_endpoint_enabled(registry, harness, "smart", group),
-            "kind": "smart",
-            "group": group,
-        })
-    return specs
-
-
-def render_mcphub_stdio_server(registry: dict[str, Any], url: str, *, enabled: bool = True) -> dict[str, Any]:
-    token_env = mcphub_bearer_env_var(registry)
-    return {
-        "command": f"${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
-        "args": [url],
-        "env": {token_env: "${" + token_env + "}"},
-        "disabled": not enabled,
-    }
 
 
 def render_repo_mcp(registry: dict[str, Any]) -> dict[str, Any]:
@@ -1120,9 +929,9 @@ def _hook_repo_root(repo_relative: bool) -> str:
     return "." if repo_relative else str(REPO_ROOT)
 
 
-def render_copilot_hooks(hook_registry: dict[str, Any]) -> dict[str, Any]:
+def render_copilot_hooks(hook_registry: dict[str, Any], *, perf_tier: str | None = None) -> dict[str, Any]:
     # Copilot hooks always run with the repo as cwd, so commands stay repo-relative.
-    return _render_copilot_hooks_shared(hook_registry, repo_root=".")
+    return _render_copilot_hooks_shared(hook_registry, repo_root=".", perf_tier=perf_tier)
 
 
 def render_codex_hooks(hook_registry: dict[str, Any], *, repo_relative: bool = False) -> dict[str, Any]:
@@ -1153,16 +962,30 @@ def merge_codex_hooks(
     repo_relative: bool = False,
 ) -> None:
     hooks_path = path or CODEX_HOOKS_PATH
-    existing: dict[str, Any] = {}
-    if hooks_path.exists():
-        existing = load_json(hooks_path)
-    existing_hooks_raw = existing.get("hooks")
-    existing_hooks: dict[str, Any] = existing_hooks_raw if isinstance(existing_hooks_raw, dict) else {}
-    existing["hooks"] = merge_hook_groups(
-        existing_hooks,
-        render_codex_hooks(hook_registry, repo_relative=repo_relative),
+
+    def _render_merged() -> dict[str, Any]:
+        existing: dict[str, Any] = {}
+        if hooks_path.exists():
+            existing = load_json(hooks_path)
+        existing_hooks_raw = existing.get("hooks")
+        existing_hooks: dict[str, Any] = existing_hooks_raw if isinstance(existing_hooks_raw, dict) else {}
+        existing["hooks"] = merge_hook_groups(
+            existing_hooks,
+            render_codex_hooks(hook_registry, repo_relative=repo_relative),
+        )
+        return existing
+
+    # Distinct fingerprint namespaces for the repo vs. home destination files:
+    # both render through the same "codex" harness id, but they are separate
+    # on-disk files and must not share a skip-gate cache record.
+    sync_hook_projection(
+        lambda dest, data: write_json(ctx, dest, data),
+        harness="codex-repo" if repo_relative else "codex-home",
+        dest_path=hooks_path,
+        render_fn=_render_merged,
+        perf_tier=_resolve_hook_perf_tier(),
+        apply=ctx.apply,
     )
-    write_json(ctx, hooks_path, existing)
 
 
 def render_codex_global_instructions() -> str:
@@ -1557,7 +1380,15 @@ def generate_copilot_rule_instructions(ctx: SyncContext) -> None:
 
 
 def generate_copilot_hooks(ctx: SyncContext, hook_registry: dict[str, Any]) -> None:
-    write_json(ctx, COPILOT_HOOKS_DIR / "policy.json", render_copilot_hooks(hook_registry))
+    perf_tier = _resolve_hook_perf_tier()
+    sync_hook_projection(
+        lambda dest, data: write_json(ctx, dest, data),
+        harness="github-copilot",
+        dest_path=COPILOT_HOOKS_DIR / "policy.json",
+        render_fn=lambda: render_copilot_hooks(hook_registry, perf_tier=perf_tier),
+        perf_tier=perf_tier,
+        apply=ctx.apply,
+    )
 
 
 def merge_claude_settings(ctx: SyncContext, policy: dict[str, Any], hook_registry: dict[str, Any]) -> None:
@@ -2815,7 +2646,40 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         action="store_true",
         help="Skip syncing Grok Plannotator hooks and skill overlays during home sync (default: enabled).",
     )
+    parser.add_argument(
+        "--with-rtk",
+        action="store_true",
+        help="After repo hook projection, run RTK fleet sync (also enabled by RTK_ENABLED=1).",
+    )
     return parser.parse_args(argv)
+
+
+def sync_rtk_fleet(ctx: SyncContext, platforms_filter: set[str] | None) -> None:
+    """Chain RTK init commands after stack sync when explicitly enabled."""
+    from wagents.rtk import build_rtk_sync_plan, resolve_rtk_platform_csv, run_rtk_sync_plan
+
+    try:
+        platforms_csv = resolve_rtk_platform_csv(platforms_filter, root=REPO_ROOT)
+        plan = build_rtk_sync_plan(platforms=platforms_csv, dry_run=not ctx.apply, root=REPO_ROOT)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        ctx.note(f"rtk sync skipped: {exc}")
+        return
+
+    prefix = "Would run RTK" if not ctx.apply else "Ran RTK"
+    for command in plan["commands"]:
+        ctx.note(f"{prefix} [{command['platform']}]: {command['command']}")
+    for skipped in plan["skipped"]:
+        ctx.note(f"Skip RTK [{skipped['platform']}]: {skipped['reason']}")
+
+    if not ctx.apply:
+        return
+
+    results = run_rtk_sync_plan(plan, cwd=REPO_ROOT)
+    for result in results:
+        ctx.note(f"RTK result [{result['platform']}]: exit={result.get('returncode')}")
+        stderr = str(result.get("stderr") or "").strip()
+        if stderr:
+            ctx.note(f"RTK stderr [{result['platform']}]: {stderr}")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -2823,7 +2687,10 @@ def main(argv: list[str] | None = None) -> int:
     if not args.apply and not args.check:
         print("Pass --apply or --check.", file=sys.stderr)
         return 2
+    from wagents.rtk import rtk_integration_enabled
+
     ctx = SyncContext(apply=args.apply, grok_plannotator_hooks=not args.no_plannotator_hooks)
+    rtk_enabled = rtk_integration_enabled(with_rtk_flag=bool(getattr(args, "with_rtk", False)))
     policy = load_json(TOOLING_POLICY_PATH)
     registry = load_registry(ctx)
     hook_registry = load_hook_registry()
@@ -2838,6 +2705,8 @@ def main(argv: list[str] | None = None) -> int:
         sync_repo_targets(ctx, registry, hook_registry, policy, platforms_filter)
     if "home" in targets:
         sync_home_targets(ctx, registry, policy, fallbacks, hook_registry, platforms_filter)
+    if rtk_enabled:
+        sync_rtk_fleet(ctx, platforms_filter)
     if args.check:
         for change in ctx.changes:
             print(change)

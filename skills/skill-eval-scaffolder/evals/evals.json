@@ -1,0 +1,93 @@
+{
+  "skill_name": "skill-eval-scaffolder",
+  "evals": [
+    {
+      "id": "scaffold-preview",
+      "prompt": "/skill-eval-scaffolder review",
+      "expected_output": "Previews evals/evals.json scaffold without writing when file exists.",
+      "files": [],
+      "assertions": [
+        "Agent runs scaffold_evals.py in preview mode",
+        "Agent does not overwrite existing eval manifests without approval",
+        "Agent includes explicit, implicit, and negative-control cases"
+      ]
+    },
+    {
+      "id": "check-existing-manifest",
+      "prompt": "/skill-eval-scaffolder check skill-router",
+      "expected_output": "Validates the existing eval manifest through the scaffolder check path.",
+      "files": [],
+      "assertions": [
+        "Agent checks that skills/skill-router/SKILL.md exists",
+        "Agent validates the existing evals/evals.json manifest",
+        "Agent reports schema failures instead of silently rewriting the file"
+      ]
+    },
+    {
+      "id": "apply-missing-manifest",
+      "prompt": "/skill-eval-scaffolder new-skill --apply",
+      "expected_output": "Writes a scaffold only when the target manifest is missing or overwrite approval is explicit.",
+      "files": [],
+      "assertions": [
+        "Agent requires the skill directory to exist before applying",
+        "Agent writes only the target eval manifest",
+        "Agent runs validate_evals.py or the skill check contract after writing"
+      ]
+    },
+    {
+      "id": "negative-overwrite-existing",
+      "prompt": "Overwrite the review skill eval manifest with a fresh scaffold",
+      "expected_output": "Refuses to overwrite the existing eval manifest without explicit maintainer approval.",
+      "files": [],
+      "assertions": [
+        "Agent detects an existing eval manifest",
+        "Agent does not replace existing cases",
+        "Agent asks for or requires explicit overwrite approval"
+      ]
+    },
+    {
+      "id": "empty-usage-schema",
+      "prompt": "/skill-eval-scaffolder",
+      "expected_output": "Shows usage and the eval manifest schema without running live LLM evals.",
+      "files": [],
+      "assertions": [
+        "Agent summarizes skill_name and evals list fields",
+        "Agent includes id, prompt, expected_output, files, and assertions in the schema",
+        "Agent routes live eval execution to the maintainer eval workflow"
+      ]
+    },
+    {
+      "id": "preview-scaffold",
+      "prompt": "/skill-eval-scaffolder new-skill",
+      "expected_output": "Previews a schema-valid eval manifest for the named skill without writing by default.",
+      "files": [],
+      "assertions": [
+        "Agent confirms skills/new-skill/SKILL.md exists before scaffolding",
+        "Agent runs scaffold_evals.py without --apply for preview",
+        "Agent includes explicit, implicit, and negative-control case guidance"
+      ]
+    },
+    {
+      "id": "apply-gate-existing-file",
+      "prompt": "/skill-eval-scaffolder review --apply but evals/evals.json already exists",
+      "expected_output": "Stops before overwriting an existing eval manifest unless explicit overwrite approval is present.",
+      "files": [],
+      "assertions": [
+        "Agent detects existing eval manifest",
+        "Agent does not overwrite without explicit approval",
+        "Agent suggests validating or manually extending existing cases"
+      ]
+    },
+    {
+      "id": "negative-live-eval-runner",
+      "prompt": "Use skill-eval-scaffolder to run live LLM evals for every skill.",
+      "expected_output": "Negative control: declines live eval execution and routes to skill-creator eval mode or maintainer CI.",
+      "files": [],
+      "assertions": [
+        "Agent states scaffolder is not a live eval runner",
+        "Agent does not launch live LLM grading",
+        "Agent names the appropriate live-eval route"
+      ]
+    }
+  ]
+}

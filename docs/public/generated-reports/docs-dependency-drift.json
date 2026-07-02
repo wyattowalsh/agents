@@ -1,0 +1,17 @@
+{
+  "checked_sources": [
+    "docs/package.json",
+    "docs/astro.config.mjs",
+    "config/docs-artifact-registry.json"
+  ],
+  "drift_detected": false,
+  "missing_registered_artifacts": [],
+  "missing_source_registries": [],
+  "plugin_dependencies": [
+    "starlight-links-validator",
+    "starlight-llms-txt",
+    "starlight-site-graph",
+    "starlight-theme-black"
+  ],
+  "unregistered_plugin_dependencies": []
+}

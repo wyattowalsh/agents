@@ -22,14 +22,14 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="firecrawl-cli-all"
   description="useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested."
-  installCommand={`npx skills add firecrawl/cli --skill firecrawl-cli-all -y -g`}
+  installCommand={`No portable install command is recorded; keep global-only or avoid unless explicitly approved.`}
   usage="/firecrawl-cli-all"
   badges={[{ text: "firecrawl-cli-all", variant: "note" }, { text: "16 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Cataloged for audit and dedupe only. This global-only/avoid row is not published as a portable install.
 
 <Aside type="note" title="Curated external (hand-maintained)">
 Composed compose-external-wave-4 using authoring SSOT (`docs/src/authoring/skills/firecrawl-cli-all.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
@@ -41,12 +41,7 @@ Firecrawl CLI skill bundle for live web capabilities inside agents: search, scra
 
 ## Harness Coverage
 
-Targets all supported agent harnesses via the install command below.
-
-**Portable multi-harness install command:**
-```bash
-npx skills add firecrawl/cli --skill firecrawl-cli-all -y -g
-```
+No portable install command is published for this global-only/avoid row.
 
 ## Trust / Audit
 
@@ -60,7 +55,7 @@ Entry maintained in authoring SSOT `docs/src/authoring/skills/firecrawl-cli-all.
 
 ## Install Prerequisites
 
-Install (per listings): `npx skills add firecrawl/cli --skill firecrawl-cli-all` (or named selectors); may require API key / login; global-only per catalog rationale summary; policy=Inspect for usage policy, auth, and cost exposure before global or broad install.
+Keep global-only/avoid unless explicitly requested; inspect usage policy, auth, and cost exposure before any manual install.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -69,7 +64,7 @@ Install (per listings): `npx skills add firecrawl/cli --skill firecrawl-cli-all`
 | Source Type | `curated-external` |
 | Display Source | `firecrawl/cli` |
 | Source Kind | `github` |
-| Installability | portable command |
+| Installability | not installable by default |
 | Review State | curated |
 | Trust Tier | `global-only-or-avoid` |
   </TabItem>

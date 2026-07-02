@@ -1,0 +1,23 @@
+---
+title: Progressive Disclosure
+description: How standing context, skills, rules, and docs layers compose
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+
+This repository uses **progressive disclosure** so agents load the minimum standing context, then pull depth on demand via skills, scoped rules, and generated docs.
+
+## Layers
+
+| Layer | Owner | Loads when |
+| ----- | ----- | ---------- |
+| Global instructions | `instructions/global.md` | Always (cross-harness) |
+| Skill descriptions | `skills/*/SKILL.md` frontmatter | Always (descriptions only) |
+| Scoped rules | `.claude/rules/`, `.cursor/rules/` | Path match |
+| Skill bodies | `skills/*/SKILL.md` body | Skill invoked |
+| Generated docs | `wagents docs generate` | Human browse / MCP docs-index |
+
+<Aside type="tip" title="Token efficacy">
+See [Harness config — token efficacy](/harness-config/token-efficacy/) for one-tool-per-layer policy.
+</Aside>

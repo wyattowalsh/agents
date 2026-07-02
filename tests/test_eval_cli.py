@@ -250,6 +250,19 @@ class TestEvalValidate:
         assert result.exit_code == 1
         assert "missing required non-empty string 'prompt'" in result.output
 
+    def test_eval_manifest_duplicate_prompt(self, patched_repo):
+        _make_skill_with_eval_manifest(
+            patched_repo,
+            "test-skill",
+            [
+                {"id": "case-1", "prompt": "Run the same eval", "expected_output": "First expected output."},
+                {"id": "case-2", "prompt": " Run the same eval ", "expected_output": "Second expected output."},
+            ],
+        )
+        result = runner.invoke(app, ["eval", "validate"])
+        assert result.exit_code == 1
+        assert "eval 2 duplicates prompt from eval 1: 'Run the same eval'" in result.output
+
     def test_eval_manifest_missing_skill_name(self, patched_repo):
         skill_dir = patched_repo / "skills" / "test-skill"
         skill_dir.mkdir(parents=True)
@@ -390,3 +403,19 @@ class TestEvalCoverage:
         row = next(item for item in payload["skills"] if item["skill"] == "has-evals")
         assert row["has_evals"] is True
         assert row["eval_count"] == 2
+
+
+def test_real_repo_eval_manifest_prompts_are_unique():
+    issues: list[str] = []
+    for manifest in sorted((cli_module.ROOT / "skills").glob("*/evals/evals.json")):
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+        seen: dict[str, int] = {}
+        for index, case in enumerate(data.get("evals", []), start=1):
+            prompt = str(case.get("prompt", "")).strip()
+            if not prompt:
+                continue
+            if prompt in seen:
+                issues.append(f"{manifest}: eval {index} duplicates prompt from eval {seen[prompt]}: {prompt!r}")
+            else:
+                seen[prompt] = index
+    assert not issues

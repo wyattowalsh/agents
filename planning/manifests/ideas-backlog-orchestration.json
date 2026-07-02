@@ -1,0 +1,67 @@
+{
+  "program": "integrate-ideas-backlog",
+  "source_plan": ".cursor/plans/ideas_backlog_integration_364ceaf3.plan.md",
+  "openspec_change": "openspec/changes/integrate-ideas-backlog",
+  "generated": "2026-07-01",
+  "waves": [
+    {"id": "W0", "gate": "G0", "theme": "Scaffold + dedup + research refresh", "status": "done", "parallel_agents": 1},
+    {"id": "W1", "gate": "G1", "theme": "Quick wins (CI gates, verify, templates)", "status": "partial", "parallel_agents": 12, "note": "ci.yml CI-gate wiring blocked pending fleet-hooks-performance rebase; all non-ci.yml items done"},
+    {"id": "W2", "gate": "G2", "theme": "Docs foundation + MCP shared lib", "status": "pending", "parallel_agents": 4},
+    {"id": "W3", "gate": "G3", "theme": "Reports fan-out", "status": "pending", "parallel_agents": 4},
+    {"id": "W4", "gate": "G4", "theme": "MCP Now servers (6)", "status": "pending", "parallel_agents": 6},
+    {"id": "W5", "gate": "G5", "theme": "Catalog + architecture IA", "status": "pending", "parallel_agents": 5},
+    {"id": "W6", "gate": "G6", "theme": "Install smoke phases 1-2", "status": "pending", "parallel_agents": 3},
+    {"id": "W7", "gate": "G7", "theme": "Skills Now (6 skills)", "status": "pending", "parallel_agents": 6},
+    {"id": "W8", "gate": "G8", "theme": "Agents Now (6 agents)", "status": "pending", "parallel_agents": 4},
+    {"id": "W9", "gate": "G9", "theme": "Testing depth", "status": "pending", "parallel_agents": 6},
+    {"id": "W10", "gate": "G10", "theme": "MCP Next servers (5)", "status": "pending", "parallel_agents": 5},
+    {"id": "W11", "gate": "G11", "theme": "CLI Next + Infra Next", "status": "pending", "parallel_agents": 4},
+    {"id": "W12", "gate": "G12", "theme": "Skills/Agents Next", "status": "pending", "parallel_agents": 8},
+    {"id": "W13", "gate": "G13", "theme": "Later tier", "status": "pending", "parallel_agents": 6},
+    {"id": "W14", "gate": "G14", "theme": "Maintainer ops dashboard", "status": "pending", "parallel_agents": 2},
+    {"id": "W15", "gate": "G15", "theme": "Ship + docs + KB update", "status": "pending", "parallel_agents": 1},
+    {"id": "RW0-RW3", "gate": null, "theme": "Review findings remediation", "status": "pending", "parallel_agents": null}
+  ],
+  "lanes": [
+    {"code": "SA-L0", "owns": "OpenSpec, manifests, research refresh", "max_parallel": 1},
+    {"code": "SA-DOC", "owns": "wagents/docs_reports.py, reports MDX, sidebar", "max_parallel": 4},
+    {"code": "SA-CAT", "owns": "/catalog/*, architecture pages, compose coordination", "max_parallel": 3},
+    {"code": "SA-MCP0", "owns": "wagents/mcp_shared/, registry schema extensions", "max_parallel": 1},
+    {"code": "SA-MCP*", "owns": "One subagent per mcp/<name>/", "max_parallel": 6},
+    {"code": "SA-CI", "owns": ".github/workflows/*, attestations, reusable workflows", "max_parallel": 2},
+    {"code": "SA-SKL", "owns": "skills/<name>/ tooling skills", "max_parallel": 6},
+    {"code": "SA-AGT", "owns": "agents/<name>.md", "max_parallel": 4},
+    {"code": "SA-CLI", "owns": "wagents/cli.py, SARIF schema", "max_parallel": 2},
+    {"code": "SA-TST", "owns": "tests/** mirrors", "max_parallel": 8},
+    {"code": "SA-WF", "owns": "runbooks, PR templates, ADR template", "max_parallel": 4},
+    {"code": "SA-INT", "owns": "Runs gate_checks, no file edits", "max_parallel": 1}
+  ],
+  "dedup_matrix": [
+    {
+      "in_flight_change": "compose-harness-catalog-pages",
+      "relationship": "W5 catalog work merges into its W2 agents/MCP composition; do not duplicate composed page logic"
+    },
+    {
+      "in_flight_change": "fleet-hooks-performance",
+      "relationship": "No ci.yml edits until it lands or rebases; ci.yml has an uncommitted 28-line diff (hook-perf job) at scaffold time. No edits to wagents/hooks/**, hooks/**, or config/hook-registry.json from this program."
+    },
+    {
+      "in_flight_change": "public-release-prod-readiness",
+      "relationship": "W11 attestations/OIDC scope aligns with its fail-closed validation parity goals rather than duplicating gates"
+    }
+  ],
+  "already_shipped_skip_list": [
+    "CLI --format json output modes (wagents/cli.py)",
+    "wagents doctor / self doctor",
+    "wagents validate --check / --dry-run semantics on core commands",
+    "Skills catalog generation + Starlight plugin wiring (docs/astro.config.mjs, wagents/catalog.py)",
+    "SHA-pinned GitHub Actions in ci.yml",
+    "Agent analogues: code-reviewer, docs-writer, release-manager, orchestrator (cover repo-reviewer, docs-curator, release-checker)"
+  ],
+  "session_log": [
+    {
+      "date": "2026-07-01",
+      "summary": "W0 full scaffold delivered. W1 delivered minus ci.yml CI-gate wiring (blocked, see dedup_matrix fleet-hooks-performance entry). W2-W15 fully specified in tasks.md as pending for follow-up sessions."
+    }
+  ]
+}

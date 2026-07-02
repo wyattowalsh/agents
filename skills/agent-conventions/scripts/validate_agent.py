@@ -16,6 +16,12 @@ except ImportError:
 
 KEBAB_CASE_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 
+PLACEHOLDER_SCAFFOLD_PHRASES = (
+    "This is the agent's system prompt.",
+    "Describe what this agent specializes in.",
+    "Rules and constraints for this agent's behavior.",
+)
+
 
 def find_repo_root(start: Path | None = None) -> Path | None:
     current = (start or Path.cwd()).resolve()
@@ -51,7 +57,7 @@ def validate_agent_file(agent_file: Path) -> list[dict[str, str]]:
 
     try:
         content = agent_file.read_text(encoding="utf-8")
-        frontmatter, _body = parse_frontmatter(content)
+        frontmatter, body = parse_frontmatter(content)
 
         if "name" not in frontmatter:
             add_error("missing required field 'name'")
@@ -66,6 +72,10 @@ def validate_agent_file(agent_file: Path) -> list[dict[str, str]]:
             add_error("missing required field 'description'")
         elif not str(frontmatter["description"]).strip():
             add_error("description cannot be empty")
+
+        for phrase in PLACEHOLDER_SCAFFOLD_PHRASES:
+            if phrase in body:
+                add_error(f"placeholder scaffold text remains: {phrase!r}")
     except Exception as exc:
         add_error(str(exc))
 

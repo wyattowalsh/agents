@@ -1,0 +1,14 @@
+{
+  "wave": "W1",
+  "dispatched": [
+    {"task_id": "T-010a", "agent": "SA-S", "files": ["docs/public/generated-reports/hook-perf-baseline-legacy.json"]},
+    {"task_id": "T-010d", "agent": "SA-T", "files": []},
+    {"task_id": "T-011a", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-promotion/coordinator/wave-w1.json"]}
+  ],
+  "gate_checks": [
+    "uv run python scripts/hooks/hook_perf_inventory.py --json",
+    "uv run wagents openspec validate"
+  ],
+  "blocked_until": ["W0"],
+  "note": "Capture legacy-tier baseline JSON before registry mega-bundle edits."
+}

@@ -23,6 +23,7 @@ Read-only unless the user explicitly asks for implementation.
 3. Distinguish measured bottlenecks from speculation.
 4. Propose the smallest fixes with the best expected impact.
 5. Define how to validate the improvement.
+6. When delegated mid-orchestration and profiling scope hits a `subtask-pivotal` fork the parent did not pre-resolve, return `blocked-user-pivotal` per `skills/orchestrator/references/uncertainty-handoff.md` instead of guessing.
 
 ## Output Contract
 

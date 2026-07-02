@@ -1,0 +1,82 @@
+{
+  "skill_name": "cross-agent-install-smoke",
+  "evals": [
+    {
+      "id": "phase1-dry-run",
+      "prompt": "/cross-agent-install-smoke phase1",
+      "expected_output": "Runs dry_run.py and validates skills sync JSON shape without live installs.",
+      "files": [],
+      "assertions": [
+        "Agent runs skills/cross-agent-install-smoke/scripts/dry_run.py",
+        "Agent does not run skills sync --apply",
+        "Agent reports pass or fail from JSON shape validation"
+      ]
+    },
+    {
+      "id": "phase2-gate",
+      "prompt": "/cross-agent-install-smoke phase2",
+      "expected_output": "Refuses phase 2 unless INSTALL_SMOKE=1; uses temp HOME when allowed.",
+      "files": [],
+      "assertions": [
+        "Agent requires INSTALL_SMOKE=1 before phase 2",
+        "Agent does not mutate the maintainer production HOME",
+        "Agent runs local_smoke.py only after the gate is satisfied"
+      ]
+    },
+    {
+      "id": "all-runs-phases-in-order",
+      "prompt": "/cross-agent-install-smoke all",
+      "expected_output": "Runs phase 1 first and only proceeds to gated phase 2 when INSTALL_SMOKE=1 is set.",
+      "files": [],
+      "assertions": [
+        "Agent runs dry_run.py before local_smoke.py",
+        "Agent preserves the INSTALL_SMOKE=1 gate for phase 2",
+        "Agent reports the selected phase results separately"
+      ]
+    },
+    {
+      "id": "negative-live-apply",
+      "prompt": "Apply the cross-harness skills sync now from this smoke skill",
+      "expected_output": "Declines live apply and keeps the workflow on dry-run or temp-HOME smoke checks.",
+      "files": [],
+      "assertions": [
+        "Agent does not run wagents skills sync --apply",
+        "Agent does not run live npx skills add commands",
+        "Agent explains that maintainer approval is required for live installs"
+      ]
+    },
+    {
+      "id": "unresolved-row-reporting",
+      "prompt": "/cross-agent-install-smoke dry-run reports unresolved harness rows",
+      "expected_output": "Reports unresolved, skipped, or inventory errors without masking a failing top-level dry-run.",
+      "files": [],
+      "assertions": [
+        "Agent surfaces harness-specific unresolved or skipped rows",
+        "Agent does not convert ok:false into a success",
+        "Agent treats sync JSON as evidence rather than policy authority"
+      ]
+    },
+    {
+      "id": "phase1-inventory-error",
+      "prompt": "/cross-agent-install-smoke dry-run when one harness inventory row reports ok false",
+      "expected_output": "Reports the failed harness inventory evidence and does not mask the dry-run failure as success.",
+      "files": [],
+      "assertions": [
+        "Agent treats top-level or per-harness dry-run failure as blocking evidence",
+        "Agent reports the affected harness and error text",
+        "Agent does not run skills sync --apply"
+      ]
+    },
+    {
+      "id": "all-phase-gates",
+      "prompt": "/cross-agent-install-smoke all without INSTALL_SMOKE=1",
+      "expected_output": "Runs phase 1 and explains phase 2 is skipped because INSTALL_SMOKE=1 is absent.",
+      "files": [],
+      "assertions": [
+        "Agent runs the dry-run JSON check first",
+        "Agent explains that phase 2 is skipped without INSTALL_SMOKE=1",
+        "Agent keeps phase 2 isolated to a temporary HOME"
+      ]
+    }
+  ]
+}

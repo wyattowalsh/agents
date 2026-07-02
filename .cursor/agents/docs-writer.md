@@ -22,6 +22,7 @@ Read the code before documenting it. Never document hypothetical behavior as imp
 3. Prefer updating existing docs over creating duplicates.
 4. Verify commands, examples, and references against source.
 5. Keep docs concise, scannable, and example-driven.
+6. When delegated mid-orchestration and doc scope hits a `subtask-pivotal` fork the parent did not pre-resolve, return `blocked-user-pivotal` per `skills/orchestrator/references/uncertainty-handoff.md` instead of guessing.
 
 ## Output Contract
 

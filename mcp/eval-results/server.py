@@ -1,0 +1,105 @@
+"""MCP server: eval-results.
+
+Read-only wrapper around `wagents eval list|coverage|adequacy|validate`,
+run as subprocesses against the repo checkout and parsed from their
+`--format json` output. No tool in this server mutates the repository;
+`wagents eval validate`/`adequacy` themselves only read `skills/**/evals/`.
+"""
+
+from __future__ import annotations
+
+import json
+import subprocess
+from typing import Any
+
+from fastmcp import FastMCP
+
+from wagents import ROOT
+
+mcp = FastMCP("Eval Results")
+
+_READ_ONLY = {
+    "readOnlyHint": True,
+    "destructiveHint": False,
+    "idempotentHint": True,
+    "openWorldHint": False,
+}
+
+_SUBPROCESS_TIMEOUT_SEC = 120
+
+
+def _run_wagents_eval(args: list[str]) -> dict[str, Any]:
+    """Run `uv run wagents eval <args> --format json` in the repo and parse stdout."""
+    argv = ["uv", "run", "wagents", "eval", *args, "--format", "json"]
+    try:
+        result = subprocess.run(  # noqa: S603
+            argv,
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            timeout=_SUBPROCESS_TIMEOUT_SEC,
+            check=False,
+        )
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise RuntimeError(f"Failed to run `{' '.join(argv)}`: {exc}") from exc
+    try:
+        payload = json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(
+            f"`{' '.join(argv)}` did not produce valid JSON (exit={result.returncode}): "
+            f"stdout={result.stdout!r} stderr={result.stderr!r}"
+        ) from exc
+    payload["_exit_code"] = result.returncode
+    return payload
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def eval_list() -> dict[str, Any]:
+    """Return `wagents eval list` output: every eval file grouped by skill.
+
+    Includes `count` (skills with evals), `eval_count` (total eval cases),
+    and per-skill rows with a sample query.
+    """
+    return _run_wagents_eval(["list"])
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def eval_coverage() -> dict[str, Any]:
+    """Return `wagents eval coverage` output: eval coverage per skill.
+
+    Each row reports `has_evals` and `eval_count` for every skill under
+    `skills/`. Use this to find skills with zero eval coverage.
+    """
+    return _run_wagents_eval(["coverage"])
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def eval_adequacy(skill: str = "", strict: bool = False) -> dict[str, Any]:
+    """Return `wagents eval adequacy` output: risk-adjusted E3/E4 adequacy.
+
+    Pass *skill* to scope to one skill (raises if that skill has no
+    `SKILL.md`); leave empty to report on every skill. *strict* sets
+    `_exit_code` to 1 in the returned payload if any R3/R4-risk-tier skill
+    lacks E4 evidence — the command still returns its JSON payload either way.
+    """
+    args = ["adequacy"]
+    if skill:
+        args.extend(["--skill", skill])
+    if strict:
+        args.append("--strict")
+    return _run_wagents_eval(args)
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def eval_validate() -> dict[str, Any]:
+    """Return `wagents eval validate` output: schema validation of every eval JSON file.
+
+    Reports which eval files fail to parse or fail schema validation, with
+    `_exit_code` set to the underlying command's exit status (non-zero on
+    any validation failure).
+    """
+    return _run_wagents_eval(["validate"])
+
+
+if __name__ == "__main__":
+    mcp.run()

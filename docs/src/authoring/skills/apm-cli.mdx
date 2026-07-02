@@ -15,7 +15,7 @@ source_url: "https://github.com/microsoft/apm"
 notes: "Remote third-party packages only. This repo bundle: uv tool install wagents --from git+https://github.com/wyattowalsh/agents or apm install wyattowalsh/agents. MCP stays MCPHub/wagents-owned."
 risk_notes: "apm install mutates harness directories; run apm audit and review apm.lock.yaml. Never route repo skills/ through APM."
 promotion_policy: "Official Microsoft tooling; verify apm audit --ci before promoting harness deploy changes."
-provenance_evidence: "microsoft/apm on GitHub; apm-cli on PyPI; repo documents adapters.apm in agent-bundle.json."
+provenance_evidence: "Explicit keep-global/avoid note in authoring catalog. Non-standard pip install is intentional for sync_kind external-tool (Microsoft APM CLI, not observability APM)."
 ---
 
 Microsoft **Agent Package Manager** (APM)—not Azure Monitor / application performance monitoring.

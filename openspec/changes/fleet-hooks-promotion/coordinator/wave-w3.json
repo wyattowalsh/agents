@@ -1,0 +1,13 @@
+{
+  "wave": "W3",
+  "focus": "copilot dispatcher promotion",
+  "dispatched": [
+    {
+      "task_id": "W3-010",
+      "agent": "SA-Dispatcher"
+    }
+  ],
+  "gate_checks": [
+    "uv run pytest tests/hooks -q"
+  ]
+}

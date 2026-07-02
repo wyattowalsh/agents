@@ -1,0 +1,14 @@
+{
+  "wave": "W7",
+  "dispatched": [
+    {"task_id": "T-220a", "agent": "SA-CI", "files": [".github/workflows/ci.yml"]},
+    {"task_id": "T-220b", "agent": "SA-O", "files": ["docs/src/content/docs/hooks/index.mdx"]},
+    {"task_id": "T-220d", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-performance/"]}
+  ],
+  "gate_checks": [
+    "uv run wagents openspec validate",
+    "uv run python scripts/check_hook_discovery_parity.py"
+  ],
+  "blocked_until": ["W5", "W6"],
+  "note": "CI hyperfine gate, docs hub, archive fleet-hooks-performance."
+}

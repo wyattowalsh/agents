@@ -4,7 +4,7 @@
       "hooks": [
         {
           "type": "command",
-          "command": "python3 ./hooks/wagents-hook.py research-evidence-ledger --harness claude-code",
+          "command": "./hooks/run-wagents-hook research-evidence-ledger --harness claude-code",
           "timeout": 5
         }
       ],
@@ -15,8 +15,9 @@
       "hooks": [
         {
           "type": "command",
-          "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py cursor-post-tool-verify-context --harness cursor",
-          "timeout": 5
+          "command": "./hooks/run-wagents-hook codex-post-tool-verify-context --harness codex",
+          "timeout": 5,
+          "statusMessage": "Checking post-edit quality"
         }
       ],
       "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
@@ -26,18 +27,31 @@
       "hooks": [
         {
           "type": "command",
-          "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py research-evidence-ledger --harness cursor",
-          "timeout": 5
+          "command": "./hooks/run-wagents-hook research-evidence-ledger --harness codex",
+          "timeout": 5,
+          "statusMessage": "Append lightweight provenance metadata for research retrieval tools."
         }
       ],
       "matcher": "WebSearch|web_search|fetch|fetcher|trafilatura|docling|mcp__.*|mcp_.*",
       "_apm_source": "_local/agents"
     },
     {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-post-tool-verify-context --harness cursor",
+      "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
+      "timeout": 5,
+      "_apm_source": "_local/agents"
+    },
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" research-evidence-ledger --harness cursor",
+      "matcher": "WebSearch|web_search|fetch|fetcher|trafilatura|docling|mcp__.*|mcp_.*",
+      "timeout": 5,
+      "_apm_source": "_local/agents"
+    },
+    {
       "type": "command",
       "bash": "./hooks/auto-format.sh",
       "cwd": ".",
-      "timeoutSec": 30,
+      "timeoutSec": 60,
       "comment": "Run best-effort formatter after edits.",
       "_apm_source": "_local/agents"
     },
@@ -51,22 +65,10 @@
     },
     {
       "type": "command",
-      "bash": "python3 ./hooks/wagents-hook.py research-evidence-ledger --harness github-copilot",
+      "bash": "./hooks/run-wagents-hook research-evidence-ledger --harness github-copilot",
       "cwd": ".",
       "timeoutSec": 5,
       "comment": "Append lightweight provenance metadata for research retrieval tools.",
-      "_apm_source": "_local/agents"
-    }
-  ],
-  "UserPromptSubmit": [
-    {
-      "hooks": [
-        {
-          "type": "command",
-          "command": "python3 ./hooks/wagents-hook.py research-prompt-triage-context --harness claude-code",
-          "timeout": 5
-        }
-      ],
       "_apm_source": "_local/agents"
     }
   ],
@@ -75,31 +77,8 @@
       "hooks": [
         {
           "type": "command",
-          "command": "python3 ./hooks/wagents-hook.py research-readonly-write-guard --harness claude-code",
+          "command": "./hooks/run-wagents-hook git-commit-push-guard --harness claude-code",
           "timeout": 5
-        }
-      ],
-      "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command",
-      "_apm_source": "_local/agents"
-    },
-    {
-      "hooks": [
-        {
-          "type": "command",
-          "command": "python3 ./hooks/wagents-hook.py research-dangerous-shell-guard --harness claude-code",
-          "timeout": 5
-        }
-      ],
-      "matcher": "Bash|bash|run_shell_command",
-      "_apm_source": "_local/agents"
-    },
-    {
-      "hooks": [
-        {
-          "type": "command",
-          "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py cursor-destructive-shell-guard --harness cursor",
-          "timeout": 5,
-          "failClosed": true
         }
       ],
       "matcher": "Bash|bash|run_shell_command|shell|terminal",
@@ -109,21 +88,19 @@
       "hooks": [
         {
           "type": "command",
-          "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py cursor-protected-file-guard --harness cursor",
-          "timeout": 5,
-          "failClosed": true
+          "command": "./hooks/run-wagents-hook image-input-optimizer-guard --harness claude-code",
+          "timeout": 60
         }
       ],
-      "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
+      "matcher": "analyze_image|attach_image|screenshot|upload_image|view_image|Read|read|.*[Ii]mage.*|.*[Vv]ision.*|.*[Ss]creenshot.*|.*[Aa]ttach.*|.*[Uu]pload.*",
       "_apm_source": "_local/agents"
     },
     {
       "hooks": [
         {
           "type": "command",
-          "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py research-readonly-write-guard --harness cursor",
-          "timeout": 5,
-          "failClosed": true
+          "command": "./hooks/run-wagents-hook research-readonly-write-guard --harness claude-code",
+          "timeout": 5
         }
       ],
       "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command",
@@ -133,12 +110,125 @@
       "hooks": [
         {
           "type": "command",
-          "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py research-dangerous-shell-guard --harness cursor",
-          "timeout": 5,
-          "failClosed": true
+          "command": "./hooks/run-wagents-hook research-dangerous-shell-guard --harness claude-code",
+          "timeout": 5
         }
       ],
       "matcher": "Bash|bash|run_shell_command",
+      "_apm_source": "_local/agents"
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook codex-destructive-shell-guard --harness codex",
+          "timeout": 5,
+          "statusMessage": "Checking shell safety"
+        }
+      ],
+      "matcher": "Bash|bash|run_shell_command|shell|terminal",
+      "_apm_source": "_local/agents"
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook codex-protected-file-guard --harness codex",
+          "timeout": 5,
+          "statusMessage": "Checking protected paths"
+        }
+      ],
+      "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
+      "_apm_source": "_local/agents"
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook git-commit-push-guard --harness codex",
+          "timeout": 5,
+          "statusMessage": "Checking git commit/push safety"
+        }
+      ],
+      "matcher": "Bash|bash|run_shell_command|shell|terminal",
+      "_apm_source": "_local/agents"
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook image-input-optimizer-guard --harness codex",
+          "timeout": 60,
+          "statusMessage": "Optimizing image inputs"
+        }
+      ],
+      "matcher": "analyze_image|attach_image|screenshot|upload_image|view_image|Read|read|.*[Ii]mage.*|.*[Vv]ision.*|.*[Ss]creenshot.*|.*[Aa]ttach.*|.*[Uu]pload.*",
+      "_apm_source": "_local/agents"
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook research-readonly-write-guard --harness codex",
+          "timeout": 5,
+          "statusMessage": "Prevent source-file write tools during active research sessions."
+        }
+      ],
+      "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command",
+      "_apm_source": "_local/agents"
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook research-dangerous-shell-guard --harness codex",
+          "timeout": 5,
+          "statusMessage": "Block dangerous shell side effects during active research sessions."
+        }
+      ],
+      "matcher": "Bash|bash|run_shell_command",
+      "_apm_source": "_local/agents"
+    },
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-destructive-shell-guard --harness cursor",
+      "matcher": "Bash|bash|run_shell_command|shell|terminal",
+      "timeout": 5,
+      "failClosed": true,
+      "_apm_source": "_local/agents"
+    },
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-protected-file-guard --harness cursor",
+      "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
+      "timeout": 5,
+      "failClosed": true,
+      "_apm_source": "_local/agents"
+    },
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" git-commit-push-guard --harness cursor",
+      "matcher": "Bash|bash|run_shell_command|shell|terminal",
+      "timeout": 5,
+      "failClosed": true,
+      "_apm_source": "_local/agents"
+    },
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" image-input-optimizer-guard --harness cursor",
+      "matcher": "analyze_image|attach_image|screenshot|upload_image|view_image|Read|read|.*[Ii]mage.*|.*[Vv]ision.*|.*[Ss]creenshot.*|.*[Aa]ttach.*|.*[Uu]pload.*",
+      "timeout": 60,
+      "failClosed": false,
+      "_apm_source": "_local/agents"
+    },
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" research-readonly-write-guard --harness cursor",
+      "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command",
+      "timeout": 5,
+      "failClosed": true,
+      "_apm_source": "_local/agents"
+    },
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" research-dangerous-shell-guard --harness cursor",
+      "matcher": "Bash|bash|run_shell_command",
+      "timeout": 5,
+      "failClosed": true,
       "_apm_source": "_local/agents"
     },
     {
@@ -159,7 +249,23 @@
     },
     {
       "type": "command",
-      "bash": "python3 ./hooks/wagents-hook.py research-readonly-write-guard --harness github-copilot",
+      "bash": "./hooks/run-wagents-hook git-commit-push-guard --harness github-copilot",
+      "cwd": ".",
+      "timeoutSec": 5,
+      "comment": "Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites across the fleet.",
+      "_apm_source": "_local/agents"
+    },
+    {
+      "type": "command",
+      "bash": "./hooks/run-wagents-hook image-input-optimizer-guard --harness github-copilot",
+      "cwd": ".",
+      "timeoutSec": 60,
+      "comment": "Resize and compress oversized local image inputs before harnesses consume them.",
+      "_apm_source": "_local/agents"
+    },
+    {
+      "type": "command",
+      "bash": "./hooks/run-wagents-hook research-readonly-write-guard --harness github-copilot",
       "cwd": ".",
       "timeoutSec": 5,
       "comment": "Prevent source-file write tools during active research sessions.",
@@ -167,10 +273,33 @@
     },
     {
       "type": "command",
-      "bash": "python3 ./hooks/wagents-hook.py research-dangerous-shell-guard --harness github-copilot",
+      "bash": "./hooks/run-wagents-hook research-dangerous-shell-guard --harness github-copilot",
       "cwd": ".",
       "timeoutSec": 5,
       "comment": "Block dangerous shell side effects during active research sessions.",
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "UserPromptSubmit": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook research-prompt-triage-context --harness claude-code",
+          "timeout": 5
+        }
+      ],
+      "_apm_source": "_local/agents"
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook research-prompt-triage-context --harness codex",
+          "timeout": 5,
+          "statusMessage": "Activate research hook state and inject research-method reminders."
+        }
+      ],
       "_apm_source": "_local/agents"
     }
   ],
@@ -179,8 +308,89 @@
       "hooks": [
         {
           "type": "command",
-          "command": "python3 ./hooks/wagents-hook.py research-stop-verifier --harness claude-code",
+          "command": "./hooks/run-wagents-hook research-stop-verifier --harness claude-code",
           "timeout": 30
+        }
+      ],
+      "_apm_source": "_local/agents"
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/verify-before-stop.sh",
+          "timeout": 60
+        }
+      ],
+      "_apm_source": "_local/agents"
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/task-completed-gate.sh",
+          "timeout": 120
+        }
+      ],
+      "_apm_source": "_local/agents"
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook codex-stop-truth-gate --harness codex",
+          "timeout": 5,
+          "statusMessage": "Checking final-answer evidence"
+        }
+      ],
+      "_apm_source": "_local/agents"
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook research-stop-verifier --harness codex",
+          "timeout": 30,
+          "statusMessage": "Verify research skill invariants before an active research session completes."
+        }
+      ],
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "SubagentStop": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/teammate-idle-gate.sh",
+          "timeout": 120
+        }
+      ],
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "SessionStart": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook codex-session-start-context --harness codex",
+          "timeout": 5,
+          "statusMessage": "Gathering Codex session context"
+        }
+      ],
+      "matcher": "startup|resume|clear",
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "PermissionRequest": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook codex-permission-request-guard --harness codex",
+          "timeout": 5,
+          "statusMessage": "Checking approval request safety"
         }
       ],
       "_apm_source": "_local/agents"
@@ -188,14 +398,9 @@
   ],
   "sessionStart": [
     {
-      "hooks": [
-        {
-          "type": "command",
-          "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py cursor-session-start-context --harness cursor",
-          "timeout": 5
-        }
-      ],
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-session-start-context --harness cursor",
       "matcher": "startup|resume|clear",
+      "timeout": 5,
       "_apm_source": "_local/agents"
     },
     {
@@ -209,35 +414,162 @@
   ],
   "stop": [
     {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-stop-truth-gate --harness cursor",
+      "timeout": 5,
+      "_apm_source": "_local/agents"
+    },
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" research-stop-verifier --harness cursor",
+      "timeout": 30,
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "beforeReadFile": [
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-before-read-file-guard --harness cursor",
+      "timeout": 5,
+      "failClosed": true,
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "beforeShellExecution": [
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-before-shell-execution-guard --harness cursor",
+      "timeout": 5,
+      "failClosed": true,
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "beforeMCPExecution": [
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-before-mcp-execution-guard --harness cursor",
+      "timeout": 5,
+      "failClosed": true,
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "afterFileEdit": [
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-after-file-edit-context --harness cursor",
+      "timeout": 5,
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "subagentStart": [
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-subagent-start-context --harness cursor",
+      "timeout": 5,
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "beforeSubmitPrompt": [
+    {
+      "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" research-prompt-triage-context --harness cursor",
+      "timeout": 5,
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "BeforeTool": [
+    {
       "hooks": [
         {
           "type": "command",
-          "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py cursor-stop-truth-gate --harness cursor",
-          "timeout": 5
+          "command": "./hooks/run-wagents-hook git-commit-push-guard --harness gemini-cli",
+          "name": "git-commit-push-guard",
+          "timeout": 5000,
+          "description": "Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites across the fleet."
         }
       ],
+      "sequential": true,
+      "matcher": "Bash|bash|run_shell_command|shell|terminal",
       "_apm_source": "_local/agents"
     },
     {
       "hooks": [
         {
           "type": "command",
-          "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py research-stop-verifier --harness cursor",
-          "timeout": 30
+          "command": "./hooks/run-wagents-hook image-input-optimizer-guard --harness gemini-cli",
+          "name": "image-input-optimizer-guard",
+          "timeout": 60000,
+          "description": "Resize and compress oversized local image inputs before harnesses consume them."
         }
       ],
+      "sequential": true,
+      "matcher": "analyze_image|attach_image|screenshot|upload_image|view_image|Read|read|.*[Ii]mage.*|.*[Vv]ision.*|.*[Ss]creenshot.*|.*[Aa]ttach.*|.*[Uu]pload.*",
       "_apm_source": "_local/agents"
-    }
-  ],
-  "beforeSubmitPrompt": [
+    },
     {
       "hooks": [
         {
           "type": "command",
-          "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py research-prompt-triage-context --harness cursor",
-          "timeout": 5
+          "command": "./hooks/run-wagents-hook research-readonly-write-guard --harness gemini-cli",
+          "name": "research-readonly-write-guard",
+          "timeout": 5000,
+          "description": "Prevent source-file write tools during active research sessions."
         }
       ],
+      "sequential": true,
+      "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command",
+      "_apm_source": "_local/agents"
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook research-dangerous-shell-guard --harness gemini-cli",
+          "name": "research-dangerous-shell-guard",
+          "timeout": 5000,
+          "description": "Block dangerous shell side effects during active research sessions."
+        }
+      ],
+      "sequential": true,
+      "matcher": "Bash|bash|run_shell_command",
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "BeforeAgent": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook research-prompt-triage-context --harness gemini-cli",
+          "name": "research-prompt-triage-context",
+          "timeout": 5000,
+          "description": "Activate research hook state and inject research-method reminders."
+        }
+      ],
+      "sequential": true,
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "AfterTool": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook research-evidence-ledger --harness gemini-cli",
+          "name": "research-evidence-ledger",
+          "timeout": 5000,
+          "description": "Append lightweight provenance metadata for research retrieval tools."
+        }
+      ],
+      "sequential": true,
+      "matcher": "WebSearch|web_search|fetch|fetcher|trafilatura|docling|mcp__.*|mcp_.*",
+      "_apm_source": "_local/agents"
+    }
+  ],
+  "AfterAgent": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./hooks/run-wagents-hook research-stop-verifier --harness gemini-cli",
+          "name": "research-stop-verifier",
+          "timeout": 30000,
+          "description": "Verify research skill invariants before an active research session completes."
+        }
+      ],
+      "sequential": true,
       "_apm_source": "_local/agents"
     }
   ],
@@ -252,7 +584,7 @@
     },
     {
       "type": "command",
-      "bash": "python3 ./hooks/wagents-hook.py research-prompt-triage-context --harness github-copilot",
+      "bash": "./hooks/run-wagents-hook research-prompt-triage-context --harness github-copilot",
       "cwd": ".",
       "timeoutSec": 5,
       "comment": "Activate research hook state and inject research-method reminders.",

@@ -1,0 +1,217 @@
+{
+  "history": [
+    {
+      "date": "2026-07-01",
+      "orphan_count": 130,
+      "total_internal_links": 375,
+      "total_pages": 861
+    },
+    {
+      "date": "2026-07-02",
+      "orphan_count": 131,
+      "total_internal_links": 375,
+      "total_pages": 862
+    }
+  ],
+  "latest": {
+    "most_linked_pages": [
+      {
+        "backlinks": 3,
+        "slug": "/harness-support"
+      },
+      {
+        "backlinks": 2,
+        "slug": "/mcp"
+      },
+      {
+        "backlinks": 2,
+        "slug": "/reports/site-graph-insights"
+      },
+      {
+        "backlinks": 2,
+        "slug": "/skills/catalog/custom/review"
+      },
+      {
+        "backlinks": 2,
+        "slug": "/skills/catalog/custom/skill-creator"
+      },
+      {
+        "backlinks": 1,
+        "slug": "/agents"
+      },
+      {
+        "backlinks": 1,
+        "slug": "/cli"
+      },
+      {
+        "backlinks": 1,
+        "slug": "/contributing"
+      },
+      {
+        "backlinks": 1,
+        "slug": "/harness-config/mcp-registry"
+      },
+      {
+        "backlinks": 1,
+        "slug": "/harness-config/token-efficacy"
+      },
+      {
+        "backlinks": 1,
+        "slug": "/reports/docs-dependency-drift"
+      },
+      {
+        "backlinks": 1,
+        "slug": "/reports/docs-graph-snapshot"
+      },
+      {
+        "backlinks": 1,
+        "slug": "/reports/docs-link-check"
+      },
+      {
+        "backlinks": 1,
+        "slug": "/reports/llms-txt-coverage"
+      },
+      {
+        "backlinks": 1,
+        "slug": "/skills/catalog"
+      }
+    ],
+    "note": "Counts absolute-path markdown links only (`](/foo/)`); relative links are not resolved.",
+    "orphan_count": 131,
+    "orphan_pages": [
+      "/agents/agent-change-recorder",
+      "/agents/agent-eval-runner",
+      "/agents/agent-permission-simulator",
+      "/agents/agent-registry-publisher",
+      "/agents/agent-transpiler",
+      "/agents/bridge-consistency-checker",
+      "/agents/code-reviewer",
+      "/agents/docs-writer",
+      "/agents/mcp-capability-mapper",
+      "/agents/mcp-template-maintainer",
+      "/agents/orchestrator",
+      "/agents/performance-profiler",
+      "/agents/permission-policy-auditor",
+      "/agents/planner",
+      "/agents/prompt-optimizer",
+      "/agents/release-manager",
+      "/agents/researcher",
+      "/agents/security-auditor",
+      "/agents/skill-author",
+      "/agents/triage-lead",
+      "/architecture/instruction-loading",
+      "/catalog",
+      "/catalog/platforms",
+      "/catalog/tags",
+      "/catalog/tooling",
+      "/harness-config",
+      "/harness-config/plugin-skill-ownership",
+      "/harness-config/rtk-integration",
+      "/harness-config/sync-manifest",
+      "/harness-config/tooling-policy",
+      "/hooks",
+      "/hooks/codex-destructive-shell-guard",
+      "/hooks/codex-permission-request-guard",
+      "/hooks/codex-post-tool-verify-context",
+      "/hooks/codex-protected-file-guard",
+      "/hooks/codex-session-start-context",
+      "/hooks/codex-stop-truth-gate",
+      "/hooks/cursor-after-file-edit-context",
+      "/hooks/cursor-before-mcp-execution-guard",
+      "/hooks/cursor-before-read-file-guard",
+      "/hooks/cursor-before-shell-execution-guard",
+      "/hooks/cursor-destructive-shell-guard",
+      "/hooks/cursor-post-tool-verify-context",
+      "/hooks/cursor-protected-file-guard",
+      "/hooks/cursor-session-start-context",
+      "/hooks/cursor-stop-truth-gate",
+      "/hooks/cursor-subagent-start-context",
+      "/hooks/destructive-shell-guard",
+      "/hooks/git-commit-push-guard",
+      "/hooks/image-input-optimizer-guard",
+      "/hooks/post-edit-format",
+      "/hooks/post-edit-lint",
+      "/hooks/prompt-log",
+      "/hooks/protected-file-guard",
+      "/hooks/research-dangerous-shell-guard",
+      "/hooks/research-evidence-ledger",
+      "/hooks/research-prompt-triage-context",
+      "/hooks/research-readonly-write-guard",
+      "/hooks/research-stop-verifier",
+      "/hooks/session-start",
+      "/hooks/task-completed-gate",
+      "/hooks/teammate-idle-gate",
+      "/hooks/verify-before-stop",
+      "/mcp/agent-catalog",
+      "/mcp/changelog-digest",
+      "/mcp/ci-artifacts",
+      "/mcp/docs-graph",
+      "/mcp/docs-index",
+      "/mcp/eval-results",
+      "/mcp/mcphub",
+      "/mcp/oauth-reference",
+      "/mcp/registry-publisher",
+      "/mcp/release-provenance",
+      "/mcp/repo-readonly",
+      "/mcp/sandbox-profiles",
+      "/mcp/skill-catalog",
+      "/mcp/source-url-health",
+      "/mcp/template-smoke",
+      "/mcp/workflow-status",
+      "/reports",
+      "/skill-research/accessibility",
+      "/skill-research/baseline-ui",
+      "/skill-research/building-native-ui",
+      "/skill-research/ckm:*",
+      "/skill-research/design-agent",
+      "/skill-research/design-doc-mermaid",
+      "/skill-research/design-md",
+      "/skill-research/design-task",
+      "/skill-research/design-taste-frontend",
+      "/skill-research/emil-design-eng",
+      "/skill-research/extract-design-system",
+      "/skill-research/figma-code-connect",
+      "/skill-research/figma-generate-design",
+      "/skill-research/figma-implement-design",
+      "/skill-research/fixing-accessibility",
+      "/skill-research/fixing-metadata",
+      "/skill-research/frontend-designer",
+      "/skill-research/impeccable",
+      "/skill-research/react:components",
+      "/skill-research/shadcn",
+      "/skill-research/shieldcn-badges",
+      "/skill-research/sleek-design-mobile-apps",
+      "/skill-research/stitch-loop",
+      "/skill-research/stitch::generate-design",
+      "/skill-research/tailwind-design-system",
+      "/skill-research/ui-ux-pro-max",
+      "/skill-research/web-design-guidelines",
+      "/skills/catalog/custom/cross-agent-install-smoke",
+      "/skills/catalog/custom/grok-delegate",
+      "/skills/catalog/custom/mcphub-operator",
+      "/skills/catalog/custom/skill-bundle-curator",
+      "/skills/catalog/custom/skill-compat-matrix",
+      "/skills/catalog/custom/skill-eval-scaffolder",
+      "/skills/catalog/custom/skill-install-dry-run-planner",
+      "/skills/catalog/custom/skill-lifecycle-manager",
+      "/skills/catalog/custom/skill-localization-packager",
+      "/skills/catalog/custom/skill-package-manifest-enricher",
+      "/skills/catalog/custom/skill-quality-dashboard",
+      "/skills/catalog/custom/skill-registry-lock",
+      "/skills/catalog/custom/skill-signing-verifier",
+      "/skills/catalog/custom/skill-tag-taxonomist",
+      "/skills/catalog/custom/skill-token-budget-linter",
+      "/skills/catalog/custom/skill-trace-debugger",
+      "/skills/catalog/external/a11y-debugging",
+      "/skills/catalog/external/apm-cli",
+      "/skills/catalog/external/chrome-devtools",
+      "/skills/catalog/external/chrome-devtools-cli",
+      "/skills/catalog/external/debug-optimize-lcp",
+      "/skills/catalog/external/memory-leak-debugging",
+      "/skills/catalog/external/troubleshooting",
+      "/skills/install"
+    ],
+    "total_internal_links": 375,
+    "total_pages": 862
+  }
+}

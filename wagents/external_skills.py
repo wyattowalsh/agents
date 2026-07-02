@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import re
 import shlex
-from collections.abc import Mapping
 from dataclasses import asdict, dataclass, replace
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping
     from pathlib import Path
 
 
@@ -140,6 +140,7 @@ CURATED_EXTERNAL_REQUIRED_FIELDS = (
     "sync_kind",
 )
 INSTALLABLE_STATUSES = {"install-now-after-trust-gate", "inspect-then-install"}
+GLOBAL_ONLY_OR_AVOID_STATUS = "global-only-or-avoid"
 SYNC_RELEVANT_EXTERNAL_FIELDS = (
     "name",
     "source",
@@ -209,13 +210,27 @@ def curated_external_authoring_errors(
     if "target_agents" not in frontmatter:
         errors.append({"source": source, "message": "Curated external authoring is missing 'target_agents'"})
 
-    install_command = str(frontmatter.get("install_command") or "")
+    status = str(frontmatter.get("status") or "")
+    install_command = str(frontmatter.get("install_command") or "").strip()
     sync_kind = str(frontmatter.get("sync_kind") or "")
     if sync_kind and sync_kind not in SUPPORTED_SYNC_KINDS:
         errors.append({"source": source, "message": f"Invalid sync_kind '{sync_kind}'"})
 
     if _is_installable_authoring(frontmatter) and not install_command:
-        errors.append({"source": source, "message": "Installable curated external authoring is missing 'install_command'"})
+        errors.append({
+            "source": source,
+            "message": "Installable curated external authoring is missing 'install_command'",
+        })
+
+    if status == GLOBAL_ONLY_OR_AVOID_STATUS and install_command:
+        errors.append(
+            {
+                "source": source,
+                "message": "global-only-or-avoid authoring rows must leave 'install_command' empty",
+            }
+        )
+    elif sync_kind == SYNC_KIND_NONE and is_skills_cli_install_command(install_command):
+        errors.append({"source": source, "message": "sync_kind none rows must not publish npx skills add"})
 
     if sync_kind == SYNC_KIND_SKILLS_CLI and not is_skills_cli_install_command(install_command):
         errors.append({"source": source, "message": "skills-cli authoring rows must use an npx skills add command"})

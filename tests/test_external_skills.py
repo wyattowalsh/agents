@@ -22,6 +22,10 @@ def _write_authoring_mdx(
     sync_kind: str | None = "skills-cli",
     source: str = "owner/repo",
     install_source: str | None = None,
+    status: str = "install-now-after-trust-gate",
+    trust_tier: str = "curated-trust-gated",
+    provenance_status: str = "verified-install-command",
+    selector_mode: str = "named",
 ) -> Path:
     install_source = install_source or source
     sync_kind_line = f"sync_kind: {sync_kind}\n" if sync_kind is not None else ""
@@ -33,12 +37,12 @@ description: Demo curated skill.
 source_kind: curated-external
 source: {source}
 install_source: {install_source}
-status: install-now-after-trust-gate
-trust_tier: curated-trust-gated
-provenance_status: verified-install-command
+status: {status}
+trust_tier: {trust_tier}
+provenance_status: {provenance_status}
 source_url: https://github.com/{source}
 target_agents: [codex]
-{sync_kind_line}selector_mode: named
+{sync_kind_line}selector_mode: {selector_mode}
 install_command: {install_command}
 ---
 
@@ -311,7 +315,7 @@ def test_read_external_skill_entries_strict_rejects_stale_index_extra_row(tmp_pa
     monkeypatch.setattr("wagents.skill_index.AUTHORING_SKILLS_DIR", authoring_dir)
     monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", index_path)
 
-    with pytest.raises(ExternalSkillCatalogError, match="stale-skill.*docs generate"):
+    with pytest.raises(ExternalSkillCatalogError, match=r"stale-skill.*docs generate"):
         read_external_skill_entries(strict=True)
 
 
@@ -336,7 +340,7 @@ def test_read_external_skill_entries_strict_rejects_index_mismatch(tmp_path, mon
     monkeypatch.setattr("wagents.skill_index.AUTHORING_SKILLS_DIR", authoring_dir)
     monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", index_path)
 
-    with pytest.raises(ExternalSkillCatalogError, match="mismatched index rows.*demo-skill"):
+    with pytest.raises(ExternalSkillCatalogError, match=r"mismatched index rows.*demo-skill"):
         read_external_skill_entries(strict=True)
 
 
@@ -366,6 +370,26 @@ def test_read_external_skill_entries_strict_rejects_missing_sync_kind(tmp_path, 
     monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", tmp_path / "missing-index.json")
 
     with pytest.raises(ExternalSkillCatalogError, match="sync_kind"):
+        read_external_skill_entries(strict=True)
+
+
+def test_read_external_skill_entries_strict_rejects_global_only_install_command(tmp_path, monkeypatch):
+    authoring_dir = tmp_path / "authoring" / "skills"
+    authoring_dir.mkdir(parents=True)
+    _write_authoring_mdx(
+        authoring_dir,
+        "avoid-skill",
+        install_command="npx skills add owner/repo --skill avoid-skill -y -g -a codex",
+        sync_kind="none",
+        status="global-only-or-avoid",
+        trust_tier="global-only-or-avoid",
+        provenance_status="explicit-unresolved",
+        selector_mode="unresolved",
+    )
+    monkeypatch.setattr("wagents.skill_index.AUTHORING_SKILLS_DIR", authoring_dir)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", tmp_path / "missing-index.json")
+
+    with pytest.raises(ExternalSkillCatalogError, match="must leave 'install_command' empty"):
         read_external_skill_entries(strict=True)
 
 

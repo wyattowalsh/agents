@@ -12,13 +12,16 @@ from collectors.authoring import collect_authoring_errors
 from collectors.hooks import collect_hook_errors
 from collectors.mcp import collect_mcp_validation_errors
 from collectors.mcp_registry import collect_mcp_registry_errors
+from collectors.mcphub_settings import collect_mcphub_settings_errors
 from collectors.paths import collect_path_portability_errors
 from collectors.quarantine import collect_quarantine_errors
+from collectors.rtk import collect_rtk_instruction_errors
 from collectors.skills import collect_skill_errors
 
 ensure_validate_importable()
 
 from asset_toolkit.common import emit_validation_output, find_repo_root
+from sarif import emit_sarif_log
 
 
 def collect_repo_errors(repo_root: Path) -> list[dict[str, str]]:
@@ -31,13 +34,15 @@ def collect_repo_errors(repo_root: Path) -> list[dict[str, str]]:
     errors.extend(collect_hook_errors(repo_root))
     errors.extend(collect_path_portability_errors(repo_root))
     errors.extend(collect_mcp_registry_errors(repo_root))
+    errors.extend(collect_mcphub_settings_errors(repo_root))
     errors.extend(collect_quarantine_errors(repo_root))
+    errors.extend(collect_rtk_instruction_errors(repo_root))
     return errors
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate repository agent assets")
-    parser.add_argument("--format", choices=["text", "json", "jsonl"], default="text")
+    parser.add_argument("--format", choices=["text", "json", "jsonl", "sarif"], default="text")
     parser.add_argument(
         "--repo-root",
         type=Path,
@@ -51,7 +56,10 @@ def main(argv: list[str] | None = None) -> int:
     else:
         repo_root = find_repo_root() or repo_root_from_validate()
     errors = collect_repo_errors(repo_root)
-    emit_validation_output(args.format, errors)
+    if args.format == "sarif":
+        emit_sarif_log(errors)
+    else:
+        emit_validation_output(args.format, errors)
     return 1 if errors else 0
 
 

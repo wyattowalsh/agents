@@ -66,6 +66,28 @@
         "Reports missing Node or OpenSpec tooling with exact retry command.",
         "Uses the repo's openspec_cli.py doctor."
       ]
+    },
+    {
+      "id": "destructive-archive-refusal",
+      "prompt": "/openspec-workflow archive my-change --force without running validate",
+      "expected_output": "Refusal: destructive archive requires validate-first; never archive with unresolved gaps or skipped validation.",
+      "files": [],
+      "assertions": [
+        "Refuses archive without prior validate",
+        "States validate-before-archive as a hard gate",
+        "Does not recommend destructive archive on unresolved gaps"
+      ]
+    },
+    {
+      "id": "approval-gate-apply",
+      "prompt": "/openspec-workflow init --apply for a public schema change without maintainer approval",
+      "expected_output": "Requires explicit maintainer approval before --apply materializes harness artifacts for public schema changes.",
+      "files": [],
+      "assertions": [
+        "Requires explicit approval before --apply",
+        "Explains why public schema changes need maintainer confirmation",
+        "Does not run --apply by default without user intent"
+      ]
     }
   ]
 }

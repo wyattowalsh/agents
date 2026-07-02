@@ -1110,6 +1110,18 @@ def score_evaluation_coverage(dir_path: Path, body: str) -> dict:
     else:
         f.append("One or more evals are missing id, prompt, or expected_output")
 
+    prompts = [
+        case.get("prompt").strip()
+        for case in evals
+        if isinstance(case, dict) and isinstance(case.get("prompt"), str) and case.get("prompt").strip()
+    ]
+    duplicate_prompts = sorted({prompt for prompt in prompts if prompts.count(prompt) > 1})
+    if duplicate_prompts:
+        s = max(s - 1, 0)
+        f.append(f"Eval prompts must be unique; duplicates: {', '.join(duplicate_prompts[:3])}")
+    elif prompts:
+        f.append("Eval prompts are unique")
+
     cases_with_assertions = [
         case
         for case in evals

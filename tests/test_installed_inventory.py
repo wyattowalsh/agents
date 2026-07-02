@@ -1,19 +1,43 @@
 import json
 import subprocess
 import sys
+from typing import Any, cast
+
+import pytest
 
 from wagents.external_skills import parse_external_skill_entries
 from wagents.installed_inventory import (
+    CLEANUP_ACTION_MANUAL_REVIEW,
+    CLEANUP_ACTION_NONE,
+    CLEANUP_ACTION_PRESERVE,
+    CLEANUP_ACTION_REFRESH_PLUGIN_CACHE,
+    CLEANUP_ACTION_REMOVE_GENERATED_SYMLINK,
+    DUPLICATE_CLASS_DIVERGENT_BODY,
+    DUPLICATE_CLASS_SAME_BODY,
+    DUPLICATE_CLASS_SAME_REALPATH,
+    EXPOSURE_OWNER_DIRECT_REPO_PATH,
+    EXPOSURE_OWNER_PLUGIN,
     _run_harness_command,
+    build_skill_cleanup_report,
     collect_installed_inventory,
+    collect_skill_cleanup_exposures,
     mirror_grok_skills_from_claude,
     query_harness_skills,
+    repo_skill_exposure_owner_for_agent,
     skills_cli_agent_id,
 )
 
 
 def _completed(cmd, payload):
     return subprocess.CompletedProcess(cmd, 0, stdout=json.dumps(payload), stderr="")
+
+
+def _write_skill(path, name: str, description: str = "Demo") -> None:
+    path.mkdir(parents=True, exist_ok=True)
+    (path / "SKILL.md").write_text(
+        f"---\nname: {name}\ndescription: {description}\n---\n\n# {name}\n",
+        encoding="utf-8",
+    )
 
 
 def test_collect_installed_inventory_normalizes_repo_curated_and_lock_sources(tmp_path):
@@ -212,6 +236,40 @@ def test_query_harness_skills_falls_back_to_local_root_on_timeout(tmp_path):
     assert entry.raw_agents == ("Claude Code",)
 
 
+def test_query_harness_skills_falls_back_for_plugin_overlap_harnesses(tmp_path):
+    roots = {
+        "antigravity": (tmp_path / ".agents" / "skills" / "fallback-skill", "Antigravity"),
+        "crush": (tmp_path / ".config" / "crush" / "skills" / "fallback-skill", "Crush"),
+        "cursor": (tmp_path / ".cursor" / "skills" / "fallback-skill", "Cursor"),
+    }
+    for skill_dir, _label in roots.values():
+        skill_dir.mkdir(parents=True)
+        (skill_dir / "SKILL.md").write_text("---\nname: fallback-skill\ndescription: Local fallback\n---\n")
+
+    def runner(cmd, **kwargs):
+        raise subprocess.TimeoutExpired(cmd, kwargs["timeout"])
+
+    results = query_harness_skills(
+        agent_ids=("antigravity", "crush", "cursor"),
+        runner=runner,
+        timeout_sec=3,
+        home=tmp_path,
+    )
+
+    by_agent = {result.agent_id: result for result in results}
+    for agent_id, (skill_dir, label) in roots.items():
+        result = by_agent[agent_id]
+        assert result.ok
+        assert result.error.startswith("Fallback local skill-root inventory after timeout:")
+        assert len(result.entries) == 1
+        entry = result.entries[0]
+        assert entry.queried_agent == agent_id
+        assert entry.name == "fallback-skill"
+        assert entry.path == str(skill_dir)
+        assert entry.scope == "global"
+        assert entry.raw_agents == (label,)
+
+
 def test_run_harness_command_captures_large_stdout():
     script = (
         "import json; "
@@ -323,3 +381,134 @@ def test_query_grok_harness_includes_repo_project_skills(tmp_path):
     by_name = {entry.name: entry for entry in result.entries}
     assert by_name["shared-skill"].scope == "project"
     assert by_name["shared-skill"].path == str(project_skill)
+
+
+def test_repo_skill_exposure_owner_prefers_codex_plugin_when_enabled(tmp_path):
+    home = tmp_path / "home"
+    repo = tmp_path / "repo"
+    config = home / ".codex" / "config.toml"
+    config.parent.mkdir(parents=True)
+    config.write_text('[plugins."agents@agents"]\nenabled = true\n', encoding="utf-8")
+
+    assert repo_skill_exposure_owner_for_agent("codex", home=home, root=repo) == EXPOSURE_OWNER_PLUGIN
+
+    config.write_text('[plugins."agents@agents"]\nenabled = false\n', encoding="utf-8")
+
+    assert repo_skill_exposure_owner_for_agent("codex", home=home, root=repo) == "skills-cli"
+
+
+def test_repo_skill_exposure_owner_prefers_opencode_direct_repo_path(tmp_path):
+    home = tmp_path / "home"
+    repo = tmp_path / "repo"
+    (repo / "skills").mkdir(parents=True)
+    (repo / "opencode.json").write_text('{"skills": {"paths": ["skills"]}}', encoding="utf-8")
+
+    assert repo_skill_exposure_owner_for_agent("opencode", home=home, root=repo) == EXPOSURE_OWNER_DIRECT_REPO_PATH
+
+
+def test_collect_skill_cleanup_exposures_marks_repo_symlink_removed_when_plugin_owned(tmp_path):
+    home = tmp_path / "home"
+    repo = tmp_path / "repo"
+    _write_skill(repo / "skills" / "demo-skill", "demo-skill")
+    codex_config = home / ".codex" / "config.toml"
+    codex_config.parent.mkdir(parents=True)
+    codex_config.write_text('[plugins."agents@agents"]\nenabled = true\n', encoding="utf-8")
+    codex_skill_root = home / ".codex" / "skills"
+    codex_skill_root.mkdir(parents=True)
+    (codex_skill_root / "demo-skill").symlink_to(repo / "skills" / "demo-skill", target_is_directory=True)
+
+    exposures = collect_skill_cleanup_exposures(root=repo, home=home)
+    (exposure,) = [item for item in exposures if item.name == "demo-skill" and item.harness == "codex"]
+
+    assert exposure.repo_owned is True
+    assert exposure.canonical_owner == EXPOSURE_OWNER_PLUGIN
+    assert exposure.cleanup_action == CLEANUP_ACTION_REMOVE_GENERATED_SYMLINK
+
+
+def test_collect_skill_cleanup_exposures_classifies_duplicate_bodies(tmp_path):
+    home = tmp_path / "home"
+    repo = tmp_path / "repo"
+    _write_skill(repo / "skills" / "same-realpath", "same-realpath")
+    for root in (home / ".claude" / "skills", home / ".grok" / "skills"):
+        root.mkdir(parents=True)
+        (root / "same-realpath").symlink_to(repo / "skills" / "same-realpath", target_is_directory=True)
+
+    _write_skill(home / ".claude" / "skills" / "same-body", "same-body", "Shared")
+    _write_skill(home / ".grok" / "skills" / "same-body", "same-body", "Shared")
+    _write_skill(home / ".claude" / "skills" / "divergent-body", "divergent-body", "One")
+    _write_skill(home / ".grok" / "skills" / "divergent-body", "divergent-body", "Two")
+
+    exposures = collect_skill_cleanup_exposures(root=repo, home=home)
+    by_name = {}
+    for exposure in exposures:
+        by_name.setdefault(exposure.name, []).append(exposure)
+
+    assert {item.duplicate_class for item in by_name["same-realpath"]} == {DUPLICATE_CLASS_SAME_REALPATH}
+    assert {item.duplicate_class for item in by_name["same-body"]} == {DUPLICATE_CLASS_SAME_BODY}
+    divergent = by_name["divergent-body"]
+    assert {item.duplicate_class for item in divergent} == {DUPLICATE_CLASS_DIVERGENT_BODY}
+    assert {item.cleanup_action for item in divergent} == {CLEANUP_ACTION_MANUAL_REVIEW}
+    assert {item.cleanup_action for item in by_name["same-body"]} == {CLEANUP_ACTION_PRESERVE}
+
+
+def test_collect_skill_cleanup_exposures_hashes_nested_behavior_files(tmp_path):
+    home = tmp_path / "home"
+    repo = tmp_path / "repo"
+    for root, script_body in (
+        (home / ".claude" / "skills" / "nested-diff", "print('claude')\n"),
+        (home / ".grok" / "skills" / "nested-diff", "print('grok')\n"),
+    ):
+        _write_skill(root, "nested-diff", "Shared")
+        scripts_dir = root / "scripts"
+        scripts_dir.mkdir()
+        (scripts_dir / "check.py").write_text(script_body, encoding="utf-8")
+
+    exposures = collect_skill_cleanup_exposures(root=repo, home=home)
+    nested = [item for item in exposures if item.name == "nested-diff"]
+
+    assert {item.duplicate_class for item in nested} == {DUPLICATE_CLASS_DIVERGENT_BODY}
+    assert {item.cleanup_action for item in nested} == {CLEANUP_ACTION_MANUAL_REVIEW}
+
+
+@pytest.mark.parametrize(
+    ("cache_head", "expected_action", "expected_risk"),
+    (
+        ("", CLEANUP_ACTION_REFRESH_PLUGIN_CACHE, "approval-required"),
+        ("a" * 40, CLEANUP_ACTION_NONE, "none"),
+        ("b" * 40, CLEANUP_ACTION_REFRESH_PLUGIN_CACHE, "approval-required"),
+    ),
+)
+def test_build_skill_cleanup_report_classifies_codex_plugin_cache_heads(
+    tmp_path,
+    monkeypatch,
+    cache_head,
+    expected_action,
+    expected_risk,
+):
+    home = tmp_path / "home"
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    cache = home / ".codex" / "plugins" / "cache" / "agents" / "agents" / "local"
+    config = home / ".codex" / "config.toml"
+    config.parent.mkdir(parents=True)
+    config.write_text('[plugins."agents@agents"]\nenabled = true\n', encoding="utf-8")
+    repo_head = "a" * 40
+
+    def fake_git_head(path):
+        if path == repo:
+            return repo_head
+        if path == cache:
+            return cache_head
+        return ""
+
+    monkeypatch.setattr("wagents.installed_inventory._git_head", fake_git_head)
+
+    report = build_skill_cleanup_report(root=repo, home=home)
+    plugins = report.get("plugins", [])
+    assert isinstance(plugins, list)
+    (codex_row,) = [row for row in plugins if isinstance(row, dict) and row.get("harness") == "codex"]
+    codex_row = cast("dict[str, Any]", codex_row)
+
+    assert codex_row["cleanup_action"] == expected_action
+    assert codex_row["risk"] == expected_risk
+    assert codex_row["installed_state"] == {"cache_head": cache_head[:12], "repo_head": repo_head[:12]}

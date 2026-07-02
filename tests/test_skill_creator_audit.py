@@ -317,6 +317,60 @@ def test_evaluation_and_validation_dimensions_score_real_contracts(tmp_path: Pat
     assert _dimension(result, "validation-contract")["score"] >= 9
 
 
+def test_evaluation_coverage_warns_on_duplicate_prompts(tmp_path: Path):
+    skill_dir = _write_skill(
+        tmp_path,
+        "duplicate-prompt-skill",
+        """
+        # Duplicate Prompt Skill
+
+        ## Dispatch
+
+        | $ARGUMENTS | Action |
+        |------------|--------|
+        | `audit <path>` | Audit |
+        | Empty | Show help |
+
+        ## Critical Rules
+
+        1. Validate before exit
+        2. Never skip eval validation
+        3. Refuse invalid paths
+        """,
+    )
+    evals_dir = skill_dir / "evals"
+    evals_dir.mkdir()
+    (evals_dir / "evals.json").write_text(
+        textwrap.dedent(
+            """\
+            {
+              "skill_name": "duplicate-prompt-skill",
+              "evals": [
+                {
+                  "id": "explicit-one",
+                  "prompt": "/duplicate-prompt-skill audit skills/foo",
+                  "expected_output": "Audits the target skill.",
+                  "assertions": ["Agent routes explicit invocation."]
+                },
+                {
+                  "id": "explicit-two",
+                  "prompt": " /duplicate-prompt-skill audit skills/foo ",
+                  "expected_output": "Audits the target skill again.",
+                  "assertions": ["Agent still routes explicit invocation."]
+                }
+              ]
+            }
+            """
+        ),
+        encoding="utf-8",
+    )
+
+    result = audit_skill(str(skill_dir))
+    findings = _dimension(result, "evaluation-coverage")["findings"]
+
+    assert any("Eval prompts must be unique" in finding for finding in findings)
+
+
 def test_cross_skill_tooling_references_do_not_reduce_portability_score(tmp_path: Path):
     skill_dir = _write_skill(
         tmp_path,

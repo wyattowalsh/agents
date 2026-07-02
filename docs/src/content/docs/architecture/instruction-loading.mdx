@@ -1,0 +1,27 @@
+---
+title: Instruction Loading
+description: Harness entrypoints and sync for cross-platform instructions
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+**Instruction loading** is harness-specific projection of the same canonical sources:
+
+| Harness | Entry | Bridge |
+| ------- | ----- | ------ |
+| Claude Code | `CLAUDE.md` | `@AGENTS.md` → `@instructions/global.md` |
+| Cursor / Codex / OpenCode | `AGENTS.md` | `@instructions/global.md` |
+| GitHub Copilot | `.github/copilot-instructions.md` | Generated from `instructions/copilot-global.md` |
+| Grok | `.grok/config.toml` + skills dirs | `instructions/grok-global.md` |
+
+Platform overlays may add runtime guidance but must not weaken safety or secret-handling rules.
+
+<Aside type="caution" title="Generated vs hand-authored">
+Regenerate mirrors with `uv run python scripts/sync_agent_stack.py --apply --targets repo` after editing canonical instruction sources.
+</Aside>
+
+## Maintainer loop
+
+1. Edit `instructions/global.md` or platform overlay.
+2. Run stack sync for harness mirrors.
+3. Run `uv run wagents validate` and `uv run wagents docs generate --check`.

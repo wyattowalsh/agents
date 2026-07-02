@@ -1,0 +1,23 @@
+{
+  "wave": "W0",
+  "dispatched": [
+    {
+      "task_id": "T-000a-h",
+      "agent": "SA-L0",
+      "files": [
+        "openspec/changes/integrate-ideas-backlog/proposal.md",
+        "openspec/changes/integrate-ideas-backlog/affected-surfaces.md",
+        "openspec/changes/integrate-ideas-backlog/design.md",
+        "openspec/changes/integrate-ideas-backlog/validation-matrix.md",
+        "openspec/changes/integrate-ideas-backlog/tasks.md",
+        "openspec/changes/integrate-ideas-backlog/specs/ideas-integration/spec.md",
+        "planning/manifests/ideas-backlog-orchestration.json"
+      ]
+    }
+  ],
+  "gate_checks": [
+    "uv run wagents openspec validate"
+  ],
+  "blocked_until": [],
+  "note": "Canonical task graph lives in this change's tasks.md; the source Cursor plan (.cursor/plans/ideas_backlog_integration_364ceaf3.plan.md) remains a read-only reference. Full W0-W15 execution is a multi-week program per the source plan's own estimate; this session delivers W0 (this wave) plus the non-colliding subset of W1."
+}

@@ -19,8 +19,10 @@ from __future__ import annotations
 
 from wagents.hooks.policies.before_mcp_execution import evaluate_before_mcp_execution
 from wagents.hooks.policies.before_read_file_guard import evaluate_before_read_file
+from wagents.hooks.policies.destructive_shell_guard import evaluate_destructive_shell
 from wagents.hooks.policies.git_commit_push_guard import evaluate_git_commit_push
 from wagents.hooks.policies.grok_deny_adapter import grok_deny_payload
+from wagents.hooks.policies.protected_file_guard import evaluate_protected_file
 from wagents.hooks.policies.stop_quality_gate import quality_gate_command
 from wagents.hooks.policies.stop_wagents_validate import validate_asset_paths
 from wagents.hooks.policies.subagent_start import subagent_start_context
@@ -28,7 +30,9 @@ from wagents.hooks.policies.subagent_start import subagent_start_context
 __all__ = [
     "evaluate_before_mcp_execution",
     "evaluate_before_read_file",
+    "evaluate_destructive_shell",
     "evaluate_git_commit_push",
+    "evaluate_protected_file",
     "grok_deny_payload",
     "quality_gate_command",
     "subagent_start_context",

@@ -1,0 +1,35 @@
+name: IDEAS Quality Gates
+
+# Interim standalone workflow for the `integrate-ideas-backlog` OpenSpec program
+# (T-100a-c). `ci.yml` carries an uncommitted, in-flight diff from the
+# `fleet-hooks-performance` program (see openspec/changes/integrate-ideas-backlog/design.md),
+# so these gates run here instead of inside `ci.yml`'s `validate` job to avoid
+# colliding with or overwriting that work. Fold these three steps into
+# `ci.yml`'s `validate` job and delete this file once `fleet-hooks-performance`
+# lands or SA-CI rebases `ci.yml`.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ideas-quality-gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1635ceea3d9b4d4f8b53728782 # v4
+      - uses: ./.github/actions/setup-uv
+      - run: uv run wagents eval validate --format json
+      - run: uv run wagents eval adequacy --strict --format json
+      - run: uv run wagents hooks validate --harness all --format json

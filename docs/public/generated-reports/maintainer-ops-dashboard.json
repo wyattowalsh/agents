@@ -1,0 +1,60 @@
+{
+  "all_populated": true,
+  "report_count": 5,
+  "reports_dir": "docs/public/generated-reports",
+  "sections": {
+    "docs-dependency-drift": {
+      "keys": [
+        "checked_sources",
+        "drift_detected",
+        "missing_registered_artifacts",
+        "missing_source_registries",
+        "plugin_dependencies",
+        "unregistered_plugin_dependencies"
+      ],
+      "path": "docs/public/generated-reports/docs-dependency-drift.json",
+      "summary": "no drift"
+    },
+    "docs-graph-snapshot": {
+      "keys": [
+        "history",
+        "latest"
+      ],
+      "path": "docs/public/generated-reports/docs-graph-snapshot.json",
+      "summary": "2 snapshots"
+    },
+    "docs-link-check": {
+      "keys": [
+        "broken_count",
+        "broken_internal_links",
+        "note",
+        "total_pages_scanned"
+      ],
+      "path": "docs/public/generated-reports/docs-link-check.json",
+      "summary": "0 broken links"
+    },
+    "llms-txt-coverage": {
+      "keys": [
+        "coverage_pct",
+        "covered_pages",
+        "missing_description",
+        "missing_title",
+        "total_pages"
+      ],
+      "path": "docs/public/generated-reports/llms-txt-coverage.json",
+      "summary": "0 missing title"
+    },
+    "site-graph-insights": {
+      "keys": [
+        "most_linked_pages",
+        "note",
+        "orphan_count",
+        "orphan_pages",
+        "total_internal_links",
+        "total_pages"
+      ],
+      "path": "docs/public/generated-reports/site-graph-insights.json",
+      "summary": "131 orphans"
+    }
+  }
+}

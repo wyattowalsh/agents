@@ -1,8 +1,42 @@
 # Public Release Readiness Evidence
 
-Generated: 2026-06-29
+Generated: 2026-06-29; refreshed: 2026-07-02
 
-## Gate matrix (2 consecutive runs)
+## 2026-07-02 Refresh Gate Matrix
+
+| Check | Result |
+| --- | --- |
+| `uv run ruff check` | pass |
+| `uv run ty check` | pass |
+| `uv run wagents validate --format json` | pass |
+| `uv run wagents hooks validate --harness all` | pass |
+| `uv run wagents openspec validate --format json` | current full run blocked by unrelated `fleet-hooks-promotion` no-delta change; `enforce-unique-eval-prompts` validates cleanly |
+| `npx -y @fission-ai/openspec@latest validate enforce-unique-eval-prompts --type change --json --strict` | pass |
+| `uv run wagents docs generate --no-installed --check` | pass |
+| `uv run wagents docs build` | pass; internal links valid |
+| `uv run wagents readme --check` | pass |
+| `uv run python scripts/sync_agent_stack.py --check --targets repo --platforms opencode` | pass |
+| `uv run python scripts/sync_agent_stack.py --apply --targets repo --platforms cursor` | pass; regenerated Cursor agent projections and repo skill symlinks |
+| `uv run wagents skills sync --dry-run` | pass; inventory rows 499 |
+| `uv run python skills/new-project/scripts/check.py` | pass |
+| `uv run pytest tests/hooks -q` | 131 passed |
+| `uv run pytest tests/hooks/test_bundle_dispatch.py tests/hooks/test_registry_perf_metadata.py tests/mcp tests/mcp_shared tests/test_installed_inventory.py tests/test_rtk_cli.py tests/test_sync_agent_stack.py tests/test_wagents_hook.py -q` | 306 passed |
+| `uv run pytest tests/test_authoring_sync.py tests/test_skills_catalog_schemas.py tests/test_catalog_index_parity.py tests/test_external_skills.py tests/test_sync_desired_skills.py -q` | 53 passed |
+| `uv run wagents eval validate --format json` | pass; canonical manifests reject duplicate stripped prompts |
+| repo duplicate prompt scanner | pass; `duplicate_prompts 0` |
+| bundled `validate_evals.py` parity check | pass; all bundled copies match canonical `skill-creator` source |
+| `uv run pytest tests/test_eval_cli.py tests/test_skill_creator_audit.py tests/test_skill_bundled_toolkit.py -q` | 84 passed |
+| `uv run pytest tests/test_eval_adequacy.py tests/test_eval_cli.py tests/test_eval_ci_flagship.py tests/mcp/test_eval_results.py -q` | 55 passed |
+
+Refresh notes:
+
+- `uv run wagents docs build` emitted Vite browser-compat externalization warnings and a Vercel local Node 26 warning; build output and internal link validation passed.
+- `uv run wagents skills sync --dry-run` emitted an Antigravity fallback inventory timeout warning; the dry-run completed without applying installs.
+- Grok Tier-T preflight was healthy. The bounded read-only dispatch completed and returned a result, but it emitted local MCPHub/GitHub MCP auth/tool-name errors during tool discovery; parent-side validation remains authoritative.
+- `uv run wagents eval coverage --format json` exits 0 with 65/65 skills carrying eval manifests and zero skills below the five-case floor.
+- `enforce-unique-eval-prompts` adds within-manifest duplicate stripped-prompt rejection, audit feedback, docs text, real-repo duplicate scanning, and bundled validator parity coverage.
+
+## 2026-06-29 Gate Matrix (Historical)
 
 | Check | Run 1 | Run 2 |
 | --- | --- | --- |

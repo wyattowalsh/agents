@@ -1,0 +1,56 @@
+---
+title: "rtk-integration"
+description: "RTK shell-layer policy — config/rtk-integration.json, wagents rtk commands, stack sync --with-rtk, and usage-review lane."
+page_kind: "harness-config"
+source_kind: "registry"
+composed: true
+composed_at: "2026-07-01"
+composed_by: "integrate-rtk-harness-fleet"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<Badge text="harness-config" variant="note" /> <Badge text="shell layer" variant="default" />
+
+> RTK (Rust Token Killer) owns the **shell dedup** token-efficacy layer. Repo policy lives in `config/rtk-integration.json`. **Do not** add `@RTK.md` to shared instruction surfaces — use `wagents rtk` instead.
+
+## Canonical config
+
+`config/rtk-integration.json` declares per-harness RTK init commands, tiers, and notes. Edit policy here; run doctor/sync to verify projections.
+
+```bash
+uv run wagents rtk doctor --format json
+uv run wagents rtk sync --dry-run --platforms claude-code,cursor,opencode,codex,gemini-cli,github-copilot
+RTK_TELEMETRY_DISABLED=1 uv run wagents rtk sync --apply --platforms claude-code,cursor,opencode,codex,gemini-cli,github-copilot
+uv run wagents rtk gain --graph
+uv run wagents rtk gain --history
+uv run wagents rtk review --format json
+```
+
+## Stack sync integration
+
+After hook projection, optionally chain RTK fleet init:
+
+```bash
+uv run python scripts/sync_agent_stack.py --apply --targets repo --with-rtk
+# or
+RTK_ENABLED=1 uv run python scripts/sync_agent_stack.py --apply --targets repo
+```
+
+<Aside type="caution" title="No @RTK.md in shared corpus">
+Shared instruction files (`instructions/global.md`, `AGENTS.md`, generated mirrors) must not `@`-include RTK.md. Validation fails on stale includes; RTK posture is CLI-driven via `wagents rtk doctor` and `wagents rtk sync`.
+</Aside>
+
+## Usage-review lane
+
+`wagents rtk review` aggregates `rtk gain --history` and summary gain output into harness-master usage-review recommendations (instrument, tune-workflow, keep). Pair with `/harness-config/token-efficacy/` for layer ownership and decision gates.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="token-efficacy" href="/harness-config/token-efficacy/" description="Eight-layer token posture hub and one-tool-per-layer rules." />
+  <LinkCard title="Hooks" href="/hooks/" description="Fleet hooks run before RTK shell projections when both apply." />
+</CardGrid>

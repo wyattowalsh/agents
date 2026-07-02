@@ -38,11 +38,11 @@
 
 ## Wave 4 - Future Fleet Rollout Tasks
 
-- [ ] T040 Add optional `--with-rtk` / `RTK_ENABLED=1` integration to `scripts/sync_agent_stack.py`.
-- [ ] T041 Implement Grok custom RTK hook only after live Grok hook schema proof.
-- [ ] T042 Add docs or catalog entry if maintainers want RTK surfaced publicly.
-- [ ] T043 Add no-stale-include validation for `@RTK.md` in shared instruction surfaces.
-- [ ] T044 Add usage-review lane for `rtk gain --history` and missed savings.
+- [x] T040 Add optional `--with-rtk` / `RTK_ENABLED=1` integration to `scripts/sync_agent_stack.py`.
+- [ ] T041 Implement Grok custom RTK hook only after live Grok hook schema proof. **Blocker:** Grok RTK shim deferred — no live bash-rewrite hook schema proof for Grok Build (only plannotator/wagents-fleet hooks verified in hook-surface-registry).
+- [x] T042 Add docs or catalog entry if maintainers want RTK surfaced publicly.
+- [x] T043 Add no-stale-include validation for `@RTK.md` in shared instruction surfaces.
+- [x] T044 Add usage-review lane for `rtk gain --history` and missed savings.
 
 ## Wave 5 - Validation
 

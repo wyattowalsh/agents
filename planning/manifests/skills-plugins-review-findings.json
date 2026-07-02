@@ -1,0 +1,1021 @@
+{
+  "generated_at": "2026-07-01T19:46:37+00:00",
+  "gate_status": "PASS",
+  "remediated_at": "2026-07-02",
+  "remediation_summary": {
+    "status": "passed",
+    "source": "planning/manifests/skills-plugins-remediation-orchestration.json",
+    "notes": [
+      "RV-SP-005..054 custom catalog rows now carry repo-owned trust/status metadata.",
+      "RV-SP-055,057..065 external rows have explicit global-only/avoid dispositions with install_command intentionally blank; RV-SP-056 keeps the accepted apm-cli external-tool exception.",
+      "RV-SP-001..003 and RV-SP-066..070 eval/runtime findings are resolved against the original finding set.",
+      "RV-SP-004 is a clean plugin-surface record, not a blocking defect."
+    ]
+  },
+  "findings": [
+    {
+      "wave": "w1",
+      "shard": "skill-shard-04",
+      "skill": "new-project",
+      "severity": "P0",
+      "category": "repo-skill",
+      "title": "check.py exit 124",
+      "evidence": {
+        "issues": [
+          "check.py exit 124"
+        ],
+        "check_rc": 124,
+        "pkg_rc": 0
+      },
+      "id": "RV-SP-002"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-01",
+      "skill": "add-badges",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-005"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-01",
+      "skill": "agent-conventions",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-006"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-01",
+      "skill": "agent-runtime-governance",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-007"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-01",
+      "skill": "api-designer",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-008"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-01",
+      "skill": "changelog-writer",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-009"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-01",
+      "skill": "data-pipeline-architect",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-010"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-01",
+      "skill": "data-wizard",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-011"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-01",
+      "skill": "database-architect",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-012"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-01",
+      "skill": "design",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-013"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-01",
+      "skill": "devops-engineer",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-014"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-02",
+      "skill": "docling-graph",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-015"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-02",
+      "skill": "docs-steward",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-016"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-02",
+      "skill": "draw-thing",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-017"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-02",
+      "skill": "email-whiz",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-018"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-02",
+      "skill": "event-driven-architect",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-019"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-02",
+      "skill": "files-buddy",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-020"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-02",
+      "skill": "git-workflow",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-021"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-02",
+      "skill": "grok-delegate",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-022"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-02",
+      "skill": "harness-master",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-023"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-02",
+      "skill": "host-panel",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-024"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-03",
+      "skill": "i18n-localization",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-025"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-03",
+      "skill": "incident-response-engineer",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-026"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-03",
+      "skill": "infrastructure-coder",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-027"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-03",
+      "skill": "javascript-conventions",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-028"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-03",
+      "skill": "learn",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-029"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-03",
+      "skill": "mcp-creator",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-030"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-03",
+      "skill": "namer",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-031"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-03",
+      "skill": "nerdbot",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-032"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-03",
+      "skill": "new-project",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-033"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-03",
+      "skill": "observability-advisor",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-034"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-04",
+      "skill": "opencode-ensemble",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-035"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-04",
+      "skill": "openspec-workflow",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-036"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-04",
+      "skill": "orchestrator",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-037"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-04",
+      "skill": "performance-profiler",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-038"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-04",
+      "skill": "prompt-engineer",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-039"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-04",
+      "skill": "python-conventions",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-040"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-04",
+      "skill": "reasoning-router",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-041"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-04",
+      "skill": "release-pipeline-architect",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-042"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-04",
+      "skill": "research",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-043"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-04",
+      "skill": "review",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-044"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-05",
+      "skill": "schema-evolution-planner",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-045"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-05",
+      "skill": "security-scanner",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-046"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-05",
+      "skill": "shell-conventions",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-047"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-05",
+      "skill": "shell-scripter",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-048"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-05",
+      "skill": "skill-creator",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-049"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-05",
+      "skill": "skill-router",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-050"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-05",
+      "skill": "tech-debt-analyzer",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-051"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-05",
+      "skill": "test-architect",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-052"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-05",
+      "skill": "things-manager",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-053"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-custom-05",
+      "skill": "wargame",
+      "severity": "P1",
+      "category": "catalog-custom",
+      "title": "missing frontmatter field: trust_tier; missing frontmatter field: status",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: trust_tier",
+          "missing frontmatter field: status"
+        ]
+      },
+      "id": "RV-SP-054"
+    },
+    {
+      "wave": "w4",
+      "severity": "P1",
+      "category": "security-judge",
+      "skill": "agent-runtime-governance",
+      "title": "security-heavy skill thin evals (5)",
+      "id": "RV-SP-066"
+    },
+    {
+      "wave": "w4",
+      "severity": "P1",
+      "category": "security-judge",
+      "skill": "openspec-workflow",
+      "title": "security-heavy skill thin evals (6)",
+      "id": "RV-SP-067"
+    },
+    {
+      "wave": "w4",
+      "severity": "P1",
+      "category": "security-judge",
+      "skill": "orchestrator",
+      "title": "security-heavy skill thin evals (7)",
+      "id": "RV-SP-068"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-ext-01",
+      "skill": "anthropics-skills-all",
+      "severity": "P2",
+      "category": "catalog-external",
+      "title": "missing frontmatter field: install_command",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: install_command"
+        ]
+      },
+      "id": "RV-SP-055"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-ext-01",
+      "skill": "apm-cli",
+      "severity": "P2",
+      "category": "catalog-external",
+      "title": "install_command may be non-standard",
+      "evidence": {
+        "issues": [
+          "install_command may be non-standard"
+        ]
+      },
+      "id": "RV-SP-056"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-ext-02",
+      "skill": "coleam00-excalidraw-diagram-skill-all",
+      "severity": "P2",
+      "category": "catalog-external",
+      "title": "missing frontmatter field: install_command",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: install_command"
+        ]
+      },
+      "id": "RV-SP-057"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-ext-04",
+      "skill": "find-skills",
+      "severity": "P2",
+      "category": "catalog-external",
+      "title": "missing frontmatter field: install_command",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: install_command"
+        ]
+      },
+      "id": "RV-SP-058"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-ext-04",
+      "skill": "firecrawl-cli-all",
+      "severity": "P2",
+      "category": "catalog-external",
+      "title": "missing frontmatter field: install_command",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: install_command"
+        ]
+      },
+      "id": "RV-SP-059"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-ext-05",
+      "skill": "github-actions-docs",
+      "severity": "P2",
+      "category": "catalog-external",
+      "title": "missing frontmatter field: install_command",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: install_command"
+        ]
+      },
+      "id": "RV-SP-060"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-ext-06",
+      "skill": "huggingface-skills-all",
+      "severity": "P2",
+      "category": "catalog-external",
+      "title": "missing frontmatter field: install_command",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: install_command"
+        ]
+      },
+      "id": "RV-SP-061"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-ext-07",
+      "skill": "microsoft-azure-skills-all",
+      "severity": "P2",
+      "category": "catalog-external",
+      "title": "missing frontmatter field: install_command",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: install_command"
+        ]
+      },
+      "id": "RV-SP-062"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-ext-08",
+      "skill": "notion-api",
+      "severity": "P2",
+      "category": "catalog-external",
+      "title": "missing frontmatter field: install_command",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: install_command"
+        ]
+      },
+      "id": "RV-SP-063"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-ext-12",
+      "skill": "stripe-best-practices",
+      "severity": "P2",
+      "category": "catalog-external",
+      "title": "missing frontmatter field: install_command",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: install_command"
+        ]
+      },
+      "id": "RV-SP-064"
+    },
+    {
+      "wave": "w3",
+      "shard": "catalog-ext-13",
+      "skill": "vercel-labs-agent-browser-all",
+      "severity": "P2",
+      "category": "catalog-external",
+      "title": "missing frontmatter field: install_command",
+      "evidence": {
+        "issues": [
+          "missing frontmatter field: install_command"
+        ]
+      },
+      "id": "RV-SP-065"
+    },
+    {
+      "wave": "w4",
+      "severity": "P2",
+      "category": "eval-program",
+      "title": "2 skills have <5 eval cases",
+      "evidence": {
+        "skills": [
+          "skill-router",
+          "i18n-localization"
+        ]
+      },
+      "id": "RV-SP-069"
+    },
+    {
+      "wave": "w4",
+      "severity": "P2",
+      "category": "data-wizard-cluster",
+      "skill": "data-pipeline-architect",
+      "title": "data cluster eval depth 9",
+      "id": "RV-SP-070"
+    },
+    {
+      "wave": "w1",
+      "shard": "skill-shard-04",
+      "skill": "agent-runtime-governance",
+      "severity": "P3",
+      "category": "repo-skill",
+      "title": "thin eval coverage (5 cases)",
+      "evidence": {
+        "issues": [
+          "thin eval coverage (5 cases)"
+        ],
+        "check_rc": 0,
+        "pkg_rc": 0
+      },
+      "id": "RV-SP-001"
+    },
+    {
+      "wave": "w1",
+      "shard": "skill-shard-05",
+      "skill": "orchestrator",
+      "severity": "P3",
+      "category": "repo-skill",
+      "title": "thin eval coverage (7 cases)",
+      "evidence": {
+        "issues": [
+          "thin eval coverage (7 cases)"
+        ],
+        "check_rc": 0,
+        "pkg_rc": 0
+      },
+      "id": "RV-SP-003"
+    },
+    {
+      "wave": "w2",
+      "severity": "P3",
+      "category": "plugins",
+      "title": "W2 surfaces clean (bundle, manifests, hooks, dry-runs)",
+      "id": "RV-SP-004"
+    }
+  ]
+}

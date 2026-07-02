@@ -41,6 +41,66 @@
       "name": "security-auditor",
       "readonly": true,
       "model": "inherit"
+    },
+    {
+      "name": "agent-change-recorder",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "agent-eval-runner",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "agent-permission-simulator",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "agent-registry-publisher",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "agent-transpiler",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "bridge-consistency-checker",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "mcp-capability-mapper",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "mcp-template-maintainer",
+      "readonly": false,
+      "model": "inherit"
+    },
+    {
+      "name": "permission-policy-auditor",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "prompt-optimizer",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "skill-author",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "triage-lead",
+      "readonly": true,
+      "model": "inherit"
     }
   ]
 }

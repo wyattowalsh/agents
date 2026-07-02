@@ -42,6 +42,7 @@ from wagents.platforms.grok import (
     sync_grok_fleet_hooks,
     sync_grok_lsp,
     sync_grok_plannotator,
+    sync_grok_skill_overlays,
 )
 
 
@@ -440,6 +441,28 @@ def test_missing_plannotator_core_skills_detects_repo_overlays(tmp_path, monkeyp
     assert "plannotator-annotate" in missing
     assert "plannotator-last" in missing
     assert set(PLANNOTATOR_CORE_SKILLS) - set(missing) == {"plannotator-review"}
+
+
+def test_sync_grok_skill_overlays_symlinks_all_repo_skills(tmp_path, monkeypatch):
+    repo = tmp_path / "repo"
+    skills_dir = repo / ".grok" / "skills"
+    grill = skills_dir / "grill-me"
+    grill.mkdir(parents=True)
+    (grill / "SKILL.md").write_text("---\nname: grill-me\n---\n", encoding="utf-8")
+    plannotator = skills_dir / "plannotator-review"
+    plannotator.mkdir(parents=True)
+    (plannotator / "SKILL.md").write_text("---\nname: plannotator-review\n---\n", encoding="utf-8")
+
+    home_skills = tmp_path / "home" / ".grok" / "skills"
+    monkeypatch.setattr("wagents.platforms.grok.GROK_SKILLS_REPO_DIR", skills_dir)
+    monkeypatch.setattr("wagents.platforms.grok.GROK_SKILLS_HOME_DIR", home_skills)
+
+    ctx = SyncContext(apply=True)
+    sync_grok_skill_overlays(ctx)
+
+    assert (home_skills / "grill-me").is_symlink()
+    assert (home_skills / "plannotator-review").is_symlink()
+    assert (home_skills / "grill-me").resolve() == grill.resolve()
 
 
 def test_plannotator_core_skill_roots_includes_project_overlay_when_present(tmp_path, monkeypatch):

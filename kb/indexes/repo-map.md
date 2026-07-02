@@ -19,7 +19,7 @@ source_count: 31
 | `AGENTS.md` | Repository standards, asset formats, workflows, platform policy. | [[agent-asset-model]], [[openspec-workflow]] |
 | `README.md` | Generated/public overview, supported agents, catalog summary, user commands. | [[repository-overview]], [[developer-commands]] |
 | `pyproject.toml` | Python package and tool configuration. | [[developer-commands]] |
-| `Makefile` | Developer command aliases. | [[developer-commands]] |
+| `justfile` | Developer command aliases (just recipes). | [[developer-commands]] |
 | `skills/` | Skill source tree, eval manifests, risk/eval coverage surface. | [[skill-authoring-and-validation]], [[agent-asset-model]], [[skill-catalog-risk-and-eval-coverage]] |
 | `agents/` | Agent prompt definitions and publication drift surface. | [[agent-asset-model]], [[agent-frontmatter-dialects]], [[agent-publication-and-drift-coverage]] |
 | `hooks/` | Runtime hook implementation for research and control-plane policies. | [[hooks-evals-control-plane]], [[validation-and-test-coverage]] |

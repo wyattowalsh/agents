@@ -15,6 +15,8 @@ from wagents import CONTENT_DIR, DOCS_DIR, ROOT
 # Authoring SSOT + catalog index (W3)
 from wagents.authoring_sync import sync_custom_authoring_from_skills
 from wagents.catalog import collect_edges
+from wagents.docs_catalog import catalog_sidebar_entries, write_catalog_pages
+from wagents.docs_reports import reports_stale_reasons, write_reports_pages
 from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
 from wagents.parsing import escape_attr, truncate_sentence
 from wagents.rendering import escape_mdx, render_page
@@ -1280,7 +1282,8 @@ def write_cli_page() -> None:
     parts.append(
         "Legacy scenario files must contain `skills`, `query`, and `expected_behavior`. "
         "Canonical manifests may use `evals/evals.json` with `skill_name` plus an `evals` array "
-        "of cases containing `prompt` and `expected_output`, with optional `files` and `assertions`."
+        "of cases containing `prompt` and `expected_output`, with optional `files` and `assertions`. "
+        "Canonical case prompts must be unique after trimming surrounding whitespace."
     )
     parts.append("")
     parts.append("  </TabItem>")
@@ -2073,6 +2076,16 @@ def render_sidebar_module(nodes: list) -> str:
         lines.append("    ],")
         lines.append("  },")
 
+    if (CONTENT_DIR / "reports" / "index.mdx").exists():
+        lines.append("  {")
+        lines.append("    label: 'Reports',")
+        lines.append("    collapsed: true,")
+        lines.append("    items: [{ autogenerate: { directory: 'reports' } }],")
+        lines.append("  },")
+
+    if (CONTENT_DIR / "catalog" / "index.mdx").exists():
+        lines.extend(catalog_sidebar_entries())
+
     lines.append("  { slug: 'cli', label: 'CLI' },")
     if (CONTENT_DIR / "contributing.mdx").exists():
         lines.append("  { slug: 'contributing', label: 'Contributing' },")
@@ -2282,6 +2295,8 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
                 "run `uv run wagents docs generate --no-installed`"
             )
 
+    reasons.extend(reports_stale_reasons())
+
     return reasons
 
 
@@ -2363,6 +2378,12 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
     typer.echo("  Generated cli.mdx")
 
     write_skill_research_pages(nodes)
+
+    write_reports_pages()
+    typer.echo("  Generated reports/* (MDX + generated-reports/*.json)")
+
+    write_catalog_pages(nodes=nodes)
+    typer.echo("  Generated catalog/* + architecture/* discovery pages")
 
     write_sidebar(nodes)
     typer.echo("  Generated generated-sidebar.mjs")

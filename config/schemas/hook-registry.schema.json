@@ -16,7 +16,7 @@
   "$defs": {
     "hook": {
       "type": "object",
-      "required": ["id", "logical_event", "command", "harnesses"],
+      "required": ["id", "logical_event", "logical_policy", "command", "harnesses"],
       "properties": {
         "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
         "description": {"type": "string", "minLength": 1},
@@ -25,6 +25,8 @@
         "degraded_behavior": {"type": "string", "minLength": 1},
         "logical_event": {"type": "string", "minLength": 1},
         "logical_policy": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "bundle_group": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "bundle_mode": {"enum": ["enforce-chain", "context-chain", "mixed"]},
         "matcher": {"type": "string", "minLength": 1},
         "command": {"type": "string", "minLength": 1},
         "commandWindows": {"type": "string", "minLength": 1},

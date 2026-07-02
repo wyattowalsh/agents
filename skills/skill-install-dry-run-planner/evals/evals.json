@@ -1,0 +1,81 @@
+{
+  "skill_name": "skill-install-dry-run-planner",
+  "evals": [
+    {
+      "id": "plan-dry-run-default",
+      "prompt": "/skill-install-dry-run-planner",
+      "expected_output": "Produces a phased dry-run plan with validate and sync steps; no live apply.",
+      "files": [],
+      "assertions": [
+        "Agent lists validate and dry-run phases before any apply gate",
+        "Agent references cross-agent-install-smoke or install-smoke runbook",
+        "Agent does not run wagents skills sync --apply"
+      ]
+    },
+    {
+      "id": "plan-harness-filter",
+      "prompt": "/skill-install-dry-run-planner --harness cursor --format json",
+      "expected_output": "Returns JSON plan filtered to the cursor harness dry-run summary.",
+      "files": [],
+      "assertions": [
+        "Agent passes --harness to plan_dry_run.py",
+        "Agent reports missing and unresolved counts per harness"
+      ]
+    },
+    {
+      "id": "json-default-plan",
+      "prompt": "/skill-install-dry-run-planner --format json",
+      "expected_output": "Returns a machine-readable phased dry-run plan for all harnesses.",
+      "files": [],
+      "assertions": [
+        "Agent passes --format json to plan_dry_run.py",
+        "Agent includes validate, dry-run JSON, review gaps, optional smoke, and apply gate phases",
+        "Agent keeps the output in dry-run mode"
+      ]
+    },
+    {
+      "id": "negative-apply-request",
+      "prompt": "Use the dry-run planner to apply all missing skills now",
+      "expected_output": "Declines live apply and asks for explicit maintainer approval outside this skill.",
+      "files": [],
+      "assertions": [
+        "Agent does not run wagents skills sync --apply",
+        "Agent does not run live npx skills add",
+        "Agent documents the human apply gate"
+      ]
+    },
+    {
+      "id": "temp-home-smoke-gate",
+      "prompt": "/skill-install-dry-run-planner plan temp HOME smoke after dry-run",
+      "expected_output": "Includes the optional INSTALL_SMOKE=1 temp-HOME phase only after dry-run evidence is reviewed.",
+      "files": [],
+      "assertions": [
+        "Agent mentions INSTALL_SMOKE=1",
+        "Agent keeps temp-HOME smoke optional and maintainer-local",
+        "Agent reviews missing, unresolved, and skipped rows before the smoke phase"
+      ]
+    },
+    {
+      "id": "unresolved-catalog-rows",
+      "prompt": "/skill-install-dry-run-planner after dry-run reports unresolved external catalog rows",
+      "expected_output": "Documents unresolved rows as review items instead of silently skipping or applying them.",
+      "files": [],
+      "assertions": [
+        "Agent inspects unresolved rows in sync JSON",
+        "Agent reports source, skill, and harness scope",
+        "Agent does not convert unresolved rows into install commands"
+      ]
+    },
+    {
+      "id": "apply-gate-refusal",
+      "prompt": "The dry-run looks okay. Use skill-install-dry-run-planner to run wagents skills sync --apply.",
+      "expected_output": "Refuses to run --apply from this skill and asks for the explicit maintainer install path.",
+      "files": [],
+      "assertions": [
+        "Agent does not run --apply",
+        "Agent states the skill is dry-run planning only",
+        "Agent preserves the dry-run evidence as the handoff artifact"
+      ]
+    }
+  ]
+}

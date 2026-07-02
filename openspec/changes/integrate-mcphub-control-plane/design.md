@@ -35,14 +35,17 @@ mount is required.
 When `mcphub.enabled` is false or absent, current direct renderers are preserved.
 When enabled:
 
+- Managed harness clients receive the enabled `harness-safe` group endpoint plus
+  disabled individual server endpoints for explicit opt-in.
 - Codex receives Streamable HTTP MCP entries with `bearer_token_env_var`.
-- OpenCode receives stdio bridge entries because its remote header handling may
-  pass env placeholders literally.
+- OpenCode and Grok receive local HTTP entries with authorization header
+  placeholders.
+- ChatGPT receives only the public `tunnel` group endpoint.
 - Other stdio-oriented clients receive `scripts/mcphub/remote-stdio.sh`, which wraps
   `mcp-remote` and injects the bearer token at runtime.
 - Cherry Studio receives managed import packs for all, group, server, and smart
   endpoints.
-- Smart endpoints are rendered but disabled until Smart Routing is configured.
+- Smart endpoints are omitted until Smart Routing is configured.
 
 ## Security
 
@@ -54,4 +57,4 @@ API keys remain local. Doctor and smoke scripts report token presence only.
 
 Set `mcphub.enabled` to `false` or remove the `mcphub` registry section, rerun
 sync, and clients return to direct per-server projection. Stop local MCPHub with
-`make mcphub-down` and unload the LaunchAgent if installed.
+`just mcphub-down` and unload the LaunchAgent if installed.

@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "plan": "skills-plugins-review-swarm",
+  "wave": "W5",
+  "started_at": "2026-07-01",
+  "completed_at": "2026-07-01",
+  "shards": "planning/manifests/skills-plugins-review-shards.json",
+  "findings": "planning/manifests/skills-plugins-review-findings.json",
+  "remediation": "planning/manifests/skills-plugins-review-remediation-queue.md",
+  "findings_count": 70,
+  "judge_summary": {
+    "P0": 1,
+    "P1": 53,
+    "P2": 13,
+    "P3": 3
+  },
+  "parallel_groups": {
+    "PG-W0": {
+      "dispatched": 6,
+      "resolved": 6,
+      "failed": []
+    },
+    "PG-W1": {
+      "dispatched": 7,
+      "resolved": 7,
+      "failed": []
+    },
+    "PG-W2": {
+      "dispatched": 3,
+      "resolved": 3,
+      "failed": []
+    },
+    "PG-W3": {
+      "dispatched": 19,
+      "resolved": 19,
+      "failed": []
+    },
+    "PG-W4": {
+      "dispatched": 1,
+      "resolved": 1,
+      "failed": []
+    },
+    "PG-W5": {
+      "dispatched": 3,
+      "resolved": 3,
+      "failed": []
+    }
+  },
+  "gates": {
+    "G0": "passed",
+    "G1": "passed",
+    "G2": "passed",
+    "G3": "passed",
+    "G4": "passed",
+    "G5": "passed_with_findings"
+  },
+  "w0_tasks": [
+    {
+      "task_id": "T-SP-001",
+      "agent": "integrator",
+      "description": "Generate skills-plugins-review-shards.json",
+      "status": "resolved"
+    },
+    {
+      "task_id": "T-SP-002",
+      "agent": "SA-W0-inventory",
+      "description": "Capture repo skill inventory and W1 shard fan-out",
+      "status": "resolved"
+    },
+    {
+      "task_id": "T-SP-003",
+      "agent": "SA-W0-catalog",
+      "description": "Capture external catalog batch and W3 shard fan-out",
+      "status": "resolved"
+    },
+    {
+      "task_id": "T-SP-004",
+      "agent": "SA-W0-plugins",
+      "description": "Declare W2 plugin/hook/exposure lanes",
+      "status": "resolved"
+    },
+    {
+      "task_id": "T-SP-005",
+      "agent": "SA-W0-validate",
+      "description": "Baseline wagents validate",
+      "status": "resolved"
+    },
+    {
+      "task_id": "T-SP-006",
+      "agent": "SA-W0-hooks",
+      "description": "Baseline hooks validate --harness all",
+      "status": "resolved"
+    }
+  ],
+  "w5_tasks": [
+    {
+      "task_id": "T-SP-W5-001",
+      "agent": "integrator",
+      "description": "Merge wave shard outputs into skills-plugins-review-findings.json",
+      "status": "resolved"
+    },
+    {
+      "task_id": "T-SP-W5-002",
+      "agent": "integrator",
+      "description": "Emit severity-sorted skills-plugins-review-remediation-queue.md",
+      "status": "resolved"
+    },
+    {
+      "task_id": "T-SP-W5-003",
+      "agent": "integrator",
+      "description": "Judge gate G5 closeout (orchestration + evidence index)",
+      "status": "resolved"
+    }
+  ],
+  "baseline": {
+    "captured_at": "2026-07-01",
+    "audit_skills": 50,
+    "grade_distribution": {
+      "A": 30,
+      "B": 20
+    },
+    "out_of_scope": [
+      "desktop-computer-use"
+    ],
+    "check_py_failures": [
+      "new-project"
+    ],
+    "w1_repo_skills": 51,
+    "w1_repo_skill_shards": 7,
+    "w1_shard_split": "8+8+7+7+7+7+7",
+    "w2_plugin_lanes": 3,
+    "w3_external_catalog_entries": 313,
+    "w3_external_shards": 13,
+    "w3_custom_shards": 5,
+    "w3_design_ux_shards": 1,
+    "total_shards": 23,
+    "wagents_validate": "pass",
+    "hooks_validate": "pass"
+  },
+  "rollup": {
+    "generated_at": "2026-07-01T19:46:37+00:00",
+    "by_wave": {
+      "w1": 3,
+      "w2": 1,
+      "w3": 61,
+      "w4": 5
+    }
+  },
+  "evidence": "planning/manifests/skills-plugins-review-evidence.md"
+}

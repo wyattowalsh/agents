@@ -3,6 +3,10 @@ name: "openspec-workflow"
 description: "Use when planning, applying, validating, or archiving OpenSpec changes in this repo, or when downstream AI tools need OpenSpec JSON status/instructions. NOT for generic code review, unrelated docs edits, or replacing generated upstream openspec-* skills."
 license: "MIT"
 source_kind: "custom"
+trust_tier: "repo-owned"
+status: "repo-owned"
+provenance_status: "repo-owned"
+sync_kind: "skills-cli"
 ---
 
 {/* GENERATED-AUTHORING: source=skills/openspec-workflow/SKILL.md; edit SKILL.md then re-run authoring sync */}
@@ -58,6 +62,8 @@ Use OpenSpec when the change affects any of these surfaces:
 - OpenSpec specs, schemas, or generated downstream tool setup
 
 Skip OpenSpec for small, isolated typo fixes or single-file local changes where the user's request and repo conventions fully determine the outcome.
+
+When a non-trivial change has user-pivotal scope or approach forks, apply `instructions/global.md` Depth routing and invoke `/grill-me` before creating or continuing change artifacts.
 
 ## Downstream Tooling
 

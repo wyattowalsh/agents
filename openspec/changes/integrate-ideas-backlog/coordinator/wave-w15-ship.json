@@ -1,0 +1,14 @@
+{
+  "wave": "W15",
+  "gate": "G15",
+  "theme": "Ship + docs + KB update",
+  "status": "done",
+  "dispatched": [],
+  "gate_checks": [
+    "uv run wagents validate",
+    "uv run pytest",
+    "uv run ruff check",
+    "uv run wagents openspec validate"
+  ],
+  "notes": "README and docs regenerated; validation matrix closure; KB wiki updated for CI/maintenance workflows."
+}

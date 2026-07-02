@@ -1,0 +1,175 @@
+---
+title: "cross-agent-install-smoke"
+description: "Phase 1 dry-run JSON smoke and phase 2 temp-HOME install smoke for skills sync. Use when validating cross-harness install parity. NOT for live --apply installs."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="cross-agent-install-smoke"
+  description="Phase 1 dry-run JSON smoke and phase 2 temp-HOME install smoke for skills sync. Use when validating cross-harness install parity. NOT for live --apply installs."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill cross-agent-install-smoke -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/cross-agent-install-smoke [phase]"
+  badges={[{ text: "cross-agent-install-smoke", variant: "note" }, { text: "343 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/cross-agent-install-smoke/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Validate additive skills sync without mutating live harness installs.
+
+## Modes
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| Empty / `phase1` / `dry-run` | Run phase 1 dry-run JSON assertions |
+| `phase2` / `local` / `smoke` | Run phase 2 temp-HOME smoke (requires `INSTALL_SMOKE=1`) |
+| `all` | Run phase 1, then phase 2 when gated |
+| `help` | Show phases, gates, and example commands |
+
+## Critical Rules
+
+1. Default to dry-run; never apply live installs from this skill.
+2. Treat skills sync JSON as evidence, not authority over repo policy.
+3. Run phase 1 before recommending any cross-harness install reconciliation.
+4. Gate phase 2 behind `INSTALL_SMOKE=1` and a disposable temp `HOME`.
+5. Report harness-specific inventory errors without masking top-level `ok: false`.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `cross-agent-install-smoke` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Argument Hint | `[phase]` |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: cross-agent-install-smoke
+description: >-
+  Phase 1 dry-run JSON smoke and phase 2 temp-HOME install smoke for skills sync.
+  Use when validating cross-harness install parity. NOT for live --apply installs.
+user-invocable: true
+argument-hint: "[phase]"
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+---
+
+# Cross-Agent Install Smoke
+
+Validate additive skills sync without mutating live harness installs.
+
+**Scope:** Install smoke only. Do not run `wagents skills sync --apply` or live `npx skills add` unless the maintainer explicitly requests it.
+
+## Dispatch
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| Empty / `phase1` / `dry-run` | Run phase 1 dry-run JSON assertions |
+| `phase2` / `local` / `smoke` | Run phase 2 temp-HOME smoke (requires `INSTALL_SMOKE=1`) |
+| `all` | Run phase 1, then phase 2 when gated |
+| `help` | Show phases, gates, and example commands |
+
+## Phase 1 — Dry-Run JSON
+
+Run the deterministic checker from the repo root:
+
+```bash
+uv run python skills/cross-agent-install-smoke/scripts/dry_run.py
+```
+
+Phase 1 executes `uv run wagents skills sync --dry-run --format json` and asserts:
+
+- top-level keys: `ok`, `mode`, `inventory_count`, `include_installed`, `agents`
+- `mode` is `dry-run`
+- each agent row includes `agent` plus list fields `missing`, `already_present`, `unresolved`, `skipped`
+
+Pass criteria: script exits `0` and prints a JSON summary to stdout.
+
+## Phase 2 — Temp-HOME Smoke
+
+Phase 2 is opt-in and mutates only a temporary home directory.
+
+```bash
+INSTALL_SMOKE=1 uv run python skills/cross-agent-install-smoke/scripts/local_smoke.py
+```
+
+The script:
+
+1. Refuses to run unless `INSTALL_SMOKE=1`
+2. Creates an isolated `HOME` under a temp directory
+3. Runs `uv run wagents validate` against the repo
+4. Runs a single-harness `wagents skills sync --dry-run --format json` probe
+5. Cleans up the temp home
+
+Never point phase 2 at a production home directory.
+
+## Validation Contract
+
+```bash
+uv run python skills/cross-agent-install-smoke/scripts/check.py
+INSTALL_SMOKE=1 uv run python skills/cross-agent-install-smoke/scripts/check.py
+```
+
+Completion criteria:
+
+1. Phase 1 (`dry_run.py`) exits `0` in CI and local maintainer runs.
+2. Phase 2 runs only when `INSTALL_SMOKE=1` is set.
+3. `scripts/check.py` exits `0` for the selected phase gates.
+
+## Critical Rules
+
+1. Default to dry-run; never apply live installs from this skill.
+2. Treat skills sync JSON as evidence, not authority over repo policy.
+3. Run phase 1 before recommending any cross-harness install reconciliation.
+4. Gate phase 2 behind `INSTALL_SMOKE=1` and a disposable temp `HOME`.
+5. Report harness-specific inventory errors without masking top-level `ok: false`.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/cross-agent-install-smoke/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/cross-agent-install-smoke/SKILL.md)

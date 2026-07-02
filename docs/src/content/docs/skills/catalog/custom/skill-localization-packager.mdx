@@ -1,0 +1,124 @@
+---
+title: "skill-localization-packager"
+description: "Scaffold for packaging localized skill variants (planned). Use when designing i18n skill bundles. NOT for live catalog edits."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="skill-localization-packager"
+  description="Scaffold for packaging localized skill variants (planned). Use when designing i18n skill bundles. NOT for live catalog edits."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill skill-localization-packager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/skill-localization-packager"
+  badges={[{ text: "skill-localization-packager", variant: "note" }, { text: "95 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v0.1.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/skill-localization-packager/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Later-tier scaffold for localized skill bundle packaging.
+
+<Aside type="note">
+This is an **auto-invoke** skill -- it activates automatically when the agent detects relevant context. It is not visible in the `/` slash command menu.
+</Aside>
+
+## Critical Rules
+
+1. Keep portable `name` field stable across locales.
+2. Do not hand-edit generated catalog MDX for localized variants.
+3. Route translation quality review to i18n-localization.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `skill-localization-packager` |
+| License | MIT |
+| Version | 0.1.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| User Invocable | No |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: skill-localization-packager
+description: >-
+  Scaffold for packaging localized skill variants (planned).
+  Use when designing i18n skill bundles. NOT for live catalog edits.
+user-invocable: false
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "0.1.0"
+  internal: true
+---
+
+# Skill Localization Packager
+
+Later-tier scaffold for localized skill bundle packaging.
+
+**Scope:** Design placeholder only. Does not translate content or publish catalog rows.
+
+## Planned Workflow
+
+1. Identify base skill under `skills/<name>/`.
+2. Collect locale overlays (TBD directory convention).
+3. Emit portable ZIP via `wagents package` with locale metadata.
+
+Pair with `i18n-localization` for translation workflow until packaging ships.
+
+## Validation Contract
+
+```bash
+uv run python skills/skill-localization-packager/scripts/check.py
+```
+
+## Critical Rules
+
+1. Keep portable `name` field stable across locales.
+2. Do not hand-edit generated catalog MDX for localized variants.
+3. Route translation quality review to i18n-localization.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/skill-localization-packager/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/skill-localization-packager/SKILL.md)

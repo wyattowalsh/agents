@@ -63,7 +63,7 @@ evaluate_git_commit_push = _load_policy_attr("git_commit_push_guard", "evaluate_
 evaluate_before_read_file = _load_policy_attr("before_read_file_guard", "evaluate_before_read_file")
 evaluate_before_mcp_execution = _load_policy_attr("before_mcp_execution", "evaluate_before_mcp_execution")
 evaluate_destructive_shell = _load_policy_attr("destructive_shell_guard", "evaluate_destructive_shell")
-evaluate_protected_file = _load_policy_attr("proteged_file_guard", "evaluate_protected_file")
+evaluate_protected_file = _load_policy_attr("protected_file_guard", "evaluate_protected_file")
 subagent_start_context = _load_policy_attr("subagent_start", "subagent_start_context")
 _grok_deny_payload = _load_policy_attr("grok_deny_adapter", "grok_deny_payload")
 
@@ -1849,9 +1849,11 @@ def _policy_git_commit_push_guard(payload: NormalizedPayload) -> int:
 POLICIES = {
     "codex-session-start-context": _policy_codex_session_start_context,
     "codex-destructive-shell-guard": _policy_codex_destructive_shell_guard,
-    "destructive-shell-guard": _policy_codex_destructive_shell_guard,
+    "destructive-shell-guard": _policy_destructive_shell_guard,
     "codex-protected-file-guard": _policy_codex_protected_file_guard,
-    "protected-file-guard": _policy_codex_protected_file_guard,
+    "protected-file-guard": _policy_protected_file_guard,
+    "copilot-destructive-shell-guard": _policy_destructive_shell_guard,
+    "copilot-protected-file-guard": _policy_protected_file_guard,
     "codex-permission-request-guard": _policy_codex_permission_request_guard,
     "codex-post-tool-verify-context": _policy_codex_post_tool_verify_context,
     "codex-stop-truth-gate": _policy_codex_stop_truth_gate,

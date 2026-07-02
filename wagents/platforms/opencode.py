@@ -12,6 +12,9 @@ import copy
 import os
 from typing import TYPE_CHECKING, Any
 
+import yaml
+
+from wagents.parsing import parse_frontmatter
 from wagents.platforms.base import (
     HOME,
     REPO_ROOT,
@@ -56,7 +59,98 @@ OPENCODE_REPO_CONFIG_PATH = REPO_ROOT / "opencode.json"
 OPENCODE_PLUGINS_DIR = HOME / ".config" / "opencode" / "plugins"
 OPENCODE_GLOBAL_MD = REPO_ROOT / "instructions" / "opencode-global.md"
 OPENCODE_AGENTS_OVERLAY_MD = REPO_ROOT / "instructions" / "opencode-agents-overlay.md"
+OPENCODE_AGENTS_CONFIG_PATH = REPO_ROOT / "config" / "opencode-agents.json"
+OPENCODE_AGENTS_DIR = REPO_ROOT / ".opencode" / "agents"
+OPENCODE_MANAGED_AGENT_MARKER = (
+    "<!-- Managed by wagents sync from agents/ + config/opencode-agents.json -->\n"
+)
+OPENCODE_FORBIDDEN_AGENT_KEYS = frozenset({
+    "tools",
+    "permissionMode",
+    "disallowedTools",
+    "model",
+    "small_model",
+})
 GLOBAL_MD = REPO_ROOT / "instructions" / "global.md"
+
+
+def opencode_managed_agent_contract_errors(content: str) -> list[str]:
+    """Return contract violations for wagents-managed OpenCode agent markdown."""
+    errors: list[str] = []
+    marker = OPENCODE_MANAGED_AGENT_MARKER.strip()
+    if marker not in content:
+        errors.append(f"missing managed marker ({marker!r})")
+        return errors
+    try:
+        frontmatter, _body = parse_frontmatter(content)
+    except ValueError as exc:
+        errors.append(f"invalid frontmatter: {exc}")
+        return errors
+    if not isinstance(frontmatter, dict):
+        errors.append("frontmatter must be a YAML mapping")
+        return errors
+
+    for key in OPENCODE_FORBIDDEN_AGENT_KEYS:
+        if key in frontmatter:
+            errors.append(f"portable {key}: must not appear in OpenCode agent frontmatter")
+
+    name = frontmatter.get("name")
+    if not isinstance(name, str) or not name.strip():
+        errors.append("missing name")
+    description = frontmatter.get("description")
+    if not isinstance(description, str) or not description.strip():
+        errors.append("missing description")
+    if frontmatter.get("mode") != "subagent":
+        errors.append("missing mode: subagent")
+    permission = frontmatter.get("permission")
+    if not isinstance(permission, dict) or not permission:
+        errors.append("missing permission:")
+    return errors
+
+
+def check_opencode_managed_agents_dir(
+    agents_dir: Path,
+    *,
+    config_path: Path | None = None,
+) -> list[str]:
+    """Check managed agents under ``agents_dir``; return combined error lines."""
+    errors: list[str] = []
+    if not agents_dir.is_dir():
+        return [f"missing OpenCode agents directory: {agents_dir}"]
+
+    try:
+        expected_names = set(_load_opencode_agent_overlays(config_path))
+    except (OSError, ValueError) as exc:
+        return [f"config/opencode-agents.json: {exc}"]
+
+    on_disk = {path.stem: path for path in sorted(agents_dir.glob("*.md"))}
+
+    for name in sorted(expected_names):
+        path = on_disk.get(name)
+        if path is None:
+            errors.append(f"{name}.md: missing managed agent file")
+            continue
+        text = path.read_text(encoding="utf-8")
+        if OPENCODE_MANAGED_AGENT_MARKER.strip() not in text:
+            errors.append(
+                f"{name}.md: unmanaged/portable projection (missing marker) — run `just sync-opencode`"
+            )
+            continue
+        for err in opencode_managed_agent_contract_errors(text):
+            errors.append(f"{path.name}: {err}")
+
+    for name, path in sorted(on_disk.items()):
+        if name in expected_names:
+            continue
+        text = path.read_text(encoding="utf-8")
+        if OPENCODE_MANAGED_AGENT_MARKER.strip() in text:
+            errors.append(f"{path.name}: stale managed agent (not in config/opencode-agents.json)")
+
+    if not expected_names and not on_disk:
+        errors.append(f"no OpenCode agents under {agents_dir}")
+    return errors
+
+
 CHROME_DEVTOOLS_LAUNCHER = os.environ.get(
     "CHROME_DEVTOOLS_LAUNCHER",
     str(HOME / ".config/opencode/tools/chrome-devtools-launcher.sh"),
@@ -593,6 +687,101 @@ def _normalize_tui_config(settings: dict[str, Any]) -> dict[str, Any]:
     return settings
 
 
+def _format_opencode_agent_frontmatter(data: dict[str, Any]) -> str:
+    return "---\n" + yaml.safe_dump(data, sort_keys=False, allow_unicode=False) + "---\n\n"
+
+
+def _portable_agent_files() -> list[Path]:
+    return sorted(path for path in (REPO_ROOT / "agents").glob("*.md") if path.name != "README.md")
+
+
+def opencode_agents_config_path() -> Path:
+    return OPENCODE_AGENTS_CONFIG_PATH
+
+
+def _load_opencode_agent_overlays(path: Path | None = None) -> dict[str, dict[str, Any]]:
+    config = load_json(path or opencode_agents_config_path())
+    agents = config.get("agents")
+    if not isinstance(agents, list):
+        raise ValueError("config/opencode-agents.json must contain an agents list")
+    overlays: dict[str, dict[str, Any]] = {}
+    for entry in agents:
+        if not isinstance(entry, dict) or not isinstance(entry.get("name"), str):
+            raise ValueError("every OpenCode agent overlay must include a name")
+        name = entry["name"]
+        overlays[name] = {key: value for key, value in entry.items() if key != "name"}
+    if not overlays:
+        raise ValueError("config/opencode-agents.json must define at least one agent overlay")
+    return overlays
+
+
+def _render_opencode_agent(path: Path, overlay: dict[str, Any]) -> str:
+    frontmatter, body = parse_frontmatter(path.read_text(encoding="utf-8"))
+    name = str(frontmatter.get("name") or path.stem)
+    data: dict[str, Any] = {
+        "name": name,
+        "description": str(frontmatter.get("description") or ""),
+    }
+    for key in ("mode", "temperature", "color", "permission"):
+        if key in overlay:
+            data[key] = overlay[key]
+    return (
+        _format_opencode_agent_frontmatter(data)
+        + OPENCODE_MANAGED_AGENT_MARKER
+        + body.rstrip()
+        + "\n"
+    )
+
+
+def _render_opencode_agents() -> dict[str, str]:
+    overlays = _load_opencode_agent_overlays()
+    agent_files = _portable_agent_files()
+    names = {
+        str(parse_frontmatter(path.read_text(encoding="utf-8"))[0].get("name") or path.stem) for path in agent_files
+    }
+    overlay_names = set(overlays)
+    missing = sorted(names - overlay_names)
+    extra = sorted(overlay_names - names)
+    if missing or extra:
+        details = []
+        if missing:
+            details.append(f"missing overlays: {', '.join(missing)}")
+        if extra:
+            details.append(f"unknown overlays: {', '.join(extra)}")
+        raise ValueError(
+            "config/opencode-agents.json does not match agents/*.md (" + "; ".join(details) + ")"
+        )
+
+    rendered: dict[str, str] = {}
+    for path in agent_files:
+        frontmatter, _ = parse_frontmatter(path.read_text(encoding="utf-8"))
+        name = str(frontmatter.get("name") or path.stem)
+        rendered[f"{name}.md"] = _render_opencode_agent(path, overlays[name])
+    return rendered
+
+
+def _sync_opencode_agents(ctx: SyncContext) -> None:
+    rendered = _render_opencode_agents()
+    if ctx.apply:
+        OPENCODE_AGENTS_DIR.mkdir(parents=True, exist_ok=True)
+    for name, content in sorted(rendered.items()):
+        ctx.write_text(OPENCODE_AGENTS_DIR / name, content)
+    if not OPENCODE_AGENTS_DIR.exists():
+        return
+    for path in sorted(OPENCODE_AGENTS_DIR.glob("*.md")):
+        if path.name in rendered:
+            continue
+        try:
+            current = path.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        if OPENCODE_MANAGED_AGENT_MARKER.strip() not in current:
+            continue
+        ctx.note(f"remove stale generated OpenCode agent {path}")
+        if ctx.apply:
+            path.unlink()
+
+
 class Adapter(PlatformAdapter):
     name = "opencode"
 
@@ -685,6 +874,7 @@ class Adapter(PlatformAdapter):
         _drop_unmanaged_provider_models(config, defaults)
         _remove_repo_managed_providers(config)
         ctx.write_json(OPENCODE_REPO_CONFIG_PATH, config)
+        _sync_opencode_agents(ctx)
 
     def sync_home(
         self,

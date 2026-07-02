@@ -85,7 +85,7 @@ Produce a triage packet before substantial retrieval for Standard, Deep, and Exh
 4. State the source-support audit strategy, including how citation anchors and support statuses will be checked.
 5. State whether execution continues immediately or pauses for user review.
 
-Pause conditions override continue conditions. Pause for user input when the topic is high-stakes, ambiguous after triage, asks for private or credentialed sources, or the user explicitly requests plan review. In noninteractive harnesses, emit the Plan Gate with blockers and stop before substantial retrieval for those pause cases. Continue without waiting only when the question is clear, non-sensitive, and has no pause condition. Quick tier may skip the formal gate but must include a short methodology note in the answer.
+Pause conditions override continue conditions. Pause for user input when the topic is high-stakes, ambiguous after triage, asks for private or credentialed sources, or the user explicitly requests plan review. When pause is due to user-pivotal scope or audience uncertainty, apply `instructions/global.md` Depth routing and invoke `/grill-me` before substantial retrieval. Factual or evidence gaps stay on the research Plan Gate, not grill-me. In noninteractive harnesses, emit the Plan Gate with blockers and stop before substantial retrieval for those pause cases. Continue without waiting only when the question is clear, non-sensitive, and has no pause condition. Quick tier may skip the formal gate but must include a short methodology note in the answer.
 
 ### Gallery (Empty Arguments)
 

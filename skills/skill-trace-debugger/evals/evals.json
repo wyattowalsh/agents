@@ -1,0 +1,93 @@
+{
+  "skill_name": "skill-trace-debugger",
+  "evals": [
+    {
+      "id": "trace-readiness",
+      "prompt": "/skill-trace-debugger skill-eval-scaffolder",
+      "expected_output": "Reports eval and check.py trace readiness gaps for the named skill.",
+      "files": [],
+      "assertions": [
+        "Agent runs trace_report.py for the named skill",
+        "Agent lists explicit-invocation eval coverage",
+        "Agent does not claim live trace capture occurred"
+      ]
+    },
+    {
+      "id": "repo-trace-summary",
+      "prompt": "/skill-trace-debugger repo --format json",
+      "expected_output": "Returns a repository-wide static trace readiness summary.",
+      "files": [],
+      "assertions": [
+        "Agent uses repo or --all mode",
+        "Agent reports eval manifest and check.py coverage",
+        "Agent keeps output machine-readable when --format json is used"
+      ]
+    },
+    {
+      "id": "empty-checklist",
+      "prompt": "/skill-trace-debugger",
+      "expected_output": "Shows the static trace signal checklist without reading live session logs.",
+      "files": [],
+      "assertions": [
+        "Agent explains evals/evals.json, scripts/check.py, explicit-invocation, and NOT-for boundary signals",
+        "Agent does not execute live evals",
+        "Agent does not harvest session logs"
+      ]
+    },
+    {
+      "id": "negative-live-trace-capture",
+      "prompt": "Capture live LLM traces for every skill",
+      "expected_output": "Declines live trace capture from this skill and routes live grading to the maintainer eval workflow.",
+      "files": [],
+      "assertions": [
+        "Agent does not claim live trace capture occurred",
+        "Agent does not read private session logs",
+        "Agent routes live trace grading to agent-eval-runner or maintainer CI"
+      ]
+    },
+    {
+      "id": "scaffolder-handoff",
+      "prompt": "Add missing explicit-invocation eval cases found by trace readiness",
+      "expected_output": "Pairs static trace findings with skill-eval-scaffolder before editing eval manifests.",
+      "files": [],
+      "assertions": [
+        "Agent treats missing explicit-invocation cases as coverage gaps",
+        "Agent routes new case scaffolding to skill-eval-scaffolder",
+        "Agent keeps prompts grounded in each skill dispatch table"
+      ]
+    },
+    {
+      "id": "single-skill-trace",
+      "prompt": "/skill-trace-debugger skill-router",
+      "expected_output": "Reports trace readiness signals for one skill including evals, check script, and explicit invocation cases.",
+      "files": [],
+      "assertions": [
+        "Agent runs trace_report.py for the named skill",
+        "Agent checks evals/evals.json and scripts/check.py",
+        "Agent reports explicit-invocation coverage"
+      ]
+    },
+    {
+      "id": "repo-json-trace",
+      "prompt": "/skill-trace-debugger --all --format json",
+      "expected_output": "Returns a machine-readable trace readiness summary for the skill fleet.",
+      "files": [],
+      "assertions": [
+        "Agent uses --all or repo mode",
+        "Agent emits JSON when requested",
+        "Agent includes missing eval or check-script gaps"
+      ]
+    },
+    {
+      "id": "missing-explicit-case",
+      "prompt": "Debug why a skill with evals is not being selected from slash-command prompts.",
+      "expected_output": "Flags missing explicit-invocation eval coverage as a trace readiness gap.",
+      "files": [],
+      "assertions": [
+        "Agent inspects eval prompts for slash-command or named dispatch cases",
+        "Agent labels the issue as static coverage evidence",
+        "Agent recommends skill-eval-scaffolder for new cases"
+      ]
+    }
+  ]
+}

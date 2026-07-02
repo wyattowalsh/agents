@@ -1,0 +1,26 @@
+{
+  "wave": "W2",
+  "dispatched": [
+    {"task_id": "T-200a", "agent": "SA-DOC", "files": ["docs/astro.config.mjs"]},
+    {"task_id": "T-200b-d", "agent": "SA-DOC", "files": ["wagents/docs_reports.py", "wagents/docs.py"]},
+    {"task_id": "T-210a-d", "agent": "SA-DOC", "files": [
+      "wagents/docs_reports.py",
+      "docs/src/content/docs/reports/",
+      "docs/public/generated-reports/",
+      "config/docs-artifact-registry.json",
+      "docs/src/generated-sidebar.mjs"
+    ]},
+    {"task_id": "T-220a-c", "agent": "SA-MCP0", "files": [
+      "wagents/mcp_shared/read_only_paths.py",
+      "wagents/mcp_shared/catalog_readers.py",
+      "tests/mcp_shared/"
+    ]}
+  ],
+  "gate_checks": [
+    "uv run wagents docs generate --check",
+    "uv run pytest tests/mcp_shared -q",
+    "uv run wagents validate",
+    "uv run wagents openspec validate"
+  ],
+  "blocked_until": []
+}

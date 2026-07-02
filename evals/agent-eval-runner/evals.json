@@ -1,0 +1,33 @@
+{
+  "agent_name": "agent-eval-runner",
+  "gates": [
+    {
+      "id": "wagents-validate",
+      "command": "uv run wagents validate",
+      "kind": "structural"
+    },
+    {
+      "id": "eval-validate",
+      "command": "uv run wagents eval validate --format json",
+      "kind": "structural"
+    },
+    {
+      "id": "eval-adequacy-strict",
+      "command": "uv run wagents eval adequacy --strict --format json",
+      "kind": "adequacy"
+    }
+  ],
+  "evals": [
+    {
+      "id": "structural-gate-run",
+      "prompt": "Run structural eval gates for new skill assets.",
+      "expected_output": "Executes manifest gates and reports exit codes without live LLM evals.",
+      "files": ["evals/agent-eval-runner/evals.json"],
+      "assertions": [
+        "Agent loads evals/agent-eval-runner/evals.json",
+        "Agent runs wagents validate and eval validate",
+        "Agent does not run live skills sync --apply"
+      ]
+    }
+  ]
+}

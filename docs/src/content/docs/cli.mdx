@@ -715,7 +715,7 @@ Validate eval JSON files for required fields and referential integrity:
 wagents eval validate
 ```
 
-Legacy scenario files must contain `skills`, `query`, and `expected_behavior`. Canonical manifests may use `evals/evals.json` with `skill_name` plus an `evals` array of cases containing `prompt` and `expected_output`, with optional `files` and `assertions`.
+Legacy scenario files must contain `skills`, `query`, and `expected_behavior`. Canonical manifests may use `evals/evals.json` with `skill_name` plus an `evals` array of cases containing `prompt` and `expected_output`, with optional `files` and `assertions`. Canonical case prompts must be unique after trimming surrounding whitespace.
 
   </TabItem>
   <TabItem label="coverage">

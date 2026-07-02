@@ -1,0 +1,130 @@
+{
+  "shard_id": "w3-catalog-ext-06",
+  "count": 24,
+  "skill_ids": [
+    "golang-security",
+    "golang-spf13-cobra",
+    "golang-spf13-viper",
+    "golang-stretchr-testify",
+    "golang-testing",
+    "golang-troubleshooting",
+    "graphql-operations",
+    "graphql-schema",
+    "grill-me",
+    "helm-chart-scaffolding",
+    "huggingface-skills-all",
+    "improve-codebase-architecture",
+    "incident-runbook-templates",
+    "inngest-durable-functions",
+    "inngest-events",
+    "inngest-setup",
+    "inngest-steps",
+    "insecure-defaults",
+    "iterate-pr",
+    "javascript-testing-patterns",
+    "k8s-manifest-generator",
+    "k8s-security-policies",
+    "kubernetes-specialist",
+    "langchain-architecture"
+  ],
+  "entries": [
+    {
+      "skill_id": "golang-security",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-spf13-cobra",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-spf13-viper",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-stretchr-testify",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-testing",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-troubleshooting",
+      "issues": []
+    },
+    {
+      "skill_id": "graphql-operations",
+      "issues": []
+    },
+    {
+      "skill_id": "graphql-schema",
+      "issues": []
+    },
+    {
+      "skill_id": "grill-me",
+      "issues": []
+    },
+    {
+      "skill_id": "helm-chart-scaffolding",
+      "issues": []
+    },
+    {
+      "skill_id": "huggingface-skills-all",
+      "issues": [
+        "missing frontmatter field: install_command"
+      ]
+    },
+    {
+      "skill_id": "improve-codebase-architecture",
+      "issues": []
+    },
+    {
+      "skill_id": "incident-runbook-templates",
+      "issues": []
+    },
+    {
+      "skill_id": "inngest-durable-functions",
+      "issues": []
+    },
+    {
+      "skill_id": "inngest-events",
+      "issues": []
+    },
+    {
+      "skill_id": "inngest-setup",
+      "issues": []
+    },
+    {
+      "skill_id": "inngest-steps",
+      "issues": []
+    },
+    {
+      "skill_id": "insecure-defaults",
+      "issues": []
+    },
+    {
+      "skill_id": "iterate-pr",
+      "issues": []
+    },
+    {
+      "skill_id": "javascript-testing-patterns",
+      "issues": []
+    },
+    {
+      "skill_id": "k8s-manifest-generator",
+      "issues": []
+    },
+    {
+      "skill_id": "k8s-security-policies",
+      "issues": []
+    },
+    {
+      "skill_id": "kubernetes-specialist",
+      "issues": []
+    },
+    {
+      "skill_id": "langchain-architecture",
+      "issues": []
+    }
+  ]
+}

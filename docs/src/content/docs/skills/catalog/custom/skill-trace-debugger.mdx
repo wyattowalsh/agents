@@ -1,0 +1,152 @@
+---
+title: "skill-trace-debugger"
+description: "Inspect eval manifests and portable validators for trace-friendly skill signals. Use when debugging skill invocation gaps. NOT for live LLM trace capture."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="skill-trace-debugger"
+  description="Inspect eval manifests and portable validators for trace-friendly skill signals. Use when debugging skill invocation gaps. NOT for live LLM trace capture."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill skill-trace-debugger -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/skill-trace-debugger &lt;skill-name|repo&gt; [--format json]"
+  badges={[{ text: "skill-trace-debugger", variant: "note" }, { text: "221 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/skill-trace-debugger/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Surface trace and eval coverage gaps for repository skills before live behavioral runs.
+
+## Modes
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| `&lt;name&gt;` | Trace readiness report for one skill |
+| `repo` / `--all` | Fleet trace readiness summary |
+| `--format json` | Machine-readable report |
+| Empty | Show trace signal checklist |
+
+## Critical Rules
+
+1. Never claim live trace capture from static reports alone.
+2. Treat missing explicit-invocation eval cases as a coverage gap, not a hard failure for internal skills.
+3. Do not mutate eval manifests without maintainer approval.
+4. Pair trace reports with skill-eval-scaffolder when adding new cases.
+5. Keep prompts grounded in each skill's dispatch table.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `skill-trace-debugger` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Argument Hint | `[skill-name|repo] [--format json]` |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: skill-trace-debugger
+description: >-
+  Inspect eval manifests and portable validators for trace-friendly skill signals.
+  Use when debugging skill invocation gaps. NOT for live LLM trace capture.
+user-invocable: true
+argument-hint: "<skill-name|repo> [--format json]"
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+---
+
+# Skill Trace Debugger
+
+Surface trace and eval coverage gaps for repository skills before live behavioral runs.
+
+**Scope:** Static trace readiness checks only. Does not execute live evals or harvest session logs.
+
+## Dispatch
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| `<name>` | Trace readiness report for one skill |
+| `repo` / `--all` | Fleet trace readiness summary |
+| `--format json` | Machine-readable report |
+| Empty | Show trace signal checklist |
+
+## Trace Readiness Checklist
+
+| Signal | Meaning |
+|--------|---------|
+| `evals/evals.json` | Behavioral cases exist for post-hoc grading |
+| `scripts/check.py` | Portable validator contract is wired |
+| explicit-invocation case | Eval includes a slash-command or named dispatch prompt |
+| NOT-for boundary | Description names the correct alternate skill |
+
+## Workflow
+
+```bash
+uv run python skills/skill-trace-debugger/scripts/trace_report.py <name>
+uv run python skills/skill-trace-debugger/scripts/trace_report.py --all --format json
+```
+
+Route live trace grading to agent-eval-runner or maintainer CI workflows.
+
+## Validation Contract
+
+```bash
+uv run python skills/skill-trace-debugger/scripts/check.py
+```
+
+## Critical Rules
+
+1. Never claim live trace capture from static reports alone.
+2. Treat missing explicit-invocation eval cases as a coverage gap, not a hard failure for internal skills.
+3. Do not mutate eval manifests without maintainer approval.
+4. Pair trace reports with skill-eval-scaffolder when adding new cases.
+5. Keep prompts grounded in each skill's dispatch table.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/skill-trace-debugger/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/skill-trace-debugger/SKILL.md)

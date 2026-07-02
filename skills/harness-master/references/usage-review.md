@@ -46,6 +46,7 @@ Prefer these runtime summaries when available:
 - `quota_status` for local quota and pricing diagnostics
 - `gemini_quota` for Gemini quota posture
 - `workspace-summary` and `git-smart-status` for repo context and worktree risk
+- `wagents rtk review` and `wagents rtk gain --history` for RTK shell token-savings usage review
 
 OpenCode command shapes that are safe to plan or run only when sanitized:
 

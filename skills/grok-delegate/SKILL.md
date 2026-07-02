@@ -32,10 +32,10 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 
 1. **Use** when the parent harness owns a multi-node graph and at least one node should run on Grok Build via native CLI.
 2. **Use** when a gate failed and the parent needs `-r <sessionId>` tune passes on an existing ledger row.
-3. **Tier-T default** — use `trivial` by default when fast preflight `ok`, `grok-auth-expiry` is `ok`, and the leaf is bounded (≤3 reads OR ≤1 file ≤80 LOC; no destructive/prod/git-push/secrets). Parent keeps synthesis.
+3. **Tier-T default** — use `trivial` by default when fast preflight `ok`, `grok-auth-expiry` is `ok`, and the leaf is bounded (≤3 reads OR ≤1 file ≤80 LOC; no destructive/prod/git-push/secrets; no unresolved user-pivotal or subtask-pivotal uncertainty). Parent keeps synthesis.
 4. **Tier-T failure fallback** — if the first native `grok -p` Tier-T dispatch fails for a parent work item, stop Tier-T for that item and continue locally.
 5. **Do not use** for Grok config/MCP sync, skill installs, or nested Grok-in-Grok orchestration.
-6. **Do not use** for multi-node graphs, overlapping file writers, or unbounded parent work better done in-session.
+6. **Do not use Tier-T** for multi-node graphs, overlapping file writers, or unbounded parent work better done in-session; use `wave`/`patterns` for valid multi-node Grok graphs.
 7. **Malformed dispatch** — `wave` without `0|1|2` is invalid; show valid tiers or the empty-args gallery. Never invent a default wave.
 
 ## Operator Contract
@@ -56,7 +56,8 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 
 1. Confirm Tier-T eligibility (Classification Gate item 3).
 2. Run fast preflight; require `ok: true` and `grok-auth-expiry: ok` (OAuth healthy).
-3. Dispatch one bounded node:
+3. For the one-file edit form, the parent must run normal branch and dirty-worktree safety checks before dispatch. Confirm the target file does not overlap unrelated dirty work and keep the parent responsible for review, synthesis, and validation.
+4. Dispatch one bounded node:
 
 ```bash
 grok --no-auto-update \
@@ -66,7 +67,7 @@ grok --no-auto-update \
   --max-turns 10
 ```
 
-4. If the native dispatch fails, record the failure, stop Tier-T for the current parent work item, and continue locally.
+5. If the native dispatch fails, record the failure, stop Tier-T for the current parent work item, and continue locally.
 
 ### `wave <0|1|2>`
 

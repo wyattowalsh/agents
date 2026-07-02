@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "plan": "findings-remediation-swarm",
+  "started_at": "2026-07-01",
+  "parent_orchestration": "planning/manifests/skills-plugins-review-orchestration.json",
+  "findings_source": "planning/manifests/skills-plugins-review-findings.json",
+  "waves": {
+    "R0": {
+      "status": "passed",
+      "gate": "GR0",
+      "tasks": [
+        {"id": "T-R0-002", "status": "resolved", "scope": "wagents/authoring_sync.py"},
+        {"id": "T-R0-003", "status": "resolved", "validation": "tests/test_authoring_sync.py"},
+        {"id": "T-R0-004", "status": "resolved", "validation": "sync_custom_authoring_from_skills() -> 50 mdx"},
+        {"id": "T-R0-008", "status": "resolved", "note": "new-project openspec validate ~412s; default check skips without --full"},
+        {"id": "T-R0-009", "status": "resolved", "note": "nerdbot missing pyyaml; desktop-computer-use absent + EXCLUDED_SKILLS"}
+      ]
+    },
+    "R1": {
+      "status": "passed",
+      "gate": "GR1",
+      "tasks": [
+        {"id": "T-R1-CAT-001", "status": "resolved", "findings": "RV-SP-005..054"},
+        {"id": "T-R1-EXT-001..011", "status": "resolved", "findings": "RV-SP-055..065"},
+        {"id": "T-R1-EXT-002", "status": "accepted", "finding": "RV-SP-056", "note": "pip install intentional for apm-cli external-tool"}
+      ]
+    },
+    "R2": {
+      "status": "passed",
+      "gate": "GR2",
+      "tasks": [
+        {"id": "T-R2-EVAL-001", "status": "resolved", "skills": ["skill-router", "i18n-localization"], "finding": "RV-SP-069"},
+        {"id": "T-R2-EVAL-002", "status": "resolved", "skills": ["orchestrator"], "findings": ["RV-SP-003", "RV-SP-068"]},
+        {"id": "T-R2-EVAL-003", "status": "resolved", "skills": ["agent-runtime-governance"], "findings": ["RV-SP-001", "RV-SP-066"]},
+        {"id": "T-R2-EVAL-004", "status": "resolved", "skills": ["openspec-workflow"], "finding": "RV-SP-067"},
+        {"id": "T-R2-EVAL-005", "status": "resolved", "skills": ["data-pipeline-architect"], "finding": "RV-SP-070"}
+      ]
+    },
+    "R3": {
+      "status": "passed",
+      "gate": "GR3",
+      "tasks": [
+        {"id": "T-R3-NP-001", "status": "resolved", "finding": "RV-SP-002", "fix": "check.py --full gate for openspec validate"},
+        {"id": "T-R3-NB-001", "status": "resolved", "fix": "nerdbot pyproject pyyaml dependency"},
+        {"id": "T-R3-DCU-001", "status": "resolved", "disposition": "excluded-absent", "note": "skills/desktop-computer-use/ absent; listed in EXCLUDED_SKILLS"}
+      ]
+    },
+    "R4": {
+      "status": "passed_with_wontfix",
+      "gate": "GR4",
+      "tasks": [
+        {"id": "T-R4-HAR-001", "status": "resolved", "config_repair_needed": 44, "repo_owned": 0},
+        {"id": "T-R4-HAR-002", "status": "wontfix", "note": "All 44 config-repair-needed are user-local gemini-cli extensions; no repo-side config mutation"}
+      ]
+    },
+    "R5": {
+      "status": "passed",
+      "gate": "GR5",
+      "validated_at": "2026-07-02",
+      "tasks": [
+        {
+          "id": "T-R5-001",
+          "status": "resolved",
+          "findings": "RV-SP-001..070",
+          "evidence": "planning/manifests/skills-plugins-review-remediation-queue.md"
+        },
+        {
+          "id": "T-R5-002",
+          "status": "accepted",
+          "finding": "RV-SP-004",
+          "note": "W2 plugin surfaces were clean; no remediation needed beyond validation."
+        },
+        {
+          "id": "T-R5-003",
+          "status": "accepted",
+          "finding": "RV-SP-056",
+          "note": "pip install apm-cli remains intentional for external-tool sync_kind."
+        }
+      ],
+      "validation": [
+        "uv run wagents validate",
+        "uv run python skills/new-project/scripts/check.py",
+        "uv run pytest tests/test_authoring_sync.py tests/test_skills_catalog_schemas.py tests/test_catalog_index_parity.py tests/test_external_skills.py tests/test_sync_desired_skills.py -q",
+        "uv run pytest tests/test_eval_adequacy.py tests/test_eval_cli.py tests/test_eval_ci_flagship.py tests/mcp/test_eval_results.py -q"
+      ],
+      "residual_notes": [
+        "Closed 2026-07-02: new skill/plugin maintenance skills outside the original RV-SP-069 target set now have at least five eval cases each; wagents eval coverage reports zero skills below the five-case floor."
+      ]
+    }
+  }
+}

@@ -2123,6 +2123,9 @@ wheels = [
 name = "nerdbot"
 version = "0.1.0"
 source = { editable = "." }
+dependencies = [
+    { name = "pyyaml" },
+]
 
 [package.optional-dependencies]
 crawl = [
@@ -2158,6 +2161,7 @@ requires-dist = [
     { name = "docling-slim", marker = "extra == 'docs'", specifier = ">=2.92.0,<3" },
     { name = "markitdown", marker = "extra == 'docs'", specifier = ">=0.1.5,<0.2" },
     { name = "opendataloader-pdf", marker = "extra == 'docs'", specifier = ">=2.4.1,<3" },
+    { name = "pyyaml", specifier = ">=6" },
     { name = "selectolax", marker = "extra == 'crawl'", specifier = ">=0.4.7,<0.5" },
     { name = "sqlite-vec", marker = "extra == 'semantic'", specifier = ">=0.1.9,<0.2" },
     { name = "trafilatura", marker = "extra == 'crawl'", specifier = ">=2.0.0,<3" },

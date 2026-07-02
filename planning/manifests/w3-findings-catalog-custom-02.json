@@ -1,0 +1,88 @@
+{
+  "shard_id": "w3-catalog-custom-02",
+  "count": 10,
+  "skill_ids": [
+    "docling-graph",
+    "docs-steward",
+    "draw-thing",
+    "email-whiz",
+    "event-driven-architect",
+    "files-buddy",
+    "git-workflow",
+    "grok-delegate",
+    "harness-master",
+    "host-panel"
+  ],
+  "entries": [
+    {
+      "skill_id": "docling-graph",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "docs-steward",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "draw-thing",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "email-whiz",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "event-driven-architect",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "files-buddy",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "git-workflow",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "grok-delegate",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "harness-master",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "host-panel",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    }
+  ]
+}

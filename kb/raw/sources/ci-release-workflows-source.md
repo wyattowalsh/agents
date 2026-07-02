@@ -19,7 +19,7 @@ source_count: 1
 | Field | Value |
 |-------|-------|
 | source_id | `ci-release-workflows` |
-| original_location | `.github/workflows/ci.yml`; `.github/workflows/release-skills.yml`; `.pre-commit-config.yaml`; `Makefile` |
+| original_location | `.github/workflows/ci.yml`; `.github/workflows/release-skills.yml`; `.pre-commit-config.yaml`; `justfile` |
 | raw_path | `kb/raw/sources/ci-release-workflows-source.md` |
 | capture_method | repo-local pointer summary from read-only research |
 | captured_at | 2026-06-23 |
@@ -36,7 +36,7 @@ The validate job runs `wagents validate`, `wagents readme --check`, `wagents apm
 
 The docs job runs `wagents docs generate --no-installed`, catalog index check, `wagents docs compose --check-composed --min-pct 100`, non-blocking `wagents docs lint || true`, Astro check, and `pnpm build`. Release-skills validates on every PR with strict skill audit + full pytest; package-and-release runs only on version tags.
 
-Pre-commit adds path-filtered hooks for validate, apm check/doctor, openspec validate, catalog index check, docs build check, and `actionlint` on `.github/workflows/`. Local workflow lint: `make ci-check`. Dependabot watches `github-actions` weekly. Regression tests: `tests/test_github_workflows.py`.
+Pre-commit adds path-filtered hooks for validate, apm check/doctor, openspec validate, catalog index check, docs build check, and `actionlint` on `.github/workflows/`. Local workflow lint: `just ci-check`. Dependabot watches `github-actions` weekly. Regression tests: `tests/test_github_workflows.py`.
 
 ## Provenance
 
@@ -45,7 +45,7 @@ Pre-commit adds path-filtered hooks for validate, apm check/doctor, openspec val
 | CI job structure and commands. | `.github/workflows/ci.yml` | canonical material | Seven jobs |
 | Release workflow gates. | `.github/workflows/release-skills.yml` | canonical material | PR validate + tag release |
 | Pre-commit validation hooks. | `.pre-commit-config.yaml` | canonical material | Path-filtered |
-| Makefile provides local shorthand targets. | `Makefile` | canonical material | CI uses `uv run` directly |
+| justfile provides local shorthand recipes. | `justfile` | canonical material | CI uses `uv run` directly |
 
 ## Planned wiki coverage
 

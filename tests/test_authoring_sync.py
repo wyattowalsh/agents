@@ -41,6 +41,10 @@ def test_sync_custom_authoring_from_skills_writes_mdx_with_custom_kind_and_marke
     assert fm["name"] == "alpha"
     assert fm["description"] == "Alpha does things."
     assert fm["source_kind"] == "custom"
+    assert fm["trust_tier"] == "repo-owned"
+    assert fm["status"] == "repo-owned"
+    assert fm["provenance_status"] == "repo-owned"
+    assert fm["sync_kind"] == "skills-cli"
 
     # Body contains the generated marker pointing to SKILL.md
     marker = GENERATED_MARKER.format(name="alpha")

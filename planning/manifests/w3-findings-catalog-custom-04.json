@@ -1,0 +1,88 @@
+{
+  "shard_id": "w3-catalog-custom-04",
+  "count": 10,
+  "skill_ids": [
+    "opencode-ensemble",
+    "openspec-workflow",
+    "orchestrator",
+    "performance-profiler",
+    "prompt-engineer",
+    "python-conventions",
+    "reasoning-router",
+    "release-pipeline-architect",
+    "research",
+    "review"
+  ],
+  "entries": [
+    {
+      "skill_id": "opencode-ensemble",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "openspec-workflow",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "orchestrator",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "performance-profiler",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "prompt-engineer",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "python-conventions",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "reasoning-router",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "release-pipeline-architect",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "research",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "review",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    }
+  ]
+}

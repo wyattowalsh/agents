@@ -1,0 +1,181 @@
+{
+  "shard_id": "w1-skill-shard-04",
+  "generated_at": "2026-07-01T19:46:37+00:00",
+  "skills": [
+    "agent-runtime-governance",
+    "api-designer",
+    "data-pipeline-architect",
+    "devops-engineer",
+    "i18n-localization",
+    "infrastructure-coder",
+    "new-project"
+  ],
+  "count": 7,
+  "entries": [
+    {
+      "skill": "agent-runtime-governance",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": "issing package dry-run for distributable skill\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Completion criteria are explicit\",\n        \"Validation contract includes a test or smoke-check surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"scripts\",\n    \"progressive-disclosure\",\n    \"body-substitutions\"\n  ],\n  \"patterns_suggested\": [\n    \"classification-gating\",\n    \"scaling-strategy\"\n  ],\n  \"patterns_not_applicable\": [\n    \"state-management\",\n    \"templates\",\n    \"hooks\",\n    \"stop-hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 143,\n    \"refs\": 2,\n    \"scripts\": 1\n  }\n}\n",
+        "stderr_tail": ""
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": "ls for tool permissions, approvals, memo)\nfrontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  1.0.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 3 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (agent-runtime-governance)\n\nFiles included: 12\nFiles excluded: 2\nfiles_excluded:\n  - .DS_Store\n  - scripts/asset_toolkit/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 90,
+        "max": 100
+      },
+      "eval": {
+        "skill": "agent-runtime-governance",
+        "has_evals": true,
+        "eval_count": 5
+      },
+      "issues": [
+        "thin eval coverage (5 cases)"
+      ]
+    },
+    {
+      "skill": "api-designer",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": ",\n        \"Missing package dry-run for distributable skill\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Completion criteria are explicit\",\n        \"Missing test or smoke-check validation surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"scripts\",\n    \"templates\",\n    \"body-substitutions\"\n  ],\n  \"patterns_suggested\": [\n    \"classification-gating\",\n    \"progressive-disclosure\"\n  ],\n  \"patterns_not_applicable\": [\n    \"scaling-strategy\",\n    \"state-management\",\n    \"hooks\",\n    \"stop-hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 205,\n    \"refs\": 4,\n    \"scripts\": 4\n  }\n}\n",
+        "stderr_tail": ""
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": "-first API design for REST, GraphQL, gRPC. Design, s)\nfrontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  1.0.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 7 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (api-designer)\n\nFiles included: 25\nFiles excluded: 2\nfiles_excluded:\n  - .DS_Store\n  - scripts/asset_toolkit/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 90,
+        "max": 100
+      },
+      "eval": {
+        "skill": "api-designer",
+        "has_evals": true,
+        "eval_count": 10
+      },
+      "issues": []
+    },
+    {
+      "skill": "data-pipeline-architect",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": "      \"Missing package dry-run for distributable skill\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Missing explicit completion criteria\",\n        \"Missing test or smoke-check validation surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"classification-gating\",\n    \"scaling-strategy\",\n    \"scripts\",\n    \"progressive-disclosure\",\n    \"body-substitutions\"\n  ],\n  \"patterns_suggested\": [\n    \"state-management\"\n  ],\n  \"patterns_not_applicable\": [\n    \"templates\",\n    \"hooks\",\n    \"stop-hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 157,\n    \"refs\": 4,\n    \"scripts\": 1\n  }\n}\n",
+        "stderr_tail": ""
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": "s batch and streaming data pipelines with)\nfrontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  1.0.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 4 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (data-pipeline-architect)\n\nFiles included: 14\nFiles excluded: 2\nfiles_excluded:\n  - .DS_Store\n  - scripts/asset_toolkit/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 90,
+        "max": 100
+      },
+      "eval": {
+        "skill": "data-pipeline-architect",
+        "has_evals": true,
+        "eval_count": 9
+      },
+      "issues": []
+    },
+    {
+      "skill": "devops-engineer",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": "issing package dry-run for distributable skill\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Completion criteria are explicit\",\n        \"Validation contract includes a test or smoke-check surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"scripts\",\n    \"templates\",\n    \"body-substitutions\"\n  ],\n  \"patterns_suggested\": [\n    \"classification-gating\",\n    \"scaling-strategy\",\n    \"state-management\",\n    \"progressive-disclosure\"\n  ],\n  \"patterns_not_applicable\": [\n    \"hooks\",\n    \"stop-hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 195,\n    \"refs\": 7,\n    \"scripts\": 4\n  }\n}\n",
+        "stderr_tail": ""
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": "mize, and debug CI/CD pipelines. GitHub Actions )\nfrontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  1.0.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 11 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (devops-engineer)\n\nFiles included: 27\nFiles excluded: 2\nfiles_excluded:\n  - .DS_Store\n  - scripts/asset_toolkit/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 90,
+        "max": 100
+      },
+      "eval": {
+        "skill": "devops-engineer",
+        "has_evals": true,
+        "eval_count": 12
+      },
+      "issues": []
+    },
+    {
+      "skill": "i18n-localization",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": "issing package dry-run for distributable skill\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Completion criteria are explicit\",\n        \"Validation contract includes a test or smoke-check surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"scripts\",\n    \"progressive-disclosure\",\n    \"body-substitutions\"\n  ],\n  \"patterns_suggested\": [\n    \"classification-gating\"\n  ],\n  \"patterns_not_applicable\": [\n    \"scaling-strategy\",\n    \"state-management\",\n    \"templates\",\n    \"hooks\",\n    \"stop-hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 136,\n    \"refs\": 1,\n    \"scripts\": 1\n  }\n}\n",
+        "stderr_tail": ""
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": "ew localization changes across app, docs, and w)\nfrontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  1.0.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 2 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (i18n-localization)\n\nFiles included: 11\nFiles excluded: 2\nfiles_excluded:\n  - .DS_Store\n  - scripts/asset_toolkit/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 90,
+        "max": 100
+      },
+      "eval": {
+        "skill": "i18n-localization",
+        "has_evals": true,
+        "eval_count": 4
+      },
+      "issues": []
+    },
+    {
+      "skill": "infrastructure-coder",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": "ng package dry-run for distributable skill\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Missing explicit completion criteria\",\n        \"Validation contract includes a test or smoke-check surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"scripts\",\n    \"templates\",\n    \"body-substitutions\"\n  ],\n  \"patterns_suggested\": [\n    \"classification-gating\",\n    \"state-management\",\n    \"progressive-disclosure\"\n  ],\n  \"patterns_not_applicable\": [\n    \"scaling-strategy\",\n    \"hooks\",\n    \"stop-hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 207,\n    \"refs\": 6,\n    \"scripts\": 4\n  }\n}\n",
+        "stderr_tail": ""
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": "-Code: Terraform, Kubernetes, Docker. Gener)\nfrontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  1.0.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 10 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (infrastructure-coder)\n\nFiles included: 29\nFiles excluded: 2\nfiles_excluded:\n  - .DS_Store\n  - scripts/asset_toolkit/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 90,
+        "max": 100
+      },
+      "eval": {
+        "skill": "infrastructure-coder",
+        "has_evals": true,
+        "eval_count": 12
+      },
+      "issues": []
+    },
+    {
+      "skill": "new-project",
+      "check": {
+        "exit_code": 124,
+        "stdout_tail": "",
+        "stderr_tail": "timeout"
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": "frontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  1.0.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 32 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (new-project)\n\nFiles included: 61\nFiles excluded: 4\nfiles_excluded:\n  - .DS_Store\n  - scripts/__pycache__/\n  - scripts/asset_toolkit/__pycache__/\n  - scripts/lib/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 90,
+        "max": 100
+      },
+      "eval": {
+        "skill": "new-project",
+        "has_evals": true,
+        "eval_count": 40
+      },
+      "issues": [
+        "check.py exit 124"
+      ]
+    }
+  ]
+}

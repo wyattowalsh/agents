@@ -36,7 +36,11 @@ Use this order:
 1. Resume if the agent can continue cleanly.
 2. Re-spawn with the original task plus failure context.
 3. Re-assign to a different owner if the same lane fails twice.
-4. Escalate to the user when automation is exhausted or the blocker is systemic.
+4. Classify the blocker before escalating:
+   - **Pivotal blocker** (`blocked-user-pivotal`) → parent runs scoped `/grill-me`, then re-dispatch
+   - **Systemic/codebase blocker** → explore or re-spawn with failure context
+   - **Micro-reversible** → subagent asks one question or applies a low-stakes default
+   - Escalate to the user only when automation is exhausted or the blocker remains systemic after recovery
 
 ## Skip Rules
 

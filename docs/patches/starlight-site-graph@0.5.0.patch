@@ -1,0 +1,16 @@
+diff --git a/config/sitemap.ts b/config/sitemap.ts
+index 1111111..2222222 100644
+--- a/config/sitemap.ts
++++ b/config/sitemap.ts
+@@ -199,5 +199,10 @@ export const globalSitemapConfigSchema = z.object({
+ 	 * @example Make the shape of all nodes except those in the "public" folder doubly as large and hollow
+ 	 * { ["!public/**", "**\/*"]: { nodeScale: 2, strokeWidth: "2", shapeColor: "backgroundColor" } }
+ 	 */
+-	styleRules: z.map(z.array(z.string()), nodeStyleSchema.partial()).default(globalSitemapConfig.styleRules),
++	styleRules: z
++		.preprocess(
++			(val) => (val instanceof Map ? val : new Map()),
++			z.map(z.array(z.string()), nodeStyleSchema.partial()),
++		)
++		.default(() => new Map()),
+ }).partial();

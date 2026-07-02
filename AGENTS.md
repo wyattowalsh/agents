@@ -75,7 +75,7 @@ Agents use YAML frontmatter followed by a markdown system prompt.
 
 **OpenCode-specific extensions (non-portable):**
 
-The following frontmatter keys are recognized only by the OpenCode harness and are not part of the portable agent contract. They are stored in a separate overlay file (`instructions/opencode-agents-overlay.md`) and are loaded exclusively by OpenCode:
+The following frontmatter keys are recognized only by the OpenCode harness and are not part of the portable agent contract. Machine-readable runtime overlays live in `config/opencode-agents.json`; wagents sync merges that JSON with portable `agents/*.md` bodies into `.opencode/agents/*.md`. Human maintainer docs live in `instructions/opencode-agents-overlay.md`. After `apm compile -t opencode` or `apm install`, run `just sync-opencode` then `just refresh-apm-lock` before commit (`apm run compile-opencode` chains both) so APM's portable projection does not overwrite schema-valid OpenCode frontmatter.
 
 | Field         | Type   | Description                                                  |
 | ------------- | ------ | ------------------------------------------------------------ |
@@ -313,12 +313,12 @@ wagents update                               # Refresh installed skills from rec
 wagents skills sync --dry-run                # Preview additive repo + curated external sync across harnesses
 wagents skills sync --apply                  # Execute the verified additive sync commands
 
-# Or use make targets (see Makefile)
-make install                                 # All skills → all agents
-make install-claude                          # All skills → Claude
-make install-skill SKILL=review              # Specific skill → all agents
-make update                                  # Refresh installed skills
-make help                                    # Show all make targets
+# Or use just recipes (see justfile)
+just install                                 # All skills → all agents
+just install-claude                          # All skills → Claude
+just install-skill --skill review            # Specific skill → all agents
+just update                                  # Refresh installed skills
+just --list                                  # Show all just recipes
 ```
 
 > **CI/CD:** The `release-skills.yml` workflow validates on every PR and automatically packages + releases skills when a version tag (`v*.*.*`) is pushed.
@@ -364,8 +364,9 @@ Everything situational uses **skills as context loaders** — Claude sees skill 
 | `python-conventions`     | Auto-invoke only                 | ~45 tokens             | Working on Python files                           |
 | `javascript-conventions` | Auto-invoke only                 | ~25 tokens             | Working on JS/TS files                            |
 | `agent-conventions`      | Auto-invoke only                 | ~30 tokens             | Creating/modifying agents                         |
-| `shell-conventions`      | Auto-invoke only                 | ~30 tokens             | Working on shell/Makefile files                   |
+| `shell-conventions`      | Auto-invoke only                 | ~30 tokens             | Working on shell/Makefile/justfile files          |
 | `learn`                  | User-invocable + auto-invoke     | ~50 tokens             | Proposing instruction changes, capturing patterns |
+| `grill-me` (curated)     | User-invocable (`/grill-me`)     | ~25 tokens             | User-pivotal uncertainties before plan/build |
 
 Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but descriptions remain in context for Claude's auto-discovery.
 
@@ -380,6 +381,50 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 | **Total always-loaded**                                                                           | **Varies** |                          |
 | Scoped rules (`.claude/rules/`)                                                                   | ~0         | Conditional (path match) |
 | Skill bodies (when invoked)                                                                       | ~12,000    | On-demand                |
+
+### Token efficacy
+
+Token posture spans eight **layers**. Each layer has one primary owner; do not stack competing tools on the same layer without measured evidence (`wagents rtk gain`, OpenCode DCP stats) and an explicit decision gate.
+
+| Layer | Primary owner (repo) | Maintainer docs |
+| ----- | -------------------- | --------------- |
+| Shell dedup | RTK via `config/rtk-integration.json` + fleet hooks | `wagents rtk doctor`, `wagents rtk sync`, `wagents rtk gain` |
+| Session pruners | OpenCode DCP — `config/opencode-dcp.jsonc` (§2.3) | Live `~/.config/opencode/dcp.jsonc`; `/dcp stats` in OpenCode |
+| Cross-harness proxy | None (research-gated) | Compare before install |
+| MCP schema tax | MCPHub `harness-safe` group (§2.6) | `config/mcp-registry.json`, `docs/ai-tools/mcphub.md` |
+| Code reads | Policy-first (narrow reads, ripgrep) | Research-gated MCP only if Read-heavy pain |
+| Standing context | `instructions/global.md` + skill descriptions | Progressive disclosure: scoped rules + on-demand skills |
+| Docs / maintainer hub | Public `/harness-config/token-efficacy/` | This section + harness-config hub |
+| Landscape tracking | `/research track token-oss-landscape` | Quarterly journal; no installs until gated |
+
+**One-tool-per-layer:** pick a single primary tool per layer. Overlap checks (e.g. RTK vs LeanCTX on shell) are allowed; double-pruning or duplicate proxies are not.
+
+**RTK (shell layer):** Repo policy lives in `config/rtk-integration.json`. Use the wagents wrapper — do not import RTK.md in shared instructions:
+
+```bash
+uv run wagents rtk doctor --format json
+uv run wagents rtk sync --dry-run --platforms claude-code,cursor,opencode,codex,gemini-cli,github-copilot
+RTK_TELEMETRY_DISABLED=1 uv run wagents rtk sync --apply --platforms claude-code,cursor,opencode,codex,gemini-cli,github-copilot
+uv run wagents rtk gain --graph
+```
+
+RTK owns local hooks and `~/.config/opencode/plugins/rtk.ts`; keep RTK out of `opencode.json` plugin arrays. Shared corpus must not import RTK.md.
+
+**DCP (session layer):** Canonical source is `config/opencode-dcp.jsonc`. Stay model-neutral (no `compress.modelMaxLimits` / `compress.modelMinLimits` unless explicitly requested). Tune only when log review shows compaction pain.
+
+**MCPHub (MCP layer):** Prefer the `harness-safe` group over attaching full server schemas to every harness. Edit once in `config/mcp-registry.json`, regenerate MCPHub settings, project via sync.
+
+**Decision gates (install only if):**
+
+| Category | Gate |
+| -------- | ---- |
+| Session proxy | Compare winner + no DCP regression + explicit approval |
+| MCP compressor | MCP strategy resolved + single-server pilot approved |
+| Code MCP | Standing-context review shows Read-heavy pain + compare winner |
+| Claude-only pruner | Compare winner for Claude layer + user sign-off |
+| New OSS token tool | Research compare complete; no stacking without `rtk gain` + DCP evidence |
+
+Full maintainer hub: docs site `/harness-config/token-efficacy/` (generated from `docs/src/content/docs/harness-config/token-efficacy.mdx`).
 
 ---
 

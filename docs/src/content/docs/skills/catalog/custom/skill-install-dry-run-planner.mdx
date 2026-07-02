@@ -1,0 +1,151 @@
+---
+title: "skill-install-dry-run-planner"
+description: "Plan cross-harness skills sync dry-run steps before any live install. Use when reconciling harness skill inventory. NOT for --apply or npx installs."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="skill-install-dry-run-planner"
+  description="Plan cross-harness skills sync dry-run steps before any live install. Use when reconciling harness skill inventory. NOT for --apply or npx installs."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill skill-install-dry-run-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/skill-install-dry-run-planner [--harness &lt;name&gt;] [--format json]"
+  badges={[{ text: "skill-install-dry-run-planner", variant: "note" }, { text: "217 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/skill-install-dry-run-planner/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Produce a maintainer plan from `wagents skills sync --dry-run` evidence.
+
+## Modes
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| Empty | Full dry-run plan for all harnesses |
+| `--harness &lt;name&gt;` | Plan for one harness adapter |
+| `--format json` | Machine-readable plan |
+| `help` | Show phases, gates, and related runbooks |
+
+## Critical Rules
+
+1. Default to dry-run; treat sync JSON as evidence, not authority over repo policy.
+2. Never auto-apply installs or run live `npx skills add` from this skill.
+3. Run phase 1 dry-run checks before recommending reconciliation.
+4. Gate temp-home smoke behind `INSTALL_SMOKE=1`.
+5. Document unresolved catalog rows instead of silently skipping them.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `skill-install-dry-run-planner` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Argument Hint | `[--harness [name]] [--format json]` |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: skill-install-dry-run-planner
+description: >-
+  Plan cross-harness skills sync dry-run steps before any live install.
+  Use when reconciling harness skill inventory. NOT for --apply or npx installs.
+user-invocable: true
+argument-hint: "[--harness <name>] [--format json]"
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+---
+
+# Skill Install Dry-Run Planner
+
+Produce a maintainer plan from `wagents skills sync --dry-run` evidence.
+
+**Scope:** Dry-run planning only. Never run `wagents skills sync --apply` or live `npx skills add` from this skill.
+
+## Dispatch
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| Empty | Full dry-run plan for all harnesses |
+| `--harness <name>` | Plan for one harness adapter |
+| `--format json` | Machine-readable plan |
+| `help` | Show phases, gates, and related runbooks |
+
+## Planned Phases
+
+1. **Validate** — `uv run wagents validate`
+2. **Dry-run JSON** — `uv run wagents skills sync --dry-run --format json`
+3. **Review gaps** — inspect `missing`, `unresolved`, and `skipped` rows per harness
+4. **Optional smoke** — `INSTALL_SMOKE=1` temp-home phase (maintainer machine only)
+5. **Apply gate** — human approval required before any `--apply`
+
+Also see `skills/cross-agent-install-smoke/` and `docs/runbooks/install-smoke.md`.
+
+## Workflow
+
+```bash
+uv run python skills/skill-install-dry-run-planner/scripts/plan_dry_run.py
+uv run python skills/skill-install-dry-run-planner/scripts/plan_dry_run.py --harness cursor --format json
+```
+
+## Validation Contract
+
+```bash
+uv run python skills/skill-install-dry-run-planner/scripts/check.py
+```
+
+## Critical Rules
+
+1. Default to dry-run; treat sync JSON as evidence, not authority over repo policy.
+2. Never auto-apply installs or run live `npx skills add` from this skill.
+3. Run phase 1 dry-run checks before recommending reconciliation.
+4. Gate temp-home smoke behind `INSTALL_SMOKE=1`.
+5. Document unresolved catalog rows instead of silently skipping them.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/skill-install-dry-run-planner/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/skill-install-dry-run-planner/SKILL.md)

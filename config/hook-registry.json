@@ -26,30 +26,6 @@
       ]
     },
     {
-      "id": "destructive-shell-guard",
-      "description": "Block high-risk shell commands.",
-      "logical_policy": "destructive-shell-guard",
-      "logical_event": "PreToolUse",
-      "matcher": "Bash|bash|run_shell_command",
-      "command": "./hooks/guard-destructive.sh",
-      "timeout": 5,
-      "harnesses": [
-        "github-copilot"
-      ]
-    },
-    {
-      "id": "protected-file-guard",
-      "description": "Block edits to protected paths and secret-bearing files.",
-      "logical_policy": "protected-file-guard",
-      "logical_event": "PreToolUse",
-      "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace",
-      "command": "./hooks/protect-files.sh",
-      "timeout": 5,
-      "harnesses": [
-        "github-copilot"
-      ]
-    },
-    {
       "id": "post-edit-format",
       "description": "Run best-effort formatter after edits.",
       "logical_policy": "post-edit-format",
@@ -101,7 +77,7 @@
       "matcher": "Bash|bash|run_shell_command|shell|terminal",
       "command": "{hook_runner} codex-destructive-shell-guard --harness {harness}",
       "timeout": 5,
-      "bundle_group": "codex-shell-file-guards",
+      "bundle_group": "fleet-pre-tool-enforce",
       "bundle_mode": "enforce-chain",
       "harnesses": [
         "codex"
@@ -117,7 +93,7 @@
       "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
       "command": "{hook_runner} codex-protected-file-guard --harness {harness}",
       "timeout": 5,
-      "bundle_group": "codex-shell-file-guards",
+      "bundle_group": "fleet-pre-tool-enforce",
       "bundle_mode": "enforce-chain",
       "harnesses": [
         "codex"
@@ -187,7 +163,7 @@
       "matcher": "Bash|bash|run_shell_command|shell|terminal",
       "command": "{hook_runner} cursor-destructive-shell-guard --harness {harness}",
       "timeout": 5,
-      "bundle_group": "cursor-shell-file-guards",
+      "bundle_group": "fleet-pre-tool-enforce",
       "bundle_mode": "enforce-chain",
       "harnesses": [
         "cursor"
@@ -203,7 +179,7 @@
       "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
       "command": "{hook_runner} cursor-protected-file-guard --harness {harness}",
       "timeout": 5,
-      "bundle_group": "cursor-shell-file-guards",
+      "bundle_group": "fleet-pre-tool-enforce",
       "bundle_mode": "enforce-chain",
       "harnesses": [
         "cursor"
@@ -302,6 +278,38 @@
       ]
     },
     {
+      "id": "destructive-shell-guard",
+      "description": "Block high-risk shell commands.",
+      "logical_policy": "destructive-shell-guard",
+      "logical_event": "PreToolUse",
+      "mode": "enforce",
+      "status_message": "Checking shell safety",
+      "matcher": "Bash|bash|run_shell_command",
+      "command": "{hook_runner} destructive-shell-guard --harness {harness}",
+      "timeout": 5,
+      "bundle_group": "fleet-pre-tool-enforce",
+      "bundle_mode": "enforce-chain",
+      "harnesses": [
+        "github-copilot"
+      ]
+    },
+    {
+      "id": "protected-file-guard",
+      "description": "Block edits to protected paths and secret-bearing files.",
+      "logical_policy": "protected-file-guard",
+      "logical_event": "PreToolUse",
+      "mode": "enforce",
+      "status_message": "Checking protected paths",
+      "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace",
+      "command": "{hook_runner} protected-file-guard --harness {harness}",
+      "timeout": 5,
+      "bundle_group": "fleet-pre-tool-enforce",
+      "bundle_mode": "enforce-chain",
+      "harnesses": [
+        "github-copilot"
+      ]
+    },
+    {
       "id": "git-commit-push-guard",
       "description": "Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites across the fleet.",
       "status_message": "Checking git commit/push safety",
@@ -311,6 +319,8 @@
       "matcher": "Bash|bash|run_shell_command|shell|terminal",
       "command": "{hook_runner} git-commit-push-guard --harness {harness}",
       "timeout": 5,
+      "bundle_group": "fleet-pre-tool-enforce",
+      "bundle_mode": "enforce-chain",
       "harnesses": [
         "codex",
         "claude-code",
@@ -327,7 +337,7 @@
       "degraded_behavior": "block with an optimized retry path when the harness cannot safely accept updated input",
       "logical_policy": "image-input-optimizer-guard",
       "logical_event": "PreToolUse",
-      "matcher": "analyze_image|attach_image|screenshot|upload_image|view_image|Read|read|.*[Ii]mage.*|.*[Vv]ision.*|.*[Ss]creenshot.*|.*[Aa]ttach.*|.*[Uu]pload.*",
+      "matcher": "analyze_image|attach_image|screenshot|upload_image|view_image|Read|read",
       "command": "{hook_runner} image-input-optimizer-guard --harness {harness}",
       "timeout": 60,
       "harnesses": [
@@ -336,7 +346,9 @@
         "cursor",
         "github-copilot",
         "gemini-cli"
-      ]
+      ],
+      "bundle_group": "fleet-pre-tool-enforce",
+      "bundle_mode": "enforce-chain"
     },
     {
       "id": "research-prompt-triage-context",

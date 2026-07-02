@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-22",
+  "generated_at": "2026-07-01",
   "ownership": {
     "integrator": [
       "wagents/docs.py"
@@ -15,92 +15,102 @@
     ]
   },
   "custom": {
-    "total": 40,
+    "total": 43,
     "shards": [
       {
         "shard_id": "compose-custom-wave-1",
         "skill_ids": [
+          "add-badges",
           "agent-conventions",
           "agent-runtime-governance",
           "api-designer",
           "changelog-writer",
           "data-pipeline-architect",
-          "data-wizard",
-          "database-architect"
+          "data-wizard"
         ],
         "count": 7
       },
       {
         "shard_id": "compose-custom-wave-2",
         "skill_ids": [
+          "database-architect",
+          "design",
           "devops-engineer",
           "docling-graph",
           "docs-steward",
           "draw-thing",
-          "email-whiz",
-          "event-driven-architect",
-          "files-buddy"
+          "email-whiz"
         ],
         "count": 7
       },
       {
         "shard_id": "compose-custom-wave-3",
         "skill_ids": [
+          "event-driven-architect",
+          "files-buddy",
           "git-workflow",
+          "grok-delegate",
           "harness-master",
           "i18n-localization",
-          "incident-response-engineer",
-          "infrastructure-coder",
-          "javascript-conventions",
-          "learn"
+          "incident-response-engineer"
         ],
         "count": 7
       },
       {
         "shard_id": "compose-custom-wave-4",
         "skill_ids": [
+          "infrastructure-coder",
+          "javascript-conventions",
+          "learn",
           "namer",
           "nerdbot",
           "new-project",
-          "observability-advisor",
-          "opencode-ensemble",
-          "openspec-workflow",
-          "performance-profiler"
+          "observability-advisor"
         ],
         "count": 7
       },
       {
         "shard_id": "compose-custom-wave-5",
         "skill_ids": [
+          "opencode-ensemble",
+          "openspec-workflow",
+          "performance-profiler",
           "reasoning-router",
           "release-pipeline-architect",
           "research",
-          "schema-evolution-planner",
-          "security-scanner",
-          "shell-conventions",
-          "shell-scripter"
+          "schema-evolution-planner"
         ],
         "count": 7
       },
       {
         "shard_id": "compose-custom-wave-6",
         "skill_ids": [
+          "security-scanner",
+          "shell-conventions",
+          "shell-scripter",
           "skill-creator",
           "skill-router",
           "tech-debt-analyzer",
-          "test-architect",
+          "test-architect"
+        ],
+        "count": 7
+      },
+      {
+        "shard_id": "compose-custom-wave-7",
+        "skill_ids": [
           "things-manager"
         ],
-        "count": 5
+        "count": 1
       }
     ]
   },
   "external": {
-    "total": 307,
+    "total": 313,
     "shards": [
       {
         "shard_id": "C-ext-1",
         "skill_ids": [
+          "a11y-debugging",
           "ab-testing",
           "ads",
           "agent-governance",
@@ -112,6 +122,7 @@
           "ai-seo",
           "analytics",
           "anthropics-skills-all",
+          "apm-cli",
           "apollo-client",
           "apollo-connectors",
           "apollo-federation",
@@ -123,15 +134,19 @@
           "arize-instrumentation",
           "arize-prompt-optimization",
           "aws-ami-builder",
-          "aws-iam",
-          "aws-serverless",
-          "best-practices"
+          "aws-iam"
         ],
         "count": 25
       },
       {
         "shard_id": "C-ext-10",
         "skill_ids": [
+          "python-testing-patterns",
+          "redis-clustering",
+          "redis-core",
+          "redis-observability",
+          "redis-security",
+          "redis-semantic-cache",
           "redis-vector-search",
           "remotion-best-practices",
           "render-blueprints",
@@ -150,19 +165,18 @@
           "security-ownership-map",
           "security-threat-model",
           "semgrep",
-          "sentry-fix-issues",
-          "sentry-sdk-setup",
-          "sentry-setup-ai-monitoring",
-          "seo-audit",
-          "seo",
-          "shieldcn-badges",
-          "shopify-dev"
+          "sentry-fix-issues"
         ],
         "count": 25
       },
       {
         "shard_id": "C-ext-11",
         "skill_ids": [
+          "sentry-sdk-setup",
+          "sentry-setup-ai-monitoring",
+          "seo-audit",
+          "seo",
+          "shopify-dev",
           "shopify-liquid",
           "shopify-storefront-graphql",
           "signup",
@@ -182,18 +196,18 @@
           "svelte5-best-practices",
           "swift-concurrency",
           "swiftui-expert-skill",
-          "systematic-debugging",
-          "tanstack-query-best-practices",
-          "tanstack-router-best-practices",
-          "tanstack-start-best-practices",
-          "tdd",
-          "temporal-developer"
+          "systematic-debugging"
         ],
         "count": 25
       },
       {
         "shard_id": "C-ext-12",
         "skill_ids": [
+          "tanstack-query-best-practices",
+          "tanstack-router-best-practices",
+          "tanstack-start-best-practices",
+          "tdd",
+          "temporal-developer",
           "terraform-module-library",
           "terraform-search-import",
           "terraform-skill",
@@ -204,6 +218,7 @@
           "testing-python",
           "threat-model-analyst",
           "to-prd",
+          "troubleshooting",
           "turborepo-caching",
           "upgrade-stripe",
           "upgrading-expo",
@@ -212,19 +227,19 @@
           "variant-analysis",
           "vercel-composition-patterns",
           "vercel-labs-agent-browser-all",
-          "vercel-optimize",
-          "vercel-react-best-practices",
-          "vercel-react-native-skills",
-          "vercel-react-view-transitions",
-          "verification-before-completion",
-          "video",
-          "vite"
+          "vercel-optimize"
         ],
         "count": 25
       },
       {
         "shard_id": "C-ext-13",
         "skill_ids": [
+          "vercel-react-best-practices",
+          "vercel-react-native-skills",
+          "vercel-react-view-transitions",
+          "verification-before-completion",
+          "video",
+          "vite",
           "vitest",
           "vue-best-practices",
           "vue",
@@ -233,11 +248,13 @@
           "wrangler",
           "writing-plans"
         ],
-        "count": 7
+        "count": 13
       },
       {
         "shard_id": "C-ext-2",
         "skill_ids": [
+          "aws-serverless",
+          "best-practices",
           "better-auth-best-practices",
           "biome-developer",
           "brainstorming",
@@ -245,6 +262,8 @@
           "changelog-automation",
           "chatgpt-app-builder",
           "chatgpt-apps",
+          "chrome-devtools-cli",
+          "chrome-devtools",
           "churn-prevention",
           "claimable-postgres",
           "cli-creator",
@@ -258,17 +277,17 @@
           "coleam00-excalidraw-diagram-skill-all",
           "commit",
           "competitor-profiling",
-          "content-strategy",
-          "copywriting",
-          "core-web-vitals",
-          "create-implementation-plan",
-          "cro"
+          "content-strategy"
         ],
         "count": 25
       },
       {
         "shard_id": "C-ext-3",
         "skill_ids": [
+          "copywriting",
+          "core-web-vitals",
+          "create-implementation-plan",
+          "cro",
           "ctf-ai-ml",
           "ctf-crypto",
           "ctf-forensics",
@@ -280,6 +299,7 @@
           "ctf-web",
           "ctf-writeup",
           "database-migration",
+          "debug-optimize-lcp",
           "debugging-strategies",
           "deep-agents-core",
           "deep-agents-memory",
@@ -288,18 +308,18 @@
           "deploy-to-vercel",
           "deployment-pipeline-design",
           "differential-review",
-          "docker-expert",
-          "drizzle-orm-patterns",
-          "durable-objects",
-          "e2e-testing-patterns",
-          "ecosystem-primer",
-          "emails"
+          "docker-expert"
         ],
         "count": 25
       },
       {
         "shard_id": "C-ext-4",
         "skill_ids": [
+          "drizzle-orm-patterns",
+          "durable-objects",
+          "e2e-testing-patterns",
+          "ecosystem-primer",
+          "emails",
           "eval-driven-dev",
           "excalidraw-diagram-generator",
           "executing-plans",
@@ -319,18 +339,18 @@
           "flutter-apply-architecture-best-practices",
           "flutter-build-responsive-layout",
           "flutter-fix-layout-issues",
-          "flutter-setup-declarative-routing",
-          "flutter-setup-localization",
-          "gemini-api",
-          "getting-started",
-          "gha-security-review",
-          "github-actions-docs"
+          "flutter-setup-declarative-routing"
         ],
         "count": 25
       },
       {
         "shard_id": "C-ext-5",
         "skill_ids": [
+          "flutter-setup-localization",
+          "gemini-api",
+          "getting-started",
+          "gha-security-review",
+          "github-actions-docs",
           "gitops-workflow",
           "golang-benchmark",
           "golang-cli",
@@ -350,18 +370,18 @@
           "golang-security",
           "golang-spf13-cobra",
           "golang-spf13-viper",
-          "golang-stretchr-testify",
-          "golang-testing",
-          "golang-troubleshooting",
-          "graphql-operations",
-          "graphql-schema",
-          "grill-me"
+          "golang-stretchr-testify"
         ],
         "count": 25
       },
       {
         "shard_id": "C-ext-6",
         "skill_ids": [
+          "golang-testing",
+          "golang-troubleshooting",
+          "graphql-operations",
+          "graphql-schema",
+          "grill-me",
           "helm-chart-scaffolding",
           "huggingface-skills-all",
           "improve-codebase-architecture",
@@ -381,18 +401,18 @@
           "langchain-fundamentals",
           "langchain-middleware",
           "langchain-rag",
-          "langfuse",
-          "langgraph-fundamentals",
-          "langgraph-human-in-the-loop",
-          "langgraph-persistence",
-          "langsmith-dataset",
-          "langsmith-evaluator"
+          "langfuse"
         ],
         "count": 25
       },
       {
         "shard_id": "C-ext-7",
         "skill_ids": [
+          "langgraph-fundamentals",
+          "langgraph-human-in-the-loop",
+          "langgraph-persistence",
+          "langsmith-dataset",
+          "langsmith-evaluator",
           "langsmith-trace",
           "launch",
           "link-workspace-packages",
@@ -404,6 +424,7 @@
           "marketing-psychology",
           "mcp-builder",
           "mcp-security-audit",
+          "memory-leak-debugging",
           "microsoft-azure-skills-all",
           "modern-python",
           "multi-stage-dockerfile",
@@ -411,19 +432,19 @@
           "neon-ai-gateway",
           "neon-functions",
           "neon-postgres-branches",
-          "neon-postgres-egress-optimizer",
-          "neon-postgres",
-          "netlify-deploy",
-          "netlify-edge-functions",
-          "netlify-functions",
-          "next-best-practices",
-          "next-cache-components"
+          "neon-postgres-egress-optimizer"
         ],
         "count": 25
       },
       {
         "shard_id": "C-ext-8",
         "skill_ids": [
+          "neon-postgres",
+          "netlify-deploy",
+          "netlify-edge-functions",
+          "netlify-functions",
+          "next-best-practices",
+          "next-cache-components",
           "next-upgrade",
           "nodejs-backend-patterns",
           "notion-api",
@@ -442,19 +463,19 @@
           "paywalls",
           "performance",
           "phoenix-evals",
-          "phoenix-tracing",
-          "plannotator-annotate",
-          "plannotator-compound",
-          "plannotator-last",
-          "plannotator-review",
-          "plannotator-setup-goal",
-          "plannotator-visual-explainer"
+          "phoenix-tracing"
         ],
         "count": 25
       },
       {
         "shard_id": "C-ext-9",
         "skill_ids": [
+          "plannotator-annotate",
+          "plannotator-compound",
+          "plannotator-last",
+          "plannotator-review",
+          "plannotator-setup-goal",
+          "plannotator-visual-explainer",
           "playwright-best-practices",
           "playwright-cli",
           "postgres",
@@ -473,13 +494,7 @@
           "pulumi-component",
           "pulumi-esc",
           "pydantic-ai-harness",
-          "python-observability",
-          "python-testing-patterns",
-          "redis-clustering",
-          "redis-core",
-          "redis-observability",
-          "redis-security",
-          "redis-semantic-cache"
+          "python-observability"
         ],
         "count": 25
       }
@@ -507,7 +522,6 @@
     "rich_hand": {
       "command": "docs compose --enrich-rich-hand",
       "ids": [
-        "add-badges",
         "host-panel",
         "mcp-creator",
         "orchestrator",
@@ -516,7 +530,7 @@
         "review",
         "wargame"
       ],
-      "count": 8
+      "count": 7
     }
   }
 }

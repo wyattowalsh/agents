@@ -20,6 +20,7 @@ Do not publish, push, or tag without explicit approval.
 2. Summarize user-visible changes, migrations, and docs impact.
 3. Check release blockers, validation status, and rollback concerns.
 4. Draft release notes and the exact next commands to ship.
+5. When delegated mid-orchestration and release scope hits a `subtask-pivotal` fork the parent did not pre-resolve, return `blocked-user-pivotal` per `skills/orchestrator/references/uncertainty-handoff.md` instead of guessing.
 
 ## Output Contract
 

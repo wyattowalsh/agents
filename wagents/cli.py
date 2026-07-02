@@ -34,10 +34,12 @@ from wagents.eval_adequacy import (
 from wagents.external_skills import ExternalSkillCatalogError, ExternalSkillEntry, read_external_skill_entries
 from wagents.installed_inventory import (
     InstalledSkillInventoryRow,
+    build_skill_cleanup_report,
     collect_desired_sync_rows,
     collect_installed_inventory,
     merge_desired_with_installed,
     mirror_grok_skills_from_claude,
+    repo_skill_owner_covered_agents,
     skills_cli_agent_id,
 )
 from wagents.opencode_sessions import (
@@ -152,7 +154,9 @@ rtk_app = typer.Typer(help="Diagnose and sync RTK token-saving hooks")
 app.add_typer(rtk_app, name="rtk")
 app.add_typer(self_app, name="self")
 
-apm_app = typer.Typer(help="APM (Microsoft Agent Package Manager) facade: materialize .apm/ from repo SSOT and doctor")
+apm_app = typer.Typer(
+    help="APM (Microsoft Agent Package Manager) facade: materialize .apm/, doctor, refresh-lock"
+)
 app.add_typer(apm_app, name="apm")
 register_validate_commands(app)
 
@@ -1332,6 +1336,11 @@ def _sync_row_summary(row: InstalledSkillInventoryRow) -> str:
     return f"{row.name} [{row.provenance_status}]{suffix}"
 
 
+def _repo_skill_covered_by_non_cli_owner(row: InstalledSkillInventoryRow, agent_id: str) -> bool:
+    """Return true when repo bundle coverage should suppress Skills CLI install."""
+    return bool(repo_skill_owner_covered_agents(row, (agent_id,)))
+
+
 def _build_sync_report(
     target_agents: tuple[str, ...],
     *,
@@ -1382,7 +1391,7 @@ def _build_sync_report(
             if not _row_targets_agent(row, agent_id):
                 skipped.append(row)
                 continue
-            if agent_id in row.installed_agents:
+            if agent_id in row.installed_agents or _repo_skill_covered_by_non_cli_owner(row, agent_id):
                 already_present.append(row)
             else:
                 missing.append(row)
@@ -1756,6 +1765,39 @@ def rtk_gain(
     raise typer.Exit(code=result.returncode)
 
 
+@rtk_app.command("review")
+def rtk_review(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+) -> None:
+    """Usage-review lane: RTK shell token savings via gain --history."""
+    from wagents.rtk import collect_rtk_usage_review
+
+    format_ = _normalize_output_format(format_)
+    report = collect_rtk_usage_review()
+
+    if format_ == "text":
+        text_lines = [
+            f"RTK usage review: {report['lane']}",
+            f"signal: {report['signal_category']}",
+            f"ok: {report['ok']}",
+        ]
+        for recommendation in report.get("recommendations", []):
+            text_lines.append(
+                f"- [{recommendation.get('lane', 'unknown')}] "
+                f"{recommendation.get('action', '')} "
+                f"(validate: {recommendation.get('validation_step', '')})"
+            )
+        _emit_structured_output(format_, text_lines=text_lines)
+    else:
+        typer.echo(json.dumps(report, indent=2 if format_ == "json" else None))
+        if format_ == "jsonl":
+            for recommendation in report.get("recommendations", []):
+                typer.echo(json.dumps({"type": "rtk-review-recommendation", **recommendation}))
+
+    if not report["ok"]:
+        raise typer.Exit(code=1)
+
+
 @app.command()
 def update(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
@@ -1838,6 +1880,39 @@ def skills_doctor(
 ):
     """Diagnose skill discovery roots and counts."""
     _exit_skill_router(["doctor", "--format", format_])
+
+
+@skills_app.command("cleanup")
+def skills_cleanup(
+    dry_run: bool = typer.Option(True, "--dry-run/--apply", help="Preview or execute skill/plugin cleanup"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Plan duplicate skill/plugin cleanup across local harnesses."""
+    if not dry_run:
+        typer.echo("Error: skills cleanup is dry-run only until a reviewed manifest apply path exists.", err=True)
+        raise typer.Exit(code=1)
+    report = build_skill_cleanup_report(root=ROOT)
+    if format_ != "text":
+        _emit_structured_output(
+            format_,
+            json_data=report,
+            jsonl_records=[{"type": "skills-cleanup", **report}],
+        )
+        return
+
+    summary = cast("dict[str, object]", report["summary"])
+    typer.echo("wagents skills cleanup (dry-run)")
+    typer.echo(f"Skill exposures: {summary['skill_exposure_count']}")
+    typer.echo(f"Plugin rows: {summary['plugin_row_count']}")
+    typer.echo("Cleanup actions:")
+    for action, count in cast("dict[str, int]", summary["cleanup_action_counts"]).items():
+        typer.echo(f"  {action}: {count}")
+    typer.echo("Duplicate classes:")
+    for duplicate_class, count in cast("dict[str, int]", summary["duplicate_class_counts"]).items():
+        typer.echo(f"  {duplicate_class}: {count}")
+    typer.echo("Docs status:")
+    for docs_status, count in cast("dict[str, int]", summary["docs_status_counts"]).items():
+        typer.echo(f"  {docs_status}: {count}")
 
 
 @skills_app.command("sync")
@@ -2578,7 +2653,7 @@ def readme(
         ),
         "| `wagents skills search <query>` | Search local repo, installed, and plugin skills on demand |",
         "| `wagents skills context <query>` | Build a compact context packet for matching skills |",
-        "| `make typecheck` | Run ty across `wagents/` and `scripts/` |",
+        "| `just typecheck` | Run ty across `wagents/` and `scripts/` |",
         "| `wagents readme` | Regenerate this README |",
         "| `wagents package <name>` | Package a skill into portable ZIP |",
         "| `wagents package --all` | Package all skills |",
@@ -3087,6 +3162,35 @@ def apm_doctor(
     else:
         emit_structured_output(fmt, json_data=report)
     raise typer.Exit(code=0 if report.get("ok") else 1)
+
+
+@apm_app.command("refresh-lock")
+def apm_refresh_lock(
+    check: bool = typer.Option(False, "--check", help="Dry-run: report hash drift without writing"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+) -> None:
+    """Recompute apm.lock.yaml local_deployed_file_hashes from on-disk deployed files."""
+    from wagents.apm import refresh_lock_hashes
+    from wagents.context import get_repo_root
+    from wagents.output import emit_structured_output, normalize_output_format
+
+    repo = get_repo_root()
+    result = refresh_lock_hashes(repo, check=check)
+    fmt = normalize_output_format(format_)
+    if fmt == "text":
+        if check:
+            if result.get("ok"):
+                typer.echo("APM lock hashes are up to date.")
+            else:
+                typer.echo("APM lock hashes are stale. Run: uv run wagents apm refresh-lock", err=True)
+                for rel in result.get("drifts", []):
+                    typer.echo(f"  {rel}")
+        else:
+            updated = result.get("updated", 0)
+            typer.echo(f"Refreshed {updated} hash(es) in apm.lock.yaml")
+    else:
+        emit_structured_output(fmt, json_data=result)
+    raise typer.Exit(code=0 if result.get("ok") else 1)
 
 
 def run() -> None:

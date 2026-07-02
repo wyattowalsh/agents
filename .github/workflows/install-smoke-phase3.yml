@@ -1,0 +1,66 @@
+name: Install Smoke Phase 3
+
+on:
+  workflow_dispatch:
+    inputs:
+      harness:
+        description: Harness adapter to smoke (or 'all')
+        required: true
+        type: choice
+        options:
+          - all
+          - cursor
+          - claude-code
+          - codex
+          - github-copilot
+          - opencode
+          - gemini-cli
+          - grok
+      phase:
+        description: Smoke phase to run
+        required: true
+        type: choice
+        default: phase2
+        options:
+          - phase1
+          - phase2
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  install-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1635ceea3d9b4d4f8b53728782 # v4
+
+      - uses: ./.github/actions/setup-uv
+
+      - name: Phase 1 — dry-run JSON (no live npx)
+        if: inputs.phase == 'phase1'
+        run: |
+          uv run python skills/cross-agent-install-smoke/scripts/dry_run.py --format json
+          uv run python skills/cross-agent-install-smoke/scripts/check.py
+
+      - name: Phase 2 — temp HOME smoke (INSTALL_SMOKE=1)
+        if: inputs.phase == 'phase2'
+        env:
+          INSTALL_SMOKE: "1"
+        run: |
+          HARNESS="${{ inputs.harness }}"
+          if [ "$HARNESS" = "all" ]; then
+            uv run python skills/cross-agent-install-smoke/scripts/local_smoke.py --format json
+          else
+            uv run python skills/cross-agent-install-smoke/scripts/local_smoke.py --harness "$HARNESS" --format json
+          fi
+          INSTALL_SMOKE=1 uv run python skills/cross-agent-install-smoke/scripts/check.py
+
+      - name: Post summary
+        if: always()
+        run: |
+          echo "phase=${{ inputs.phase }} harness=${{ inputs.harness }}"
+          echo "No wagents skills sync --apply or live npx skills add in this workflow."

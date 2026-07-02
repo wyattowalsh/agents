@@ -13,6 +13,7 @@ import stat
 import sys
 from contextlib import suppress
 from dataclasses import dataclass
+from functools import lru_cache
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -106,12 +107,8 @@ class SourceIdentity:
             return None
 
 
-def load_image_optimizer_config(path: Path | None = None) -> dict[str, Any]:
-    config_path = path or CONFIG_PATH
-    try:
-        return json.loads(config_path.read_text(encoding="utf-8"))
-    except FileNotFoundError:
-        return {
+def _default_image_optimizer_config() -> dict[str, Any]:
+    return {
             "version": 1,
             "cache_dir": str(DEFAULT_CACHE_DIR),
             "default_profile": DEFAULT_PROFILE,
@@ -151,6 +148,24 @@ def load_image_optimizer_config(path: Path | None = None) -> dict[str, Any]:
                 ],
             },
         }
+
+
+@lru_cache(maxsize=4)
+def _load_image_optimizer_config_cached(cache_key: tuple[str, int, int]) -> dict[str, Any]:
+    path = Path(cache_key[0])
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return _default_image_optimizer_config()
+
+
+def load_image_optimizer_config(path: Path | None = None) -> dict[str, Any]:
+    config_path = path or CONFIG_PATH
+    if not config_path.is_file():
+        return _default_image_optimizer_config()
+    return _load_image_optimizer_config_cached(
+        (str(config_path.resolve()), config_path.stat().st_mtime_ns, config_path.stat().st_size)
+    )
 
 
 def _load_pillow():
@@ -608,6 +623,11 @@ def optimize_image_batch(payload: dict[str, Any]) -> dict[str, Any]:
         )
         results.append(result.to_json())
     return {"status": "ok", "results": results}
+
+
+def optimize_image_batch_inprocess(payload: dict[str, Any]) -> dict[str, Any]:
+    """Run batch image optimization in-process (same contract as ``optimize_image_batch``)."""
+    return optimize_image_batch(payload)
 
 
 def main(argv: list[str] | None = None) -> int:

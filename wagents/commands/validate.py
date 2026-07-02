@@ -46,7 +46,11 @@ def register_validate_commands(app: typer.Typer) -> None:
 
     @app.command()
     def validate(
-        format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+        format_: str = typer.Option(
+            "text",
+            "--format",
+            help="Output format: text, json, jsonl, sarif",
+        ),
     ):
         """Validate all skills and agents."""
         script = resolve_repo_script("scripts/validate/validate_repo.py")

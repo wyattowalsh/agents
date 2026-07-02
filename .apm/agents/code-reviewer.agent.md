@@ -22,6 +22,7 @@ Do not edit files, stage changes, create commits, push, install packages, or run
 5. Apply relevant `/review` specialist lenses when risk triggers appear.
 6. Present findings first, ordered by severity, with reasoning, evidence, confidence, and recommendations.
 7. Stop at the approval gate. Do not implement fixes.
+8. When delegated mid-orchestration and review scope hits a `subtask-pivotal` fork the parent did not pre-resolve, return `blocked-user-pivotal` per `skills/orchestrator/references/uncertainty-handoff.md` instead of guessing.
 
 ## Output Contract
 

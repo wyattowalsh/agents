@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-07-01T19:46:37+00:00",
+  "findings": [
+    {
+      "wave": "w2",
+      "severity": "P3",
+      "category": "plugins",
+      "title": "W2 surfaces clean (bundle, manifests, hooks, dry-runs)"
+    }
+  ]
+}

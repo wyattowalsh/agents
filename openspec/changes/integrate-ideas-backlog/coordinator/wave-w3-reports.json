@@ -1,0 +1,31 @@
+{
+  "wave": "W3",
+  "dispatched": [
+    {"task_id": "T-310a-e", "agent": "SA-DOC", "files": [
+      "wagents/docs_reports.py",
+      "docs/src/content/docs/reports/llms-txt-coverage.mdx",
+      "docs/public/generated-reports/llms-txt-coverage.json"
+    ]},
+    {"task_id": "T-311a-f", "agent": "SA-DOC", "files": [
+      "wagents/docs_reports.py",
+      "docs/src/content/docs/reports/site-graph-insights.mdx",
+      "docs/public/generated-reports/site-graph-insights.json"
+    ]},
+    {"task_id": "T-312a-d", "agent": "SA-DOC", "files": [
+      "wagents/docs_reports.py",
+      "docs/src/content/docs/reports/docs-link-check.mdx",
+      "docs/public/generated-reports/docs-link-check.json"
+    ]},
+    {"task_id": "T-313a-d", "agent": "SA-DOC", "files": [
+      "wagents/docs_reports.py",
+      "docs/src/content/docs/reports/docs-graph-snapshot.mdx",
+      "docs/public/generated-reports/docs-graph-snapshot.json"
+    ]}
+  ],
+  "gate_checks": [
+    "uv run wagents docs generate --check",
+    "uv run wagents validate",
+    "uv run wagents openspec validate"
+  ],
+  "blocked_until": []
+}

@@ -1,0 +1,32 @@
+name: Maintenance Freshness
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: maintenance-freshness
+  cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  stale-generated-artifacts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1635ceea3d9b4d4f8b53728782 # v4
+      - uses: ./.github/actions/setup-uv
+      - name: Check README freshness
+        run: uv run wagents readme --check
+      - name: Check docs generate freshness
+        run: uv run wagents docs generate --no-installed --check
+      - name: Check skills catalog index freshness
+        run: uv run wagents catalog index --check
+      - name: Check agent stack sync freshness
+        run: uv run python scripts/check_agent_stack.py

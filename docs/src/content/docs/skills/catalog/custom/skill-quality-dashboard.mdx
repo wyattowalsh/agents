@@ -1,0 +1,141 @@
+---
+title: "skill-quality-dashboard"
+description: "Aggregate generated maintainer reports into a skill-quality summary. Use when reviewing docs, link, and eval health. NOT for editing report sources."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="skill-quality-dashboard"
+  description="Aggregate generated maintainer reports into a skill-quality summary. Use when reviewing docs, link, and eval health. NOT for editing report sources."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill skill-quality-dashboard -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/skill-quality-dashboard [--format json]"
+  badges={[{ text: "skill-quality-dashboard", variant: "note" }, { text: "144 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/skill-quality-dashboard/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Summarize maintainer ops reports for skill and docs quality gates.
+
+## Modes
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| Empty | Default dashboard summary |
+| `--format json` | Machine-readable aggregate |
+| `reports` | List registered report files and key counts |
+
+## Critical Rules
+
+1. Treat generated report JSON as evidence, not authority to bypass validate gates.
+2. Never hand-edit `docs/public/generated-reports/*.json`.
+3. Pair dashboard output with skill-lifecycle-manager for per-skill readiness.
+4. Route broken-link remediation to docs-steward.
+5. Do not claim reports are fresh without checking generation timestamps when present.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `skill-quality-dashboard` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Argument Hint | `[--format json]` |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: skill-quality-dashboard
+description: >-
+  Aggregate generated maintainer reports into a skill-quality summary.
+  Use when reviewing docs, link, and eval health. NOT for editing report sources.
+user-invocable: true
+argument-hint: "[--format json]"
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+---
+
+# Skill Quality Dashboard
+
+Summarize maintainer ops reports for skill and docs quality gates.
+
+**Scope:** Read-only aggregation of committed `docs/public/generated-reports/*.json`. Does not regenerate reports.
+
+## Dispatch
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| Empty | Default dashboard summary |
+| `--format json` | Machine-readable aggregate |
+| `reports` | List registered report files and key counts |
+
+## Workflow
+
+```bash
+uv run python skills/skill-quality-dashboard/scripts/aggregate_reports.py
+uv run python skills/skill-quality-dashboard/scripts/aggregate_reports.py --format json
+```
+
+Regenerate upstream reports with `wagents docs generate` / docs reports pipeline — do not hand-edit JSON.
+
+## Validation Contract
+
+```bash
+uv run python skills/skill-quality-dashboard/scripts/check.py
+```
+
+## Critical Rules
+
+1. Treat generated report JSON as evidence, not authority to bypass validate gates.
+2. Never hand-edit `docs/public/generated-reports/*.json`.
+3. Pair dashboard output with skill-lifecycle-manager for per-skill readiness.
+4. Route broken-link remediation to docs-steward.
+5. Do not claim reports are fresh without checking generation timestamps when present.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/skill-quality-dashboard/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/skill-quality-dashboard/SKILL.md)

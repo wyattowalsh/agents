@@ -62,6 +62,6 @@
 		"${REPO_ROOT}"
 	],
 	"hook_perf": {
-		"tier": "legacy"
+		"tier": "bundle"
 	}
 }

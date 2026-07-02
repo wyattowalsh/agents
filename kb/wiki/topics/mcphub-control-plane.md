@@ -34,18 +34,18 @@ MCPHub is the preferred local MCP control plane when enabled in `config/mcp-regi
 | `scripts/mcphub/` | Launch, doctor, validate, remote-stdio bridge, tunnel helpers |
 | `scripts/sync_agent_stack.py` | Renders per-harness MCP projections |
 | `mcp/mcphub/server.py` | First-party FastMCP metadata tool (`mcphub_status`); not the running `@samanhappy/mcphub` process |
-| `Makefile` `mcphub-*` | Nine developer targets wrapping `scripts/mcphub/` lifecycle |
+| `justfile` `mcphub-*` | Developer recipes wrapping `scripts/mcphub/` lifecycle |
 
 ## Lifecycle and launch (Wave 07)
 
 | Stage | Entry | Behavior |
 |-------|-------|----------|
-| Start | `make mcphub-up` → `up.sh` | `ensure-running.sh`: health check, else `npx -y @samanhappy/mcphub` with logs in `.mcphub/mcphub.log` |
+| Start | `just mcphub-up` → `up.sh` | `ensure-running.sh`: health check, else `npx -y @samanhappy/mcphub` with logs in `.mcphub/mcphub.log` |
 | Ensure | `ensure-running.sh` | Shared by smoke, OpenAPI export, `remote-stdio.sh`, and harness wrappers |
-| Stop | `make mcphub-down` | Stops managed wrapper/child PIDs and tunnel; refuses unmanaged PIDs |
-| Diagnose | `make mcphub-doctor` | Settings, node/npx, health, listener, PID state, bearer, tunnel, smart routing |
-| Smoke | `make mcphub-smoke` | Bearer `initialize` + `tools/list` over HTTP MCP session |
-| LaunchAgent | `make mcphub-install-launch-agent` | `config/launchd/com.wyattowalsh.mcphub.plist` → `launch-agent-run.sh` with KeepAlive |
+| Stop | `just mcphub-down` | Stops managed wrapper/child PIDs and tunnel; refuses unmanaged PIDs |
+| Diagnose | `just mcphub-doctor` | Settings, node/npx, health, listener, PID state, bearer, tunnel, smart routing |
+| Smoke | `just mcphub-smoke` | Bearer `initialize` + `tools/list` over HTTP MCP session |
+| LaunchAgent | `just mcphub-install-launch-agent` | `config/launchd/com.wyattowalsh.mcphub.plist` → `launch-agent-run.sh` with KeepAlive |
 
 Runtime state lives in gitignored `.mcphub/` (PID files, logs, optional `cloudflared` sidecar). Secrets load from `.env.mcphub` only.
 

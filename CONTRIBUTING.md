@@ -34,6 +34,22 @@ uv run wagents validate
 uv run wagents docs generate --no-installed
 ```
 
+Install [just](https://just.systems) **1.52.0 or newer** (`brew install just`). Bare `just` lists available recipes.
+
+| Task | Command |
+| --- | --- |
+| Validate assets | `just validate` |
+| Run tests | `just test` |
+| Lint, format, type-check | `just check-python` |
+| Sync projection drift | `just sync-check` |
+| Regenerate OpenCode agents | `just sync-opencode` |
+| Refresh APM lock hashes | `just refresh-apm-lock` |
+| Verify OpenCode agent lane | `just verify-opencode` |
+| Workflow lint (local) | `just ci-check` (requires `actionlint`) |
+| Install skills to Claude | `just install-claude` |
+
+See `justfile` for the full recipe list (`just --list`).
+
 ## Pre-commit and CI parity
 
 Local hooks mirror CI staleness checks (not the full docs build):
@@ -50,7 +66,18 @@ Local hooks mirror CI staleness checks (not the full docs build):
 
 PR gate: `uv run wagents validate && uv run wagents hooks validate --harness all && uv run pytest && uv run wagents readme --check`
 
-Sync projection drift: `make sync-check` or `uv run python scripts/check_agent_stack.py`
+Sync projection drift: `just sync-check` or `uv run python scripts/check_agent_stack.py`
+
+APM + OpenCode maintainer sequence after harness sync or `apm compile -t opencode`:
+
+```bash
+just sync-opencode          # or: uv run python scripts/sync_agent_stack.py --apply --targets repo
+just refresh-apm-lock       # recompute apm.lock.yaml local_deployed_file_hashes
+apm audit --ci --no-drift
+just verify-opencode
+```
+
+Never commit after bare `apm install` without trailing `just sync-opencode` (APM deploys portable `tools: all` into `.opencode/agents/`, which OpenCode 1.17+ rejects). Prefer `apm run compile-opencode` or `apm run install-all` for the chained safe path.
 
 Docs use pnpm from the `docs/` directory:
 

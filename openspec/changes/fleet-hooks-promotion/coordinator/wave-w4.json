@@ -1,0 +1,13 @@
+{
+  "wave": "W4",
+  "dispatched": [
+    {"task_id": "T-150a", "agent": "SA-S", "files": ["scripts/hooks/hook_perf_inventory.py"]},
+    {"task_id": "T-150b", "agent": "SA-S", "files": ["scripts/hooks/hook_assurance.py"]},
+    {"task_id": "T-150c", "agent": "SA-O", "files": ["docs/runbooks/hook-performance.md"]}
+  ],
+  "gate_checks": [
+    "uv run pytest tests/hooks/test_hook_perf_inventory_tier.py tests/hooks/test_hook_assurance.py -q"
+  ],
+  "blocked_until": ["W1"],
+  "note": "Inventory --tier and hook_assurance tooling; parallel with W2/W3."
+}

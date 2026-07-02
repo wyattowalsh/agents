@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+from typing import Any, cast
 
 from typer.testing import CliRunner
 
@@ -260,3 +261,104 @@ def test_rtk_sync_plan_skips_malformed_non_init_policy_command(tmp_path):
             "reason": "unsupported sync command: only rtk init commands are executable: rtk gain",
         }
     ]
+
+
+def test_rtk_integration_enabled_env_and_flag(monkeypatch):
+    monkeypatch.delenv("RTK_ENABLED", raising=False)
+    from wagents.rtk import rtk_integration_enabled
+
+    assert rtk_integration_enabled() is False
+    assert rtk_integration_enabled(with_rtk_flag=False) is False
+
+    monkeypatch.setenv("RTK_ENABLED", "1")
+    assert rtk_integration_enabled() is True
+    assert rtk_integration_enabled(with_rtk_flag=False) is True
+
+    monkeypatch.delenv("RTK_ENABLED", raising=False)
+    assert rtk_integration_enabled(with_rtk_flag=True) is True
+
+
+def test_resolve_rtk_platform_csv_maps_grok_alias(tmp_path):
+    config_dir = tmp_path / "config"
+    config_dir.mkdir()
+    (config_dir / "rtk-integration.json").write_text(
+        json.dumps({
+            "version": 1,
+            "harnesses": {
+                "grok-build": {"tier": "test", "mode": "test", "init": ["rtk init --grok"]},
+                "cursor": {"tier": "test", "mode": "test", "init": ["rtk init --cursor"]},
+            },
+        }),
+        encoding="utf-8",
+    )
+
+    from wagents.rtk import resolve_rtk_platform_csv
+
+    assert resolve_rtk_platform_csv({"grok"}, root=tmp_path) == "grok-build"
+    assert resolve_rtk_platform_csv({"grok", "cursor"}, root=tmp_path) == "cursor,grok-build"
+
+
+def test_collect_shared_rtk_include_violations_detects_include(tmp_path):
+    instructions = tmp_path / "instructions"
+    instructions.mkdir()
+    (instructions / "global.md").write_text("# Global\n\nSee @RTK.md for shell dedup.\n", encoding="utf-8")
+
+    from wagents.rtk import collect_shared_rtk_include_violations
+
+    violations = collect_shared_rtk_include_violations(root=tmp_path)
+    assert len(violations) == 1
+    assert violations[0]["source"] == "instructions/global.md"
+    assert "@RTK.md" in violations[0]["message"]
+
+
+def test_collect_rtk_usage_review_recommends_tune_workflow_on_missed(monkeypatch):
+    def fake_gain(*, history=False, **_kwargs):
+        if history:
+            return _completed(
+                ["rtk", "gain", "--history"],
+                "Recent commands\nMissed savings without RTK: 42 tokens\n",
+            )
+        return _completed(["rtk", "gain"], "RTK Token Savings\nTokens saved: 10\n")
+
+    monkeypatch.setattr("wagents.rtk.run_rtk_gain", fake_gain)
+
+    from wagents.rtk import collect_rtk_usage_review
+
+    report = collect_rtk_usage_review()
+    assert report["ok"] is True
+    lanes = {item["lane"] for item in report["recommendations"]}
+    assert "tune-workflow" in lanes
+
+
+def test_sync_rtk_fleet_dry_run_notes_commands(monkeypatch, tmp_path):
+    import scripts.sync_agent_stack as sync_module
+
+    notes: list[str] = []
+
+    class FakeCtx:
+        apply = False
+
+        def note(self, message: str) -> None:
+            notes.append(message)
+
+    monkeypatch.setattr(sync_module, "REPO_ROOT", tmp_path)
+    config_dir = tmp_path / "config"
+    config_dir.mkdir()
+    (config_dir / "rtk-integration.json").write_text(
+        json.dumps({
+            "version": 1,
+            "harnesses": {
+                "opencode": {
+                    "tier": "test",
+                    "mode": "test",
+                    "init": ["rtk init --opencode"],
+                },
+            },
+        }),
+        encoding="utf-8",
+    )
+
+    sync_module.sync_rtk_fleet(cast("Any", FakeCtx()), {"opencode"})
+
+    assert any("Would run RTK [opencode]" in note for note in notes)
+    assert not any(note.startswith("RTK result") for note in notes)

@@ -10,5 +10,7 @@ Generated downstream tool artifacts SHALL be derived from canonical repo sources
 
 - **GIVEN** `mcphub.enabled` is true in the MCP registry
 - **WHEN** downstream MCP client configuration is rendered
-- **THEN** clients SHALL receive MCPHub all, enabled group, enabled server, and disabled smart endpoints instead of direct per-server process entries
+- **THEN** managed harness clients SHALL receive the enabled MCPHub `harness-safe` group endpoint plus disabled individual server endpoints instead of direct per-server process entries
+- **AND** ChatGPT SHALL receive only the bounded MCPHub `tunnel` group endpoint from the public MCPHub URL
+- **AND** Cherry Studio import packs MAY include all, group, server, and smart endpoint files for explicit manual import
 - **AND** registries without `mcphub` SHALL continue to render direct per-server entries.

@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "owner_change": "integrate-ideas-backlog-w9",
+  "description": "Flagship repo-owned skills that must keep eval coverage for CI gating.",
+  "gate_policy": {
+    "require_skill_dir": true,
+    "require_evals_manifest": true,
+    "min_eval_cases": 1,
+    "require_valid_frontmatter": true
+  },
+  "skills": [
+    {
+      "name": "orchestrator",
+      "rationale": "Core orchestration skill with high fan-out and eval regression coverage."
+    },
+    {
+      "name": "review",
+      "rationale": "Primary code-review entrypoint; evals guard review-mode behavior."
+    },
+    {
+      "name": "git-workflow",
+      "rationale": "Git safety and workflow conventions used across harnesses."
+    },
+    {
+      "name": "python-conventions",
+      "rationale": "Auto-invoked Python convention loader; high edit-surface impact."
+    },
+    {
+      "name": "agent-conventions",
+      "rationale": "Auto-invoked agent authoring conventions."
+    },
+    {
+      "name": "harness-master",
+      "rationale": "Harness discovery and gap analysis; cross-platform policy."
+    },
+    {
+      "name": "skill-creator",
+      "rationale": "Scaffolding and validation templates for new skills."
+    },
+    {
+      "name": "grok-delegate",
+      "rationale": "Cross-harness Grok delegation with preflight and eval gates."
+    },
+    {
+      "name": "learn",
+      "rationale": "Instruction capture workflow with user-facing eval coverage."
+    },
+    {
+      "name": "security-scanner",
+      "rationale": "Security review skill with elevated risk tier."
+    }
+  ]
+}

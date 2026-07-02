@@ -1,0 +1,132 @@
+{
+  "shard_id": "w3-catalog-ext-04",
+  "count": 24,
+  "skill_ids": [
+    "differential-review",
+    "docker-expert",
+    "drizzle-orm-patterns",
+    "durable-objects",
+    "e2e-testing-patterns",
+    "ecosystem-primer",
+    "emails",
+    "eval-driven-dev",
+    "excalidraw-diagram-generator",
+    "executing-plans",
+    "expo-cicd-workflows",
+    "expo-deployment",
+    "expo-dev-client",
+    "fastapi-templates",
+    "fastmcp-client-cli",
+    "find-bugs",
+    "find-skills",
+    "firebase-ai-logic-basics",
+    "firebase-app-hosting-basics",
+    "firebase-auth-basics",
+    "firecrawl-cli-all",
+    "flutter-add-integration-test",
+    "flutter-add-widget-test",
+    "flutter-apply-architecture-best-practices"
+  ],
+  "entries": [
+    {
+      "skill_id": "differential-review",
+      "issues": []
+    },
+    {
+      "skill_id": "docker-expert",
+      "issues": []
+    },
+    {
+      "skill_id": "drizzle-orm-patterns",
+      "issues": []
+    },
+    {
+      "skill_id": "durable-objects",
+      "issues": []
+    },
+    {
+      "skill_id": "e2e-testing-patterns",
+      "issues": []
+    },
+    {
+      "skill_id": "ecosystem-primer",
+      "issues": []
+    },
+    {
+      "skill_id": "emails",
+      "issues": []
+    },
+    {
+      "skill_id": "eval-driven-dev",
+      "issues": []
+    },
+    {
+      "skill_id": "excalidraw-diagram-generator",
+      "issues": []
+    },
+    {
+      "skill_id": "executing-plans",
+      "issues": []
+    },
+    {
+      "skill_id": "expo-cicd-workflows",
+      "issues": []
+    },
+    {
+      "skill_id": "expo-deployment",
+      "issues": []
+    },
+    {
+      "skill_id": "expo-dev-client",
+      "issues": []
+    },
+    {
+      "skill_id": "fastapi-templates",
+      "issues": []
+    },
+    {
+      "skill_id": "fastmcp-client-cli",
+      "issues": []
+    },
+    {
+      "skill_id": "find-bugs",
+      "issues": []
+    },
+    {
+      "skill_id": "find-skills",
+      "issues": [
+        "missing frontmatter field: install_command"
+      ]
+    },
+    {
+      "skill_id": "firebase-ai-logic-basics",
+      "issues": []
+    },
+    {
+      "skill_id": "firebase-app-hosting-basics",
+      "issues": []
+    },
+    {
+      "skill_id": "firebase-auth-basics",
+      "issues": []
+    },
+    {
+      "skill_id": "firecrawl-cli-all",
+      "issues": [
+        "missing frontmatter field: install_command"
+      ]
+    },
+    {
+      "skill_id": "flutter-add-integration-test",
+      "issues": []
+    },
+    {
+      "skill_id": "flutter-add-widget-test",
+      "issues": []
+    },
+    {
+      "skill_id": "flutter-apply-architecture-best-practices",
+      "issues": []
+    }
+  ]
+}

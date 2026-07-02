@@ -1,0 +1,128 @@
+{
+  "shard_id": "w3-catalog-ext-09",
+  "count": 24,
+  "skill_ids": [
+    "otel-collector",
+    "otel-instrumentation",
+    "otel-semantic-conventions",
+    "paywalls",
+    "performance",
+    "phoenix-evals",
+    "phoenix-tracing",
+    "plannotator-annotate",
+    "plannotator-compound",
+    "plannotator-last",
+    "plannotator-review",
+    "plannotator-setup-goal",
+    "plannotator-visual-explainer",
+    "playwright-best-practices",
+    "playwright-cli",
+    "postgres",
+    "postmortem-writing",
+    "prisma-cli",
+    "prisma-client-api",
+    "prisma-compute",
+    "prisma-database-setup",
+    "prisma-postgres",
+    "prisma-upgrade-v7",
+    "product-marketing"
+  ],
+  "entries": [
+    {
+      "skill_id": "otel-collector",
+      "issues": []
+    },
+    {
+      "skill_id": "otel-instrumentation",
+      "issues": []
+    },
+    {
+      "skill_id": "otel-semantic-conventions",
+      "issues": []
+    },
+    {
+      "skill_id": "paywalls",
+      "issues": []
+    },
+    {
+      "skill_id": "performance",
+      "issues": []
+    },
+    {
+      "skill_id": "phoenix-evals",
+      "issues": []
+    },
+    {
+      "skill_id": "phoenix-tracing",
+      "issues": []
+    },
+    {
+      "skill_id": "plannotator-annotate",
+      "issues": []
+    },
+    {
+      "skill_id": "plannotator-compound",
+      "issues": []
+    },
+    {
+      "skill_id": "plannotator-last",
+      "issues": []
+    },
+    {
+      "skill_id": "plannotator-review",
+      "issues": []
+    },
+    {
+      "skill_id": "plannotator-setup-goal",
+      "issues": []
+    },
+    {
+      "skill_id": "plannotator-visual-explainer",
+      "issues": []
+    },
+    {
+      "skill_id": "playwright-best-practices",
+      "issues": []
+    },
+    {
+      "skill_id": "playwright-cli",
+      "issues": []
+    },
+    {
+      "skill_id": "postgres",
+      "issues": []
+    },
+    {
+      "skill_id": "postmortem-writing",
+      "issues": []
+    },
+    {
+      "skill_id": "prisma-cli",
+      "issues": []
+    },
+    {
+      "skill_id": "prisma-client-api",
+      "issues": []
+    },
+    {
+      "skill_id": "prisma-compute",
+      "issues": []
+    },
+    {
+      "skill_id": "prisma-database-setup",
+      "issues": []
+    },
+    {
+      "skill_id": "prisma-postgres",
+      "issues": []
+    },
+    {
+      "skill_id": "prisma-upgrade-v7",
+      "issues": []
+    },
+    {
+      "skill_id": "product-marketing",
+      "issues": []
+    }
+  ]
+}

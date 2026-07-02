@@ -1,0 +1,19 @@
+{
+  "wave": "W6",
+  "dispatched": [
+    {"task_id": "T-210a", "harness": "cursor"},
+    {"task_id": "T-210b", "harness": "codex"},
+    {"task_id": "T-210c", "harness": "claude-code"},
+    {"task_id": "T-210d", "harness": "github-copilot"},
+    {"task_id": "T-210e", "harness": "gemini-cli"},
+    {"task_id": "T-210f", "harness": "grok"},
+    {"task_id": "T-210g", "harness": "opencode"},
+    {"task_id": "T-211a", "agent": "SA-S", "files": ["scripts/hooks/hook_assurance.py"]}
+  ],
+  "gate_checks": [
+    "uv run python scripts/hooks/hook_assurance.py --json",
+    "uv run pytest tests/hooks/ -q --tb=line"
+  ],
+  "blocked_until": ["W5"],
+  "note": "Seven parallel harness assurance subagents + hook_assurance gate."
+}

@@ -1,0 +1,130 @@
+{
+  "shard_id": "w3-catalog-ext-05",
+  "count": 24,
+  "skill_ids": [
+    "flutter-build-responsive-layout",
+    "flutter-fix-layout-issues",
+    "flutter-setup-declarative-routing",
+    "flutter-setup-localization",
+    "gemini-api",
+    "getting-started",
+    "gha-security-review",
+    "github-actions-docs",
+    "gitops-workflow",
+    "golang-benchmark",
+    "golang-cli",
+    "golang-concurrency",
+    "golang-database",
+    "golang-error-handling",
+    "golang-graphql",
+    "golang-grpc",
+    "golang-how-to",
+    "golang-lint",
+    "golang-modernize",
+    "golang-observability",
+    "golang-performance",
+    "golang-popular-libraries",
+    "golang-project-layout",
+    "golang-safety"
+  ],
+  "entries": [
+    {
+      "skill_id": "flutter-build-responsive-layout",
+      "issues": []
+    },
+    {
+      "skill_id": "flutter-fix-layout-issues",
+      "issues": []
+    },
+    {
+      "skill_id": "flutter-setup-declarative-routing",
+      "issues": []
+    },
+    {
+      "skill_id": "flutter-setup-localization",
+      "issues": []
+    },
+    {
+      "skill_id": "gemini-api",
+      "issues": []
+    },
+    {
+      "skill_id": "getting-started",
+      "issues": []
+    },
+    {
+      "skill_id": "gha-security-review",
+      "issues": []
+    },
+    {
+      "skill_id": "github-actions-docs",
+      "issues": [
+        "missing frontmatter field: install_command"
+      ]
+    },
+    {
+      "skill_id": "gitops-workflow",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-benchmark",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-cli",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-concurrency",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-database",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-error-handling",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-graphql",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-grpc",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-how-to",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-lint",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-modernize",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-observability",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-performance",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-popular-libraries",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-project-layout",
+      "issues": []
+    },
+    {
+      "skill_id": "golang-safety",
+      "issues": []
+    }
+  ]
+}

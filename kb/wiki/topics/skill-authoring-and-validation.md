@@ -59,7 +59,7 @@ Skill eval coverage should also be read against skill risk. Use [[skill-catalog-
 | Claim | Source | Type | Notes |
 |-------|--------|------|-------|
 | Skill frontmatter requires `name` and `description`. | `kb/raw/sources/agents-md.md` | raw source note | Derived from `AGENTS.md`. |
-| `wagents validate` validates all skills and agents. | `kb/raw/sources/pyproject-and-makefile.md`; `kb/raw/extracts/developer-commands-extract.md` | raw source notes | Derived from Makefile and README. |
+| `wagents validate` validates all skills and agents. | `kb/raw/sources/pyproject-and-makefile.md`; `kb/raw/extracts/developer-commands-extract.md` | raw source notes | Derived from justfile and README. |
 | README and docs pages are generated public surfaces. | `kb/raw/sources/openspec-config.md` | raw source note | Derived from OpenSpec config. |
 | The repo currently lists 55 skills. | `kb/raw/sources/readme.md`; `kb/raw/sources/code-surface-inventory.md` | raw source notes | README badge/table plus inventory. |
 | Validation and packaging have different enforcement scopes. | `kb/raw/sources/asset-validation-coverage.md`; `kb/raw/sources/tests-and-validation.md` | raw source notes | Important release-readiness distinction. |

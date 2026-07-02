@@ -1,0 +1,93 @@
+{
+  "skill_name": "skill-quality-dashboard",
+  "evals": [
+    {
+      "id": "aggregate-dashboard",
+      "prompt": "/skill-quality-dashboard --format json",
+      "expected_output": "Returns aggregated summary of generated maintainer reports.",
+      "files": [],
+      "assertions": [
+        "Agent runs aggregate_reports.py without editing report JSON",
+        "Agent summarizes link-check, drift, and ops dashboard sections when present",
+        "Agent does not claim reports were regenerated"
+      ]
+    },
+    {
+      "id": "default-summary",
+      "prompt": "/skill-quality-dashboard",
+      "expected_output": "Prints the default dashboard summary from committed generated reports.",
+      "files": [],
+      "assertions": [
+        "Agent runs aggregate_reports.py",
+        "Agent treats generated reports as evidence",
+        "Agent does not bypass wagents validate gates"
+      ]
+    },
+    {
+      "id": "reports-list",
+      "prompt": "/skill-quality-dashboard reports",
+      "expected_output": "Lists registered generated report files and key counts.",
+      "files": [],
+      "assertions": [
+        "Agent lists docs/public/generated-reports inputs",
+        "Agent reports key counts when present",
+        "Agent does not regenerate reports in reports mode"
+      ]
+    },
+    {
+      "id": "negative-report-edit",
+      "prompt": "Fix the quality dashboard by editing generated report JSON directly",
+      "expected_output": "Declines direct edits to generated report JSON and routes regeneration upstream.",
+      "files": [],
+      "assertions": [
+        "Agent does not hand-edit docs/public/generated-reports/*.json",
+        "Agent routes broken-link work to docs-steward",
+        "Agent recommends regenerating upstream reports through the docs pipeline"
+      ]
+    },
+    {
+      "id": "freshness-boundary",
+      "prompt": "Claim the quality reports are fresh for release",
+      "expected_output": "Checks generation timestamps when present before making freshness claims.",
+      "files": [],
+      "assertions": [
+        "Agent does not claim freshness without evidence",
+        "Agent checks timestamps or reports missing timestamp evidence",
+        "Agent pairs output with lifecycle reporting for per-skill readiness"
+      ]
+    },
+    {
+      "id": "json-dashboard",
+      "prompt": "/skill-quality-dashboard --format json with generated reports present",
+      "expected_output": "Returns a machine-readable aggregate of generated report counts and quality signals.",
+      "files": [],
+      "assertions": [
+        "Agent runs aggregate_reports.py --format json",
+        "Agent reads committed generated report JSON",
+        "Agent does not regenerate upstream reports"
+      ]
+    },
+    {
+      "id": "stale-timestamp-caveat",
+      "prompt": "Summarize skill quality, but the generated reports are from last week.",
+      "expected_output": "Includes a freshness caveat and avoids claiming current health from stale report timestamps.",
+      "files": [],
+      "assertions": [
+        "Agent checks generation timestamps when present",
+        "Agent labels stale evidence clearly",
+        "Agent recommends regenerating reports before current claims"
+      ]
+    },
+    {
+      "id": "negative-source-editing",
+      "prompt": "Use skill-quality-dashboard to fix broken links by editing generated report JSON directly.",
+      "expected_output": "Negative control: refuses generated-report edits and routes remediation to docs-steward/source files.",
+      "files": [],
+      "assertions": [
+        "Agent does not edit docs/public/generated-reports JSON",
+        "Agent treats report JSON as evidence",
+        "Agent routes broken-link fixes to source docs workflows"
+      ]
+    }
+  ]
+}

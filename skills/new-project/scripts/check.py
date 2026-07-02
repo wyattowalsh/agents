@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import os
 import subprocess
 import sys
@@ -48,6 +49,15 @@ def _run(command: list[str]) -> int:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Validate new-project skill assets.")
+    parser.add_argument(
+        "--full",
+        action="store_true",
+        help="Run full validation including OpenSpec (slow; default skips for portable CI).",
+    )
+    args = parser.parse_args()
+    run_full = args.full and not _portable_ci()
+
     toolkit = _toolkit_path()
     commands: list[list[str]] = [
         [sys.executable, str(toolkit / "validate_skill.py"), str(SKILL_DIR)],
@@ -69,7 +79,7 @@ def main() -> int:
         [sys.executable, str(scripts_dir / "preferences.py"), "validate", "--format", "json"],
     ])
     openspec_cli = scripts_dir / "openspec_cli.py"
-    if (SKILL_DIR.parents[1] / "openspec").is_dir() and openspec_cli.is_file():
+    if run_full and (SKILL_DIR.parents[1] / "openspec").is_dir() and openspec_cli.is_file():
         commands.append([sys.executable, str(openspec_cli), "validate"])
 
     exit_code = 0

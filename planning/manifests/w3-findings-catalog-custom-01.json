@@ -1,0 +1,88 @@
+{
+  "shard_id": "w3-catalog-custom-01",
+  "count": 10,
+  "skill_ids": [
+    "add-badges",
+    "agent-conventions",
+    "agent-runtime-governance",
+    "api-designer",
+    "changelog-writer",
+    "data-pipeline-architect",
+    "data-wizard",
+    "database-architect",
+    "design",
+    "devops-engineer"
+  ],
+  "entries": [
+    {
+      "skill_id": "add-badges",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "agent-conventions",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "agent-runtime-governance",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "api-designer",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "changelog-writer",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "data-pipeline-architect",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "data-wizard",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "database-architect",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "design",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "devops-engineer",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    }
+  ]
+}

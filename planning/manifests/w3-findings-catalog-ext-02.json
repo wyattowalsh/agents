@@ -1,0 +1,130 @@
+{
+  "shard_id": "w3-catalog-ext-02",
+  "count": 24,
+  "skill_ids": [
+    "aws-serverless",
+    "best-practices",
+    "better-auth-best-practices",
+    "biome-developer",
+    "brainstorming",
+    "building-pydantic-ai-agents",
+    "changelog-automation",
+    "chatgpt-app-builder",
+    "chatgpt-apps",
+    "chrome-devtools-cli",
+    "chrome-devtools",
+    "churn-prevention",
+    "claimable-postgres",
+    "cli-creator",
+    "cli-just",
+    "clickhouse-architecture-advisor",
+    "clickhouse-best-practices",
+    "cloudflare",
+    "code-review",
+    "codeql",
+    "cold-email",
+    "coleam00-excalidraw-diagram-skill-all",
+    "commit",
+    "competitor-profiling"
+  ],
+  "entries": [
+    {
+      "skill_id": "aws-serverless",
+      "issues": []
+    },
+    {
+      "skill_id": "best-practices",
+      "issues": []
+    },
+    {
+      "skill_id": "better-auth-best-practices",
+      "issues": []
+    },
+    {
+      "skill_id": "biome-developer",
+      "issues": []
+    },
+    {
+      "skill_id": "brainstorming",
+      "issues": []
+    },
+    {
+      "skill_id": "building-pydantic-ai-agents",
+      "issues": []
+    },
+    {
+      "skill_id": "changelog-automation",
+      "issues": []
+    },
+    {
+      "skill_id": "chatgpt-app-builder",
+      "issues": []
+    },
+    {
+      "skill_id": "chatgpt-apps",
+      "issues": []
+    },
+    {
+      "skill_id": "chrome-devtools-cli",
+      "issues": []
+    },
+    {
+      "skill_id": "chrome-devtools",
+      "issues": []
+    },
+    {
+      "skill_id": "churn-prevention",
+      "issues": []
+    },
+    {
+      "skill_id": "claimable-postgres",
+      "issues": []
+    },
+    {
+      "skill_id": "cli-creator",
+      "issues": []
+    },
+    {
+      "skill_id": "cli-just",
+      "issues": []
+    },
+    {
+      "skill_id": "clickhouse-architecture-advisor",
+      "issues": []
+    },
+    {
+      "skill_id": "clickhouse-best-practices",
+      "issues": []
+    },
+    {
+      "skill_id": "cloudflare",
+      "issues": []
+    },
+    {
+      "skill_id": "code-review",
+      "issues": []
+    },
+    {
+      "skill_id": "codeql",
+      "issues": []
+    },
+    {
+      "skill_id": "cold-email",
+      "issues": []
+    },
+    {
+      "skill_id": "coleam00-excalidraw-diagram-skill-all",
+      "issues": [
+        "missing frontmatter field: install_command"
+      ]
+    },
+    {
+      "skill_id": "commit",
+      "issues": []
+    },
+    {
+      "skill_id": "competitor-profiling",
+      "issues": []
+    }
+  ]
+}

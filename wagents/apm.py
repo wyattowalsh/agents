@@ -6,7 +6,9 @@ Produces consumable primitives for Microsoft APM (agent package manager).
 from __future__ import annotations
 
 import contextlib
+import hashlib
 import json
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
 
 import yaml
@@ -484,4 +486,64 @@ def doctor(repo_root: Path) -> dict[str, Any]:
     else:
         checks.append({"name": ".apm/", "ok": True, "hooks": hooks_present})
 
+    from wagents.platforms.opencode import check_opencode_managed_agents_dir
+
+    agent_errors = check_opencode_managed_agents_dir(
+        repo_root / ".opencode" / "agents",
+        config_path=repo_root / "config" / "opencode-agents.json",
+    )
+    if agent_errors:
+        checks.append({
+            "name": "opencode-agents-contract",
+            "ok": False,
+            "message": "; ".join(agent_errors[:5])
+            + ("; ..." if len(agent_errors) > 5 else "")
+            + " — run `just sync-opencode`",
+        })
+        ok = False
+    else:
+        checks.append({"name": "opencode-agents-contract", "ok": True})
+
     return {"ok": ok, "checks": checks, "repo_root": str(repo_root)}
+
+
+def refresh_lock_hashes(repo_root: Path, *, check: bool = False) -> dict[str, Any]:
+    """Recompute ``local_deployed_file_hashes`` in apm.lock.yaml from on-disk files."""
+    lock_path = repo_root / "apm.lock.yaml"
+    if not lock_path.exists():
+        return {"ok": False, "message": "missing apm.lock.yaml", "drifts": []}
+
+    data = yaml.safe_load(lock_path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        return {"ok": False, "message": "apm.lock.yaml must be a mapping", "drifts": []}
+
+    deployed_files = data.get("local_deployed_files")
+    if not isinstance(deployed_files, list):
+        return {"ok": False, "message": "apm.lock.yaml missing local_deployed_files list", "drifts": []}
+
+    new_hashes: dict[str, str] = {}
+    drifts: list[str] = []
+    old_hashes = data.get("local_deployed_file_hashes") or {}
+
+    for rel in deployed_files:
+        if not isinstance(rel, str):
+            continue
+        path = repo_root / rel
+        if not path.is_file():
+            drifts.append(f"{rel}: missing on disk")
+            continue
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        new_hashes[rel] = f"sha256:{digest}"
+        old = old_hashes.get(rel, "")
+        old_hex = old.replace("sha256:", "") if isinstance(old, str) else ""
+        if old_hex != digest:
+            drifts.append(rel)
+
+    ok = not drifts
+    if check:
+        return {"ok": ok, "drifts": drifts, "lock_path": str(lock_path)}
+
+    data["local_deployed_file_hashes"] = new_hashes
+    data["generated_at"] = datetime.now(UTC).isoformat()
+    lock_path.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=False), encoding="utf-8")
+    return {"ok": True, "updated": len(new_hashes), "drifts": drifts, "lock_path": str(lock_path)}

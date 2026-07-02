@@ -9,7 +9,8 @@ import yaml
 
 from wagents.context import get_repo_root
 from wagents.hooks.merge import merge_cursor_flat_hooks
-from wagents.hooks.render import render_cursor_global_hooks, render_cursor_hooks
+from wagents.hooks.registry import sync_hook_projection
+from wagents.hooks.render import render_cursor_global_hooks, render_cursor_hooks, resolve_hook_perf_tier
 from wagents.parsing import parse_frontmatter
 from wagents.platforms.base import (
     HOME,
@@ -231,9 +232,19 @@ class Adapter(PlatformAdapter):
         policy: dict[str, Any],
     ) -> None:
         ctx.write_json(cursor_mcp_path(), self.render_mcp(registry, {}, harness="cursor"))
-        hooks = self.render_hooks(hook_registry, repo_root="$CURSOR_PROJECT_DIR")
-        if hooks is not None:
-            ctx.write_json(cursor_hooks_path(), hooks)
+        perf_tier = resolve_hook_perf_tier()
+        sync_hook_projection(
+            ctx.write_json,
+            harness="cursor",
+            dest_path=cursor_hooks_path(),
+            render_fn=lambda: self.render_hooks(
+                hook_registry,
+                repo_root="$CURSOR_PROJECT_DIR",
+                perf_tier=perf_tier,
+            ),
+            perf_tier=perf_tier,
+            apply=ctx.apply,
+        )
         ctx.write_json(cursor_permissions_path(), self.render_permissions(policy))
         ctx.write_json(cursor_cli_path(), self.render_cli_config(policy))
         ctx.write_text(cursor_bugbot_path(), self.render_bugbot(policy))
@@ -284,7 +295,7 @@ class Adapter(PlatformAdapter):
             token_env = mcphub_bearer_env_var(registry)
             servers: dict[str, Any] = {}
             for spec in mcphub_endpoint_specs(registry, harness or self.name):
-                if spec.get("kind") != "group" or spec.get("group") != "harness-safe" or not spec.get("enabled"):
+                if not spec.get("enabled"):
                     continue
                 servers[str(spec["name"])] = {
                     "type": "http",
@@ -321,6 +332,7 @@ class Adapter(PlatformAdapter):
         hook_registry: dict[str, Any],
         *,
         repo_root: str = "$CURSOR_PROJECT_DIR",
+        perf_tier: str | None = None,
     ) -> dict[str, Any] | None:
         """Render Cursor's flat hook shape: ``{event: [{command, matcher?, timeout?, failClosed?}]}``.
 
@@ -328,7 +340,7 @@ class Adapter(PlatformAdapter):
         ``{"hooks": [{"type": "command", ...}]}`` group shape. See
         ``wagents.hooks.render.render_cursor_hooks`` for the authoritative shape.
         """
-        return render_cursor_hooks(hook_registry, harness=self.name, repo_root=repo_root)
+        return render_cursor_hooks(hook_registry, harness=self.name, repo_root=repo_root, perf_tier=perf_tier)
 
     def render_permissions(self, policy: dict[str, Any]) -> dict[str, Any]:
         return {

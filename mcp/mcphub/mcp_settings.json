@@ -1,5 +1,34 @@
 {
   "mcpServers": {
+    "agent-catalog": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/agent-catalog",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
+      },
+      "timeout": 600000
+    },
+    "arxiv": {
+      "command": "bash",
+      "args": [
+        "-lc",
+        "uvx --offline arxiv-mcp-server || uvx arxiv-mcp-server"
+      ],
+      "timeout": 600000
+    },
+    "atom-of-thoughts": {
+      "command": "node",
+      "args": [
+        "${REPO_ROOT}/mcp/servers/MCP_Atom_of_Thoughts/build/index.js"
+      ],
+      "timeout": 600000
+    },
     "brave-search": {
       "command": "npx",
       "args": [
@@ -30,6 +59,20 @@
       },
       "timeout": 600000
     },
+    "ci-artifacts": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/ci-artifacts",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
+      },
+      "timeout": 600000
+    },
     "context7": {
       "command": "npx",
       "args": [
@@ -41,131 +84,6 @@
       "env": {
         "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
       },
-      "timeout": 600000
-    },
-    "deepwiki": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://mcp.deepwiki.com/mcp"
-      ],
-      "timeout": 600000
-    },
-    "docling": {
-      "command": "${REPO_ROOT}/scripts/mcphub/docling-stdio.sh",
-      "args": [],
-      "timeout": 600000
-    },
-    "fetch": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-fetch-server"
-      ],
-      "timeout": 600000
-    },
-    "fetcher": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "fetcher-mcp"
-      ],
-      "timeout": 600000
-    },
-    "ossinsight": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "ossinsight-mcp"
-      ],
-      "timeout": 600000
-    },
-    "package-version": {
-      "command": "~/go/bin/mcp-package-version",
-      "args": [],
-      "timeout": 600000
-    },
-    "penpot": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://design.penpot.app/mcp/stream?userToken=${PENPOT_MCP_USER_TOKEN}"
-      ],
-      "env": {
-        "PENPOT_MCP_USER_TOKEN": "${PENPOT_MCP_USER_TOKEN}"
-      },
-      "timeout": 600000
-    },
-    "repomix": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "repomix",
-        "--mcp"
-      ],
-      "timeout": 600000
-    },
-    "sequential-thinking": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
-      ],
-      "timeout": 600000
-    },
-    "structured-thinking": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "structured-thinking"
-      ],
-      "timeout": 600000
-    },
-    "supathings": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "supathings-mcp"
-      ],
-      "timeout": 600000
-    },
-    "tavily": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "tavily-mcp"
-      ],
-      "env": {
-        "TAVILY_API_KEY": "${TAVILY_API_KEY}"
-      },
-      "timeout": 600000
-    },
-    "trafilatura": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "${REPO_ROOT}/mcp/servers/trafilatura_mcp",
-        "run",
-        "python3",
-        "trafilatura_mcp.py"
-      ],
-      "timeout": 600000
-    },
-    "arxiv": {
-      "command": "bash",
-      "args": [
-        "-lc",
-        "uvx --offline arxiv-mcp-server || uvx arxiv-mcp-server"
-      ],
-      "timeout": 600000
-    },
-    "atom-of-thoughts": {
-      "command": "node",
-      "args": [
-        "${REPO_ROOT}/mcp/servers/MCP_Atom_of_Thoughts/build/index.js"
-      ],
       "timeout": 600000
     },
     "crash": {
@@ -193,11 +111,67 @@
       ],
       "timeout": 600000
     },
+    "deepwiki": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.deepwiki.com/mcp"
+      ],
+      "timeout": 600000
+    },
+    "docling": {
+      "command": "${REPO_ROOT}/scripts/mcphub/docling-stdio.sh",
+      "args": [],
+      "timeout": 600000
+    },
+    "docs-graph": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/docs-graph",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
+      },
+      "timeout": 600000
+    },
+    "docs-index": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/docs-index",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
+      },
+      "timeout": 600000
+    },
     "duckduckgo-search": {
       "command": "uvx",
       "args": [
         "duckduckgo-mcp-server"
       ],
+      "timeout": 600000
+    },
+    "eval-results": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/eval-results",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
+      },
       "timeout": 600000
     },
     "exa": {
@@ -209,6 +183,22 @@
       "env": {
         "EXA_API_KEY": "${EXA_API_KEY}"
       },
+      "timeout": 600000
+    },
+    "fetch": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-fetch-server"
+      ],
+      "timeout": 600000
+    },
+    "fetcher": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "fetcher-mcp"
+      ],
       "timeout": 600000
     },
     "ffmpeg": {
@@ -252,6 +242,76 @@
       ],
       "timeout": 600000
     },
+    "ossinsight": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "ossinsight-mcp"
+      ],
+      "timeout": 600000
+    },
+    "package-version": {
+      "command": "~/go/bin/mcp-package-version",
+      "args": [],
+      "timeout": 600000
+    },
+    "penpot": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://design.penpot.app/mcp/stream?userToken=${PENPOT_MCP_USER_TOKEN}"
+      ],
+      "env": {
+        "PENPOT_MCP_USER_TOKEN": "${PENPOT_MCP_USER_TOKEN}"
+      },
+      "timeout": 600000
+    },
+    "release-provenance": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/release-provenance",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
+      },
+      "timeout": 600000
+    },
+    "repo-readonly": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/repo-readonly",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
+      },
+      "timeout": 600000
+    },
+    "repomix": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "repomix",
+        "--mcp"
+      ],
+      "timeout": 600000
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "timeout": 600000
+    },
     "shannon-thinking": {
       "command": "npx",
       "args": [
@@ -260,11 +320,91 @@
       ],
       "timeout": 600000
     },
+    "skill-catalog": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/skill-catalog",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
+      },
+      "timeout": 600000
+    },
+    "source-url-health": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/source-url-health",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
+      },
+      "timeout": 600000
+    },
+    "structured-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "structured-thinking"
+      ],
+      "timeout": 600000
+    },
+    "supathings": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "supathings-mcp"
+      ],
+      "timeout": 600000
+    },
+    "tavily": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "tavily-mcp"
+      ],
+      "env": {
+        "TAVILY_API_KEY": "${TAVILY_API_KEY}"
+      },
+      "timeout": 600000
+    },
+    "template-smoke": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/template-smoke",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
+      },
+      "timeout": 600000
+    },
     "think-strategies": {
       "command": "npx",
       "args": [
         "-y",
         "github:aaronsb/think-strategies"
+      ],
+      "timeout": 600000
+    },
+    "trafilatura": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "${REPO_ROOT}/mcp/servers/trafilatura_mcp",
+        "run",
+        "python3",
+        "trafilatura_mcp.py"
       ],
       "timeout": 600000
     },
@@ -285,6 +425,20 @@
         "wikipedia-mcp"
       ],
       "timeout": 600000
+    },
+    "workflow-status": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/workflow-status",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
+      },
+      "timeout": 600000
     }
   },
   "groups": {
@@ -292,6 +446,7 @@
       "name": "all-managed",
       "description": "All enabled servers managed by the repository MCP registry.",
       "servers": [
+        "agent-catalog",
         "arxiv",
         "atom-of-thoughts",
         "brave-search",
@@ -303,7 +458,9 @@
         "deep-lucid-3d",
         "deepwiki",
         "docling",
+        "docs-index",
         "duckduckgo-search",
+        "eval-results",
         "exa",
         "fetch",
         "fetcher",
@@ -315,142 +472,186 @@
         "ossinsight",
         "package-version",
         "penpot",
+        "repo-readonly",
         "repomix",
         "sequential-thinking",
         "shannon-thinking",
+        "skill-catalog",
+        "source-url-health",
         "structured-thinking",
         "supathings",
         "tavily",
         "think-strategies",
         "trafilatura",
         "wayback",
-        "wikipedia"
-      ]
-    },
-    "code": {
-      "name": "code",
-      "description": "Code intelligence, repository inspection, docs lookup, and browser automation servers.",
-      "servers": [
-        "chrome-devtools",
-        "context7",
-        "deepwiki",
-        "docling",
-        "fetch",
-        "fetcher",
-        "ossinsight",
-        "package-version",
-        "repomix",
-        "supathings",
-        "trafilatura"
-      ]
-    },
-    "harness-safe": {
-      "name": "harness-safe",
-      "description": "Safe shared harness MCP surface for search, docs, browser inspection, package metadata, repo packing, fetch, and Gmail.",
-      "servers": [
-        "brave-search",
-        "chrome-devtools",
-        "context7",
-        "deepwiki",
-        "fetch",
-        "fetcher",
-        "package-version",
-        "penpot",
-        "repomix",
-        "supathings",
-        "tavily",
-        "trafilatura",
-        "duckduckgo-search",
-        "gmail"
-      ]
-    },
-    "research": {
-      "name": "research",
-      "description": "Search, retrieval, reference, and source inspection servers.",
-      "servers": [
-        "arxiv",
-        "brave-search",
-        "context7",
-        "deepwiki",
-        "duckduckgo-search",
-        "exa",
-        "fetch",
-        "ossinsight",
-        "tavily",
-        "trafilatura",
-        "wayback",
-        "wikipedia"
-      ]
-    },
-    "reasoning": {
-      "name": "reasoning",
-      "description": "Structured thinking and planning servers.",
-      "servers": [
-        "atom-of-thoughts",
-        "cascade-thinking",
-        "crash",
-        "creative-thinking",
-        "lotus-wisdom-mcp",
-        "sequential-thinking",
-        "shannon-thinking",
-        "structured-thinking",
-        "think-strategies"
+        "wikipedia",
+        "template-smoke",
+        "ci-artifacts",
+        "release-provenance",
+        "workflow-status",
+        "docs-graph"
       ]
     },
     "browser": {
       "name": "browser",
-      "description": "Browser and web UI automation servers.",
+      "description": "Live browser automation.",
       "servers": [
         "chrome-devtools"
       ]
     },
-    "data": {
-      "name": "data",
-      "description": "Data extraction, package metadata, and transform servers.",
+    "code-intel": {
+      "name": "code-intel",
+      "description": "Repository and dependency intelligence.",
+      "servers": [
+        "agent-catalog",
+        "repo-readonly",
+        "repomix",
+        "package-version",
+        "ossinsight",
+        "skill-catalog"
+      ]
+    },
+    "daily": {
+      "name": "daily",
+      "description": "Default local workhorse bundle for routine coding and research.",
+      "servers": [
+        "brave-search",
+        "context7",
+        "deepwiki",
+        "fetch",
+        "trafilatura",
+        "package-version",
+        "repomix"
+      ]
+    },
+    "data-pipeline": {
+      "name": "data-pipeline",
+      "description": "Heavy document extraction and media transform.",
       "servers": [
         "docling",
         "ffmpeg",
-        "ossinsight",
-        "package-version",
-        "supathings",
         "trafilatura"
       ]
     },
-    "media": {
-      "name": "media",
-      "description": "Media, document, and 3D asset processing servers.",
+    "docs": {
+      "name": "docs",
+      "description": "Library and framework documentation lookup.",
       "servers": [
+        "context7",
+        "deepwiki",
+        "docs-index"
+      ]
+    },
+    "experimental": {
+      "name": "experimental",
+      "description": "Bleeding-edge search, reasoning, and media servers.",
+      "servers": [
+        "exa",
+        "g-search",
+        "atom-of-thoughts",
+        "crash",
+        "creative-thinking",
         "deep-lucid-3d",
-        "docling",
-        "ffmpeg"
+        "lotus-wisdom-mcp",
+        "shannon-thinking",
+        "think-strategies"
+      ]
+    },
+    "harness-safe": {
+      "name": "harness-safe",
+      "description": "Shared harness-facing alias of daily; keep membership equal to daily.",
+      "servers": [
+        "brave-search",
+        "context7",
+        "deepwiki",
+        "fetch",
+        "trafilatura",
+        "package-version",
+        "repomix"
       ]
     },
     "personal": {
       "name": "personal",
-      "description": "Personal-account connectors; treat as sensitive.",
+      "description": "Account-backed connectors; treat as sensitive.",
       "servers": [
         "gmail",
         "linkedin"
       ]
     },
-    "local-ai": {
-      "name": "local-ai",
-      "description": "Local AI helper and context-prep servers.",
+    "productivity": {
+      "name": "productivity",
+      "description": "GTD and design tooling.",
       "servers": [
-        "context7",
-        "package-version",
-        "repomix"
+        "supathings",
+        "penpot"
       ]
     },
-    "experimental": {
-      "name": "experimental",
-      "description": "Newer or less-proven servers kept behind explicit group targeting.",
+    "read-web": {
+      "name": "read-web",
+      "description": "URL ingestion without search APIs.",
       "servers": [
-        "crash",
-        "deep-lucid-3d",
-        "lotus-wisdom-mcp",
-        "supathings",
-        "think-strategies"
+        "fetch",
+        "fetcher",
+        "trafilatura",
+        "wayback"
+      ]
+    },
+    "reasoning": {
+      "name": "reasoning",
+      "description": "Curated structured-thinking servers (three proven tools only).",
+      "servers": [
+        "sequential-thinking",
+        "cascade-thinking",
+        "structured-thinking"
+      ]
+    },
+    "references": {
+      "name": "references",
+      "description": "Academic papers, encyclopedia, and archive lookup.",
+      "servers": [
+        "arxiv",
+        "wikipedia",
+        "wayback"
+      ]
+    },
+    "repo-catalog": {
+      "name": "repo-catalog",
+      "description": "Read-only repo catalog, docs reports, eval gates, and source URL health.",
+      "servers": [
+        "skill-catalog",
+        "agent-catalog",
+        "docs-index",
+        "repo-readonly",
+        "source-url-health",
+        "eval-results",
+        "template-smoke",
+        "ci-artifacts",
+        "release-provenance",
+        "workflow-status",
+        "docs-graph"
+      ]
+    },
+    "search": {
+      "name": "search",
+      "description": "Stable web search APIs.",
+      "servers": [
+        "brave-search",
+        "tavily",
+        "duckduckgo-search"
+      ]
+    },
+    "tunnel": {
+      "name": "tunnel",
+      "description": "Bounded remote ChatGPT tunnel surface without personal or browser tools.",
+      "servers": [
+        "brave-search",
+        "context7",
+        "deepwiki",
+        "fetch",
+        "trafilatura",
+        "package-version",
+        "repomix",
+        "duckduckgo-search"
       ]
     }
   },
@@ -468,6 +669,12 @@
       "embeddingProvider": "${SMART_ROUTING_EMBEDDING_PROVIDER}",
       "embeddingModel": "${EMBEDDING_MODEL}",
       "progressiveDisclosure": "${SMART_ROUTING_PROGRESSIVE_DISCLOSURE}"
+    },
+    "toolResultCompression": {
+      "enabled": false,
+      "minTokens": 2000,
+      "maxOutputTokens": 1200,
+      "strategy": "auto"
     }
   }
 }

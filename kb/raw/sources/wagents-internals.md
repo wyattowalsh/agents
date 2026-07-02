@@ -19,7 +19,7 @@ source_count: 1
 | Field | Value |
 |-------|-------|
 | source_id | `wagents-internals` |
-| original_location | `pyproject.toml`; `wagents/__init__.py`; `wagents/cli.py`; `wagents/docs.py`; `wagents/catalog.py`; `wagents/rendering.py`; `wagents/site_model.py`; `Makefile`; `tests/test_cli_integration.py` |
+| original_location | `pyproject.toml`; `wagents/__init__.py`; `wagents/cli.py`; `wagents/docs.py`; `wagents/catalog.py`; `wagents/rendering.py`; `wagents/site_model.py`; `justfile`; `tests/test_cli_integration.py` |
 | raw_path | `kb/raw/sources/wagents-internals.md` |
 | capture_method | repo-local pointer summary from read-only inspection |
 | captured_at | 2026-05-01 |

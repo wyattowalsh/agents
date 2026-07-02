@@ -1,5 +1,7 @@
 """Tests for wagents.parsing — frontmatter parsing, fence tracking, and text transforms."""
 
+from pathlib import Path
+
 import pytest
 
 from wagents.parsing import (
@@ -13,6 +15,59 @@ from wagents.parsing import (
     to_title,
     truncate_sentence,
 )
+
+PARSING_FIXTURES = Path(__file__).resolve().parent / "fixtures" / "parsing"
+
+
+# ---------------------------------------------------------------------------
+# parse_frontmatter — edge-case fixtures
+# ---------------------------------------------------------------------------
+
+
+class TestParseFrontmatterFixtures:
+    @pytest.mark.parametrize(
+        ("fixture_name", "expected_name", "body_snippet"),
+        [
+            ("valid-minimal.md", "edge-minimal", "Body only."),
+            ("nested-metadata.md", "edge-nested", "Nested metadata body."),
+            ("multiline-description.md", "edge-multiline", "Multiline description body."),
+            ("colon-in-value.md", "edge-colon", "Colon value body."),
+            ("unicode-content.md", "edge-unicode", "café"),
+            ("empty-body.md", "edge-empty-body", ""),
+        ],
+    )
+    def test_valid_edge_fixtures(self, fixture_name: str, expected_name: str, body_snippet: str) -> None:
+        content = (PARSING_FIXTURES / fixture_name).read_text(encoding="utf-8")
+        fm, body = parse_frontmatter(content)
+        assert fm["name"] == expected_name
+        assert fm["description"]
+        if body_snippet:
+            assert body_snippet in body
+
+    def test_closing_at_eof_fixture(self) -> None:
+        content = (PARSING_FIXTURES / "closing-at-eof.md").read_text(encoding="utf-8")
+        fm, body = parse_frontmatter(content)
+        assert fm["name"] == "edge-eof-close"
+        assert body == ""
+
+    def test_nested_metadata_structure(self) -> None:
+        content = (PARSING_FIXTURES / "nested-metadata.md").read_text(encoding="utf-8")
+        fm, _body = parse_frontmatter(content)
+        assert fm["metadata"]["author"] == "alice"
+        assert fm["metadata"]["flags"] == ["alpha", "beta"]
+
+    @pytest.mark.parametrize(
+        ("fixture_name", "match_text"),
+        [
+            ("missing-open.md", "must start with '---'"),
+            ("missing-close.md", "missing closing '---'"),
+        ],
+    )
+    def test_invalid_edge_fixtures_raise(self, fixture_name: str, match_text: str) -> None:
+        content = (PARSING_FIXTURES / fixture_name).read_text(encoding="utf-8")
+        with pytest.raises(ValueError, match=match_text):
+            parse_frontmatter(content)
+
 
 # ---------------------------------------------------------------------------
 # parse_frontmatter

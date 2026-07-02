@@ -13,7 +13,7 @@
     },
     {
       "id": "empty-no-diff-menu",
-      "prompt": "/review",
+      "prompt": "/review in a clean worktree with no diff",
       "expected_output": "When no changed files are present, shows a mode menu and requires the explicit audit keyword before a full repository audit.",
       "assertions": [
         "No implicit full audit",
@@ -307,7 +307,7 @@
     },
     {
       "id": "source-scan-redacts-secrets",
-      "prompt": "/review source scan /tmp/candidate-skill",
+      "prompt": "/review source scan /tmp/candidate-skill containing .env.example and setup.sh",
       "expected_output": "Scans source surfaces without executing candidate code, redacts secret-like excerpts, avoids broad KEY substring false positives, and treats output as first-pass evidence.",
       "assertions": [
         "Redacts credential-looking values",

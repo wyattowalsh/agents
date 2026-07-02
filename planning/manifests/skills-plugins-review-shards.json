@@ -1,0 +1,1286 @@
+{
+  "version": 1,
+  "plan": "skills-plugins-review-swarm",
+  "wave": "W0",
+  "generated_at": "2026-07-01",
+  "summary": {
+    "w1_repo_skill_shards": 7,
+    "w1_repo_skills": 51,
+    "w2_plugin_lanes": 3,
+    "w3_external_shards": 13,
+    "w3_external_catalog_entries": 313,
+    "total_shards": 23
+  },
+  "shards": [
+    {
+      "lane_id": "W1-skills",
+      "shard_id": "W1-skills-01",
+      "owner": "subagent-w1-01",
+      "skill_ids": [
+        "add-badges",
+        "agent-conventions",
+        "agent-runtime-governance",
+        "api-designer",
+        "changelog-writer",
+        "data-pipeline-architect",
+        "data-wizard",
+        "database-architect"
+      ],
+      "scope": [
+        "skills/add-badges/",
+        "skills/agent-conventions/",
+        "skills/agent-runtime-governance/",
+        "skills/api-designer/",
+        "skills/changelog-writer/",
+        "skills/data-pipeline-architect/",
+        "skills/data-wizard/",
+        "skills/database-architect/"
+      ],
+      "lens": [
+        "skill-assets",
+        "agentic"
+      ],
+      "coverage": {
+        "skills": 8
+      },
+      "validation_commands": [
+        "uv run python scripts/check.py",
+        "uv run python ../../skill-creator/scripts/audit.py . --format json",
+        "uv run python ../../skill-creator/scripts/audit.py . --security --format json",
+        "uv run wagents eval adequacy <name>",
+        "uv run python ../../skill-creator/scripts/package.py . --dry-run"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W1-skills",
+      "shard_id": "W1-skills-02",
+      "owner": "subagent-w1-02",
+      "skill_ids": [
+        "design",
+        "desktop-computer-use",
+        "devops-engineer",
+        "docling-graph",
+        "docs-steward",
+        "draw-thing",
+        "email-whiz",
+        "event-driven-architect"
+      ],
+      "scope": [
+        "skills/design/",
+        "skills/desktop-computer-use/",
+        "skills/devops-engineer/",
+        "skills/docling-graph/",
+        "skills/docs-steward/",
+        "skills/draw-thing/",
+        "skills/email-whiz/",
+        "skills/event-driven-architect/"
+      ],
+      "lens": [
+        "skill-assets",
+        "agentic"
+      ],
+      "coverage": {
+        "skills": 8
+      },
+      "validation_commands": [
+        "uv run python scripts/check.py",
+        "uv run python ../../skill-creator/scripts/audit.py . --format json",
+        "uv run python ../../skill-creator/scripts/audit.py . --security --format json",
+        "uv run wagents eval adequacy <name>",
+        "uv run python ../../skill-creator/scripts/package.py . --dry-run"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W1-skills",
+      "shard_id": "W1-skills-03",
+      "owner": "subagent-w1-03",
+      "skill_ids": [
+        "files-buddy",
+        "git-workflow",
+        "grok-delegate",
+        "harness-master",
+        "host-panel",
+        "i18n-localization",
+        "incident-response-engineer"
+      ],
+      "scope": [
+        "skills/files-buddy/",
+        "skills/git-workflow/",
+        "skills/grok-delegate/",
+        "skills/harness-master/",
+        "skills/host-panel/",
+        "skills/i18n-localization/",
+        "skills/incident-response-engineer/"
+      ],
+      "lens": [
+        "skill-assets",
+        "agentic"
+      ],
+      "coverage": {
+        "skills": 7
+      },
+      "validation_commands": [
+        "uv run python scripts/check.py",
+        "uv run python ../../skill-creator/scripts/audit.py . --format json",
+        "uv run python ../../skill-creator/scripts/audit.py . --security --format json",
+        "uv run wagents eval adequacy <name>",
+        "uv run python ../../skill-creator/scripts/package.py . --dry-run"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W1-skills",
+      "shard_id": "W1-skills-04",
+      "owner": "subagent-w1-04",
+      "skill_ids": [
+        "infrastructure-coder",
+        "javascript-conventions",
+        "learn",
+        "mcp-creator",
+        "namer",
+        "nerdbot",
+        "new-project"
+      ],
+      "scope": [
+        "skills/infrastructure-coder/",
+        "skills/javascript-conventions/",
+        "skills/learn/",
+        "skills/mcp-creator/",
+        "skills/namer/",
+        "skills/nerdbot/",
+        "skills/new-project/"
+      ],
+      "lens": [
+        "skill-assets",
+        "agentic"
+      ],
+      "coverage": {
+        "skills": 7
+      },
+      "validation_commands": [
+        "uv run python scripts/check.py",
+        "uv run python ../../skill-creator/scripts/audit.py . --format json",
+        "uv run python ../../skill-creator/scripts/audit.py . --security --format json",
+        "uv run wagents eval adequacy <name>",
+        "uv run python ../../skill-creator/scripts/package.py . --dry-run"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W1-skills",
+      "shard_id": "W1-skills-05",
+      "owner": "subagent-w1-05",
+      "skill_ids": [
+        "observability-advisor",
+        "opencode-ensemble",
+        "openspec-workflow",
+        "orchestrator",
+        "performance-profiler",
+        "prompt-engineer",
+        "python-conventions"
+      ],
+      "scope": [
+        "skills/observability-advisor/",
+        "skills/opencode-ensemble/",
+        "skills/openspec-workflow/",
+        "skills/orchestrator/",
+        "skills/performance-profiler/",
+        "skills/prompt-engineer/",
+        "skills/python-conventions/"
+      ],
+      "lens": [
+        "skill-assets",
+        "agentic"
+      ],
+      "coverage": {
+        "skills": 7
+      },
+      "validation_commands": [
+        "uv run python scripts/check.py",
+        "uv run python ../../skill-creator/scripts/audit.py . --format json",
+        "uv run python ../../skill-creator/scripts/audit.py . --security --format json",
+        "uv run wagents eval adequacy <name>",
+        "uv run python ../../skill-creator/scripts/package.py . --dry-run"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W1-skills",
+      "shard_id": "W1-skills-06",
+      "owner": "subagent-w1-06",
+      "skill_ids": [
+        "reasoning-router",
+        "release-pipeline-architect",
+        "research",
+        "review",
+        "schema-evolution-planner",
+        "security-scanner",
+        "shell-conventions"
+      ],
+      "scope": [
+        "skills/reasoning-router/",
+        "skills/release-pipeline-architect/",
+        "skills/research/",
+        "skills/review/",
+        "skills/schema-evolution-planner/",
+        "skills/security-scanner/",
+        "skills/shell-conventions/"
+      ],
+      "lens": [
+        "skill-assets",
+        "agentic"
+      ],
+      "coverage": {
+        "skills": 7
+      },
+      "validation_commands": [
+        "uv run python scripts/check.py",
+        "uv run python ../../skill-creator/scripts/audit.py . --format json",
+        "uv run python ../../skill-creator/scripts/audit.py . --security --format json",
+        "uv run wagents eval adequacy <name>",
+        "uv run python ../../skill-creator/scripts/package.py . --dry-run"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W1-skills",
+      "shard_id": "W1-skills-07",
+      "owner": "subagent-w1-07",
+      "skill_ids": [
+        "shell-scripter",
+        "skill-creator",
+        "skill-router",
+        "tech-debt-analyzer",
+        "test-architect",
+        "things-manager",
+        "wargame"
+      ],
+      "scope": [
+        "skills/shell-scripter/",
+        "skills/skill-creator/",
+        "skills/skill-router/",
+        "skills/tech-debt-analyzer/",
+        "skills/test-architect/",
+        "skills/things-manager/",
+        "skills/wargame/"
+      ],
+      "lens": [
+        "skill-assets",
+        "agentic"
+      ],
+      "coverage": {
+        "skills": 7
+      },
+      "validation_commands": [
+        "uv run python scripts/check.py",
+        "uv run python ../../skill-creator/scripts/audit.py . --format json",
+        "uv run python ../../skill-creator/scripts/audit.py . --security --format json",
+        "uv run wagents eval adequacy <name>",
+        "uv run python ../../skill-creator/scripts/package.py . --dry-run"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W2-plugins",
+      "shard_id": "L-plugin-manifests",
+      "owner": "subagent-w2-manifests",
+      "scope": [
+        "agent-bundle.json",
+        ".claude-plugin/plugin.json",
+        ".claude-plugin/marketplace.json",
+        ".codex-plugin/plugin.json",
+        ".agents/plugins/marketplace.json",
+        "docs/src/content/docs/harness-config/plugin-skill-ownership.mdx"
+      ],
+      "lens": [
+        "supply-chain",
+        "agentic",
+        "docs"
+      ],
+      "coverage": {
+        "manifest_surfaces": 6
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python scripts/sync_agent_stack.py --dry-run --targets repo"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W2-plugins",
+      "shard_id": "L-exposure-dedupe",
+      "owner": "subagent-w2-exposure",
+      "scope": [
+        "wagents/installed_inventory.py",
+        "planning/manifests/harness-reconciliation.json",
+        "config/sync-manifest.json"
+      ],
+      "lens": [
+        "agentic",
+        "supply-chain",
+        "docs"
+      ],
+      "coverage": {
+        "harnesses": "all"
+      },
+      "validation_commands": [
+        "uv run wagents skills sync --dry-run --format json",
+        "uv run wagents skills cleanup --dry-run --format json",
+        "uv run python scripts/generate_harness_reconciliation.py"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W2-plugins",
+      "shard_id": "L-hook-projection",
+      "owner": "subagent-w2-hooks",
+      "scope": [
+        "config/hook-registry.json",
+        "hooks/wagents-hook.py",
+        "wagents/hooks/render.py",
+        "wagents/hooks/bundle.py",
+        ".cursor/hooks.json"
+      ],
+      "lens": [
+        "security",
+        "agentic",
+        "ci"
+      ],
+      "coverage": {
+        "harnesses": "all"
+      },
+      "validation_commands": [
+        "uv run wagents hooks validate --harness all",
+        "uv run python scripts/check_hook_discovery_parity.py"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W3-catalog-external",
+      "shard_id": "W3-ext-01",
+      "owner": "subagent-w3-01",
+      "catalog_ids": [
+        "a11y-debugging",
+        "ab-testing",
+        "ads",
+        "agent-governance",
+        "agent-owasp-compliance",
+        "agent-supply-chain",
+        "agentic-actions-auditor",
+        "agentic-eval",
+        "agents-sdk",
+        "ai-seo",
+        "analytics",
+        "anthropics-skills-all",
+        "apm-cli",
+        "apollo-client",
+        "apollo-connectors",
+        "apollo-federation",
+        "apollo-ios",
+        "apollo-mcp-server",
+        "apollo-router",
+        "apollo-server",
+        "arize-evaluator",
+        "arize-instrumentation",
+        "arize-prompt-optimization",
+        "aws-ami-builder",
+        "aws-iam"
+      ],
+      "scope": [
+        "docs/src/authoring/skills/a11y-debugging.mdx",
+        "docs/src/authoring/skills/ab-testing.mdx",
+        "docs/src/authoring/skills/ads.mdx",
+        "docs/src/authoring/skills/agent-governance.mdx",
+        "docs/src/authoring/skills/agent-owasp-compliance.mdx",
+        "docs/src/authoring/skills/agent-supply-chain.mdx",
+        "docs/src/authoring/skills/agentic-actions-auditor.mdx",
+        "docs/src/authoring/skills/agentic-eval.mdx",
+        "docs/src/authoring/skills/agents-sdk.mdx",
+        "docs/src/authoring/skills/ai-seo.mdx",
+        "docs/src/authoring/skills/analytics.mdx",
+        "docs/src/authoring/skills/anthropics-skills-all.mdx",
+        "docs/src/authoring/skills/apm-cli.mdx",
+        "docs/src/authoring/skills/apollo-client.mdx",
+        "docs/src/authoring/skills/apollo-connectors.mdx",
+        "docs/src/authoring/skills/apollo-federation.mdx",
+        "docs/src/authoring/skills/apollo-ios.mdx",
+        "docs/src/authoring/skills/apollo-mcp-server.mdx",
+        "docs/src/authoring/skills/apollo-router.mdx",
+        "docs/src/authoring/skills/apollo-server.mdx",
+        "docs/src/authoring/skills/arize-evaluator.mdx",
+        "docs/src/authoring/skills/arize-instrumentation.mdx",
+        "docs/src/authoring/skills/arize-prompt-optimization.mdx",
+        "docs/src/authoring/skills/aws-ami-builder.mdx",
+        "docs/src/authoring/skills/aws-iam.mdx"
+      ],
+      "lens": [
+        "source/provenance",
+        "supply-chain",
+        "agentic"
+      ],
+      "coverage": {
+        "catalog_entries": 25
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python skills/review/scripts/source-audit.py --format json <source>",
+        "npx skills add <install_source> --list"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W3-catalog-external",
+      "shard_id": "W3-ext-02",
+      "owner": "subagent-w3-02",
+      "catalog_ids": [
+        "aws-serverless",
+        "best-practices",
+        "better-auth-best-practices",
+        "biome-developer",
+        "brainstorming",
+        "building-pydantic-ai-agents",
+        "changelog-automation",
+        "chatgpt-app-builder",
+        "chatgpt-apps",
+        "chrome-devtools-cli",
+        "chrome-devtools",
+        "churn-prevention",
+        "claimable-postgres",
+        "cli-creator",
+        "cli-just",
+        "clickhouse-architecture-advisor",
+        "clickhouse-best-practices",
+        "cloudflare",
+        "code-review",
+        "codeql",
+        "cold-email",
+        "coleam00-excalidraw-diagram-skill-all",
+        "commit",
+        "competitor-profiling",
+        "content-strategy"
+      ],
+      "scope": [
+        "docs/src/authoring/skills/aws-serverless.mdx",
+        "docs/src/authoring/skills/best-practices.mdx",
+        "docs/src/authoring/skills/better-auth-best-practices.mdx",
+        "docs/src/authoring/skills/biome-developer.mdx",
+        "docs/src/authoring/skills/brainstorming.mdx",
+        "docs/src/authoring/skills/building-pydantic-ai-agents.mdx",
+        "docs/src/authoring/skills/changelog-automation.mdx",
+        "docs/src/authoring/skills/chatgpt-app-builder.mdx",
+        "docs/src/authoring/skills/chatgpt-apps.mdx",
+        "docs/src/authoring/skills/chrome-devtools-cli.mdx",
+        "docs/src/authoring/skills/chrome-devtools.mdx",
+        "docs/src/authoring/skills/churn-prevention.mdx",
+        "docs/src/authoring/skills/claimable-postgres.mdx",
+        "docs/src/authoring/skills/cli-creator.mdx",
+        "docs/src/authoring/skills/cli-just.mdx",
+        "docs/src/authoring/skills/clickhouse-architecture-advisor.mdx",
+        "docs/src/authoring/skills/clickhouse-best-practices.mdx",
+        "docs/src/authoring/skills/cloudflare.mdx",
+        "docs/src/authoring/skills/code-review.mdx",
+        "docs/src/authoring/skills/codeql.mdx",
+        "docs/src/authoring/skills/cold-email.mdx",
+        "docs/src/authoring/skills/coleam00-excalidraw-diagram-skill-all.mdx",
+        "docs/src/authoring/skills/commit.mdx",
+        "docs/src/authoring/skills/competitor-profiling.mdx",
+        "docs/src/authoring/skills/content-strategy.mdx"
+      ],
+      "lens": [
+        "source/provenance",
+        "supply-chain",
+        "agentic"
+      ],
+      "coverage": {
+        "catalog_entries": 25
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python skills/review/scripts/source-audit.py --format json <source>",
+        "npx skills add <install_source> --list"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W3-catalog-external",
+      "shard_id": "W3-ext-03",
+      "owner": "subagent-w3-03",
+      "catalog_ids": [
+        "copywriting",
+        "core-web-vitals",
+        "create-implementation-plan",
+        "cro",
+        "ctf-ai-ml",
+        "ctf-crypto",
+        "ctf-forensics",
+        "ctf-malware",
+        "ctf-misc",
+        "ctf-osint",
+        "ctf-pwn",
+        "ctf-reverse",
+        "ctf-web",
+        "ctf-writeup",
+        "database-migration",
+        "debug-optimize-lcp",
+        "debugging-strategies",
+        "deep-agents-core",
+        "deep-agents-memory",
+        "deep-agents-orchestration",
+        "deno-expert",
+        "deploy-to-vercel",
+        "deployment-pipeline-design",
+        "differential-review",
+        "docker-expert"
+      ],
+      "scope": [
+        "docs/src/authoring/skills/copywriting.mdx",
+        "docs/src/authoring/skills/core-web-vitals.mdx",
+        "docs/src/authoring/skills/create-implementation-plan.mdx",
+        "docs/src/authoring/skills/cro.mdx",
+        "docs/src/authoring/skills/ctf-ai-ml.mdx",
+        "docs/src/authoring/skills/ctf-crypto.mdx",
+        "docs/src/authoring/skills/ctf-forensics.mdx",
+        "docs/src/authoring/skills/ctf-malware.mdx",
+        "docs/src/authoring/skills/ctf-misc.mdx",
+        "docs/src/authoring/skills/ctf-osint.mdx",
+        "docs/src/authoring/skills/ctf-pwn.mdx",
+        "docs/src/authoring/skills/ctf-reverse.mdx",
+        "docs/src/authoring/skills/ctf-web.mdx",
+        "docs/src/authoring/skills/ctf-writeup.mdx",
+        "docs/src/authoring/skills/database-migration.mdx",
+        "docs/src/authoring/skills/debug-optimize-lcp.mdx",
+        "docs/src/authoring/skills/debugging-strategies.mdx",
+        "docs/src/authoring/skills/deep-agents-core.mdx",
+        "docs/src/authoring/skills/deep-agents-memory.mdx",
+        "docs/src/authoring/skills/deep-agents-orchestration.mdx",
+        "docs/src/authoring/skills/deno-expert.mdx",
+        "docs/src/authoring/skills/deploy-to-vercel.mdx",
+        "docs/src/authoring/skills/deployment-pipeline-design.mdx",
+        "docs/src/authoring/skills/differential-review.mdx",
+        "docs/src/authoring/skills/docker-expert.mdx"
+      ],
+      "lens": [
+        "source/provenance",
+        "supply-chain",
+        "agentic"
+      ],
+      "coverage": {
+        "catalog_entries": 25
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python skills/review/scripts/source-audit.py --format json <source>",
+        "npx skills add <install_source> --list"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W3-catalog-external",
+      "shard_id": "W3-ext-04",
+      "owner": "subagent-w3-04",
+      "catalog_ids": [
+        "drizzle-orm-patterns",
+        "durable-objects",
+        "e2e-testing-patterns",
+        "ecosystem-primer",
+        "emails",
+        "eval-driven-dev",
+        "excalidraw-diagram-generator",
+        "executing-plans",
+        "expo-cicd-workflows",
+        "expo-deployment",
+        "expo-dev-client",
+        "fastapi-templates",
+        "fastmcp-client-cli",
+        "find-bugs",
+        "find-skills",
+        "firebase-ai-logic-basics",
+        "firebase-app-hosting-basics",
+        "firebase-auth-basics",
+        "firecrawl-cli-all",
+        "flutter-add-integration-test",
+        "flutter-add-widget-test",
+        "flutter-apply-architecture-best-practices",
+        "flutter-build-responsive-layout",
+        "flutter-fix-layout-issues",
+        "flutter-setup-declarative-routing"
+      ],
+      "scope": [
+        "docs/src/authoring/skills/drizzle-orm-patterns.mdx",
+        "docs/src/authoring/skills/durable-objects.mdx",
+        "docs/src/authoring/skills/e2e-testing-patterns.mdx",
+        "docs/src/authoring/skills/ecosystem-primer.mdx",
+        "docs/src/authoring/skills/emails.mdx",
+        "docs/src/authoring/skills/eval-driven-dev.mdx",
+        "docs/src/authoring/skills/excalidraw-diagram-generator.mdx",
+        "docs/src/authoring/skills/executing-plans.mdx",
+        "docs/src/authoring/skills/expo-cicd-workflows.mdx",
+        "docs/src/authoring/skills/expo-deployment.mdx",
+        "docs/src/authoring/skills/expo-dev-client.mdx",
+        "docs/src/authoring/skills/fastapi-templates.mdx",
+        "docs/src/authoring/skills/fastmcp-client-cli.mdx",
+        "docs/src/authoring/skills/find-bugs.mdx",
+        "docs/src/authoring/skills/find-skills.mdx",
+        "docs/src/authoring/skills/firebase-ai-logic-basics.mdx",
+        "docs/src/authoring/skills/firebase-app-hosting-basics.mdx",
+        "docs/src/authoring/skills/firebase-auth-basics.mdx",
+        "docs/src/authoring/skills/firecrawl-cli-all.mdx",
+        "docs/src/authoring/skills/flutter-add-integration-test.mdx",
+        "docs/src/authoring/skills/flutter-add-widget-test.mdx",
+        "docs/src/authoring/skills/flutter-apply-architecture-best-practices.mdx",
+        "docs/src/authoring/skills/flutter-build-responsive-layout.mdx",
+        "docs/src/authoring/skills/flutter-fix-layout-issues.mdx",
+        "docs/src/authoring/skills/flutter-setup-declarative-routing.mdx"
+      ],
+      "lens": [
+        "source/provenance",
+        "supply-chain",
+        "agentic"
+      ],
+      "coverage": {
+        "catalog_entries": 25
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python skills/review/scripts/source-audit.py --format json <source>",
+        "npx skills add <install_source> --list"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W3-catalog-external",
+      "shard_id": "W3-ext-05",
+      "owner": "subagent-w3-05",
+      "catalog_ids": [
+        "flutter-setup-localization",
+        "gemini-api",
+        "getting-started",
+        "gha-security-review",
+        "github-actions-docs",
+        "gitops-workflow",
+        "golang-benchmark",
+        "golang-cli",
+        "golang-concurrency",
+        "golang-database",
+        "golang-error-handling",
+        "golang-graphql",
+        "golang-grpc",
+        "golang-how-to",
+        "golang-lint",
+        "golang-modernize",
+        "golang-observability",
+        "golang-performance",
+        "golang-popular-libraries",
+        "golang-project-layout",
+        "golang-safety",
+        "golang-security",
+        "golang-spf13-cobra",
+        "golang-spf13-viper",
+        "golang-stretchr-testify"
+      ],
+      "scope": [
+        "docs/src/authoring/skills/flutter-setup-localization.mdx",
+        "docs/src/authoring/skills/gemini-api.mdx",
+        "docs/src/authoring/skills/getting-started.mdx",
+        "docs/src/authoring/skills/gha-security-review.mdx",
+        "docs/src/authoring/skills/github-actions-docs.mdx",
+        "docs/src/authoring/skills/gitops-workflow.mdx",
+        "docs/src/authoring/skills/golang-benchmark.mdx",
+        "docs/src/authoring/skills/golang-cli.mdx",
+        "docs/src/authoring/skills/golang-concurrency.mdx",
+        "docs/src/authoring/skills/golang-database.mdx",
+        "docs/src/authoring/skills/golang-error-handling.mdx",
+        "docs/src/authoring/skills/golang-graphql.mdx",
+        "docs/src/authoring/skills/golang-grpc.mdx",
+        "docs/src/authoring/skills/golang-how-to.mdx",
+        "docs/src/authoring/skills/golang-lint.mdx",
+        "docs/src/authoring/skills/golang-modernize.mdx",
+        "docs/src/authoring/skills/golang-observability.mdx",
+        "docs/src/authoring/skills/golang-performance.mdx",
+        "docs/src/authoring/skills/golang-popular-libraries.mdx",
+        "docs/src/authoring/skills/golang-project-layout.mdx",
+        "docs/src/authoring/skills/golang-safety.mdx",
+        "docs/src/authoring/skills/golang-security.mdx",
+        "docs/src/authoring/skills/golang-spf13-cobra.mdx",
+        "docs/src/authoring/skills/golang-spf13-viper.mdx",
+        "docs/src/authoring/skills/golang-stretchr-testify.mdx"
+      ],
+      "lens": [
+        "source/provenance",
+        "supply-chain",
+        "agentic"
+      ],
+      "coverage": {
+        "catalog_entries": 25
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python skills/review/scripts/source-audit.py --format json <source>",
+        "npx skills add <install_source> --list"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W3-catalog-external",
+      "shard_id": "W3-ext-06",
+      "owner": "subagent-w3-06",
+      "catalog_ids": [
+        "golang-testing",
+        "golang-troubleshooting",
+        "graphql-operations",
+        "graphql-schema",
+        "grill-me",
+        "helm-chart-scaffolding",
+        "huggingface-skills-all",
+        "improve-codebase-architecture",
+        "incident-runbook-templates",
+        "inngest-durable-functions",
+        "inngest-events",
+        "inngest-setup",
+        "inngest-steps",
+        "insecure-defaults",
+        "iterate-pr",
+        "javascript-testing-patterns",
+        "k8s-manifest-generator",
+        "k8s-security-policies",
+        "kubernetes-specialist",
+        "langchain-architecture",
+        "langchain-dependencies",
+        "langchain-fundamentals",
+        "langchain-middleware",
+        "langchain-rag",
+        "langfuse"
+      ],
+      "scope": [
+        "docs/src/authoring/skills/golang-testing.mdx",
+        "docs/src/authoring/skills/golang-troubleshooting.mdx",
+        "docs/src/authoring/skills/graphql-operations.mdx",
+        "docs/src/authoring/skills/graphql-schema.mdx",
+        "docs/src/authoring/skills/grill-me.mdx",
+        "docs/src/authoring/skills/helm-chart-scaffolding.mdx",
+        "docs/src/authoring/skills/huggingface-skills-all.mdx",
+        "docs/src/authoring/skills/improve-codebase-architecture.mdx",
+        "docs/src/authoring/skills/incident-runbook-templates.mdx",
+        "docs/src/authoring/skills/inngest-durable-functions.mdx",
+        "docs/src/authoring/skills/inngest-events.mdx",
+        "docs/src/authoring/skills/inngest-setup.mdx",
+        "docs/src/authoring/skills/inngest-steps.mdx",
+        "docs/src/authoring/skills/insecure-defaults.mdx",
+        "docs/src/authoring/skills/iterate-pr.mdx",
+        "docs/src/authoring/skills/javascript-testing-patterns.mdx",
+        "docs/src/authoring/skills/k8s-manifest-generator.mdx",
+        "docs/src/authoring/skills/k8s-security-policies.mdx",
+        "docs/src/authoring/skills/kubernetes-specialist.mdx",
+        "docs/src/authoring/skills/langchain-architecture.mdx",
+        "docs/src/authoring/skills/langchain-dependencies.mdx",
+        "docs/src/authoring/skills/langchain-fundamentals.mdx",
+        "docs/src/authoring/skills/langchain-middleware.mdx",
+        "docs/src/authoring/skills/langchain-rag.mdx",
+        "docs/src/authoring/skills/langfuse.mdx"
+      ],
+      "lens": [
+        "source/provenance",
+        "supply-chain",
+        "agentic"
+      ],
+      "coverage": {
+        "catalog_entries": 25
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python skills/review/scripts/source-audit.py --format json <source>",
+        "npx skills add <install_source> --list"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W3-catalog-external",
+      "shard_id": "W3-ext-07",
+      "owner": "subagent-w3-07",
+      "catalog_ids": [
+        "langgraph-fundamentals",
+        "langgraph-human-in-the-loop",
+        "langgraph-persistence",
+        "langsmith-dataset",
+        "langsmith-evaluator",
+        "langsmith-trace",
+        "launch",
+        "link-workspace-packages",
+        "llm-evaluation",
+        "logfire-instrumentation",
+        "logging-best-practices",
+        "managed-deep-agents",
+        "marketing-ideas",
+        "marketing-psychology",
+        "mcp-builder",
+        "mcp-security-audit",
+        "memory-leak-debugging",
+        "microsoft-azure-skills-all",
+        "modern-python",
+        "multi-stage-dockerfile",
+        "mysql",
+        "neon-ai-gateway",
+        "neon-functions",
+        "neon-postgres-branches",
+        "neon-postgres-egress-optimizer"
+      ],
+      "scope": [
+        "docs/src/authoring/skills/langgraph-fundamentals.mdx",
+        "docs/src/authoring/skills/langgraph-human-in-the-loop.mdx",
+        "docs/src/authoring/skills/langgraph-persistence.mdx",
+        "docs/src/authoring/skills/langsmith-dataset.mdx",
+        "docs/src/authoring/skills/langsmith-evaluator.mdx",
+        "docs/src/authoring/skills/langsmith-trace.mdx",
+        "docs/src/authoring/skills/launch.mdx",
+        "docs/src/authoring/skills/link-workspace-packages.mdx",
+        "docs/src/authoring/skills/llm-evaluation.mdx",
+        "docs/src/authoring/skills/logfire-instrumentation.mdx",
+        "docs/src/authoring/skills/logging-best-practices.mdx",
+        "docs/src/authoring/skills/managed-deep-agents.mdx",
+        "docs/src/authoring/skills/marketing-ideas.mdx",
+        "docs/src/authoring/skills/marketing-psychology.mdx",
+        "docs/src/authoring/skills/mcp-builder.mdx",
+        "docs/src/authoring/skills/mcp-security-audit.mdx",
+        "docs/src/authoring/skills/memory-leak-debugging.mdx",
+        "docs/src/authoring/skills/microsoft-azure-skills-all.mdx",
+        "docs/src/authoring/skills/modern-python.mdx",
+        "docs/src/authoring/skills/multi-stage-dockerfile.mdx",
+        "docs/src/authoring/skills/mysql.mdx",
+        "docs/src/authoring/skills/neon-ai-gateway.mdx",
+        "docs/src/authoring/skills/neon-functions.mdx",
+        "docs/src/authoring/skills/neon-postgres-branches.mdx",
+        "docs/src/authoring/skills/neon-postgres-egress-optimizer.mdx"
+      ],
+      "lens": [
+        "source/provenance",
+        "supply-chain",
+        "agentic"
+      ],
+      "coverage": {
+        "catalog_entries": 25
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python skills/review/scripts/source-audit.py --format json <source>",
+        "npx skills add <install_source> --list"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W3-catalog-external",
+      "shard_id": "W3-ext-08",
+      "owner": "subagent-w3-08",
+      "catalog_ids": [
+        "neon-postgres",
+        "netlify-deploy",
+        "netlify-edge-functions",
+        "netlify-functions",
+        "next-best-practices",
+        "next-cache-components",
+        "next-upgrade",
+        "nodejs-backend-patterns",
+        "notion-api",
+        "notion-cli",
+        "nx-generate",
+        "nx-workspace-patterns",
+        "obsidian-cli",
+        "obsidian-markdown",
+        "obsidian-vault",
+        "on-call-handoff-patterns",
+        "onboarding",
+        "openapi-spec-generation",
+        "otel-collector",
+        "otel-instrumentation",
+        "otel-semantic-conventions",
+        "paywalls",
+        "performance",
+        "phoenix-evals",
+        "phoenix-tracing"
+      ],
+      "scope": [
+        "docs/src/authoring/skills/neon-postgres.mdx",
+        "docs/src/authoring/skills/netlify-deploy.mdx",
+        "docs/src/authoring/skills/netlify-edge-functions.mdx",
+        "docs/src/authoring/skills/netlify-functions.mdx",
+        "docs/src/authoring/skills/next-best-practices.mdx",
+        "docs/src/authoring/skills/next-cache-components.mdx",
+        "docs/src/authoring/skills/next-upgrade.mdx",
+        "docs/src/authoring/skills/nodejs-backend-patterns.mdx",
+        "docs/src/authoring/skills/notion-api.mdx",
+        "docs/src/authoring/skills/notion-cli.mdx",
+        "docs/src/authoring/skills/nx-generate.mdx",
+        "docs/src/authoring/skills/nx-workspace-patterns.mdx",
+        "docs/src/authoring/skills/obsidian-cli.mdx",
+        "docs/src/authoring/skills/obsidian-markdown.mdx",
+        "docs/src/authoring/skills/obsidian-vault.mdx",
+        "docs/src/authoring/skills/on-call-handoff-patterns.mdx",
+        "docs/src/authoring/skills/onboarding.mdx",
+        "docs/src/authoring/skills/openapi-spec-generation.mdx",
+        "docs/src/authoring/skills/otel-collector.mdx",
+        "docs/src/authoring/skills/otel-instrumentation.mdx",
+        "docs/src/authoring/skills/otel-semantic-conventions.mdx",
+        "docs/src/authoring/skills/paywalls.mdx",
+        "docs/src/authoring/skills/performance.mdx",
+        "docs/src/authoring/skills/phoenix-evals.mdx",
+        "docs/src/authoring/skills/phoenix-tracing.mdx"
+      ],
+      "lens": [
+        "source/provenance",
+        "supply-chain",
+        "agentic"
+      ],
+      "coverage": {
+        "catalog_entries": 25
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python skills/review/scripts/source-audit.py --format json <source>",
+        "npx skills add <install_source> --list"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W3-catalog-external",
+      "shard_id": "W3-ext-09",
+      "owner": "subagent-w3-09",
+      "catalog_ids": [
+        "plannotator-annotate",
+        "plannotator-compound",
+        "plannotator-last",
+        "plannotator-review",
+        "plannotator-setup-goal",
+        "plannotator-visual-explainer",
+        "playwright-best-practices",
+        "playwright-cli",
+        "postgres",
+        "postmortem-writing",
+        "prisma-cli",
+        "prisma-client-api",
+        "prisma-compute",
+        "prisma-database-setup",
+        "prisma-postgres",
+        "prisma-upgrade-v7",
+        "product-marketing",
+        "programmatic-seo",
+        "property-based-testing",
+        "pulumi-automation-api",
+        "pulumi-best-practices",
+        "pulumi-component",
+        "pulumi-esc",
+        "pydantic-ai-harness",
+        "python-observability"
+      ],
+      "scope": [
+        "docs/src/authoring/skills/plannotator-annotate.mdx",
+        "docs/src/authoring/skills/plannotator-compound.mdx",
+        "docs/src/authoring/skills/plannotator-last.mdx",
+        "docs/src/authoring/skills/plannotator-review.mdx",
+        "docs/src/authoring/skills/plannotator-setup-goal.mdx",
+        "docs/src/authoring/skills/plannotator-visual-explainer.mdx",
+        "docs/src/authoring/skills/playwright-best-practices.mdx",
+        "docs/src/authoring/skills/playwright-cli.mdx",
+        "docs/src/authoring/skills/postgres.mdx",
+        "docs/src/authoring/skills/postmortem-writing.mdx",
+        "docs/src/authoring/skills/prisma-cli.mdx",
+        "docs/src/authoring/skills/prisma-client-api.mdx",
+        "docs/src/authoring/skills/prisma-compute.mdx",
+        "docs/src/authoring/skills/prisma-database-setup.mdx",
+        "docs/src/authoring/skills/prisma-postgres.mdx",
+        "docs/src/authoring/skills/prisma-upgrade-v7.mdx",
+        "docs/src/authoring/skills/product-marketing.mdx",
+        "docs/src/authoring/skills/programmatic-seo.mdx",
+        "docs/src/authoring/skills/property-based-testing.mdx",
+        "docs/src/authoring/skills/pulumi-automation-api.mdx",
+        "docs/src/authoring/skills/pulumi-best-practices.mdx",
+        "docs/src/authoring/skills/pulumi-component.mdx",
+        "docs/src/authoring/skills/pulumi-esc.mdx",
+        "docs/src/authoring/skills/pydantic-ai-harness.mdx",
+        "docs/src/authoring/skills/python-observability.mdx"
+      ],
+      "lens": [
+        "source/provenance",
+        "supply-chain",
+        "agentic"
+      ],
+      "coverage": {
+        "catalog_entries": 25
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python skills/review/scripts/source-audit.py --format json <source>",
+        "npx skills add <install_source> --list"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W3-catalog-external",
+      "shard_id": "W3-ext-10",
+      "owner": "subagent-w3-10",
+      "catalog_ids": [
+        "python-testing-patterns",
+        "redis-clustering",
+        "redis-core",
+        "redis-observability",
+        "redis-security",
+        "redis-semantic-cache",
+        "redis-vector-search",
+        "remotion-best-practices",
+        "render-blueprints",
+        "render-debug",
+        "render-deploy",
+        "revops",
+        "rover",
+        "rust-async-patterns",
+        "rust-best-practices",
+        "rust-mcp-server-generator",
+        "sast-configuration",
+        "schema",
+        "secret-scanning",
+        "secrets-management",
+        "security-best-practices",
+        "security-ownership-map",
+        "security-threat-model",
+        "semgrep",
+        "sentry-fix-issues"
+      ],
+      "scope": [
+        "docs/src/authoring/skills/python-testing-patterns.mdx",
+        "docs/src/authoring/skills/redis-clustering.mdx",
+        "docs/src/authoring/skills/redis-core.mdx",
+        "docs/src/authoring/skills/redis-observability.mdx",
+        "docs/src/authoring/skills/redis-security.mdx",
+        "docs/src/authoring/skills/redis-semantic-cache.mdx",
+        "docs/src/authoring/skills/redis-vector-search.mdx",
+        "docs/src/authoring/skills/remotion-best-practices.mdx",
+        "docs/src/authoring/skills/render-blueprints.mdx",
+        "docs/src/authoring/skills/render-debug.mdx",
+        "docs/src/authoring/skills/render-deploy.mdx",
+        "docs/src/authoring/skills/revops.mdx",
+        "docs/src/authoring/skills/rover.mdx",
+        "docs/src/authoring/skills/rust-async-patterns.mdx",
+        "docs/src/authoring/skills/rust-best-practices.mdx",
+        "docs/src/authoring/skills/rust-mcp-server-generator.mdx",
+        "docs/src/authoring/skills/sast-configuration.mdx",
+        "docs/src/authoring/skills/schema.mdx",
+        "docs/src/authoring/skills/secret-scanning.mdx",
+        "docs/src/authoring/skills/secrets-management.mdx",
+        "docs/src/authoring/skills/security-best-practices.mdx",
+        "docs/src/authoring/skills/security-ownership-map.mdx",
+        "docs/src/authoring/skills/security-threat-model.mdx",
+        "docs/src/authoring/skills/semgrep.mdx",
+        "docs/src/authoring/skills/sentry-fix-issues.mdx"
+      ],
+      "lens": [
+        "source/provenance",
+        "supply-chain",
+        "agentic"
+      ],
+      "coverage": {
+        "catalog_entries": 25
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python skills/review/scripts/source-audit.py --format json <source>",
+        "npx skills add <install_source> --list"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W3-catalog-external",
+      "shard_id": "W3-ext-11",
+      "owner": "subagent-w3-11",
+      "catalog_ids": [
+        "sentry-sdk-setup",
+        "sentry-setup-ai-monitoring",
+        "seo-audit",
+        "seo",
+        "shopify-dev",
+        "shopify-liquid",
+        "shopify-storefront-graphql",
+        "signup",
+        "site-architecture",
+        "skill-scanner",
+        "slidev",
+        "slo-implementation",
+        "solve-challenge",
+        "sql-code-review",
+        "sql-optimization-patterns",
+        "sql-optimization",
+        "stride-analysis-patterns",
+        "stripe-best-practices",
+        "supabase-postgres-best-practices",
+        "supabase",
+        "supply-chain-risk-auditor",
+        "svelte5-best-practices",
+        "swift-concurrency",
+        "swiftui-expert-skill",
+        "systematic-debugging"
+      ],
+      "scope": [
+        "docs/src/authoring/skills/sentry-sdk-setup.mdx",
+        "docs/src/authoring/skills/sentry-setup-ai-monitoring.mdx",
+        "docs/src/authoring/skills/seo-audit.mdx",
+        "docs/src/authoring/skills/seo.mdx",
+        "docs/src/authoring/skills/shopify-dev.mdx",
+        "docs/src/authoring/skills/shopify-liquid.mdx",
+        "docs/src/authoring/skills/shopify-storefront-graphql.mdx",
+        "docs/src/authoring/skills/signup.mdx",
+        "docs/src/authoring/skills/site-architecture.mdx",
+        "docs/src/authoring/skills/skill-scanner.mdx",
+        "docs/src/authoring/skills/slidev.mdx",
+        "docs/src/authoring/skills/slo-implementation.mdx",
+        "docs/src/authoring/skills/solve-challenge.mdx",
+        "docs/src/authoring/skills/sql-code-review.mdx",
+        "docs/src/authoring/skills/sql-optimization-patterns.mdx",
+        "docs/src/authoring/skills/sql-optimization.mdx",
+        "docs/src/authoring/skills/stride-analysis-patterns.mdx",
+        "docs/src/authoring/skills/stripe-best-practices.mdx",
+        "docs/src/authoring/skills/supabase-postgres-best-practices.mdx",
+        "docs/src/authoring/skills/supabase.mdx",
+        "docs/src/authoring/skills/supply-chain-risk-auditor.mdx",
+        "docs/src/authoring/skills/svelte5-best-practices.mdx",
+        "docs/src/authoring/skills/swift-concurrency.mdx",
+        "docs/src/authoring/skills/swiftui-expert-skill.mdx",
+        "docs/src/authoring/skills/systematic-debugging.mdx"
+      ],
+      "lens": [
+        "source/provenance",
+        "supply-chain",
+        "agentic"
+      ],
+      "coverage": {
+        "catalog_entries": 25
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python skills/review/scripts/source-audit.py --format json <source>",
+        "npx skills add <install_source> --list"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W3-catalog-external",
+      "shard_id": "W3-ext-12",
+      "owner": "subagent-w3-12",
+      "catalog_ids": [
+        "tanstack-query-best-practices",
+        "tanstack-router-best-practices",
+        "tanstack-start-best-practices",
+        "tdd",
+        "temporal-developer",
+        "terraform-module-library",
+        "terraform-search-import",
+        "terraform-skill",
+        "terraform-stacks",
+        "terraform-style-guide",
+        "terraform-test",
+        "test-driven-development",
+        "testing-python",
+        "threat-model-analyst",
+        "to-prd",
+        "troubleshooting",
+        "turborepo-caching",
+        "upgrade-stripe",
+        "upgrading-expo",
+        "use-railway",
+        "uv-package-manager",
+        "variant-analysis",
+        "vercel-composition-patterns",
+        "vercel-labs-agent-browser-all",
+        "vercel-optimize"
+      ],
+      "scope": [
+        "docs/src/authoring/skills/tanstack-query-best-practices.mdx",
+        "docs/src/authoring/skills/tanstack-router-best-practices.mdx",
+        "docs/src/authoring/skills/tanstack-start-best-practices.mdx",
+        "docs/src/authoring/skills/tdd.mdx",
+        "docs/src/authoring/skills/temporal-developer.mdx",
+        "docs/src/authoring/skills/terraform-module-library.mdx",
+        "docs/src/authoring/skills/terraform-search-import.mdx",
+        "docs/src/authoring/skills/terraform-skill.mdx",
+        "docs/src/authoring/skills/terraform-stacks.mdx",
+        "docs/src/authoring/skills/terraform-style-guide.mdx",
+        "docs/src/authoring/skills/terraform-test.mdx",
+        "docs/src/authoring/skills/test-driven-development.mdx",
+        "docs/src/authoring/skills/testing-python.mdx",
+        "docs/src/authoring/skills/threat-model-analyst.mdx",
+        "docs/src/authoring/skills/to-prd.mdx",
+        "docs/src/authoring/skills/troubleshooting.mdx",
+        "docs/src/authoring/skills/turborepo-caching.mdx",
+        "docs/src/authoring/skills/upgrade-stripe.mdx",
+        "docs/src/authoring/skills/upgrading-expo.mdx",
+        "docs/src/authoring/skills/use-railway.mdx",
+        "docs/src/authoring/skills/uv-package-manager.mdx",
+        "docs/src/authoring/skills/variant-analysis.mdx",
+        "docs/src/authoring/skills/vercel-composition-patterns.mdx",
+        "docs/src/authoring/skills/vercel-labs-agent-browser-all.mdx",
+        "docs/src/authoring/skills/vercel-optimize.mdx"
+      ],
+      "lens": [
+        "source/provenance",
+        "supply-chain",
+        "agentic"
+      ],
+      "coverage": {
+        "catalog_entries": 25
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python skills/review/scripts/source-audit.py --format json <source>",
+        "npx skills add <install_source> --list"
+      ],
+      "status": "pending"
+    },
+    {
+      "lane_id": "W3-catalog-external",
+      "shard_id": "W3-ext-13",
+      "owner": "subagent-w3-13",
+      "catalog_ids": [
+        "vercel-react-best-practices",
+        "vercel-react-native-skills",
+        "vercel-react-view-transitions",
+        "verification-before-completion",
+        "video",
+        "vite",
+        "vitest",
+        "vue-best-practices",
+        "vue",
+        "web-quality-audit",
+        "workers-best-practices",
+        "wrangler",
+        "writing-plans"
+      ],
+      "scope": [
+        "docs/src/authoring/skills/vercel-react-best-practices.mdx",
+        "docs/src/authoring/skills/vercel-react-native-skills.mdx",
+        "docs/src/authoring/skills/vercel-react-view-transitions.mdx",
+        "docs/src/authoring/skills/verification-before-completion.mdx",
+        "docs/src/authoring/skills/video.mdx",
+        "docs/src/authoring/skills/vite.mdx",
+        "docs/src/authoring/skills/vitest.mdx",
+        "docs/src/authoring/skills/vue-best-practices.mdx",
+        "docs/src/authoring/skills/vue.mdx",
+        "docs/src/authoring/skills/web-quality-audit.mdx",
+        "docs/src/authoring/skills/workers-best-practices.mdx",
+        "docs/src/authoring/skills/wrangler.mdx",
+        "docs/src/authoring/skills/writing-plans.mdx"
+      ],
+      "lens": [
+        "source/provenance",
+        "supply-chain",
+        "agentic"
+      ],
+      "coverage": {
+        "catalog_entries": 13
+      },
+      "validation_commands": [
+        "uv run wagents validate",
+        "uv run python skills/review/scripts/source-audit.py --format json <source>",
+        "npx skills add <install_source> --list"
+      ],
+      "status": "pending"
+    }
+  ]
+}

@@ -16,4 +16,7 @@ Ask only high-impact questions that affect architecture or safety.
 
 ## Ambiguity Gate
 
-If target path, project type, package manager, docs stack, database primary, or deploy target is ambiguous, ask a short multiple-choice question before mutation.
+If target path, project type, package manager, docs stack, database primary, or deploy target is ambiguous, apply `instructions/global.md` Depth routing before mutation.
+
+- **Independent enum** (one stack choice): short batched multiple-choice question.
+- **User-pivotal plan** (vague goal or interdependent architecture prefs): suggest `/grill-me` before `plan` mode.

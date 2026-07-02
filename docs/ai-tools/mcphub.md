@@ -16,21 +16,21 @@ print("JWT_SECRET=" + secrets.token_urlsafe(48))
 print("MCPHUB_BEARER_TOKEN=" + secrets.token_urlsafe(48))
 PY
 # Replace the placeholders in .env.mcphub with those generated values.
-make mcphub-up
-make mcphub-doctor
-make mcphub-smoke
+just mcphub-up
+just mcphub-doctor
+just mcphub-smoke
 ```
 
 Do not commit `.env.mcphub`.
 
 ## Local Operation
 
-- `make mcphub-up`: start local MCPHub with `npx -y @samanhappy/mcphub`.
-- `make mcphub-down`: stop the local PID recorded in `.mcphub/mcphub.pid`.
-- `make mcphub-logs`: tail `.mcphub/mcphub.log`.
-- `make mcphub-doctor`: check settings, Node/npx, health, and secret presence.
-- `make mcphub-smoke`: run health and authenticated `tools/list`.
-- `make mcphub-openapi`: export `mcp/mcphub/openapi.json`.
+- `just mcphub-up`: start local MCPHub with `npx -y @samanhappy/mcphub`.
+- `just mcphub-down`: stop the local PID recorded in `.mcphub/mcphub.pid`.
+- `just mcphub-logs`: tail `.mcphub/mcphub.log`.
+- `just mcphub-doctor`: check settings, Node/npx, health, and secret presence.
+- `just mcphub-smoke`: run health and authenticated `tools/list`.
+- `just mcphub-openapi`: export `mcp/mcphub/openapi.json`.
 
 The LaunchAgent template at `config/launchd/com.wyattowalsh.mcphub.plist` starts
 the same local script. Install or remove it with the Make targets. If
@@ -46,7 +46,7 @@ stops.
 - Smart Routing, disabled until configured: `http://127.0.0.1:46683/mcp/$smart`
 - Group Smart Routing: `http://127.0.0.1:46683/mcp/$smart/{group}`
 - OpenAPI: `http://127.0.0.1:46683/api/openapi.json`
-- ChatGPT remote MCP URL: `https://mcp.w4w.dev/mcp/harness-safe`
+- ChatGPT remote MCP URL: `https://mcp.w4w.dev/mcp/tunnel`
 
 MCP endpoints keep bearer auth enabled through `Authorization`. OpenAPI
 endpoints are documented by MCPHub as public, so expose the remote URL only
@@ -56,7 +56,7 @@ through an authenticated tunnel and keep local MCPHub bound to localhost.
 
 ChatGPT custom MCP apps/connectors require a remote server; local MCP servers are
 not supported by ChatGPT developer mode. The managed public endpoint is
-`https://mcp.w4w.dev/mcp/harness-safe`, backed by the named Cloudflare Tunnel
+`https://mcp.w4w.dev/mcp/tunnel`, backed by the named Cloudflare Tunnel
 `mcphub`.
 
 Set these values only in `.env.mcphub`:
@@ -88,22 +88,29 @@ Managed groups are declared in `config/mcp-registry.json` and emitted into
 `mcp/mcphub/mcp_settings.json`:
 
 - `all-managed`
-- `code`
-- `harness-safe`
-- `research`
-- `reasoning`
+- `daily`
+- `tunnel`
+- `search`
+- `read-web`
+- `docs`
+- `code-intel`
+- `references`
 - `browser`
-- `data`
-- `media`
+- `reasoning`
+- `data-pipeline`
 - `personal`
-- `local-ai`
+- `productivity`
 - `experimental`
+- `harness-safe`
+- `repo-catalog`
 
-The `harness-safe` group is the shared harness-facing MCP surface and includes
-the approved search, browser, docs, fetch, package metadata, repository
-packing, Supabase, Tavily, Trafilatura, DuckDuckGo, and Gmail servers. The
-`personal` group can expose account-backed tools and should be treated as
-sensitive even on localhost.
+The `harness-safe` group is the shared harness-facing MCP surface and aliases
+the `daily` membership: search, docs, fetch, package metadata, Trafilatura, and
+Repomix. `tunnel` is the bounded remote ChatGPT surface. `personal` can expose
+account-backed tools and should be treated as sensitive even on localhost.
+`all-managed`, `experimental`, and the narrower workflow groups stay available
+inside MCPHub for explicit opt-in routing instead of being enabled on every
+harness by default.
 
 ## Adding Or Removing Servers
 
@@ -121,13 +128,13 @@ Apply sync only after the preview is expected.
 
 Codex receives an enabled Streamable HTTP entry named
 `mcphub_group_harness-safe`. OpenCode receives an enabled remote HTTP entry with
-the same name. ChatGPT receives the public
-`https://mcp.w4w.dev/mcp/harness-safe` endpoint. Managed harnesses also receive
-disabled individual server endpoint entries for each enabled repository MCP
-server, so users can opt into a narrower server endpoint without regenerating
-the full config. Other group and smart-routing fanout stays inside MCPHub
-instead of being projected as enabled harness MCP entries. stdio-oriented
-clients use
+the same name, and Grok receives the equivalent local HTTP entry. ChatGPT
+receives the public `https://mcp.w4w.dev/mcp/tunnel` endpoint. Managed
+harnesses also receive disabled individual server endpoint entries for each
+enabled repository MCP server, so users can opt into a narrower server endpoint
+without regenerating the full config. Other group and smart-routing fanout stays
+inside MCPHub instead of being projected as enabled harness MCP entries.
+stdio-oriented clients use
 `scripts/mcphub/remote-stdio.sh`, which calls `mcp-remote` with the bearer token
 from `MCPHUB_BEARER_TOKEN`.
 
@@ -149,13 +156,13 @@ set `DB_URL` in `.env.mcphub`. Leaving `DB_URL` unset keeps file-backed mode.
 ## Troubleshooting
 
 - Missing token: set `MCPHUB_BEARER_TOKEN` in `.env.mcphub`.
-- Startup failure: run `make mcphub-doctor`, then inspect `.mcphub/mcphub.log`.
-- Bad group: run `make mcphub-validate`.
-- Stale PID with failed health: run `make mcphub-up`; the startup path clears
+- Startup failure: run `just mcphub-doctor`, then inspect `.mcphub/mcphub.log`.
+- Bad group: run `just mcphub-validate`.
+- Stale PID with failed health: run `just mcphub-up`; the startup path clears
   managed stale wrapper and child PID state before restarting.
 - OpenCode cannot connect: verify `~/.config/opencode/opencode.json` has only
   `mcphub_group_harness-safe` for MCPHub, then run
   `opencode mcp list --pure --log-level ERROR` and expect
   `mcphub_group_harness-safe connected`.
-- Runtime smoke: run `make mcphub-smoke` after `make mcphub-doctor` reports a
+- Runtime smoke: run `just mcphub-smoke` after `just mcphub-doctor` reports a
   healthy listener.

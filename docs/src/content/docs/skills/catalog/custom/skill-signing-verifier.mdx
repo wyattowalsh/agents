@@ -1,0 +1,122 @@
+---
+title: "skill-signing-verifier"
+description: "Scaffold for verifying skill package signatures and provenance (planned). Use when designing supply-chain checks. NOT for live signing or key management."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="skill-signing-verifier"
+  description="Scaffold for verifying skill package signatures and provenance (planned). Use when designing supply-chain checks. NOT for live signing or key management."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill skill-signing-verifier -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/skill-signing-verifier"
+  badges={[{ text: "skill-signing-verifier", variant: "note" }, { text: "93 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v0.1.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/skill-signing-verifier/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Later-tier scaffold for skill package signature verification.
+
+<Aside type="note">
+This is an **auto-invoke** skill -- it activates automatically when the agent detects relevant context. It is not visible in the `/` slash command menu.
+</Aside>
+
+## Critical Rules
+
+1. Never commit or print private signing keys.
+2. Route live signing to maintainer-controlled release tooling when implemented.
+3. Pair with security-scanner for executable-surface review until signing ships.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `skill-signing-verifier` |
+| License | MIT |
+| Version | 0.1.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| User Invocable | No |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: skill-signing-verifier
+description: >-
+  Scaffold for verifying skill package signatures and provenance (planned).
+  Use when designing supply-chain checks. NOT for live signing or key management.
+user-invocable: false
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "0.1.0"
+  internal: true
+---
+
+# Skill Signing Verifier
+
+Later-tier scaffold for skill package signature verification.
+
+**Scope:** Design placeholder only. Does not sign packages or manage private keys.
+
+## Planned Workflow
+
+1. Load packaged skill ZIP from `wagents package --dry-run` output.
+2. Verify signature manifest against maintainer trust store (TBD).
+3. Report pass/fail without mutating installed harness skills.
+
+## Validation Contract
+
+```bash
+uv run python skills/skill-signing-verifier/scripts/check.py
+```
+
+## Critical Rules
+
+1. Never commit or print private signing keys.
+2. Route live signing to maintainer-controlled release tooling when implemented.
+3. Pair with security-scanner for executable-surface review until signing ships.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/skill-signing-verifier/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/skill-signing-verifier/SKILL.md)

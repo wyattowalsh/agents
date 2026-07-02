@@ -16,8 +16,8 @@ from wagents.installed_inventory import (
     HarnessQueryResult,
     InstalledInventorySnapshot,
     InstalledSkillInventoryRow,
-    collect_installed_inventory,
     collect_desired_sync_rows,
+    collect_installed_inventory,
     external_entry_to_inventory_row,
     merge_desired_with_installed,
 )
@@ -33,8 +33,35 @@ def _failed_query_snapshot(agent_id: str = "codex", error: str = "inventory boom
     return InstalledInventorySnapshot(rows=(), queries=(HarnessQueryResult(agent_id, False, (), error),))
 
 
-def _warning_query_snapshot(agent_id: str = "codex", warning: str = "Fallback inventory used") -> InstalledInventorySnapshot:
+def _warning_query_snapshot(
+    agent_id: str = "codex",
+    warning: str = "Fallback inventory used",
+) -> InstalledInventorySnapshot:
     return InstalledInventorySnapshot(rows=(), queries=(HarnessQueryResult(agent_id, True, (), warning),))
+
+
+def _repo_owned_desired_row() -> InstalledSkillInventoryRow:
+    return InstalledSkillInventoryRow(
+        name="repo-owned-skill",
+        path="",
+        source_path="skills/repo-owned-skill/SKILL.md",
+        scope="desired",
+        description="Repo owned.",
+        license="",
+        version="",
+        author="",
+        source="github:wyattowalsh/agents",
+        install_source="github:wyattowalsh/agents",
+        source_url="https://github.com/wyattowalsh/agents",
+        install_command="npx skills add github:wyattowalsh/agents --skill repo-owned-skill -y -g",
+        provenance_status="repo-owned",
+        trust_tier="repo-owned",
+        selector_mode="named",
+        installed_agents=(),
+        discovered_in=(),
+        target_agents=("codex",),
+        sync_kind="skills-cli",
+    )
 
 
 def test_desired_install_now_entries_excludes_inspect_tier(tmp_path):
@@ -77,6 +104,29 @@ npx skills add vercel-labs/agent-skills --skill curated-skill -y -g -a codex
     assert row.installed_agents == ()
     assert row.target_agents == ("codex",)
     assert "curated-skill" in row.install_command
+
+
+def test_external_entry_to_inventory_row_does_not_synthesize_global_only_command():
+    row = external_entry_to_inventory_row(
+        ExternalSkillEntry(
+            name="avoid-skill",
+            source="owner/repo",
+            install_source="owner/repo",
+            status="global-only-or-avoid",
+            trust_tier="global-only-or-avoid",
+            provenance_status="explicit-unresolved",
+            install_command="",
+            target_agents=(),
+            source_url="https://github.com/owner/repo",
+            notes="Avoid duplicate plugin-owned skill.",
+            selector_mode="unresolved",
+            sync_kind="none",
+        )
+    )
+
+    assert row.install_command == ""
+    assert row.sync_kind == "none"
+    assert not row.is_installable()
 
 
 def test_merge_desired_with_installed_preserves_installed_agents():
@@ -446,6 +496,67 @@ npx skills add owner/repo --skill strict-snapshot -y -g -a codex
 
     assert result.exit_code == 0
     assert seen == {"inventory": strict_entries, "desired": strict_entries}
+
+
+def test_sync_repo_owned_skill_covered_by_non_cli_owner_is_already_present(monkeypatch):
+    row = _repo_owned_desired_row()
+
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: tuple(agent_ids))
+
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json"])
+
+    assert result.exit_code == 0
+    payload = json.loads(result.output)
+    agent = payload["agents"][0]
+    assert agent["missing"] == []
+    assert agent["commands"] == []
+    assert agent["already_present"] == ["repo-owned-skill [repo-owned]"]
+
+
+def test_sync_repo_owned_skill_missing_when_owner_is_skills_cli(monkeypatch):
+    row = _repo_owned_desired_row()
+
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json"])
+
+    assert result.exit_code == 0
+    agent = json.loads(result.output)["agents"][0]
+    assert agent["missing"] == ["repo-owned-skill [repo-owned]"]
+    assert agent["commands"] == [
+        "npx skills add github:wyattowalsh/agents --skill repo-owned-skill -y -g -a codex"
+    ]
+
+
+def test_sync_inventory_failure_still_blocks_owner_covered_repo_skill(monkeypatch):
+    calls: list[list[str]] = []
+
+    def mock_run(cmd, **kwargs):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(cmd, 0)
+
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _failed_query_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (_repo_owned_desired_row(),))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: tuple(agent_ids))
+    monkeypatch.setattr("wagents.cli.subprocess.run", mock_run)
+
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply", "--format", "json"])
+
+    assert result.exit_code == 1
+    assert calls == []
+    payload = json.loads(result.output)
+    assert payload["ok"] is False
+    assert payload["error_type"] == "inventory"
 
 
 def test_collect_desired_sync_rows_includes_repo_owned_skills(tmp_path):

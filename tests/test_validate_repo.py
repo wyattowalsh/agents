@@ -53,6 +53,15 @@ def test_cursor_agents_config_matches_schema() -> None:
     jsonschema.Draft202012Validator(schema).validate(data)
 
 
+def test_opencode_agents_config_matches_schema() -> None:
+    schema = json.loads(
+        (REPO_ROOT / "config" / "schemas" / "opencode-agents.schema.json").read_text(encoding="utf-8")
+    )
+    data = json.loads((REPO_ROOT / "config" / "opencode-agents.json").read_text(encoding="utf-8"))
+
+    jsonschema.Draft202012Validator(schema).validate(data)
+
+
 def test_validate_repo_success_json(mini_repo: Path) -> None:
     result = _run_validate_repo("--format", "json", cwd=mini_repo)
     assert result.returncode == 0, result.stderr
@@ -248,6 +257,36 @@ def test_validate_repo_mcp_registry_wildcard_requires_opt_in(mini_repo: Path) ->
     result = _run_validate_repo(cwd=mini_repo)
     assert result.returncode == 1
     assert "tools_allow_all" in result.stdout + result.stderr
+
+
+def test_validate_repo_rejects_agent_scaffold_placeholder_text(mini_repo: Path) -> None:
+    agent_script = REPO_ROOT / "skills" / "agent-conventions" / "scripts" / "validate_agent.py"
+    if not agent_script.is_file():
+        pytest.skip("agent validator not available")
+
+    dest = mini_repo / "skills" / "agent-conventions" / "scripts" / "validate_agent.py"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(agent_script.read_text(encoding="utf-8"))
+
+    agent = mini_repo / "agents" / "test-agent.md"
+    agent.write_text(
+        "---\n"
+        "name: test-agent\n"
+        "description: Test agent with scaffold body.\n"
+        "---\n\n"
+        "This is the agent's system prompt. Everything below the frontmatter\n"
+        "is treated as instructions.\n\n"
+        "Rules and constraints for this agent's behavior.\n",
+        encoding="utf-8",
+    )
+    (mini_repo / "agents" / "README.md").write_text(
+        "# Agents\n\n| Name | Description |\n| ---- | ----------- |\n| test-agent | Test agent. |\n",
+        encoding="utf-8",
+    )
+
+    result = _run_validate_repo(cwd=mini_repo)
+    assert result.returncode == 1
+    assert "placeholder scaffold text remains" in result.stdout
 
 
 def test_validate_repo_mcp_registry_rejects_string_tools_allow_all(mini_repo: Path) -> None:

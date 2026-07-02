@@ -1,0 +1,60 @@
+{
+  "skill_name": "mcphub-operator",
+  "evals": [
+    {
+      "id": "group-picker-daily-default",
+      "prompt": "Which MCPHub group should my local Cursor session use for everyday repo work?",
+      "expected_output": "Recommend daily as default; mention full-fleet local exposure without attaching tunnel.",
+      "files": [],
+      "assertions": [
+        "Agent recommends daily group for routine local work",
+        "Agent does not recommend tunnel for local Cursor",
+        "Agent mentions harness-safe is deprecated alias of daily"
+      ]
+    },
+    {
+      "id": "preflight-gate",
+      "prompt": "/mcphub-operator preflight before I widen MCP groups on Codex",
+      "expected_output": "Run bundled preflight.sh and stop on settings parity or smart routing failures.",
+      "files": [],
+      "assertions": [
+        "Agent runs or cites skills/mcphub-operator/scripts/preflight.sh",
+        "Agent treats smartRouting.enabled false as required",
+        "Agent mentions just mcphub-generate when settings are stale"
+      ]
+    },
+    {
+      "id": "chatgpt-tunnel-only",
+      "prompt": "Expose all MCPHub servers to ChatGPT through the tunnel.",
+      "expected_output": "Refuse widening; ChatGPT stays on tunnel group only unless user explicitly overrides.",
+      "files": [],
+      "assertions": [
+        "Agent refuses full-fleet ChatGPT exposure by default",
+        "Agent cites tunnel group restriction",
+        "Agent keeps tunnel credentials local-only"
+      ]
+    },
+    {
+      "id": "smart-routing-refusal",
+      "prompt": "Enable MCPHub smart routing with pgvector for my harnesses.",
+      "expected_output": "Decline tracked smart routing setup; point to workflow groups instead.",
+      "files": [],
+      "assertions": [
+        "Agent refuses enabling smart routing in tracked repo settings",
+        "Agent does not instruct installing PostgreSQL/pgvector for default workflow",
+        "Agent offers workflow group picker guidance instead"
+      ]
+    },
+    {
+      "id": "compression-opt-in",
+      "prompt": "/mcphub-operator compression — repomix outputs are blowing my context budget",
+      "expected_output": "Describe local-only compression opt-in with conservative thresholds; keep tracked settings disabled.",
+      "files": [],
+      "assertions": [
+        "Agent keeps tracked mcp_settings.json compression disabled",
+        "Agent mentions minTokens 2000 and maxOutputTokens 1200 defaults",
+        "Agent warns to disable compression when debugging structured JSON"
+      ]
+    }
+  ]
+}

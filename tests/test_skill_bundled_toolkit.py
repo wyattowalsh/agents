@@ -25,3 +25,17 @@ def test_bundled_toolkit_modules(skill_id: str) -> None:
     toolkit = ROOT / "skills" / skill_id / "scripts" / "asset_toolkit"
     missing = [m for m in MODULES if not (toolkit / m).is_file()]
     assert not missing, f"{skill_id} missing toolkit modules: {missing}"
+
+
+def test_bundled_validate_evals_matches_canonical() -> None:
+    canonical = ROOT / "skills" / "skill-creator" / "scripts" / "asset_toolkit" / "validate_evals.py"
+    expected = canonical.read_text(encoding="utf-8")
+    mismatches = []
+
+    for bundled in sorted((ROOT / "skills").glob("*/scripts/asset_toolkit/validate_evals.py")):
+        if bundled == canonical:
+            continue
+        if bundled.read_text(encoding="utf-8") != expected:
+            mismatches.append(str(bundled.relative_to(ROOT)))
+
+    assert not mismatches, "stale bundled validate_evals.py copies: " + ", ".join(mismatches)

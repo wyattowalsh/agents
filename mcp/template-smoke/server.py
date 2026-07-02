@@ -1,0 +1,151 @@
+"""MCP server: template-smoke.
+
+Dry-run MCP scaffold and layout validation for first-party `mcp/<name>/`
+trees. No tool in this server writes files or mutates the repository.
+"""
+
+from __future__ import annotations
+
+import importlib.util
+import re
+import sys
+from typing import Any
+
+from fastmcp import FastMCP
+
+from wagents import ROOT
+
+mcp = FastMCP("Template Smoke")
+
+_READ_ONLY = {
+    "readOnlyHint": True,
+    "destructiveHint": False,
+    "idempotentHint": True,
+    "openWorldHint": False,
+}
+
+_KEBAB_CASE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
+
+
+def _load_collect_mcp_errors():
+    validate_dir = ROOT / "scripts" / "validate"
+    if str(validate_dir) not in sys.path:
+        sys.path.insert(0, str(validate_dir))
+    from _toolkit import ensure_validate_importable
+
+    ensure_validate_importable()
+    from collectors.mcp import collect_mcp_errors
+
+    return collect_mcp_errors
+
+
+def _load_scaffold_module():
+    path = ROOT / "skills" / "mcp-creator" / "scripts" / "scaffold_mcp.py"
+    spec = importlib.util.spec_from_file_location("_scaffold_mcp", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Could not load scaffold module from {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _load_mcp_local_module():
+    path = ROOT / "scripts" / "validate" / "_mcp_local.py"
+    spec = importlib.util.spec_from_file_location("_mcp_local", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Could not load MCP local policy from {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _workspace_members() -> list[str]:
+    pyproject = ROOT / "pyproject.toml"
+    if not pyproject.is_file():
+        return []
+    match = re.search(r'(?ms)^members\s*=\s*\[(?P<members>.*?)\]', pyproject.read_text(encoding="utf-8"))
+    if not match:
+        return []
+    return re.findall(r'"([^"]+)"', match.group("members"))
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def mcp_layout_validate() -> dict[str, Any]:
+    """Validate every first-party `mcp/<name>/` layout in the repository.
+
+    Runs the same checks as `uv run python scripts/validate/validate_mcp.py`:
+    required `server.py`, `pyproject.toml`, `fastmcp.json`, kebab-case
+    directory names, and a FastMCP reference in `server.py`. Returns
+    `ok: true` when no errors are found.
+    """
+    errors = _load_collect_mcp_errors()(ROOT)
+    return {"ok": not errors, "error_count": len(errors), "errors": errors}
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def list_mcp_servers() -> list[dict[str, Any]]:
+    """List first-party MCP server directories with a quick layout checklist.
+
+    Skips machine-local `mcp/servers/` and other gitignored install trees.
+    Each row reports whether the standard scaffold files exist.
+    """
+    local_policy = _load_mcp_local_module()
+    rows: list[dict[str, Any]] = []
+    mcp_dir = ROOT / "mcp"
+    if not mcp_dir.is_dir():
+        return rows
+    for subdir in sorted(mcp_dir.iterdir(), key=lambda p: p.name):
+        if not subdir.is_dir() or local_policy.is_local_mcp_dir(subdir, ROOT):
+            continue
+        rows.append({
+            "name": subdir.name,
+            "workspace_member": f"mcp/{subdir.name}" in _workspace_members(),
+            "has_server_py": (subdir / "server.py").is_file(),
+            "has_pyproject": (subdir / "pyproject.toml").is_file(),
+            "has_fastmcp_json": (subdir / "fastmcp.json").is_file(),
+        })
+    return rows
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def scaffold_dry_run(name: str) -> dict[str, Any]:
+    """Dry-run scaffolding a new first-party MCP server name.
+
+    Validates kebab-case, checks for collisions under `mcp/<name>/`, and
+    returns the template files that `scaffold_mcp.py` would write without
+    creating any files. Use before authoring a new server.
+    """
+    scaffold = _load_scaffold_module()
+    try:
+        scaffold.validate_name(name)
+    except ValueError as exc:
+        raise ValueError(str(exc)) from exc
+
+    target = ROOT / "mcp" / name
+    member = f"mcp/{name}"
+    title = scaffold.to_title(name)
+    return {
+        "name": name,
+        "title": title,
+        "target_dir": str(target.relative_to(ROOT)),
+        "already_exists": target.exists(),
+        "in_workspace": member in _workspace_members(),
+        "kebab_case_valid": bool(_KEBAB_CASE.match(name)),
+        "would_create": ["server.py", "pyproject.toml", "fastmcp.json"],
+        "package_name": f"mcp-{name}",
+        "fastmcp_entrypoint": "mcp",
+    }
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def scaffold_name_check(name: str) -> dict[str, bool | str]:
+    """Return whether *name* is valid kebab-case for a new MCP server directory."""
+    try:
+        _load_scaffold_module().validate_name(name)
+    except ValueError as exc:
+        return {"valid": False, "reason": str(exc)}
+    return {"valid": True, "reason": "ok"}
+
+
+if __name__ == "__main__":
+    mcp.run()

@@ -54,6 +54,41 @@ Act on evidence, not belief. Every decision about intent, scope, constraints, ap
 
 **Fast path**: Fully grounded → act.
 
+### Depth routing
+
+Classify each assumption before asking:
+
+| Class | Action |
+| ----- | ------ |
+| `codebase-resolvable` | Explore/read first — never ask |
+| `user-pivotal` | `/grill-me` (one question at a time + recommended answer) |
+| `independent-choice` | Batched MCQ above (2–4 options, trade-offs) |
+| `low-stakes-defaultable` | Apply default; disclose assumption briefly |
+
+**User-pivotal** when user judgment would materially change scope, approach, success criteria, audience, risk acceptance, or architecture. Signals: reasonable engineers would diverge; the answer changes touched files or the definition of done.
+
+**Mid-task classification** (during implementation or mid-wave orchestration):
+
+| Mid-task class | Action |
+| ----- | ------ |
+| `micro-reversible` | One concise question or low-stakes default; no grill |
+| `subtask-pivotal` | Scoped `/grill-me` on that subtask/branch only |
+
+**Scoped grill contract** (mid-task `subtask-pivotal`; full plan when upfront):
+
+- **Scope:** subtask id or name
+- **Resolved context:** bullets for settled decisions — do not re-grill those areas
+- **Open branch:** one decision tree within scope
+- **Protocol:** one question at a time with recommended answer, within scope only
+
+**`/grill-me` protocol** (load skill body when installed; protocol adapted from mattpocock/skills, MIT):
+
+> Interview relentlessly about every aspect of the scoped branch (or full plan when upfront) until shared understanding. Walk the design tree one branch at a time. For each question, provide your recommended answer. Ask one at a time. If answerable from codebase, explore instead.
+
+**Skips:** user says "just do it" or "your call"; fully grounded task; single binary with obvious trade-offs; micro-reversible mid-task question; factual/evidence gaps → `/research`, not grill-me. Explicit `/grill-me` or "grill me" → always run the protocol.
+
+Orchestrated work: apply the Uncertainty Gate in `orchestrator` before decomposition and on re-entry when mid-wave pivotal blockers appear.
+
 ## Orchestration Core
 
 Before non-trivial tool-mediated work:
@@ -72,7 +107,7 @@ Before non-trivial tool-mediated work:
 
 **Grok delegation**: When a parent harness (Codex, OpenCode, Claude, Cursor) assigns work to Grok Build, use `/grok-delegate` for native CLI task-graph dispatch (`grok -p`, session resume, worktrees). Pre-flight: `bash skills/grok-delegate/scripts/preflight.sh` (bundled doctor; optional `--cwd <target>`). OAuth via `grok login` is primary; `XAI_API_KEY` only when the user explicitly requests API-key billing.
 
-**Grok trivial offload (Tier-T)**: When fast preflight `ok` and `grok-auth-expiry` is `ok` (OAuth healthy), parents SHOULD default to `/grok-delegate trivial` for an eligible bounded leaf (≤3 file reads OR ≤1 file edit ≤80 LOC; no destructive/prod/git-push/secrets). Parent retains synthesis. Skip Tier-T for multi-node graphs, overlapping writers, or broad work. If the first native Tier-T dispatch fails, stop Tier-T for that work item and continue locally.
+**Grok trivial offload (Tier-T)**: When fast preflight `ok` and `grok-auth-expiry` is `ok` (OAuth healthy), parents MUST default to `/grok-delegate trivial` for an eligible bounded leaf (≤3 file reads OR ≤1 file edit ≤80 LOC; no destructive/prod/git-push/secrets; no unresolved user-pivotal or subtask-pivotal uncertainty). Parent retains synthesis. Skip Tier-T for multi-node graphs, overlapping writers, or broad work. If the first native Tier-T dispatch fails, stop Tier-T for that work item and continue locally.
 
 ## Git Branch Policy
 
@@ -105,7 +140,7 @@ Use this flow when adding or updating trust-gated third-party skills (full detai
 4. Preview: `uv run wagents skills sync --dry-run`.
 5. Regenerate: `uv run wagents readme`, `uv run wagents docs generate --no-installed`, `uv run wagents docs build`.
 
-Public docs publish the catalog landing at `/skills/catalog/`, custom skill detail pages at `/skills/catalog/custom/<name>/`, and curated external detail pages at `/skills/catalog/external/<name>/`. The curated install hub remains `/external-skills/`. Use `--include-installed` only for maintainer previews of local harness inventory rows.
+Public docs publish the catalog landing at `/skills/catalog/`, custom skill detail pages at `/skills/catalog/custom/<name>/`, curated external detail pages at `/skills/catalog/external/<name>/`, and the curated external install hub at `/skills/catalog/external/`. Use `--include-installed` only for maintainer previews of local harness inventory rows.
 # GitHub Copilot
 
 Copilot-specific extension only. Keep shared cross-platform instructions in `global.md`.
@@ -121,3 +156,31 @@ Copilot-specific extension only. Keep shared cross-platform instructions in `glo
 - Default to the globally managed profile: `gpt-5.4`, high reasoning effort, `continueOnAutoMode=false`, and no explicit `COPILOT_SUBAGENT_MAX_CONCURRENT` or `COPILOT_SUBAGENT_MAX_DEPTH` caps.
 - Use heavier or lighter models only when explicitly requested or when a bounded plan identifies a concrete need.
 - Keep `/fleet` dispatch accountable. Do not invent artificial fan-out limits in instructions unless the user asks for them.
+
+<!-- rtk-instructions v2 -->
+# RTK — Token-Optimized CLI
+
+**rtk** is a CLI proxy that filters and compresses command outputs, saving 60-90% tokens.
+
+## Rule
+
+Always prefix shell commands with `rtk`:
+
+```bash
+# Instead of:              Use:
+git status                 rtk git status
+git log -10                rtk git log -10
+cargo test                 rtk cargo test
+docker ps                  rtk docker ps
+kubectl get pods           rtk kubectl pods
+```
+
+## Meta commands (use directly)
+
+```bash
+rtk gain              # Token savings dashboard
+rtk gain --history    # Per-command savings history
+rtk discover          # Find missed rtk opportunities
+rtk proxy <cmd>       # Run raw (no filtering) but track usage
+```
+<!-- /rtk-instructions -->

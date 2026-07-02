@@ -1,0 +1,154 @@
+---
+title: "skill-tag-taxonomist"
+description: "Infer and audit skill tags from names, descriptions, and catalog authoring rows. Use when organizing catalog taxonomies. NOT for live catalog index edits."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="skill-tag-taxonomist"
+  description="Infer and audit skill tags from names, descriptions, and catalog authoring rows. Use when organizing catalog taxonomies. NOT for live catalog index edits."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill skill-tag-taxonomist -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/skill-tag-taxonomist &lt;skill-name|repo&gt; [--format json]"
+  badges={[{ text: "skill-tag-taxonomist", variant: "note" }, { text: "224 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/skill-tag-taxonomist/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Propose and audit tag assignments for repository skills and catalog entries.
+
+## Modes
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| `&lt;name&gt;` | Tag report for one skill |
+| `repo` / `--all` | Tag matrix for all repo skills |
+| `--format json` | Machine-readable report |
+| Empty | Show tag heuristics and example commands |
+
+## Critical Rules
+
+1. Treat inferred tags as proposals until a maintainer confirms them.
+2. Never hand-edit `skills-catalog-index.json` or generated catalog MDX.
+3. Prefer kebab-case tag ids aligned with docs catalog routes.
+4. Pair tag audits with skill-compat-matrix for harness-specific caveats.
+5. Route catalog authoring edits to docs-steward after human review.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `skill-tag-taxonomist` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Argument Hint | `[skill-name|repo] [--format json]` |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: skill-tag-taxonomist
+description: >-
+  Infer and audit skill tags from names, descriptions, and catalog authoring rows.
+  Use when organizing catalog taxonomies. NOT for live catalog index edits.
+user-invocable: true
+argument-hint: "<skill-name|repo> [--format json]"
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+---
+
+# Skill Tag Taxonomist
+
+Propose and audit tag assignments for repository skills and catalog entries.
+
+**Scope:** Tag inference and reporting only. Does not edit generated catalog indexes or authoring MDX.
+
+## Dispatch
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| `<name>` | Tag report for one skill |
+| `repo` / `--all` | Tag matrix for all repo skills |
+| `--format json` | Machine-readable report |
+| Empty | Show tag heuristics and example commands |
+
+## Tag Heuristics
+
+| Tag | Signal |
+|-----|--------|
+| `conventions` | Name or description mentions conventions, standards, lint |
+| `orchestration` | orchestrator, delegate, ensemble, workflow |
+| `security` | security, audit, scanner, quarantine |
+| `docs` | docs, readme, steward, catalog |
+| `mcp` | mcp, server, registry |
+| `eval` | eval, scaffold, adequacy |
+
+## Workflow
+
+```bash
+uv run python skills/skill-tag-taxonomist/scripts/tag_report.py <name>
+uv run python skills/skill-tag-taxonomist/scripts/tag_report.py --all --format json
+```
+
+Apply tag changes in `docs/src/authoring/skills/<id>.mdx` or skill metadata — not via generated catalog pages.
+
+## Validation Contract
+
+```bash
+uv run python skills/skill-tag-taxonomist/scripts/check.py
+```
+
+## Critical Rules
+
+1. Treat inferred tags as proposals until a maintainer confirms them.
+2. Never hand-edit `skills-catalog-index.json` or generated catalog MDX.
+3. Prefer kebab-case tag ids aligned with docs catalog routes.
+4. Pair tag audits with skill-compat-matrix for harness-specific caveats.
+5. Route catalog authoring edits to docs-steward after human review.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/skill-tag-taxonomist/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/skill-tag-taxonomist/SKILL.md)

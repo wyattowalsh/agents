@@ -88,7 +88,7 @@ def mcphub_registry():
             "bearer_token_env_var": "MCPHUB_BEARER_TOKEN",
             "startup_timeout_sec": 20,
             "tool_timeout_sec": 90,
-            "smart_routing": {"path": "$smart"},
+            "smart_routing": {"enabled": True, "path": "$smart"},
             "groups": {
                 "code": {"enabled": True, "servers": ["foo"]},
                 "research": {"enabled": True, "servers": ["bar"]},
@@ -228,27 +228,28 @@ def test_repo_opencode_mcp_projects_configured_groups_and_server_endpoints():
     rendered = render_opencode_mcp(registry, {})
     client = registry["mcphub"]["clients"]["opencode"]
     group_names = sorted(client["included_groups"])
-    server_names = sorted(client["included_servers"])
+    server_names = sorted(registry["servers"])
 
     assert sorted(name for name in rendered if name.startswith("mcphub_group_")) == [
         f"mcphub_group_{name}" for name in group_names
     ]
+    assert "mcphub_all" not in rendered
     assert rendered["mcphub_group_harness-safe"]["enabled"] is True
     assert rendered["mcphub_group_harness-safe"]["url"] == "http://127.0.0.1:46683/mcp/harness-safe"
     assert all(name in rendered for name in server_names)
-    assert all(rendered[name]["enabled"] is True for name in server_names)
+    assert all(rendered[name]["enabled"] is False for name in server_names)
 
 
-def test_repo_mcphub_projects_harness_safe_group_to_managed_harnesses():
+def test_repo_mcphub_projects_harness_safe_to_managed_harnesses():
     registry = json.loads((sync_agent_stack.REPO_ROOT / "config/mcp-registry.json").read_text(encoding="utf-8"))
-    server_names = sorted(registry["mcphub"]["groups"]["harness-safe"]["servers"])
+    server_names = sorted(registry["servers"])
     prefixed_server_names = [f"mcphub_server_{name}" for name in server_names]
 
     codex = render_codex_mcp_block(registry)
     codex_payload = tomllib.loads(codex)
+    assert "[mcp_servers.mcphub_all]" not in codex
     assert "[mcp_servers.mcphub_group_harness-safe]" in codex
     assert 'url = "http://127.0.0.1:46683/mcp/harness-safe"' in codex
-    assert "[mcp_servers.mcphub_all]" not in codex
     assert sorted(name for name in codex_payload["mcp_servers"] if name.startswith("mcphub_server_")) == sorted(
         prefixed_server_names
     )
@@ -257,23 +258,19 @@ def test_repo_mcphub_projects_harness_safe_group_to_managed_harnesses():
 
     claude = render_client_mcp(registry, {}, "claude-desktop")["mcpServers"]
     assert list(claude) == ["mcphub_group_harness-safe", *prefixed_server_names]
-    assert claude["mcphub_group_harness-safe"]["args"] == ["http://127.0.0.1:46683/mcp/harness-safe"]
     assert claude["mcphub_group_harness-safe"]["disabled"] is False
     assert all(claude[name]["disabled"] is True for name in prefixed_server_names)
 
     chatgpt = render_client_mcp(registry, {}, "chatgpt")["mcpServers"]
-    assert list(chatgpt) == ["mcphub_group_harness-safe", *prefixed_server_names]
-    assert chatgpt["mcphub_group_harness-safe"]["args"] == ["https://mcp.w4w.dev/mcp/harness-safe"]
-    assert chatgpt["mcphub_group_harness-safe"]["disabled"] is False
-    assert chatgpt["mcphub_server_fetch"]["args"] == ["https://mcp.w4w.dev/mcp/fetch"]
-    assert all(chatgpt[name]["disabled"] is True for name in prefixed_server_names)
+    assert list(chatgpt) == ["mcphub_group_tunnel"]
+    assert chatgpt["mcphub_group_tunnel"]["args"] == ["https://mcp.w4w.dev/mcp/tunnel"]
+    assert chatgpt["mcphub_group_tunnel"]["disabled"] is False
 
     grok = render_grok_mcp_block(registry)
     grok_payload = tomllib.loads(grok)
-    assert "[mcp_servers.mcphub_group_harness-safe]" in grok
-    assert 'url = "http://127.0.0.1:46683/mcp/harness-safe"' in grok
-    assert '"Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}"' in grok
     assert "[mcp_servers.mcphub_all]" not in grok
+    assert "[mcp_servers.mcphub_group_harness-safe]" in grok
+    assert '"Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}"' in grok
     assert sorted(name for name in grok_payload["mcp_servers"] if name.startswith("mcphub_server_")) == sorted(
         prefixed_server_names
     )
@@ -281,46 +278,38 @@ def test_repo_mcphub_projects_harness_safe_group_to_managed_harnesses():
     assert all(grok_payload["mcp_servers"][name]["enabled"] is False for name in prefixed_server_names)
 
 
-def test_repo_harness_safe_group_contains_approved_servers():
+def test_repo_workflow_groups_and_bounded_clients():
     registry = json.loads((sync_agent_stack.REPO_ROOT / "config/mcp-registry.json").read_text(encoding="utf-8"))
 
-    assert registry["mcphub"]["groups"]["harness-safe"]["servers"] == [
+    assert registry["mcphub"]["groups"]["daily"]["servers"] == [
         "brave-search",
-        "chrome-devtools",
         "context7",
         "deepwiki",
         "fetch",
-        "fetcher",
-        "package-version",
-        "penpot",
-        "repomix",
-        "supathings",
-        "tavily",
         "trafilatura",
-        "duckduckgo-search",
-        "gmail",
+        "package-version",
+        "repomix",
     ]
-    assert registry["mcphub"]["clients"]["default"]["included_endpoint_kinds"] == ["group", "server"]
-    assert registry["mcphub"]["clients"]["default"]["included_groups"] == ["harness-safe"]
-    assert (
-        registry["mcphub"]["clients"]["default"]["included_servers"]
-        == registry["mcphub"]["groups"]["harness-safe"]["servers"]
-    )
-    assert registry["mcphub"]["clients"]["default"]["enabled_groups"] == ["harness-safe"]
-    assert registry["mcphub"]["clients"]["default"]["enable_server_endpoints"] is True
-    assert registry["mcphub"]["clients"]["codex"]["included_endpoint_kinds"] == ["group", "server"]
-    assert registry["mcphub"]["clients"]["codex"]["included_groups"] == ["harness-safe"]
-    assert registry["mcphub"]["clients"]["chatgpt"]["included_endpoint_kinds"] == ["group", "server"]
-    assert registry["mcphub"]["clients"]["chatgpt"]["included_groups"] == ["harness-safe"]
-    assert registry["mcphub"]["clients"]["grok"]["included_groups"] == ["harness-safe"]
-    assert registry["mcphub"]["clients"]["grok"]["enabled_groups"] == ["harness-safe"]
-    assert registry["mcphub"]["clients"]["opencode"]["included_endpoint_kinds"] == ["group", "server"]
-    assert registry["mcphub"]["clients"]["opencode"]["included_groups"] == sorted(registry["mcphub"]["groups"])
-    assert registry["mcphub"]["clients"]["opencode"]["enabled_groups"] == sorted(registry["mcphub"]["groups"])
-    assert (
-        registry["mcphub"]["clients"]["opencode"]["included_servers"]
-        == registry["mcphub"]["groups"]["all-managed"]["servers"]
-    )
+    assert registry["mcphub"]["groups"]["harness-safe"]["servers"] == registry["mcphub"]["groups"]["daily"]["servers"]
+    assert registry["mcphub"]["groups"]["reasoning"]["servers"] == [
+        "sequential-thinking",
+        "cascade-thinking",
+        "structured-thinking",
+    ]
+    expected_client = {
+        "included_endpoint_kinds": ["group", "server"],
+        "included_groups": ["harness-safe"],
+        "enabled_endpoint_kinds": ["group"],
+        "enabled_groups": ["harness-safe"],
+        "enable_server_endpoints": True,
+    }
+    for name in ("default", "codex", "grok", "opencode"):
+        client = registry["mcphub"]["clients"][name]
+        for key, value in expected_client.items():
+            assert client[key] == value
+    assert registry["mcphub"]["clients"]["chatgpt"]["included_endpoint_kinds"] == ["group"]
+    assert registry["mcphub"]["clients"]["chatgpt"]["included_groups"] == ["tunnel"]
+    assert "included_servers" not in registry["mcphub"]["clients"]["opencode"]
 
 
 def test_opencode_adapter_group_only_mcphub_projection_excludes_all_and_smart():
@@ -706,7 +695,7 @@ def test_codex_repo_adapter_renders_absolute_hook_commands(monkeypatch):
 
     monkeypatch.setattr("scripts.sync_agent_stack.merge_codex_hooks", fake_merge_codex_hooks)
 
-    codex_platform.Adapter().sync_repo(SyncContext(apply=False), {}, {}, {})
+    codex_platform.Adapter().sync_repo(platform_base.SyncContext(apply=False), {}, {}, {})
 
     assert calls == [{"path": codex_platform.CODEX_REPO_HOOKS_PATH}]
 
@@ -1800,6 +1789,196 @@ def test_cursor_agent_overlay_matches_portable_agents():
     agents = {path.stem for path in (sync_agent_stack.REPO_ROOT / "agents").glob("*.md") if path.name != "README.md"}
 
     assert overlays == agents
+
+
+def test_opencode_agent_overlay_matches_portable_agents():
+    overlays = set(opencode_platform._load_opencode_agent_overlays().keys())
+    agents = {path.stem for path in (sync_agent_stack.REPO_ROOT / "agents").glob("*.md") if path.name != "README.md"}
+
+    assert overlays == agents
+
+
+def test_opencode_managed_agent_contract_errors_valid_agent():
+    content = (
+        "---\n"
+        "name: reviewer\n"
+        "description: Review code.\n"
+        "mode: subagent\n"
+        "temperature: 0.1\n"
+        "color: primary\n"
+        "permission:\n"
+        "  edit: deny\n"
+        "---\n\n"
+        "<!-- Managed by wagents sync from agents/ + config/opencode-agents.json -->\n"
+        "Review only.\n"
+    )
+    assert opencode_platform.opencode_managed_agent_contract_errors(content) == []
+
+
+def test_opencode_managed_agent_contract_errors_rejects_tools():
+    content = (
+        "---\n"
+        "name: reviewer\n"
+        "description: Review code.\n"
+        "tools: all\n"
+        "mode: subagent\n"
+        "permission:\n"
+        "  edit: deny\n"
+        "---\n\n"
+        "<!-- Managed by wagents sync from agents/ + config/opencode-agents.json -->\n"
+    )
+    errors = opencode_platform.opencode_managed_agent_contract_errors(content)
+    assert any("tools" in err for err in errors)
+
+
+def test_opencode_managed_agent_contract_errors_rejects_missing_permission():
+    content = (
+        "---\n"
+        "name: reviewer\n"
+        "description: Review code.\n"
+        "mode: subagent\n"
+        "---\n\n"
+        "<!-- Managed by wagents sync from agents/ + config/opencode-agents.json -->\n"
+    )
+    errors = opencode_platform.opencode_managed_agent_contract_errors(content)
+    assert any("permission" in err for err in errors)
+
+
+def test_opencode_managed_agent_contract_errors_rejects_malformed_frontmatter():
+    content = "<!-- Managed by wagents sync from agents/ + config/opencode-agents.json -->\n"
+    errors = opencode_platform.opencode_managed_agent_contract_errors(content)
+    assert errors
+
+
+def test_check_opencode_managed_agents_dir_requires_overlay_parity(tmp_path):
+    agents_dir = tmp_path / ".opencode" / "agents"
+    agents_dir.mkdir(parents=True)
+    config_path = tmp_path / "config" / "opencode-agents.json"
+    config_path.parent.mkdir(parents=True)
+    config_path.write_text(
+        json.dumps({
+            "version": 1,
+            "agents": [
+                {
+                    "name": "reviewer",
+                    "mode": "subagent",
+                    "temperature": 0.1,
+                    "color": "primary",
+                    "permission": {"edit": "deny"},
+                },
+                {
+                    "name": "planner",
+                    "mode": "subagent",
+                    "temperature": 0.1,
+                    "color": "primary",
+                    "permission": {"edit": "deny"},
+                },
+            ],
+        }),
+        encoding="utf-8",
+    )
+    (agents_dir / "reviewer.md").write_text(
+        "---\nname: reviewer\ndescription: Review.\nmode: subagent\npermission:\n  edit: deny\n---\n\n"
+        "<!-- Managed by wagents sync from agents/ + config/opencode-agents.json -->\n",
+        encoding="utf-8",
+    )
+
+    errors = opencode_platform.check_opencode_managed_agents_dir(agents_dir, config_path=config_path)
+    assert any("planner.md" in err for err in errors)
+
+
+def test_render_opencode_agents_use_permission_not_portable_tools():
+    rendered = opencode_platform._render_opencode_agents()
+    agent_names = {
+        f"{path.stem}.md"
+        for path in (sync_agent_stack.REPO_ROOT / "agents").glob("*.md")
+        if path.name != "README.md"
+    }
+
+    assert set(rendered) == agent_names
+    for name, content in rendered.items():
+        frontmatter = content.split("---", 2)[1]
+        assert "tools:" not in frontmatter, f"{name} must not project portable tools into OpenCode"
+        assert "permissionMode:" not in frontmatter, f"{name} must not project permissionMode into OpenCode"
+        assert "mode: subagent" in frontmatter, f"{name} must include OpenCode subagent mode"
+        assert "permission:" in frontmatter, f"{name} must include OpenCode permission rules"
+        assert opencode_platform.OPENCODE_MANAGED_AGENT_MARKER.strip() in content
+
+
+def _mini_opencode_sync_repo(tmp_path):
+    repo = tmp_path / "repo"
+    agents = repo / "agents"
+    agents.mkdir(parents=True)
+    (repo / "config").mkdir(parents=True)
+    (repo / "instructions").mkdir()
+    (repo / "skills").mkdir()
+    (agents / "reviewer.md").write_text(
+        "---\nname: reviewer\ndescription: Review code.\ntools: all\npermissionMode: default\n---\n\nReview only.\n",
+        encoding="utf-8",
+    )
+    overlay = {
+        "version": 1,
+        "agents": [
+            {
+                "name": "reviewer",
+                "mode": "subagent",
+                "temperature": 0.1,
+                "color": "primary",
+                "permission": {"edit": "deny", "bash": "ask", "webfetch": "allow"},
+            }
+        ],
+    }
+    (repo / "config" / "opencode-agents.json").write_text(json.dumps(overlay), encoding="utf-8")
+    return repo
+
+
+def _patch_opencode_sync_repo(monkeypatch, repo):
+    agents_dir = repo / ".opencode" / "agents"
+    monkeypatch.setattr(opencode_platform, "REPO_ROOT", repo)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_AGENTS_DIR", agents_dir)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_AGENTS_CONFIG_PATH", repo / "config" / "opencode-agents.json")
+    monkeypatch.setattr(opencode_platform, "OPENCODE_REPO_CONFIG_PATH", repo / "opencode.json")
+    return agents_dir
+
+
+def test_opencode_sync_repo_writes_managed_agents(tmp_path, monkeypatch):
+    repo = _mini_opencode_sync_repo(tmp_path)
+    agents_dir = _patch_opencode_sync_repo(monkeypatch, repo)
+    adapter = opencode_platform.Adapter()
+    ctx = platform_base.SyncContext(apply=True)
+    adapter.sync_repo(ctx, {"servers": {}}, {"hooks": []}, {"model_defaults": {}})
+
+    out = agents_dir / "reviewer.md"
+    assert out.exists()
+    errors = opencode_platform.opencode_managed_agent_contract_errors(out.read_text(encoding="utf-8"))
+    assert errors == []
+
+
+def test_opencode_sync_repo_check_idempotent(tmp_path, monkeypatch):
+    repo = _mini_opencode_sync_repo(tmp_path)
+    _patch_opencode_sync_repo(monkeypatch, repo)
+    adapter = opencode_platform.Adapter()
+    policy = {"model_defaults": {}}
+    adapter.sync_repo(platform_base.SyncContext(apply=True), {"servers": {}}, {"hooks": []}, policy)
+    ctx = platform_base.SyncContext(apply=False)
+    adapter.sync_repo(ctx, {"servers": {}}, {"hooks": []}, policy)
+    agent_changes = [c for c in ctx.changes if ".opencode/agents/reviewer.md" in c]
+    assert agent_changes == []
+
+
+def test_opencode_sync_repo_check_detects_corruption(tmp_path, monkeypatch):
+    repo = _mini_opencode_sync_repo(tmp_path)
+    agents_dir = _patch_opencode_sync_repo(monkeypatch, repo)
+    adapter = opencode_platform.Adapter()
+    policy = {"model_defaults": {}}
+    adapter.sync_repo(platform_base.SyncContext(apply=True), {"servers": {}}, {"hooks": []}, policy)
+    (agents_dir / "reviewer.md").write_text(
+        "---\nname: reviewer\ntools: all\n---\n\n",
+        encoding="utf-8",
+    )
+    ctx = platform_base.SyncContext(apply=False)
+    adapter.sync_repo(ctx, {"servers": {}}, {"hooks": []}, policy)
+    assert any(".opencode/agents/reviewer.md" in c for c in ctx.changes)
 
 
 def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_path, monkeypatch):

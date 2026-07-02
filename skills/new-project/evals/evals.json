@@ -103,9 +103,9 @@
 				"Uses nested AGENTS.md only where subtree rules differ."
 			]
 		},
-		{
-			"id": "presets-show-curated-tradeoffs",
-			"prompt": "/new-project preset list",
+			{
+				"id": "presets-show-curated-tradeoffs",
+				"prompt": "Show curated new-project preset tradeoffs before bootstrapping",
 			"expected_output": "The skill shows curated presets and tradeoffs.",
 			"files": ["skills/new-project/data/presets.json"],
 			"assertions": [

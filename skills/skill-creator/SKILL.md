@@ -36,6 +36,7 @@ Create, improve, and audit AI agent skills. Every skill follows 14 proven struct
 | `optimize-description <name>`       | Optimize Description         | `/skill-creator optimize-description review`       |
 | `dashboard`                         | Dashboard                    | `/skill-creator dashboard`                         |
 | `package <name>` / `package --all`  | Package                      | `/skill-creator package wargame`                   |
+| `example-blocks <name>`               | Example Blocks               | `/skill-creator example-blocks review`             |
 | Natural language skill idea         | Auto: Develop (new)          | `"tool that audits Python type safety"`            |
 | Skill name + modification verb      | Auto: Develop (existing)     | `"refactor the wargame skill"`                     |
 | Path to SKILL.md                    | Auto: Develop (existing)     | `skills/wargame/SKILL.md`                          |
@@ -163,6 +164,17 @@ Package skills into portable ZIP files for Claude Code Desktop import. Load `ref
 uv run python skills/skill-creator/scripts/package.py skills/<name>/ --dry-run  # Check before emitting a ZIP
 uv run python skills/skill-creator/scripts/package.py skills/<name>/            # Single skill → <name>-v<version>.skill.zip
 ```
+
+## Example Blocks Generator
+
+Generate Empty/Help Gallery example bullets from an existing dispatch table.
+
+```bash
+uv run python skills/skill-creator/scripts/generate_example_blocks.py <name>           # Preview block
+uv run python skills/skill-creator/scripts/generate_example_blocks.py <name> --apply # Append when missing
+```
+
+Use this mode after the dispatch table stabilizes and before publishing the skill. Do not append duplicate `## Example Blocks` sections.
 
 ## Runtime Hook Projection
 

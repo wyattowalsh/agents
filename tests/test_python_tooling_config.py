@@ -5,6 +5,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from packaging.version import Version
+
 ROOT = Path(__file__).resolve().parents[1]
 
 # Legacy path-list invocations on ruff/ty commands (not other Python tooling).
@@ -26,13 +28,31 @@ def _read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def test_makefile_uses_config_driven_ruff_and_ty() -> None:
-    makefile = _read(ROOT / "Makefile")
-    assert "uv run ruff check" in makefile
-    assert "uv run ty check" in makefile
-    for line in _tooling_lines(makefile):
+def test_justfile_uses_config_driven_ruff_and_ty() -> None:
+    justfile = _read(ROOT / "justfile")
+    assert "uv run ruff check" in justfile
+    assert "uv run ty check" in justfile
+    for line in _tooling_lines(justfile):
         for pattern in FORBIDDEN_RUFF_TY_PATTERNS:
-            assert not re.search(pattern, line), f"Makefile hard-codes paths: {line.strip()}"
+            assert not re.search(pattern, line), f"justfile hard-codes paths: {line.strip()}"
+
+
+def test_ci_workflows_install_just_at_least_1_52() -> None:
+    text = _read(ROOT / ".github" / "workflows" / "ci.yml")
+    match = re.search(r"JUST_VERSION:\s*([0-9.]+)", text)
+    assert match is not None, "ci.yml must pin JUST_VERSION for workflows job"
+    assert Version(match.group(1)) >= Version("1.52.0")
+
+
+def test_justfile_has_safe_default() -> None:
+    justfile = _read(ROOT / "justfile")
+    assert "set default-list := true" in justfile
+    assert "minimum 1.52.0" in justfile
+    default_idx = justfile.find("[default]")
+    install_idx = justfile.find("\ninstall:")
+    assert default_idx != -1, "justfile must declare a [default] recipe"
+    assert install_idx != -1, "justfile must declare an install recipe"
+    assert default_idx < install_idx, "[default] recipe must precede install recipe"
 
 
 def test_ci_workflows_use_config_driven_ruff() -> None:

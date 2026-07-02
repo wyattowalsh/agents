@@ -8,21 +8,33 @@ import { Card, CardGrid, LinkCard, Badge } from '@astrojs/starlight/components';
 > Specialized agent configurations with tools, permissions, and system prompts for various AI coding assistants.
 
 <div class="stats-bar">
-  <span class="stat stat-agent">8 agents available</span>
+  <span class="stat stat-agent">20 agents available</span>
 </div>
 
 ## All Agents
 
 <div class="catalog-agent">
 <CardGrid>
+  <LinkCard title="agent-change-recorder" href="/agents/agent-change-recorder/" description="Record agent definition changes with validation evidence for maintainer audit trails." />
+  <LinkCard title="agent-eval-runner" href="/agents/agent-eval-runner/" description="Run structural eval gates for skills and agents; report adequacy without live LLM runs." />
+  <LinkCard title="agent-permission-simulator" href="/agents/agent-permission-simulator/" description="Scaffold for simulating agent permission decisions against sample tool calls (planned)." />
+  <LinkCard title="agent-registry-publisher" href="/agents/agent-registry-publisher/" description="Scaffold for publishing agent catalog registry artifacts (planned)." />
+  <LinkCard title="agent-transpiler" href="/agents/agent-transpiler/" description="Scaffold for transpiling portable agent frontmatter across harness projections (planned)." />
+  <LinkCard title="bridge-consistency-checker" href="/agents/bridge-consistency-checker/" description="Verify instruction bridge and discovery parity across harness sync projections." />
   <LinkCard title="code-reviewer" href="/agents/code-reviewer/" description="Review changes for correctness, risk, and maintainability without editing code." />
   <LinkCard title="docs-writer" href="/agents/docs-writer/" description="Update or create technical documentation grounded in the current codebase." />
+  <LinkCard title="mcp-capability-mapper" href="/agents/mcp-capability-mapper/" description="Map MCP server tools to harness registry entries and maintainer docs surfaces." />
+  <LinkCard title="mcp-template-maintainer" href="/agents/mcp-template-maintainer/" description="Maintain FastMCP v3 MCP scaffolds in mcp/; align templates with repo conventions." />
   <LinkCard title="orchestrator" href="/agents/orchestrator/" description="Coordinate multi-step work by decomposing, delegating, and synthesizing results." />
   <LinkCard title="performance-profiler" href="/agents/performance-profiler/" description="Investigate performance bottlenecks and recommend the highest-leverage fixes." />
+  <LinkCard title="permission-policy-auditor" href="/agents/permission-policy-auditor/" description="Audit agent permissionMode, tool allowlists, and OpenCode permission overlays for least privilege." />
   <LinkCard title="planner" href="/agents/planner/" description="Create a codebase-grounded implementation plan before coding." />
+  <LinkCard title="prompt-optimizer" href="/agents/prompt-optimizer/" description="Scaffold for prompt/token optimization reviews on agent and skill bodies (planned)." />
   <LinkCard title="release-manager" href="/agents/release-manager/" description="Prepare release notes, versioning, and ship-readiness checks with cautious permissions." />
   <LinkCard title="researcher" href="/agents/researcher/" description="Investigate a technical question deeply and return a concise evidence-backed summary." />
   <LinkCard title="security-auditor" href="/agents/security-auditor/" description="Audit code and configuration for security risks without making changes." />
+  <LinkCard title="skill-author" href="/agents/skill-author/" description="Read-only advisor for skill authoring, audits, and eval planning. Does not edit skill files." />
+  <LinkCard title="triage-lead" href="/agents/triage-lead/" description="Classify incoming work by severity, harness surface, and ownership; route to specialist agents." />
 </CardGrid>
 </div>
 

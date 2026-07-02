@@ -1,0 +1,14 @@
+{
+  "wave": "W2",
+  "dispatched": [
+    {"task_id": "T-110b", "agent": "SA-R", "files": ["config/hook-registry.json"]},
+    {"task_id": "T-110c", "agent": "SA-R", "files": ["config/hook-registry.json"]},
+    {"task_id": "T-110d", "agent": "SA-R", "files": ["config/hook-registry.json"]},
+    {"task_id": "T-120a", "agent": "SA-T-REG", "files": ["tests/hooks/test_render_bundle_matchers.py"]}
+  ],
+  "gate_checks": [
+    "uv run pytest tests/hooks/test_render_bundle_matchers.py tests/hooks/test_bundle_dispatch.py -q"
+  ],
+  "blocked_until": ["W1"],
+  "note": "fleet-pre-tool-enforce mega-bundle + image matcher narrowing."
+}

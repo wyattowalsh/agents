@@ -1,0 +1,151 @@
+---
+title: "skill-compat-matrix"
+description: "Report portable vs runtime-specific skill fields across supported harnesses. Use when auditing cross-agent compatibility. NOT for live installs or packaging."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="skill-compat-matrix"
+  description="Report portable vs runtime-specific skill fields across supported harnesses. Use when auditing cross-agent compatibility. NOT for live installs or packaging."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill skill-compat-matrix -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/skill-compat-matrix &lt;skill-name|repo&gt; [--format json]"
+  badges={[{ text: "skill-compat-matrix", variant: "note" }, { text: "186 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/skill-compat-matrix/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Summarize how a skill's frontmatter and bundled assets map to supported harnesses.
+
+## Modes
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| `&lt;name&gt;` | Matrix for one skill |
+| `repo` / `--all` | Matrix summary for all repo skills |
+| `--format json` | Machine-readable report |
+| Empty | Show harness list and field tiers |
+
+## Critical Rules
+
+1. Mark unknown or best-effort harness behavior explicitly.
+2. Never treat runtime-specific fields as portable safety controls.
+3. Pair matrix output with skill-creator security audit for executable surfaces.
+4. Do not mutate harness projections from this skill.
+5. Include install-path notes only as documentation, not commands to run.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `skill-compat-matrix` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Argument Hint | `[skill-name|repo] [--format json]` |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: skill-compat-matrix
+description: >-
+  Report portable vs runtime-specific skill fields across supported harnesses.
+  Use when auditing cross-agent compatibility. NOT for live installs or packaging.
+user-invocable: true
+argument-hint: "<skill-name|repo> [--format json]"
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+---
+
+# Skill Compat Matrix
+
+Summarize how a skill's frontmatter and bundled assets map to supported harnesses.
+
+**Scope:** Compatibility reporting only. Does not install skills or edit harness configs.
+
+## Dispatch
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| `<name>` | Matrix for one skill |
+| `repo` / `--all` | Matrix summary for all repo skills |
+| `--format json` | Machine-readable report |
+| Empty | Show harness list and field tiers |
+
+## Field Tiers
+
+| Tier | Examples |
+|------|----------|
+| portable-core | `name`, `description`, `license`, `metadata` |
+| portable-but-variable | `allowed-tools`, scripts, references |
+| runtime-specific | `user-invocable`, `hooks`, `context`, `paths` |
+
+Load `skills/skill-creator/references/runtime-compatibility.md` when interpreting results.
+
+## Workflow
+
+```bash
+uv run python skills/skill-compat-matrix/scripts/compat_matrix.py <name>
+uv run python skills/skill-compat-matrix/scripts/compat_matrix.py --all --format json
+```
+
+## Validation Contract
+
+```bash
+uv run python skills/skill-compat-matrix/scripts/check.py
+```
+
+## Critical Rules
+
+1. Mark unknown or best-effort harness behavior explicitly.
+2. Never treat runtime-specific fields as portable safety controls.
+3. Pair matrix output with skill-creator security audit for executable surfaces.
+4. Do not mutate harness projections from this skill.
+5. Include install-path notes only as documentation, not commands to run.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/skill-compat-matrix/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/skill-compat-matrix/SKILL.md)

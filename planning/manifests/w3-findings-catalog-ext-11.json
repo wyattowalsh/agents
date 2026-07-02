@@ -1,0 +1,128 @@
+{
+  "shard_id": "w3-catalog-ext-11",
+  "count": 24,
+  "skill_ids": [
+    "sast-configuration",
+    "schema",
+    "secret-scanning",
+    "secrets-management",
+    "security-best-practices",
+    "security-ownership-map",
+    "security-threat-model",
+    "semgrep",
+    "sentry-fix-issues",
+    "sentry-sdk-setup",
+    "sentry-setup-ai-monitoring",
+    "seo-audit",
+    "seo",
+    "shopify-dev",
+    "shopify-liquid",
+    "shopify-storefront-graphql",
+    "signup",
+    "site-architecture",
+    "skill-scanner",
+    "slidev",
+    "slo-implementation",
+    "solve-challenge",
+    "sql-code-review",
+    "sql-optimization-patterns"
+  ],
+  "entries": [
+    {
+      "skill_id": "sast-configuration",
+      "issues": []
+    },
+    {
+      "skill_id": "schema",
+      "issues": []
+    },
+    {
+      "skill_id": "secret-scanning",
+      "issues": []
+    },
+    {
+      "skill_id": "secrets-management",
+      "issues": []
+    },
+    {
+      "skill_id": "security-best-practices",
+      "issues": []
+    },
+    {
+      "skill_id": "security-ownership-map",
+      "issues": []
+    },
+    {
+      "skill_id": "security-threat-model",
+      "issues": []
+    },
+    {
+      "skill_id": "semgrep",
+      "issues": []
+    },
+    {
+      "skill_id": "sentry-fix-issues",
+      "issues": []
+    },
+    {
+      "skill_id": "sentry-sdk-setup",
+      "issues": []
+    },
+    {
+      "skill_id": "sentry-setup-ai-monitoring",
+      "issues": []
+    },
+    {
+      "skill_id": "seo-audit",
+      "issues": []
+    },
+    {
+      "skill_id": "seo",
+      "issues": []
+    },
+    {
+      "skill_id": "shopify-dev",
+      "issues": []
+    },
+    {
+      "skill_id": "shopify-liquid",
+      "issues": []
+    },
+    {
+      "skill_id": "shopify-storefront-graphql",
+      "issues": []
+    },
+    {
+      "skill_id": "signup",
+      "issues": []
+    },
+    {
+      "skill_id": "site-architecture",
+      "issues": []
+    },
+    {
+      "skill_id": "skill-scanner",
+      "issues": []
+    },
+    {
+      "skill_id": "slidev",
+      "issues": []
+    },
+    {
+      "skill_id": "slo-implementation",
+      "issues": []
+    },
+    {
+      "skill_id": "solve-challenge",
+      "issues": []
+    },
+    {
+      "skill_id": "sql-code-review",
+      "issues": []
+    },
+    {
+      "skill_id": "sql-optimization-patterns",
+      "issues": []
+    }
+  ]
+}

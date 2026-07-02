@@ -10,39 +10,15 @@
     ],
     "preToolUse": [
       {
-        "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-destructive-shell-guard --harness cursor",
-        "matcher": "Bash|bash|run_shell_command|shell|terminal",
-        "timeout": 5,
+        "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" --bundle cursor-destructive-shell-guard,cursor-protected-file-guard,git-commit-push-guard,image-input-optimizer-guard --harness cursor --bundle-mode enforce-chain --bundle-timeout 75",
+        "matcher": "Bash|bash|run_shell_command|shell|terminal|Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|analyze_image|attach_image|screenshot|upload_image|view_image|Read|read",
+        "timeout": 75,
         "failClosed": true
       },
       {
-        "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-protected-file-guard --harness cursor",
-        "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
-        "timeout": 5,
-        "failClosed": true
-      },
-      {
-        "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" git-commit-push-guard --harness cursor",
-        "matcher": "Bash|bash|run_shell_command|shell|terminal",
-        "timeout": 5,
-        "failClosed": true
-      },
-      {
-        "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" image-input-optimizer-guard --harness cursor",
-        "matcher": ".*",
-        "timeout": 60,
-        "failClosed": false
-      },
-      {
-        "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" research-readonly-write-guard --harness cursor",
-        "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command",
-        "timeout": 5,
-        "failClosed": true
-      },
-      {
-        "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" research-dangerous-shell-guard --harness cursor",
-        "matcher": "Bash|bash|run_shell_command",
-        "timeout": 5,
+        "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" --bundle research-readonly-write-guard,research-dangerous-shell-guard --harness cursor --bundle-mode enforce-chain --bundle-timeout 10",
+        "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command|Bash|bash",
+        "timeout": 10,
         "failClosed": true
       }
     ],

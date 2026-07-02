@@ -1,0 +1,128 @@
+{
+  "shard_id": "w3-catalog-ext-03",
+  "count": 24,
+  "skill_ids": [
+    "content-strategy",
+    "copywriting",
+    "core-web-vitals",
+    "create-implementation-plan",
+    "cro",
+    "ctf-ai-ml",
+    "ctf-crypto",
+    "ctf-forensics",
+    "ctf-malware",
+    "ctf-misc",
+    "ctf-osint",
+    "ctf-pwn",
+    "ctf-reverse",
+    "ctf-web",
+    "ctf-writeup",
+    "database-migration",
+    "debug-optimize-lcp",
+    "debugging-strategies",
+    "deep-agents-core",
+    "deep-agents-memory",
+    "deep-agents-orchestration",
+    "deno-expert",
+    "deploy-to-vercel",
+    "deployment-pipeline-design"
+  ],
+  "entries": [
+    {
+      "skill_id": "content-strategy",
+      "issues": []
+    },
+    {
+      "skill_id": "copywriting",
+      "issues": []
+    },
+    {
+      "skill_id": "core-web-vitals",
+      "issues": []
+    },
+    {
+      "skill_id": "create-implementation-plan",
+      "issues": []
+    },
+    {
+      "skill_id": "cro",
+      "issues": []
+    },
+    {
+      "skill_id": "ctf-ai-ml",
+      "issues": []
+    },
+    {
+      "skill_id": "ctf-crypto",
+      "issues": []
+    },
+    {
+      "skill_id": "ctf-forensics",
+      "issues": []
+    },
+    {
+      "skill_id": "ctf-malware",
+      "issues": []
+    },
+    {
+      "skill_id": "ctf-misc",
+      "issues": []
+    },
+    {
+      "skill_id": "ctf-osint",
+      "issues": []
+    },
+    {
+      "skill_id": "ctf-pwn",
+      "issues": []
+    },
+    {
+      "skill_id": "ctf-reverse",
+      "issues": []
+    },
+    {
+      "skill_id": "ctf-web",
+      "issues": []
+    },
+    {
+      "skill_id": "ctf-writeup",
+      "issues": []
+    },
+    {
+      "skill_id": "database-migration",
+      "issues": []
+    },
+    {
+      "skill_id": "debug-optimize-lcp",
+      "issues": []
+    },
+    {
+      "skill_id": "debugging-strategies",
+      "issues": []
+    },
+    {
+      "skill_id": "deep-agents-core",
+      "issues": []
+    },
+    {
+      "skill_id": "deep-agents-memory",
+      "issues": []
+    },
+    {
+      "skill_id": "deep-agents-orchestration",
+      "issues": []
+    },
+    {
+      "skill_id": "deno-expert",
+      "issues": []
+    },
+    {
+      "skill_id": "deploy-to-vercel",
+      "issues": []
+    },
+    {
+      "skill_id": "deployment-pipeline-design",
+      "issues": []
+    }
+  ]
+}

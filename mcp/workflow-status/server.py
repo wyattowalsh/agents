@@ -1,0 +1,122 @@
+"""MCP server: workflow-status.
+
+Read-only summaries of `.github/workflows/*.yml` using the shared MCP
+read-only path guard. No tool in this server mutates the repository.
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+import yaml
+from fastmcp import FastMCP
+
+from wagents import ROOT
+from wagents.mcp_shared.read_only_paths import PathNotAllowedError, read_text_within_allowlist
+
+mcp = FastMCP("Workflow Status")
+
+_READ_ONLY = {
+    "readOnlyHint": True,
+    "destructiveHint": False,
+    "idempotentHint": True,
+    "openWorldHint": False,
+}
+
+_WORKFLOW_PREFIXES = (".github/workflows",)
+
+
+def _workflow_dir() -> Any:
+    return ROOT / ".github" / "workflows"
+
+
+def _summarize_workflow(filename: str, data: dict[str, Any]) -> dict[str, Any]:
+    jobs = data.get("jobs", {})
+    job_summaries: list[dict[str, Any]] = []
+    if isinstance(jobs, dict):
+        for job_name, job in sorted(jobs.items()):
+            if not isinstance(job, dict):
+                continue
+            steps = job.get("steps", [])
+            step_count = len(steps) if isinstance(steps, list) else 0
+            job_summaries.append({
+                "name": job_name,
+                "runs_on": job.get("runs-on"),
+                "timeout_minutes": job.get("timeout-minutes"),
+                "permissions": job.get("permissions"),
+                "step_count": step_count,
+                "needs": job.get("needs"),
+            })
+    return {
+        "filename": filename,
+        "workflow_name": data.get("name"),
+        "on": data.get("on"),
+        "permissions": data.get("permissions"),
+        "concurrency": data.get("concurrency"),
+        "job_count": len(job_summaries),
+        "jobs": job_summaries,
+    }
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def list_workflows() -> list[dict[str, str]]:
+    """List tracked GitHub workflow files under `.github/workflows/`."""
+    workflow_dir = _workflow_dir()
+    if not workflow_dir.is_dir():
+        return []
+    return [
+        {
+            "filename": path.name,
+            "relative_path": str(path.relative_to(ROOT)),
+        }
+        for path in sorted(workflow_dir.glob("*.yml"), key=lambda p: p.name)
+    ]
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def get_workflow_summary(filename: str) -> dict[str, Any]:
+    """Return a structured summary for one workflow YAML file.
+
+    *filename* is the basename under `.github/workflows/`, e.g. `ci.yml`.
+    Enforced via `wagents.mcp_shared.read_only_paths`.
+    """
+    if not filename.endswith(".yml"):
+        filename = f"{filename}.yml"
+    relative = f".github/workflows/{filename}"
+    try:
+        text = read_text_within_allowlist(relative, allowed_prefixes=_WORKFLOW_PREFIXES)
+    except PathNotAllowedError as exc:
+        raise ValueError(str(exc)) from exc
+    data = yaml.safe_load(text)
+    if not isinstance(data, dict):
+        raise ValueError(f"Workflow root must be a mapping: {relative}")
+    return _summarize_workflow(filename, data)
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def read_workflow(filename: str, max_bytes: int = 500_000) -> str:
+    """Return raw YAML for one workflow file within the read-only allowlist."""
+    if not filename.endswith(".yml"):
+        filename = f"{filename}.yml"
+    relative = f".github/workflows/{filename}"
+    try:
+        return read_text_within_allowlist(
+            relative,
+            allowed_prefixes=_WORKFLOW_PREFIXES,
+            max_bytes=max_bytes,
+        )
+    except PathNotAllowedError as exc:
+        raise ValueError(str(exc)) from exc
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def workflows_overview() -> dict[str, Any]:
+    """Return compact summaries for every workflow file in the repo."""
+    summaries = []
+    for row in list_workflows():
+        summaries.append(get_workflow_summary(row["filename"]))
+    return {"workflow_count": len(summaries), "workflows": summaries}
+
+
+if __name__ == "__main__":
+    mcp.run()

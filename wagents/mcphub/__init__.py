@@ -1,0 +1,43 @@
+"""MCPHub control-plane helpers shared by sync and platform adapters."""
+
+from wagents.mcphub.endpoints import (
+    MCPHUB_DEFAULT_URL,
+    MCPHUB_PROJECTION_MODES,
+    mcphub_bearer_env_var,
+    mcphub_client_config,
+    mcphub_config,
+    mcphub_enabled,
+    mcphub_endpoint_enabled,
+    mcphub_endpoint_name,
+    mcphub_endpoint_specs,
+    mcphub_full_fleet_client_config,
+    mcphub_groups,
+    mcphub_mcp_url,
+    mcphub_projection_mode,
+    mcphub_smart_routing_enabled,
+    mcphub_spec_enabled_for_harness,
+    mcphub_url,
+    mcphub_workflow_group_ids,
+    render_mcphub_stdio_server,
+)
+
+__all__ = [
+    "MCPHUB_DEFAULT_URL",
+    "MCPHUB_PROJECTION_MODES",
+    "mcphub_bearer_env_var",
+    "mcphub_client_config",
+    "mcphub_config",
+    "mcphub_enabled",
+    "mcphub_endpoint_enabled",
+    "mcphub_endpoint_name",
+    "mcphub_endpoint_specs",
+    "mcphub_full_fleet_client_config",
+    "mcphub_groups",
+    "mcphub_mcp_url",
+    "mcphub_projection_mode",
+    "mcphub_smart_routing_enabled",
+    "mcphub_spec_enabled_for_harness",
+    "mcphub_url",
+    "mcphub_workflow_group_ids",
+    "render_mcphub_stdio_server",
+]

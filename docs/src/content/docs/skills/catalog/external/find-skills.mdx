@@ -22,14 +22,14 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="find-skills"
   description="duplicate of `harness-master` discover (systematic gap pipeline)."
-  installCommand={`npx skills add vercel-labs/skills@find-skills --skill find-skills -y -g`}
+  installCommand={`No portable install command is recorded; keep global-only or avoid unless explicitly approved.`}
   usage="/find-skills"
   badges={[{ text: "find-skills", variant: "note" }, { text: "7 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Cataloged for audit and dedupe only. This global-only/avoid row is not published as a portable install.
 
 <Aside type="note" title="Curated external (hand-maintained)">
 Composed compose-external-wave-4 using authoring SSOT (`docs/src/authoring/skills/find-skills.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
@@ -41,12 +41,7 @@ Vercel find-skills; overlaps with harness-master Discover for systematic gap exp
 
 ## Harness Coverage
 
-Targets all supported agent harnesses via the install command below.
-
-**Portable multi-harness install command:**
-```bash
-npx skills add vercel-labs/skills@find-skills --skill find-skills -y -g
-```
+No portable install command is published for this global-only/avoid row.
 
 ## Trust / Audit
 
@@ -69,7 +64,7 @@ Avoid; status=global-only-or-avoid; unresolved.
 | Source Type | `curated-external` |
 | Display Source | `vercel-labs/skills` |
 | Source Kind | `github` |
-| Installability | portable command |
+| Installability | not installable by default |
 | Review State | curated |
 | Trust Tier | `global-only-or-avoid` |
   </TabItem>

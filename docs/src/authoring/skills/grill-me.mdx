@@ -1,6 +1,6 @@
 ---
 name: "grill-me"
-description: "Product-engineering workflow skills beyond the curated `obsidian-vault` row."
+description: "Deep user interview for pivotal plan/design uncertainties. Auto-suggest when user judgment would materially change scope, approach, or success criteria. NOT for codebase-discoverable facts."
 title: "Grill Me"
 source_kind: "curated-external"
 source: "mattpocock/skills"
@@ -12,11 +12,24 @@ sync_kind: "skills-cli"
 install_command: "npx skills add mattpocock/skills --skill grill-me --skill tdd --skill to-prd --skill improve-codebase-architecture -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
 source_url: "https://github.com/mattpocock/skills"
-notes: "Product-engineering workflow skills beyond the curated `obsidian-vault` row."
-risk_notes: "Product-engineering workflow skills beyond the curated `obsidian-vault` row."
+notes: "Curated productivity skill; harness routing policy in instructions/global.md Depth routing."
+risk_notes: "Process-only skill (interview protocol); no executable scripts in upstream body."
 promotion_policy: "Install only after trust gate; audit again before repo promotion."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in authoring catalog."
+provenance_evidence: "Curated npx skills add with named --skill selectors; MIT upstream."
 ---
 
+## Harness routing
 
-Product-engineering workflow skills beyond the curated `obsidian-vault` row.
+Canonical policy: `instructions/global.md` §Clarification Gate → **Depth routing**.
+
+| Trigger | Route |
+| ------- | ----- |
+| User-pivotal scope, approach, success criteria, or architecture fork | `/grill-me` |
+| Mid-wave `subtask-pivotal` fork or `blocked-user-pivotal` handoff | Scoped `/grill-me` (one branch; do not re-grill settled areas) |
+| Independent enum with clear trade-offs | Batched MCQ (Clarification Gate) |
+| Answer in repo, config, or conventions | Explore codebase first |
+| Factual/evidence question | `/research` Plan Gate |
+
+**Anti-triggers:** fully grounded requests; "just do it" / "your call"; `micro-reversible` mid-task question (one concise ask or default).
+
+Grok Build loads repo overlay at `.grok/skills/grill-me/SKILL.md` for enhanced discovery description.

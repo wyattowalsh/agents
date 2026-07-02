@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "Local-first Obsidian-compatible knowledge-base toolkit"
 requires-python = ">=3.11"
 license = "MIT"
-dependencies = []
+dependencies = [
+    "pyyaml>=6",
+]
 
 [project.scripts]
 nerdbot = "nerdbot.cli:main"

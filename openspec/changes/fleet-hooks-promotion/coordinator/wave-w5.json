@@ -1,0 +1,15 @@
+{
+  "wave": "W5",
+  "dispatched": [
+    {"task_id": "T-200a", "agent": "SA-POL", "files": ["config/tooling-policy.json"]},
+    {"task_id": "T-200b", "agent": "SA-S", "files": [".cursor/hooks.json", ".github/hooks/"]},
+    {"task_id": "T-200g", "agent": "SA-S", "files": ["docs/public/generated-reports/hook-perf-baseline-bundle.json"]}
+  ],
+  "gate_checks": [
+    "uv run python scripts/sync_agent_stack.py --check --targets repo",
+    "uv run wagents hooks validate --harness all",
+    "uv run wagents apm materialize --check"
+  ],
+  "blocked_until": ["W2", "W3", "W4"],
+  "note": "SERIAL tier=bundle promotion + repo sync. Skip home sync unless user-approved."
+}

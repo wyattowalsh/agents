@@ -1,0 +1,133 @@
+---
+title: "registry-publisher"
+description: "Stub MCP server for future registry publishing workflows"
+---
+
+import { Badge, Tabs, TabItem, Aside, Code, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<Badge text="MCP" variant="note" /> <Badge text="FastMCP" variant="success" /> <Badge text="2 deps" variant="default" />
+
+> Stub MCP server for future registry publishing workflows
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository MCP server directory `mcp/registry-publisher/` (source file `mcp/registry-publisher/server.py`).
+</Aside>
+
+<Aside type="tip" title="Usage">
+Add to your `claude_desktop_config.json`:
+```json
+{
+  "mcpServers": {
+    "registry-publisher": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "mcp/registry-publisher",
+        "python",
+        "server.py"
+      ]
+    }
+  }
+}
+```
+</Aside>
+
+<Tabs>
+  <TabItem label="Package">
+| Field | Value |
+| ----- | ----- |
+| Name | `mcp-registry-publisher` |
+| Version | 0.1.0 |
+| Python | `>=3.13` |
+  </TabItem>
+  <TabItem label="Dependencies">
+<Badge text="fastmcp&gt;=2" variant="note" /> <Badge text="wagents" variant="note" />
+  </TabItem>
+  <TabItem label="FastMCP Config">
+```json
+{
+  "$schema": "https://gofastmcp.com/public/schemas/fastmcp.json/v1.json",
+  "source": {
+    "path": "server.py",
+    "entrypoint": "mcp"
+  },
+  "environment": {
+    "type": "uv"
+  }
+}
+```
+  </TabItem>
+</Tabs>
+
+## Server Source
+
+<div class="server-source">
+
+```python title="mcp/registry-publisher/server.py"
+"""MCP server: registry-publisher.
+
+Later-tier stub for publishing MCP registry artifacts. Read-only inventory only.
+"""
+
+from __future__ import annotations
+
+import json
+from typing import Any
+
+from fastmcp import FastMCP
+
+from wagents import ROOT
+
+mcp = FastMCP("Registry Publisher")
+
+_READ_ONLY = {
+    "readOnlyHint": True,
+    "destructiveHint": False,
+    "idempotentHint": True,
+    "openWorldHint": False,
+}
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def registry_snapshot() -> dict[str, Any]:
+    """Return a read-only summary of `config/mcp-registry.json` server ids."""
+    path = ROOT / "config" / "mcp-registry.json"
+    if not path.is_file():
+        return {"ok": False, "error": "missing config/mcp-registry.json"}
+    data = json.loads(path.read_text(encoding="utf-8"))
+    servers = data.get("servers") or data.get("mcpServers") or {}
+    if isinstance(servers, dict):
+        ids = sorted(servers.keys())
+    elif isinstance(servers, list):
+        ids = sorted(str(row.get("id", row.get("name", ""))) for row in servers if isinstance(row, dict))
+    else:
+        ids = []
+    return {"ok": True, "server_count": len(ids), "server_ids": ids[:50], "truncated": len(ids) > 50}
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def publish_status() -> dict[str, str]:
+    """Report that live registry publishing is not implemented in this stub."""
+    return {
+        "status": "stub",
+        "message": "Registry publishing is planned (W13). Use config/mcp-registry.json as SSOT.",
+    }
+
+
+if __name__ == "__main__":
+    mcp.run()
+
+```
+
+</div>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="MCP Overview" href="/mcp/" description="Browse all MCP documentation in this site." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Scaffold new MCP servers with wagents." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/mcp/registry-publisher/server.py)

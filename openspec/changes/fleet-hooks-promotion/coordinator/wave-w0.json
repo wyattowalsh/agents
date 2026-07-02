@@ -1,0 +1,14 @@
+{
+  "wave": "W0",
+  "dispatched": [
+    {"task_id": "T-000a", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-promotion/proposal.md"]},
+    {"task_id": "T-000b", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-promotion/design.md"]},
+    {"task_id": "T-000c", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-promotion/tasks.md"]},
+    {"task_id": "T-000d", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-promotion/validation-matrix.md"]},
+    {"task_id": "T-000e", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-promotion/affected-surfaces.md"]},
+    {"task_id": "T-000f", "agent": "SA-L0", "files": ["openspec/changes/fleet-hooks-promotion/coordinator/wave-w0.json"]}
+  ],
+  "gate_checks": ["uv run wagents openspec validate"],
+  "blocked_until": [],
+  "note": "Scaffold fleet-hooks-promotion OpenSpec change."
+}

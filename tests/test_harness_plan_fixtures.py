@@ -23,6 +23,7 @@ from scripts.sync_agent_stack import (
     merge_copilot_config,
     render_gemini_mcp,
 )
+from wagents.platforms import opencode as opencode_platform
 from wagents.platforms.cursor import Adapter as CursorAdapter
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -262,6 +263,19 @@ def test_cursor_cloud_agent_repo_evidence_surfaces_exist() -> None:
     assert rendered is not None
     guard_command = _cursor_hook_command(rendered, "cursor-destructive-shell-guard")
     assert "$CURSOR_PROJECT_DIR" in guard_command
+
+
+def test_opencode_agents_on_disk_contract() -> None:
+    """Generated .opencode/agents overlays align with config/opencode-agents.json."""
+    agents_dir = ROOT / ".opencode" / "agents"
+    overlay_path = ROOT / "config" / "opencode-agents.json"
+    assert agents_dir.is_dir()
+    assert overlay_path.is_file()
+    errors = opencode_platform.check_opencode_managed_agents_dir(
+        agents_dir,
+        config_path=overlay_path,
+    )
+    assert errors == [], errors
 
 
 def test_cursor_cloud_subagent_repo_evidence_and_overlay_alignment() -> None:

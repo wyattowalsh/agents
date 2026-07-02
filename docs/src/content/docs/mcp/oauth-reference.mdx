@@ -1,0 +1,137 @@
+---
+title: "oauth-reference"
+description: "Read-only OAuth MCP configuration reference shape for maintainers"
+---
+
+import { Badge, Tabs, TabItem, Aside, Code, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<Badge text="MCP" variant="note" /> <Badge text="FastMCP" variant="success" /> <Badge text="1 deps" variant="default" />
+
+> Read-only OAuth MCP configuration reference shape for maintainers
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository MCP server directory `mcp/oauth-reference/` (source file `mcp/oauth-reference/server.py`).
+</Aside>
+
+<Aside type="tip" title="Usage">
+Add to your `claude_desktop_config.json`:
+```json
+{
+  "mcpServers": {
+    "oauth-reference": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "mcp/oauth-reference",
+        "python",
+        "server.py"
+      ]
+    }
+  }
+}
+```
+</Aside>
+
+<Tabs>
+  <TabItem label="Package">
+| Field | Value |
+| ----- | ----- |
+| Name | `mcp-oauth-reference` |
+| Version | 0.1.0 |
+| Python | `>=3.13` |
+  </TabItem>
+  <TabItem label="Dependencies">
+<Badge text="fastmcp&gt;=2" variant="note" />
+  </TabItem>
+  <TabItem label="FastMCP Config">
+```json
+{
+  "$schema": "https://gofastmcp.com/public/schemas/fastmcp.json/v1.json",
+  "source": {
+    "path": "server.py",
+    "entrypoint": "mcp"
+  },
+  "environment": {
+    "type": "uv"
+  }
+}
+```
+  </TabItem>
+</Tabs>
+
+## Server Source
+
+<div class="server-source">
+
+```python title="mcp/oauth-reference/server.py"
+"""MCP server: oauth-reference.
+
+Read-only reference shape for OAuth-protected MCP servers. Documents expected
+tool annotations and auth placeholders without performing OAuth flows or network I/O.
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from fastmcp import FastMCP
+
+mcp = FastMCP("OAuth Reference")
+
+_READ_ONLY = {
+    "readOnlyHint": True,
+    "destructiveHint": False,
+    "idempotentHint": True,
+    "openWorldHint": False,
+}
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def oauth_reference_shape() -> dict[str, Any]:
+    """Return the repo reference schema for OAuth MCP server configuration.
+
+    Use this when authoring OAuth-backed MCP entries in `config/mcp-registry.json`.
+    Values are placeholders — live credentials belong in user-owned env files only.
+    """
+    return {
+        "auth": {
+            "type": "oauth2",
+            "authorizationUrl": "https://provider.example/oauth/authorize",
+            "tokenUrl": "https://provider.example/oauth/token",
+            "scopes": ["read"],
+        },
+        "env_placeholders": ["MCP_OAUTH_CLIENT_ID", "MCP_OAUTH_CLIENT_SECRET"],
+        "notes": [
+            "Never commit OAuth client secrets to tracked config.",
+            "Prefer MCPHub bearer auth for local control-plane endpoints.",
+            "Mark read-only tools with readOnlyHint annotations.",
+        ],
+    }
+
+
+@mcp.tool(annotations=_READ_ONLY)
+def list_reference_tools() -> list[dict[str, str]]:
+    """List the reference tool ids shipped by this scaffold server."""
+    return [
+        {"name": "oauth_reference_shape", "purpose": "Document OAuth MCP config shape"},
+        {"name": "list_reference_tools", "purpose": "Enumerate reference tool ids"},
+    ]
+
+
+if __name__ == "__main__":
+    mcp.run()
+
+```
+
+</div>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="MCP Overview" href="/mcp/" description="Browse all MCP documentation in this site." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Scaffold new MCP servers with wagents." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/mcp/oauth-reference/server.py)

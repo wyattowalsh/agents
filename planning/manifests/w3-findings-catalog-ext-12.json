@@ -1,0 +1,130 @@
+{
+  "shard_id": "w3-catalog-ext-12",
+  "count": 24,
+  "skill_ids": [
+    "sql-optimization",
+    "stride-analysis-patterns",
+    "stripe-best-practices",
+    "supabase-postgres-best-practices",
+    "supabase",
+    "supply-chain-risk-auditor",
+    "svelte5-best-practices",
+    "swift-concurrency",
+    "swiftui-expert-skill",
+    "systematic-debugging",
+    "tanstack-query-best-practices",
+    "tanstack-router-best-practices",
+    "tanstack-start-best-practices",
+    "tdd",
+    "temporal-developer",
+    "terraform-module-library",
+    "terraform-search-import",
+    "terraform-skill",
+    "terraform-stacks",
+    "terraform-style-guide",
+    "terraform-test",
+    "test-driven-development",
+    "testing-python",
+    "threat-model-analyst"
+  ],
+  "entries": [
+    {
+      "skill_id": "sql-optimization",
+      "issues": []
+    },
+    {
+      "skill_id": "stride-analysis-patterns",
+      "issues": []
+    },
+    {
+      "skill_id": "stripe-best-practices",
+      "issues": [
+        "missing frontmatter field: install_command"
+      ]
+    },
+    {
+      "skill_id": "supabase-postgres-best-practices",
+      "issues": []
+    },
+    {
+      "skill_id": "supabase",
+      "issues": []
+    },
+    {
+      "skill_id": "supply-chain-risk-auditor",
+      "issues": []
+    },
+    {
+      "skill_id": "svelte5-best-practices",
+      "issues": []
+    },
+    {
+      "skill_id": "swift-concurrency",
+      "issues": []
+    },
+    {
+      "skill_id": "swiftui-expert-skill",
+      "issues": []
+    },
+    {
+      "skill_id": "systematic-debugging",
+      "issues": []
+    },
+    {
+      "skill_id": "tanstack-query-best-practices",
+      "issues": []
+    },
+    {
+      "skill_id": "tanstack-router-best-practices",
+      "issues": []
+    },
+    {
+      "skill_id": "tanstack-start-best-practices",
+      "issues": []
+    },
+    {
+      "skill_id": "tdd",
+      "issues": []
+    },
+    {
+      "skill_id": "temporal-developer",
+      "issues": []
+    },
+    {
+      "skill_id": "terraform-module-library",
+      "issues": []
+    },
+    {
+      "skill_id": "terraform-search-import",
+      "issues": []
+    },
+    {
+      "skill_id": "terraform-skill",
+      "issues": []
+    },
+    {
+      "skill_id": "terraform-stacks",
+      "issues": []
+    },
+    {
+      "skill_id": "terraform-style-guide",
+      "issues": []
+    },
+    {
+      "skill_id": "terraform-test",
+      "issues": []
+    },
+    {
+      "skill_id": "test-driven-development",
+      "issues": []
+    },
+    {
+      "skill_id": "testing-python",
+      "issues": []
+    },
+    {
+      "skill_id": "threat-model-analyst",
+      "issues": []
+    }
+  ]
+}

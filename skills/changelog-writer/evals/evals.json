@@ -48,7 +48,7 @@
     },
     {
       "id": "non-conventional-fallback",
-      "prompt": "/changelog-writer generate",
+      "prompt": "Generate a changelog for commits without conventional prefixes",
       "files": [],
       "expected_output": "Uses best-effort heuristics for non-conventional commits and flags uncertainty.",
       "assertions": [

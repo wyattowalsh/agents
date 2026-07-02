@@ -1,0 +1,16 @@
+[project]
+name = "mcp-skill-catalog"
+version = "0.1.0"
+description = "Read-only MCP server exposing the repo skill catalog (skills/, docs/public/generated-registries/skills-catalog-index.json)"
+requires-python = ">=3.13"
+dependencies = ["fastmcp>=2", "wagents"]
+
+[tool.uv.sources]
+wagents = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+only-include = ["server.py"]

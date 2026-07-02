@@ -1,0 +1,48 @@
+name: Reusable Validate
+
+on:
+  workflow_call:
+    inputs:
+      run_pytest_subset:
+        description: Run the curated pytest subset after validate/lint
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1635ceea3d9b4d4f8b53728782 # v4
+      - uses: ./.github/actions/setup-uv
+      - name: Lint Python
+        run: |
+          uv run ruff check
+          uv run ruff format --check
+      - name: Type-check Python
+        run: uv run ty check --no-progress
+      - name: Validate repository assets
+        run: uv run wagents validate
+      - name: Validate SARIF output
+        run: uv run wagents validate --format sarif > /tmp/wagents-validate.sarif
+      - name: Curated pytest subset
+        if: inputs.run_pytest_subset
+        run: |
+          uv run pytest \
+            tests/test_skills_catalog_schemas.py \
+            tests/test_catalog_index_parity.py \
+            tests/test_skill_index.py \
+            tests/test_authoring_sync.py \
+            tests/test_golden_docs.py \
+            tests/test_eval_ci_flagship.py \
+            tests/test_precommit_contract.py \
+            tests/test_cli_failure_paths.py \
+            tests/test_new_mcp_scaffold.py \
+            -q --tb=line

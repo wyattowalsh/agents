@@ -10,7 +10,11 @@ import shutil
 from pathlib import Path
 from typing import Any
 
-from wagents.hooks.render import enabled_hooks_for_harness
+from wagents.hooks.render import (
+    BUNDLE_PERF_TIERS,
+    prepare_hooks_for_render,
+    resolve_hook_perf_tier,
+)
 from wagents.platforms.base import (
     HOME,
     REPO_ROOT,
@@ -493,11 +497,24 @@ def _is_dispatcher_backed(hook: dict[str, Any]) -> bool:
     return any(token in command for token in ("wagents-hook.py", "run-wagents-hook", "{hook_runner}"))
 
 
+def _dedupe_grok_consecutive_hooks(hooks: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    deduped: list[dict[str, Any]] = []
+    last_key: tuple[str, str] | None = None
+    for hook in hooks:
+        key = (str(hook.get("logical_event")), _grok_policy_id(hook))
+        if key == last_key:
+            continue
+        deduped.append(hook)
+        last_key = key
+    return deduped
+
+
 def render_grok_hooks(
     hook_registry: dict[str, Any],
     *,
     repo_root: str,
     source_harness: str = GROK_FLEET_SOURCE_HARNESS,
+    perf_tier: str | None = None,
 ) -> dict[str, Any]:
     """Project dispatcher-backed fleet policies into Grok's nested deny-adapter shape.
 
@@ -505,18 +522,42 @@ def render_grok_hooks(
     rewritten to invoke the repo runner with ``--harness grok-build`` so the
     dispatcher emits its Grok deny payload on a block.
     """
+    tier = perf_tier or resolve_hook_perf_tier()
     runner = f"{repo_root}/hooks/run-wagents-hook"
     rendered: dict[str, list[dict[str, Any]]] = {}
-    for hook in enabled_hooks_for_harness(hook_registry, source_harness):
+    hooks = prepare_hooks_for_render(hook_registry, source_harness, perf_tier=tier)
+    if tier in BUNDLE_PERF_TIERS:
+        hooks = _dedupe_grok_consecutive_hooks(hooks)
+    for hook in hooks:
         if not _is_dispatcher_backed(hook):
             continue
         event = GROK_EVENT_MAP.get(str(hook.get("logical_event")))
         if not event:
             continue
         policy_id = _grok_policy_id(hook)
+        bundle_ids = hook.get("_bundle_policy_ids")
+        if isinstance(bundle_ids, list) and bundle_ids:
+            ids_csv = ",".join(str(item) for item in bundle_ids)
+            bundle_mode = str(hook.get("bundle_mode") or "enforce-chain")
+            timeout = int(hook.get("timeout", 5))
+            if "--worker-socket" in str(hook.get("command") or "") or "wagents-hook-worker.py" in str(
+                hook.get("command") or ""
+            ):
+                command = (
+                    f'{runner} --worker-socket "${{WAGENTS_HOOK_WORKER_SOCKET:-}}" '
+                    f"--bundle {shlex.quote(ids_csv)} --harness grok-build "
+                    f"--bundle-mode {shlex.quote(bundle_mode)} --bundle-timeout {timeout}"
+                )
+            else:
+                command = (
+                    f"{runner} --bundle {shlex.quote(ids_csv)} --harness grok-build "
+                    f"--bundle-mode {shlex.quote(bundle_mode)} --bundle-timeout {timeout}"
+                )
+        else:
+            command = f"{runner} {shlex.quote(policy_id)} --harness grok-build"
         config: dict[str, Any] = {
             "type": "command",
-            "command": f"{runner} {shlex.quote(policy_id)} --harness grok-build",
+            "command": command,
             "timeout": int(hook.get("timeout", 5)),
             "wagentsPolicy": policy_id,
         }
@@ -586,13 +627,13 @@ def _copy_plannotator_exit_plan_hook(ctx: SyncContext, *, hooks_dir: Path) -> No
         _chmod_executable(destination)
 
 
-def sync_grok_plannotator_skill_overlays(ctx: SyncContext) -> None:
-    """Symlink repo Plannotator skill overlays into ~/.grok/skills."""
+def sync_grok_skill_overlays(ctx: SyncContext) -> None:
+    """Symlink repo Grok skill overlays into ~/.grok/skills."""
     if not GROK_SKILLS_REPO_DIR.is_dir():
         return
     if ctx.apply:
         GROK_SKILLS_HOME_DIR.mkdir(parents=True, exist_ok=True)
-    for skill_dir in sorted(GROK_SKILLS_REPO_DIR.glob("plannotator-*")):
+    for skill_dir in sorted(GROK_SKILLS_REPO_DIR.iterdir()):
         if not skill_dir.is_dir() or not (skill_dir / "SKILL.md").is_file():
             continue
         destination = GROK_SKILLS_HOME_DIR / skill_dir.name
@@ -605,6 +646,11 @@ def sync_grok_plannotator_skill_overlays(ctx: SyncContext) -> None:
             if destination.exists() or destination.is_symlink():
                 destination.unlink()
             destination.symlink_to(skill_dir)
+
+
+def sync_grok_plannotator_skill_overlays(ctx: SyncContext) -> None:
+    """Backward-compatible alias for repo Grok skill overlay sync."""
+    sync_grok_skill_overlays(ctx)
 
 
 def sync_grok_plannotator(ctx: SyncContext) -> None:

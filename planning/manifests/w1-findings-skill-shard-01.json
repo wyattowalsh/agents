@@ -1,0 +1,201 @@
+{
+  "shard_id": "w1-skill-shard-01",
+  "generated_at": "2026-07-01T19:46:37+00:00",
+  "skills": [
+    "review",
+    "research",
+    "design",
+    "things-manager",
+    "skill-creator",
+    "docling-graph",
+    "files-buddy",
+    "javascript-conventions"
+  ],
+  "count": 8,
+  "entries": [
+    {
+      "skill": "review",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": "  \"Validation contract includes package dry-run\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Completion criteria are explicit\",\n        \"Validation contract includes a test or smoke-check surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"classification-gating\",\n    \"scaling-strategy\",\n    \"state-management\",\n    \"scripts\",\n    \"progressive-disclosure\",\n    \"body-substitutions\"\n  ],\n  \"patterns_suggested\": [],\n  \"patterns_not_applicable\": [\n    \"templates\",\n    \"hooks\",\n    \"stop-hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 258,\n    \"refs\": 21,\n    \"scripts\": 7\n  }\n}\n",
+        "stderr_tail": "ate_evals.py /Users/ww/dev/projects/agents/skills/review\n+ /Users/ww/dev/projects/agents/.venv/bin/python3 /Users/ww/dev/projects/agents/skills/review/scripts/asset_toolkit/package.py /Users/ww/dev/projects/agents/skills/review --dry-run\n+ /Users/ww/dev/projects/agents/.venv/bin/python3 /Users/ww/dev/projects/agents/skills/skill-creator/scripts/audit.py /Users/ww/dev/projects/agents/skills/review\n"
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": "mplificati)\nfrontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  1.0.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 28 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (review)\n\nFiles included: 37\nFiles excluded: 4\nfiles_excluded:\n  - .DS_Store\n  - scripts/.DS_Store\n  - scripts/__pycache__/\n  - scripts/asset_toolkit/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 100,
+        "max": 100
+      },
+      "eval": {
+        "skill": "review",
+        "has_evals": true,
+        "eval_count": 33
+      },
+      "issues": []
+    },
+    {
+      "skill": "research",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": "Missing package dry-run for distributable skill\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Completion criteria are explicit\",\n        \"Validation contract includes a test or smoke-check surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"classification-gating\",\n    \"scaling-strategy\",\n    \"state-management\",\n    \"scripts\",\n    \"templates\",\n    \"progressive-disclosure\",\n    \"body-substitutions\",\n    \"stop-hooks\"\n  ],\n  \"patterns_suggested\": [],\n  \"patterns_not_applicable\": [\n    \"hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 458,\n    \"refs\": 10,\n    \"scripts\": 7\n  }\n}\n",
+        "stderr_tail": ""
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": "            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  1.0.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 14 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (research)\n\nFiles included: 28\nFiles excluded: 5\nfiles_excluded:\n  - .DS_Store\n  - scripts/.DS_Store\n  - scripts/__pycache__/\n  - scripts/asset_toolkit/__pycache__/\n  - scripts/lib/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 98,
+        "max": 100
+      },
+      "eval": {
+        "skill": "research",
+        "has_evals": true,
+        "eval_count": 11
+      },
+      "issues": []
+    },
+    {
+      "skill": "design",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": "  \"Validation contract includes package dry-run\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Completion criteria are explicit\",\n        \"Validation contract includes a test or smoke-check surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"classification-gating\",\n    \"scaling-strategy\",\n    \"state-management\",\n    \"scripts\",\n    \"progressive-disclosure\",\n    \"body-substitutions\"\n  ],\n  \"patterns_suggested\": [],\n  \"patterns_not_applicable\": [\n    \"templates\",\n    \"hooks\",\n    \"stop-hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 387,\n    \"refs\": 17,\n    \"scripts\": 2\n  }\n}\n",
+        "stderr_tail": ""
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": " audit user-facing interfaces. U)\nfrontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  2.0.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 19 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (design)\n\nFiles included: 37\nFiles excluded: 3\nfiles_excluded:\n  - .DS_Store\n  - scripts/__pycache__/\n  - scripts/asset_toolkit/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 97,
+        "max": 100
+      },
+      "eval": {
+        "skill": "design",
+        "has_evals": true,
+        "eval_count": 39
+      },
+      "issues": []
+    },
+    {
+      "skill": "things-manager",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": "\"Missing package dry-run for distributable skill\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Completion criteria are explicit\",\n        \"Validation contract includes a test or smoke-check surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"classification-gating\",\n    \"scripts\",\n    \"progressive-disclosure\",\n    \"body-substitutions\"\n  ],\n  \"patterns_suggested\": [],\n  \"patterns_not_applicable\": [\n    \"scaling-strategy\",\n    \"state-management\",\n    \"templates\",\n    \"hooks\",\n    \"stop-hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 312,\n    \"refs\": 2,\n    \"scripts\": 2\n  }\n}\n",
+        "stderr_tail": ""
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": "eviewing/managing Things 3 via SupaThings MCP: tas)\nfrontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  1.1.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 4 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (things-manager)\n\nFiles included: 13\nFiles excluded: 2\nfiles_excluded:\n  - .DS_Store\n  - scripts/asset_toolkit/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 97,
+        "max": 100
+      },
+      "eval": {
+        "skill": "things-manager",
+        "has_evals": true,
+        "eval_count": 25
+      },
+      "issues": []
+    },
+    {
+      "skill": "skill-creator",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": "  \"Validation contract includes package dry-run\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Completion criteria are explicit\",\n        \"Validation contract includes a test or smoke-check surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"classification-gating\",\n    \"scaling-strategy\",\n    \"state-management\",\n    \"scripts\",\n    \"templates\",\n    \"progressive-disclosure\",\n    \"body-substitutions\",\n    \"stop-hooks\"\n  ],\n  \"patterns_suggested\": [],\n  \"patterns_not_applicable\": [\n    \"hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 246,\n    \"refs\": 13,\n    \"scripts\": 9\n  }\n}\n",
+        "stderr_tail": ""
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": " pa)\nfrontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  2.0.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 18 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (skill-creator)\n\nFiles included: 33\nFiles excluded: 4\nfiles_excluded:\n  - .DS_Store\n  - scripts/.DS_Store\n  - scripts/__pycache__/\n  - scripts/asset_toolkit/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 96,
+        "max": 100
+      },
+      "eval": {
+        "skill": "skill-creator",
+        "has_evals": true,
+        "eval_count": 39
+      },
+      "issues": []
+    },
+    {
+      "skill": "docling-graph",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": "issing package dry-run for distributable skill\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Completion criteria are explicit\",\n        \"Validation contract includes a test or smoke-check surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"scaling-strategy\",\n    \"scripts\",\n    \"progressive-disclosure\",\n    \"body-substitutions\"\n  ],\n  \"patterns_suggested\": [\n    \"classification-gating\"\n  ],\n  \"patterns_not_applicable\": [\n    \"state-management\",\n    \"templates\",\n    \"hooks\",\n    \"stop-hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 319,\n    \"refs\": 5,\n    \"scripts\": 3\n  }\n}\n",
+        "stderr_tail": ""
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": "ng Graph knowledge-graph w)\nfrontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  1.1.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 8 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (docling-graph)\n\nFiles included: 17\nFiles excluded: 3\nfiles_excluded:\n  - .DS_Store\n  - scripts/__pycache__/\n  - scripts/asset_toolkit/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 94,
+        "max": 100
+      },
+      "eval": {
+        "skill": "docling-graph",
+        "has_evals": true,
+        "eval_count": 13
+      },
+      "issues": []
+    },
+    {
+      "skill": "files-buddy",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": "ssing package dry-run for distributable skill\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Completion criteria are explicit\",\n        \"Validation contract includes a test or smoke-check surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"classification-gating\",\n    \"scaling-strategy\",\n    \"scripts\",\n    \"templates\",\n    \"progressive-disclosure\",\n    \"body-substitutions\"\n  ],\n  \"patterns_suggested\": [\n    \"state-management\"\n  ],\n  \"patterns_not_applicable\": [\n    \"hooks\",\n    \"stop-hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 215,\n    \"refs\": 13,\n    \"scripts\": 3\n  }\n}\n",
+        "stderr_tail": ""
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": " safely auditing, organizing, deduplicating, renamin)\nfrontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  1.1.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 17 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (files-buddy)\n\nFiles included: 26\nFiles excluded: 2\nfiles_excluded:\n  - .DS_Store\n  - scripts/asset_toolkit/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 94,
+        "max": 100
+      },
+      "eval": {
+        "skill": "files-buddy",
+        "has_evals": true,
+        "eval_count": 18
+      },
+      "issues": []
+    },
+    {
+      "skill": "javascript-conventions",
+      "check": {
+        "exit_code": 0,
+        "stdout_tail": "\"Missing package dry-run for distributable skill\",\n        \"Hook validation not required because hooks are not configured\",\n        \"No stale legacy progress audit flag found\",\n        \"Completion criteria are explicit\",\n        \"Validation contract includes a test or smoke-check surface\"\n      ]\n    }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"scripts\",\n    \"progressive-disclosure\",\n    \"body-substitutions\"\n  ],\n  \"patterns_suggested\": [],\n  \"patterns_not_applicable\": [\n    \"classification-gating\",\n    \"scaling-strategy\",\n    \"state-management\",\n    \"templates\",\n    \"hooks\",\n    \"stop-hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 145,\n    \"refs\": 5,\n    \"scripts\": 1\n  }\n}\n",
+        "stderr_tail": ""
+      },
+      "package_dry_run": {
+        "exit_code": 0,
+        "stdout_tail": "date JS/TS tooling conventions. Enforce pn)\nfrontmatter_license            PASS  MIT\nfrontmatter_author             PASS  wyattowalsh\nfrontmatter_version            PASS  1.0.0\nfrontmatter_commands_portable   PASS  No non-portable frontmatter command paths found\nno_absolute_paths              PASS  No absolute paths found\nreferenced_files_exist         PASS  All 6 packaged resource paths resolve\nbody_operator_paths_portable   PASS  No non-portable body operator paths found\nno_wagents_reference           PASS  No wagents references found\nno_at_imports                  PASS  No @ imports found\nname_directory_match           PASS  OK (javascript-conventions)\n\nFiles included: 15\nFiles excluded: 2\nfiles_excluded:\n  - .DS_Store\n  - scripts/asset_toolkit/__pycache__/\nPortable: yes\n\nOverall: PASS\n"
+      },
+      "audit": {
+        "grade": "A",
+        "score": 94,
+        "max": 100
+      },
+      "eval": {
+        "skill": "javascript-conventions",
+        "has_evals": true,
+        "eval_count": 9
+      },
+      "issues": []
+    }
+  ]
+}

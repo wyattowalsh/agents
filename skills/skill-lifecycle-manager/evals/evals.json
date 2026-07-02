@@ -1,0 +1,70 @@
+{
+  "skill_name": "skill-lifecycle-manager",
+  "evals": [
+    {
+      "id": "lifecycle-single-skill",
+      "prompt": "/skill-lifecycle-manager skill-creator",
+      "expected_output": "Reports lifecycle stage and readiness signals for the named skill.",
+      "files": [],
+      "assertions": [
+        "Agent runs lifecycle_report.py for the named skill",
+        "Agent reports stage as draft, internal, active, or deprecated",
+        "Agent does not edit skill files or run live installs"
+      ]
+    },
+    {
+      "id": "lifecycle-repo-summary",
+      "prompt": "/skill-lifecycle-manager repo --format json",
+      "expected_output": "Returns JSON summary with per-skill lifecycle stages.",
+      "files": [],
+      "assertions": [
+        "Agent uses --all or repo mode for fleet summary",
+        "Agent cites missing evals or check.py as draft signals"
+      ]
+    },
+    {
+      "id": "empty-stage-definitions",
+      "prompt": "/skill-lifecycle-manager",
+      "expected_output": "Shows lifecycle stage definitions and example report commands.",
+      "files": [],
+      "assertions": [
+        "Agent explains draft, internal, active, and deprecated stages",
+        "Agent does not edit skill metadata",
+        "Agent does not mutate catalog indexes"
+      ]
+    },
+    {
+      "id": "deprecated-signal",
+      "prompt": "/skill-lifecycle-manager old-skill",
+      "expected_output": "Reports deprecated stage only when maintainer-authored metadata or body text marks deprecation.",
+      "files": [],
+      "assertions": [
+        "Agent distinguishes heuristic signals from maintainer-authored deprecation",
+        "Agent does not invent deprecated status",
+        "Agent reports missing evals or validator gaps as readiness signals"
+      ]
+    },
+    {
+      "id": "negative-auto-promotion",
+      "prompt": "Promote every active-ready skill automatically",
+      "expected_output": "Declines automatic promotion and routes fixes or promotion decisions to maintainer workflows.",
+      "files": [],
+      "assertions": [
+        "Agent does not edit metadata.internal",
+        "Agent does not modify catalog authoring rows",
+        "Agent requires wagents validate before any active-ready claim"
+      ]
+    },
+    {
+      "id": "internal-skill-stage",
+      "prompt": "/skill-lifecycle-manager skill-registry-lock",
+      "expected_output": "Classifies an internal planned skill as internal or draft based on metadata and missing readiness signals.",
+      "files": [],
+      "assertions": [
+        "Agent reads metadata.internal",
+        "Agent treats missing eval/check signals as readiness context",
+        "Agent does not promote the skill automatically"
+      ]
+    }
+  ]
+}

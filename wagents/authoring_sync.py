@@ -44,8 +44,12 @@ def _render_frontmatter(fm: dict) -> str:
         if key in fm and fm[key] not in (None, ""):
             val = str(fm[key]).replace('"', '\\"')
             lines.append(f'{key}: "{val}"')
-    # Explicit authoring marker
+    # Explicit authoring marker + repo-owned catalog contract
     lines.append('source_kind: "custom"')
+    lines.append('trust_tier: "repo-owned"')
+    lines.append('status: "repo-owned"')
+    lines.append('provenance_status: "repo-owned"')
+    lines.append('sync_kind: "skills-cli"')
     lines.append("---")
     return "\n".join(lines)
 

@@ -14,7 +14,24 @@ from typing import Any
 from wagents import ROOT
 from wagents.cli import collect_desired_sync_rows
 from wagents.external_skills import read_external_skill_entries
-from wagents.installed_inventory import collect_installed_inventory, merge_desired_with_installed, supported_agent_ids
+from wagents.installed_inventory import (
+    CLEANUP_ACTION_MANUAL_REVIEW,
+    CLEANUP_ACTION_NONE,
+    CLEANUP_ACTION_PRESERVE,
+    CLEANUP_ACTION_REFRESH_PLUGIN_CACHE,
+    CLEANUP_ACTION_SYNC_HOME_CONFIG,
+    DOCS_STATUS_DOCUMENTED,
+    DOCS_STATUS_NOT_APPLICABLE,
+    DUPLICATE_CLASS_NONE,
+    EXPOSURE_OWNER_PLUGIN,
+    EXPOSURE_OWNER_SKILLS_CLI,
+    collect_installed_inventory,
+    collect_skill_cleanup_exposures,
+    merge_desired_with_installed,
+    repo_skill_owner_covered_agents,
+    skill_cleanup_metadata_for_exposures,
+    supported_agent_ids,
+)
 
 OUT = ROOT / "planning" / "manifests" / "harness-reconciliation.json"
 HOME = Path.home()
@@ -123,6 +140,9 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
     snapshot = collect_installed_inventory(external_entries=external_entries, query_timeout_sec=300)
     desired = collect_desired_sync_rows(external_entries=external_entries)
     merged = merge_desired_with_installed(snapshot, desired)
+    cleanup_by_name: dict[str, list[Any]] = defaultdict(list)
+    for exposure in collect_skill_cleanup_exposures():
+        cleanup_by_name[exposure.name].append(exposure)
     all_agents = supported_agent_ids()
     failed_agents = {query.agent_id for query in snapshot.queries if not query.ok}
     rows: list[dict[str, Any]] = []
@@ -137,8 +157,18 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
         else:
             target_agents = tuple(row.target_agents or all_agents)
         unknown = set(target_agents) & failed_agents
-        missing = set(target_agents) - set(row.installed_agents) - unknown
+        owner_covered = set(repo_skill_owner_covered_agents(row, target_agents, home=HOME, root=ROOT))
+        missing = set(target_agents) - set(row.installed_agents) - unknown - owner_covered
         classification, action, rationale = _skill_disposition(row, all_agents, missing, unknown)
+        if owner_covered and row.provenance_status == "repo-owned" and classification == "synced":
+            rationale = (
+                "Repo-owned skill is covered by a native plugin or direct repo skill path for "
+                f"{', '.join(sorted(owner_covered))}; no duplicate Skills CLI install is recommended."
+            )
+        cleanup_meta = skill_cleanup_metadata_for_exposures(
+            cleanup_by_name.get(row.name, ()),
+            fallback_docs_status=row.docs_status,
+        )
         if row.name in desired_names or row.provenance_status in {"repo-owned", "verified-curated-external"}:
             for agent in missing:
                 default_missing_by_agent[agent] = default_missing_by_agent.get(agent, 0) + 1
@@ -161,7 +191,12 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
                 "installed_agents": list(row.installed_agents),
                 "target_agents": list(target_agents),
                 "missing_agents": sorted(missing),
+                "owner_covered_agents": sorted(owner_covered),
                 "query_blocked_agents": sorted(unknown),
+                "exposure_owner": cleanup_meta["exposure_owner"],
+                "duplicate_class": cleanup_meta["duplicate_class"],
+                "cleanup_action": cleanup_meta["cleanup_action"],
+                "docs_status": cleanup_meta["docs_status"],
                 "classification": classification,
                 "action": action,
                 "owner": "catalog" if row.provenance_status != "read-only-discovered" else "user-local",
@@ -476,6 +511,42 @@ def _plugin_rows() -> list[dict[str, Any]]:
     return rows
 
 
+def _cleanup_action_for_terminal_action(row: dict[str, Any]) -> str:
+    action = str(row.get("action") or "")
+    if action == "cache-refresh-needed":
+        return CLEANUP_ACTION_REFRESH_PLUGIN_CACHE
+    if action == "home-sync-needed":
+        return CLEANUP_ACTION_SYNC_HOME_CONFIG
+    if action == "local-only-preserve":
+        return CLEANUP_ACTION_PRESERVE
+    if action in {"blocked-needs-approval", "config-repair-needed", "curate-external"}:
+        return CLEANUP_ACTION_MANUAL_REVIEW
+    return CLEANUP_ACTION_NONE
+
+
+def _default_exposure_owner(row: dict[str, Any]) -> str:
+    if row.get("asset_type") == "skill":
+        return EXPOSURE_OWNER_SKILLS_CLI
+    if row.get("owner") == "user-local":
+        return "user-local"
+    return EXPOSURE_OWNER_PLUGIN
+
+
+def _default_docs_status(row: dict[str, Any]) -> str:
+    if row.get("owner") == "repo":
+        return DOCS_STATUS_DOCUMENTED
+    return DOCS_STATUS_NOT_APPLICABLE
+
+
+def _with_reconciliation_defaults(row: dict[str, Any]) -> dict[str, Any]:
+    normalized = dict(row)
+    normalized.setdefault("exposure_owner", _default_exposure_owner(normalized))
+    normalized.setdefault("duplicate_class", DUPLICATE_CLASS_NONE)
+    normalized.setdefault("cleanup_action", _cleanup_action_for_terminal_action(normalized))
+    normalized.setdefault("docs_status", _default_docs_status(normalized))
+    return normalized
+
+
 def _task_files(harness: str, asset_type: str) -> list[str]:
     files = {"planning/manifests/harness-reconciliation.json"}
     if asset_type == "skill":
@@ -593,7 +664,10 @@ def _summary(rows: list[dict[str, Any]], skill_summary: dict[str, Any]) -> dict[
 def build_manifest() -> dict[str, Any]:
     skill_rows, skill_summary = _skill_rows()
     plugin_rows = _plugin_rows()
-    rows = sorted(skill_rows + plugin_rows, key=lambda item: (item["asset_type"], item["harness"], item["name"]))
+    rows = sorted(
+        (_with_reconciliation_defaults(row) for row in [*skill_rows, *plugin_rows]),
+        key=lambda item: (item["asset_type"], item["harness"], item["name"]),
+    )
     return _sanitize({
         "version": 1,
         "generated_at": datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z"),

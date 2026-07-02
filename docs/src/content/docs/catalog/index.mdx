@@ -1,0 +1,18 @@
+---
+title: Catalog
+description: Unified discovery hub for skills, agents, MCP, and maintainer indexes
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Unified discovery for skills, agents, MCP servers, and maintainer tooling indexes.
+
+<CardGrid>
+  <LinkCard title="Skills" href="/skills/catalog/" description="Custom + curated external skill catalog." />
+  <LinkCard title="Agents" href="/catalog/agents/" description="Portable agent configurations." />
+  <LinkCard title="MCP Servers" href="/catalog/mcp/" description="First-party MCP servers in this repo." />
+  <LinkCard title="Tags" href="/catalog/tags/" description="Skill catalog grouped by tag." />
+  <LinkCard title="Platforms" href="/catalog/platforms/" description="Skills by target harness." />
+  <LinkCard title="Tooling" href="/catalog/tooling/" description="Skills, agents, and MCP tooling lanes." />
+  <LinkCard title="Architecture" href="/architecture/progressive-disclosure/" description="Progressive disclosure and instruction loading." />
+</CardGrid>

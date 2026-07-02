@@ -1,0 +1,109 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/run-wagents-hook git-commit-push-guard --harness claude-code",
+            "timeout": 5
+          }
+        ],
+        "matcher": "Bash|bash|run_shell_command|shell|terminal"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/run-wagents-hook image-input-optimizer-guard --harness claude-code",
+            "timeout": 60
+          }
+        ],
+        "matcher": "analyze_image|attach_image|screenshot|upload_image|view_image|Read|read|.*[Ii]mage.*|.*[Vv]ision.*|.*[Ss]creenshot.*|.*[Aa]ttach.*|.*[Uu]pload.*"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/run-wagents-hook research-readonly-write-guard --harness claude-code",
+            "timeout": 5
+          }
+        ],
+        "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/run-wagents-hook research-dangerous-shell-guard --harness claude-code",
+            "timeout": 5
+          }
+        ],
+        "matcher": "Bash|bash|run_shell_command"
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/run-wagents-hook research-prompt-triage-context --harness claude-code",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/run-wagents-hook research-evidence-ledger --harness claude-code",
+            "timeout": 5
+          }
+        ],
+        "matcher": "WebSearch|web_search|fetch|fetcher|trafilatura|docling|mcp__.*|mcp_.*"
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/run-wagents-hook research-stop-verifier --harness claude-code",
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/verify-before-stop.sh",
+            "timeout": 60
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/task-completed-gate.sh",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/teammate-idle-gate.sh",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
+  }
+}

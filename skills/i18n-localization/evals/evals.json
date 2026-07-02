@@ -39,6 +39,16 @@
         "States the request is outside i18n-localization scope",
         "Does not perform generic headline rewriting"
       ]
+    },
+    {
+      "id": "explicit-icu-plural-review",
+      "prompt": "/i18n-localization Review ICU MessageFormat plural rules for a checkout counter message.",
+      "expected_output": "Reviews plural categories, translator notes, and locale-aware formatting instead of string concatenation.",
+      "assertions": [
+        "Mentions ICU or MessageFormat plural handling",
+        "Requires translator notes or context for ambiguous strings",
+        "Avoids naive concatenation for counted messages"
+      ]
     }
   ]
 }

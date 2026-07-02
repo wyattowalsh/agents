@@ -1,0 +1,622 @@
+{
+  "captured_at": "2026-07-02T09:49:12Z",
+  "inventory": {
+    "claude-code": {
+      "PostToolUse": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-evidence-ledger",
+          "logical_policy": "research-evidence-ledger",
+          "mode": "audit",
+          "timeout": 5
+        }
+      ],
+      "PreToolUse": [
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "git-commit-push-guard",
+          "logical_policy": "git-commit-push-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "image-input-optimizer-guard",
+          "logical_policy": "image-input-optimizer-guard",
+          "mode": "enforce",
+          "timeout": 60
+        },
+        {
+          "bundle_group": "research-shell-guards",
+          "dispatcher_backed": true,
+          "id": "research-readonly-write-guard",
+          "logical_policy": "research-readonly-write-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "research-shell-guards",
+          "dispatcher_backed": true,
+          "id": "research-dangerous-shell-guard",
+          "logical_policy": "research-dangerous-shell-guard",
+          "mode": "enforce",
+          "timeout": 5
+        }
+      ],
+      "Stop": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-stop-verifier",
+          "logical_policy": "research-stop-verifier",
+          "mode": "enforce",
+          "timeout": 30
+        },
+        {
+          "bundle_group": null,
+          "dispatcher_backed": false,
+          "id": "verify-before-stop",
+          "logical_policy": "verify-before-stop",
+          "mode": "enforce",
+          "timeout": 60
+        },
+        {
+          "bundle_group": null,
+          "dispatcher_backed": false,
+          "id": "task-completed-gate",
+          "logical_policy": "task-completed-gate",
+          "mode": "enforce",
+          "timeout": 120
+        }
+      ],
+      "SubagentStop": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": false,
+          "id": "teammate-idle-gate",
+          "logical_policy": "teammate-idle-gate",
+          "mode": "enforce",
+          "timeout": 120
+        }
+      ],
+      "UserPromptSubmit": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-prompt-triage-context",
+          "logical_policy": "research-prompt-triage-context",
+          "mode": "context",
+          "timeout": 5
+        }
+      ]
+    },
+    "codex": {
+      "PermissionRequest": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "codex-permission-request-guard",
+          "logical_policy": "codex-permission-request-guard",
+          "mode": "enforce",
+          "timeout": 5
+        }
+      ],
+      "PostToolUse": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "codex-post-tool-verify-context",
+          "logical_policy": "codex-post-tool-verify-context",
+          "mode": "context",
+          "timeout": 5
+        },
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-evidence-ledger",
+          "logical_policy": "research-evidence-ledger",
+          "mode": "audit",
+          "timeout": 5
+        }
+      ],
+      "PreToolUse": [
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "codex-destructive-shell-guard",
+          "logical_policy": "codex-destructive-shell-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "codex-protected-file-guard",
+          "logical_policy": "codex-protected-file-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "git-commit-push-guard",
+          "logical_policy": "git-commit-push-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "image-input-optimizer-guard",
+          "logical_policy": "image-input-optimizer-guard",
+          "mode": "enforce",
+          "timeout": 60
+        },
+        {
+          "bundle_group": "research-shell-guards",
+          "dispatcher_backed": true,
+          "id": "research-readonly-write-guard",
+          "logical_policy": "research-readonly-write-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "research-shell-guards",
+          "dispatcher_backed": true,
+          "id": "research-dangerous-shell-guard",
+          "logical_policy": "research-dangerous-shell-guard",
+          "mode": "enforce",
+          "timeout": 5
+        }
+      ],
+      "SessionStart": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "codex-session-start-context",
+          "logical_policy": "codex-session-start-context",
+          "mode": "context",
+          "timeout": 5
+        }
+      ],
+      "Stop": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "codex-stop-truth-gate",
+          "logical_policy": "codex-stop-truth-gate",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-stop-verifier",
+          "logical_policy": "research-stop-verifier",
+          "mode": "enforce",
+          "timeout": 30
+        }
+      ],
+      "UserPromptSubmit": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-prompt-triage-context",
+          "logical_policy": "research-prompt-triage-context",
+          "mode": "context",
+          "timeout": 5
+        }
+      ]
+    },
+    "cursor": {
+      "AfterFileEdit": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "cursor-after-file-edit-context",
+          "logical_policy": "cursor-after-file-edit-context",
+          "mode": "context",
+          "timeout": 5
+        }
+      ],
+      "BeforeMCPExecution": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "cursor-before-mcp-execution-guard",
+          "logical_policy": "cursor-before-mcp-execution-guard",
+          "mode": "enforce",
+          "timeout": 5
+        }
+      ],
+      "BeforeReadFile": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "cursor-before-read-file-guard",
+          "logical_policy": "cursor-before-read-file-guard",
+          "mode": "enforce",
+          "timeout": 5
+        }
+      ],
+      "BeforeShellExecution": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "cursor-before-shell-execution-guard",
+          "logical_policy": "cursor-before-shell-execution-guard",
+          "mode": "enforce",
+          "timeout": 5
+        }
+      ],
+      "PostToolUse": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "cursor-post-tool-verify-context",
+          "logical_policy": "cursor-post-tool-verify-context",
+          "mode": "context",
+          "timeout": 5
+        },
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-evidence-ledger",
+          "logical_policy": "research-evidence-ledger",
+          "mode": "audit",
+          "timeout": 5
+        }
+      ],
+      "PreToolUse": [
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "cursor-destructive-shell-guard",
+          "logical_policy": "cursor-destructive-shell-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "cursor-protected-file-guard",
+          "logical_policy": "cursor-protected-file-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "git-commit-push-guard",
+          "logical_policy": "git-commit-push-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "image-input-optimizer-guard",
+          "logical_policy": "image-input-optimizer-guard",
+          "mode": "enforce",
+          "timeout": 60
+        },
+        {
+          "bundle_group": "research-shell-guards",
+          "dispatcher_backed": true,
+          "id": "research-readonly-write-guard",
+          "logical_policy": "research-readonly-write-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "research-shell-guards",
+          "dispatcher_backed": true,
+          "id": "research-dangerous-shell-guard",
+          "logical_policy": "research-dangerous-shell-guard",
+          "mode": "enforce",
+          "timeout": 5
+        }
+      ],
+      "SessionStart": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "cursor-session-start-context",
+          "logical_policy": "cursor-session-start-context",
+          "mode": "context",
+          "timeout": 5
+        }
+      ],
+      "Stop": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "cursor-stop-truth-gate",
+          "logical_policy": "cursor-stop-truth-gate",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-stop-verifier",
+          "logical_policy": "research-stop-verifier",
+          "mode": "enforce",
+          "timeout": 30
+        }
+      ],
+      "SubagentStart": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "cursor-subagent-start-context",
+          "logical_policy": "cursor-subagent-start-context",
+          "mode": "context",
+          "timeout": 5
+        }
+      ],
+      "UserPromptSubmit": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-prompt-triage-context",
+          "logical_policy": "research-prompt-triage-context",
+          "mode": "context",
+          "timeout": 5
+        }
+      ]
+    },
+    "gemini-cli": {
+      "PostToolUse": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-evidence-ledger",
+          "logical_policy": "research-evidence-ledger",
+          "mode": "audit",
+          "timeout": 5
+        }
+      ],
+      "PreToolUse": [
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "git-commit-push-guard",
+          "logical_policy": "git-commit-push-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "image-input-optimizer-guard",
+          "logical_policy": "image-input-optimizer-guard",
+          "mode": "enforce",
+          "timeout": 60
+        },
+        {
+          "bundle_group": "research-shell-guards",
+          "dispatcher_backed": true,
+          "id": "research-readonly-write-guard",
+          "logical_policy": "research-readonly-write-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "research-shell-guards",
+          "dispatcher_backed": true,
+          "id": "research-dangerous-shell-guard",
+          "logical_policy": "research-dangerous-shell-guard",
+          "mode": "enforce",
+          "timeout": 5
+        }
+      ],
+      "Stop": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-stop-verifier",
+          "logical_policy": "research-stop-verifier",
+          "mode": "enforce",
+          "timeout": 30
+        }
+      ],
+      "UserPromptSubmit": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-prompt-triage-context",
+          "logical_policy": "research-prompt-triage-context",
+          "mode": "context",
+          "timeout": 5
+        }
+      ]
+    },
+    "github-copilot": {
+      "PostToolUse": [
+        {
+          "bundle_group": "copilot-post-edit-quality",
+          "dispatcher_backed": false,
+          "id": "post-edit-format",
+          "logical_policy": "post-edit-format",
+          "mode": null,
+          "timeout": 60
+        },
+        {
+          "bundle_group": "copilot-post-edit-quality",
+          "dispatcher_backed": false,
+          "id": "post-edit-lint",
+          "logical_policy": "post-edit-lint",
+          "mode": null,
+          "timeout": 30
+        },
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-evidence-ledger",
+          "logical_policy": "research-evidence-ledger",
+          "mode": "audit",
+          "timeout": 5
+        }
+      ],
+      "PreToolUse": [
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "destructive-shell-guard",
+          "logical_policy": "destructive-shell-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "protected-file-guard",
+          "logical_policy": "protected-file-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "git-commit-push-guard",
+          "logical_policy": "git-commit-push-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "fleet-pre-tool-enforce",
+          "dispatcher_backed": true,
+          "id": "image-input-optimizer-guard",
+          "logical_policy": "image-input-optimizer-guard",
+          "mode": "enforce",
+          "timeout": 60
+        },
+        {
+          "bundle_group": "research-shell-guards",
+          "dispatcher_backed": true,
+          "id": "research-readonly-write-guard",
+          "logical_policy": "research-readonly-write-guard",
+          "mode": "enforce",
+          "timeout": 5
+        },
+        {
+          "bundle_group": "research-shell-guards",
+          "dispatcher_backed": true,
+          "id": "research-dangerous-shell-guard",
+          "logical_policy": "research-dangerous-shell-guard",
+          "mode": "enforce",
+          "timeout": 5
+        }
+      ],
+      "SessionStart": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": false,
+          "id": "session-start",
+          "logical_policy": "session-start",
+          "mode": null,
+          "timeout": 15
+        }
+      ],
+      "Stop": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-stop-verifier",
+          "logical_policy": "research-stop-verifier",
+          "mode": "enforce",
+          "timeout": 30
+        }
+      ],
+      "UserPromptSubmit": [
+        {
+          "bundle_group": null,
+          "dispatcher_backed": false,
+          "id": "prompt-log",
+          "logical_policy": "prompt-log",
+          "mode": null,
+          "timeout": 5
+        },
+        {
+          "bundle_group": null,
+          "dispatcher_backed": true,
+          "id": "research-prompt-triage-context",
+          "logical_policy": "research-prompt-triage-context",
+          "mode": "context",
+          "timeout": 5
+        }
+      ]
+    }
+  },
+  "summary": {
+    "harness_count": 5,
+    "harnesses": {
+      "claude-code": {
+        "events": {
+          "PostToolUse": 1,
+          "PreToolUse": 4,
+          "Stop": 3,
+          "SubagentStop": 1,
+          "UserPromptSubmit": 1
+        },
+        "max_spawns_single_event": 4,
+        "total_spawns": 10
+      },
+      "codex": {
+        "events": {
+          "PermissionRequest": 1,
+          "PostToolUse": 2,
+          "PreToolUse": 6,
+          "SessionStart": 1,
+          "Stop": 2,
+          "UserPromptSubmit": 1
+        },
+        "max_spawns_single_event": 6,
+        "total_spawns": 13
+      },
+      "cursor": {
+        "events": {
+          "AfterFileEdit": 1,
+          "BeforeMCPExecution": 1,
+          "BeforeReadFile": 1,
+          "BeforeShellExecution": 1,
+          "PostToolUse": 2,
+          "PreToolUse": 6,
+          "SessionStart": 1,
+          "Stop": 2,
+          "SubagentStart": 1,
+          "UserPromptSubmit": 1
+        },
+        "max_spawns_single_event": 6,
+        "total_spawns": 17
+      },
+      "gemini-cli": {
+        "events": {
+          "PostToolUse": 1,
+          "PreToolUse": 4,
+          "Stop": 1,
+          "UserPromptSubmit": 1
+        },
+        "max_spawns_single_event": 4,
+        "total_spawns": 7
+      },
+      "github-copilot": {
+        "events": {
+          "PostToolUse": 3,
+          "PreToolUse": 6,
+          "SessionStart": 1,
+          "Stop": 1,
+          "UserPromptSubmit": 2
+        },
+        "max_spawns_single_event": 6,
+        "total_spawns": 13
+      }
+    },
+    "total_spawns": 60
+  },
+  "tier": "legacy"
+}

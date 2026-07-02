@@ -22,14 +22,14 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="notion-api"
   description="third-party Notion REST guide; prefer official `makenotion/skills@notion-cli` for catalog promotion."
-  installCommand={`npx skills add intellectronica/agent-skills@notion-api --skill notion-api -y -g`}
+  installCommand={`No portable install command is recorded; keep global-only or avoid unless explicitly approved.`}
   usage="/notion-api"
   badges={[{ text: "notion-api", variant: "note" }, { text: "10 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Cataloged for audit and dedupe only. This global-only/avoid row is not published as a portable install.
 
 <Aside type="note" title="Curated external (hand-maintained)">
 Composed compose-external-wave-8 using authoring SSOT (`docs/src/authoring/skills/notion-api.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
@@ -41,12 +41,7 @@ Third-party Notion REST guide; prefer official makenotion/skills@notion-cli for 
 
 ## Harness Coverage
 
-Targets all supported agent harnesses via the install command below.
-
-**Portable multi-harness install command:**
-```bash
-npx skills add intellectronica/agent-skills@notion-api --skill notion-api -y -g
-```
+No portable install command is published for this global-only/avoid row.
 
 ## Trust / Audit
 
@@ -69,7 +64,7 @@ status=global-only-or-avoid; selector=unresolved; unresolved: third-party Notion
 | Source Type | `curated-external` |
 | Display Source | `intellectronica/agent-skills` |
 | Source Kind | `github` |
-| Installability | portable command |
+| Installability | not installable by default |
 | Review State | curated |
 | Trust Tier | `global-only-or-avoid` |
   </TabItem>

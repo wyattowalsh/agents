@@ -5,11 +5,13 @@ applyTo: '**/*'
 
 # OpenCode Agent Runtime Overlay
 
-This file contains OpenCode-specific runtime configuration for the agents defined in `agents/*.md`. It is loaded exclusively by the OpenCode harness and is ignored by Codex, Claude Code, and Grok routes.
+This file documents OpenCode-specific runtime configuration for the agents defined in `agents/*.md`. It is loaded exclusively by the OpenCode harness as an instruction surface and is ignored by Codex, Claude Code, and Grok routes.
+
+Machine-readable runtime overlays live in `config/opencode-agents.json`. Wagents sync merges that JSON with portable `agents/*.md` bodies into `.opencode/agents/*.md` (OpenCode-native frontmatter with `permission` objects, not portable `tools: all`).
 
 ## Purpose
 
-The portable agent contract (documented in `AGENTS.md`) defines a minimal, cross-platform schema. OpenCode extends this schema with runtime-specific keys for subagent behavior, UI theming, and granular permission rules. These extensions are stored here to keep the canonical agent definitions portable.
+The portable agent contract (documented in `AGENTS.md`) defines a minimal, cross-platform schema. OpenCode extends this schema with runtime-specific keys for subagent behavior, UI theming, and granular permission rules. Those extensions are stored in `config/opencode-agents.json` to keep the canonical agent definitions portable.
 
 ## Custom Keys (OpenCode-only)
 
@@ -22,141 +24,15 @@ The portable agent contract (documented in `AGENTS.md`) defines a minimal, cross
 
 ## Agent Runtime Configuration
 
-### researcher
+Per-agent `mode`, `temperature`, `color`, and `permission` values are defined in `config/opencode-agents.json`. Generated OpenCode agent files are written to `.opencode/agents/` by:
 
-```yaml
-mode: subagent
-temperature: 0.1
-color: primary
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "ls *": allow
-    "rg *": allow
-    "git log*": allow
-  webfetch: allow
+```bash
+uv run python scripts/sync_agent_stack.py --apply --targets repo --platforms opencode
 ```
 
-### orchestrator
+Or via `just sync-opencode`.
 
-```yaml
-mode: subagent
-temperature: 0.1
-color: primary
-permission:
-  edit: deny
-  bash: ask
-  webfetch: ask
-  task:
-    "*": deny
-    "general": allow
-    "explore": allow
-    "planner": allow
-    "researcher": allow
-    "code-reviewer": allow
-    "docs-writer": allow
-    "security-auditor": allow
-    "release-manager": allow
-    "performance-profiler": allow
-```
-
-### planner
-
-```yaml
-mode: subagent
-temperature: 0.1
-color: info
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "ls *": allow
-    "rg *": allow
-    "git status*": allow
-    "git diff*": allow
-    "git log*": allow
-  webfetch: ask
-```
-
-### code-reviewer
-
-```yaml
-mode: subagent
-temperature: 0.1
-color: warning
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "git status*": allow
-    "git diff*": allow
-    "git log*": allow
-    "rg *": allow
-  webfetch: deny
-```
-
-### security-auditor
-
-```yaml
-mode: subagent
-temperature: 0.1
-color: error
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "git diff*": allow
-    "git log*": allow
-    "rg *": allow
-  webfetch: allow
-```
-
-### performance-profiler
-
-```yaml
-mode: subagent
-temperature: 0.1
-color: secondary
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "git diff*": allow
-    "rg *": allow
-  webfetch: ask
-```
-
-### release-manager
-
-```yaml
-mode: subagent
-temperature: 0.1
-color: success
-permission:
-  bash:
-    "*": ask
-    "git status*": allow
-    "git diff*": allow
-    "git log*": allow
-    "git tag*": ask
-    "gh release*": ask
-  webfetch: ask
-```
-
-### docs-writer
-
-```yaml
-mode: subagent
-temperature: 0.2
-color: accent
-permission:
-  bash:
-    "*": ask
-    "ls *": allow
-    "rg *": allow
-  webfetch: ask
-```
+After `apm compile -t opencode`, always re-run that sync so APM's portable agent projection does not overwrite schema-valid OpenCode frontmatter.
 
 ## Notes
 
@@ -167,4 +43,8 @@ permission:
 
 ## Maintenance
 
-When a new agent is added to `agents/`, add its runtime configuration here if it uses custom keys. Keep the portable frontmatter in the `.md` file minimal (`name`, `description`, and any documented optional fields).
+When a new agent is added to `agents/`:
+
+1. Add a matching entry to `config/opencode-agents.json` with OpenCode runtime keys.
+2. Run `just sync-opencode` (or the `sync_agent_stack.py` command above).
+3. Keep portable frontmatter in `agents/<name>.md` minimal (`name`, `description`, and documented optional fields).

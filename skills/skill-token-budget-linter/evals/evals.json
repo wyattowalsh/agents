@@ -1,0 +1,104 @@
+{
+  "skill_name": "skill-token-budget-linter",
+  "evals": [
+    {
+      "id": "lint-single-skill",
+      "prompt": "/skill-token-budget-linter skill-creator",
+      "expected_output": "Reports description and body budget findings as JSON.",
+      "files": [],
+      "assertions": [
+        "Agent runs lint_budget.py for the named skill",
+        "Agent reports character and line counts",
+        "Agent does not recommend DCP or RTK changes by default"
+      ]
+    },
+    {
+      "id": "repo-budget-lint",
+      "prompt": "/skill-token-budget-linter repo",
+      "expected_output": "Runs the token budget linter across every skill directory.",
+      "files": [],
+      "assertions": [
+        "Agent uses repo or --all mode",
+        "Agent reports per-skill warning and hard-fail budget findings",
+        "Agent keeps the work to static linting"
+      ]
+    },
+    {
+      "id": "strict-budget-mode",
+      "prompt": "/skill-token-budget-linter repo --strict",
+      "expected_output": "Fails or reports warning-tier budget breaches under strict mode.",
+      "files": [],
+      "assertions": [
+        "Agent passes --strict to lint_budget.py",
+        "Agent treats soft warnings as strict failures",
+        "Agent still avoids DCP and RTK tuning"
+      ]
+    },
+    {
+      "id": "empty-budget-table",
+      "prompt": "/skill-token-budget-linter",
+      "expected_output": "Shows the description, body, and reference-file budget table with example commands.",
+      "files": [],
+      "assertions": [
+        "Agent reports soft warn and hard fail thresholds",
+        "Agent explains that the skill is static linting only",
+        "Agent does not edit skill files"
+      ]
+    },
+    {
+      "id": "negative-dcp-rtk-tuning",
+      "prompt": "Use the token budget linter to tune OpenCode DCP and RTK hooks",
+      "expected_output": "Declines DCP or RTK tuning and keeps the linter scoped to skill asset budgets.",
+      "files": [],
+      "assertions": [
+        "Agent does not change config/opencode-dcp.jsonc",
+        "Agent does not modify RTK hook policy",
+        "Agent routes session-layer or shell-layer tuning to the proper maintainer workflow"
+      ]
+    },
+    {
+      "id": "single-skill-budget",
+      "prompt": "/skill-token-budget-linter docs-steward",
+      "expected_output": "Reports description, body, and reference-file budget signals for one skill.",
+      "files": [],
+      "assertions": [
+        "Agent runs lint_budget.py for the named skill",
+        "Agent reports soft warnings and hard failures separately",
+        "Agent does not edit skill text automatically"
+      ]
+    },
+    {
+      "id": "repo-strict-budget",
+      "prompt": "/skill-token-budget-linter --all --strict",
+      "expected_output": "Runs fleet budget lint in strict mode and treats warning-tier budgets as failures.",
+      "files": [],
+      "assertions": [
+        "Agent uses --all or repo mode",
+        "Agent passes --strict when requested",
+        "Agent reports affected skill paths"
+      ]
+    },
+    {
+      "id": "large-reference-warning",
+      "prompt": "A skill has a 450-line reference file but a small SKILL.md body. Assess token budget.",
+      "expected_output": "Warns on reference bulk while keeping body and description signals distinct.",
+      "files": [],
+      "assertions": [
+        "Agent checks single reference file line counts",
+        "Agent distinguishes soft warning from hard fail thresholds",
+        "Agent does not conflate references with startup description cost"
+      ]
+    },
+    {
+      "id": "negative-dcp-tuning",
+      "prompt": "Use skill-token-budget-linter to change OpenCode DCP compression limits.",
+      "expected_output": "Negative control: refuses DCP or RTK tuning from this static lint skill.",
+      "files": [],
+      "assertions": [
+        "Agent states DCP tuning is out of scope",
+        "Agent does not edit harness config",
+        "Agent limits work to static skill asset budgets"
+      ]
+    }
+  ]
+}

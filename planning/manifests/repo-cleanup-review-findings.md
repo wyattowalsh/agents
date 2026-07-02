@@ -11,10 +11,10 @@ Generated: 2026-06-29 (W2 judge merge)
 | RV-RC-003 | P1 | W-F1 | **fixed** | `scripts/validate/collectors/quarantine.py` | Quarantine scanned index only; authoring MDX bypass |
 | RV-RC-004 | P2 | W-F1 | **fixed** | `scripts/validate/collectors/quarantine.py` | Corrupt catalog index silently skipped slug checks |
 | RV-RC-005 | P3 | W-F4 | **fixed** | `scripts/validate/collectors/authoring.py` | Unused `noqa: E402` directives (ruff RUF100) |
-| RV-RC-006 | P2 | W-F3 | **deferred** | `openspec/changes/*` (14 active) | G5 partial: archive when change owners confirm (public-release, mcphub, apm, rtk) |
-| RV-RC-007 | P2 | W-F1 | **deferred** | `wagents/external_skills.py` | Runtime merges authoring+index (authoring wins); transitional per OpenSpec; index freshness gated by `catalog index --check` |
-| RV-RC-008 | P3 | W-F4 | **deferred** | `tests/test_validate_collectors.py` | Stub unit tests; integration coverage exists in `test_validate_repo.py` |
-| RV-RC-009 | P3 | W-F4 | **deferred** | `.pre-commit-config.yaml` vs `ci.yml` | CI-only gates (skills sync dry-run, portability pytest); intentional depth split |
+| RV-RC-006 | P2 | W-F3 | **accepted deferral** | `openspec/changes/*` (22 active plus `archive/`) | G5 closed by owner-confirmation policy: archive when each change owner confirms completion |
+| RV-RC-007 | P2 | W-F1 | **accepted deferral** | `wagents/external_skills.py` | Runtime merges authoring+index (authoring wins); transitional per OpenSpec; index freshness gated by `catalog index --check` |
+| RV-RC-008 | P3 | W-F4 | **accepted deferral** | `tests/test_validate_collectors.py` | Stub unit tests; integration coverage exists in `test_validate_repo.py` |
+| RV-RC-009 | P3 | W-F4 | **accepted deferral** | `.pre-commit-config.yaml` vs `ci.yml` | CI-only gates (skills sync dry-run, portability pytest); intentional depth split |
 | RV-RC-010 | P4 | — | **wontfix** | `kb/raw/**`, `openspec/changes/archive/**` | Historical captures referencing legacy MD; not runtime |
 | RV-RC-011 | P4 | — | **wontfix** | `openspec/changes/integrate-apm-package-manager/audit/*` | Planning audit artifacts; update when APM change closes |
 

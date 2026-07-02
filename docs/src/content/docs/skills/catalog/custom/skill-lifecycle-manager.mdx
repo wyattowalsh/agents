@@ -1,0 +1,152 @@
+---
+title: "skill-lifecycle-manager"
+description: "Report skill lifecycle stage from frontmatter, eval coverage, and validators. Use when promoting, deprecating, or auditing repo skills. NOT for live installs."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="skill-lifecycle-manager"
+  description="Report skill lifecycle stage from frontmatter, eval coverage, and validators. Use when promoting, deprecating, or auditing repo skills. NOT for live installs."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill skill-lifecycle-manager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/skill-lifecycle-manager &lt;skill-name|repo&gt; [--format json]"
+  badges={[{ text: "skill-lifecycle-manager", variant: "note" }, { text: "213 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/skill-lifecycle-manager/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Classify repository skills by lifecycle stage and readiness gates.
+
+## Modes
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| `&lt;name&gt;` | Lifecycle report for one skill |
+| `repo` / `--all` | Summary for every `skills/*/` directory |
+| `--format json` | Machine-readable report |
+| Empty | Show stage definitions and example commands |
+
+## Critical Rules
+
+1. Never auto-promote a skill based on lifecycle heuristics alone.
+2. Treat missing evals as a draft signal, not a hard block for internal skills.
+3. Do not mutate `metadata.internal` or catalog authoring rows from this skill.
+4. Run `wagents validate` before declaring a skill active-ready.
+5. Route executable fixes to skill-creator or the maintainer lead.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `skill-lifecycle-manager` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Argument Hint | `[skill-name|repo] [--format json]` |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: skill-lifecycle-manager
+description: >-
+  Report skill lifecycle stage from frontmatter, eval coverage, and validators.
+  Use when promoting, deprecating, or auditing repo skills. NOT for live installs.
+user-invocable: true
+argument-hint: "<skill-name|repo> [--format json]"
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+---
+
+# Skill Lifecycle Manager
+
+Classify repository skills by lifecycle stage and readiness gates.
+
+**Scope:** Read-only lifecycle reporting. Does not edit skills, run installs, or mutate catalog indexes.
+
+## Dispatch
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| `<name>` | Lifecycle report for one skill |
+| `repo` / `--all` | Summary for every `skills/*/` directory |
+| `--format json` | Machine-readable report |
+| Empty | Show stage definitions and example commands |
+
+## Lifecycle Stages
+
+| Stage | Signals |
+|-------|---------|
+| `draft` | TODO description, missing evals, or failing `scripts/check.py` contract |
+| `internal` | `metadata.internal: true` |
+| `active` | Valid frontmatter, eval manifest, and portable validator present |
+| `deprecated` | Body or metadata marks deprecation (maintainer-authored) |
+
+## Workflow
+
+```bash
+uv run python skills/skill-lifecycle-manager/scripts/lifecycle_report.py <name>
+uv run python skills/skill-lifecycle-manager/scripts/lifecycle_report.py --all --format json
+```
+
+Pair lifecycle output with `/skill-creator audit` before promotion.
+
+## Validation Contract
+
+```bash
+uv run python skills/skill-lifecycle-manager/scripts/check.py
+```
+
+## Critical Rules
+
+1. Never auto-promote a skill based on lifecycle heuristics alone.
+2. Treat missing evals as a draft signal, not a hard block for internal skills.
+3. Do not mutate `metadata.internal` or catalog authoring rows from this skill.
+4. Run `wagents validate` before declaring a skill active-ready.
+5. Route executable fixes to skill-creator or the maintainer lead.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/skill-lifecycle-manager/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/skill-lifecycle-manager/SKILL.md)

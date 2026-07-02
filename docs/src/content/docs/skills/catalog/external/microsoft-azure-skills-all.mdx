@@ -22,14 +22,14 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="microsoft-azure-skills-all"
   description="massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote."
-  installCommand={`npx skills add microsoft/azure-skills --skill microsoft-azure-skills-all -y -g`}
+  installCommand={`No portable install command is recorded; keep global-only or avoid unless explicitly approved.`}
   usage="/microsoft-azure-skills-all"
   badges={[{ text: "microsoft-azure-skills-all", variant: "note" }, { text: "14 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Cataloged for audit and dedupe only. This global-only/avoid row is not published as a portable install.
 
 <Aside type="note" title="Curated external (hand-maintained)">
 Composed compose-external-wave-7 using authoring SSOT (`docs/src/authoring/skills/microsoft-azure-skills-all.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
@@ -41,12 +41,7 @@ microsoft/azure-skills (official Microsoft). Massive bundle covering many Azure 
 
 ## Harness Coverage
 
-Targets all supported agent harnesses via the install command below.
-
-**Portable multi-harness install command:**
-```bash
-npx skills add microsoft/azure-skills --skill microsoft-azure-skills-all -y -g
-```
+No portable install command is published for this global-only/avoid row.
 
 ## Trust / Audit
 
@@ -60,7 +55,7 @@ Entry maintained in authoring SSOT `docs/src/authoring/skills/microsoft-azure-sk
 
 ## Install Prerequisites
 
-npx skills add microsoft/azure-skills (but keep global-only; avoid bulk in curated install-now); status=keep-global-only-or-avoid.
+Keep global-only/avoid; do not bulk-promote without a concrete approval and fresh source audit.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -69,7 +64,7 @@ npx skills add microsoft/azure-skills (but keep global-only; avoid bulk in curat
 | Source Type | `curated-external` |
 | Display Source | `microsoft/azure-skills` |
 | Source Kind | `github` |
-| Installability | portable command |
+| Installability | not installable by default |
 | Review State | curated |
 | Trust Tier | `global-only-or-avoid` |
   </TabItem>

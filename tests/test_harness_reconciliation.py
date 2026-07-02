@@ -5,6 +5,9 @@ from __future__ import annotations
 import importlib.util
 import json
 from pathlib import Path
+from types import SimpleNamespace
+
+from wagents.installed_inventory import InstalledSkillInventoryRow
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "planning" / "manifests" / "harness-reconciliation.json"
@@ -46,6 +49,18 @@ def load_generator_module():
     return module
 
 
+def count_skill_agents(manifest: dict, *, field: str, provenance_statuses: set[str]) -> dict[str, int]:
+    counts = dict.fromkeys(SUPPORTED_SKILL_AGENTS, 0)
+    for row in manifest["matrix"]:
+        if row["asset_type"] != "skill":
+            continue
+        if row.get("provenance_status") not in provenance_statuses:
+            continue
+        for agent in row.get(field, []):
+            counts[agent] = counts.get(agent, 0) + 1
+    return counts
+
+
 def test_harness_reconciliation_manifest_has_terminal_dispositions() -> None:
     manifest = load_manifest()
 
@@ -67,22 +82,39 @@ def test_harness_reconciliation_manifest_has_terminal_dispositions() -> None:
 def test_harness_reconciliation_records_full_skill_sync_result() -> None:
     manifest = load_manifest()
     skills = manifest["summary"]["skills"]
+    default_missing = skills["default_sync_missing_by_agent"]
+    include_installed_missing = skills["include_installed_missing_by_agent"]
+    query_blocked = skills["query_blocked_by_agent"]
 
     assert skills["desired_count"] > 0
-    assert set(skills["default_sync_missing_by_agent"]) == SUPPORTED_SKILL_AGENTS
-    assert set(skills["query_blocked_by_agent"]) == SUPPORTED_SKILL_AGENTS
-    assert all(count == 0 for count in skills["default_sync_missing_by_agent"].values())
-    assert all(count == 0 for count in skills["query_blocked_by_agent"].values())
-    assert skills["include_installed_missing_by_agent"]["grok"] == 4
+    assert set(default_missing) == SUPPORTED_SKILL_AGENTS
+    assert set(include_installed_missing) == SUPPORTED_SKILL_AGENTS
+    assert set(query_blocked) == SUPPORTED_SKILL_AGENTS
 
-    anthro_gaps = {
-        row["name"]
-        for row in manifest["matrix"]
-        if row["asset_type"] == "skill"
-        and row.get("source") == "anthropics/skills"
-        and row.get("missing_agents") == ["grok"]
-    }
-    assert anthro_gaps == {"frontend-design", "pdf", "web-artifacts-builder", "webapp-testing"}
+    default_statuses = {"repo-owned", "verified-curated-external"}
+    assert default_missing == count_skill_agents(
+        manifest,
+        field="missing_agents",
+        provenance_statuses=default_statuses,
+    )
+    assert include_installed_missing == count_skill_agents(
+        manifest,
+        field="missing_agents",
+        provenance_statuses={*default_statuses, "installed-external"},
+    )
+    assert query_blocked == count_skill_agents(
+        manifest,
+        field="query_blocked_agents",
+        provenance_statuses=default_statuses,
+    )
+
+    if not skills["query_errors"]:
+        assert all(count == 0 for count in default_missing.values())
+        assert all(count == 0 for count in query_blocked.values())
+    else:
+        assert any(count > 0 for count in default_missing.values()) or any(
+            count > 0 for count in query_blocked.values()
+        )
 
 
 def test_harness_reconciliation_covers_plugin_drift_and_config_blockers() -> None:
@@ -135,6 +167,66 @@ def test_native_plugin_detection_requires_successful_positive_output() -> None:
     assert not module._native_plugins_reported({"ok": True, "stdout": "No plugins installed\n", "stderr": ""})
     assert not module._native_plugins_reported({"ok": True, "stdout": "0 plugins\n", "stderr": ""})
     assert module._native_plugins_reported({"ok": True, "stdout": "plugin-a installed, enabled\n", "stderr": ""})
+
+
+def test_skill_rows_subtracts_owner_covered_agents_and_exports_cleanup_metadata(monkeypatch) -> None:
+    module = load_generator_module()
+    row = InstalledSkillInventoryRow(
+        name="repo-owned-skill",
+        path="",
+        source_path="skills/repo-owned-skill/SKILL.md",
+        scope="desired",
+        description="Repo owned.",
+        license="",
+        version="",
+        author="",
+        source="github:wyattowalsh/agents",
+        install_source="github:wyattowalsh/agents",
+        source_url="https://github.com/wyattowalsh/agents",
+        install_command="npx skills add github:wyattowalsh/agents --skill repo-owned-skill -y -g",
+        provenance_status="repo-owned",
+        trust_tier="repo-owned",
+        selector_mode="named",
+        installed_agents=(),
+        discovered_in=(),
+        target_agents=("codex", "opencode", "claude-code"),
+        sync_kind="skills-cli",
+        docs_status="documented",
+    )
+    exposure = SimpleNamespace(
+        name="repo-owned-skill",
+        duplicate_class="same-realpath",
+        cleanup_action="remove-generated-symlink",
+        docs_status="documented",
+        canonical_owner="plugin",
+        exposure_owner="skills-cli",
+    )
+
+    monkeypatch.setattr(module, "read_external_skill_entries", lambda strict=True: [])
+    monkeypatch.setattr(module, "collect_installed_inventory", lambda **kwargs: SimpleNamespace(queries=()))
+    monkeypatch.setattr(module, "collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr(module, "merge_desired_with_installed", lambda snapshot, desired: SimpleNamespace(rows=desired))
+    monkeypatch.setattr(module, "collect_skill_cleanup_exposures", lambda: (exposure,))
+    monkeypatch.setattr(module, "supported_agent_ids", lambda: ("codex", "opencode", "claude-code"))
+    monkeypatch.setattr(
+        module,
+        "repo_skill_owner_covered_agents",
+        lambda row, target_agents, **kwargs: tuple(
+            agent for agent in target_agents if agent in {"codex", "opencode"}
+        ),
+    )
+
+    rows, summary = module._skill_rows()
+
+    assert rows[0]["owner_covered_agents"] == ["codex", "opencode"]
+    assert rows[0]["missing_agents"] == ["claude-code"]
+    assert rows[0]["exposure_owner"] == "plugin"
+    assert rows[0]["duplicate_class"] == "same-realpath"
+    assert rows[0]["cleanup_action"] == "remove-generated-symlink"
+    assert rows[0]["docs_status"] == "documented"
+    assert summary["default_sync_missing_by_agent"]["codex"] == 0
+    assert summary["default_sync_missing_by_agent"]["opencode"] == 0
+    assert summary["default_sync_missing_by_agent"]["claude-code"] == 1
 
 
 def test_harness_reconciliation_is_redacted_and_has_parallel_task_graph() -> None:

@@ -1,0 +1,88 @@
+{
+  "shard_id": "w3-catalog-custom-03",
+  "count": 10,
+  "skill_ids": [
+    "i18n-localization",
+    "incident-response-engineer",
+    "infrastructure-coder",
+    "javascript-conventions",
+    "learn",
+    "mcp-creator",
+    "namer",
+    "nerdbot",
+    "new-project",
+    "observability-advisor"
+  ],
+  "entries": [
+    {
+      "skill_id": "i18n-localization",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "incident-response-engineer",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "infrastructure-coder",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "javascript-conventions",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "learn",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "mcp-creator",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "namer",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "nerdbot",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "new-project",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    },
+    {
+      "skill_id": "observability-advisor",
+      "issues": [
+        "missing frontmatter field: trust_tier",
+        "missing frontmatter field: status"
+      ]
+    }
+  ]
+}

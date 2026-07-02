@@ -4,7 +4,22 @@ requires-python = ">=3.13"
 
 [manifest]
 members = [
+    "mcp-agent-catalog",
+    "mcp-changelog-digest",
+    "mcp-ci-artifacts",
+    "mcp-docs-graph",
+    "mcp-docs-index",
+    "mcp-eval-results",
     "mcp-mcphub",
+    "mcp-oauth-reference",
+    "mcp-registry-publisher",
+    "mcp-release-provenance",
+    "mcp-repo-readonly",
+    "mcp-sandbox-profiles",
+    "mcp-skill-catalog",
+    "mcp-source-url-health",
+    "mcp-template-smoke",
+    "mcp-workflow-status",
     "wagents",
 ]
 
@@ -708,6 +723,96 @@ wheels = [
 ]
 
 [[package]]
+name = "mcp-agent-catalog"
+version = "0.1.0"
+source = { editable = "mcp/agent-catalog" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "wagents" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2" },
+    { name = "wagents", editable = "." },
+]
+
+[[package]]
+name = "mcp-changelog-digest"
+version = "0.1.0"
+source = { editable = "mcp/changelog-digest" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "wagents" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2" },
+    { name = "wagents", editable = "." },
+]
+
+[[package]]
+name = "mcp-ci-artifacts"
+version = "0.1.0"
+source = { editable = "mcp/ci-artifacts" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "wagents" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2" },
+    { name = "wagents", editable = "." },
+]
+
+[[package]]
+name = "mcp-docs-graph"
+version = "0.1.0"
+source = { editable = "mcp/docs-graph" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "wagents" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2" },
+    { name = "wagents", editable = "." },
+]
+
+[[package]]
+name = "mcp-docs-index"
+version = "0.1.0"
+source = { editable = "mcp/docs-index" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "wagents" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2" },
+    { name = "wagents", editable = "." },
+]
+
+[[package]]
+name = "mcp-eval-results"
+version = "0.1.0"
+source = { editable = "mcp/eval-results" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "wagents" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2" },
+    { name = "wagents", editable = "." },
+]
+
+[[package]]
 name = "mcp-mcphub"
 version = "0.1.0"
 source = { editable = "mcp/mcphub" }
@@ -717,6 +822,139 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [{ name = "fastmcp", specifier = ">=2" }]
+
+[[package]]
+name = "mcp-oauth-reference"
+version = "0.1.0"
+source = { editable = "mcp/oauth-reference" }
+dependencies = [
+    { name = "fastmcp" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "fastmcp", specifier = ">=2" }]
+
+[[package]]
+name = "mcp-registry-publisher"
+version = "0.1.0"
+source = { editable = "mcp/registry-publisher" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "wagents" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2" },
+    { name = "wagents", editable = "." },
+]
+
+[[package]]
+name = "mcp-release-provenance"
+version = "0.1.0"
+source = { editable = "mcp/release-provenance" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "pyyaml" },
+    { name = "wagents" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2" },
+    { name = "pyyaml", specifier = ">=6" },
+    { name = "wagents", editable = "." },
+]
+
+[[package]]
+name = "mcp-repo-readonly"
+version = "0.1.0"
+source = { editable = "mcp/repo-readonly" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "wagents" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2" },
+    { name = "wagents", editable = "." },
+]
+
+[[package]]
+name = "mcp-sandbox-profiles"
+version = "0.1.0"
+source = { editable = "mcp/sandbox-profiles" }
+dependencies = [
+    { name = "fastmcp" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "fastmcp", specifier = ">=2" }]
+
+[[package]]
+name = "mcp-skill-catalog"
+version = "0.1.0"
+source = { editable = "mcp/skill-catalog" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "wagents" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2" },
+    { name = "wagents", editable = "." },
+]
+
+[[package]]
+name = "mcp-source-url-health"
+version = "0.1.0"
+source = { editable = "mcp/source-url-health" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "httpx" },
+    { name = "wagents" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2" },
+    { name = "httpx", specifier = ">=0.28.1" },
+    { name = "wagents", editable = "." },
+]
+
+[[package]]
+name = "mcp-template-smoke"
+version = "0.1.0"
+source = { editable = "mcp/template-smoke" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "wagents" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2" },
+    { name = "wagents", editable = "." },
+]
+
+[[package]]
+name = "mcp-workflow-status"
+version = "0.1.0"
+source = { editable = "mcp/workflow-status" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "pyyaml" },
+    { name = "wagents" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2" },
+    { name = "pyyaml", specifier = ">=6" },
+    { name = "wagents", editable = "." },
+]
 
 [[package]]
 name = "mdurl"

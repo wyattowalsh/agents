@@ -1,0 +1,111 @@
+---
+title: "plugin-skill-ownership"
+description: "Ownership rules that prevent repo skills from being installed again on top of native plugins or direct repo skill paths."
+page_kind: "harness-config"
+source_kind: "registry"
+asset_id: "plugin-skill-ownership"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="harness-config" variant="note" /> <Badge text="skills" variant="default" /> <Badge text="plugins" variant="default" />
+
+> Skill and plugin exposure rules for local harnesses. Use this page with `wagents skills cleanup --dry-run` and `wagents skills sync --dry-run` before changing any live home config, plugin cache, or skill directory.
+
+## Ownership Model
+
+Repo-owned skills come from `skills/<name>/SKILL.md`. A harness should expose each repo skill through exactly one owner:
+
+| Harness | Preferred repo skill owner | Cleanup implication |
+| --- | --- | --- |
+| Codex | Native `agents@agents` plugin when enabled in `~/.codex/config.toml` | Do not also install repo-owned skills into `~/.codex/skills`; stale plugin cache refresh stays approval-gated. |
+| OpenCode | Direct repo path when `opencode.json` has `skills.paths: ["skills"]` | Do not add duplicate Skills CLI copies for repo-owned skills; keep runtime plugins in the repo/live plugin array. |
+| Claude Code | Skills CLI unless a native plugin install is explicitly chosen | Repo-owned global skill copies remain valid fallback exposure. |
+| Grok Build | Grok project/global skills plus Claude-compatible mirrored exposure | Skills CLI has no native Grok adapter; sync uses Claude Code adapter and mirrors only when requested by the sync path. |
+| Gemini CLI, Antigravity, Crush, Cursor, GitHub Copilot | Skills CLI or platform projection surface | Keep local plugin/extension surfaces separate from repo skill copies unless a registry row declares one-owner behavior. |
+
+The normalized report fields are:
+
+| Field | Meaning |
+| --- | --- |
+| `exposure_owner` | The active owner class for this row, such as `plugin`, `direct-repo-path`, `skills-cli`, `project-local`, or `user-local`. |
+| `duplicate_class` | Duplicate risk for same-name skill exposures: `none`, `same-realpath`, `same-body`, or `divergent-body`. |
+| `cleanup_action` | Dry-run-only recommendation: `none`, `remove-generated-symlink`, `refresh-plugin-cache`, `sync-home-config`, `preserve`, or `manual-review`. |
+| `docs_status` | Documentation coverage: `documented`, `generated-missing`, or `not-applicable`. |
+
+<Aside type="caution" title="Apply boundary">
+`wagents skills cleanup --dry-run` is read-only. It may identify symlinks, stale plugin caches, or home config drift, but it does not delete files, refresh plugin caches, or write live harness configs. Those actions need a separately reviewed apply path.
+</Aside>
+
+## Commands
+
+Preview additive installs:
+
+```bash
+uv run wagents skills sync --dry-run
+```
+
+Preview duplicate cleanup and plugin drift:
+
+```bash
+uv run wagents skills cleanup --dry-run --format json
+```
+
+Regenerate the local reconciliation packet:
+
+```bash
+uv run python scripts/generate_harness_reconciliation.py
+```
+
+Use `--apply` only for `wagents skills sync` after reviewing the dry-run output. `wagents skills cleanup --apply` intentionally exits until a reviewed apply manifest exists.
+
+## Duplicate Classes
+
+| Class | Interpretation | Default action |
+| --- | --- | --- |
+| `none` | Only one exposure for that skill name was found. | No cleanup. |
+| `same-realpath` | Multiple harness entries point to the same resolved skill directory. | Keep only when that owner is expected; remove generated repo symlinks when a plugin/direct path owns exposure. |
+| `same-body` | Multiple directories have identical `SKILL.md` content. | Preserve unless the row is repo-owned and superseded by plugin/direct-path ownership. |
+| `divergent-body` | Same skill name resolves to different `SKILL.md` content. | Manual review before any install, deletion, or promotion. |
+
+## Plugin Surfaces
+
+Native and runtime plugins are documented through the harness config docs and the plugin/extension registry:
+
+| Surface | Source | Documentation responsibility |
+| --- | --- | --- |
+| Claude Code plugin | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` | Repo-owned native plugin manifest, documented here and in AGENTS.md. |
+| Codex plugin | `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json` | Repo-owned native plugin manifest; cache refresh is a cleanup recommendation, not an automatic action. |
+| OpenCode runtime plugins | `opencode.json`, live `~/.config/opencode/opencode.json`, TUI `~/.config/opencode/tui.json` | Repo plugin array uses `@latest`; live-only or TUI-only plugins are preserved as user-local unless promoted. |
+| Gemini extensions | `~/.gemini/extensions`, `~/.gemini/settings.json` | Local extension rows are preserved unless a registry or catalog entry promotes them. |
+| Chrome DevTools upstream plugin/extension | `config/plugin-extension-registry.json`, MCP registry ownership rules | Plugin/extension owners suppress duplicate standalone MCP projection for that harness. |
+
+## Skill Documentation
+
+Custom skills are documented from the repo-owned skill catalog path:
+
+- Source skill body: `skills/<name>/SKILL.md`
+- Human catalog entry: `docs/src/authoring/skills/<name>.mdx`
+- Generated public page: `/skills/catalog/custom/<name>/`
+- Generated machine index: `docs/public/generated-registries/skills-catalog-index.json`
+
+Curated external skills stay out of `skills/` and are documented in the authoring catalog:
+
+- Human catalog entry: `docs/src/authoring/skills/<name>.mdx`
+- Public generated page: `/skills/catalog/external/<name>/`
+- Install hub: `/skills/catalog/external/`
+- Sync source: `wagents skills sync --dry-run`
+
+Included third-party plugin or extension skills must be documented in the owning registry or catalog entry before promotion. If a duplicate local exposure has no trusted provenance or docs entry, keep it `user-local` and use `manual-review` or `preserve`, not automatic install or deletion.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="sync-manifest" href="/harness-config/sync-manifest/" description="Projection ownership ledger for generated, merged, copied, and symlinked harness surfaces." />
+  <LinkCard title="mcp-registry" href="/harness-config/mcp-registry/" description="MCP one-owner rules, including plugin and extension ownership." />
+  <LinkCard title="Skills Catalog" href="/skills/catalog/" description="Generated catalog for repo-owned custom and curated external skills." />
+  <LinkCard title="External Skills" href="/skills/catalog/external/" description="Curated external install hub and trust-gate workflow." />
+</CardGrid>

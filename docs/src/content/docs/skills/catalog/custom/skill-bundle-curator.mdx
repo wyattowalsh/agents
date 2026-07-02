@@ -1,0 +1,142 @@
+---
+title: "skill-bundle-curator"
+description: "Summarize bundle components from agent-bundle.json and repo skill/agent counts. Use when packaging or auditing distributable bundles. NOT for live plugin installs."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="skill-bundle-curator"
+  description="Summarize bundle components from agent-bundle.json and repo skill/agent counts. Use when packaging or auditing distributable bundles. NOT for live plugin installs."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill skill-bundle-curator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/skill-bundle-curator [--format json]"
+  badges={[{ text: "skill-bundle-curator", variant: "note" }, { text: "158 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/skill-bundle-curator/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Report bundle composition and adapter install surfaces for the repository root bundle.
+
+## Modes
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| Empty | Default bundle summary |
+| `--format json` | Machine-readable bundle report |
+| `adapters` | List adapter install/update commands only |
+
+## Critical Rules
+
+1. Treat adapter install strings as documentation — do not execute them from this skill.
+2. Never duplicate `skills/` or `agents/` into platform plugin folders.
+3. Pair bundle reports with cross-agent-install-smoke dry-run before install reconciliation.
+4. Keep bundle root policy aligned with `AGENTS.md` §2.1.
+5. Route packaging ZIP work to `wagents package`, not ad-hoc archives.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `skill-bundle-curator` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Argument Hint | `[--format json]` |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: skill-bundle-curator
+description: >-
+  Summarize bundle components from agent-bundle.json and repo skill/agent counts.
+  Use when packaging or auditing distributable bundles. NOT for live plugin installs.
+user-invocable: true
+argument-hint: "[--format json]"
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+---
+
+# Skill Bundle Curator
+
+Report bundle composition and adapter install surfaces for the repository root bundle.
+
+**Scope:** Read-only bundle inventory. Does not run `wagents install`, `npx skills add`, or marketplace updates.
+
+## Dispatch
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| Empty | Default bundle summary |
+| `--format json` | Machine-readable bundle report |
+| `adapters` | List adapter install/update commands only |
+
+## Workflow
+
+```bash
+uv run python skills/skill-bundle-curator/scripts/bundle_report.py
+uv run python skills/skill-bundle-curator/scripts/bundle_report.py --format json
+uv run python skills/skill-bundle-curator/scripts/bundle_report.py adapters
+```
+
+Cross-check counts with skill-router index before publishing bundle notes.
+
+## Validation Contract
+
+```bash
+uv run python skills/skill-bundle-curator/scripts/check.py
+```
+
+## Critical Rules
+
+1. Treat adapter install strings as documentation — do not execute them from this skill.
+2. Never duplicate `skills/` or `agents/` into platform plugin folders.
+3. Pair bundle reports with cross-agent-install-smoke dry-run before install reconciliation.
+4. Keep bundle root policy aligned with `AGENTS.md` §2.1.
+5. Route packaging ZIP work to `wagents package`, not ad-hoc archives.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/skill-bundle-curator/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/skill-bundle-curator/SKILL.md)

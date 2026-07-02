@@ -1,0 +1,16 @@
+[project]
+name = "mcp-eval-results"
+version = "0.1.0"
+description = "Read-only MCP server exposing wagents eval list/coverage/adequacy/validate results"
+requires-python = ">=3.13"
+dependencies = ["fastmcp>=2", "wagents"]
+
+[tool.uv.sources]
+wagents = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+only-include = ["server.py"]

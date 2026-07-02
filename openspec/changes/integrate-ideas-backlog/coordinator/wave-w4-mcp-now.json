@@ -1,0 +1,25 @@
+{
+  "wave": "W4",
+  "dispatched": [
+    {"task_id": "T-400a-f", "agent": "SA-MCP-SC", "files": ["mcp/skill-catalog/", "docs/src/content/docs/mcp/skill-catalog.mdx", "tests/mcp/test_skill_catalog.py"]},
+    {"task_id": "T-401a-f", "agent": "SA-MCP-AC", "files": ["mcp/agent-catalog/", "docs/src/content/docs/mcp/agent-catalog.mdx", "tests/mcp/test_agent_catalog.py"]},
+    {"task_id": "T-402a-f", "agent": "SA-MCP-DI", "files": ["mcp/docs-index/", "docs/src/content/docs/mcp/docs-index.mdx", "tests/mcp/test_docs_index.py"]},
+    {"task_id": "T-403a-f", "agent": "SA-MCP-RO", "files": ["mcp/repo-readonly/", "docs/src/content/docs/mcp/repo-readonly.mdx", "tests/mcp/test_repo_readonly.py"]},
+    {"task_id": "T-404a-e", "agent": "SA-MCP-URL", "files": ["mcp/source-url-health/", "docs/src/content/docs/mcp/source-url-health.mdx", "tests/mcp/test_source_url_health.py"]},
+    {"task_id": "T-405a-e", "agent": "SA-MCP-EV", "files": ["mcp/eval-results/", "docs/src/content/docs/mcp/eval-results.mdx", "tests/mcp/test_eval_results.py"]},
+    {"task_id": "T-406a", "agent": "SA-MCP0", "files": [
+      "config/mcp-registry.json",
+      "mcp/mcphub/mcp_settings.json",
+      "pyproject.toml"
+    ]}
+  ],
+  "gate_checks": [
+    "uv run python scripts/generate_mcphub_settings.py --check",
+    "bash scripts/mcphub/validate-settings.sh",
+    "uv run pytest tests/mcp_shared tests/mcp -q",
+    "uv run wagents validate",
+    "uv run wagents openspec validate"
+  ],
+  "blocked_until": [],
+  "note": "V-030 FastMCP Inspector smoke per server remains a manual maintainer gate; automated pytest covers tool contracts."
+}

@@ -22,6 +22,10 @@
       "name": "changelog-writer"
     },
     {
+      "command": "npx skills add github:wyattowalsh/agents --skill cross-agent-install-smoke -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "cross-agent-install-smoke"
+    },
+    {
       "command": "npx skills add github:wyattowalsh/agents --skill data-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "data-pipeline-architect"
     },
@@ -106,6 +110,10 @@
       "name": "mcp-creator"
     },
     {
+      "command": "npx skills add github:wyattowalsh/agents --skill mcphub-operator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "mcphub-operator"
+    },
+    {
       "command": "npx skills add github:wyattowalsh/agents --skill namer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "namer"
     },
@@ -178,12 +186,64 @@
       "name": "shell-scripter"
     },
     {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-bundle-curator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "skill-bundle-curator"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-compat-matrix -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "skill-compat-matrix"
+    },
+    {
       "command": "npx skills add github:wyattowalsh/agents --skill skill-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "skill-creator"
     },
     {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-eval-scaffolder -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "skill-eval-scaffolder"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-install-dry-run-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "skill-install-dry-run-planner"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-lifecycle-manager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "skill-lifecycle-manager"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-localization-packager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "skill-localization-packager"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-package-manifest-enricher -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "skill-package-manifest-enricher"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-quality-dashboard -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "skill-quality-dashboard"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-registry-lock -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "skill-registry-lock"
+    },
+    {
       "command": "npx skills add github:wyattowalsh/agents --skill skill-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "skill-router"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-signing-verifier -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "skill-signing-verifier"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-tag-taxonomist -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "skill-tag-taxonomist"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-token-budget-linter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "skill-token-budget-linter"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-trace-debugger -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "skill-trace-debugger"
     },
     {
       "command": "npx skills add github:wyattowalsh/agents --skill tech-debt-analyzer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",

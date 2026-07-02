@@ -31,7 +31,7 @@ Treat these repo files and directories as primary evidence before using generate
 | `wagents/` | Repository CLI and automation implementation. |
 | `config/` | Canonical registries and generated/merged surface policy. |
 | `openspec/` | Change workflow specs, schemas, active changes, and OpenSpec config. |
-| `Makefile`, `pyproject.toml` | Developer command and tooling configuration. |
+| `justfile`, `pyproject.toml` | Developer command and tooling configuration. |
 
 ## Current Wiki Map
 

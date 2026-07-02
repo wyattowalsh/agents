@@ -224,6 +224,31 @@ class TestRenderSkillPage:
         assert "Enriched from research cache (stub)" in result
         assert "SKILL.md is not available locally" not in result
 
+    def test_curated_global_only_does_not_synthesize_install_command(self, tmp_repo, monkeypatch):
+        node = _make_node(
+            "skill",
+            id="avoid-skill",
+            source="curated-external",
+            body="",
+            source_path="docs/src/authoring/skills/avoid-skill.mdx",
+            metadata={
+                "_is_stub": True,
+                "_curated_status": "global-only-or-avoid",
+                "_skills_trust_tier": "global-only-or-avoid",
+                "_skills_source": "owner/repo",
+                "_skills_install_source": "owner/repo",
+                "_sync_kind": "none",
+                "_selector_mode": "unresolved",
+            },
+        )
+        monkeypatch.setattr("wagents.rendering.load_skill_research", lambda sid: None)
+
+        result = render_skill_page(node, [], [node])
+
+        assert "npx skills add owner/repo --skill avoid-skill" not in result
+        assert "Portable multi-harness install command" not in result
+        assert "no portable install command is recorded" in result
+
     def test_pip_cli_catalog_row_skips_agentskills_blurb(self, tmp_repo):
         node = _make_node(
             "apm-cli",

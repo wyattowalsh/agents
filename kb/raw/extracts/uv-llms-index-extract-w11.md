@@ -14,7 +14,7 @@ journal_ref: kb-wave11-gap-sweep-2026-06-25
 
 # UV Llms Index Extract W11
 
-Normalized extract from `https://docs.astral.sh/uv/llms.txt` fetched 2026-06-25. External evidence only; repo `pyproject.toml` and `Makefile` remain authoritative for commands.
+Normalized extract from `https://docs.astral.sh/uv/llms.txt` fetched 2026-06-25. External evidence only; repo `pyproject.toml` and `justfile` remain authoritative for commands.
 
 ## Index highlights
 

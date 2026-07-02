@@ -75,6 +75,26 @@ Use this gate before loading the full orchestration doctrine:
 2. Present the Accounting Rule, recovery ladder, and reporting contract.
 3. Explain how to handle missing agents, re-spawns, and explicit skips before advancing to the next wave.
 
+## 0.5 Uncertainty Gate (upfront and re-entry)
+
+Before the Decomposition Gate — and again on re-entry — apply `instructions/global.md` Depth routing:
+
+1. List assumptions that still block safe decomposition, dispatch, or the affected subtask.
+2. Explore codebase-resolvable items first.
+3. When user-pivotal uncertainties remain upfront, invoke `/grill-me` before dispatching subagents or teammates.
+4. When a mid-wave fork is `subtask-pivotal`, pause affected workstreams and invoke **scoped** `/grill-me` (see scoped grill contract in `global.md`). Do not re-grill settled plan areas.
+5. Do not parallelize workstreams that depend on unresolved user choices. Do not let subagents guess through pivotal forks.
+
+**Re-entry triggers:**
+
+- Subagent or teammate returns `blocked-user-pivotal` (see `references/uncertainty-handoff.md`)
+- Wave accounting lists an unresolved pivotal blocker
+- Parent discovers a mid-wave fork before the next dispatch
+
+**Re-entry actions:** pause affected lanes → scoped `/grill-me` → update prompts → resume or re-dispatch.
+
+**Fast path:** Fully grounded request with no user-pivotal blockers → proceed to §0.
+
 ## 0. Decomposition Gate (MANDATORY before any work)
 
 Before executing any request that involves tool-mediated work:
@@ -147,6 +167,7 @@ independent.
 ### Prompt-tuning
 - Give every subagent a detailed, self-contained prompt with exact file paths, expected output format, and domain context.
 - Do NOT rely on the subagent inheriting conversation history — it does not.
+- When a subtask hits user-pivotal uncertainty the parent did not pre-resolve, return `blocked-user-pivotal` per `references/uncertainty-handoff.md` instead of guessing.
 
 ### Model selection
 - Default policy: `opus` for every subagent, teammate, and wave.
@@ -233,6 +254,7 @@ When N agents are dispatched, all N must be accounted for before proceeding:
 - Read `references/classification-gate.md` when deciding whether this skill should own the task at all.
 - Read `references/patterns.md` only when the user requests a specific pattern or the topology choice is the main question.
 - Read `references/progress-accounting.md` when discussing reporting, accounting, or recovery behavior.
+- Read `references/uncertainty-handoff.md` when a subagent hits user-pivotal uncertainty or returns `blocked-user-pivotal`.
 - Read `references/runtime-capability-boundaries.md` when tool/runtime limits or environment-specific constraints affect the topology.
 - Read `references/misroute-examples.md` when a request is close to the trigger boundary.
 
@@ -258,6 +280,7 @@ When N agents are dispatched, all N must be accounted for before proceeding:
 | `references/classification-gate.md` | Invocation gate, near-miss rules, and ask-first logic before orchestration starts | Deciding whether to invoke the skill |
 | `references/patterns.md` | Detailed patterns A-F with ASCII diagrams, key rules, recovery ladder | Designing parallel execution or selecting a pattern |
 | `references/progress-accounting.md` | Progress tracking contract, Accounting Rule details, and recovery/reporting expectations | Explaining recovery, accounting, or reporting |
+| `references/uncertainty-handoff.md` | Subagent `blocked-user-pivotal` return contract and parent scoped-grill obligations | Mid-wave pivotal blockers or re-entry |
 | `references/runtime-capability-boundaries.md` | Tier and runtime boundary guidance, including when tool or environment limits constrain the topology | Choosing a tier or discussing environment limits |
 | `references/misroute-examples.md` | Concrete false-trigger and near-miss scenarios | Checking borderline requests |
 
@@ -283,7 +306,7 @@ All orchestrated work must produce structured progress indicators via TaskCreate
 
 When the macro graph assigns nodes to **Grok Build**, the parent still owns waves, gates, and synthesis. Delegate execution via `/grok-delegate` — native `grok -p`, `-r`, worktrees, and leader only (no custom wrapper). Pre-flight: invoke `/grok-delegate` preflight before fleet dispatch (see grok-delegate skill). Parent dispatches parallel Grok nodes as independent bash subprocesses (Pattern A/E). Tune in-flight branches with `-r <sessionId>` after parent gates fail.
 
-**Tier-T trivial offload:** During decomposition, classify each leaf for Tier-T. When fast preflight `ok` and `grok-auth-expiry: ok`, default eligible bounded leaves (≤3 reads OR ≤1 file ≤80 LOC) to `/grok-delegate trivial` single-node `grok -p`. Parent keeps synthesis. Ineligible for multi-node graphs, overlapping writers, broad work, destructive/prod/git-push tasks, or secret-reading tasks. If first native Tier-T dispatch fails, stop Tier-T for the current parent work item and continue locally.
+**Tier-T trivial offload:** During decomposition, classify each leaf for Tier-T. When fast preflight `ok` and `grok-auth-expiry: ok`, default eligible bounded leaves (≤3 reads OR ≤1 file ≤80 LOC) to `/grok-delegate trivial` single-node `grok -p`. Parent keeps synthesis. Ineligible for multi-node graphs, overlapping writers, broad work, destructive/prod/git-push tasks, secret-reading tasks, or unresolved user-pivotal/subtask-pivotal uncertainty (resolve via scoped `/grill-me` first). If first native Tier-T dispatch fails, stop Tier-T for the current parent work item and continue locally.
 
 ## Scope Boundaries
 

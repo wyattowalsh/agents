@@ -4,6 +4,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 permissions: {}
 
@@ -86,7 +87,19 @@ jobs:
           mkdir -p "$HOME/.local/bin"
           mv actionlint "$HOME/.local/bin/actionlint"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-      - run: make ci-check
+      - name: Install just
+        env:
+          JUST_VERSION: 1.55.1
+          JUST_SHA256: b0ef600f0df20d5ae91ae931627c499fc52b477ffe5f5ea7b7b3ec616b16c778
+        run: |
+          archive="just-${JUST_VERSION}-x86_64-unknown-linux-musl.tar.gz"
+          curl -sSfL "https://github.com/casey/just/releases/download/${JUST_VERSION}/${archive}" -o "${archive}"
+          printf '%s  %s\n' "${JUST_SHA256}" "${archive}" | sha256sum -c -
+          tar -xzf "${archive}" just
+          mkdir -p "$HOME/.local/bin"
+          mv just "$HOME/.local/bin/just"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - run: just ci-check
 
   apm:
     runs-on: ubuntu-latest
@@ -142,3 +155,43 @@ jobs:
       - run: cd docs && pnpm install --frozen-lockfile
       - run: cd docs && pnpm exec astro check
       - run: cd docs && pnpm build
+
+  hook-perf:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1635ceea3d9b4d4f8b53728782 # v4
+      - uses: ./.github/actions/setup-uv
+      - name: Hook perf inventory and assurance
+        run: |
+          uv run python scripts/hooks/hook_assurance.py --json
+          uv run python <<'PY'
+          import json
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          repo = Path(".")
+          baseline_path = repo / "docs/public/generated-reports/hook-perf-baseline-bundle.json"
+          baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+          proc = subprocess.run(
+              ["uv", "run", "python", "scripts/hooks/hook_perf_inventory.py", "--tier", "bundle", "--json"],
+              capture_output=True,
+              text=True,
+              check=True,
+          )
+          live = json.loads(proc.stdout)
+          expected = int(baseline["summary"]["total_spawns"])
+          actual = int(live["summary"]["total_spawns"])
+          if actual > expected:
+              print(
+                  f"bundle spawn regression: live {actual} > committed baseline {expected}",
+                  file=sys.stderr,
+              )
+              raise SystemExit(1)
+          print(f"bundle spawns OK: {actual} <= baseline {expected}")
+          PY
+          uv run pytest tests/hooks/test_performance_baseline.py tests/hooks/test_bundle_dispatch.py tests/hooks/test_hook_perf_inventory_tier.py -q --tb=line

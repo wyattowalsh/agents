@@ -20,9 +20,53 @@ if command -v git &>/dev/null && git rev-parse --git-dir &>/dev/null 2>&1; then
     done <<< "$PY"
   fi
 
-  # Check for incomplete markers
+  # Check for incomplete markers. Abstract Python methods commonly use
+  # `raise NotImplementedError` as a contract, not as unfinished work.
   INCOMPLETE=$(echo "$MODIFIED" | while read -r f; do
-    [ -f "$f" ] && grep -n 'TODO.*implement\|NotImplementedError\|raise NotImplementedError' "$f" 2>/dev/null | head -3
+    [ -f "$f" ] || continue
+    [ "$f" = "hooks/task-completed-gate.sh" ] && continue
+    if [[ "$f" == *.py ]] && command -v python3 &>/dev/null; then
+      python3 - "$f" <<'PY'
+import ast
+import re
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+try:
+    text = path.read_text(encoding="utf-8")
+    tree = ast.parse(text)
+except (OSError, SyntaxError, UnicodeDecodeError):
+    sys.exit(0)
+
+abstract_ranges: list[range] = []
+for node in ast.walk(tree):
+    if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+        continue
+    if not any(
+        (
+            isinstance(decorator, ast.Name) and decorator.id == "abstractmethod"
+        )
+        or (
+            isinstance(decorator, ast.Attribute) and decorator.attr == "abstractmethod"
+        )
+        for decorator in node.decorator_list
+    ):
+        continue
+    abstract_ranges.append(range(node.lineno, (node.end_lineno or node.lineno) + 1))
+
+def in_abstract_method(lineno: int) -> bool:
+    return any(lineno in lines for lines in abstract_ranges)
+
+for lineno, line in enumerate(text.splitlines(), start=1):
+    has_todo = re.search(r"TODO.*implement", line)
+    has_not_implemented = "NotImplementedError" in line
+    if has_todo or (has_not_implemented and not in_abstract_method(lineno)):
+        print(f"{lineno}:{line}")
+PY
+    else
+      grep -n 'TODO.*implement\|NotImplementedError\|raise NotImplementedError' "$f" 2>/dev/null
+    fi | head -3
   done)
   [ -n "$INCOMPLETE" ] && ISSUES="$(printf '%sIncomplete implementation:\n%s\n\n' "$ISSUES" "$INCOMPLETE")"
 

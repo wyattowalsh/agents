@@ -31,7 +31,7 @@ source_count: 3
 
 ## Summary
 
-The repo's core tooling aligns with official docs for Typer CLI apps, PyPA `pyproject.toml`, uv projects/workspaces, Ruff config, ty config, pytest config, Astro/Starlight config, JSON Schema Draft 2020-12, and python-jsonschema validation. These sources are useful for understanding upstream semantics behind repo config, but local `pyproject.toml`, `Makefile`, `wagents/`, `docs/`, and `tests/` remain the authority for commands and repo behavior.
+The repo's core tooling aligns with official docs for Typer CLI apps, PyPA `pyproject.toml`, uv projects/workspaces, Ruff config, ty config, pytest config, Astro/Starlight config, JSON Schema Draft 2020-12, and python-jsonschema validation. These sources are useful for understanding upstream semantics behind repo config, but local `pyproject.toml`, `justfile`, `wagents/`, `docs/`, and `tests/` remain the authority for commands and repo behavior.
 
 Verified details include Typer's explicit `typer.Typer()` app and `@app.command()` pattern, PyPA's `[build-system]`, `[project]`, and `[tool]` tables, uv's project interface and workspace docs, and Starlight's `astro.config.mjs` integration model.
 

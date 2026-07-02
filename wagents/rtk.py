@@ -17,6 +17,21 @@ from wagents.context import get_repo_root_optional
 CONFIG_RELATIVE_PATH = Path("config") / "rtk-integration.json"
 RTK_REQUIRED_INIT_FLAGS = ("--agent", "--auto-patch", "--codex", "--copilot", "--dry-run", "--gemini", "--opencode")
 RTK_SYNC_APPLY_TIMEOUT_SECONDS = 120
+SHARED_RTK_INCLUDE_GLOBS = (
+    "instructions/*.md",
+    "AGENTS.md",
+    "GEMINI.md",
+    "CLAUDE.md",
+    ".github/copilot-instructions.md",
+    ".github/instructions/*.instructions.md",
+)
+RTK_INCLUDE_PATTERN = re.compile(r"@RTK\.md\b")
+STACK_TO_RTK_PLATFORM_ALIASES = {
+    "grok": "grok-build",
+    "copilot": "github-copilot",
+    "github-copilot-cli": "github-copilot",
+}
+STACK_SYNC_PLATFORM_SKIP = frozenset({"repo-core", "shared", "vscode"})
 
 
 def _repo_root(root: Path | None = None) -> Path:
@@ -425,3 +440,142 @@ def run_rtk_gain(
     if graph:
         argv.append("--graph")
     return _run_capture(argv, cwd=_repo_root(root), timeout=30)
+
+
+def rtk_integration_enabled(*, with_rtk_flag: bool = False) -> bool:
+    """Return True when stack sync should chain RTK fleet apply."""
+    if with_rtk_flag:
+        return True
+    value = os.environ.get("RTK_ENABLED", "").strip().lower()
+    return value in {"1", "true", "yes", "on"}
+
+
+def resolve_rtk_platform_csv(platforms_filter: set[str] | None, root: Path | None = None) -> str | None:
+    """Map stack-sync platform filters to RTK policy platform ids."""
+    policy = load_rtk_policy(root)
+    harnesses = policy.get("harnesses", {})
+    if not isinstance(harnesses, dict):
+        raise ValueError("policy.harnesses must be an object")
+    known = set(harnesses)
+    if platforms_filter is None:
+        return None
+    mapped: list[str] = []
+    for name in platforms_filter:
+        if name in STACK_SYNC_PLATFORM_SKIP:
+            continue
+        rtk_name = STACK_TO_RTK_PLATFORM_ALIASES.get(name, name)
+        if rtk_name in known:
+            mapped.append(rtk_name)
+    if not mapped:
+        return None
+    return ",".join(sorted(set(mapped)))
+
+
+def collect_shared_rtk_include_violations(root: Path | None = None) -> list[dict[str, str]]:
+    """Fail validation when shared instruction surfaces include @RTK.md."""
+    repo_root = _repo_root(root)
+    errors: list[dict[str, str]] = []
+    for pattern in SHARED_RTK_INCLUDE_GLOBS:
+        for path in sorted(repo_root.glob(pattern)):
+            if not path.is_file():
+                continue
+            rel = path.relative_to(repo_root).as_posix()
+            for line_no, line in enumerate(path.read_text(encoding="utf-8", errors="replace").splitlines(), start=1):
+                if RTK_INCLUDE_PATTERN.search(line):
+                    errors.append({
+                        "source": rel,
+                        "message": f"Shared instruction surface must not include @RTK.md (line {line_no})",
+                    })
+    return errors
+
+
+def _parse_rtk_gain_lines(output: str) -> dict[str, Any]:
+    tokens_saved_line: str | None = None
+    missed_savings_lines: list[str] = []
+    for line in output.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        lowered = stripped.lower()
+        if tokens_saved_line is None and ("tokens saved" in lowered or "token savings" in lowered):
+            tokens_saved_line = stripped
+        if any(token in lowered for token in ("missed", "without rtk", "not using rtk", "could have saved")):
+            missed_savings_lines.append(stripped)
+    return {
+        "tokens_saved_line": tokens_saved_line,
+        "missed_savings_lines": missed_savings_lines,
+    }
+
+
+def collect_rtk_usage_review(root: Path | None = None) -> dict[str, Any]:
+    """Usage-review lane: aggregate-safe RTK shell savings via gain --history."""
+    history_proc = run_rtk_gain(history=True, root=root)
+    summary_proc = run_rtk_gain(root=root)
+    history_output = _command_output(history_proc)
+    summary_output = _command_output(summary_proc)
+    history_parsed = _parse_rtk_gain_lines(history_output)
+    summary_parsed = _parse_rtk_gain_lines(summary_output)
+    recommendations: list[dict[str, str]] = []
+    if history_proc.returncode != 0:
+        recommendations.append({
+            "lane": "instrument",
+            "target_surface": "rtk-binary",
+            "action": "Install or repair RTK before reviewing shell token savings.",
+            "requires_audit_before_apply": "false",
+            "validation_step": "uv run wagents rtk doctor --format json",
+        })
+    elif history_parsed["missed_savings_lines"]:
+        recommendations.append({
+            "lane": "tune-workflow",
+            "target_surface": "shell-commands",
+            "action": "Review recent commands flagged as missed RTK savings and adopt RTK aliases.",
+            "requires_audit_before_apply": "false",
+            "validation_step": "uv run wagents rtk gain --history",
+        })
+    elif summary_parsed["tokens_saved_line"]:
+        recommendations.append({
+            "lane": "keep",
+            "target_surface": "rtk-shell-proxy",
+            "action": "RTK is recording shell token savings; continue periodic history review.",
+            "requires_audit_before_apply": "false",
+            "validation_step": "uv run wagents rtk gain --graph",
+        })
+    else:
+        recommendations.append({
+            "lane": "instrument",
+            "target_surface": "rtk-telemetry",
+            "action": "Run representative shell work, then re-check RTK gain history for savings signal.",
+            "requires_audit_before_apply": "false",
+            "validation_step": "uv run wagents rtk gain --history",
+        })
+    return {
+        "lane": "rtk-shell-token-savings",
+        "signal_category": "token-cost",
+        "history": {
+            "returncode": history_proc.returncode,
+            "stdout": history_proc.stdout.strip(),
+            "stderr": history_proc.stderr.strip(),
+            **history_parsed,
+        },
+        "summary": {
+            "returncode": summary_proc.returncode,
+            "stdout": summary_proc.stdout.strip(),
+            "stderr": summary_proc.stderr.strip(),
+            **summary_parsed,
+        },
+        "recommendations": recommendations,
+        "ok": history_proc.returncode == 0 and summary_proc.returncode == 0,
+    }
+
+
+def sync_rtk_after_stack_projection(
+    *,
+    apply: bool,
+    platforms_filter: set[str] | None = None,
+    root: Path | None = None,
+) -> dict[str, Any]:
+    """Run RTK init commands after repo hook projection when explicitly enabled."""
+    platforms_csv = resolve_rtk_platform_csv(platforms_filter, root=root)
+    plan = build_rtk_sync_plan(platforms=platforms_csv, dry_run=not apply, root=root)
+    results = run_rtk_sync_plan(plan, cwd=_repo_root(root))
+    return {"plan": plan, "results": results}

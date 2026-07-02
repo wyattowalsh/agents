@@ -21,7 +21,9 @@ def validate_settings(settings: dict[str, Any], registry: dict[str, Any]) -> lis
     servers = settings.get("mcpServers")
     if not isinstance(servers, dict) or not servers:
         errors.append("mcpServers must be a non-empty object")
+        settings_server_ids: set[object] = set()
     else:
+        settings_server_ids = set(servers)
         missing = sorted(set(registry.get("servers", {})) - set(servers))
         extra = sorted(set(servers) - set(registry.get("servers", {})))
         if missing:
@@ -39,7 +41,48 @@ def validate_settings(settings: dict[str, Any], registry: dict[str, Any]) -> lis
                 if server not in servers:
                     errors.append(f"group {group_name} references unknown server {server}")
 
-    routing = settings.get("systemConfig", {}).get("routing", {})
+    registry_groups = registry.get("mcphub", {}).get("groups", {})
+    if isinstance(registry_groups, dict) and isinstance(groups, dict):
+        expected_group_names = {
+            name
+            for name, group in registry_groups.items()
+            if isinstance(group, dict) and group.get("enabled") is not False
+        }
+        actual_group_names = set(groups)
+        missing_groups = sorted(expected_group_names - actual_group_names)
+        extra_groups = sorted(actual_group_names - expected_group_names)
+        if missing_groups:
+            errors.append("mcp_settings.json is missing registry groups: " + ", ".join(missing_groups))
+        if extra_groups:
+            errors.append("mcp_settings.json has groups not in registry: " + ", ".join(extra_groups))
+        for group_name in sorted(expected_group_names & actual_group_names):
+            registry_group = registry_groups.get(group_name, {})
+            settings_group = groups.get(group_name, {})
+            if not isinstance(registry_group, dict) or not isinstance(settings_group, dict):
+                continue
+            registry_servers = [
+                server
+                for server in registry_group.get("servers", [])
+                if server in settings_server_ids
+            ]
+            settings_servers = settings_group.get("servers", [])
+            if registry_servers != settings_servers:
+                errors.append(f"group {group_name} server membership drift vs registry")
+
+    system_config = settings.get("systemConfig", {})
+    if not isinstance(system_config, dict):
+        errors.append("systemConfig must be an object")
+        system_config = {}
+
+    smart_routing = system_config.get("smartRouting", {})
+    if isinstance(smart_routing, dict) and smart_routing.get("enabled") is not False:
+        errors.append("systemConfig.smartRouting.enabled must be false in tracked settings")
+
+    compression = system_config.get("toolResultCompression", {})
+    if compression not in ({}, None) and not isinstance(compression, dict):
+        errors.append("systemConfig.toolResultCompression must be an object when present")
+
+    routing = system_config.get("routing", {})
     expected = {
         "enableGlobalRoute": True,
         "enableGroupNameRoute": True,

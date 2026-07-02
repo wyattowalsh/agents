@@ -522,7 +522,10 @@ def package_all(skills_dir: Path, output_dir: Path, dry_run: bool = False, force
 
     # Fill in descriptions from frontmatter
     for entry in top_manifest["skills"]:
-        skill_md = skills_dir / entry["name"] / "SKILL.md"
+        skill_name = entry.get("name")
+        if not isinstance(skill_name, str):
+            continue
+        skill_md = skills_dir / skill_name / "SKILL.md"
         if skill_md.is_file():
             content = skill_md.read_text(encoding="utf-8", errors="replace")
             fm, _ = parse_frontmatter(content)

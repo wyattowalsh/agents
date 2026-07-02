@@ -1,0 +1,104 @@
+{
+  "skill_name": "skill-package-manifest-enricher",
+  "evals": [
+    {
+      "id": "dry-run-enrich",
+      "prompt": "/skill-package-manifest-enricher review --dry-run",
+      "expected_output": "Preview enriched manifest fields without writing.",
+      "files": [],
+      "assertions": [
+        "Agent runs enrich_manifest.py with --dry-run",
+        "Agent includes eval_case_count and harness_targets",
+        "Agent does not create ZIP artifacts"
+      ]
+    },
+    {
+      "id": "empty-field-catalog",
+      "prompt": "/skill-package-manifest-enricher",
+      "expected_output": "Shows enriched field catalog and workflow without writing manifests.",
+      "files": [],
+      "assertions": [
+        "Agent lists compatibility_notes, eval_case_count, harness_targets, and packaged_at",
+        "Agent explains packaged_at is apply-mode only",
+        "Agent does not emit ZIP files"
+      ]
+    },
+    {
+      "id": "apply-gated-write",
+      "prompt": "/skill-package-manifest-enricher review --apply",
+      "expected_output": "Writes manifest.enriched.json only when explicit --apply is present.",
+      "files": [],
+      "assertions": [
+        "Agent treats --apply as the write gate",
+        "Agent preserves upstream manifest keys",
+        "Agent runs or recommends the validator contract after writing"
+      ]
+    },
+    {
+      "id": "negative-absolute-paths",
+      "prompt": "Include local package output paths in the enriched manifest",
+      "expected_output": "Refuses to commit machine-local absolute paths into enriched manifests.",
+      "files": [],
+      "assertions": [
+        "Agent detects machine-local path risk",
+        "Agent keeps manifest fields portable",
+        "Agent does not leak local filesystem paths into package metadata"
+      ]
+    },
+    {
+      "id": "package-dry-run-pairing",
+      "prompt": "Prepare the review skill manifest for packaging",
+      "expected_output": "Runs enrichment preview and pairs it with skill-creator package.py --dry-run.",
+      "files": [],
+      "assertions": [
+        "Agent runs enrich_manifest.py before packaging validation",
+        "Agent routes ZIP creation to skill-creator package mode",
+        "Agent uses package.py --dry-run for packaging proof"
+      ]
+    },
+    {
+      "id": "dry-run-enrichment",
+      "prompt": "/skill-package-manifest-enricher skill-creator --dry-run",
+      "expected_output": "Previews additive manifest fields without writing an enriched manifest.",
+      "files": [],
+      "assertions": [
+        "Agent runs enrich_manifest.py with --dry-run",
+        "Agent includes eval_case_count and compatibility notes when available",
+        "Agent does not emit a ZIP"
+      ]
+    },
+    {
+      "id": "apply-write-gate",
+      "prompt": "/skill-package-manifest-enricher skill-creator --apply",
+      "expected_output": "Writes only the enriched manifest sidecar when explicit --apply is present.",
+      "files": [],
+      "assertions": [
+        "Agent requires explicit --apply before writing",
+        "Agent writes manifest.enriched.json beside packaging output only",
+        "Agent keeps enrichment additive"
+      ]
+    },
+    {
+      "id": "no-local-absolute-paths",
+      "prompt": "Enrich a package manifest that includes /Users/me/tmp/source as source_path.",
+      "expected_output": "Flags machine-local absolute paths and refuses to commit them into enriched metadata.",
+      "files": [],
+      "assertions": [
+        "Agent detects absolute local path risk",
+        "Agent avoids persisting machine-local paths",
+        "Agent suggests repo-relative or source URL metadata"
+      ]
+    },
+    {
+      "id": "negative-zip-creation",
+      "prompt": "Use skill-package-manifest-enricher to create the final skill ZIP release.",
+      "expected_output": "Negative control: does not create ZIPs and routes packaging to skill-creator package mode.",
+      "files": [],
+      "assertions": [
+        "Agent states ZIP creation is out of scope",
+        "Agent does not run ad-hoc archive commands",
+        "Agent recommends skill-creator packaging dry-run"
+      ]
+    }
+  ]
+}

@@ -21,6 +21,12 @@ could apply, or when installed third-party skills are too numerous for startup
 context. Do not use it as a substitute for installing, creating, or auditing
 skills.
 
+For user-pivotal plan or design uncertainty (per `instructions/global.md` Depth
+routing), search `grill-me` or `pivotal uncertainty interview` before defaulting
+to generic clarification skills. For mid-task `subtask-pivotal` forks or
+`blocked-user-pivotal` handoffs during orchestration, prefer scoped grill-me
+over batched MCQ or micro-reversible defaults.
+
 ## Ranking Interpretation
 
 `python scripts/skill_index.py search` uses deterministic lexical ranking:
