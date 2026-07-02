@@ -29,9 +29,14 @@ Create minimal, schema-valid eval manifests for repository skills.
 ## Workflow
 
 1. Confirm `skills/<name>/SKILL.md` exists.
-2. Run `uv run python skills/skill-eval-scaffolder/scripts/scaffold_evals.py <name>`.
+2. Run the bundled scaffold script:
+
+```bash
+uv run python skills/skill-eval-scaffolder/scripts/scaffold_evals.py <name>
+```
+
 3. Add explicit, implicit, and negative-control cases before claiming adequate coverage.
-4. Validate with `uv run python skills/skill-eval-scaffolder/scripts/check.py`.
+4. Validate with the bundled check script.
 
 ## Manifest Shape
 

@@ -19,7 +19,7 @@ Later-tier scaffold for skill package signature verification.
 
 ## Planned Workflow
 
-1. Load packaged skill ZIP from `wagents package --dry-run` output.
+1. Load packaged skill ZIP output from the repo packaging dry-run.
 2. Verify signature manifest against maintainer trust store (TBD).
 3. Report pass/fail without mutating installed harness skills.
 

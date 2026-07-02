@@ -12,7 +12,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Aggregate generated maintainer reports into a skill-quality summary. Use when reviewing docs, link, and eval health. NOT for editing report sources."
   installCommand={`npx skills add github:wyattowalsh/agents --skill skill-quality-dashboard -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/skill-quality-dashboard [--format json]"
-  badges={[{ text: "skill-quality-dashboard", variant: "note" }, { text: "144 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "skill-quality-dashboard", variant: "note" }, { text: "141 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
@@ -107,7 +107,7 @@ uv run python skills/skill-quality-dashboard/scripts/aggregate_reports.py
 uv run python skills/skill-quality-dashboard/scripts/aggregate_reports.py --format json
 ```
 
-Regenerate upstream reports with `wagents docs generate` / docs reports pipeline — do not hand-edit JSON.
+Regenerate upstream reports with the repo docs-generation pipeline — do not hand-edit JSON.
 
 ## Validation Contract
 

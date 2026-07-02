@@ -32,7 +32,7 @@ uv run python skills/skill-quality-dashboard/scripts/aggregate_reports.py
 uv run python skills/skill-quality-dashboard/scripts/aggregate_reports.py --format json
 ```
 
-Regenerate upstream reports with `wagents docs generate` / docs reports pipeline — do not hand-edit JSON.
+Regenerate upstream reports with the repo docs-generation pipeline — do not hand-edit JSON.
 
 ## Validation Contract
 

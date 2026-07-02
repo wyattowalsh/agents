@@ -15,7 +15,7 @@ sync_kind: "skills-cli"
 
 Report bundle composition and adapter install surfaces for the repository root bundle.
 
-**Scope:** Read-only bundle inventory. Does not run `wagents install`, `npx skills add`, or marketplace updates.
+**Scope:** Read-only bundle inventory. Does not run install commands or marketplace updates.
 
 ## Dispatch
 
@@ -47,4 +47,4 @@ uv run python skills/skill-bundle-curator/scripts/check.py
 2. Never duplicate `skills/` or `agents/` into platform plugin folders.
 3. Pair bundle reports with cross-agent-install-smoke dry-run before install reconciliation.
 4. Keep bundle root policy aligned with `AGENTS.md` §2.1.
-5. Route packaging ZIP work to `wagents package`, not ad-hoc archives.
+5. Route packaging ZIP work to the repo packaging command, not ad-hoc archives.

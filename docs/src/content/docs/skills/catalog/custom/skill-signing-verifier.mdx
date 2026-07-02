@@ -12,7 +12,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Scaffold for verifying skill package signatures and provenance (planned). Use when designing supply-chain checks. NOT for live signing or key management."
   installCommand={`npx skills add github:wyattowalsh/agents --skill skill-signing-verifier -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/skill-signing-verifier"
-  badges={[{ text: "skill-signing-verifier", variant: "note" }, { text: "93 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v0.1.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "skill-signing-verifier", variant: "note" }, { text: "94 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v0.1.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
@@ -88,7 +88,7 @@ Later-tier scaffold for skill package signature verification.
 
 ## Planned Workflow
 
-1. Load packaged skill ZIP from `wagents package --dry-run` output.
+1. Load packaged skill ZIP output from the repo packaging dry-run.
 2. Verify signature manifest against maintainer trust store (TBD).
 3. Report pass/fail without mutating installed harness skills.
 

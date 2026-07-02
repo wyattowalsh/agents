@@ -12,7 +12,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Plan cross-harness skills sync dry-run steps before any live install. Use when reconciling harness skill inventory. NOT for --apply or npx installs."
   installCommand={`npx skills add github:wyattowalsh/agents --skill skill-install-dry-run-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/skill-install-dry-run-planner [--harness &lt;name&gt;] [--format json]"
-  badges={[{ text: "skill-install-dry-run-planner", variant: "note" }, { text: "217 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "skill-install-dry-run-planner", variant: "note" }, { text: "208 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
@@ -25,7 +25,7 @@ This page is generated from the repository file `skills/skill-install-dry-run-pl
 
 ## What It Does
 
-Produce a maintainer plan from `wagents skills sync --dry-run` evidence.
+Produce a maintainer plan from skills-sync dry-run evidence.
 
 ## Modes
 
@@ -89,9 +89,9 @@ metadata:
 
 # Skill Install Dry-Run Planner
 
-Produce a maintainer plan from `wagents skills sync --dry-run` evidence.
+Produce a maintainer plan from skills-sync dry-run evidence.
 
-**Scope:** Dry-run planning only. Never run `wagents skills sync --apply` or live `npx skills add` from this skill.
+**Scope:** Dry-run planning only. Never run live apply installs from this skill.
 
 ## Dispatch
 
@@ -104,8 +104,8 @@ Produce a maintainer plan from `wagents skills sync --dry-run` evidence.
 
 ## Planned Phases
 
-1. **Validate** — `uv run wagents validate`
-2. **Dry-run JSON** — `uv run wagents skills sync --dry-run --format json`
+1. **Validate** — run the repo validation command
+2. **Dry-run JSON** — run the skills-sync dry-run JSON command
 3. **Review gaps** — inspect `missing`, `unresolved`, and `skipped` rows per harness
 4. **Optional smoke** — `INSTALL_SMOKE=1` temp-home phase (maintainer machine only)
 5. **Apply gate** — human approval required before any `--apply`

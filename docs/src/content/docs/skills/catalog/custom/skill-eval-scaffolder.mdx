@@ -12,7 +12,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Scaffold evals/evals.json manifests for repo skills with baseline cases. Use when adding behavioral eval coverage. NOT for live LLM eval execution."
   installCommand={`npx skills add github:wyattowalsh/agents --skill skill-eval-scaffolder -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/skill-eval-scaffolder &lt;skill-name&gt; [--apply]"
-  badges={[{ text: "skill-eval-scaffolder", variant: "note" }, { text: "202 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "skill-eval-scaffolder", variant: "note" }, { text: "208 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
@@ -105,9 +105,14 @@ Create minimal, schema-valid eval manifests for repository skills.
 ## Workflow
 
 1. Confirm `skills/<name>/SKILL.md` exists.
-2. Run `uv run python skills/skill-eval-scaffolder/scripts/scaffold_evals.py <name>`.
+2. Run the bundled scaffold script:
+
+```bash
+uv run python skills/skill-eval-scaffolder/scripts/scaffold_evals.py <name>
+```
+
 3. Add explicit, implicit, and negative-control cases before claiming adequate coverage.
-4. Validate with `uv run python skills/skill-eval-scaffolder/scripts/check.py`.
+4. Validate with the bundled check script.
 
 ## Manifest Shape
 

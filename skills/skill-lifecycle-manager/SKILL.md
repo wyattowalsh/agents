@@ -55,5 +55,5 @@ uv run python skills/skill-lifecycle-manager/scripts/check.py
 1. Never auto-promote a skill based on lifecycle heuristics alone.
 2. Treat missing evals as a draft signal, not a hard block for internal skills.
 3. Do not mutate `metadata.internal` or catalog authoring rows from this skill.
-4. Run `wagents validate` before declaring a skill active-ready.
+4. Run the repo validation command before declaring a skill active-ready.
 5. Route executable fixes to skill-creator or the maintainer lead.

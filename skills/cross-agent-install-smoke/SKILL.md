@@ -15,7 +15,7 @@ metadata:
 
 Validate additive skills sync without mutating live harness installs.
 
-**Scope:** Install smoke only. Do not run `wagents skills sync --apply` or live `npx skills add` unless the maintainer explicitly requests it.
+**Scope:** Install smoke only. Do not run live apply installs unless the maintainer explicitly requests it.
 
 ## Dispatch
 
@@ -34,7 +34,7 @@ Run the deterministic checker from the repo root:
 uv run python skills/cross-agent-install-smoke/scripts/dry_run.py
 ```
 
-Phase 1 executes `uv run wagents skills sync --dry-run --format json` and asserts:
+Phase 1 executes the repo skills-sync dry-run command and asserts:
 
 - top-level keys: `ok`, `mode`, `inventory_count`, `include_installed`, `agents`
 - `mode` is `dry-run`
@@ -54,8 +54,8 @@ The script:
 
 1. Refuses to run unless `INSTALL_SMOKE=1`
 2. Creates an isolated `HOME` under a temp directory
-3. Runs `uv run wagents validate` against the repo
-4. Runs a single-harness `wagents skills sync --dry-run --format json` probe
+3. Runs the repo validation command against the repo
+4. Runs a single-harness skills-sync dry-run JSON probe
 5. Cleans up the temp home
 
 Never point phase 2 at a production home directory.

@@ -12,7 +12,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Scaffold for packaging localized skill variants (planned). Use when designing i18n skill bundles. NOT for live catalog edits."
   installCommand={`npx skills add github:wyattowalsh/agents --skill skill-localization-packager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/skill-localization-packager"
-  badges={[{ text: "skill-localization-packager", variant: "note" }, { text: "95 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v0.1.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "skill-localization-packager", variant: "note" }, { text: "98 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v0.1.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
@@ -90,7 +90,7 @@ Later-tier scaffold for localized skill bundle packaging.
 
 1. Identify base skill under `skills/<name>/`.
 2. Collect locale overlays (TBD directory convention).
-3. Emit portable ZIP via `wagents package` with locale metadata.
+3. Emit portable ZIP output with locale metadata through the repo packaging command.
 
 Pair with `i18n-localization` for translation workflow until packaging ships.
 

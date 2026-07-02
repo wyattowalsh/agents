@@ -21,7 +21,7 @@ Later-tier scaffold for localized skill bundle packaging.
 
 1. Identify base skill under `skills/<name>/`.
 2. Collect locale overlays (TBD directory convention).
-3. Emit portable ZIP via `wagents package` with locale metadata.
+3. Emit portable ZIP output with locale metadata through the repo packaging command.
 
 Pair with `i18n-localization` for translation workflow until packaging ships.
 
