@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "mcphub_group_harness-safe": {
+    "mcphub_group_harness": {
       "type": "http",
-      "url": "http://127.0.0.1:46683/mcp/harness-safe",
+      "url": "http://127.0.0.1:46683/mcp/harness",
       "headers": {
         "Authorization": "Bearer ${env:MCPHUB_BEARER_TOKEN}"
       }

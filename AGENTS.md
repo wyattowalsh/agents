@@ -391,7 +391,7 @@ Token posture spans eight **layers**. Each layer has one primary owner; do not s
 | Shell dedup | RTK via `config/rtk-integration.json` + fleet hooks | `wagents rtk doctor`, `wagents rtk sync`, `wagents rtk gain` |
 | Session pruners | OpenCode DCP — `config/opencode-dcp.jsonc` (§2.3) | Live `~/.config/opencode/dcp.jsonc`; `/dcp stats` in OpenCode |
 | Cross-harness proxy | None (research-gated) | Compare before install |
-| MCP schema tax | MCPHub `harness-safe` group (§2.6) | `config/mcp-registry.json`, `docs/ai-tools/mcphub.md` |
+| MCP schema tax | MCPHub `harness` group (§2.6) | `config/mcp-registry.json`, `docs/ai-tools/mcphub.md` |
 | Code reads | Policy-first (narrow reads, ripgrep) | Research-gated MCP only if Read-heavy pain |
 | Standing context | `instructions/global.md` + skill descriptions | Progressive disclosure: scoped rules + on-demand skills |
 | Docs / maintainer hub | Public `/harness-config/token-efficacy/` | This section + harness-config hub |
@@ -412,7 +412,7 @@ RTK owns local hooks and `~/.config/opencode/plugins/rtk.ts`; keep RTK out of `o
 
 **DCP (session layer):** Canonical source is `config/opencode-dcp.jsonc`. Stay model-neutral (no `compress.modelMaxLimits` / `compress.modelMinLimits` unless explicitly requested). Tune only when log review shows compaction pain.
 
-**MCPHub (MCP layer):** Prefer the `harness-safe` group over attaching full server schemas to every harness. Edit once in `config/mcp-registry.json`, regenerate MCPHub settings, project via sync.
+**MCPHub (MCP layer):** Prefer the `harness` group over attaching full server schemas to every harness. Edit once in `config/mcp-registry.json`, regenerate MCPHub settings, project via sync.
 
 **Decision gates (install only if):**
 

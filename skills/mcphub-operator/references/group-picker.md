@@ -1,31 +1,43 @@
 # MCPHub Group Picker
 
-Workflow-first groups from `config/mcp-registry.json`. Local managed harnesses project **all** groups plus per-server endpoints unless a harness-specific client override exists.
+Workflow-first groups from `config/mcp-registry.json`. Local managed harnesses default to **`harness`** only, with per-server endpoints discoverable but disabled unless a harness-specific profile opts in.
 
 ## Default guidance
 
 | Group | When to connect |
 | --- | --- |
-| `daily` | Default local workhorse (search + docs + fetch + code-intel lite) |
-| `search` | Need multiple search APIs (Brave, Tavily, DuckDuckGo) |
-| `read-web` | URL ingestion without search APIs (fetch, fetcher, trafilatura, wayback) |
-| `docs` | Library/framework documentation (context7, deepwiki) |
-| `code-intel` | Repo/deps intelligence (repomix, package-version, ossinsight) |
-| `references` | Academic/archive lookup (arxiv, wikipedia, wayback) |
+| `harness` | Default local baseline: bounded high-signal set with search, docs, URL fetch, package metadata, Chrome DevTools, and Penpot |
+| `daily` | Routine opt-in expansion for broader repo, browser, and web reading |
+| `coding` | Code-agent context: docs, URL fetch, repo, dependency, and browser inspection |
+| `research` | Web and reference research across search, read, archive, and wiki surfaces |
+| `review` | Repo review, docs/source lookup, generated evidence, and browser inspection |
+| `release` | Release checks: versions, repo context, source reads, and package metadata |
+| `personal-work` | Account-backed work suites — explicit user intent only |
+| `media-work` | Document, 3D, and web-ingestion suites; prefer **`/ffmpeg`** skill plus local CLIs for deterministic ffmpeg-style media transforms (not ffmpeg MCP by default) |
+| `web-search` | Search APIs across Brave, DuckDuckGo, Tavily, Exa, and Google search |
+| `web-read` | URL ingestion without search APIs (fetch, fetcher, trafilatura, wayback) |
+| `docs` | Library/framework documentation lookup |
+| `repo` | Repo/dependency intelligence (repomix, package-version, ossinsight) |
 | `browser` | Live Chrome automation (chrome-devtools) |
 | `reasoning` | Hard problems only — three curated thinkers |
-| `data-pipeline` | Heavy extract/transform (docling, ffmpeg, trafilatura) |
-| `personal` | Account-backed connectors — explicit user intent only |
-| `productivity` | GTD/design (supathings, penpot) |
-| `experimental` | Bleeding-edge — opt-in |
-| `repo-catalog` | Repo read-only catalog/docs MCP servers |
+| `reasoning-lab` | Experimental thinking servers — opt-in |
+| `media` | Document and 3D processing servers |
+| `design` | Design connectors |
+| `productivity` | Productivity connectors |
+| `accounts` | Account connectors — explicit user intent only |
+| `references` | Academic/archive lookup (arxiv, wikipedia, wayback) |
+| `shared-read` | Broad read-only shared surface for trusted local expansion |
+| `credentialed` | API-key/OAuth-backed shared services |
+| `account-backed` | Personal/account-backed connectors |
+| `live-browser` | Browser/session-bound connectors |
+| `heavy` | High-output or high-runtime servers |
+| `experimental` | Bleeding-edge servers — opt-in |
 | `tunnel` | **ChatGPT remote only** — not for local harness default |
-| `harness-safe` | Deprecated alias of `daily` |
-| `all-managed` | Entire fleet meta-endpoint |
 
 ## Decision flow
 
-1. Routine coding/research → start with `daily`.
-2. Need a specific API shape → add `search`, `read-web`, or `docs` instead of attaching everything blindly in the UI.
-3. Sensitive/account tools → `personal` only when the user asked for Gmail/LinkedIn workflows.
-4. ChatGPT connector → `tunnel` endpoint via public URL; do not mirror full fleet remotely.
+1. Routine local harness work → start with `harness`.
+2. Broader dev flow → opt into `daily`, `coding`, `research`, `review`, or `release`.
+3. Need a specific API shape → add a capability group instead of attaching everything blindly in the UI.
+4. Sensitive/account tools → account-backed groups only when the user asked for that workflow.
+5. ChatGPT connector → `tunnel` endpoint via public URL; do not mirror the global `/mcp` route remotely.

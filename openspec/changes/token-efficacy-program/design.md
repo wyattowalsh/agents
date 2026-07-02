@@ -60,7 +60,7 @@ Eight context layers govern token efficacy. Each layer has a current owner and a
 | Shell dedup | RTK binary + repo policy | Live fleet hooks (Wave 2) | RTK vs LeanCTX (overlap check only) |
 | Session pruners | OpenCode DCP | Tuned if R5 warrants (Wave 4) | Sleev vs DCP vs Cozempic vs context-mode |
 | Cross-harness proxy | None installed | R1 winner, gated | Headroom vs Sleev vs LeanCTX |
-| MCP schema tax | `harness-safe` group | R2 outcome | mcp-compressor vs Tool Attention vs groups-only |
+| MCP schema tax | `harness` group | R2 outcome | mcp-compressor vs Tool Attention vs groups-only |
 | Code reads | Policy-only | R1 winner if R3 shows pain | jCodeMunch vs symbol-index MCPs vs policy-only |
 | Standing context | ~980 tok global + skill descs | Trim list from R3 | N/A (review-driven) |
 | Docs / maintainer hub | Partial AGENTS.md | Full hub (Wave 3) | N/A |
@@ -131,6 +131,6 @@ Same-file writers serialize; read-only research and validation fan out.
 | --- | --- | --- |
 | Shell | RTK binary + repo policy | Live fleet hooks (Wave 2) |
 | Session | OpenCode DCP | Tuned if logs warrant (Wave 4) |
-| MCP | `harness-safe` group | Research outcome (R2) |
+| MCP | `harness` group | Research outcome (R2) |
 | Standing context | ~980 tok global + skill descs | Trim list from R3 |
 | Docs | Partial in AGENTS.md | Full hub via docs-steward (Wave 3) |

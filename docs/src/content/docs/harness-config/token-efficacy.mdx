@@ -32,7 +32,7 @@ New OSS token tools (Sleev, Headroom, Cozempic, mcp-compressor, jCodeMunch, etc.
 | Shell dedup | RTK | `config/rtk-integration.json`; `wagents rtk doctor`, `wagents rtk sync`, `wagents rtk gain` |
 | Session pruners | OpenCode DCP | `config/opencode-dcp.jsonc` → `~/.config/opencode/dcp.jsonc`; OpenCode `/dcp stats` |
 | Cross-harness proxy | None (gated) | Research compare: Headroom vs Sleev vs LeanCTX |
-| MCP schema tax | MCPHub `harness-safe` | `config/mcp-registry.json`; [MCPHub](/mcp/) § control plane |
+| MCP schema tax | MCPHub `harness` | `config/mcp-registry.json`; [MCPHub](/mcp/) § control plane |
 | Code reads | Policy-first | Narrow reads, ripgrep; symbol MCPs only if review shows pain |
 | Standing context | `instructions/global.md` + skill descs | Scoped rules (`.claude/rules/`), on-demand skill bodies |
 | Docs / maintainer hub | This page + `AGENTS.md` | `/harness-config/token-efficacy/` |
@@ -86,7 +86,7 @@ Tune thresholds only when log review (`openspec/changes/token-efficacy-program/`
 
 ## MCPHub (MCP layer)
 
-MCP tool schemas are a major context tax. Prefer connecting harnesses to the **`harness-safe`** MCPHub group rather than projecting every server to every client.
+MCP tool schemas are a major context tax. Prefer connecting harnesses to the **`harness`** MCPHub group rather than projecting every server to every client.
 
 ```bash
 # Edit SSOT
@@ -142,7 +142,7 @@ uv run python scripts/sync_agent_stack.py --apply --targets repo
 
 <CardGrid>
   <LinkCard title="Harness Config hub" href="/harness-config/" description="sync-manifest, mcp-registry, tooling-policy." />
-  <LinkCard title="mcp-registry" href="/harness-config/mcp-registry/" description="MCP groups including harness-safe." />
+  <LinkCard title="mcp-registry" href="/harness-config/mcp-registry/" description="MCP groups including harness." />
   <LinkCard title="sync-manifest" href="/harness-config/sync-manifest/" description="DCP and RTK projection surfaces." />
   <LinkCard title="Hooks" href="/hooks/" description="Fleet hooks run before RTK when both apply." />
   <LinkCard title="AGENTS.md §5" href="https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#token-efficacy" description="Canonical token budget and efficacy summary." />

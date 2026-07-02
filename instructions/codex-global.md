@@ -141,6 +141,14 @@ Use this flow when adding or updating trust-gated third-party skills (full detai
 
 Public docs publish the catalog landing at `/skills/catalog/`, custom skill detail pages at `/skills/catalog/custom/<name>/`, curated external detail pages at `/skills/catalog/external/<name>/`, and the curated external install hub at `/skills/catalog/external/`. Use `--include-installed` only for maintainer previews of local harness inventory rows.
 
+## MCPHub Preflight
+
+- MCP is MCPHub-backed: only `mcphub_group_harness` is enabled by default in managed Codex config.
+- Before sessions that need MCP tools, run `just mcphub-doctor && just mcphub-smoke`.
+- `MCPHUB_BEARER_TOKEN` must be in Codex's process environment. For CLI, source `.env.mcphub` in the same shell. For GUI, install the MCPHub LaunchAgent (`just mcphub-install-launch-agent` after fixing plist paths) or export the token into the macOS user session.
+- Do not enable individual `mcphub_server_*` entries unless intentionally narrowing MCP scope.
+- Optional warm-start: `just mcphub-up` before opening Codex, or launch via `scripts/mcphub/wrappers/codex`.
+
 ## Codex-Specific Instructions
 
 - Treat `./instructions/global.md` as the canonical shared instruction source.

@@ -85,32 +85,24 @@ local MCP URL, provider, and timestamp. Keep the real catch-hook URL in
 ## Groups
 
 Managed groups are declared in `config/mcp-registry.json` and emitted into
-`mcp/mcphub/mcp_settings.json`:
+`mcp/mcphub/mcp_settings.json`. They intentionally overlap across three layers:
 
-- `all-managed`
-- `daily`
-- `tunnel`
-- `search`
-- `read-web`
-- `docs`
-- `code-intel`
-- `references`
-- `browser`
-- `reasoning`
-- `data-pipeline`
-- `personal`
-- `productivity`
-- `experimental`
-- `harness-safe`
-- `repo-catalog`
+- Default/workflow groups: `harness`, `tunnel`, `daily`, `coding`, `research`,
+  `review`, `release`, `personal-work`, and `media-work`. For local trim/transcode/thumbnail/GIF work, prefer the repo `/ffmpeg` skill over MCP multimedia servers when the harness has shell access.
+- Capability groups: `web-search`, `web-read`, `docs`, `repo`, `browser`,
+  `reasoning`, `reasoning-lab`, `media`, `design`,
+  `productivity`, `accounts`, and `references`.
+- Risk/exposure groups: `shared-read`, `credentialed`, `account-backed`,
+  `live-browser`, `heavy`, and `experimental`.
 
-The `harness-safe` group is the shared harness-facing MCP surface and aliases
-the `daily` membership: search, docs, fetch, package metadata, Trafilatura, and
-Repomix. `tunnel` is the bounded remote ChatGPT surface. `personal` can expose
-account-backed tools and should be treated as sensitive even on localhost.
-`all-managed`, `experimental`, and the narrower workflow groups stay available
-inside MCPHub for explicit opt-in routing instead of being enabled on every
-harness by default.
+The `harness` group is the shared default local harness-facing MCP surface. It
+is not the broad daily bundle; it is the highest-value tool set meant to keep
+MCP schema/context bloat bounded: Brave Search, DuckDuckGo Search, Context7,
+DeepWiki, Fetch, `fetcher` limited to `fetch_urls`, package metadata,
+Chrome DevTools, and Penpot. Broader work should opt into workflow groups such
+as `daily`, `coding`, `research`, `review`, or `release`. `tunnel` is the
+bounded remote ChatGPT surface and intentionally excludes personal-account,
+live-browser, heavy, and experimental tools.
 
 ## Adding Or Removing Servers
 
@@ -124,10 +116,63 @@ uv run python scripts/sync_agent_stack.py --targets repo,home --check
 
 Apply sync only after the preview is expected.
 
+## Tracked Settings vs Runtime Settings
+
+MCPHub reads the tracked baseline from `mcp/mcphub/mcp_settings.json`, which is
+generated from `config/mcp-registry.json`. At runtime MCPHub may also write
+server connection state, OAuth tokens, and dashboard edits under
+`.mcphub/runtime/` (gitignored). Treat the tracked JSON as the repo source of
+truth; treat `.mcphub/runtime/` as machine-local overlay state that can diverge
+until you regenerate or reconcile from the dashboard.
+
+After editing the registry, run `just mcphub-generate` and restart MCPHub when
+upstream transport or URL fields change. Dashboard-only OAuth completion does
+not need a registry edit, but you should still verify `/health` and
+`just mcphub-smoke` after reconnecting upstream servers.
+
+## Auth Policy (`auth_policy`)
+
+Registry entries may declare `auth_policy` to document how MCPHub should reach
+an upstream server. Prefer OAuth-first upstreams over long-lived API keys when
+the provider supports MCP OAuth.
+
+| `auth_policy` | Meaning | Registry examples |
+| --- | --- | --- |
+| `oauth` | Complete upstream OAuth through MCPHub; no tracked API key | `context7`, `tavily`, `exa` |
+| `public-http` | Public streamable HTTP endpoint; no upstream secret | `deepwiki` |
+| `account-token` | User-owned account token in env or URL placeholder | `penpot` |
+| `api-key` | Provider API key via env placeholder | `brave-search` and other stdio servers |
+| `none` | Local stdio or otherwise credential-free upstream | repo-owned MCP servers |
+
+The generator copies transport shape into `mcp_settings.json`: `type` + `url`
+for SSE or Streamable HTTP, `type` + `openapi` for OpenAPI-backed tools, and
+`command` plus optional `args` for stdio. It does not emit OAuth secrets.
+Configure upstream OAuth in MCPHub itself.
+
+## Upstream OAuth via MCPHub Dashboard
+
+For `auth_policy: oauth` servers:
+
+1. Regenerate settings: `just mcphub-generate`.
+2. Restart MCPHub: `just mcphub-up` (or reload the affected server from the dashboard).
+3. Open the MCPHub dashboard, select the server, and complete the provider OAuth
+   flow. MCPHub stores tokens in runtime state under `.mcphub/runtime/`.
+4. Confirm the server shows connected in the dashboard and in `/health`.
+
+OAuth servers include `context7`, `tavily`, and `exa` using MCPHub-managed
+Streamable HTTP URLs.
+
+## Context7 SSRF Caveat
+
+Do **not** point Context7 at the unauthenticated base
+`https://mcp.context7.com/mcp` when the registry expects OAuth. Keep Context7 on
+the OAuth endpoint `https://mcp.context7.com/mcp/oauth` with
+`transport: streamable-http` and `auth_policy: oauth`.
+
 ## Client Notes
 
 Codex receives an enabled Streamable HTTP entry named
-`mcphub_group_harness-safe`. OpenCode receives an enabled remote HTTP entry with
+`mcphub_group_harness`. OpenCode receives an enabled remote HTTP entry with
 the same name, and Grok receives the equivalent local HTTP entry. ChatGPT
 receives the public `https://mcp.w4w.dev/mcp/tunnel` endpoint. Managed
 harnesses also receive disabled individual server endpoint entries for each
@@ -157,12 +202,22 @@ set `DB_URL` in `.env.mcphub`. Leaving `DB_URL` unset keeps file-backed mode.
 
 - Missing token: set `MCPHUB_BEARER_TOKEN` in `.env.mcphub`.
 - Startup failure: run `just mcphub-doctor`, then inspect `.mcphub/mcphub.log`.
+- Degraded `/health`: MCPHub core is up but some enabled upstream servers are
+  disconnected. `just mcphub-doctor` reports `degraded (connected/total)`.
+  Reconnect OAuth servers from the dashboard or fix env placeholders, then reload
+  the affected server.
 - Bad group: run `just mcphub-validate`.
 - Stale PID with failed health: run `just mcphub-up`; the startup path clears
   managed stale wrapper and child PID state before restarting.
 - OpenCode cannot connect: verify `~/.config/opencode/opencode.json` has only
-  `mcphub_group_harness-safe` for MCPHub, then run
+  `mcphub_group_harness` for MCPHub, then run
   `opencode mcp list --pure --log-level ERROR` and expect
-  `mcphub_group_harness-safe connected`.
+  `mcphub_group_harness connected`.
+- Codex cannot connect:
+  1. Run `just mcphub-doctor && just mcphub-smoke` (hub + harness MCP must pass)
+  2. Verify `MCPHUB_BEARER_TOKEN` is set in Codex's environment (`echo $MCPHUB_BEARER_TOKEN` in the same shell, or `launchctl getenv MCPHUB_BEARER_TOKEN` for GUI)
+  3. Confirm `~/.codex/config.toml` has `mcphub_group_harness` enabled at `http://127.0.0.1:46683/mcp/harness`
+  4. Re-sync: `uv run python scripts/sync_agent_stack.py --apply --targets home`
+  5. Optional warm-start: `just mcphub-up` before opening Codex, or use `scripts/mcphub/wrappers/codex`
 - Runtime smoke: run `just mcphub-smoke` after `just mcphub-doctor` reports a
   healthy listener.

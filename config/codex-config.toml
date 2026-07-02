@@ -4,7 +4,7 @@ approval_policy = "never"
 approvals_reviewer = "user"
 background_terminal_max_timeout = 300000
 check_for_update_on_startup = true
-file_opener = "vscode"
+file_opener = "cursor"
 model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 model_reasoning_summary = "detailed"
@@ -81,15 +81,6 @@ plan_mode_reasoning_effort = "xhigh"
 sandbox_mode = "danger-full-access"
 web_search = "live"
 
-[model_providers.local-lmstudio]
-name = "LM Studio (local)"
-base_url = "http://127.0.0.1:1234/v1"
-wire_api = "responses"
-
-[profiles.local-lmstudio]
-model = "local-model"
-model_provider = "local-lmstudio"
-
 [apps._default]
 enabled = true
 destructive_enabled = false
@@ -147,108 +138,311 @@ terminal_title = ["spinner", "project"]
 
 # BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS
 
-[mcp_servers.mcphub_group_harness-safe]
-url = "http://127.0.0.1:46683/mcp/harness-safe"
+[mcp_servers.mcphub_group_harness]
+url = "http://127.0.0.1:46683/mcp/harness"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = true
+
+[mcp_servers.mcphub_server_agent-catalog]
+url = "http://127.0.0.1:46683/mcp/agent-catalog"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_arxiv]
+url = "http://127.0.0.1:46683/mcp/arxiv"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_atom-of-thoughts]
+url = "http://127.0.0.1:46683/mcp/atom-of-thoughts"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
 
 [mcp_servers.mcphub_server_brave-search]
 url = "http://127.0.0.1:46683/mcp/brave-search"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_cascade-thinking]
+url = "http://127.0.0.1:46683/mcp/cascade-thinking"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_chrome-devtools]
 url = "http://127.0.0.1:46683/mcp/chrome-devtools"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_ci-artifacts]
+url = "http://127.0.0.1:46683/mcp/ci-artifacts"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_context7]
 url = "http://127.0.0.1:46683/mcp/context7"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_crash]
+url = "http://127.0.0.1:46683/mcp/crash"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_creative-thinking]
+url = "http://127.0.0.1:46683/mcp/creative-thinking"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_deep-lucid-3d]
+url = "http://127.0.0.1:46683/mcp/deep-lucid-3d"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_deepwiki]
 url = "http://127.0.0.1:46683/mcp/deepwiki"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_docling]
+url = "http://127.0.0.1:46683/mcp/docling"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_docs-graph]
+url = "http://127.0.0.1:46683/mcp/docs-graph"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_docs-index]
+url = "http://127.0.0.1:46683/mcp/docs-index"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_duckduckgo-search]
 url = "http://127.0.0.1:46683/mcp/duckduckgo-search"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_eval-results]
+url = "http://127.0.0.1:46683/mcp/eval-results"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_exa]
+url = "http://127.0.0.1:46683/mcp/exa"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_fetch]
 url = "http://127.0.0.1:46683/mcp/fetch"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_fetcher]
 url = "http://127.0.0.1:46683/mcp/fetcher"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_g-search]
+url = "http://127.0.0.1:46683/mcp/g-search"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_gmail]
 url = "http://127.0.0.1:46683/mcp/gmail"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_linkedin]
+url = "http://127.0.0.1:46683/mcp/linkedin"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_lotus-wisdom-mcp]
+url = "http://127.0.0.1:46683/mcp/lotus-wisdom-mcp"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_ossinsight]
+url = "http://127.0.0.1:46683/mcp/ossinsight"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_package-version]
 url = "http://127.0.0.1:46683/mcp/package-version"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_penpot]
 url = "http://127.0.0.1:46683/mcp/penpot"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_release-provenance]
+url = "http://127.0.0.1:46683/mcp/release-provenance"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_repo-readonly]
+url = "http://127.0.0.1:46683/mcp/repo-readonly"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_repomix]
 url = "http://127.0.0.1:46683/mcp/repomix"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_sequential-thinking]
+url = "http://127.0.0.1:46683/mcp/sequential-thinking"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_shannon-thinking]
+url = "http://127.0.0.1:46683/mcp/shannon-thinking"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_skill-catalog]
+url = "http://127.0.0.1:46683/mcp/skill-catalog"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_source-url-health]
+url = "http://127.0.0.1:46683/mcp/source-url-health"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_structured-thinking]
+url = "http://127.0.0.1:46683/mcp/structured-thinking"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_supathings]
 url = "http://127.0.0.1:46683/mcp/supathings"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_tavily]
 url = "http://127.0.0.1:46683/mcp/tavily"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_template-smoke]
+url = "http://127.0.0.1:46683/mcp/template-smoke"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_think-strategies]
+url = "http://127.0.0.1:46683/mcp/think-strategies"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_trafilatura]
 url = "http://127.0.0.1:46683/mcp/trafilatura"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
-startup_timeout_sec = 20
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_wayback]
+url = "http://127.0.0.1:46683/mcp/wayback"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_wikipedia]
+url = "http://127.0.0.1:46683/mcp/wikipedia"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_workflow-status]
+url = "http://127.0.0.1:46683/mcp/workflow-status"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 

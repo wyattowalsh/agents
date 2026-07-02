@@ -173,7 +173,7 @@ def collect_grok_doctor_checks(home: Path | None = None) -> list[dict[str, str]]
         content = GROK_CONFIG_PATH.read_text(encoding="utf-8")
         has_mcp_managed = GROK_MCP_BEGIN in content
         has_policy_managed = GROK_POLICY_BEGIN in content
-        has_mcphub = "mcp_servers.mcphub_group_harness-safe" in content
+        has_mcphub = "mcp_servers.mcphub_group_harness" in content
 
         if has_mcp_managed:
             checks.append(_make_check("grok-mcp-managed-block", "ok", "MCP managed block present"))
@@ -213,7 +213,7 @@ def collect_grok_doctor_checks(home: Path | None = None) -> list[dict[str, str]]
                 _make_check(
                     "grok-mcphub-endpoint",
                     "ok",
-                    "mcphub harness-safe endpoint configured",
+                    "mcphub harness endpoint configured",
                 )
             )
 

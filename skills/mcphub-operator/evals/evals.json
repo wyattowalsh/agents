@@ -2,14 +2,15 @@
   "skill_name": "mcphub-operator",
   "evals": [
     {
-      "id": "group-picker-daily-default",
+      "id": "group-picker-harness-default",
       "prompt": "Which MCPHub group should my local Cursor session use for everyday repo work?",
-      "expected_output": "Recommend daily as default; mention full-fleet local exposure without attaching tunnel.",
+      "expected_output": "Recommend harness as the default; mention that broader workflow groups are opt-in and tunnel is remote-only.",
       "files": [],
       "assertions": [
-        "Agent recommends daily group for routine local work",
+        "Agent recommends harness group for routine local work",
+        "Agent mentions daily, coding, research, review, or release as opt-in escalation groups",
         "Agent does not recommend tunnel for local Cursor",
-        "Agent mentions harness-safe is deprecated alias of daily"
+        "Agent describes harness as the minimal context-bloat control group"
       ]
     },
     {

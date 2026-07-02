@@ -1,317 +1,310 @@
 # BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS
 
-[mcp_servers.mcphub_group_harness-safe]
-url = "http://127.0.0.1:46683/mcp/harness-safe"
+[mcp_servers.mcphub_group_harness]
+url = "http://127.0.0.1:46683/mcp/harness"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = true
 
 [mcp_servers.mcphub_server_agent-catalog]
 url = "http://127.0.0.1:46683/mcp/agent-catalog"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_arxiv]
 url = "http://127.0.0.1:46683/mcp/arxiv"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_atom-of-thoughts]
 url = "http://127.0.0.1:46683/mcp/atom-of-thoughts"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_brave-search]
 url = "http://127.0.0.1:46683/mcp/brave-search"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_cascade-thinking]
 url = "http://127.0.0.1:46683/mcp/cascade-thinking"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_chrome-devtools]
 url = "http://127.0.0.1:46683/mcp/chrome-devtools"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_ci-artifacts]
 url = "http://127.0.0.1:46683/mcp/ci-artifacts"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_context7]
 url = "http://127.0.0.1:46683/mcp/context7"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_crash]
 url = "http://127.0.0.1:46683/mcp/crash"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_creative-thinking]
 url = "http://127.0.0.1:46683/mcp/creative-thinking"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_deep-lucid-3d]
 url = "http://127.0.0.1:46683/mcp/deep-lucid-3d"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_deepwiki]
 url = "http://127.0.0.1:46683/mcp/deepwiki"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_docling]
 url = "http://127.0.0.1:46683/mcp/docling"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_docs-graph]
 url = "http://127.0.0.1:46683/mcp/docs-graph"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_docs-index]
 url = "http://127.0.0.1:46683/mcp/docs-index"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_duckduckgo-search]
 url = "http://127.0.0.1:46683/mcp/duckduckgo-search"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_eval-results]
 url = "http://127.0.0.1:46683/mcp/eval-results"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_exa]
 url = "http://127.0.0.1:46683/mcp/exa"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_fetch]
 url = "http://127.0.0.1:46683/mcp/fetch"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_fetcher]
 url = "http://127.0.0.1:46683/mcp/fetcher"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
-tool_timeout_sec = 90
-enabled = false
-
-[mcp_servers.mcphub_server_ffmpeg]
-url = "http://127.0.0.1:46683/mcp/ffmpeg"
-headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_g-search]
 url = "http://127.0.0.1:46683/mcp/g-search"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_gmail]
 url = "http://127.0.0.1:46683/mcp/gmail"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_linkedin]
 url = "http://127.0.0.1:46683/mcp/linkedin"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_lotus-wisdom-mcp]
 url = "http://127.0.0.1:46683/mcp/lotus-wisdom-mcp"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_ossinsight]
 url = "http://127.0.0.1:46683/mcp/ossinsight"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_package-version]
 url = "http://127.0.0.1:46683/mcp/package-version"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_penpot]
 url = "http://127.0.0.1:46683/mcp/penpot"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_release-provenance]
 url = "http://127.0.0.1:46683/mcp/release-provenance"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_repo-readonly]
 url = "http://127.0.0.1:46683/mcp/repo-readonly"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_repomix]
 url = "http://127.0.0.1:46683/mcp/repomix"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_sequential-thinking]
 url = "http://127.0.0.1:46683/mcp/sequential-thinking"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_shannon-thinking]
 url = "http://127.0.0.1:46683/mcp/shannon-thinking"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_skill-catalog]
 url = "http://127.0.0.1:46683/mcp/skill-catalog"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_source-url-health]
 url = "http://127.0.0.1:46683/mcp/source-url-health"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_structured-thinking]
 url = "http://127.0.0.1:46683/mcp/structured-thinking"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_supathings]
 url = "http://127.0.0.1:46683/mcp/supathings"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_tavily]
 url = "http://127.0.0.1:46683/mcp/tavily"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_template-smoke]
 url = "http://127.0.0.1:46683/mcp/template-smoke"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_think-strategies]
 url = "http://127.0.0.1:46683/mcp/think-strategies"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_trafilatura]
 url = "http://127.0.0.1:46683/mcp/trafilatura"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_wayback]
 url = "http://127.0.0.1:46683/mcp/wayback"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_wikipedia]
 url = "http://127.0.0.1:46683/mcp/wikipedia"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
 [mcp_servers.mcphub_server_workflow-status]
 url = "http://127.0.0.1:46683/mcp/workflow-status"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
-startup_timeout_sec = 20
+startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 

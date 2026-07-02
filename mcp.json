@@ -1,9 +1,9 @@
 {
   "mcpServers": {
-    "mcphub_group_harness-safe": {
+    "mcphub_group_harness": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
-        "http://127.0.0.1:46683/mcp/harness-safe"
+        "http://127.0.0.1:46683/mcp/harness"
       ],
       "env": {
         "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
@@ -204,16 +204,6 @@
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/fetcher"
-      ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
-      "disabled": true
-    },
-    "mcphub_server_ffmpeg": {
-      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
-      "args": [
-        "http://127.0.0.1:46683/mcp/ffmpeg"
       ],
       "env": {
         "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"

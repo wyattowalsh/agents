@@ -161,7 +161,7 @@ def test_grok_plannotator_policy_unified_source_and_legacy_parity():
 
 def test_is_grok_owned_header_matches_policy_tables():
     assert is_grok_owned_header("models")
-    assert is_grok_owned_header("mcp_servers.mcphub_group_harness-safe")
+    assert is_grok_owned_header("mcp_servers.mcphub_group_harness")
     assert is_grok_owned_header("compat.claude")
     assert not is_grok_owned_header("cli")
     assert not is_grok_owned_header("marketplace.sources")
@@ -255,12 +255,12 @@ def test_strip_registry_mcp_without_markers():
 [cli]
 auto_update = true
 
-[mcp_servers.mcphub_group_harness-safe]
-url = "http://127.0.0.1:46683/mcp/harness-safe"
+[mcp_servers.mcphub_group_harness]
+url = "http://127.0.0.1:46683/mcp/harness"
 enabled = true
 """
     stripped = strip_registry_mcp_tables(current, names)
-    assert "mcphub_group_harness-safe" not in stripped
+    assert "mcphub_group_harness" not in stripped
     assert "[cli]" in stripped
 
 
@@ -268,7 +268,7 @@ def test_render_grok_config_repo_only_is_mcp_block():
     registry = load_json(MCP_REGISTRY_PATH)
     rendered = render_grok_config("", registry, repo_only=True)
     assert "BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS" in rendered
-    assert "[mcp_servers.mcphub_group_harness-safe]" in rendered
+    assert "[mcp_servers.mcphub_group_harness]" in rendered
 
 
 def test_render_grok_config_home_includes_policy_and_preserves_user(tmp_path, monkeypatch):

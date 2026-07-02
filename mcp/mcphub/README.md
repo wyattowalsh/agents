@@ -17,7 +17,7 @@ server directly when `mcphub.enabled` is true in the registry.
 
 - All servers: `http://127.0.0.1:46683/mcp`
 - Group: `http://127.0.0.1:46683/mcp/{group}`
-- Harness-safe group: `http://127.0.0.1:46683/mcp/harness-safe`
+- Harness group: `http://127.0.0.1:46683/mcp/harness`
 - Server: `http://127.0.0.1:46683/mcp/{server}`
 - Smart Routing, opt-in only: `http://127.0.0.1:46683/mcp/$smart` and `/$smart/{group}`
 - OpenAPI export: `http://127.0.0.1:46683/api/openapi.json`
@@ -53,7 +53,7 @@ https://mcp.w4w.dev/mcp/tunnel
 ```
 
 Managed harness configs also expose each individual MCPHub server endpoint as a
-disabled entry. The only enabled projected endpoint is `harness-safe`; enable a
+disabled entry. The only enabled projected endpoint is `harness`; enable a
 single server endpoint locally only when a narrower surface is needed.
 
 Set `MCPHUB_TUNNEL_ENABLED=true` in `.env.mcphub` to have the MCPHub LaunchAgent

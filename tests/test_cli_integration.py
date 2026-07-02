@@ -49,6 +49,11 @@ def patched_repo(tmp_path, monkeypatch):
         "config/sync-manifest.json",
         "config/tooling-policy.json",
         "config/harness-surface-registry.json",
+        "mcp/mcphub/README.md",
+        "mcp/mcphub/fastmcp.json",
+        "mcp/mcphub/mcp_settings.json",
+        "mcp/mcphub/pyproject.toml",
+        "mcp/mcphub/server.py",
         "planning/manifests/security-quarantine-register.json",
         "AGENTS.md",
     ):
@@ -605,6 +610,7 @@ class TestSkillsSync:
         resolved = snapshot if snapshot is not None else self._snapshot()
         monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: resolved)
         monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: ())
+        monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
         return resolved
 
     def test_sync_dry_run_reports_categories_and_commands(self, monkeypatch):
@@ -788,6 +794,7 @@ class TestSkillsSync:
         monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
         monkeypatch.setattr("wagents.cli.collect_installed_inventory", capture_inventory)
         monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: ())
+        monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
 
         result = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
 
@@ -807,7 +814,7 @@ class TestGrokDoctor:
         grok_cfg = tmp_path / "config.toml"
         grok_cfg.write_text(
             "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS\n"
-            "[mcp_servers.mcphub_group_harness-safe]\nenabled = true\n"
+            "[mcp_servers.mcphub_group_harness]\nenabled = true\n"
             "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS\n",
             encoding="utf-8",
         )
@@ -832,7 +839,7 @@ class TestGrokDoctor:
     def test_grok_doctor_warns_missing_managed_markers(self, monkeypatch, tmp_path):
         grok_cfg = tmp_path / "config.toml"
         grok_cfg.write_text(
-            "[mcp_servers.mcphub_group_harness-safe]\nenabled = true\n",
+            "[mcp_servers.mcphub_group_harness]\nenabled = true\n",
             encoding="utf-8",
         )
         monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_PATH", grok_cfg)

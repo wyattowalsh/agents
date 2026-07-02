@@ -21,15 +21,15 @@ import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components'
 
 ## Overview
 
-`config/mcp-registry.json` normalizes MCP server launch specs (stdio, transport, command/args, env placeholders, timeouts, tool allow/deny, platform_overrides, exclude_from_harnesses, ownership), groups them into logical bundles (research, reasoning, browser, harness-safe, etc.), and declares client-specific projection rules (which groups/servers are included for `opencode`, `grok`, `codex`, `chatgpt`, stdio_bridge, etc.).
+`config/mcp-registry.json` normalizes MCP server launch specs (stdio, transport, command/args, env placeholders, timeouts, tool allow/deny, platform_overrides, exclude_from_harnesses, ownership), groups them into logical bundles (research, reasoning, browser, harness, etc.), and declares client-specific projection rules (which groups/servers are included for `opencode`, `grok`, `codex`, `chatgpt`, stdio_bridge, etc.).
 
 MCPHub uses this to produce `mcp_settings.json`; `scripts/sync_agent_stack.py` consumes it for per-client config emission (exact vs merge behavior documented in the registry and sync surfaces).
 
 ## What It Controls
 
-- ~34 MCP servers (brave-search, tavily, chrome-devtools, context7, fetch, repomix, docling, ffmpeg, arxiv, wikipedia, gmail, linkedin, thinking servers, etc.)
+- ~34 MCP servers (brave-search, duckduckgo-search, chrome-devtools, context7, fetch, repomix, docling, arxiv, wikipedia, gmail, linkedin, thinking servers, etc.; ffmpeg is registered but disabled in favor of skill/CLI routing)
 - Per-server: transport, command (often npx/uvx with repo wrappers for chrome-devtools), env (API keys via placeholders), enabled, timeouts, tools list or `*` + tools_allow_all, tool_approvals, platform_overrides, exclude_from_harnesses, ownership rules (plugin vs extension vs repo_mcp)
-- Named groups for targeting (all-managed, harness-safe, code, research, reasoning, browser, data, media, personal, local-ai, experimental)
+- Named groups for targeting (`harness`, `tunnel`, `daily`, `coding`, `research`, `review`, `release`, capability groups, and risk/exposure groups)
 - Client defaults and overrides (transport, auth, included_groups, enable_server_endpoints, etc.)
 - Contributor policy defaults (tools_policy, wildcard opt-in)
 
@@ -44,13 +44,8 @@ Projections target:
 
 See `config/sync-manifest.json` for which outputs are generated vs merged.
 
-## Client snippets
 
-Example MCP client blocks for commonly referenced servers:
 
-<McpClientSnippet serverKey="chrome-devtools" chromeRepoPath="${REPO_ROOT}" />
-
-<McpClientSnippet serverKey="brave-search" package="brave-search-mcp" />
 
 ## Client snippets
 
@@ -201,19 +196,10 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "tools_allow_all": true
     },
     "context7": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "@upstash/context7-mcp",
-        "--api-key",
-        "${CONTEXT7_API_KEY}"
-      ],
-      "env": {
-        "CONTEXT7_API_KEY": {
-          "env_var": "CONTEXT7_API_KEY"
-        }
-      },
+      "transport": "streamable-http",
+      "auth_policy": "oauth",
+      "url": "https://mcp.context7.com/mcp/oauth",
+      "env": {},
       "enabled": true,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
@@ -225,13 +211,9 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "tools_allow_all": true
     },
     "deepwiki": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://mcp.deepwiki.com/mcp"
-      ],
+      "transport": "streamable-http",
+      "auth_policy": "public-http",
+      "url": "https://mcp.deepwiki.com/mcp",
       "env": {},
       "enabled": true,
       "startup_timeout_sec": 90,
@@ -332,13 +314,9 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "platform_overrides": {}
     },
     "penpot": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://design.penpot.app/mcp/stream?userToken=${PENPOT_MCP_USER_TOKEN}"
-      ],
+      "transport": "streamable-http",
+      "auth_policy": "account-token",
+      "url": "https://design.penpot.app/mcp/stream?userToken=${PENPOT_MCP_USER_TOKEN}",
       "env": {
         "PENPOT_MCP_USER_TOKEN": {
           "env_var": "PENPOT_MCP_USER_TOKEN"
@@ -428,17 +406,10 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "tools_allow_all": true
     },
     "tavily": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "tavily-mcp"
-      ],
-      "env": {
-        "TAVILY_API_KEY": {
-          "env_var": "TAVILY_API_KEY"
-        }
-      },
+      "transport": "streamable-http",
+      "auth_policy": "oauth",
+      "url": "https://mcp.tavily.com/mcp/",
+      "env": {},
       "enabled": true,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
@@ -581,36 +552,9 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "tools_allow_all": true
     },
     "exa": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "exa-mcp-server"
-      ],
-      "env": {
-        "EXA_API_KEY": {
-          "env_var": "EXA_API_KEY"
-        }
-      },
-      "enabled": true,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [
-        "*"
-      ],
-      "tool_approvals": {},
-      "platform_overrides": {},
-      "tools_allow_all": true
-    },
-    "ffmpeg": {
-      "transport": "stdio",
-      "command": "uv",
-      "args": [
-        "--directory",
-        "${REPO_ROOT}/mcp/servers/ffmpeg-mcp",
-        "run",
-        "ffmpeg-mcp"
-      ],
+      "transport": "streamable-http",
+      "auth_policy": "oauth",
+      "url": "https://mcp.exa.ai/mcp",
       "env": {},
       "enabled": true,
       "startup_timeout_sec": 90,
@@ -766,6 +710,299 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "tool_approvals": {},
       "platform_overrides": {},
       "tools_allow_all": true
+    },
+    "agent-catalog": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/agent-catalog",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": {
+          "value": "${REPO_ROOT}"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "list_agents",
+        "get_agent",
+        "agent_skill_edges"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "docs-index": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/docs-index",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": {
+          "value": "${REPO_ROOT}"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "list_reports",
+        "get_report",
+        "list_content_pages",
+        "read_content_page"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "eval-results": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/eval-results",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": {
+          "value": "${REPO_ROOT}"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "eval_list",
+        "eval_coverage",
+        "eval_adequacy",
+        "eval_validate"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "repo-readonly": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/repo-readonly",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": {
+          "value": "${REPO_ROOT}"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "list_allowed_prefixes",
+        "path_allowed",
+        "read_file",
+        "list_directory"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "skill-catalog": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/skill-catalog",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": {
+          "value": "${REPO_ROOT}"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "list_skills",
+        "get_skill",
+        "skills_catalog_index",
+        "skill_catalog_summary"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "source-url-health": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/source-url-health",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": {
+          "value": "${REPO_ROOT}"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "check_url_health",
+        "check_urls_health"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "template-smoke": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/template-smoke",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": {
+          "value": "${REPO_ROOT}"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "mcp_layout_validate",
+        "list_mcp_servers",
+        "scaffold_dry_run",
+        "scaffold_name_check"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "ci-artifacts": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/ci-artifacts",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": {
+          "value": "${REPO_ROOT}"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "list_ci_artifacts",
+        "get_ci_artifact",
+        "ci_artifact_registry",
+        "ci_artifact_summary"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "release-provenance": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/release-provenance",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": {
+          "value": "${REPO_ROOT}"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "list_provenance_manifests",
+        "get_provenance_manifest",
+        "list_release_workflows",
+        "get_release_workflow_summary"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "workflow-status": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/workflow-status",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": {
+          "value": "${REPO_ROOT}"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "list_workflows",
+        "get_workflow_summary",
+        "read_workflow",
+        "workflows_overview"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "docs-graph": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${REPO_ROOT}/mcp/docs-graph",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "WAGENTS_REPO_ROOT": {
+          "value": "${REPO_ROOT}"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "docs_graph_snapshot",
+        "docs_graph_latest",
+        "docs_graph_history"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
     }
   },
   "mcphub": {
@@ -773,7 +1010,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
     "base_url": "http://127.0.0.1:46683",
     "public_url": "https://mcp.w4w.dev/mcp",
     "bearer_token_env_var": "MCPHUB_BEARER_TOKEN",
-    "startup_timeout_sec": 20,
+    "startup_timeout_sec": 90,
     "tool_timeout_sec": 90,
     "projection_adapters": {
       "grok": "http",
@@ -790,170 +1027,303 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "embedding_model_env_var": "SMART_ROUTING_EMBEDDING_MODEL"
     },
     "groups": {
-      "all-managed": {
-        "description": "All enabled servers managed by the repository MCP registry.",
-        "enabled": true,
-        "servers": [
-          "arxiv",
-          "atom-of-thoughts",
-          "brave-search",
-          "cascade-thinking",
-          "chrome-devtools",
-          "context7",
-          "crash",
-          "creative-thinking",
-          "deep-lucid-3d",
-          "deepwiki",
-          "docling",
-          "duckduckgo-search",
-          "exa",
-          "fetch",
-          "fetcher",
-          "ffmpeg",
-          "g-search",
-          "gmail",
-          "linkedin",
-          "lotus-wisdom-mcp",
-          "ossinsight",
-          "package-version",
-          "penpot",
-          "repomix",
-          "sequential-thinking",
-          "shannon-thinking",
-          "structured-thinking",
-          "supathings",
-          "tavily",
-          "think-strategies",
-          "trafilatura",
-          "wayback",
-          "wikipedia"
-        ]
-      },
-      "code": {
-        "description": "Code intelligence, repository inspection, docs lookup, and browser automation servers.",
-        "enabled": true,
-        "servers": [
-          "chrome-devtools",
-          "context7",
-          "deepwiki",
-          "docling",
-          "fetch",
-          "fetcher",
-          "ossinsight",
-          "package-version",
-          "repomix",
-          "supathings",
-          "trafilatura"
-        ]
-      },
-      "harness-safe": {
-        "description": "Safe shared harness MCP surface for search, docs, browser inspection, package metadata, repo packing, fetch, and Gmail.",
+      "harness": {
+        "description": "Default local harness bundle: highest-value tools with bounded schema/context cost.",
         "enabled": true,
         "servers": [
           "brave-search",
-          "chrome-devtools",
+          "duckduckgo-search",
           "context7",
           "deepwiki",
           "fetch",
-          "fetcher",
+          {
+            "name": "fetcher",
+            "tools": [
+              "fetch_urls"
+            ]
+          },
           "package-version",
-          "penpot",
-          "repomix",
-          "supathings",
-          "tavily",
-          "trafilatura",
+          "chrome-devtools",
+          "penpot"
+        ]
+      },
+      "tunnel": {
+        "description": "Minimal remote ChatGPT tunnel surface without personal, browser, or heavy tools.",
+        "enabled": true,
+        "servers": [
+          "brave-search",
+          "context7",
+          "deepwiki",
+          "fetch",
+          "package-version"
+        ]
+      },
+      "daily": {
+        "description": "Broader local workhorse bundle for routine agentic development.",
+        "enabled": true,
+        "servers": [
+          "brave-search",
           "duckduckgo-search",
-          "gmail"
+          "context7",
+          "deepwiki",
+          "fetch",
+          {
+            "name": "fetcher",
+            "tools": [
+              "fetch_urls"
+            ]
+          },
+          "package-version",
+          "trafilatura",
+          "repomix",
+          "chrome-devtools"
+        ]
+      },
+      "coding": {
+        "description": "Coding, dependency lookup, repo inspection, and browser validation workflow.",
+        "enabled": true,
+        "servers": [
+          "context7",
+          "deepwiki",
+          "fetch",
+          "duckduckgo-search",
+          "repomix",
+          "package-version",
+          "ossinsight",
+          "chrome-devtools"
         ]
       },
       "research": {
-        "description": "Search, retrieval, reference, and source inspection servers.",
+        "description": "Search, retrieval, public references, and source inspection workflow.",
         "enabled": true,
         "servers": [
-          "arxiv",
           "brave-search",
-          "context7",
-          "deepwiki",
           "duckduckgo-search",
+          "tavily",
           "exa",
           "fetch",
-          "g-search",
-          "ossinsight",
-          "tavily",
+          "fetcher",
           "trafilatura",
+          "arxiv",
+          "wikipedia",
           "wayback",
-          "wikipedia"
+          "deepwiki"
         ]
       },
-      "reasoning": {
-        "description": "Structured thinking and planning servers.",
+      "review": {
+        "description": "Code, docs, eval, source-health, workflow-status, and browser-backed review workflow.",
         "enabled": true,
         "servers": [
-          "atom-of-thoughts",
-          "cascade-thinking",
-          "crash",
-          "creative-thinking",
-          "lotus-wisdom-mcp",
-          "sequential-thinking",
-          "shannon-thinking",
-          "structured-thinking",
-          "think-strategies"
+          "context7",
+          "deepwiki",
+          "fetch",
+          "duckduckgo-search",
+          "package-version",
+          "repomix",
+          "chrome-devtools"
+        ]
+      },
+      "release": {
+        "description": "Release, package, CI artifact, provenance, and eval-readiness workflow.",
+        "enabled": true,
+        "servers": [
+          "package-version",
+          "repomix",
+          "fetch",
+          "trafilatura"
+        ]
+      },
+      "personal-work": {
+        "description": "Explicit personal-account and design/productivity workflow.",
+        "enabled": true,
+        "servers": [
+          "gmail",
+          "linkedin",
+          "supathings",
+          "penpot"
+        ]
+      },
+      "media-work": {
+        "description": "Document, 3D, and web-ingestion workflow; prefer an agent skill plus ffmpeg CLI for deterministic media transforms.",
+        "enabled": true,
+        "servers": [
+          "docling",
+          "deep-lucid-3d",
+          "fetch",
+          "trafilatura"
+        ]
+      },
+      "web-search": {
+        "description": "Web search providers.",
+        "enabled": true,
+        "servers": [
+          "brave-search",
+          "duckduckgo-search",
+          "tavily",
+          "exa",
+          "g-search"
+        ]
+      },
+      "web-read": {
+        "description": "URL and page ingestion without search APIs.",
+        "enabled": true,
+        "servers": [
+          "fetch",
+          "fetcher",
+          "trafilatura",
+          "wayback"
+        ]
+      },
+      "docs": {
+        "description": "Library, framework, repo docs, and docs graph lookup.",
+        "enabled": true,
+        "servers": [
+          "context7",
+          "deepwiki"
+        ]
+      },
+      "repo": {
+        "description": "Repository and package intelligence.",
+        "enabled": true,
+        "servers": [
+          "repomix",
+          "package-version",
+          "ossinsight"
         ]
       },
       "browser": {
-        "description": "Browser and web UI automation servers.",
+        "description": "Live browser automation.",
         "enabled": true,
         "servers": [
           "chrome-devtools"
         ]
       },
-      "data": {
-        "description": "Data extraction, package metadata, and transform servers.",
+      "reasoning": {
+        "description": "Curated structured-thinking servers (three proven tools only).",
         "enabled": true,
         "servers": [
-          "docling",
-          "ffmpeg",
-          "ossinsight",
-          "package-version",
-          "supathings",
-          "trafilatura"
+          "sequential-thinking",
+          "cascade-thinking",
+          "structured-thinking"
+        ]
+      },
+      "reasoning-lab": {
+        "description": "Experimental or less-proven reasoning tools.",
+        "enabled": true,
+        "servers": [
+          "atom-of-thoughts",
+          "crash",
+          "creative-thinking",
+          "lotus-wisdom-mcp",
+          "shannon-thinking",
+          "think-strategies"
         ]
       },
       "media": {
-        "description": "Media, document, and 3D asset processing servers.",
+        "description": "Document and 3D processing.",
         "enabled": true,
         "servers": [
-          "deep-lucid-3d",
           "docling",
-          "ffmpeg"
+          "deep-lucid-3d"
         ]
       },
-      "personal": {
-        "description": "Personal-account connectors; treat as sensitive.",
+      "design": {
+        "description": "Design tooling.",
+        "enabled": true,
+        "servers": [
+          "penpot"
+        ]
+      },
+      "productivity": {
+        "description": "Productivity tooling.",
+        "enabled": true,
+        "servers": [
+          "supathings"
+        ]
+      },
+      "accounts": {
+        "description": "Account-backed connectors.",
         "enabled": true,
         "servers": [
           "gmail",
           "linkedin"
         ]
       },
-      "local-ai": {
-        "description": "Local AI helper and context-prep servers.",
+      "references": {
+        "description": "Academic papers, encyclopedia, and archive lookup.",
         "enabled": true,
         "servers": [
+          "arxiv",
+          "wikipedia",
+          "wayback"
+        ]
+      },
+      "shared-read": {
+        "description": "Broad read-oriented pool for explicit opt-in without personal or browser tools.",
+        "enabled": true,
+        "servers": [
+          "brave-search",
           "context7",
+          "deepwiki",
+          "fetch",
           "package-version",
-          "repomix"
+          "duckduckgo-search",
+          "trafilatura",
+          "arxiv",
+          "wikipedia",
+          "wayback"
+        ]
+      },
+      "credentialed": {
+        "description": "Tools that rely on provider API keys, OAuth, or user-owned account tokens.",
+        "enabled": true,
+        "servers": [
+          "brave-search",
+          "context7",
+          "tavily",
+          "exa",
+          "penpot"
+        ]
+      },
+      "account-backed": {
+        "description": "Tools backed by user accounts or personal app state.",
+        "enabled": true,
+        "servers": [
+          "gmail",
+          "linkedin",
+          "supathings",
+          "penpot"
+        ]
+      },
+      "live-browser": {
+        "description": "Tools that automate or depend on live browser/session state.",
+        "enabled": true,
+        "servers": [
+          "chrome-devtools",
+          "linkedin"
+        ]
+      },
+      "heavy": {
+        "description": "Large-output or heavier processing tools.",
+        "enabled": true,
+        "servers": [
+          "repomix",
+          "docling",
+          "deep-lucid-3d"
         ]
       },
       "experimental": {
-        "description": "Newer or less-proven servers kept behind explicit group targeting.",
+        "description": "Bleeding-edge, less-proven, or high-variance tools.",
         "enabled": true,
         "servers": [
-          "crash",
-          "deep-lucid-3d",
+          "exa",
           "g-search",
+          "atom-of-thoughts",
+          "crash",
+          "creative-thinking",
+          "deep-lucid-3d",
           "lotus-wisdom-mcp",
-          "supathings",
+          "shannon-thinking",
           "think-strategies"
         ]
       }
@@ -965,29 +1335,13 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "server"
         ],
         "included_groups": [
-          "harness-safe"
-        ],
-        "included_servers": [
-          "brave-search",
-          "chrome-devtools",
-          "context7",
-          "deepwiki",
-          "fetch",
-          "fetcher",
-          "package-version",
-          "penpot",
-          "repomix",
-          "supathings",
-          "tavily",
-          "trafilatura",
-          "duckduckgo-search",
-          "gmail"
+          "harness"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness-safe"
+          "harness"
         ],
         "enable_server_endpoints": true
       },
@@ -999,13 +1353,13 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "server"
         ],
         "included_groups": [
-          "harness-safe"
+          "harness"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness-safe"
+          "harness"
         ],
         "enable_server_endpoints": true
       },
@@ -1017,13 +1371,13 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "server"
         ],
         "included_groups": [
-          "harness-safe"
+          "harness"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness-safe"
+          "harness"
         ],
         "enable_server_endpoints": true
       },
@@ -1035,69 +1389,13 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "server"
         ],
         "included_groups": [
-          "all-managed",
-          "browser",
-          "code",
-          "data",
-          "experimental",
-          "harness-safe",
-          "local-ai",
-          "media",
-          "personal",
-          "reasoning",
-          "research"
-        ],
-        "included_servers": [
-          "arxiv",
-          "atom-of-thoughts",
-          "brave-search",
-          "cascade-thinking",
-          "chrome-devtools",
-          "context7",
-          "crash",
-          "creative-thinking",
-          "deep-lucid-3d",
-          "deepwiki",
-          "docling",
-          "duckduckgo-search",
-          "exa",
-          "fetch",
-          "fetcher",
-          "ffmpeg",
-          "g-search",
-          "gmail",
-          "linkedin",
-          "lotus-wisdom-mcp",
-          "ossinsight",
-          "package-version",
-          "penpot",
-          "repomix",
-          "sequential-thinking",
-          "shannon-thinking",
-          "structured-thinking",
-          "supathings",
-          "tavily",
-          "think-strategies",
-          "trafilatura",
-          "wayback",
-          "wikipedia"
+          "harness"
         ],
         "enabled_endpoint_kinds": [
-          "group",
-          "server"
+          "group"
         ],
         "enabled_groups": [
-          "all-managed",
-          "browser",
-          "code",
-          "data",
-          "experimental",
-          "harness-safe",
-          "local-ai",
-          "media",
-          "personal",
-          "reasoning",
-          "research"
+          "harness"
         ],
         "enable_server_endpoints": true,
         "server_endpoint_name_style": "base"
@@ -1107,19 +1405,18 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "auth": "bearer_token_env_var",
         "url_source": "public",
         "included_endpoint_kinds": [
-          "group",
-          "server"
+          "group"
         ],
         "included_groups": [
-          "harness-safe"
+          "tunnel"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness-safe"
+          "tunnel"
         ],
-        "enable_server_endpoints": true
+        "enable_server_endpoints": false
       },
       "stdio_bridge": {
         "transport": "stdio",

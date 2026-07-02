@@ -16,7 +16,7 @@ def test_grok_doctor_report_shape(monkeypatch, tmp_path):
     grok_cfg = tmp_path / "config.toml"
     grok_cfg.write_text(
         "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS\n"
-        "[mcp_servers.mcphub_group_harness-safe]\nenabled = true\n"
+        "[mcp_servers.mcphub_group_harness]\nenabled = true\n"
         "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS\n"
         "# BEGIN MANAGED BY sync_agent_stack.py: GROK_POLICY\n"
         '[models]\ndefault = "grok-composer-2.5-fast"\n'
@@ -46,13 +46,17 @@ def test_grok_doctor_report_shape(monkeypatch, tmp_path):
     assert isinstance(report["checks"], list)
     assert report["checks"][0]["name"] == "grok-binary"
     assert report["ok"] is True
+    assert any(
+        check["name"] == "grok-mcphub-endpoint" and check["summary"] == "mcphub harness endpoint configured"
+        for check in report["checks"]
+    )
 
 
 def test_grok_doctor_json_cli(monkeypatch, tmp_path):
     grok_cfg = tmp_path / "config.toml"
     grok_cfg.write_text(
         "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS\n"
-        "[mcp_servers.mcphub_group_harness-safe]\nenabled = true\n"
+        "[mcp_servers.mcphub_group_harness]\nenabled = true\n"
         "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS\n",
         encoding="utf-8",
     )
@@ -82,7 +86,7 @@ def test_grok_doctor_json_uppercase_format(monkeypatch, tmp_path):
     grok_cfg = tmp_path / "config.toml"
     grok_cfg.write_text(
         "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS\n"
-        "[mcp_servers.mcphub_group_harness-safe]\nenabled = true\n"
+        "[mcp_servers.mcphub_group_harness]\nenabled = true\n"
         "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS\n",
         encoding="utf-8",
     )

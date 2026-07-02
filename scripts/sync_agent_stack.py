@@ -992,6 +992,14 @@ def render_codex_global_instructions() -> str:
     global_text = GLOBAL_MD.read_text(encoding="utf-8").rstrip("\n")
     codex_suffix = """
 
+## MCPHub Preflight
+
+- MCP is MCPHub-backed: only `mcphub_group_harness` is enabled by default in managed Codex config.
+- Before sessions that need MCP tools, run `just mcphub-doctor && just mcphub-smoke`.
+- `MCPHUB_BEARER_TOKEN` must be in Codex's process environment. For CLI, source `.env.mcphub` in the same shell. For GUI, install the MCPHub LaunchAgent (`just mcphub-install-launch-agent` after fixing plist paths) or export the token into the macOS user session.
+- Do not enable individual `mcphub_server_*` entries unless intentionally narrowing MCP scope.
+- Optional warm-start: `just mcphub-up` before opening Codex, or launch via `scripts/mcphub/wrappers/codex`.
+
 ## Codex-Specific Instructions
 
 - Treat `./instructions/global.md` as the canonical shared instruction source.
@@ -1032,7 +1040,7 @@ def render_codex_base_config(
         "approvals_reviewer": "user",
         "background_terminal_max_timeout": 300000,
         "check_for_update_on_startup": True,
-        "file_opener": "vscode",
+        "file_opener": "cursor",
         "model": model,
         "model_reasoning_effort": reasoning_effort,
         "model_reasoning_summary": "detailed",

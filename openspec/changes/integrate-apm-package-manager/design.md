@@ -25,7 +25,7 @@ Integrate APM as a **complementary optional CLI** for consuming remote agent pac
 - Repo MCP model: `config/mcp-registry.json` (canonical) → MCPHub (`scripts/mcphub/...`) → generated `mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`, OpenCode via sync, etc.
 - **Split:** Treat APM-managed MCPs as user/consumer declared remote servers. Do not auto-populate repo `mcp-registry` from APM nor project `apm.yml` from registry in this change.
 - OpenCode specific: repo `opencode.json` + live `~/.config/opencode/opencode.json` own runtime plugins and (via sync) some MCP. APM may add MCP entries to OpenCode-detected locations; keep ownership notes so sync does not fight APM-deployed MCPs. Future bridge would be explicit (e.g., opt-in projection) and tracked separately.
-- Precedence: repo-managed "harness-safe" group via MCPHub stays default for repo surfaces.
+- Precedence: repo-managed "harness" group via MCPHub stays default for repo surfaces.
 
 ## Data And Control Flow
 

@@ -35,7 +35,7 @@ mount is required.
 When `mcphub.enabled` is false or absent, current direct renderers are preserved.
 When enabled:
 
-- Managed harness clients receive the enabled `harness-safe` group endpoint plus
+- Managed harness clients receive the enabled `harness` group endpoint plus
   disabled individual server endpoints for explicit opt-in.
 - Codex receives Streamable HTTP MCP entries with `bearer_token_env_var`.
 - OpenCode and Grok receive local HTTP entries with authorization header

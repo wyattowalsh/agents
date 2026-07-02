@@ -17,7 +17,7 @@ The Cursor harness lane SHALL define repo-owned Cursor editor and CLI projection
 
 - **GIVEN** repo sync renders `.cursor/mcp.json`
 - **WHEN** the MCP registry enables MCPHub
-- **THEN** the rendered config includes only the managed `harness-safe` MCPHub group by default
+- **THEN** the rendered config includes only the managed `harness` MCPHub group by default
 - **AND** secrets use `${env:NAME}` placeholders
 - **AND** repo paths use `${workspaceFolder}`.
 

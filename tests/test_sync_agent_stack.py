@@ -80,13 +80,27 @@ def assert_opencode_model_matrix(payload: dict) -> None:
         assert '"reasoningSummary": "auto"' not in json.dumps(model)
 
 
+def group_server_name(server: object) -> str:
+    if isinstance(server, str):
+        return server
+    if isinstance(server, dict):
+        name = server.get("name")
+        if isinstance(name, str):
+            return name
+    raise AssertionError(f"invalid group server entry: {server!r}")
+
+
+def group_server_names(group: dict) -> list[str]:
+    return [group_server_name(server) for server in group["servers"]]
+
+
 def mcphub_registry():
     return {
         "mcphub": {
             "enabled": True,
             "base_url": "http://127.0.0.1:46683",
             "bearer_token_env_var": "MCPHUB_BEARER_TOKEN",
-            "startup_timeout_sec": 20,
+            "startup_timeout_sec": 90,
             "tool_timeout_sec": 90,
             "smart_routing": {"enabled": True, "path": "$smart"},
             "groups": {
@@ -147,7 +161,7 @@ def test_render_codex_mcp_block_projects_mcphub_http_endpoints():
     assert "[mcp_servers.mcphub_all]" in rendered
     assert 'url = "http://127.0.0.1:46683/mcp"' in rendered
     assert 'bearer_token_env_var = "MCPHUB_BEARER_TOKEN"' in rendered
-    assert "startup_timeout_sec = 20" in rendered
+    assert "startup_timeout_sec = 90" in rendered
     assert "tool_timeout_sec = 90" in rendered
     assert "[mcp_servers.mcphub_group_code]" not in rendered
     assert "[mcp_servers.mcphub_smart_group_code]" not in rendered
@@ -234,13 +248,13 @@ def test_repo_opencode_mcp_projects_configured_groups_and_server_endpoints():
         f"mcphub_group_{name}" for name in group_names
     ]
     assert "mcphub_all" not in rendered
-    assert rendered["mcphub_group_harness-safe"]["enabled"] is True
-    assert rendered["mcphub_group_harness-safe"]["url"] == "http://127.0.0.1:46683/mcp/harness-safe"
+    assert rendered["mcphub_group_harness"]["enabled"] is True
+    assert rendered["mcphub_group_harness"]["url"] == "http://127.0.0.1:46683/mcp/harness"
     assert all(name in rendered for name in server_names)
     assert all(rendered[name]["enabled"] is False for name in server_names)
 
 
-def test_repo_mcphub_projects_harness_safe_to_managed_harnesses():
+def test_repo_mcphub_projects_harness_to_managed_harnesses():
     registry = json.loads((sync_agent_stack.REPO_ROOT / "config/mcp-registry.json").read_text(encoding="utf-8"))
     server_names = sorted(registry["servers"])
     prefixed_server_names = [f"mcphub_server_{name}" for name in server_names]
@@ -248,17 +262,17 @@ def test_repo_mcphub_projects_harness_safe_to_managed_harnesses():
     codex = render_codex_mcp_block(registry)
     codex_payload = tomllib.loads(codex)
     assert "[mcp_servers.mcphub_all]" not in codex
-    assert "[mcp_servers.mcphub_group_harness-safe]" in codex
-    assert 'url = "http://127.0.0.1:46683/mcp/harness-safe"' in codex
+    assert "[mcp_servers.mcphub_group_harness]" in codex
+    assert 'url = "http://127.0.0.1:46683/mcp/harness"' in codex
     assert sorted(name for name in codex_payload["mcp_servers"] if name.startswith("mcphub_server_")) == sorted(
         prefixed_server_names
     )
-    assert codex_payload["mcp_servers"]["mcphub_group_harness-safe"]["enabled"] is True
+    assert codex_payload["mcp_servers"]["mcphub_group_harness"]["enabled"] is True
     assert all(codex_payload["mcp_servers"][name]["enabled"] is False for name in prefixed_server_names)
 
     claude = render_client_mcp(registry, {}, "claude-desktop")["mcpServers"]
-    assert list(claude) == ["mcphub_group_harness-safe", *prefixed_server_names]
-    assert claude["mcphub_group_harness-safe"]["disabled"] is False
+    assert list(claude) == ["mcphub_group_harness", *prefixed_server_names]
+    assert claude["mcphub_group_harness"]["disabled"] is False
     assert all(claude[name]["disabled"] is True for name in prefixed_server_names)
 
     chatgpt = render_client_mcp(registry, {}, "chatgpt")["mcpServers"]
@@ -269,38 +283,66 @@ def test_repo_mcphub_projects_harness_safe_to_managed_harnesses():
     grok = render_grok_mcp_block(registry)
     grok_payload = tomllib.loads(grok)
     assert "[mcp_servers.mcphub_all]" not in grok
-    assert "[mcp_servers.mcphub_group_harness-safe]" in grok
+    assert "[mcp_servers.mcphub_group_harness]" in grok
     assert '"Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}"' in grok
     assert sorted(name for name in grok_payload["mcp_servers"] if name.startswith("mcphub_server_")) == sorted(
         prefixed_server_names
     )
-    assert grok_payload["mcp_servers"]["mcphub_group_harness-safe"]["enabled"] is True
+    assert grok_payload["mcp_servers"]["mcphub_group_harness"]["enabled"] is True
     assert all(grok_payload["mcp_servers"][name]["enabled"] is False for name in prefixed_server_names)
 
 
 def test_repo_workflow_groups_and_bounded_clients():
     registry = json.loads((sync_agent_stack.REPO_ROOT / "config/mcp-registry.json").read_text(encoding="utf-8"))
 
-    assert registry["mcphub"]["groups"]["daily"]["servers"] == [
+    harness_group = registry["mcphub"]["groups"]["harness"]
+    assert group_server_names(harness_group) == [
         "brave-search",
+        "duckduckgo-search",
         "context7",
         "deepwiki",
         "fetch",
-        "trafilatura",
+        "fetcher",
         "package-version",
-        "repomix",
+        "chrome-devtools",
+        "penpot",
     ]
-    assert registry["mcphub"]["groups"]["harness-safe"]["servers"] == registry["mcphub"]["groups"]["daily"]["servers"]
+    assert {"name": "fetcher", "tools": ["fetch_urls"]} in harness_group["servers"]
+    assert group_server_names(registry["mcphub"]["groups"]["daily"]) == [
+        "brave-search",
+        "duckduckgo-search",
+        "context7",
+        "deepwiki",
+        "fetch",
+        "fetcher",
+        "package-version",
+        "trafilatura",
+        "repomix",
+        "chrome-devtools",
+    ]
     assert registry["mcphub"]["groups"]["reasoning"]["servers"] == [
         "sequential-thinking",
         "cascade-thinking",
         "structured-thinking",
     ]
+    assert "harness-safe" not in registry["mcphub"]["groups"]
+    assert {"coding", "research", "review", "release", "shared-read", "credentialed", "heavy"}.issubset(
+        registry["mcphub"]["groups"]
+    )
+    enabled_servers = {
+        server_name
+        for server_name, server_config in registry["servers"].items()
+        if server_config.get("enabled", True) is True
+    }
+    for group_name, group_config in registry["mcphub"]["groups"].items():
+        if group_config.get("enabled", True) is not True:
+            continue
+        assert set(group_server_names(group_config)).issubset(enabled_servers), group_name
     expected_client = {
         "included_endpoint_kinds": ["group", "server"],
-        "included_groups": ["harness-safe"],
+        "included_groups": ["harness"],
         "enabled_endpoint_kinds": ["group"],
-        "enabled_groups": ["harness-safe"],
+        "enabled_groups": ["harness"],
         "enable_server_endpoints": True,
     }
     for name in ("default", "codex", "grok", "opencode"):
@@ -339,7 +381,7 @@ def test_strip_managed_opencode_mcphub_entries_preserves_unrelated_mcp():
 
 
 def test_merge_server_maps_strips_stale_mcphub_namespace_entries():
-    rendered = {"mcphub_group_harness-safe": {"type": "remote"}}
+    rendered = {"mcphub_group_harness": {"type": "remote"}}
     existing = {
         "mcphub_all": {"type": "remote"},
         "mcphub_group_code": {"type": "remote"},
@@ -352,7 +394,7 @@ def test_merge_server_maps_strips_stale_mcphub_namespace_entries():
     platform_merged = platform_base.merge_server_maps(rendered, existing, known)
 
     for payload in (merged, platform_merged):
-        assert [name for name in payload if name.startswith("mcphub")] == ["mcphub_group_harness-safe"]
+        assert [name for name in payload if name.startswith("mcphub")] == ["mcphub_group_harness"]
         assert payload["custom-local"] == {"type": "local"}
 
 
@@ -406,7 +448,7 @@ def test_validate_settings_catches_unknown_group_servers_and_real_looking_secret
 
     errors = validate_settings(settings, {"servers": {"foo": {}}})
 
-    assert "group bad references unknown server missing" in errors
+    assert "groups.bad.servers[0] references missing server 'missing'" in errors
     assert any("FOO_API_KEY" in error for error in errors)
 
 
@@ -867,14 +909,14 @@ def test_repair_codex_config_text_deduplicates_managed_mcphub_servers():
 
     registry = json.loads((sync_agent_stack.REPO_ROOT / "config/mcp-registry.json").read_text(encoding="utf-8"))
     current = """
-[mcp_servers.mcphub_group_harness-safe]
-url = "http://127.0.0.1:46683/mcp/harness-safe"
+[mcp_servers.mcphub_group_harness]
+url = "http://127.0.0.1:46683/mcp/harness"
 enabled = true
 
 # BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS
 
-[mcp_servers.mcphub_group_harness-safe]
-url = "http://127.0.0.1:46683/mcp/harness-safe"
+[mcp_servers.mcphub_group_harness]
+url = "http://127.0.0.1:46683/mcp/harness"
 enabled = true
 
 # END MANAGED BY sync_agent_stack.py: MCP_SERVERS
@@ -882,8 +924,8 @@ enabled = true
     repaired = sync_agent_stack.repair_codex_config_text(current, registry)
     data = tomllib.loads(repaired)
 
-    assert repaired.count("[mcp_servers.mcphub_group_harness-safe]") == 0
-    assert "mcphub_group_harness-safe" not in data.get("mcp_servers", {})
+    assert repaired.count("[mcp_servers.mcphub_group_harness]") == 0
+    assert "mcphub_group_harness" not in data.get("mcp_servers", {})
 
 
 def test_render_codex_config_drops_preserved_managed_mcphub_servers():
@@ -892,8 +934,8 @@ def test_render_codex_config_drops_preserved_managed_mcphub_servers():
     registry = mcphub_registry()
     policy = {"model_defaults": {"codex": {"model": "gpt-5.5", "reasoning_effort": "high", "personality": "pragmatic"}}}
     current = """
-[mcp_servers.mcphub_group_harness-safe]
-url = "http://127.0.0.1:46683/mcp/harness-safe"
+[mcp_servers.mcphub_group_harness]
+url = "http://127.0.0.1:46683/mcp/harness"
 enabled = true
 
 [mcp_servers.mcphub_server_brave-search]
@@ -903,12 +945,12 @@ enabled = false
 
     rendered = render_codex_config(current, registry, policy, include_local_extras=True)
     data = tomllib.loads(rendered)
-    harness_safe_blocks = rendered.count("[mcp_servers.mcphub_group_harness-safe]")
+    harness_blocks = rendered.count("[mcp_servers.mcphub_group_harness]")
     brave_blocks = rendered.count("[mcp_servers.mcphub_server_brave-search]")
 
-    assert harness_safe_blocks == 1
+    assert harness_blocks == 1
     assert brave_blocks == 1
-    assert "mcphub_group_harness-safe" in data["mcp_servers"]
+    assert "mcphub_group_harness" in data["mcp_servers"]
 
 
 def test_render_codex_config_drops_preserved_features_multi_agent_v2_table():
@@ -1670,13 +1712,13 @@ def test_cursor_adapter_render_mcphub_mcp_uses_native_placeholders(monkeypatch):
             "clients": {
                 "default": {
                     "included_endpoint_kinds": ["group", "server"],
-                    "included_groups": ["harness-safe"],
+                    "included_groups": ["harness"],
                     "enabled_endpoint_kinds": ["group"],
-                    "enabled_groups": ["harness-safe"],
+                    "enabled_groups": ["harness"],
                 }
             },
             "groups": {
-                "harness-safe": {
+                "harness": {
                     "enabled": True,
                     "servers": ["example"],
                 }
@@ -1690,9 +1732,9 @@ def test_cursor_adapter_render_mcphub_mcp_uses_native_placeholders(monkeypatch):
     assert "real-secret" not in payload
     assert rendered == {
         "mcpServers": {
-            "mcphub_group_harness-safe": {
+            "mcphub_group_harness": {
                 "type": "http",
-                "url": "http://127.0.0.1:46683/mcp/harness-safe",
+                "url": "http://127.0.0.1:46683/mcp/harness",
                 "headers": {"Authorization": "Bearer ${env:MCPHUB_BEARER_TOKEN}"},
             }
         }

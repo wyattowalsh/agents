@@ -12,7 +12,7 @@ The MCP audit lane SHALL keep MCP servers only when live or dynamic external sta
 - **WHEN** managed local clients are rendered from the MCP registry
 - **THEN** the registry SHALL preserve direct server definitions as MCPHub source material
 - **AND** MCPHub settings SHALL expose all, group, and server MCP endpoints with bearer auth enabled
-- **AND** managed harness clients SHALL default to the bounded `harness-safe` group instead of enabling `all-managed`, `personal`, or `experimental` groups
+- **AND** managed harness clients SHALL default to the bounded `harness` group instead of the global all route or broader `account-backed`, `live-browser`, `heavy`, or `experimental` groups
 - **AND** tracked settings SHALL use environment placeholders instead of real secrets.
 
 #### Scenario: Smart Routing remains opt-in
