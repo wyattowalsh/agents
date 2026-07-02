@@ -41,6 +41,10 @@ Composed compose-custom-wave-1 from `skills/data-wizard/SKILL.md` with full SKIL
 
 Full-stack data science and ML engineering — from exploratory data analysis through model deployment strategy. Adapts approach based on complexity classification.
 
+<Aside type="tip" title="Viz pipeline">
+Executable charts flow **probe/profile → viz-planner → viz-renderer → dashboard-builder** (optional HTML EDA dashboard). Use `viz plan`, `viz render`, and `viz dashboard` sub-modes after profiling data.
+</Aside>
+
 ## Modes
 
 | `$ARGUMENTS` | Action |
@@ -50,6 +54,9 @@ Full-stack data science and ML engineering — from exploratory data analysis th
 | `features &lt;data&gt;` | **Feature Engineering** — suggest transformations, encoding, selection pipeline |
 | `stats &lt;question&gt;` | **Stats** — select and design statistical hypothesis test |
 | `viz &lt;data&gt;` | **Visualization** — recommend chart types, encodings, layout for data |
+| `viz plan &lt;data&gt; [goal]` | **Viz Plan** — JSON chart plan from data + goal via `viz-planner.py` |
+| `viz render &lt;plan&gt; &lt;data&gt;` | **Viz Render** — PNG/HTML charts from plan via `viz-renderer.py` |
+| `viz dashboard &lt;profile&gt;` | **Viz Dashboard** — HTML EDA dashboard via `dashboard-builder.py` |
 | `experiment &lt;hypothesis&gt;` | **Experiment Design** — A/B test design, power analysis, CUPED |
 | `timeseries &lt;data&gt;` | **Time Series** — forecasting approach, decomposition, model selection |
 | `anomaly &lt;data&gt;` | **Anomaly Detection** — detection approach, algorithm selection, threshold strategy |
@@ -71,12 +78,6 @@ Full-stack data science and ML engineering — from exploratory data analysis th
 10. **MLOps recommendations must assess current maturity** — do not recommend Level 3 automation for Level 0 teams
 11. **Load ONE reference file at a time** — do not preload all references into context
 12. **Data quality scores must be computed, not estimated** — run the scorer script on actual data
-
-**Canonical terms** (use these exactly throughout):
-- Modes: "EDA", "Model Selection", "Feature Engineering", "Stats", "Visualization", "Experiment Design", "Time Series", "Anomaly Detection", "MLOps"
-- Tiers: "Quick", "Standard", "Full Pipeline"
-- Quality dimensions: "Completeness", "Consistency", "Accuracy", "Timeliness", "Uniqueness"
-- MLOps levels: "Level 0" (manual), "Level 1" (pipeline), "Level 2" (CI/CD+CT), "Level 3" (full auto)
 
 ## Canonical Vocabulary
 
@@ -149,6 +150,27 @@ Present the scoring to the user. User can override tier.
 1. Load `data/visualization-grammar.json` for chart type selection
 2. Match data characteristics to visualization types
 3. Recommend: chart type, encoding channels, color palette, layout
+4. Read `references/visualization.md` when user needs executable artifacts
+
+### Viz Plan (Quick)
+
+1. Run: `!uv run python scripts/viz-planner.py &lt;data&gt; --goal "&lt;goal&gt;"`
+2. Parse JSON — present: `goal_category`, chart list with encodings and rationale
+3. Confirm column mappings before rendering
+
+### Viz Render (Quick)
+
+1. Run: `!uv run python scripts/viz-renderer.py &lt;plan.json&gt; &lt;data&gt; --format png|html`
+2. Parse JSON — present output paths and any per-chart errors
+3. Use PNG for reports/dashboards; HTML for interactive exploration
+
+### Viz Dashboard (Quick)
+
+1. Ensure profile JSON exists (run `data-profiler.py` and optionally `data-quality-scorer.py`)
+2. Optional: run viz plan + render, pass `--viz-plan` and `--render-result` to builder
+3. Run: `!uv run python scripts/dashboard-builder.py &lt;profile.json&gt; --output &lt;path&gt;`
+4. Open output HTML via `file://` — do not read template into context
+5. Read `references/dashboard-design.md` for view schema
 
 ### Experiment Design (Standard)
 
@@ -267,6 +289,9 @@ Full-stack data science and ML engineering — from exploratory data analysis th
 | `features <data>` | **Feature Engineering** — suggest transformations, encoding, selection pipeline |
 | `stats <question>` | **Stats** — select and design statistical hypothesis test |
 | `viz <data>` | **Visualization** — recommend chart types, encodings, layout for data |
+| `viz plan <data> [goal]` | **Viz Plan** — JSON chart plan from data + goal via `viz-planner.py` |
+| `viz render <plan> <data>` | **Viz Render** — PNG/HTML charts from plan via `viz-renderer.py` |
+| `viz dashboard <profile>` | **Viz Dashboard** — HTML EDA dashboard via `dashboard-builder.py` |
 | `experiment <hypothesis>` | **Experiment Design** — A/B test design, power analysis, CUPED |
 | `timeseries <data>` | **Time Series** — forecasting approach, decomposition, model selection |
 | `anomaly <data>` | **Anomaly Detection** — detection approach, algorithm selection, threshold strategy |
@@ -300,6 +325,8 @@ Present common data science tasks:
 | 3 | Engineer features | `features` | `/data-wizard features sales_data.csv` |
 | 4 | Pick a stat test | `stats` | `/data-wizard stats "is conversion rate different between groups?"` |
 | 5 | Choose visualizations | `viz` | `/data-wizard viz time_series_metrics.csv` |
+| 5b | Plan + render charts | `viz plan` / `viz render` | `/data-wizard viz plan sales.csv "compare regions"` |
+| 5c | Build EDA dashboard | `viz dashboard` | `/data-wizard viz dashboard profile.json` |
 | 6 | Design an experiment | `experiment` | `/data-wizard experiment "new checkout flow increases conversion"` |
 | 7 | Forecast time series | `timeseries` | `/data-wizard timeseries monthly_revenue.csv` |
 | 8 | Detect anomalies | `anomaly` | `/data-wizard anomaly server_metrics.csv` |
@@ -372,6 +399,27 @@ Present the scoring to the user. User can override tier.
 1. Load `data/visualization-grammar.json` for chart type selection
 2. Match data characteristics to visualization types
 3. Recommend: chart type, encoding channels, color palette, layout
+4. Read `references/visualization.md` when user needs executable artifacts
+
+### Viz Plan (Quick)
+
+1. Run: `!uv run python scripts/viz-planner.py &lt;data&gt; --goal "&lt;goal&gt;"`
+2. Parse JSON — present: `goal_category`, chart list with encodings and rationale
+3. Confirm column mappings before rendering
+
+### Viz Render (Quick)
+
+1. Run: `!uv run python scripts/viz-renderer.py &lt;plan.json&gt; &lt;data&gt; --format png|html`
+2. Parse JSON — present output paths and any per-chart errors
+3. Use PNG for reports/dashboards; HTML for interactive exploration
+
+### Viz Dashboard (Quick)
+
+1. Ensure profile JSON exists (run `data-profiler.py` and optionally `data-quality-scorer.py`)
+2. Optional: run viz plan + render, pass `--viz-plan` and `--render-result` to builder
+3. Run: `!uv run python scripts/dashboard-builder.py &lt;profile.json&gt; --output &lt;path&gt;`
+4. Open output HTML via `file://` — do not read template into context
+5. Read `references/dashboard-design.md` for view schema
 
 ### Experiment Design (Standard)
 
@@ -443,12 +491,6 @@ Dimensions scored:
 10. **MLOps recommendations must assess current maturity** — do not recommend Level 3 automation for Level 0 teams
 11. **Load ONE reference file at a time** — do not preload all references into context
 12. **Data quality scores must be computed, not estimated** — run the scorer script on actual data
-
-**Canonical terms** (use these exactly throughout):
-- Modes: "EDA", "Model Selection", "Feature Engineering", "Stats", "Visualization", "Experiment Design", "Time Series", "Anomaly Detection", "MLOps"
-- Tiers: "Quick", "Standard", "Full Pipeline"
-- Quality dimensions: "Completeness", "Consistency", "Accuracy", "Timeliness", "Uniqueness"
-- MLOps levels: "Level 0" (manual), "Level 1" (pipeline), "Level 2" (CI/CD+CT), "Level 3" (full auto)
 ````
 
 [Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/data-wizard/SKILL.md)

@@ -873,6 +873,14 @@ export const skillResearchIndex = [
     "stale": false
   },
   {
+    "mean_confidence": 0.82,
+    "name": "ffmpeg",
+    "research_tier": "quick",
+    "researched_at": "2026-07-02T00:00:00Z",
+    "source_type": "custom",
+    "stale": false
+  },
+  {
     "mean_confidence": 0.77,
     "name": "figma-code-connect",
     "research_tier": "standard",
@@ -1926,6 +1934,14 @@ export const skillResearchIndex = [
     "research_tier": "standard",
     "researched_at": "2026-06-16T08:46:52Z",
     "source_type": "curated-external",
+    "stale": false
+  },
+  {
+    "mean_confidence": 0.85,
+    "name": "pentest",
+    "research_tier": "quick",
+    "researched_at": "2026-07-02T00:00:00Z",
+    "source_type": "custom",
     "stale": false
   },
   {
@@ -3054,6 +3070,14 @@ export const skillResearchIndex = [
     "research_tier": "standard",
     "researched_at": "2026-06-16T08:37:32Z",
     "source_type": "curated-external",
+    "stale": false
+  },
+  {
+    "mean_confidence": 0.8,
+    "name": "yt-dlp",
+    "research_tier": "quick",
+    "researched_at": "2026-07-02T00:00:00Z",
+    "source_type": "custom",
     "stale": false
   }
 ];

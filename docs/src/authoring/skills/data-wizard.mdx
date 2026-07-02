@@ -42,7 +42,12 @@ Full-stack data science and ML engineering — from exploratory data analysis th
 | `features <data>` | **Feature Engineering** — suggest transformations, encoding, selection pipeline |
 | `stats <question>` | **Stats** — select and design statistical hypothesis test |
 | `viz <data>` | **Visualization** — recommend chart types, encodings, layout for data |
+| `viz plan <data> [goal]` | **Viz Plan** — JSON chart plan from data + goal via `viz-planner.py` |
+| `viz render <plan> <data>` | **Viz Render** — PNG/HTML charts from plan via `viz-renderer.py` |
+| `viz dashboard <profile>` | **Viz Dashboard** — HTML EDA dashboard via `dashboard-builder.py` |
 | `experiment <hypothesis>` | **Experiment Design** — A/B test design, power analysis, CUPED |
+
+> **Viz pipeline:** `viz plan` → `viz render` → optional `viz dashboard`. Run `viz-planner.py` for JSON encodings, `viz-renderer.py` for PNG/HTML assets, then pass profile + plan/render JSON to `dashboard-builder.py` for a shareable EDA report.
 | `timeseries <data>` | **Time Series** — forecasting approach, decomposition, model selection |
 | `anomaly <data>` | **Anomaly Detection** — detection approach, algorithm selection, threshold strategy |
 | `mlops <model>` | **MLOps** — serving strategy, deployment pipeline, monitoring plan |
@@ -75,6 +80,8 @@ Present common data science tasks:
 | 3 | Engineer features | `features` | `/data-wizard features sales_data.csv` |
 | 4 | Pick a stat test | `stats` | `/data-wizard stats "is conversion rate different between groups?"` |
 | 5 | Choose visualizations | `viz` | `/data-wizard viz time_series_metrics.csv` |
+| 5b | Plan + render charts | `viz plan` / `viz render` | `/data-wizard viz plan sales.csv "compare regions"` |
+| 5c | Build EDA dashboard | `viz dashboard` | `/data-wizard viz dashboard profile.json` |
 | 6 | Design an experiment | `experiment` | `/data-wizard experiment "new checkout flow increases conversion"` |
 | 7 | Forecast time series | `timeseries` | `/data-wizard timeseries monthly_revenue.csv` |
 | 8 | Detect anomalies | `anomaly` | `/data-wizard anomaly server_metrics.csv` |
@@ -147,6 +154,27 @@ Present the scoring to the user. User can override tier.
 1. Load `data/visualization-grammar.json` for chart type selection
 2. Match data characteristics to visualization types
 3. Recommend: chart type, encoding channels, color palette, layout
+4. Read `references/visualization.md` when user needs executable artifacts
+
+### Viz Plan (Quick)
+
+1. Run: `!uv run python scripts/viz-planner.py <data> --goal "<goal>"`
+2. Parse JSON — present: `goal_category`, chart list with encodings and rationale
+3. Confirm column mappings before rendering
+
+### Viz Render (Quick)
+
+1. Run: `!uv run python scripts/viz-renderer.py <plan.json> <data> --format png|html`
+2. Parse JSON — present output paths and any per-chart errors
+3. Use PNG for reports/dashboards; HTML for interactive exploration
+
+### Viz Dashboard (Quick)
+
+1. Ensure profile JSON exists (run `data-profiler.py` and optionally `data-quality-scorer.py`)
+2. Optional: run viz plan + render, pass `--viz-plan` and `--render-result` to builder
+3. Run: `!uv run python scripts/dashboard-builder.py <profile.json> --output <path>`
+4. Open output HTML via `file://` — do not read template into context
+5. Read `references/dashboard-design.md` for view schema
 
 ### Experiment Design (Standard)
 
@@ -201,6 +229,8 @@ Dimensions scored:
 | `references/experiment-design.md` | A/B test patterns, CUPED, power analysis, multiple comparison corrections | Experiment Design mode |
 | `references/mlops-maturity.md` | Maturity levels 0-3, deployment patterns, monitoring strategy | MLOps mode |
 | `references/data-quality.md` | Quality framework, scoring dimensions, remediation strategies | EDA mode, Data Quality Assessment |
+| `references/visualization.md` | Viz plan/render pipeline, encoding rules, dependency handling | Viz Plan, Viz Render, Visualization |
+| `references/dashboard-design.md` | Dashboard JSON schema, builder usage, view selection | Viz Dashboard |
 
 **Loading rule:** Load ONE reference at a time per the "Read When" column. Do not preload.
 

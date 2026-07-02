@@ -6,7 +6,7 @@
     <a href="https://github.com/wyattowalsh/agents/actions/workflows/CI"><img src="https://github.com/wyattowalsh/agents/actions/workflows/CI/badge.svg" alt="CI"></a>
     <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE"><img src="https://img.shields.io/github/license/wyattowalsh/agents?style=flat-square&color=5D6D7E" alt="License"></a>
     <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=2E86C1" alt="Release"></a>
-    <a href="https://agents.w4w.dev/skills/catalog/"><img src="https://img.shields.io/badge/skills-65-0f766e?style=flat-square" alt="Skills"></a>
+    <a href="https://agents.w4w.dev/skills/catalog/"><img src="https://img.shields.io/badge/skills-68-0f766e?style=flat-square" alt="Skills"></a>
     <a href="https://agents.w4w.dev"><img src="https://img.shields.io/badge/docs-agents.w4w.dev-00b4d8?style=flat-square&logo=read-the-docs&logoColor=white" alt="Docs"></a>
   </p>
   <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/docs/public/social-card.png" alt="Agents social preview" width="640">
@@ -78,6 +78,7 @@ Reusable actions and knowledge bases for AI agents.
 | draw-thing | Generate local AI images and short media with Draw Things CLI on macOS. Use when you need local txt2img, img2img, model setup, imports, prompt refinement, or rig-aware best-model selection. NOT for UI implementation (design), ad copy iteration (ad-creative), or broad vendor/tool research (research). |
 | email-whiz | Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, labels, cleanup. Use when managing email or automating Gmail. NOT for composing emails, calendar, or non-Gmail. |
 | event-driven-architect | Design event-driven systems: contracts, topics, consumers, retries, idempotency, and sagas. Use for asynchronous workflows. NOT for CRUD APIs or ETL pipelines. |
+| ffmpeg | Probe, trim, transcode, concat, and extract local A/V with ffmpeg/ffprobe. Use when converting or inspecting media files. NOT for AI image generation (draw-thing) or UI design (design). |
 | files-buddy | Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders. NOT for shell script generation, CI/CD, databases, or non-macOS platform cleanup. |
 | git-workflow | Git operations: conventional commits, PR descriptions, branch strategy, conflict resolution, code archaeology, bisect. Use for git workflow tasks. NOT for code review, CI/CD, or changelogs. |
 | grok-delegate | Use when delegating to native Grok CLI for default Tier-T trivial leaves or wave/tune nodes from parent harnesses. NOT for harness sync or wrappers. |
@@ -97,6 +98,7 @@ Reusable actions and knowledge bases for AI agents.
 | opencode-ensemble | Use when coordinating OpenCode Ensemble teams, delegating independent coding work, reviewing teammate output, or running staged parallel waves. NOT for single-agent tasks, nested team-of-teams, or teammate subagents using team tools. |
 | openspec-workflow | Use when planning, applying, validating, or archiving OpenSpec changes in this repo, or when downstream AI tools need OpenSpec JSON status/instructions. NOT for generic code review, unrelated docs edits, or replacing generated upstream openspec-* skills. |
 | orchestrator | Review and orchestrate parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination. NOT for single-action tasks. |
+| pentest | Authorized penetration-test planning and methodology synthesis. Mandatory scope gate before recon, web, API, or OSINT work. Use for pre-authorized engagements with signed ROE. NOT for static code audit (security-scanner), CTF labs (ctf-*), or vendored C2/webshell tooling. |
 | performance-profiler | Performance analysis: complexity estimation, profiler output parsing, caching design, regression risk. Use for optimization guidance. NOT for running profilers, load tests, or monitoring. |
 | prompt-engineer | Prompt engineering. Craft, analyze, harden, convert, design tool prompts, and build PromptOps/eval plans. Use for system, agent, tool, RAG prompts. NOT for running prompts or building agents. |
 | python-conventions | Enforce Python tooling conventions for uv, ty, Ruff, pytest, and pyproject.toml. Use when working on .py files or Python project config. NOT for JS/TS, shell scripts, CI design, profiling, or test architecture. |
@@ -127,6 +129,7 @@ Reusable actions and knowledge bases for AI agents.
 | test-architect | Test strategy, coverage analysis, edge case identification, flaky test diagnosis. Use when designing test suites. NOT for running tests (devops-engineer), TDD, or code review (review). |
 | things-manager | Use when reviewing/managing Things 3 via SupaThings MCP: tasks, projects, headings, tags, deadlines, triage, capture, cleanup, and GTD. NOT for calendars, Gmail, database edits, MCP setup, or secrets. |
 | wargame | Strategic decision analysis and wargaming. Auto-classifies complexity for analysis or simulation. Use for decisions under uncertainty. NOT for simple pros/cons or code review. |
+| yt-dlp | Probe, transcript, and download video/audio with yt-dlp CLI on supported hosts. Use when you need metadata, captions, or local media. Transcript-first (probe, transcript, download). NOT for static HTML (Fetch MCP), research, or ffmpeg transforms. |
 
 ## 🤖 Agents
 

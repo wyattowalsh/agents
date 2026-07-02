@@ -28,3 +28,17 @@ Research cache for catalog enrichment. Not authoritative for install or trust de
 Full-stack data science and ML engineering — from exploratory data analysis through model deployment strategy. Adapts approach based on complexity classification.
 
 &gt; Grounded in repository `skills/data-wizard/SKILL.md`; treat as evidence, not authority.
+
+## Viz Pipeline (Wave 9)
+
+**Sub-modes:** `viz plan` → `viz render` → optional `viz dashboard` for shareable EDA HTML.
+
+| Mode | Script | Output |
+|------|--------|--------|
+| Viz Plan | `scripts/viz-planner.py` | JSON chart plan (`goal_category`, encodings, column mappings) |
+| Viz Render | `scripts/viz-renderer.py` | PNG or HTML chart files from plan JSON |
+| Viz Dashboard | `scripts/dashboard-builder.py` | Composable HTML dashboard from profiler JSON |
+
+**Flow:** Profile data with `data-profiler.py` first; use base `viz` for recommendations only. When the user wants artifacts, run plan then render; pass `--viz-plan` and `--render-result` into the dashboard builder when embedding charts.
+
+**References:** `references/visualization.md` (plan/render), `references/dashboard-design.md` (dashboard schema).
