@@ -17,7 +17,7 @@ def test_smart_routing_endpoints_omitted_when_disabled():
     assert all(spec["kind"] != "smart" for spec in specs)
 
 
-def test_codex_bounded_profile_includes_harness_safe_and_disabled_servers():
+def test_codex_bounded_profile_includes_harness_and_disabled_servers():
     repo_root = Path(__file__).resolve().parents[1]
     registry = json.loads((repo_root / "config" / "mcp-registry.json").read_text(encoding="utf-8"))
     specs = mcphub_endpoint_specs(registry, "codex")
@@ -26,6 +26,6 @@ def test_codex_bounded_profile_includes_harness_safe_and_disabled_servers():
     assert kinds == {"group", "server"}
 
     group_names = {spec["group"] for spec in specs if spec["kind"] == "group"}
-    assert group_names == {"harness-safe"}
+    assert group_names == {"harness"}
     assert {spec["server"] for spec in specs if spec["kind"] == "server"} == set(registry["servers"])
     assert all(spec["enabled"] is False for spec in specs if spec["kind"] == "server")

@@ -28,6 +28,14 @@ def enabled_registry_servers(registry: dict[str, Any], harness: str | None = Non
     }
 
 
+def registry_server_ids(registry: dict[str, Any]) -> set[str]:
+    return {
+        name
+        for name, entry in registry.get("servers", {}).items()
+        if isinstance(entry, dict)
+    }
+
+
 def mcphub_remote_stdio() -> Path:
     return get_repo_root() / "scripts" / "mcphub" / "remote-stdio.sh"
 
@@ -161,14 +169,16 @@ def mcphub_groups(registry: dict[str, Any], harness: str | None = None) -> dict[
     groups = mcphub_config(registry).get("groups", {})
     if not isinstance(groups, dict):
         return {}
-    enabled_servers = set(enabled_registry_servers(registry, harness))
+    server_ids = registry_server_ids(registry)
     rendered: dict[str, dict[str, Any]] = {}
     for name, group in groups.items():
         if not isinstance(group, dict) or group.get("enabled") is False:
             continue
-        servers = [server for server in group.get("servers", []) if server in enabled_servers]
-        if not servers:
-            continue
+        servers = []
+        for server in group.get("servers", []):
+            server_name = server if isinstance(server, str) else server.get("name") if isinstance(server, dict) else None
+            if server_name in server_ids:
+                servers.append(server)
         rendered[str(name)] = {**group, "servers": servers}
     return rendered
 
@@ -194,6 +204,7 @@ def mcphub_endpoint_specs(registry: dict[str, Any], harness: str | None = None) 
     included_servers_raw = client.get("included_servers")
     included_servers = set(included_servers_raw) if isinstance(included_servers_raw, list) else None
     enabled_servers = set(enabled_registry_servers(registry, harness))
+    server_ids = registry_server_ids(registry)
 
     specs: list[dict[str, Any]] = []
     if should_include("all"):
@@ -215,7 +226,7 @@ def mcphub_endpoint_specs(registry: dict[str, Any], harness: str | None = None) 
             "kind": "group",
             "group": group_name,
         })
-    for server in sorted(enabled_servers):
+    for server in sorted(server_ids):
         if not should_include("server"):
             continue
         if included_servers is not None and server not in included_servers:
@@ -223,7 +234,7 @@ def mcphub_endpoint_specs(registry: dict[str, Any], harness: str | None = None) 
         specs.append({
             "name": mcphub_endpoint_name(registry, harness, "server", server),
             "url": f"{hub_url}/{server}",
-            "enabled": mcphub_endpoint_enabled(registry, harness, "server", server),
+            "enabled": server in enabled_servers and mcphub_endpoint_enabled(registry, harness, "server", server),
             "kind": "server",
             "server": server,
         })

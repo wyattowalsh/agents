@@ -29,6 +29,7 @@ def collect_mcphub_settings_errors(repo_root: Path) -> list[dict[str, str]]:
 
     try:
         from scripts.generate_mcphub_settings import generate_settings, serialize_settings
+        from scripts.mcphub.group_validation import group_server_names
         from scripts.mcphub.validate_settings import validate_settings
     except ImportError as exc:
         errors.append({
@@ -37,10 +38,17 @@ def collect_mcphub_settings_errors(repo_root: Path) -> list[dict[str, str]]:
         })
         return errors
 
-    generated = generate_settings(registry)
+    try:
+        generated = generate_settings(registry)
+    except ValueError as exc:
+        generated = None
+        errors.append({
+            "source": "config/mcp-registry.json",
+            "message": f"MCPHub settings generation failed: {exc}",
+        })
     if settings_path.is_file():
         committed = _load_json(settings_path)
-        if serialize_settings(generated) != serialize_settings(committed):
+        if generated is not None and serialize_settings(generated) != serialize_settings(committed):
             errors.append({
                 "source": "mcp/mcphub/mcp_settings.json",
                 "message": "Stale vs registry; run: just mcphub-generate",
@@ -55,18 +63,24 @@ def collect_mcphub_settings_errors(repo_root: Path) -> list[dict[str, str]]:
             "message": "Missing tracked MCPHub settings file",
         })
 
+    expected_harness_servers = [
+        "brave-search",
+        "duckduckgo-search",
+        "context7",
+        "deepwiki",
+        "fetch",
+        "fetcher",
+        "package-version",
+        "chrome-devtools",
+        "penpot",
+    ]
     groups = mcphub.get("groups", {})
     if isinstance(groups, dict):
-        daily = groups.get("daily", {})
-        harness_safe = groups.get("harness-safe", {})
-        if (
-            isinstance(daily, dict)
-            and isinstance(harness_safe, dict)
-            and daily.get("servers") != harness_safe.get("servers")
-        ):
+        harness_group = groups.get("harness", {})
+        if isinstance(harness_group, dict) and group_server_names(harness_group) != expected_harness_servers:
             errors.append({
-                "source": "config/mcp-registry.json:mcphub.groups.harness-safe",
-                "message": "harness-safe must alias daily server membership",
+                "source": "config/mcp-registry.json:mcphub.groups.harness",
+                "message": "harness must stay the minimal default server set",
             })
         reasoning = groups.get("reasoning", {})
         if isinstance(reasoning, dict) and len(reasoning.get("servers", [])) > 3:
@@ -95,9 +109,9 @@ def collect_mcphub_settings_errors(repo_root: Path) -> list[dict[str, str]]:
 
         bounded_client_expectations = {
             "included_endpoint_kinds": ["group", "server"],
-            "included_groups": ["harness-safe"],
+            "included_groups": ["harness"],
             "enabled_endpoint_kinds": ["group"],
-            "enabled_groups": ["harness-safe"],
+            "enabled_groups": ["harness"],
             "enable_server_endpoints": True,
         }
         for harness in ("default", "codex", "grok", "opencode"):

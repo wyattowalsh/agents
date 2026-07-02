@@ -19,10 +19,35 @@ else
 fi
 
 printf 'health: '
-if mcphub_is_healthy; then
-  printf 'healthy\n'
+health_body="$(curl -fsS --max-time 2 "$(mcphub_health_url)" 2>/dev/null || true)"
+if [[ -n "${health_body}" ]]; then
+  health_status="$(printf '%s' "${health_body}" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("status","unknown"))' 2>/dev/null || printf 'unknown')"
+  case "${health_status}" in
+    healthy)
+      printf 'healthy\n'
+      ;;
+    degraded)
+      connected="$(printf '%s' "${health_body}" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("connected","?"))' 2>/dev/null || printf '?')"
+      total="$(printf '%s' "${health_body}" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("total","?"))' 2>/dev/null || printf '?')"
+      printf 'degraded (%s/%s servers connected)\n' "${connected}" "${total}"
+      ;;
+    unhealthy)
+      printf 'unhealthy\n'
+      ;;
+    *)
+      if mcphub_is_healthy; then
+        printf 'healthy (legacy response)\n'
+      else
+        printf 'not running\n'
+      fi
+      ;;
+  esac
 else
-  printf 'not running\n'
+  if mcphub_is_healthy; then
+    printf 'healthy\n'
+  else
+    printf 'not running\n'
+  fi
 fi
 
 printf 'listener: '

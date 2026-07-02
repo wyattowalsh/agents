@@ -12,7 +12,8 @@ mcphub_require_token
 curl -fsS "$(mcphub_health_url)" >/dev/null
 
 headers_file="$(mktemp)"
-trap 'rm -f "${headers_file}"' EXIT
+group_headers_file="$(mktemp)"
+trap 'rm -f "${headers_file}" "${group_headers_file}"' EXIT
 
 curl -fsS \
   -D "${headers_file}" \
@@ -38,4 +39,28 @@ curl -fsS \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' \
   "${MCPHUB_BASE_URL%/}/mcp" >/dev/null
 
-printf 'MCPHub smoke passed\n'
+curl -fsS \
+  -D "${group_headers_file}" \
+  -H "Authorization: Bearer ${MCPHUB_BEARER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"mcphub-smoke","version":"1.0.0"}}}' \
+  "${MCPHUB_BASE_URL%/}/mcp/harness" >/dev/null
+
+group_session_id="$(
+  awk 'BEGIN{IGNORECASE=1} /^mcp-session-id:/ {sub(/\r$/, "", $2); print $2; exit}' "${group_headers_file}"
+)"
+if [[ -z "${group_session_id}" ]]; then
+  printf 'MCPHub smoke failed: harness initialize response did not include mcp-session-id\n' >&2
+  exit 1
+fi
+
+curl -fsS \
+  -H "Authorization: Bearer ${MCPHUB_BEARER_TOKEN}" \
+  -H "Mcp-Session-Id: ${group_session_id}" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' \
+  "${MCPHUB_BASE_URL%/}/mcp/harness" >/dev/null
+
+printf 'MCPHub smoke passed (all + harness)\n'
