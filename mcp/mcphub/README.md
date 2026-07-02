@@ -45,11 +45,11 @@ make mcphub-smoke
 ## Public ChatGPT URL
 
 ChatGPT custom MCP apps/connectors require a remote MCP server. This machine
-uses the stable named Cloudflare Tunnel `mcphub`; managed harnesses use the
-bounded `harness-safe` endpoint:
+uses the stable named Cloudflare Tunnel `mcphub`; ChatGPT uses the bounded
+`tunnel` endpoint:
 
 ```text
-https://mcp.w4w.dev/mcp/harness-safe
+https://mcp.w4w.dev/mcp/tunnel
 ```
 
 Managed harness configs also expose each individual MCPHub server endpoint as a
