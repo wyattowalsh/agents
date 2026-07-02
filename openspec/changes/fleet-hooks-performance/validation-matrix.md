@@ -157,18 +157,18 @@ Full matrix executed after RV-S remediation and T-031c bridge test alignment.
 | V-RV-01..07 | Green | RV/RW/post-review + soft-gate + sequential regression |
 | Hyperfine >=3x | Deferred | `hyperfine` not installed locally |
 
-## Wave assurance run (ship-close, 2026-07-02)
+## Wave assurance run (ship-close)
 
-Full matrix re-run on `feat/fleet-hooks-performance` after RV-S-009 implementation and hook-scoped commit packaging.
+Full matrix re-run on `feat/fleet-hooks-performance` after RV-S-008..011 closure, hook-scoped commit packaging, and ship-close validation. `hook_perf.tier` remains `legacy`; hyperfine ≥3× gate deferred to Phase 6.
 
 | ID | Result | Notes |
 |----|--------|-------|
 | V-01 | Green | 139 passed (`tests/hooks/` + bridge + fingerprint + opencode integration) |
 | V-02 | Green | `test_performance_baseline.py` (via V-RV subset) |
 | V-03 | Green | `test_bundle_dispatch.py` (via V-RV subset) |
-| V-04 | Green (re-verified 2026-07-02) | `wagents validate` — all validations passed |
+| V-04 | Green (re-verified 2026-07-01) | `wagents validate` — all validations passed |
 | V-05 | Green | `wagents hooks validate --harness all` |
-| V-06 | Green (re-verified 2026-07-02) | `sync_agent_stack.py --check --targets repo` |
+| V-06 | Green (re-verified 2026-07-01) | `sync_agent_stack.py --check --targets repo` |
 | V-07 | Green | `check_hook_discovery_parity.py` |
 | V-08 | Green | `wagents openspec validate` |
 | V-09 | Green | `ruff check hooks/ wagents/hooks/ tests/hooks/` |
@@ -176,5 +176,9 @@ Full matrix re-run on `feat/fleet-hooks-performance` after RV-S-009 implementati
 | V-11 | Green | 15 passed `test_hook_worker.py` (includes RV-S-009 forward tests) |
 | V-12 | Green | `test_registry_perf_metadata.py` (via prior waves) |
 | V-RV-01..07 | Green | 49 passed regression subset |
+| RV-S-008 | Green | H1–H6 hook-scoped manifest paths in five atomic commits |
+| RV-S-009 | Green | `--forward-timeout` + derived single-policy/bundle margins |
+| RV-S-010 | Green | Worker concurrency documented in `design.md` + `hooks/index.mdx` |
+| RV-S-011 | Green | V-04 + V-06 green on branch (re-verified 2026-07-01); T-040 skipped |
 | RV-S-009 | Green | `pytest -k forward` — 4 passed |
 | Hyperfine >=3x | Deferred | Phase 6 maintainer track; `hook_perf.tier` stays `legacy` |
