@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from scripts.mcphub.group_validation import render_group_server, validate_enabled_registry_group
 from scripts.sync_agent_stack import render_env_value, replace_arg_placeholders
 
 DEFAULT_ROUTING: dict[str, Any] = {
@@ -39,33 +40,84 @@ def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+HTTP_TRANSPORTS = frozenset({"streamable-http", "sse"})
+SUPPORTED_TRANSPORTS = frozenset({"stdio", "sse", "streamable-http", "openapi"})
+PASSTHROUGH_FIELDS = (
+    "description",
+    "owner",
+    "options",
+    "proxy",
+    "oauth",
+    "passthroughHeaders",
+    "enableKeepAlive",
+    "keepAliveInterval",
+)
+
+
+def render_url_value(url: str) -> str:
+    return url
+
+
+def render_header_value(value: Any) -> str:
+    if isinstance(value, dict):
+        return render_env_value(value, {}, local_values=False)
+    return str(value)
+
+
+def copy_optional_fields(entry: dict[str, Any], server: dict[str, Any]) -> None:
+    if entry.get("headers"):
+        server["headers"] = {key: render_header_value(value) for key, value in entry["headers"].items()}
+    for field in PASSTHROUGH_FIELDS:
+        if field in entry:
+            server[field] = entry[field]
+
+
 def render_server_entry(entry: dict[str, Any]) -> dict[str, Any]:
-    server: dict[str, Any] = {
-        "command": entry["command"],
-        "args": replace_arg_placeholders(entry.get("args", []), {}, local_values=False),
-    }
+    transport = str(entry.get("transport", "stdio"))
+    server: dict[str, Any] = {}
+
+    if transport not in SUPPORTED_TRANSPORTS:
+        raise ValueError(f"unsupported MCPHub server transport: {transport}")
+
+    if transport == "stdio":
+        server["command"] = entry["command"]
+        if "args" in entry:
+            server["args"] = replace_arg_placeholders(entry.get("args", []), {}, local_values=False)
+    elif transport in HTTP_TRANSPORTS:
+        server["type"] = transport
+        server["url"] = render_url_value(str(entry["url"]))
+    elif transport == "openapi":
+        server["type"] = "openapi"
+        openapi = dict(entry["openapi"])
+        if "url" in openapi:
+            openapi["url"] = render_url_value(str(openapi["url"]))
+        server["openapi"] = openapi
+
     if entry.get("env"):
-        server["env"] = {
-            key: render_env_value(value, {}, local_values=False) for key, value in entry["env"].items()
-        }
+        server["env"] = {key: render_env_value(value, {}, local_values=False) for key, value in entry["env"].items()}
+    copy_optional_fields(entry, server)
     if entry.get("timeout_ms"):
         server["timeout"] = entry["timeout_ms"]
+    if entry.get("enabled") is False:
+        server["disabled"] = True
     return server
 
 
-def render_groups(mcphub_groups: dict[str, Any], enabled_servers: set[str]) -> dict[str, Any]:
+def render_groups(mcphub_groups: dict[str, Any], registry_servers: dict[str, Any]) -> dict[str, Any]:
     groups: dict[str, Any] = {}
     for name in sorted(mcphub_groups):
         group = mcphub_groups[name]
-        if not isinstance(group, dict) or group.get("enabled") is False:
+        if not isinstance(group, dict):
+            raise ValueError(f"mcphub.groups.{name} must be an object")
+        if group.get("enabled") is False:
             continue
-        servers = [server for server in group.get("servers", []) if server in enabled_servers]
-        if not servers:
-            continue
+        errors = validate_enabled_registry_group(name, group, registry_servers)
+        if errors:
+            raise ValueError("; ".join(errors))
         groups[name] = {
             "name": name,
             "description": str(group.get("description", "")),
-            "servers": servers,
+            "servers": [render_group_server(server) for server in group.get("servers", [])],
         }
     return groups
 
@@ -73,13 +125,19 @@ def render_groups(mcphub_groups: dict[str, Any], enabled_servers: set[str]) -> d
 def generate_settings(registry: dict[str, Any]) -> dict[str, Any]:
     mcp_servers: dict[str, Any] = {}
     for name, entry in sorted(registry.get("servers", {}).items()):
-        if not isinstance(entry, dict) or entry.get("enabled") is False:
+        if not isinstance(entry, dict):
             continue
-        mcp_servers[name] = render_server_entry(entry)
+        try:
+            mcp_servers[name] = render_server_entry(entry)
+        except ValueError as exc:
+            raise ValueError(f"servers.{name}: {exc}") from exc
 
     mcphub = registry.get("mcphub", {})
     mcphub_groups = mcphub.get("groups", {})
-    groups = render_groups(mcphub_groups if isinstance(mcphub_groups, dict) else {}, set(mcp_servers))
+    groups = render_groups(
+        mcphub_groups if isinstance(mcphub_groups, dict) else {},
+        registry.get("servers", {}) if isinstance(registry.get("servers", {}), dict) else {},
+    )
 
     return {
         "mcpServers": mcp_servers,
@@ -125,7 +183,11 @@ def main(argv: list[str] | None = None) -> int:
 
     registry_path, settings_path = repo_paths(args.repo_root)
     registry = load_json(registry_path)
-    generated = generate_settings(registry)
+    try:
+        generated = generate_settings(registry)
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
     rendered = serialize_settings(generated)
 
     if args.stdout:

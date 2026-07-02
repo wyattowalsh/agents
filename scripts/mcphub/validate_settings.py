@@ -7,6 +7,14 @@ import re
 from pathlib import Path
 from typing import Any
 
+from scripts.mcphub.group_validation import (
+    enabled_settings_server_ids,
+    registry_server_ids,
+    render_group_server,
+    validate_enabled_registry_group,
+    validate_group_server_entries,
+)
+
 SECRET_KEY_RE = re.compile(r"(TOKEN|SECRET|PASSWORD|API_KEY|AUTH_KEY|JWT)", re.I)
 PLACEHOLDER_RE = re.compile(r"^\$\{[A-Z_][A-Z0-9_]*\}$")
 BAD_LITERALS = {"changeme", "change-me", "secret", "password", "token", "your-token", "your-secret"}
@@ -18,14 +26,21 @@ def load_json(path: Path) -> dict[str, Any]:
 
 def validate_settings(settings: dict[str, Any], registry: dict[str, Any]) -> list[str]:
     errors: list[str] = []
+    registry_servers = registry.get("servers", {})
+    if not isinstance(registry_servers, dict):
+        registry_servers = {}
     servers = settings.get("mcpServers")
     if not isinstance(servers, dict) or not servers:
         errors.append("mcpServers must be a non-empty object")
-        settings_server_ids: set[object] = set()
+        settings_server_ids: set[str] = set()
+        settings_enabled_server_ids: set[str] = set()
     else:
-        settings_server_ids = set(servers)
-        missing = sorted(set(registry.get("servers", {})) - set(servers))
-        extra = sorted(set(servers) - set(registry.get("servers", {})))
+        settings_servers: dict[str, Any] = {str(name): entry for name, entry in servers.items()}
+        settings_server_ids = set(settings_servers)
+        settings_enabled_server_ids = enabled_settings_server_ids(settings_servers)
+        registry_ids = registry_server_ids(registry_servers)
+        missing = sorted(registry_ids - settings_server_ids)
+        extra = sorted(settings_server_ids - set(registry_servers))
         if missing:
             errors.append("mcp_settings.json is missing registry servers: " + ", ".join(missing))
         if extra:
@@ -37,9 +52,13 @@ def validate_settings(settings: dict[str, Any], registry: dict[str, Any]) -> lis
             if not isinstance(group, dict):
                 errors.append(f"group {group_name} must be an object")
                 continue
-            for server in group.get("servers", []):
-                if server not in servers:
-                    errors.append(f"group {group_name} references unknown server {server}")
+            errors.extend(validate_group_server_entries(
+                str(group_name),
+                group,
+                all_server_ids=settings_server_ids,
+                enabled_server_ids=settings_enabled_server_ids,
+                source_prefix="groups",
+            ))
 
     registry_groups = registry.get("mcphub", {}).get("groups", {})
     if isinstance(registry_groups, dict) and isinstance(groups, dict):
@@ -55,18 +74,28 @@ def validate_settings(settings: dict[str, Any], registry: dict[str, Any]) -> lis
             errors.append("mcp_settings.json is missing registry groups: " + ", ".join(missing_groups))
         if extra_groups:
             errors.append("mcp_settings.json has groups not in registry: " + ", ".join(extra_groups))
+        registry_group_errors: dict[str, list[str]] = {}
+        for group_name in sorted(expected_group_names):
+            registry_group = registry_groups.get(group_name, {})
+            if not isinstance(registry_group, dict):
+                message = f"mcphub.groups.{group_name} must be an object"
+                registry_group_errors[group_name] = [message]
+                errors.append(message)
+                continue
+            group_errors = validate_enabled_registry_group(str(group_name), registry_group, registry_servers)
+            if group_errors:
+                registry_group_errors[group_name] = group_errors
+                errors.extend(group_errors)
         for group_name in sorted(expected_group_names & actual_group_names):
+            if registry_group_errors.get(group_name):
+                continue
             registry_group = registry_groups.get(group_name, {})
             settings_group = groups.get(group_name, {})
             if not isinstance(registry_group, dict) or not isinstance(settings_group, dict):
                 continue
-            registry_servers = [
-                server
-                for server in registry_group.get("servers", [])
-                if server in settings_server_ids
-            ]
+            expected_servers = [render_group_server(server) for server in registry_group.get("servers", [])]
             settings_servers = settings_group.get("servers", [])
-            if registry_servers != settings_servers:
+            if expected_servers != settings_servers:
                 errors.append(f"group {group_name} server membership drift vs registry")
 
     system_config = settings.get("systemConfig", {})

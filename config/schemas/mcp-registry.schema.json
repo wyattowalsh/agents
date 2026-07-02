@@ -21,8 +21,6 @@
         "type": "object",
         "required": [
           "transport",
-          "command",
-          "args",
           "env",
           "enabled",
           "startup_timeout_sec",
@@ -33,6 +31,25 @@
         ],
         "properties": {
           "transport": {
+            "type": "string",
+            "enum": [
+              "stdio",
+              "sse",
+              "streamable-http",
+              "openapi"
+            ]
+          },
+          "auth_policy": {
+            "type": "string",
+            "enum": [
+              "oauth",
+              "public-http",
+              "account-token",
+              "api-key",
+              "none"
+            ]
+          },
+          "url": {
             "type": "string",
             "minLength": 1
           },
@@ -45,6 +62,74 @@
             "items": {
               "type": "string"
             }
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object"
+                }
+              ]
+            }
+          },
+          "passthroughHeaders": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "enableKeepAlive": {
+            "type": "boolean"
+          },
+          "keepAliveInterval": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "openapi": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "minLength": 1
+              },
+              "schema": {
+                "type": "object"
+              }
+            },
+            "anyOf": [
+              {
+                "required": [
+                  "url"
+                ]
+              },
+              {
+                "required": [
+                  "schema"
+                ]
+              }
+            ],
+            "additionalProperties": true
+          },
+          "description": {
+            "type": "string"
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "options": {
+            "type": "object"
+          },
+          "proxy": {
+            "type": "object"
+          },
+          "oauth": {
+            "type": "object"
           },
           "env": {
             "type": "object"
@@ -76,6 +161,62 @@
             "type": "boolean"
           }
         },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "transport": {
+                  "const": "stdio"
+                }
+              },
+              "required": [
+                "transport"
+              ]
+            },
+            "then": {
+              "required": [
+                "command"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "transport": {
+                  "enum": [
+                    "streamable-http",
+                    "sse"
+                  ]
+                }
+              },
+              "required": [
+                "transport"
+              ]
+            },
+            "then": {
+              "required": [
+                "url"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "transport": {
+                  "const": "openapi"
+                }
+              },
+              "required": [
+                "transport"
+              ]
+            },
+            "then": {
+              "required": [
+                "openapi"
+              ]
+            }
+          }
+        ],
         "additionalProperties": true
       }
     },
@@ -166,8 +307,77 @@
               "servers": {
                 "type": "array",
                 "items": {
-                  "type": "string",
-                  "minLength": 1
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    {
+                      "type": "object",
+                      "required": [
+                        "name"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "alias": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "tools": {
+                          "oneOf": [
+                            {
+                              "const": "all"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "minItems": 1,
+                              "uniqueItems": true
+                            }
+                          ]
+                        },
+                        "prompts": {
+                          "oneOf": [
+                            {
+                              "const": "all"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "minItems": 1,
+                              "uniqueItems": true
+                            }
+                          ]
+                        },
+                        "resources": {
+                          "oneOf": [
+                            {
+                              "const": "all"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "minItems": 1,
+                              "uniqueItems": true
+                            }
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  ]
                 },
                 "uniqueItems": true
               }
