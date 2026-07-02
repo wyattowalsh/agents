@@ -8,7 +8,11 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from nerdbot.contracts import GENERATED_ARTIFACTS, OPERATION_JOURNAL_PATH, READ_ONLY_MODES, REVIEW_QUEUE_PATH
-from nerdbot.evidence import detect_untrusted_instruction_patterns, review_item_for_suspicious_evidence
+from nerdbot.evidence import (
+    detect_untrusted_instruction_patterns,
+    review_item_for_suspicious_evidence,
+    source_map_entries_by_id,
+)
 from nerdbot.graph import build_graph, render_graph_edges_jsonl, render_graph_report
 from nerdbot.operations import append_operation_entry, build_operation_entry
 from nerdbot.replay import dry_run_replay, load_operation_entries
@@ -105,6 +109,16 @@ def _ensure_source_map(root: Path) -> None:
         "Canonical material touched? | Provenance status | Status |\n"
         "|---|---|---|---|---|---|---|\n",
     )
+
+
+def _load_source_map_entries(root: Path) -> dict[str, Any]:
+    source_map = root / "indexes" / "source-map.md"
+    if not source_map.is_file():
+        return {}
+    try:
+        return source_map_entries_by_id(read_text_no_follow(source_map))
+    except (OSError, UnicodeDecodeError, RuntimeError):
+        return {}
 
 
 def build_create_result(*, root: Path, apply: bool, force: bool, bootstrap_module: Any) -> dict[str, object]:
@@ -246,6 +260,8 @@ def build_query_result(args: Any) -> dict[str, object]:
             ],
         )
     results = query(root, args.query, limit=max(1, args.limit), use_fts=not args.lexical)
+    source_map_entries = _load_source_map_entries(root)
+    cited_source_ids = sorted({source_id for result in results for source_id in result.source_ids})
     findings = []
     review_items = []
     for result in results:
@@ -262,6 +278,14 @@ def build_query_result(args: Any) -> dict[str, object]:
         else (),
         payload={
             "results": [result.to_dict() for result in results],
+            "provenance_sources": {
+                source_id: source_map_entries[source_id].to_dict()
+                for source_id in cited_source_ids
+                if source_id in source_map_entries
+            },
+            "missing_provenance_sources": [
+                source_id for source_id in cited_source_ids if source_id not in source_map_entries
+            ],
             "suspicious_evidence": findings,
             "review_items": review_items,
         },

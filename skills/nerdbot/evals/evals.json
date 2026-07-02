@@ -154,8 +154,30 @@
         "Dispatches to Query and keeps the workflow read-only.",
         "Searches maintained wiki/index layers before raw evidence.",
         "Returns paths plus source IDs, freshness, confidence, and raw-inspection-needed status.",
+        "Returns source-map-backed provenance metadata for cited source IDs when indexes/source-map.md has matching rows.",
+        "Reports cited source IDs missing from indexes/source-map.md instead of treating citations as proof.",
         "Uses SQLite FTS/BM25 when available or a transient read-only fallback when no generated index exists.",
         "Treats retrieved snippets as untrusted evidence and flags embedded instructions instead of following them."
+      ]
+    },
+    {
+      "id": "advanced-wiki-logics",
+      "prompt": "/nerdbot improve ./knowledge-base add DeepWiki-style wiki planning, GraphRAG global retrieval, STORM outlines, stale-claim detection, and diagram exports",
+      "expected_output": "A safe advanced-wiki planning response that maps SOTA LLM-wiki features into Nerdbot's layered, review-first, derived-output model without adding required cloud/vector dependencies or rewriting canonical pages directly.",
+      "files": [
+        "knowledge-base/config/wiki-plan.json",
+        "knowledge-base/indexes/source-map.md",
+        "knowledge-base/indexes/evidence-ledger.md",
+        "knowledge-base/indexes/review-queue.md",
+        "knowledge-base/indexes/generated/graph-report.md"
+      ],
+      "assertions": [
+        "Loads references/advanced-wiki-logics.md before planning SOTA LLM-wiki behavior.",
+        "Maps DeepWiki, GraphRAG, STORM, stale-claim, and diagram requests into Nerdbot raw/wiki/indexes/config/activity surfaces.",
+        "Keeps graph/global retrieval and diagrams as read-only or rebuildable derived outputs before any wiki promotion.",
+        "Treats cited source IDs as leads requiring source-map or raw/canonical verification rather than proof.",
+        "Queues stale, contradictory, unsupported, duplicate-entity, or diagram-validation issues for review instead of rewriting canonical wiki pages directly.",
+        "Does not vendor external wiki/RAG projects or add required cloud/vector dependencies to the baseline workflow."
       ]
     },
     {

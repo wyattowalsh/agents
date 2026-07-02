@@ -17,6 +17,17 @@ Graph analytics include node count, edge count by type, orphan wiki pages, broke
 
 Every edge includes `source`, `target`, `edge_type`, `evidence_path`, and `confidence`. Supported edge types are `links_to`, `embeds`, `aliases`, `cites`, `derives_from`, `updates`, `contradicts`, and `mentions`.
 
+## Advanced Graph Use
+
+GraphRAG, LightRAG, and HippoRAG-style ideas map to Nerdbot as derived graph review, not baseline RAG infrastructure. Use generated graph artifacts to:
+
+- find candidate neighborhoods for multi-hop query planning;
+- queue alias collisions, duplicate entities, noisy relations, or stale/contradictory claims;
+- build future community summaries, diagrams, or digest exports under generated/derived paths;
+- explain global themes only when the underlying note/source paths remain visible.
+
+Do not promote graph neighborhoods, entity clusters, or diagram edges into canonical `wiki` claims without source-map or raw/canonical provenance.
+
 ## Safety
 
 Graph commands are read-only unless the user explicitly asks to enqueue review items or approve a migration batch. Generated Markdown reports render untrusted targets and metrics as code spans so malicious note/link text is displayed as data rather than interpreted as report structure.

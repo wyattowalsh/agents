@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from nerdbot.contracts import (
+    ADVANCED_WIKI_LOGICS,
     MODE_SUMMARIES,
     MODE_VISUALS,
     MODES,
@@ -322,6 +323,7 @@ def build_plan_payload(mode: str, target: str) -> dict[str, Any]:
         "required_gates": build_required_gates(mode),
         "safety_promises": list(SAFETY_PROMISES),
         "expansion_lanes_not_deferred": list(REQUIRED_EXPANSION_LANES),
+        "advanced_wiki_logics": list(ADVANCED_WIKI_LOGICS),
         "suggested_next_command": next_command,
         "suggested_next_argv": next_argv,
         "suggested_next_commands": [command for command, _ in next_steps],
@@ -406,6 +408,8 @@ def render_plan_guide(payload: dict[str, Any]) -> str:
     lines.extend(f"- {promise}" for promise in payload["safety_promises"])
     lines.extend(["", render_rule("roadmap visibility"), "Expansion lanes kept visible:"])
     lines.extend(f"- {lane}" for lane in payload["expansion_lanes_not_deferred"])
+    lines.extend(["", render_rule("advanced wiki logic"), "Planning checks:"])
+    lines.extend(f"- {logic}" for logic in payload["advanced_wiki_logics"])
     if len(payload["suggested_next_commands"]) == 1:
         lines.extend(["", render_rule("next safe command"), render_command_card(payload["suggested_next_command"])])
     else:

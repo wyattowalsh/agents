@@ -19,6 +19,7 @@ if str(SRC_DIR) not in sys.path:
 
 from nerdbot.cli import build_parser, build_plan_payload, main
 from nerdbot.contracts import (
+    ADVANCED_WIKI_LOGICS,
     CLAIM_RECORD_FIELDS,
     GENERATED_ARTIFACTS,
     GRAPH_EDGE_FIELDS,
@@ -75,6 +76,8 @@ def test_plan_payload_keeps_required_expansion_lanes_visible() -> None:
 
     for lane in REQUIRED_EXPANSION_LANES:
         assert lane in payload["expansion_lanes_not_deferred"]
+    for logic in ADVANCED_WIKI_LOGICS:
+        assert logic in payload["advanced_wiki_logics"]
 
 
 def test_contract_reference_docs_exist() -> None:

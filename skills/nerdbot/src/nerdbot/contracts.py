@@ -103,6 +103,7 @@ REFERENCE_DOCS = (
     "current-state-and-compatibility.md",
     "pipeline-contracts.md",
     "schema-contracts.md",
+    "advanced-wiki-logics.md",
     "kb-architecture.md",
     "kb-operations.md",
     "page-templates.md",
@@ -121,13 +122,30 @@ REFERENCE_DOCS = (
 )
 
 REQUIRED_EXPANSION_LANES = (
+    "steerable wiki plan manifests",
+    "hierarchical topic planning",
+    "claim verification",
     "graph analytics",
+    "validated diagram outputs",
+    "incremental stale-page detection",
+    "AI-friendly digest exports",
     "watch mode",
     "OpenDataLoader PDF adapter",
     "Granite Docling live model execution",
     "Crawlee large-crawl provider",
     "optional semantic embeddings",
     "MarkItDown fallback adapter",
+)
+
+ADVANCED_WIKI_LOGICS = (
+    "persistent compiled wiki before query-time synthesis",
+    "steerable page plan manifest with focus paths and page caps",
+    "bottom-up topic hierarchy before parent synthesis",
+    "dual local/global retrieval over FTS and graph artifacts",
+    "claim-level source-map verification before confidence upgrades",
+    "contradiction and stale-claim review queue entries",
+    "incremental refresh from source hashes or git SHAs",
+    "validated diagram and digest derived outputs only",
 )
 
 SAFETY_PROMISES = (

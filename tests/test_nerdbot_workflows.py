@@ -160,6 +160,14 @@ def test_query_fts_graph_watch_and_replay_surfaces(tmp_path: Path, capsys) -> No
         encoding="utf-8",
     )
     (root / "wiki" / "beta.md").write_text("# Beta\n\nAlpha backlink.\n", encoding="utf-8")
+    (root / "indexes" / "source-map.md").write_text(
+        "# Source Map\n\n"
+        "| Source ID | Raw path | Capture type | Planned wiki target | "
+        "Canonical material touched? | Provenance status | Status |\n"
+        "|---|---|---|---|---|---|---|\n"
+        "| src-alpha | raw/sources/alpha.md | local-file | wiki/alpha.md | no | linked | captured |\n",
+        encoding="utf-8",
+    )
 
     results = query(root, "alpha", use_fts=True)
     assert results[0].source_ids == ("src-alpha",)
@@ -172,6 +180,8 @@ def test_query_fts_graph_watch_and_replay_surfaces(tmp_path: Path, capsys) -> No
 
     assert main(["query", "--root", str(root), "alpha", "--compact"]) == 0
     query_payload = _payload(capsys)
+    assert query_payload["payload"]["provenance_sources"]["src-alpha"]["raw_path"] == "raw/sources/alpha.md"
+    assert query_payload["payload"]["missing_provenance_sources"] == []
     assert query_payload["payload"]["suspicious_evidence"]
 
     assert main(["query", "--root", str(root), "alpha", "--semantic", "--compact"]) == 2

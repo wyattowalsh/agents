@@ -79,7 +79,7 @@ If clarifying exchange is unavailable, default to inventory-only planning with n
 
 ## Canonical Vocabulary
 
-Use these terms exactly throughout:
+These are Nerdbot's canonical terms. Use them exactly throughout:
 
 | Term                  | Meaning                                                                                                      | Default rule                                                           |
 | --------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
@@ -149,6 +149,43 @@ Use gates for every multi-step flow. Stop at the first blocked gate.
 
 For Query, stop after Gate 2 unless the user explicitly asks to turn a KB gap into `enrich`, `ingest`, or `derive` work.
 
+## Classification Gating
+
+Classify every request before loading deep references or touching files:
+
+- `query` and `audit` are read-only unless the user explicitly asks for follow-on mutation.
+- `create`, `ingest`, `enrich`, `derive`, and `improve` are additive-first and dry-run/planning-first when risk is unclear.
+- `migrate` is high-impact by default and requires the migration interview, inversion, rollback plan, and explicit approval.
+- Requests for SOTA LLM-wiki, GraphRAG, DeepWiki, CodeWiki, or STORM-style behavior load `references/advanced-wiki-logics.md` and map the idea into Nerdbot layers before implementation.
+
+## Scaling Strategy
+
+Scale by risk and ownership:
+
+- Single safe query/audit: stay local and read-only.
+- Multi-source ingest or enrich: split by independent source/page, then reconcile `indexes` and `activity log` sequentially.
+- Graph, retrieval, stale-page, diagram, or digest work: produce rebuildable `derived output` first; promote only through review queues or approved `enrich`.
+- Same-file contracts, schema fields, eval manifests, generated docs, and package metadata stay serialized.
+
+## State Management
+
+Durable state lives in project-visible surfaces:
+
+- `indexes/source-map.md`, `indexes/coverage.md`, and `indexes/evidence-ledger.md` explain source and claim support.
+- `indexes/review-queue.md` holds uncertain save-back, stale, contradictory, suspicious, parser-warning, and graph-cleanup items.
+- `activity/log.md` and `activity/operations.jsonl` are append-only activity and replay records.
+- `activity/research/` is journal-only by default; source promotion requires approved ingest.
+- `indexes/generated/` stores rebuildable FTS, graph, diagram, digest, and future community-summary artifacts.
+
+## Templates
+
+Use bundled templates for new or repaired surfaces:
+
+- `.obsidian/templates/*` for shared vault-safe note shapes.
+- `assets/source-summary-template.md` and `assets/*-page-template.md` for source and wiki pages.
+- `assets/activity-log-template.md` for append-only operating records.
+- `assets/kb-bootstrap-template.md` for manual starter packets when automation is unavailable.
+
 ## Primary Workflows
 
 ### Create
@@ -197,10 +234,12 @@ Use for read-only diagnosis, linting, and confidence checks.
 Use when the user wants an answer from the maintained KB without mutating it.
 
 1. Load `references/kb-architecture.md` first.
-2. Read `wiki/` and `indexes/` first; inspect `raw/` only to verify citations or confirm that the KB still has a gap.
-3. Answer with note paths, `[[wikilinks]]`, provenance references, and an explicit confidence level.
-4. Classify the result as `answered`, `partial`, or `gap`.
-5. If the KB cannot answer confidently, recommend the next safe follow-up mode (`enrich`, `ingest`, or `derive`) instead of mutating content during query.
+2. Load `references/advanced-wiki-logics.md` when the query needs graph/global retrieval, contradiction checks, stale-claim review, source-map verification, or LLM-wiki planning logic.
+3. Read `wiki/` and `indexes/` first; inspect `raw/` only to verify citations or confirm that the KB still has a gap.
+4. Answer with note paths, `[[wikilinks]]`, source-map provenance when available, and an explicit confidence level.
+5. Treat cited source IDs as leads, not proof; unsupported or stale support stays review-visible.
+6. Classify the result as `answered`, `partial`, or `gap`.
+7. If the KB cannot answer confidently, recommend the next safe follow-up mode (`enrich`, `ingest`, or `derive`) instead of mutating content during query.
 
 ### Derive
 
@@ -287,6 +326,7 @@ Load references on demand; do not load all at once. If a listed reference, scrip
 | File                                            | Content                                                                                                   | Load When                                                                                          |
 | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | `references/audit-checklist.md`                 | Read-only audit rubric, severity model, provenance/index/activity checks, and report shape                | Audit, Gate 5 verification, pre-migration checks, post-change confidence checks                    |
+| `references/advanced-wiki-logics.md`            | SOTA LLM-wiki, GraphRAG, CodeWiki, DeepWiki, STORM, verification, and derived-output adoption rules       | Query/enrich planning, graph/global retrieval, stale/contradiction review, diagram/digest planning |
 | `references/cli.md`                             | Local and installed CLI command contracts, examples, and safe/read-only command defaults                  | CLI smoke, command planning, package validation, user-facing command guidance                      |
 | `references/current-state-and-compatibility.md` | Stable compatibility surfaces, baseline script/package behavior, and runtime authority                    | Skill/package alignment checks, compatibility-sensitive changes, release or audit review           |
 | `references/graph.md`                           | Graph source model, supported edge concepts, implemented analytics, and graph safety rules                | Graph inspection, backlink/blast-radius planning, derived graph outputs, migration impact analysis |
@@ -315,7 +355,7 @@ Load references on demand; do not load all at once. If a listed reference, scrip
 | `scripts/kb_bootstrap.py`   | Scaffold the approved layered structure, shared `.obsidian/` surfaces, and default starter files                              | Create and additive repair after Gate 3 approval; never for cutover or overwrite-by-default                         |
 | `scripts/kb_path_policy.py` | Internal/shared helper for classifying protected, volatile, generated, and safe KB paths                                      | Script internals and contract review; call through inventory/lint/bootstrap unless explicitly debugging path policy |
 
-Run from the skill root:
+Run compatibility script smoke checks from the skill root:
 
 - `python3 scripts/kb_inventory.py --root .`
 - `python3 scripts/kb_lint.py --root . --fail-on warning`
@@ -324,14 +364,16 @@ Run from the skill root:
 
 ## Validation Contract
 
-Run from this skill directory before declaring changes complete:
+Run from the repository root before declaring changes complete unless the command explicitly changes directory:
 
 ```bash
-python scripts/check.py
-ruff check . tests/test_nerdbot*.py
-ruff format --check . tests/test_nerdbot*.py
-ty check
-pytest tests/test_nerdbot*.py tests/test_package.py tests/test_skill_creator_audit.py -q
+cd skills/nerdbot && uv run python scripts/check.py
+uv run python skills/skill-creator/scripts/audit.py skills/nerdbot --format json
+uv run python skills/skill-creator/scripts/package.py skills/nerdbot --dry-run
+uv run ruff check skills/nerdbot tests/test_nerdbot*.py tests/test_package.py tests/test_skill_creator_audit.py
+uv run ruff format --check skills/nerdbot tests/test_nerdbot*.py tests/test_package.py tests/test_skill_creator_audit.py
+uv run --project skills/nerdbot ty check
+uv run pytest tests/test_nerdbot*.py tests/test_package.py tests/test_skill_creator_audit.py -q
 ```
 
 CLI smoke: `uv run --project skills/nerdbot nerdbot --help`, `uv run --project skills/nerdbot nerdbot modes`, and one read-only plan or dry-run command such as `uv run --project skills/nerdbot nerdbot bootstrap --root ./nerdbot-smoke --dry-run`.

@@ -14,7 +14,7 @@ SRC_DIR = NERDBOT_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from nerdbot.evidence import apply_confidence_cap
+from nerdbot.evidence import apply_confidence_cap, parse_source_map_entries, source_map_entries_by_id
 from nerdbot.graph import extract_alias_edges, extract_edges, split_obsidian_reference
 from nerdbot.operations import OperationEntry, append_operation_entry, build_operation_entry
 from nerdbot.safety import normalize_vault_relative_path
@@ -140,6 +140,25 @@ def test_pointer_stub_text_flattens_untrusted_multiline_fields() -> None:
 def test_apply_confidence_cap_rejects_invalid_confidence(confidence: float) -> None:
     with pytest.raises(ValueError, match=r"confidence must be between 0\.0 and 1\.0"):
         apply_confidence_cap(confidence, "static")
+
+
+def test_source_map_parser_preserves_escaped_pipes_and_first_entry() -> None:
+    text = (
+        "# Source Map\n\n"
+        "| Source ID | Raw path | Capture type | Planned wiki target | "
+        "Canonical material touched? | Provenance status | Status |\n"
+        "|---|---|---|---|---|---|---|\n"
+        "| `src-alpha` | `raw/sources/a\\|b.md` | local-file | `wiki/topics/alpha.md` | no | linked | captured |\n"
+        "| src-alpha | raw/sources/duplicate.md | import | | yes | stale | duplicate |\n"
+    )
+
+    entries = parse_source_map_entries(text)
+    by_id = source_map_entries_by_id(text)
+
+    assert entries[0].source_id == "src-alpha"
+    assert entries[0].raw_path == "raw/sources/a|b.md"
+    assert entries[0].planned_wiki_target == "wiki/topics/alpha.md"
+    assert by_id["src-alpha"].raw_path == "raw/sources/a|b.md"
 
 
 @pytest.mark.parametrize(

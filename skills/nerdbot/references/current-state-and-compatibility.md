@@ -11,6 +11,7 @@
 - `nerdbot.safety` normalizes vault-relative paths, rejects traversal/absolute/drive-qualified paths, and provides append-only log helpers for package workflows.
 - `nerdbot.operations` creates stable-shaped unique operation records and can append them to JSONL journals without following final symlinks.
 - `nerdbot.retrieval` provides lexical retrieval, transient/persisted SQLite FTS5 querying, and generated FTS builds.
+- `nerdbot query` attaches read-only `provenance_sources` metadata from `indexes/source-map.md` for cited source IDs without changing the stable query result row shape.
 - `nerdbot.graph` provides baseline edge extraction, relative-link normalization, basename-aware orphan detection, and generated graph analytics outputs.
 - `nerdbot ingest --source` writes pointer stubs by default for outside-root, symlinked, oversized, unreadable, or secret-looking sources; outside-root copies require `--copy-outside-root`.
 - `tests/test_nerdbot_scripts.py` protects current script behavior.

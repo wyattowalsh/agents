@@ -31,8 +31,13 @@ Machine callers should prefer CLI JSON payloads. `plan` includes both `suggested
 
 | Surface | Default path | Mutation rule |
 |---------|--------------|---------------|
+| Wiki plan | `config/wiki-plan.json` or `config/wiki-plan.md` | Optional steering surface for scope, focus paths, page hierarchy, and caps; never overrides provenance or approval gates |
 | Evidence ledger | `indexes/evidence-ledger.md` | Update with claim-level provenance when wiki claims change |
 | Review queue | `indexes/review-queue.md` | Queue uncertain save-back, parser warnings, and watch events before promotion |
 | Operation journal | `activity/operations.jsonl` | Append-only JSONL for replayable operations |
 | Research journal | `activity/research/` | Journal-only by default; approved ingest required before adding sources |
 | Generated artifacts | `indexes/generated/` | Rebuildable; never canonical |
+
+## Advanced Wiki Payloads
+
+`nerdbot plan` exposes `advanced_wiki_logics` so machine callers can see which LLM-wiki patterns are in scope before mutating files. `nerdbot query` exposes `payload.provenance_sources` and `payload.missing_provenance_sources` so cited source IDs can be checked against `indexes/source-map.md` without changing the stable `QueryResult` shape.
