@@ -29,7 +29,7 @@
       },
       {
         "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" image-input-optimizer-guard --harness cursor",
-        "matcher": ".*",
+        "matcher": "analyze_image|attach_image|screenshot|upload_image|view_image|Read|read",
         "timeout": 60,
         "failClosed": false
       },

@@ -14,7 +14,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ./hooks/wagents-hook.py research-evidence-ledger --harness claude-code",
+            "command": "./hooks/run-wagents-hook research-evidence-ledger --harness claude-code",
             "timeout": 5
           }
         ],
@@ -26,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ./hooks/wagents-hook.py git-commit-push-guard --harness claude-code",
+            "command": "./hooks/run-wagents-hook git-commit-push-guard --harness claude-code",
             "timeout": 5
           }
         ],
@@ -40,13 +40,13 @@
             "timeout": 60
           }
         ],
-        "matcher": ".*"
+        "matcher": "analyze_image|attach_image|screenshot|upload_image|view_image|Read|read"
       },
       {
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ./hooks/wagents-hook.py research-readonly-write-guard --harness claude-code",
+            "command": "./hooks/run-wagents-hook research-readonly-write-guard --harness claude-code",
             "timeout": 5
           }
         ],
@@ -56,7 +56,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ./hooks/wagents-hook.py research-dangerous-shell-guard --harness claude-code",
+            "command": "./hooks/run-wagents-hook research-dangerous-shell-guard --harness claude-code",
             "timeout": 5
           }
         ],
@@ -68,7 +68,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ./hooks/wagents-hook.py research-prompt-triage-context --harness claude-code",
+            "command": "./hooks/run-wagents-hook research-prompt-triage-context --harness claude-code",
             "timeout": 5
           }
         ]
@@ -79,7 +79,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ./hooks/wagents-hook.py research-stop-verifier --harness claude-code",
+            "command": "./hooks/run-wagents-hook research-stop-verifier --harness claude-code",
             "timeout": 30
           }
         ]

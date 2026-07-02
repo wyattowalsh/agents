@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ./hooks/wagents-hook.py git-commit-push-guard --harness gemini-cli",
+            "command": "./hooks/run-wagents-hook git-commit-push-guard --harness gemini-cli",
             "name": "git-commit-push-guard",
             "timeout": 5000,
             "description": "Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites across the fleet."
@@ -49,13 +49,13 @@
           }
         ],
         "sequential": true,
-        "matcher": ".*"
+        "matcher": "analyze_image|attach_image|screenshot|upload_image|view_image|Read|read"
       },
       {
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ./hooks/wagents-hook.py research-readonly-write-guard --harness gemini-cli",
+            "command": "./hooks/run-wagents-hook research-readonly-write-guard --harness gemini-cli",
             "name": "research-readonly-write-guard",
             "timeout": 5000,
             "description": "Prevent source-file write tools during active research sessions."
@@ -68,7 +68,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ./hooks/wagents-hook.py research-dangerous-shell-guard --harness gemini-cli",
+            "command": "./hooks/run-wagents-hook research-dangerous-shell-guard --harness gemini-cli",
             "name": "research-dangerous-shell-guard",
             "timeout": 5000,
             "description": "Block dangerous shell side effects during active research sessions."
@@ -86,7 +86,7 @@
             "cwd": ".",
             "comment": "Run best-effort formatter after edits.",
             "command": "./hooks/auto-format.sh",
-            "timeout": 30000
+            "timeout": 60000
           }
         ],
         "_apm_source": "_local/agents"
@@ -107,7 +107,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ./hooks/wagents-hook.py research-evidence-ledger --harness gemini-cli",
+            "command": "./hooks/run-wagents-hook research-evidence-ledger --harness gemini-cli",
             "name": "research-evidence-ledger",
             "timeout": 5000,
             "description": "Append lightweight provenance metadata for research retrieval tools."
@@ -145,12 +145,46 @@
         "_apm_source": "_local/agents"
       }
     ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/verify-before-stop.sh",
+            "timeout": 60
+          }
+        ],
+        "_apm_source": "_local/agents"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/task-completed-gate.sh",
+            "timeout": 120
+          }
+        ],
+        "_apm_source": "_local/agents"
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/teammate-idle-gate.sh",
+            "timeout": 120
+          }
+        ],
+        "_apm_source": "_local/agents"
+      }
+    ],
     "BeforeAgent": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ./hooks/wagents-hook.py research-prompt-triage-context --harness gemini-cli",
+            "command": "./hooks/run-wagents-hook research-prompt-triage-context --harness gemini-cli",
             "name": "research-prompt-triage-context",
             "timeout": 5000,
             "description": "Activate research hook state and inject research-method reminders."
@@ -164,7 +198,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ./hooks/wagents-hook.py research-stop-verifier --harness gemini-cli",
+            "command": "./hooks/run-wagents-hook research-stop-verifier --harness gemini-cli",
             "name": "research-stop-verifier",
             "timeout": 30000,
             "description": "Verify research skill invariants before an active research session completes."
