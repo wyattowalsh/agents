@@ -1,0 +1,20 @@
+---
+title: Surfaces
+description: Portable configuration surfaces managed by wagents
+---
+
+import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+Surfaces are the portable units in this repo. Runtimes are the places those surfaces are projected.
+
+<CardGrid>
+  <LinkCard title="Instructions" href="/surfaces/instructions/" description="Shared operating rules, platform overlays, and generated mirrors." />
+  <LinkCard title="Skills" href="/skills/catalog/" description="Portable prompt-and-workflow bundles with generated catalog pages." />
+  <LinkCard title="Tools" href="/surfaces/tools/" description="MCP, CLI, and plugin surfaces exposed to supported runtimes." />
+  <LinkCard title="Hooks" href="/hooks/" description="Lifecycle guards, context injection, formatting, lint, and stop gates." />
+  <LinkCard title="Agents" href="/agents/" description="Specialist agent definitions and runtime-specific projections." />
+</CardGrid>
+
+<Aside type="note" title="Order matters">
+The docs present surfaces as instructions -> skills -> tools -> hooks -> agents: policy, reusable workflows, connected capabilities, automation, then specialist roles.
+</Aside>

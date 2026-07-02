@@ -189,7 +189,7 @@ The worker daemon (`python3 hooks/wagents-hook-worker.py --serve --socket PATH`)
 
 Observability: set `WAGENTS_HOOK_TIMING=1` on a hook invocation to append JSON timing lines to `~/.cache/wagents/hook-timing.jsonl`. Worker-tier forwards (`--worker-socket`) record the same sidecar with `"forwarded": true` so hyperfine runs can distinguish warm socket paths from cold spawns. Bundle worker forwards use a socket wait budget of `bundle_timeout + 1s` (aligned with the OpenCode bridge margin). Inventory spawn counts with `uv run python scripts/hooks/hook_perf_inventory.py --json`.
 
-The repo default tier is **`bundle`** after [Hooks Bundle Promotion v2](https://github.com/wyattowalsh/agents/tree/main/openspec/changes/fleet-hooks-promotion) (`openspec/changes/fleet-hooks-promotion/`). Committed spawn baselines live under `docs/public/generated-reports/hook-perf-baseline-*.json`. Maintainer workflow: [Hook performance runbook](/runbooks/hook-performance/) (`docs/runbooks/hook-performance.md`). Promote to `worker` only after hyperfine validation documented in `openspec/changes/fleet-hooks-performance/validation-matrix.md`.
+The repo default tier is **`bundle`** after [Hooks Bundle Promotion v2](https://github.com/wyattowalsh/agents/tree/main/openspec/changes/fleet-hooks-promotion) (`openspec/changes/fleet-hooks-promotion/`). Committed spawn baselines live under `docs/public/generated-reports/hook-perf-baseline-*.json`. Maintainer workflow: `docs/runbooks/hook-performance.md`. Promote to `worker` only after hyperfine validation documented in `openspec/changes/fleet-hooks-performance/validation-matrix.md`.
 
 ## Related
 

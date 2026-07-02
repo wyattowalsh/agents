@@ -1,0 +1,23 @@
+---
+title: Reference
+description: Factual lookup pages for generated registries, schemas, CLI, and runtime compatibility
+---
+
+import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+Reference pages are lookup surfaces. Operational process lives under [Contributing](/contributing/).
+
+<CardGrid>
+  <LinkCard title="CLI Reference" href="/cli/" description="Commands for scaffolding, validation, packaging, installation, docs generation, and sync workflows." />
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Generated custom and curated external skill indexes." />
+  <LinkCard title="MCP Registry" href="/harness-config/mcp-registry/" description="MCP registry and MCPHub projection policy." />
+  <LinkCard title="Hook Registry" href="/hooks/" description="Generated hook pages and lifecycle policy." />
+  <LinkCard title="Runtime Compatibility" href="/runtimes/" description="Surface support across agent runtimes." />
+  <LinkCard title="Harness Support" href="/harness-support/" description="Fixture-backed support tiers and validation commands." />
+  <LinkCard title="Reports" href="/reports/" description="Generated docs graph, link check, dependency drift, and maintainer dashboards." />
+  <LinkCard title="Catalog Indexes" href="/catalog/" description="Generated catalog pages for assets, tags, platforms, and tooling." />
+</CardGrid>
+
+<Aside type="note" title="Generated data">
+Machine-readable public artifacts live under `docs/public/generated-*` and generated ESM modules under `docs/src/generated-*`. Regenerate them with `uv run wagents docs generate --no-installed`.
+</Aside>

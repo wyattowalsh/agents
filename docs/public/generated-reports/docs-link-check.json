@@ -1,11 +1,6 @@
 {
-  "broken_count": 1,
-  "broken_internal_links": [
-    {
-      "page": "reports/site-graph-insights.mdx",
-      "target": "/foo"
-    }
-  ],
+  "broken_count": 0,
+  "broken_internal_links": [],
   "note": "Complements the build-time starlight-links-validator check; scans absolute markdown links only.",
-  "total_pages_scanned": 862
+  "total_pages_scanned": 874
 }

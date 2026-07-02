@@ -121,3 +121,21 @@ def test_regen_config_embed(tmp_path) -> None:
     out = regen_config_embed(page, config_path=config, summary="Full sample.json")
     assert '"version": 1' in out
     assert "Old" not in out
+
+
+def test_ensure_mcp_snippets_dedupes_repeated_sections() -> None:
+    from wagents.docs_compose_regen_configs import _ensure_mcp_snippets
+
+    page = (
+        "import { Badge } from '@astrojs/starlight/components';\n\n"
+        "## Client snippets\n\n"
+        "<McpClientSnippet serverKey=\"chrome-devtools\" />\n\n"
+        "## Client snippets\n\n"
+        "<McpClientSnippet serverKey=\"brave-search\" />\n\n"
+        "## Key Fields\n\n"
+        "| Field | Purpose |\n"
+    )
+    out = _ensure_mcp_snippets(page)
+    assert out.count("## Client snippets") == 1
+    assert "chrome-devtools" in out
+    assert "## Key Fields" in out

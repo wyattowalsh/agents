@@ -1,6 +1,6 @@
 {
   "all_populated": true,
-  "report_count": 5,
+  "report_count": 7,
   "reports_dir": "docs/public/generated-reports",
   "sections": {
     "docs-dependency-drift": {
@@ -33,6 +33,26 @@
       "path": "docs/public/generated-reports/docs-link-check.json",
       "summary": "0 broken links"
     },
+    "hook-perf-baseline-bundle": {
+      "keys": [
+        "captured_at",
+        "inventory",
+        "summary",
+        "tier"
+      ],
+      "path": "docs/public/generated-reports/hook-perf-baseline-bundle.json",
+      "summary": "4 top-level keys"
+    },
+    "hook-perf-baseline-legacy": {
+      "keys": [
+        "captured_at",
+        "inventory",
+        "summary",
+        "tier"
+      ],
+      "path": "docs/public/generated-reports/hook-perf-baseline-legacy.json",
+      "summary": "4 top-level keys"
+    },
     "llms-txt-coverage": {
       "keys": [
         "coverage_pct",
@@ -54,7 +74,7 @@
         "total_pages"
       ],
       "path": "docs/public/generated-reports/site-graph-insights.json",
-      "summary": "131 orphans"
+      "summary": "136 orphans"
     }
   }
 }

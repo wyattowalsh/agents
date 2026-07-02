@@ -8,9 +8,9 @@
     },
     {
       "date": "2026-07-02",
-      "orphan_count": 131,
-      "total_internal_links": 375,
-      "total_pages": 862
+      "orphan_count": 136,
+      "total_internal_links": 379,
+      "total_pages": 874
     }
   ],
   "latest": {
@@ -18,6 +18,10 @@
       {
         "backlinks": 3,
         "slug": "/harness-support"
+      },
+      {
+        "backlinks": 2,
+        "slug": "/contributing"
       },
       {
         "backlinks": 2,
@@ -45,10 +49,6 @@
       },
       {
         "backlinks": 1,
-        "slug": "/contributing"
-      },
-      {
-        "backlinks": 1,
         "slug": "/harness-config/mcp-registry"
       },
       {
@@ -73,11 +73,11 @@
       },
       {
         "backlinks": 1,
-        "slug": "/skills/catalog"
+        "slug": "/runtimes"
       }
     ],
-    "note": "Counts absolute-path markdown links only (`](/foo/)`); relative links are not resolved.",
-    "orphan_count": 131,
+    "note": "Counts absolute-path markdown links only (paths like /foo/); relative links are not resolved.",
+    "orphan_count": 136,
     "orphan_pages": [
       "/agents/agent-change-recorder",
       "/agents/agent-eval-runner",
@@ -142,6 +142,7 @@
       "/hooks/task-completed-gate",
       "/hooks/teammate-idle-gate",
       "/hooks/verify-before-stop",
+      "/install",
       "/mcp/agent-catalog",
       "/mcp/changelog-digest",
       "/mcp/ci-artifacts",
@@ -209,9 +210,13 @@
       "/skills/catalog/external/debug-optimize-lcp",
       "/skills/catalog/external/memory-leak-debugging",
       "/skills/catalog/external/troubleshooting",
-      "/skills/install"
+      "/skills/install",
+      "/start-here",
+      "/surfaces",
+      "/surfaces/instructions",
+      "/surfaces/tools"
     ],
-    "total_internal_links": 375,
-    "total_pages": 862
+    "total_internal_links": 379,
+    "total_pages": 874
   }
 }

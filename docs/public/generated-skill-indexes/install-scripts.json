@@ -66,6 +66,10 @@
       "name": "event-driven-architect"
     },
     {
+      "command": "npx skills add github:wyattowalsh/agents --skill ffmpeg -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "ffmpeg"
+    },
+    {
       "command": "npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "files-buddy"
     },
@@ -140,6 +144,10 @@
     {
       "command": "npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "orchestrator"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill pentest -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "pentest"
     },
     {
       "command": "npx skills add github:wyattowalsh/agents --skill performance-profiler -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
@@ -260,6 +268,10 @@
     {
       "command": "npx skills add github:wyattowalsh/agents --skill wargame -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "wargame"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill yt-dlp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "yt-dlp"
     }
   ],
   "externalCommands": [

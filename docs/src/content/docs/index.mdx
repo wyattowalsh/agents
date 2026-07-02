@@ -1,30 +1,33 @@
 ---
-title: Agents
-description: Portable skills and MCP tools for coding agents
+title: wagents
+description: Versioned agent configuration for portable AI coding runtimes
 template: splash
 hero:
-  tagline: Portable skills and MCP tools for coding agents
+  tagline: Version agent instructions, skills, tools, hooks, and agents once; project them into every supported runtime.
   image:
     html: |
-      <div class="hero-terminal">
-        <div class="hero-terminal-header">
-          <span class="hero-terminal-dot red"></span>
-          <span class="hero-terminal-dot yellow"></span>
-          <span class="hero-terminal-dot green"></span>
-          <span class="hero-terminal-title">agent control plane</span>
+      <div class="projection-pipeline" aria-label="Repository projection pipeline">
+        <div class="pipeline-stage">
+          <span class="pipeline-label">repo sources</span>
+          <span class="pipeline-detail">instructions / skills / tools / hooks / agents</span>
         </div>
-        <div class="hero-terminal-body">
-          <span class="hero-terminal-prompt">$</span>
-          <span class="hero-terminal-cmd">npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode</span>
-          <span class="hero-terminal-cursor">▋</span>
+        <div class="pipeline-connector" aria-hidden="true"></div>
+        <div class="pipeline-stage">
+          <span class="pipeline-label">generated state</span>
+          <span class="pipeline-detail">registries / docs / install scripts / sync plans</span>
+        </div>
+        <div class="pipeline-connector" aria-hidden="true"></div>
+        <div class="pipeline-stage">
+          <span class="pipeline-label">runtime projections</span>
+          <span class="pipeline-detail">Codex / Claude Code / OpenCode / Cursor / Grok</span>
         </div>
       </div>
   actions:
-    - text: Get Started
-      link: /start-here/
+    - text: Install
+      link: /install/
       icon: right-arrow
-    - text: Explore Skills
-      link: /skills/catalog/
+    - text: System Overview
+      link: /surfaces/
       variant: minimal
       icon: right-arrow
 ---
@@ -33,14 +36,6 @@ import { Badge, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/compo
 import InstallCommand from '../../components/InstallCommand.astro';
 import { installCommands } from '../../generated-site-data.mjs';
 
-<div class="stats-bar">
-  <span class="stat stat-total">378 Skills</span>
-  <span class="stat stat-skill">65 Custom Skills</span>
-  <span class="stat stat-external">313 External Skills</span>
-  <span class="stat stat-harness">9 Supported Harnesses</span>
-  <span class="stat stat-mcp">16 Custom MCP</span>
-</div>
-
 <div class="hero-badge-row">
   <a href="https://github.com/wyattowalsh/agents/stargazers"><img src="https://img.shields.io/github/stars/wyattowalsh/agents?style=flat-square&label=stars&color=0f766e" alt="GitHub stars" /></a>
   <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml"><img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/badge.svg" alt="CI status" /></a>
@@ -48,63 +43,110 @@ import { installCommands } from '../../generated-site-data.mjs';
   <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=0284c7" alt="Latest release" /></a>
 </div>
 
-## Get started
+## Surface Map
 
-Install the catalog once, then invoke a focused skill inside your agent. For the shortest guided path, see [Start Here](/start-here/).
+A surface is a portable piece of agent configuration. `wagents` keeps each surface inspectable in the repo, then generates the runtime-specific files and docs around it.
 
-<InstallCommand command={installCommands.all} title="Install the full catalog" note="Globally installs repo skills across supported agent harnesses." />
-
-Then run `/review`, `/wargame`, or `/mcp-creator` in Claude Code, OpenCode, Grok Build, or any [agentskills.io](https://agentskills.io)-compatible harness.
-
-## What skills are
-
-<div class="catalog-skill">
-<CardGrid>
-  <Card title="Portable">
-    <div class="feature-card-icon" aria-hidden="true">P</div>
-    <Badge text="Install once" variant="note" /> Move the same workflows across supported coding agents without maintaining parallel prompt copies.
-  </Card>
-  <Card title="Inspectable">
-    <div class="feature-card-icon" aria-hidden="true">C</div>
-    <Badge text="Versioned" variant="tip" /> Keep prompts, workflows, and conventions in source control instead of buried in copy-paste docs.
-  </Card>
-  <Card title="Composable">
-    <div class="feature-card-icon" aria-hidden="true">OS</div>
-    <Badge text="Stackable" variant="success" /> Pull specialists together for review, architecture, docs, and runtime work without rebuilding the workflow each time.
-  </Card>
-</CardGrid>
+<div class="surface-map">
+  <a class="surface-node surface-node--instructions" href="/surfaces/instructions/">
+    <span class="surface-kicker">01</span>
+    <strong>Instructions</strong>
+    <span>Shared operating rules and platform overlays.</span>
+  </a>
+  <a class="surface-node surface-node--skills" href="/skills/catalog/">
+    <span class="surface-kicker">02</span>
+    <strong>Skills</strong>
+    <span>381 catalog entries: 68 repo-owned, 313 curated external.</span>
+  </a>
+  <a class="surface-node surface-node--tools" href="/surfaces/tools/">
+    <span class="surface-kicker">03</span>
+    <strong>Tools</strong>
+    <span>60 MCP tools plus CLI and plugin surfaces.</span>
+  </a>
+  <a class="surface-node surface-node--hooks" href="/hooks/">
+    <span class="surface-kicker">04</span>
+    <strong>Hooks</strong>
+    <span>Lifecycle guards, context injectors, and stop gates.</span>
+  </a>
+  <a class="surface-node surface-node--agents" href="/agents/">
+    <span class="surface-kicker">05</span>
+    <strong>Agents</strong>
+    <span>20 repo-managed specialist agent definitions.</span>
+  </a>
 </div>
 
-## Explore
+## Runtime Matrix
+
+Runtimes consume the same surfaces through native files, generated projections, plugins, MCPHub endpoints, or Skills CLI installs. The detailed fixture-backed matrix lives in [Runtimes](/runtimes/) and [Harness Support](/harness-support/).
+
+<div class="runtime-table-wrapper">
+<table>
+<thead><tr><th>Runtime</th><th>Instructions</th><th>Skills</th><th>Tools</th><th>Hooks</th><th>Agents</th></tr></thead>
+<tbody>
+<tr><td>Codex</td><td>generated</td><td>plugin/Skills CLI</td><td>MCPHub</td><td>generated</td><td>dynamic</td></tr>
+<tr><td>Claude Code</td><td>native import</td><td>plugin/Skills CLI</td><td>MCP</td><td>generated</td><td>native subagents</td></tr>
+<tr><td>OpenCode</td><td>native AGENTS.md</td><td>Skills CLI</td><td>MCPHub + plugins</td><td>generated</td><td>native agents</td></tr>
+<tr><td>Cursor</td><td>rules + AGENTS.md</td><td>Skills CLI</td><td>MCPHub</td><td>native hooks</td><td><code>.cursor/agents</code></td></tr>
+<tr><td>Grok Build</td><td>generated</td><td>mirrored skills</td><td>MCPHub</td><td>generated</td><td>delegation</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="stats-bar stats-bar--context">
+  <span class="stat stat-harness">9 Supported Runtimes</span>
+  <span class="stat stat-agent">20 Agent Definitions</span>
+  <span class="stat stat-mcp">16 Repo MCP</span>
+  <span class="stat stat-mcp">44 External MCP</span>
+</div>
+
+## Install Paths
+
+Choose the path by intent; each route links to the exact commands and generated references.
+
+<div class="install-path-grid">
+  <div class="operator-card">
+    <span class="operator-card__kicker">use everything</span>
+    <h3>Install the full catalog</h3>
+    <p>Put the repo-owned skill bundle into supported agent runtimes.</p>
+  </div>
+  <div class="operator-card">
+    <span class="operator-card__kicker">install one surface</span>
+    <h3>Start with one skill</h3>
+    <p>Install a focused workflow first, then expand once it proves useful.</p>
+  </div>
+  <div class="operator-card">
+    <span class="operator-card__kicker">sync a runtime</span>
+    <h3>Preview harness reconciliation</h3>
+    <p>Use dry-run sync before changing local agent installations.</p>
+  </div>
+  <div class="operator-card">
+    <span class="operator-card__kicker">preview changes</span>
+    <h3>Validate generated surfaces</h3>
+    <p>Regenerate docs, validate registries, and run focused tests.</p>
+  </div>
+</div>
+
+<InstallCommand command={installCommands.all} title="Use everything" note="Global Skills CLI install across supported agent runtimes." />
 
 <CardGrid>
-  <LinkCard title="Enhance Code Reviews" href="/skills/catalog/custom/review/" description="Review a diff with evidence, structure, and severity instead of ad hoc feedback." />
-  <LinkCard title="Strategic Decision Analysis" href="/skills/catalog/custom/wargame/" description="Pressure-test a product or engineering decision before you commit to it." />
-  <LinkCard title="Host Expert Panels" href="/skills/catalog/custom/host-panel/" description="Get multiple expert perspectives in one session when the problem has real trade-offs." />
-  <LinkCard title="Run Spec Workflows" href="/skills/catalog/custom/openspec-workflow/" description="Plan, inspect, validate, and archive OpenSpec changes with repo-aware wrapper commands." />
-  <LinkCard title="Create MCP Servers" href="/skills/catalog/custom/mcp-creator/" description="Build a production-ready FastMCP server with design, testing, and deployment guidance." />
-  <LinkCard title="Start Here" href="/start-here/" description="Shortest guided path: install, pick a starter skill, and learn the repo layout." />
-  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse repository skills plus external skills from the curated catalog and local harness inventory." />
-  <LinkCard title="MCP Overview" href="/mcp/" description="Overview of 16 repo MCP package(s) and 61 external MCP tools from `mcp.json`." />
-  <LinkCard title="CLI Reference" href="/cli/" description="Commands for scaffolding, validation, packaging, installation, and docs generation workflows." />
-  <LinkCard title="Harness Support" href="/harness-support/" description="Fixture-backed support matrix for repo-managed harness surfaces, sync commands, and validation gates." />
-  <LinkCard title="Create Your Own" href="/skills/catalog/custom/skill-creator/" description="Build, improve, and audit skills with skill-creator." />
+  <LinkCard title="Install Guide" href="/install/" description="Intent-based install paths and preview commands." />
+  <LinkCard title="Skill Install Scripts" href="/skills/install/" description="Copyable per-skill install commands." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Full wagents command reference." />
 </CardGrid>
 
-## Supported agents
+## Featured Workflows
+
+Workflow cards are grouped by the surface they exercise so the catalog stays connected to the system model.
 
 <CardGrid>
-  <LinkCard title="Antigravity" href="https://antigravity.google/" description="Advanced Agentic Coding assistant." />
-  <LinkCard title="Claude Code" href="https://docs.anthropic.com/en/docs/claude-code" description="Anthropic's official CLI for Claude." />
-  <LinkCard title="Codex" href="https://github.com/openai/codex" description="Autonomous coding workflows for command-line development." />
-  <LinkCard title="Crush" href="https://github.com/crush-ai/crush" description="Autonomous development agent focused on fast terminal workflows." />
-  <LinkCard title="Cursor" href="https://cursor.com/" description="The AI Code Editor." />
-  <LinkCard title="Gemini CLI" href="https://github.com/google/gemini-cli" description="Google's command-line interface for Gemini." />
-  <LinkCard title="GitHub Copilot" href="https://github.com/features/copilot" description="Your AI pair programmer, right in your IDE." />
-  <LinkCard title="Grok Build" href="https://x.ai/cli" description="xAI's agentic coding CLI with skills, MCP, and Claude Code compatibility." />
-  <LinkCard title="OpenCode" href="https://github.com/anomalyco/opencode" description="Native AGENTS.md support plus repo-level OpenCode config and subagents." />
+  <LinkCard title="Instructions: set shared rules" href="/surfaces/instructions/" description="Read how global instructions, platform overlays, and generated mirrors compose." />
+  <LinkCard title="Skills: review code" href="/skills/catalog/custom/review/" description="Run evidence-first review with severity, risk, and validation expectations." />
+  <LinkCard title="Skills: create MCP servers" href="/skills/catalog/custom/mcp-creator/" description="Build a FastMCP server with design, testing, and deployment guidance." />
+  <LinkCard title="Tools: inspect MCP control plane" href="/mcp/" description="Review MCPHub groups, registry sources, and client sync coverage." />
+  <LinkCard title="Hooks: enforce stop gates" href="/hooks/task-completed-gate/" description="Use lifecycle hooks for validation evidence and completion checks." />
+  <LinkCard title="Agents: delegate reviews" href="/agents/code-reviewer/" description="Use specialist agent definitions for focused review and coordination roles." />
 </CardGrid>
 
 <Aside type="note" title="How these docs work">
-Catalog pages are generated from `skills/`, `agents/`, and `mcp/` via `wagents docs generate`. Onboarding pages stay hand-maintained. See [Contributing](/contributing/) and [Harness Support](/harness-support/) for maintainer detail.
+Catalog pages are generated from `skills/`, `agents/`, and `mcp/` via `wagents docs generate`. Onboarding pages stay hand-maintained. See [Contributing](/contributing/) for CI/CD, generated artifact, and validation detail.
 </Aside>

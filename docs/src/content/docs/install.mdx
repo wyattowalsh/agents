@@ -1,0 +1,65 @@
+---
+title: Install
+description: Intent-based install paths for wagents surfaces and runtimes
+---
+
+import { CardGrid, LinkCard, Steps, Aside } from '@astrojs/starlight/components';
+import InstallCommand from '../../components/InstallCommand.astro';
+import { installCommands } from '../../generated-site-data.mjs';
+
+Use this page to choose the shortest safe path. Live install/apply commands are explicit; preview commands are safe first passes.
+
+## Use Everything
+
+<InstallCommand command={installCommands.all} title="Install the full catalog" note="Global Skills CLI install across supported agent runtimes." />
+
+## Install One Surface
+
+<InstallCommand command={installCommands.starter} title="Install one starter skill" note="Start with review before installing the full catalog." />
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse repo-owned and curated external skills." />
+  <LinkCard title="Skill Install Scripts" href="/skills/install/" description="Copyable per-skill install commands." />
+  <LinkCard title="Tools Surface" href="/surfaces/tools/" description="MCP, CLI, and plugin surfaces that support runtime work." />
+</CardGrid>
+
+## Sync A Runtime
+
+Preview additive repo + curated external skill reconciliation before applying it:
+
+```bash
+uv run wagents skills sync --dry-run
+```
+
+<Aside type="caution" title="Apply requires intent">
+Do not run `uv run wagents skills sync --apply` or live Skills CLI installs unless you intend to mutate local runtime installations.
+</Aside>
+
+## Preview Changes
+
+<Steps>
+1. Validate repo assets.
+
+   ```bash
+   uv run wagents validate
+   ```
+
+2. Regenerate public docs and registries.
+
+   ```bash
+   uv run wagents docs generate --no-installed
+   ```
+
+3. Build the docs site.
+
+   ```bash
+   uv run wagents docs build
+   ```
+
+</Steps>
+
+<CardGrid>
+  <LinkCard title="Runtimes" href="/runtimes/" description="Compatibility matrix for generated and native runtime projections." />
+  <LinkCard title="Contributing" href="/contributing/" description="CI/CD, docs generation, validation gates, release flow, and source ownership." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Full wagents command reference." />
+</CardGrid>

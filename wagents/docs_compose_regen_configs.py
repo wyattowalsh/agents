@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
@@ -72,7 +73,14 @@ def regen_config_embed(page_text: str, *, config_path: Path, summary: str) -> st
     return page_text[:start] + block + page_text[end + len("</details>") :]
 
 
+def _strip_mcp_snippet_sections(page_text: str) -> str:
+    """Remove repeated Client snippets blocks before re-inserting a single section."""
+    pattern = r"## Client snippets\n\n.*?(?=\n## |\n<details|\Z)"
+    return re.sub(pattern, "", page_text, flags=re.DOTALL)
+
+
 def _ensure_mcp_snippets(page_text: str) -> str:
+    page_text = _strip_mcp_snippet_sections(page_text)
     page_text = page_text.replace(
         "import McpClientSnippet from '../../../../components/McpClientSnippet.astro';",
         _MCP_SNIPPET_IMPORT,

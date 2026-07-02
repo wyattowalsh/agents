@@ -156,9 +156,7 @@ def render_docs_dependency_drift_mdx(data: dict[str, Any]) -> str:
     if data["plugin_dependencies"]:
         for name in data["plugin_dependencies"]:
             flag = (
-                " ⚠️ not referenced in astro.config.mjs"
-                if name in data["unregistered_plugin_dependencies"]
-                else " ✅"
+                " ⚠️ not referenced in astro.config.mjs" if name in data["unregistered_plugin_dependencies"] else " ✅"
             )
             parts.append(f"- `{name}`{flag}")
     else:
@@ -277,7 +275,7 @@ def collect_site_graph_insights() -> dict[str, Any]:
         "orphan_count": len(orphans),
         "orphan_pages": orphans,
         "most_linked_pages": [{"slug": s, "backlinks": c} for s, c in most_linked[:15] if c > 0],
-        "note": "Counts absolute-path markdown links only (`](/foo/)`); relative links are not resolved.",
+        "note": "Counts absolute-path markdown links only (paths like /foo/); relative links are not resolved.",
     }
 
 
@@ -420,8 +418,7 @@ def render_docs_graph_snapshot_mdx(data: dict[str, Any]) -> str:
     ]
     for entry in reversed(data["history"]):
         parts.append(
-            f"| {entry['date']} | {entry['total_pages']} | "
-            f"{entry['total_internal_links']} | {entry['orphan_count']} |"
+            f"| {entry['date']} | {entry['total_pages']} | {entry['total_internal_links']} | {entry['orphan_count']} |"
         )
     parts.append("")
     return "\n".join(parts)
@@ -475,6 +472,7 @@ def _summarize_report_payload(slug: str, payload: Any) -> str:
 
 def render_maintainer_ops_dashboard_mdx(data: dict[str, Any]) -> str:
     status = "🟢 All sections populated" if data["all_populated"] else "🟡 Partial coverage"
+    report_page_slugs = {spec.slug for spec in REPORT_SPECS}
     parts = [
         "---",
         "title: Maintainer Ops Dashboard",
@@ -494,9 +492,8 @@ def render_maintainer_ops_dashboard_mdx(data: dict[str, Any]) -> str:
         "| ------ | ------- | ---- |",
     ]
     for slug, section in sorted(data.get("sections", {}).items()):
-        parts.append(
-            f"| [{slug}](/reports/{slug}/) | {section.get('summary', '—')} | `{section.get('path', '')}` |"
-        )
+        report_label = f"[{slug}](/reports/{slug}/)" if slug in report_page_slugs else slug
+        parts.append(f"| {report_label} | {section.get('summary', '—')} | `{section.get('path', '')}` |")
     parts.append("")
     return "\n".join(parts)
 
@@ -581,9 +578,7 @@ def write_reports_index_page() -> None:
     ]
     for spec in REPORT_SPECS:
         parts.append(
-            f'  <LinkCard title="{spec.title}" '
-            f'href="/reports/{spec.slug}/" '
-            f'description="{spec.description}" />'
+            f'  <LinkCard title="{spec.title}" href="/reports/{spec.slug}/" description="{spec.description}" />'
         )
     parts.extend(["</CardGrid>", ""])
     REPORTS_CONTENT_DIR.mkdir(parents=True, exist_ok=True)

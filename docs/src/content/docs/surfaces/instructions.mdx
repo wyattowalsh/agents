@@ -1,0 +1,25 @@
+---
+title: Instructions
+description: Shared and platform-specific instruction surfaces
+---
+
+import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+Instructions define the standing behavior that runtimes should load before a task begins.
+
+| Layer | Source | Role |
+| --- | --- | --- |
+| Shared policy | `instructions/global.md`, `AGENTS.md` | Cross-runtime rules, trust boundaries, clarification gates, git policy, docs lookup |
+| Platform overlays | `instructions/*-global.md` | Runtime-specific narrowing without weakening shared policy |
+| Scoped rules | `.claude/rules/`, `.cursor/rules/`, generated Copilot instructions | Path-conditional or platform-native instruction loading |
+| Generated mirrors | `.github/instructions/`, `.apm/instructions/`, runtime config files | Projection for runtimes that need concrete files |
+
+<CardGrid>
+  <LinkCard title="Instruction Loading" href="/architecture/instruction-loading/" description="How instructions enter supported runtimes." />
+  <LinkCard title="Progressive Disclosure" href="/architecture/progressive-disclosure/" description="Always-loaded policy, scoped rules, and on-demand skills." />
+  <LinkCard title="Contributing" href="/contributing/" description="Source ownership and regeneration rules for instruction surfaces." />
+</CardGrid>
+
+<Aside type="caution" title="Precedence">
+Platform overlays may add or narrow runtime-specific behavior. They must not weaken safety, secret-handling, approval, or destructive-action rules unless the active user explicitly requests that outcome.
+</Aside>

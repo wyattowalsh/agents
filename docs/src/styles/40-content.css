@@ -79,7 +79,7 @@ tr:last-child td { border-bottom: none; }
 
 /* ===== TYPOGRAPHY ===== */
 h1, h2, h3, h4, h5, h6 {
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 .sl-markdown-content {
   font-size: 1.05rem;
@@ -89,6 +89,18 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes content-enter {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.runtime-table-wrapper {
+  max-width: 100%;
+  margin: 1rem 0 1.25rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+
+.runtime-table-wrapper table {
+  min-width: 760px;
 }
 
 /* ===== ASIDE/CALLOUT ENHANCEMENTS ===== */

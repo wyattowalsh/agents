@@ -1,0 +1,21 @@
+---
+title: Tools
+description: MCP, CLI, and plugin surfaces managed by wagents
+---
+
+import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+Tools are the executable and connected capabilities that support agent work. In this repo, that means MCP servers, the `wagents` CLI, Skills CLI install paths, and runtime plugin manifests.
+
+<p><strong>Current scope:</strong> 16 repo MCP package(s), 44 external MCP tool entries, plus CLI and plugin distribution surfaces.</p>
+
+<CardGrid>
+  <LinkCard title="MCP Overview" href="/mcp/" description="Configured MCP servers, MCPHub groups, and client sync coverage." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Scaffold, validate, package, sync, and generate docs with wagents." />
+  <LinkCard title="MCP Registry" href="/harness-config/mcp-registry/" description="Registry source for MCPHub and client projections." />
+  <LinkCard title="Plugin Skill Ownership" href="/harness-config/plugin-skill-ownership/" description="How plugin and Skills CLI surfaces share ownership." />
+</CardGrid>
+
+<Aside type="note" title="Runtime boundary">
+Tools are exposed differently per runtime: native MCP config, MCPHub group/server endpoints, CLI wrappers, and plugin manifests. Use the runtime matrix before assuming one shape works everywhere.
+</Aside>

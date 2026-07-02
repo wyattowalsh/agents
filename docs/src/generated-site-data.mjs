@@ -3,11 +3,11 @@ const baseSiteData = {
   "counts": {
     "bundledAgents": 20,
     "customMcp": 16,
-    "customSkills": 65,
-    "externalMcp": 61,
+    "customSkills": 68,
+    "externalMcp": 44,
     "externalSkills": 313,
-    "mcpTools": 77,
-    "skills": 378,
+    "mcpTools": 60,
+    "skills": 381,
     "supportedHarnesses": 9
   },
   "distributionPaths": [
@@ -1289,6 +1289,10 @@ const baseSiteData = {
         "name": "event-driven-architect"
       },
       {
+        "command": "npx skills add github:wyattowalsh/agents --skill ffmpeg -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+        "name": "ffmpeg"
+      },
+      {
         "command": "npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "files-buddy"
       },
@@ -1363,6 +1367,10 @@ const baseSiteData = {
       {
         "command": "npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "orchestrator"
+      },
+      {
+        "command": "npx skills add github:wyattowalsh/agents --skill pentest -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+        "name": "pentest"
       },
       {
         "command": "npx skills add github:wyattowalsh/agents --skill performance-profiler -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
@@ -1483,6 +1491,10 @@ const baseSiteData = {
       {
         "command": "npx skills add github:wyattowalsh/agents --skill wargame -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "wargame"
+      },
+      {
+        "command": "npx skills add github:wyattowalsh/agents --skill yt-dlp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+        "name": "yt-dlp"
       }
     ],
     "externalCommands": [
@@ -26731,7 +26743,7 @@ const skillIndexes = {
           "scripts/local_smoke.py"
         ],
         "templates": [],
-        "wordCount": 343
+        "wordCount": 331
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -26916,7 +26928,10 @@ const skillIndexes = {
           "evals/implicit-trigger.json",
           "evals/model-selection.json",
           "evals/negative-control.json",
-          "evals/stats-mode.json"
+          "evals/stats-mode.json",
+          "evals/viz-dashboard.json",
+          "evals/viz-plan.json",
+          "evals/viz-render.json"
         ],
         "headings": [
           "Data Wizard",
@@ -26932,6 +26947,9 @@ const skillIndexes = {
           "Feature Engineering (Standard)",
           "Stats (Quick)",
           "Visualization (Quick)",
+          "Viz Plan (Quick)",
+          "Viz Render (Quick)",
+          "Viz Dashboard (Quick)",
           "Experiment Design (Standard)",
           "Time Series (Standard)",
           "Anomaly Detection (Standard)",
@@ -26941,12 +26959,14 @@ const skillIndexes = {
           "Critical Rules"
         ],
         "references": [
+          "references/dashboard-design.md",
           "references/data-quality.md",
           "references/experiment-design.md",
           "references/feature-engineering.md",
           "references/mlops-maturity.md",
           "references/model-selection.md",
-          "references/statistical-tests.md"
+          "references/statistical-tests.md",
+          "references/visualization.md"
         ],
         "resourceLinks": [],
         "scripts": [
@@ -26958,15 +26978,18 @@ const skillIndexes = {
           "scripts/asset_toolkit/validate_hooks.py",
           "scripts/asset_toolkit/validate_skill.py",
           "scripts/check.py",
+          "scripts/dashboard-builder.py",
           "scripts/data-profiler.py",
           "scripts/data-quality-scorer.py",
           "scripts/model-recommender.py",
-          "scripts/statistical-test-selector.py"
+          "scripts/statistical-test-selector.py",
+          "scripts/viz-planner.py",
+          "scripts/viz-renderer.py"
         ],
         "templates": [
           "templates/dashboard.html"
         ],
-        "wordCount": 1643
+        "wordCount": 1921
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -27985,6 +28008,110 @@ const skillIndexes = {
       "trustTier": "repo",
       "unsupportedTargetAgents": [],
       "useCommand": "/event-driven-architect",
+      "userInvocable": true,
+      "version": "1.0.0"
+    },
+    {
+      "allowedTools": "",
+      "argumentHint": "<doctor|probe|trim|transcode|concat|extract-audio|thumbnail|gif> [paths]",
+      "auditDate": "",
+      "auditedHead": "",
+      "author": "wyattowalsh",
+      "credentialBehavior": "",
+      "dedupeNotes": "",
+      "description": "Probe, trim, transcode, concat, and extract local A/V with ffmpeg/ffprobe. Use when converting or inspecting media files. NOT for AI image generation (draw-thing) or UI design (design).",
+      "displaySource": "github:wyattowalsh/agents",
+      "executableSurface": "",
+      "fileAccess": "",
+      "hookSurface": "",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill ffmpeg -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installable": true,
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [
+          "evals/evals.json"
+        ],
+        "headings": [
+          "FFmpeg",
+          "Canonical Vocabulary",
+          "Dispatch",
+          "Auto-Detection Heuristic",
+          "Critical Rules",
+          "Prerequisite Protocol",
+          "Mode Protocols",
+          "Doctor",
+          "Probe",
+          "Trim",
+          "Transcode",
+          "Concat",
+          "Extract audio",
+          "Thumbnail",
+          "GIF",
+          "Help _(empty)_",
+          "Gallery (Empty Arguments)",
+          "Skill Awareness",
+          "Reference Files",
+          "Scripts",
+          "Reporting Template"
+        ],
+        "references": [
+          "references/probe-fields.md",
+          "references/recipes-thumbnail-gif.md",
+          "references/recipes-trim-transcode.md",
+          "references/safety.md"
+        ],
+        "resourceLinks": [],
+        "scripts": [
+          "scripts/check.py",
+          "scripts/doctor.py",
+          "scripts/probe_media.py"
+        ],
+        "templates": [],
+        "wordCount": 1248
+      },
+      "license": "MIT",
+      "licenseStatus": "",
+      "liveActionRisk": "",
+      "localInventoryOnly": false,
+      "model": "",
+      "name": "ffmpeg",
+      "networkAccess": "",
+      "noPinRationale": "",
+      "pinPolicy": "",
+      "promotionPolicy": "",
+      "provenanceEvidence": "repo-owned",
+      "provenanceStatus": "repo-owned",
+      "reviewStatus": "reviewed",
+      "riskCategory": "",
+      "riskNotes": "",
+      "scriptSurface": "",
+      "sourceKind": "repo",
+      "sourceListEvidence": "",
+      "sourcePath": "skills/ffmpeg/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/ffmpeg/SKILL.md",
+      "status": "repo-owned",
+      "syncKind": "skills-cli",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "crush",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "grok",
+        "opencode"
+      ],
+      "title": "Ffmpeg",
+      "trustBadge": "Repo-owned",
+      "trustBadgeVariant": "tip",
+      "trustTier": "repo",
+      "unsupportedTargetAgents": [],
+      "useCommand": "/ffmpeg",
       "userInvocable": true,
       "version": "1.0.0"
     },
@@ -29357,7 +29484,7 @@ const skillIndexes = {
           "scripts/preflight.sh"
         ],
         "templates": [],
-        "wordCount": 396
+        "wordCount": 428
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -29552,6 +29679,7 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
+          "evals/advanced-wiki-logics.json",
           "evals/adversarial-kb-content-query.json",
           "evals/audit-mode.json",
           "evals/derive-generated-artifacts.json",
@@ -29588,6 +29716,10 @@ const skillIndexes = {
           "Canonical Vocabulary",
           "Default KB Pattern",
           "Core Operating Pipeline",
+          "Classification Gating",
+          "Scaling Strategy",
+          "State Management",
+          "Templates",
           "Primary Workflows",
           "Create",
           "Ingest",
@@ -29599,13 +29731,10 @@ const skillIndexes = {
           "Risky Migration Interview + Inversion",
           "Interview",
           "Inversion",
-          "Safety and Confirmation Rules",
-          "Reference File Index",
-          "References",
-          "Scripts",
-          "Validation Contract"
+          "Safety and Confirmation Rules"
         ],
         "references": [
+          "references/advanced-wiki-logics.md",
           "references/audit-checklist.md",
           "references/cli.md",
           "references/current-state-and-compatibility.md",
@@ -29642,7 +29771,7 @@ const skillIndexes = {
           "scripts/kb_path_policy.py"
         ],
         "templates": [],
-        "wordCount": 4006
+        "wordCount": 4366
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -30255,6 +30384,114 @@ const skillIndexes = {
       "trustTier": "repo",
       "unsupportedTargetAgents": [],
       "useCommand": "/orchestrator",
+      "userInvocable": true,
+      "version": "1.0.0"
+    },
+    {
+      "allowedTools": "",
+      "argumentHint": "<doctor|scope|recon|web|api|osint|validate|report|help> [target]",
+      "auditDate": "",
+      "auditedHead": "",
+      "author": "wyattowalsh",
+      "credentialBehavior": "",
+      "dedupeNotes": "",
+      "description": "Authorized penetration-test planning and methodology synthesis. Mandatory scope gate before recon, web, API, or OSINT work. Use for pre-authorized engagements with signed ROE. NOT for static code audit (security-scanner), CTF labs (ctf-*), or vendored C2/webshell tooling.",
+      "displaySource": "github:wyattowalsh/agents",
+      "executableSurface": "",
+      "fileAccess": "",
+      "hookSurface": "",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill pentest -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installable": true,
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [
+          "evals/evals.json"
+        ],
+        "headings": [
+          "Pentest",
+          "Canonical Vocabulary",
+          "Tier Boundaries",
+          "Scope Gate (Mandatory)",
+          "Dispatch",
+          "Mode: doctor",
+          "Mode: scope",
+          "Mode: recon",
+          "Mode: web",
+          "Mode: api",
+          "Mode: osint",
+          "Mode: validate",
+          "Mode: report",
+          "Mode: help",
+          "Help _(empty)_",
+          "Reference File Index",
+          "Scripts",
+          "Critical Rules"
+        ],
+        "references": [
+          "references/external-runners.md",
+          "references/findings-schema.md",
+          "references/osint.md",
+          "references/playbooks/api.md",
+          "references/playbooks/web.md",
+          "references/provenance.md",
+          "references/scope-and-roe.md"
+        ],
+        "resourceLinks": [
+          "https://staging.example.com/api",
+          "https://staging.example.com/app"
+        ],
+        "scripts": [
+          "scripts/check.py",
+          "scripts/doctor.py",
+          "scripts/findings_emit.py",
+          "scripts/scope_check.py"
+        ],
+        "templates": [],
+        "wordCount": 1468
+      },
+      "license": "MIT",
+      "licenseStatus": "",
+      "liveActionRisk": "",
+      "localInventoryOnly": false,
+      "model": "opus",
+      "name": "pentest",
+      "networkAccess": "",
+      "noPinRationale": "",
+      "pinPolicy": "",
+      "promotionPolicy": "",
+      "provenanceEvidence": "repo-owned",
+      "provenanceStatus": "repo-owned",
+      "reviewStatus": "reviewed",
+      "riskCategory": "",
+      "riskNotes": "",
+      "scriptSurface": "",
+      "sourceKind": "repo",
+      "sourceListEvidence": "",
+      "sourcePath": "skills/pentest/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/pentest/SKILL.md",
+      "status": "repo-owned",
+      "syncKind": "skills-cli",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "crush",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "grok",
+        "opencode"
+      ],
+      "title": "Pentest",
+      "trustBadge": "Repo-owned",
+      "trustBadgeVariant": "tip",
+      "trustTier": "repo",
+      "unsupportedTargetAgents": [],
+      "useCommand": "/pentest",
       "userInvocable": true,
       "version": "1.0.0"
     },
@@ -30907,7 +31144,7 @@ const skillIndexes = {
         "templates": [
           "templates/dashboard.html"
         ],
-        "wordCount": 4128
+        "wordCount": 4144
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -31271,7 +31508,7 @@ const skillIndexes = {
         "templates": [
           "templates/dashboard.html"
         ],
-        "wordCount": 1312
+        "wordCount": 1325
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -31570,7 +31807,7 @@ const skillIndexes = {
           "scripts/check.py"
         ],
         "templates": [],
-        "wordCount": 158
+        "wordCount": 157
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -31866,7 +32103,7 @@ const skillIndexes = {
           "scripts/scaffold_evals.py"
         ],
         "templates": [],
-        "wordCount": 202
+        "wordCount": 208
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -31949,7 +32186,7 @@ const skillIndexes = {
           "scripts/plan_dry_run.py"
         ],
         "templates": [],
-        "wordCount": 217
+        "wordCount": 208
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -32032,7 +32269,7 @@ const skillIndexes = {
           "scripts/lifecycle_report.py"
         ],
         "templates": [],
-        "wordCount": 213
+        "wordCount": 215
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -32112,7 +32349,7 @@ const skillIndexes = {
           "scripts/check.py"
         ],
         "templates": [],
-        "wordCount": 95
+        "wordCount": 98
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -32277,7 +32514,7 @@ const skillIndexes = {
           "scripts/check.py"
         ],
         "templates": [],
-        "wordCount": 144
+        "wordCount": 141
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -32538,7 +32775,7 @@ const skillIndexes = {
           "scripts/check.py"
         ],
         "templates": [],
-        "wordCount": 93
+        "wordCount": 94
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -33303,6 +33540,119 @@ const skillIndexes = {
       "useCommand": "/wargame",
       "userInvocable": true,
       "version": "2.1.0"
+    },
+    {
+      "allowedTools": "",
+      "argumentHint": "<probe|transcript|download|playlist|cookies|doctor|help> [url or path]",
+      "auditDate": "",
+      "auditedHead": "",
+      "author": "wyattowalsh",
+      "credentialBehavior": "",
+      "dedupeNotes": "",
+      "description": "Probe, transcript, and download video/audio with yt-dlp CLI on supported hosts. Use when you need metadata, captions, or local media. Transcript-first (probe, transcript, download). NOT for static HTML (Fetch MCP), research, or ffmpeg transforms.",
+      "displaySource": "github:wyattowalsh/agents",
+      "executableSurface": "",
+      "fileAccess": "",
+      "hookSurface": "",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill yt-dlp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installable": true,
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [
+          "evals/evals.json"
+        ],
+        "headings": [
+          "yt-dlp",
+          "Canonical Vocabulary",
+          "Dispatch",
+          "Auto-Detection Heuristic",
+          "Transcript-First Protocol",
+          "Stage 1 \u2014 Doctor (once per session or after errors)",
+          "Stage 2 \u2014 Probe (mandatory before transcript or download)",
+          "Stage 3 \u2014 Transcript (preferred over download)",
+          "Stage 4 \u2014 Download (explicit approval required)",
+          "Mode Details",
+          "Probe mode",
+          "Transcript",
+          "Download",
+          "Playlist",
+          "Cookies",
+          "Doctor",
+          "Help",
+          "Gallery (Empty Arguments)",
+          "Critical Rules",
+          "Troubleshooting",
+          "References",
+          "Scripts",
+          "Examples",
+          "Preflight"
+        ],
+        "references": [
+          "references/ethics-and-tos.md",
+          "references/formats-and-quality.md",
+          "references/troubleshooting.md"
+        ],
+        "resourceLinks": [
+          "https://github.com/yt-dlp/yt-dlp",
+          "https://www.youtube.com/playlist?list=PL\u2026'",
+          "https://www.youtube.com/playlist?list=\u2026`",
+          "https://www.youtube.com/watch?v=dQw4w9WgXcQ'",
+          "https://www.youtube.com/watch?v=\u2026`",
+          "https://\u2026'"
+        ],
+        "scripts": [
+          "scripts/check.py",
+          "scripts/doctor.py",
+          "scripts/probe_url.py"
+        ],
+        "templates": [],
+        "wordCount": 1376
+      },
+      "license": "MIT",
+      "licenseStatus": "",
+      "liveActionRisk": "",
+      "localInventoryOnly": false,
+      "model": "",
+      "name": "yt-dlp",
+      "networkAccess": "",
+      "noPinRationale": "",
+      "pinPolicy": "",
+      "promotionPolicy": "",
+      "provenanceEvidence": "repo-owned",
+      "provenanceStatus": "repo-owned",
+      "reviewStatus": "reviewed",
+      "riskCategory": "",
+      "riskNotes": "",
+      "scriptSurface": "",
+      "sourceKind": "repo",
+      "sourceListEvidence": "",
+      "sourcePath": "skills/yt-dlp/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/yt-dlp/SKILL.md",
+      "status": "repo-owned",
+      "syncKind": "skills-cli",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "crush",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "grok",
+        "opencode"
+      ],
+      "title": "Yt Dlp",
+      "trustBadge": "Repo-owned",
+      "trustBadgeVariant": "tip",
+      "trustTier": "repo",
+      "unsupportedTargetAgents": [],
+      "useCommand": "/yt-dlp",
+      "userInvocable": true,
+      "version": "1.0.0"
     }
   ],
   "customSkillIndex": [
@@ -33907,7 +34257,7 @@ const skillIndexes = {
           "scripts/local_smoke.py"
         ],
         "templates": [],
-        "wordCount": 343
+        "wordCount": 331
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -34092,7 +34442,10 @@ const skillIndexes = {
           "evals/implicit-trigger.json",
           "evals/model-selection.json",
           "evals/negative-control.json",
-          "evals/stats-mode.json"
+          "evals/stats-mode.json",
+          "evals/viz-dashboard.json",
+          "evals/viz-plan.json",
+          "evals/viz-render.json"
         ],
         "headings": [
           "Data Wizard",
@@ -34108,6 +34461,9 @@ const skillIndexes = {
           "Feature Engineering (Standard)",
           "Stats (Quick)",
           "Visualization (Quick)",
+          "Viz Plan (Quick)",
+          "Viz Render (Quick)",
+          "Viz Dashboard (Quick)",
           "Experiment Design (Standard)",
           "Time Series (Standard)",
           "Anomaly Detection (Standard)",
@@ -34117,12 +34473,14 @@ const skillIndexes = {
           "Critical Rules"
         ],
         "references": [
+          "references/dashboard-design.md",
           "references/data-quality.md",
           "references/experiment-design.md",
           "references/feature-engineering.md",
           "references/mlops-maturity.md",
           "references/model-selection.md",
-          "references/statistical-tests.md"
+          "references/statistical-tests.md",
+          "references/visualization.md"
         ],
         "resourceLinks": [],
         "scripts": [
@@ -34134,15 +34492,18 @@ const skillIndexes = {
           "scripts/asset_toolkit/validate_hooks.py",
           "scripts/asset_toolkit/validate_skill.py",
           "scripts/check.py",
+          "scripts/dashboard-builder.py",
           "scripts/data-profiler.py",
           "scripts/data-quality-scorer.py",
           "scripts/model-recommender.py",
-          "scripts/statistical-test-selector.py"
+          "scripts/statistical-test-selector.py",
+          "scripts/viz-planner.py",
+          "scripts/viz-renderer.py"
         ],
         "templates": [
           "templates/dashboard.html"
         ],
-        "wordCount": 1643
+        "wordCount": 1921
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -35161,6 +35522,110 @@ const skillIndexes = {
       "trustTier": "repo",
       "unsupportedTargetAgents": [],
       "useCommand": "/event-driven-architect",
+      "userInvocable": true,
+      "version": "1.0.0"
+    },
+    {
+      "allowedTools": "",
+      "argumentHint": "<doctor|probe|trim|transcode|concat|extract-audio|thumbnail|gif> [paths]",
+      "auditDate": "",
+      "auditedHead": "",
+      "author": "wyattowalsh",
+      "credentialBehavior": "",
+      "dedupeNotes": "",
+      "description": "Probe, trim, transcode, concat, and extract local A/V with ffmpeg/ffprobe. Use when converting or inspecting media files. NOT for AI image generation (draw-thing) or UI design (design).",
+      "displaySource": "github:wyattowalsh/agents",
+      "executableSurface": "",
+      "fileAccess": "",
+      "hookSurface": "",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill ffmpeg -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installable": true,
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [
+          "evals/evals.json"
+        ],
+        "headings": [
+          "FFmpeg",
+          "Canonical Vocabulary",
+          "Dispatch",
+          "Auto-Detection Heuristic",
+          "Critical Rules",
+          "Prerequisite Protocol",
+          "Mode Protocols",
+          "Doctor",
+          "Probe",
+          "Trim",
+          "Transcode",
+          "Concat",
+          "Extract audio",
+          "Thumbnail",
+          "GIF",
+          "Help _(empty)_",
+          "Gallery (Empty Arguments)",
+          "Skill Awareness",
+          "Reference Files",
+          "Scripts",
+          "Reporting Template"
+        ],
+        "references": [
+          "references/probe-fields.md",
+          "references/recipes-thumbnail-gif.md",
+          "references/recipes-trim-transcode.md",
+          "references/safety.md"
+        ],
+        "resourceLinks": [],
+        "scripts": [
+          "scripts/check.py",
+          "scripts/doctor.py",
+          "scripts/probe_media.py"
+        ],
+        "templates": [],
+        "wordCount": 1248
+      },
+      "license": "MIT",
+      "licenseStatus": "",
+      "liveActionRisk": "",
+      "localInventoryOnly": false,
+      "model": "",
+      "name": "ffmpeg",
+      "networkAccess": "",
+      "noPinRationale": "",
+      "pinPolicy": "",
+      "promotionPolicy": "",
+      "provenanceEvidence": "repo-owned",
+      "provenanceStatus": "repo-owned",
+      "reviewStatus": "reviewed",
+      "riskCategory": "",
+      "riskNotes": "",
+      "scriptSurface": "",
+      "sourceKind": "repo",
+      "sourceListEvidence": "",
+      "sourcePath": "skills/ffmpeg/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/ffmpeg/SKILL.md",
+      "status": "repo-owned",
+      "syncKind": "skills-cli",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "crush",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "grok",
+        "opencode"
+      ],
+      "title": "Ffmpeg",
+      "trustBadge": "Repo-owned",
+      "trustBadgeVariant": "tip",
+      "trustTier": "repo",
+      "unsupportedTargetAgents": [],
+      "useCommand": "/ffmpeg",
       "userInvocable": true,
       "version": "1.0.0"
     },
@@ -36533,7 +36998,7 @@ const skillIndexes = {
           "scripts/preflight.sh"
         ],
         "templates": [],
-        "wordCount": 396
+        "wordCount": 428
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -36728,6 +37193,7 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
+          "evals/advanced-wiki-logics.json",
           "evals/adversarial-kb-content-query.json",
           "evals/audit-mode.json",
           "evals/derive-generated-artifacts.json",
@@ -36764,6 +37230,10 @@ const skillIndexes = {
           "Canonical Vocabulary",
           "Default KB Pattern",
           "Core Operating Pipeline",
+          "Classification Gating",
+          "Scaling Strategy",
+          "State Management",
+          "Templates",
           "Primary Workflows",
           "Create",
           "Ingest",
@@ -36775,13 +37245,10 @@ const skillIndexes = {
           "Risky Migration Interview + Inversion",
           "Interview",
           "Inversion",
-          "Safety and Confirmation Rules",
-          "Reference File Index",
-          "References",
-          "Scripts",
-          "Validation Contract"
+          "Safety and Confirmation Rules"
         ],
         "references": [
+          "references/advanced-wiki-logics.md",
           "references/audit-checklist.md",
           "references/cli.md",
           "references/current-state-and-compatibility.md",
@@ -36818,7 +37285,7 @@ const skillIndexes = {
           "scripts/kb_path_policy.py"
         ],
         "templates": [],
-        "wordCount": 4006
+        "wordCount": 4366
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -37431,6 +37898,114 @@ const skillIndexes = {
       "trustTier": "repo",
       "unsupportedTargetAgents": [],
       "useCommand": "/orchestrator",
+      "userInvocable": true,
+      "version": "1.0.0"
+    },
+    {
+      "allowedTools": "",
+      "argumentHint": "<doctor|scope|recon|web|api|osint|validate|report|help> [target]",
+      "auditDate": "",
+      "auditedHead": "",
+      "author": "wyattowalsh",
+      "credentialBehavior": "",
+      "dedupeNotes": "",
+      "description": "Authorized penetration-test planning and methodology synthesis. Mandatory scope gate before recon, web, API, or OSINT work. Use for pre-authorized engagements with signed ROE. NOT for static code audit (security-scanner), CTF labs (ctf-*), or vendored C2/webshell tooling.",
+      "displaySource": "github:wyattowalsh/agents",
+      "executableSurface": "",
+      "fileAccess": "",
+      "hookSurface": "",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill pentest -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installable": true,
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [
+          "evals/evals.json"
+        ],
+        "headings": [
+          "Pentest",
+          "Canonical Vocabulary",
+          "Tier Boundaries",
+          "Scope Gate (Mandatory)",
+          "Dispatch",
+          "Mode: doctor",
+          "Mode: scope",
+          "Mode: recon",
+          "Mode: web",
+          "Mode: api",
+          "Mode: osint",
+          "Mode: validate",
+          "Mode: report",
+          "Mode: help",
+          "Help _(empty)_",
+          "Reference File Index",
+          "Scripts",
+          "Critical Rules"
+        ],
+        "references": [
+          "references/external-runners.md",
+          "references/findings-schema.md",
+          "references/osint.md",
+          "references/playbooks/api.md",
+          "references/playbooks/web.md",
+          "references/provenance.md",
+          "references/scope-and-roe.md"
+        ],
+        "resourceLinks": [
+          "https://staging.example.com/api",
+          "https://staging.example.com/app"
+        ],
+        "scripts": [
+          "scripts/check.py",
+          "scripts/doctor.py",
+          "scripts/findings_emit.py",
+          "scripts/scope_check.py"
+        ],
+        "templates": [],
+        "wordCount": 1468
+      },
+      "license": "MIT",
+      "licenseStatus": "",
+      "liveActionRisk": "",
+      "localInventoryOnly": false,
+      "model": "opus",
+      "name": "pentest",
+      "networkAccess": "",
+      "noPinRationale": "",
+      "pinPolicy": "",
+      "promotionPolicy": "",
+      "provenanceEvidence": "repo-owned",
+      "provenanceStatus": "repo-owned",
+      "reviewStatus": "reviewed",
+      "riskCategory": "",
+      "riskNotes": "",
+      "scriptSurface": "",
+      "sourceKind": "repo",
+      "sourceListEvidence": "",
+      "sourcePath": "skills/pentest/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/pentest/SKILL.md",
+      "status": "repo-owned",
+      "syncKind": "skills-cli",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "crush",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "grok",
+        "opencode"
+      ],
+      "title": "Pentest",
+      "trustBadge": "Repo-owned",
+      "trustBadgeVariant": "tip",
+      "trustTier": "repo",
+      "unsupportedTargetAgents": [],
+      "useCommand": "/pentest",
       "userInvocable": true,
       "version": "1.0.0"
     },
@@ -38083,7 +38658,7 @@ const skillIndexes = {
         "templates": [
           "templates/dashboard.html"
         ],
-        "wordCount": 4128
+        "wordCount": 4144
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -38447,7 +39022,7 @@ const skillIndexes = {
         "templates": [
           "templates/dashboard.html"
         ],
-        "wordCount": 1312
+        "wordCount": 1325
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -38746,7 +39321,7 @@ const skillIndexes = {
           "scripts/check.py"
         ],
         "templates": [],
-        "wordCount": 158
+        "wordCount": 157
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -39042,7 +39617,7 @@ const skillIndexes = {
           "scripts/scaffold_evals.py"
         ],
         "templates": [],
-        "wordCount": 202
+        "wordCount": 208
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -39125,7 +39700,7 @@ const skillIndexes = {
           "scripts/plan_dry_run.py"
         ],
         "templates": [],
-        "wordCount": 217
+        "wordCount": 208
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -39208,7 +39783,7 @@ const skillIndexes = {
           "scripts/lifecycle_report.py"
         ],
         "templates": [],
-        "wordCount": 213
+        "wordCount": 215
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -39288,7 +39863,7 @@ const skillIndexes = {
           "scripts/check.py"
         ],
         "templates": [],
-        "wordCount": 95
+        "wordCount": 98
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -39453,7 +40028,7 @@ const skillIndexes = {
           "scripts/check.py"
         ],
         "templates": [],
-        "wordCount": 144
+        "wordCount": 141
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -39714,7 +40289,7 @@ const skillIndexes = {
           "scripts/check.py"
         ],
         "templates": [],
-        "wordCount": 93
+        "wordCount": 94
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -40479,6 +41054,119 @@ const skillIndexes = {
       "useCommand": "/wargame",
       "userInvocable": true,
       "version": "2.1.0"
+    },
+    {
+      "allowedTools": "",
+      "argumentHint": "<probe|transcript|download|playlist|cookies|doctor|help> [url or path]",
+      "auditDate": "",
+      "auditedHead": "",
+      "author": "wyattowalsh",
+      "credentialBehavior": "",
+      "dedupeNotes": "",
+      "description": "Probe, transcript, and download video/audio with yt-dlp CLI on supported hosts. Use when you need metadata, captions, or local media. Transcript-first (probe, transcript, download). NOT for static HTML (Fetch MCP), research, or ffmpeg transforms.",
+      "displaySource": "github:wyattowalsh/agents",
+      "executableSurface": "",
+      "fileAccess": "",
+      "hookSurface": "",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill yt-dlp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installable": true,
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [
+          "evals/evals.json"
+        ],
+        "headings": [
+          "yt-dlp",
+          "Canonical Vocabulary",
+          "Dispatch",
+          "Auto-Detection Heuristic",
+          "Transcript-First Protocol",
+          "Stage 1 \u2014 Doctor (once per session or after errors)",
+          "Stage 2 \u2014 Probe (mandatory before transcript or download)",
+          "Stage 3 \u2014 Transcript (preferred over download)",
+          "Stage 4 \u2014 Download (explicit approval required)",
+          "Mode Details",
+          "Probe mode",
+          "Transcript",
+          "Download",
+          "Playlist",
+          "Cookies",
+          "Doctor",
+          "Help",
+          "Gallery (Empty Arguments)",
+          "Critical Rules",
+          "Troubleshooting",
+          "References",
+          "Scripts",
+          "Examples",
+          "Preflight"
+        ],
+        "references": [
+          "references/ethics-and-tos.md",
+          "references/formats-and-quality.md",
+          "references/troubleshooting.md"
+        ],
+        "resourceLinks": [
+          "https://github.com/yt-dlp/yt-dlp",
+          "https://www.youtube.com/playlist?list=PL\u2026'",
+          "https://www.youtube.com/playlist?list=\u2026`",
+          "https://www.youtube.com/watch?v=dQw4w9WgXcQ'",
+          "https://www.youtube.com/watch?v=\u2026`",
+          "https://\u2026'"
+        ],
+        "scripts": [
+          "scripts/check.py",
+          "scripts/doctor.py",
+          "scripts/probe_url.py"
+        ],
+        "templates": [],
+        "wordCount": 1376
+      },
+      "license": "MIT",
+      "licenseStatus": "",
+      "liveActionRisk": "",
+      "localInventoryOnly": false,
+      "model": "",
+      "name": "yt-dlp",
+      "networkAccess": "",
+      "noPinRationale": "",
+      "pinPolicy": "",
+      "promotionPolicy": "",
+      "provenanceEvidence": "repo-owned",
+      "provenanceStatus": "repo-owned",
+      "reviewStatus": "reviewed",
+      "riskCategory": "",
+      "riskNotes": "",
+      "scriptSurface": "",
+      "sourceKind": "repo",
+      "sourceListEvidence": "",
+      "sourcePath": "skills/yt-dlp/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/yt-dlp/SKILL.md",
+      "status": "repo-owned",
+      "syncKind": "skills-cli",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "crush",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "grok",
+        "opencode"
+      ],
+      "title": "Yt Dlp",
+      "trustBadge": "Repo-owned",
+      "trustBadgeVariant": "tip",
+      "trustTier": "repo",
+      "unsupportedTargetAgents": [],
+      "useCommand": "/yt-dlp",
+      "userInvocable": true,
+      "version": "1.0.0"
     }
   ],
   "externalSkillIndex": [
@@ -87829,7 +88517,7 @@ const skillIndexes = {
           "scripts/local_smoke.py"
         ],
         "templates": [],
-        "wordCount": 343
+        "wordCount": 331
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -88014,7 +88702,10 @@ const skillIndexes = {
           "evals/implicit-trigger.json",
           "evals/model-selection.json",
           "evals/negative-control.json",
-          "evals/stats-mode.json"
+          "evals/stats-mode.json",
+          "evals/viz-dashboard.json",
+          "evals/viz-plan.json",
+          "evals/viz-render.json"
         ],
         "headings": [
           "Data Wizard",
@@ -88030,6 +88721,9 @@ const skillIndexes = {
           "Feature Engineering (Standard)",
           "Stats (Quick)",
           "Visualization (Quick)",
+          "Viz Plan (Quick)",
+          "Viz Render (Quick)",
+          "Viz Dashboard (Quick)",
           "Experiment Design (Standard)",
           "Time Series (Standard)",
           "Anomaly Detection (Standard)",
@@ -88039,12 +88733,14 @@ const skillIndexes = {
           "Critical Rules"
         ],
         "references": [
+          "references/dashboard-design.md",
           "references/data-quality.md",
           "references/experiment-design.md",
           "references/feature-engineering.md",
           "references/mlops-maturity.md",
           "references/model-selection.md",
-          "references/statistical-tests.md"
+          "references/statistical-tests.md",
+          "references/visualization.md"
         ],
         "resourceLinks": [],
         "scripts": [
@@ -88056,15 +88752,18 @@ const skillIndexes = {
           "scripts/asset_toolkit/validate_hooks.py",
           "scripts/asset_toolkit/validate_skill.py",
           "scripts/check.py",
+          "scripts/dashboard-builder.py",
           "scripts/data-profiler.py",
           "scripts/data-quality-scorer.py",
           "scripts/model-recommender.py",
-          "scripts/statistical-test-selector.py"
+          "scripts/statistical-test-selector.py",
+          "scripts/viz-planner.py",
+          "scripts/viz-renderer.py"
         ],
         "templates": [
           "templates/dashboard.html"
         ],
-        "wordCount": 1643
+        "wordCount": 1921
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -89083,6 +89782,110 @@ const skillIndexes = {
       "trustTier": "repo",
       "unsupportedTargetAgents": [],
       "useCommand": "/event-driven-architect",
+      "userInvocable": true,
+      "version": "1.0.0"
+    },
+    {
+      "allowedTools": "",
+      "argumentHint": "<doctor|probe|trim|transcode|concat|extract-audio|thumbnail|gif> [paths]",
+      "auditDate": "",
+      "auditedHead": "",
+      "author": "wyattowalsh",
+      "credentialBehavior": "",
+      "dedupeNotes": "",
+      "description": "Probe, trim, transcode, concat, and extract local A/V with ffmpeg/ffprobe. Use when converting or inspecting media files. NOT for AI image generation (draw-thing) or UI design (design).",
+      "displaySource": "github:wyattowalsh/agents",
+      "executableSurface": "",
+      "fileAccess": "",
+      "hookSurface": "",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill ffmpeg -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installable": true,
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [
+          "evals/evals.json"
+        ],
+        "headings": [
+          "FFmpeg",
+          "Canonical Vocabulary",
+          "Dispatch",
+          "Auto-Detection Heuristic",
+          "Critical Rules",
+          "Prerequisite Protocol",
+          "Mode Protocols",
+          "Doctor",
+          "Probe",
+          "Trim",
+          "Transcode",
+          "Concat",
+          "Extract audio",
+          "Thumbnail",
+          "GIF",
+          "Help _(empty)_",
+          "Gallery (Empty Arguments)",
+          "Skill Awareness",
+          "Reference Files",
+          "Scripts",
+          "Reporting Template"
+        ],
+        "references": [
+          "references/probe-fields.md",
+          "references/recipes-thumbnail-gif.md",
+          "references/recipes-trim-transcode.md",
+          "references/safety.md"
+        ],
+        "resourceLinks": [],
+        "scripts": [
+          "scripts/check.py",
+          "scripts/doctor.py",
+          "scripts/probe_media.py"
+        ],
+        "templates": [],
+        "wordCount": 1248
+      },
+      "license": "MIT",
+      "licenseStatus": "",
+      "liveActionRisk": "",
+      "localInventoryOnly": false,
+      "model": "",
+      "name": "ffmpeg",
+      "networkAccess": "",
+      "noPinRationale": "",
+      "pinPolicy": "",
+      "promotionPolicy": "",
+      "provenanceEvidence": "repo-owned",
+      "provenanceStatus": "repo-owned",
+      "reviewStatus": "reviewed",
+      "riskCategory": "",
+      "riskNotes": "",
+      "scriptSurface": "",
+      "sourceKind": "repo",
+      "sourceListEvidence": "",
+      "sourcePath": "skills/ffmpeg/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/ffmpeg/SKILL.md",
+      "status": "repo-owned",
+      "syncKind": "skills-cli",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "crush",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "grok",
+        "opencode"
+      ],
+      "title": "Ffmpeg",
+      "trustBadge": "Repo-owned",
+      "trustBadgeVariant": "tip",
+      "trustTier": "repo",
+      "unsupportedTargetAgents": [],
+      "useCommand": "/ffmpeg",
       "userInvocable": true,
       "version": "1.0.0"
     },
@@ -90455,7 +91258,7 @@ const skillIndexes = {
           "scripts/preflight.sh"
         ],
         "templates": [],
-        "wordCount": 396
+        "wordCount": 428
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -90650,6 +91453,7 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
+          "evals/advanced-wiki-logics.json",
           "evals/adversarial-kb-content-query.json",
           "evals/audit-mode.json",
           "evals/derive-generated-artifacts.json",
@@ -90686,6 +91490,10 @@ const skillIndexes = {
           "Canonical Vocabulary",
           "Default KB Pattern",
           "Core Operating Pipeline",
+          "Classification Gating",
+          "Scaling Strategy",
+          "State Management",
+          "Templates",
           "Primary Workflows",
           "Create",
           "Ingest",
@@ -90697,13 +91505,10 @@ const skillIndexes = {
           "Risky Migration Interview + Inversion",
           "Interview",
           "Inversion",
-          "Safety and Confirmation Rules",
-          "Reference File Index",
-          "References",
-          "Scripts",
-          "Validation Contract"
+          "Safety and Confirmation Rules"
         ],
         "references": [
+          "references/advanced-wiki-logics.md",
           "references/audit-checklist.md",
           "references/cli.md",
           "references/current-state-and-compatibility.md",
@@ -90740,7 +91545,7 @@ const skillIndexes = {
           "scripts/kb_path_policy.py"
         ],
         "templates": [],
-        "wordCount": 4006
+        "wordCount": 4366
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -91353,6 +92158,114 @@ const skillIndexes = {
       "trustTier": "repo",
       "unsupportedTargetAgents": [],
       "useCommand": "/orchestrator",
+      "userInvocable": true,
+      "version": "1.0.0"
+    },
+    {
+      "allowedTools": "",
+      "argumentHint": "<doctor|scope|recon|web|api|osint|validate|report|help> [target]",
+      "auditDate": "",
+      "auditedHead": "",
+      "author": "wyattowalsh",
+      "credentialBehavior": "",
+      "dedupeNotes": "",
+      "description": "Authorized penetration-test planning and methodology synthesis. Mandatory scope gate before recon, web, API, or OSINT work. Use for pre-authorized engagements with signed ROE. NOT for static code audit (security-scanner), CTF labs (ctf-*), or vendored C2/webshell tooling.",
+      "displaySource": "github:wyattowalsh/agents",
+      "executableSurface": "",
+      "fileAccess": "",
+      "hookSurface": "",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill pentest -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installable": true,
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [
+          "evals/evals.json"
+        ],
+        "headings": [
+          "Pentest",
+          "Canonical Vocabulary",
+          "Tier Boundaries",
+          "Scope Gate (Mandatory)",
+          "Dispatch",
+          "Mode: doctor",
+          "Mode: scope",
+          "Mode: recon",
+          "Mode: web",
+          "Mode: api",
+          "Mode: osint",
+          "Mode: validate",
+          "Mode: report",
+          "Mode: help",
+          "Help _(empty)_",
+          "Reference File Index",
+          "Scripts",
+          "Critical Rules"
+        ],
+        "references": [
+          "references/external-runners.md",
+          "references/findings-schema.md",
+          "references/osint.md",
+          "references/playbooks/api.md",
+          "references/playbooks/web.md",
+          "references/provenance.md",
+          "references/scope-and-roe.md"
+        ],
+        "resourceLinks": [
+          "https://staging.example.com/api",
+          "https://staging.example.com/app"
+        ],
+        "scripts": [
+          "scripts/check.py",
+          "scripts/doctor.py",
+          "scripts/findings_emit.py",
+          "scripts/scope_check.py"
+        ],
+        "templates": [],
+        "wordCount": 1468
+      },
+      "license": "MIT",
+      "licenseStatus": "",
+      "liveActionRisk": "",
+      "localInventoryOnly": false,
+      "model": "opus",
+      "name": "pentest",
+      "networkAccess": "",
+      "noPinRationale": "",
+      "pinPolicy": "",
+      "promotionPolicy": "",
+      "provenanceEvidence": "repo-owned",
+      "provenanceStatus": "repo-owned",
+      "reviewStatus": "reviewed",
+      "riskCategory": "",
+      "riskNotes": "",
+      "scriptSurface": "",
+      "sourceKind": "repo",
+      "sourceListEvidence": "",
+      "sourcePath": "skills/pentest/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/pentest/SKILL.md",
+      "status": "repo-owned",
+      "syncKind": "skills-cli",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "crush",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "grok",
+        "opencode"
+      ],
+      "title": "Pentest",
+      "trustBadge": "Repo-owned",
+      "trustBadgeVariant": "tip",
+      "trustTier": "repo",
+      "unsupportedTargetAgents": [],
+      "useCommand": "/pentest",
       "userInvocable": true,
       "version": "1.0.0"
     },
@@ -92005,7 +92918,7 @@ const skillIndexes = {
         "templates": [
           "templates/dashboard.html"
         ],
-        "wordCount": 4128
+        "wordCount": 4144
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -92369,7 +93282,7 @@ const skillIndexes = {
         "templates": [
           "templates/dashboard.html"
         ],
-        "wordCount": 1312
+        "wordCount": 1325
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -92668,7 +93581,7 @@ const skillIndexes = {
           "scripts/check.py"
         ],
         "templates": [],
-        "wordCount": 158
+        "wordCount": 157
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -92964,7 +93877,7 @@ const skillIndexes = {
           "scripts/scaffold_evals.py"
         ],
         "templates": [],
-        "wordCount": 202
+        "wordCount": 208
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -93047,7 +93960,7 @@ const skillIndexes = {
           "scripts/plan_dry_run.py"
         ],
         "templates": [],
-        "wordCount": 217
+        "wordCount": 208
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -93130,7 +94043,7 @@ const skillIndexes = {
           "scripts/lifecycle_report.py"
         ],
         "templates": [],
-        "wordCount": 213
+        "wordCount": 215
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -93210,7 +94123,7 @@ const skillIndexes = {
           "scripts/check.py"
         ],
         "templates": [],
-        "wordCount": 95
+        "wordCount": 98
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -93375,7 +94288,7 @@ const skillIndexes = {
           "scripts/check.py"
         ],
         "templates": [],
-        "wordCount": 144
+        "wordCount": 141
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -93636,7 +94549,7 @@ const skillIndexes = {
           "scripts/check.py"
         ],
         "templates": [],
-        "wordCount": 93
+        "wordCount": 94
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -94401,6 +95314,119 @@ const skillIndexes = {
       "useCommand": "/wargame",
       "userInvocable": true,
       "version": "2.1.0"
+    },
+    {
+      "allowedTools": "",
+      "argumentHint": "<probe|transcript|download|playlist|cookies|doctor|help> [url or path]",
+      "auditDate": "",
+      "auditedHead": "",
+      "author": "wyattowalsh",
+      "credentialBehavior": "",
+      "dedupeNotes": "",
+      "description": "Probe, transcript, and download video/audio with yt-dlp CLI on supported hosts. Use when you need metadata, captions, or local media. Transcript-first (probe, transcript, download). NOT for static HTML (Fetch MCP), research, or ffmpeg transforms.",
+      "displaySource": "github:wyattowalsh/agents",
+      "executableSurface": "",
+      "fileAccess": "",
+      "hookSurface": "",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill yt-dlp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installable": true,
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [
+          "evals/evals.json"
+        ],
+        "headings": [
+          "yt-dlp",
+          "Canonical Vocabulary",
+          "Dispatch",
+          "Auto-Detection Heuristic",
+          "Transcript-First Protocol",
+          "Stage 1 \u2014 Doctor (once per session or after errors)",
+          "Stage 2 \u2014 Probe (mandatory before transcript or download)",
+          "Stage 3 \u2014 Transcript (preferred over download)",
+          "Stage 4 \u2014 Download (explicit approval required)",
+          "Mode Details",
+          "Probe mode",
+          "Transcript",
+          "Download",
+          "Playlist",
+          "Cookies",
+          "Doctor",
+          "Help",
+          "Gallery (Empty Arguments)",
+          "Critical Rules",
+          "Troubleshooting",
+          "References",
+          "Scripts",
+          "Examples",
+          "Preflight"
+        ],
+        "references": [
+          "references/ethics-and-tos.md",
+          "references/formats-and-quality.md",
+          "references/troubleshooting.md"
+        ],
+        "resourceLinks": [
+          "https://github.com/yt-dlp/yt-dlp",
+          "https://www.youtube.com/playlist?list=PL\u2026'",
+          "https://www.youtube.com/playlist?list=\u2026`",
+          "https://www.youtube.com/watch?v=dQw4w9WgXcQ'",
+          "https://www.youtube.com/watch?v=\u2026`",
+          "https://\u2026'"
+        ],
+        "scripts": [
+          "scripts/check.py",
+          "scripts/doctor.py",
+          "scripts/probe_url.py"
+        ],
+        "templates": [],
+        "wordCount": 1376
+      },
+      "license": "MIT",
+      "licenseStatus": "",
+      "liveActionRisk": "",
+      "localInventoryOnly": false,
+      "model": "",
+      "name": "yt-dlp",
+      "networkAccess": "",
+      "noPinRationale": "",
+      "pinPolicy": "",
+      "promotionPolicy": "",
+      "provenanceEvidence": "repo-owned",
+      "provenanceStatus": "repo-owned",
+      "reviewStatus": "reviewed",
+      "riskCategory": "",
+      "riskNotes": "",
+      "scriptSurface": "",
+      "sourceKind": "repo",
+      "sourceListEvidence": "",
+      "sourcePath": "skills/yt-dlp/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/yt-dlp/SKILL.md",
+      "status": "repo-owned",
+      "syncKind": "skills-cli",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "crush",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "grok",
+        "opencode"
+      ],
+      "title": "Yt Dlp",
+      "trustBadge": "Repo-owned",
+      "trustBadgeVariant": "tip",
+      "trustTier": "repo",
+      "unsupportedTargetAgents": [],
+      "useCommand": "/yt-dlp",
+      "userInvocable": true,
+      "version": "1.0.0"
     }
   ]
 };
