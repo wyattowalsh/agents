@@ -95,19 +95,10 @@
       "tools_allow_all": true
     },
     "context7": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "@upstash/context7-mcp",
-        "--api-key",
-        "${CONTEXT7_API_KEY}"
-      ],
-      "env": {
-        "CONTEXT7_API_KEY": {
-          "env_var": "CONTEXT7_API_KEY"
-        }
-      },
+      "transport": "streamable-http",
+      "auth_policy": "oauth",
+      "url": "https://mcp.context7.com/mcp/oauth",
+      "env": {},
       "enabled": true,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
@@ -119,13 +110,9 @@
       "tools_allow_all": true
     },
     "deepwiki": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://mcp.deepwiki.com/mcp"
-      ],
+      "transport": "streamable-http",
+      "auth_policy": "public-http",
+      "url": "https://mcp.deepwiki.com/mcp",
       "env": {},
       "enabled": true,
       "startup_timeout_sec": 90,
@@ -226,13 +213,9 @@
       "platform_overrides": {}
     },
     "penpot": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://design.penpot.app/mcp/stream?userToken=${PENPOT_MCP_USER_TOKEN}"
-      ],
+      "transport": "streamable-http",
+      "auth_policy": "account-token",
+      "url": "https://design.penpot.app/mcp/stream?userToken=${PENPOT_MCP_USER_TOKEN}",
       "env": {
         "PENPOT_MCP_USER_TOKEN": {
           "env_var": "PENPOT_MCP_USER_TOKEN"
@@ -322,17 +305,10 @@
       "tools_allow_all": true
     },
     "tavily": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "tavily-mcp"
-      ],
-      "env": {
-        "TAVILY_API_KEY": {
-          "env_var": "TAVILY_API_KEY"
-        }
-      },
+      "transport": "streamable-http",
+      "auth_policy": "oauth",
+      "url": "https://mcp.tavily.com/mcp/",
+      "env": {},
       "enabled": true,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
@@ -475,36 +451,9 @@
       "tools_allow_all": true
     },
     "exa": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "exa-mcp-server"
-      ],
-      "env": {
-        "EXA_API_KEY": {
-          "env_var": "EXA_API_KEY"
-        }
-      },
-      "enabled": true,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [
-        "*"
-      ],
-      "tool_approvals": {},
-      "platform_overrides": {},
-      "tools_allow_all": true
-    },
-    "ffmpeg": {
-      "transport": "stdio",
-      "command": "uv",
-      "args": [
-        "--directory",
-        "${REPO_ROOT}/mcp/servers/ffmpeg-mcp",
-        "run",
-        "ffmpeg-mcp"
-      ],
+      "transport": "streamable-http",
+      "auth_policy": "oauth",
+      "url": "https://mcp.exa.ai/mcp",
       "env": {},
       "enabled": true,
       "startup_timeout_sec": 90,
@@ -676,7 +625,7 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": true,
+      "enabled": false,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
@@ -702,7 +651,7 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": true,
+      "enabled": false,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
@@ -729,7 +678,7 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": true,
+      "enabled": false,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
@@ -756,7 +705,7 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": true,
+      "enabled": false,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
@@ -783,7 +732,7 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": true,
+      "enabled": false,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
@@ -810,7 +759,7 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": true,
+      "enabled": false,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
@@ -835,7 +784,7 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": true,
+      "enabled": false,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
@@ -862,7 +811,7 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": true,
+      "enabled": false,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
@@ -889,7 +838,7 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": true,
+      "enabled": false,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
@@ -916,7 +865,7 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": true,
+      "enabled": false,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
@@ -943,7 +892,7 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": true,
+      "enabled": false,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
@@ -960,7 +909,7 @@
     "base_url": "http://127.0.0.1:46683",
     "public_url": "https://mcp.w4w.dev/mcp",
     "bearer_token_env_var": "MCPHUB_BEARER_TOKEN",
-    "startup_timeout_sec": 20,
+    "startup_timeout_sec": 90,
     "tool_timeout_sec": 90,
     "projection_adapters": {
       "grok": "http",
@@ -977,94 +926,145 @@
       "embedding_model_env_var": "SMART_ROUTING_EMBEDDING_MODEL"
     },
     "groups": {
-      "all-managed": {
-        "description": "All enabled servers managed by the repository MCP registry.",
+      "harness": {
+        "description": "Default local harness bundle: highest-value tools with bounded schema/context cost.",
         "enabled": true,
         "servers": [
-          "agent-catalog",
-          "arxiv",
-          "atom-of-thoughts",
           "brave-search",
-          "cascade-thinking",
-          "chrome-devtools",
-          "context7",
-          "crash",
-          "creative-thinking",
-          "deep-lucid-3d",
-          "deepwiki",
-          "docling",
-          "docs-index",
           "duckduckgo-search",
-          "eval-results",
-          "exa",
-          "fetch",
-          "fetcher",
-          "ffmpeg",
-          "g-search",
-          "gmail",
-          "linkedin",
-          "lotus-wisdom-mcp",
-          "ossinsight",
-          "package-version",
-          "penpot",
-          "repo-readonly",
-          "repomix",
-          "sequential-thinking",
-          "shannon-thinking",
-          "skill-catalog",
-          "source-url-health",
-          "structured-thinking",
-          "supathings",
-          "tavily",
-          "think-strategies",
-          "trafilatura",
-          "wayback",
-          "wikipedia",
-          "template-smoke",
-          "ci-artifacts",
-          "release-provenance",
-          "workflow-status",
-          "docs-graph"
-        ]
-      },
-      "daily": {
-        "description": "Default local workhorse bundle for routine coding and research.",
-        "enabled": true,
-        "servers": [
-          "brave-search",
           "context7",
           "deepwiki",
           "fetch",
-          "trafilatura",
+          {
+            "name": "fetcher",
+            "tools": [
+              "fetch_urls"
+            ]
+          },
           "package-version",
-          "repomix"
+          "chrome-devtools",
+          "penpot"
         ]
       },
       "tunnel": {
-        "description": "Bounded remote ChatGPT tunnel surface without personal or browser tools.",
+        "description": "Minimal remote ChatGPT tunnel surface without personal, browser, or heavy tools.",
         "enabled": true,
         "servers": [
           "brave-search",
           "context7",
           "deepwiki",
           "fetch",
-          "trafilatura",
-          "package-version",
-          "repomix",
-          "duckduckgo-search"
+          "package-version"
         ]
       },
-      "search": {
-        "description": "Stable web search APIs.",
+      "daily": {
+        "description": "Broader local workhorse bundle for routine agentic development.",
         "enabled": true,
         "servers": [
           "brave-search",
-          "tavily",
-          "duckduckgo-search"
+          "duckduckgo-search",
+          "context7",
+          "deepwiki",
+          "fetch",
+          {
+            "name": "fetcher",
+            "tools": [
+              "fetch_urls"
+            ]
+          },
+          "package-version",
+          "trafilatura",
+          "repomix",
+          "chrome-devtools"
         ]
       },
-      "read-web": {
-        "description": "URL ingestion without search APIs.",
+      "coding": {
+        "description": "Coding, dependency lookup, repo inspection, and browser validation workflow.",
+        "enabled": true,
+        "servers": [
+          "context7",
+          "deepwiki",
+          "fetch",
+          "duckduckgo-search",
+          "repomix",
+          "package-version",
+          "ossinsight",
+          "chrome-devtools"
+        ]
+      },
+      "research": {
+        "description": "Search, retrieval, public references, and source inspection workflow.",
+        "enabled": true,
+        "servers": [
+          "brave-search",
+          "duckduckgo-search",
+          "tavily",
+          "exa",
+          "fetch",
+          "fetcher",
+          "trafilatura",
+          "arxiv",
+          "wikipedia",
+          "wayback",
+          "deepwiki"
+        ]
+      },
+      "review": {
+        "description": "Code, docs, eval, source-health, workflow-status, and browser-backed review workflow.",
+        "enabled": true,
+        "servers": [
+          "context7",
+          "deepwiki",
+          "fetch",
+          "duckduckgo-search",
+          "package-version",
+          "repomix",
+          "chrome-devtools"
+        ]
+      },
+      "release": {
+        "description": "Release, package, CI artifact, provenance, and eval-readiness workflow.",
+        "enabled": true,
+        "servers": [
+          "package-version",
+          "repomix",
+          "fetch",
+          "trafilatura"
+        ]
+      },
+      "personal-work": {
+        "description": "Explicit personal-account and design/productivity workflow.",
+        "enabled": true,
+        "servers": [
+          "gmail",
+          "linkedin",
+          "supathings",
+          "penpot"
+        ]
+      },
+      "media-work": {
+        "description": "Document, 3D, and web-ingestion workflow; prefer an agent skill plus ffmpeg CLI for deterministic media transforms.",
+        "enabled": true,
+        "servers": [
+          "docling",
+          "deep-lucid-3d",
+          "fetch",
+          "trafilatura"
+        ]
+      },
+      "web-search": {
+        "description": "Web search providers.",
+        "enabled": true,
+        "servers": [
+          "brave-search",
+          "duckduckgo-search",
+          "tavily",
+          "exa",
+          "g-search"
+        ]
+      },
+      "web-read": {
+        "description": "URL and page ingestion without search APIs.",
         "enabled": true,
         "servers": [
           "fetch",
@@ -1074,33 +1074,20 @@
         ]
       },
       "docs": {
-        "description": "Library and framework documentation lookup.",
+        "description": "Library, framework, repo docs, and docs graph lookup.",
         "enabled": true,
         "servers": [
           "context7",
-          "deepwiki",
-          "docs-index"
+          "deepwiki"
         ]
       },
-      "code-intel": {
-        "description": "Repository and dependency intelligence.",
+      "repo": {
+        "description": "Repository and package intelligence.",
         "enabled": true,
         "servers": [
-          "agent-catalog",
-          "repo-readonly",
           "repomix",
           "package-version",
-          "ossinsight",
-          "skill-catalog"
-        ]
-      },
-      "references": {
-        "description": "Academic papers, encyclopedia, and archive lookup.",
-        "enabled": true,
-        "servers": [
-          "arxiv",
-          "wikipedia",
-          "wayback"
+          "ossinsight"
         ]
       },
       "browser": {
@@ -1119,33 +1106,113 @@
           "structured-thinking"
         ]
       },
-      "data-pipeline": {
-        "description": "Heavy document extraction and media transform.",
+      "reasoning-lab": {
+        "description": "Experimental or less-proven reasoning tools.",
+        "enabled": true,
+        "servers": [
+          "atom-of-thoughts",
+          "crash",
+          "creative-thinking",
+          "lotus-wisdom-mcp",
+          "shannon-thinking",
+          "think-strategies"
+        ]
+      },
+      "media": {
+        "description": "Document and 3D processing.",
         "enabled": true,
         "servers": [
           "docling",
-          "ffmpeg",
-          "trafilatura"
+          "deep-lucid-3d"
         ]
       },
-      "personal": {
-        "description": "Account-backed connectors; treat as sensitive.",
+      "design": {
+        "description": "Design tooling.",
+        "enabled": true,
+        "servers": [
+          "penpot"
+        ]
+      },
+      "productivity": {
+        "description": "Productivity tooling.",
+        "enabled": true,
+        "servers": [
+          "supathings"
+        ]
+      },
+      "accounts": {
+        "description": "Account-backed connectors.",
         "enabled": true,
         "servers": [
           "gmail",
           "linkedin"
         ]
       },
-      "productivity": {
-        "description": "GTD and design tooling.",
+      "references": {
+        "description": "Academic papers, encyclopedia, and archive lookup.",
         "enabled": true,
         "servers": [
+          "arxiv",
+          "wikipedia",
+          "wayback"
+        ]
+      },
+      "shared-read": {
+        "description": "Broad read-oriented pool for explicit opt-in without personal or browser tools.",
+        "enabled": true,
+        "servers": [
+          "brave-search",
+          "context7",
+          "deepwiki",
+          "fetch",
+          "package-version",
+          "duckduckgo-search",
+          "trafilatura",
+          "arxiv",
+          "wikipedia",
+          "wayback"
+        ]
+      },
+      "credentialed": {
+        "description": "Tools that rely on provider API keys, OAuth, or user-owned account tokens.",
+        "enabled": true,
+        "servers": [
+          "brave-search",
+          "context7",
+          "tavily",
+          "exa",
+          "penpot"
+        ]
+      },
+      "account-backed": {
+        "description": "Tools backed by user accounts or personal app state.",
+        "enabled": true,
+        "servers": [
+          "gmail",
+          "linkedin",
           "supathings",
           "penpot"
         ]
       },
+      "live-browser": {
+        "description": "Tools that automate or depend on live browser/session state.",
+        "enabled": true,
+        "servers": [
+          "chrome-devtools",
+          "linkedin"
+        ]
+      },
+      "heavy": {
+        "description": "Large-output or heavier processing tools.",
+        "enabled": true,
+        "servers": [
+          "repomix",
+          "docling",
+          "deep-lucid-3d"
+        ]
+      },
       "experimental": {
-        "description": "Bleeding-edge search, reasoning, and media servers.",
+        "description": "Bleeding-edge, less-proven, or high-variance tools.",
         "enabled": true,
         "servers": [
           "exa",
@@ -1158,36 +1225,6 @@
           "shannon-thinking",
           "think-strategies"
         ]
-      },
-      "harness-safe": {
-        "description": "Shared harness-facing alias of daily; keep membership equal to daily.",
-        "enabled": true,
-        "servers": [
-          "brave-search",
-          "context7",
-          "deepwiki",
-          "fetch",
-          "trafilatura",
-          "package-version",
-          "repomix"
-        ]
-      },
-      "repo-catalog": {
-        "description": "Read-only repo catalog, docs reports, eval gates, and source URL health.",
-        "enabled": true,
-        "servers": [
-          "skill-catalog",
-          "agent-catalog",
-          "docs-index",
-          "repo-readonly",
-          "source-url-health",
-          "eval-results",
-          "template-smoke",
-          "ci-artifacts",
-          "release-provenance",
-          "workflow-status",
-          "docs-graph"
-        ]
       }
     },
     "clients": {
@@ -1197,13 +1234,13 @@
           "server"
         ],
         "included_groups": [
-          "harness-safe"
+          "harness"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness-safe"
+          "harness"
         ],
         "enable_server_endpoints": true
       },
@@ -1215,13 +1252,13 @@
           "server"
         ],
         "included_groups": [
-          "harness-safe"
+          "harness"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness-safe"
+          "harness"
         ],
         "enable_server_endpoints": true
       },
@@ -1233,13 +1270,13 @@
           "server"
         ],
         "included_groups": [
-          "harness-safe"
+          "harness"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness-safe"
+          "harness"
         ],
         "enable_server_endpoints": true
       },
@@ -1251,13 +1288,13 @@
           "server"
         ],
         "included_groups": [
-          "harness-safe"
+          "harness"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness-safe"
+          "harness"
         ],
         "enable_server_endpoints": true,
         "server_endpoint_name_style": "base"
