@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from wagents.hooks.render import enabled_hooks_for_harness
+from wagents.hooks.render import enabled_hooks_for_harness, group_hooks_by_logical_event
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 REGISTRY_PATH = REPO_ROOT / "config" / "hook-registry.json"
@@ -36,7 +36,7 @@ def test_bundle_groups_include_mode_and_are_contiguous():
 
     for harness in sorted(harnesses):
         seen_groups: dict[str, list[int]] = {}
-        for index, hook in enumerate(enabled_hooks_for_harness(registry, harness)):
+        for index, hook in enumerate(group_hooks_by_logical_event(enabled_hooks_for_harness(registry, harness))):
             group = hook.get("bundle_group")
             if not group:
                 continue

@@ -227,6 +227,26 @@ def dedupe_logical_policy_across_events(
     ]
 
 
+
+
+def group_hooks_by_logical_event(hooks: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Preserve registry order within each ``logical_event`` block.
+
+    Bundle collapse only considers consecutive rows. Registry rows for different
+    native events may interleave; regrouping keeps enforce chains collapsible
+    without changing per-event relative order.
+    """
+    buckets: dict[str, list[dict[str, Any]]] = {}
+    event_order: list[str] = []
+    for hook in hooks:
+        event = str(hook.get("logical_event") or "")
+        if event not in buckets:
+            buckets[event] = []
+            event_order.append(event)
+        buckets[event].append(hook)
+    return [hook for event in event_order for hook in buckets[event]]
+
+
 def prepare_hooks_for_render(
     hook_registry: dict[str, Any],
     harness: str,
@@ -235,6 +255,7 @@ def prepare_hooks_for_render(
 ) -> list[dict[str, Any]]:
     """Enabled harness hooks with optional dedupe + bundle collapse for render."""
     hooks = enabled_hooks_for_harness(hook_registry, harness)
+    hooks = group_hooks_by_logical_event(hooks)
     hooks = dedupe_logical_policy_across_events(hooks, harness, perf_tier=perf_tier)
     return collapse_bundle_entries(hooks, harness, perf_tier=perf_tier)
 
