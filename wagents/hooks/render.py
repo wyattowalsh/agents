@@ -25,10 +25,219 @@ from __future__ import annotations
 
 import json
 import shlex
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 from wagents.context import get_repo_root
+
+HOOK_PERF_TIERS: tuple[str, ...] = ("legacy", "g1", "bundle", "worker")
+BUNDLE_PERF_TIERS: frozenset[str] = frozenset({"bundle", "worker"})
+DEFAULT_HARNESS_HOOK_TIMEOUT = 120
+TOOLING_POLICY_PATH = get_repo_root() / "config" / "tooling-policy.json"
+COPILOT_POST_EDIT_SHELL = "./hooks/post-edit-quality.sh"
+CODEX_UNSUPPORTED_MATCHER_TOKENS: tuple[str, ...] = ("(?=", "(?!", "(?<=", "(?<!")
+
+# When the same logical_policy would render on both events in a pair, drop the
+# less-specific event (second element) only under bundle/worker tiers.
+DEDUPE_EVENT_PAIRS: dict[str, tuple[tuple[str, str], ...]] = {
+    "cursor": (
+        ("PreToolUse", "BeforeShellExecution"),
+        ("PostToolUse", "AfterFileEdit"),
+    ),
+}
+
+
+@lru_cache(maxsize=1)
+def _load_tooling_policy() -> dict[str, Any]:
+    if not TOOLING_POLICY_PATH.is_file():
+        return {}
+    try:
+        return json.loads(TOOLING_POLICY_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def resolve_hook_perf_tier(*, override: str | None = None) -> str:
+    """Read staged hook perf tier from repo policy (default ``legacy``)."""
+    if override is not None:
+        return override if override in HOOK_PERF_TIERS else "legacy"
+    policy = _load_tooling_policy()
+    tier = str((policy.get("hook_perf") or {}).get("tier") or "legacy")
+    return tier if tier in HOOK_PERF_TIERS else "legacy"
+
+
+def _is_dispatcher_backed(hook: dict[str, Any]) -> bool:
+    command = str(hook.get("command") or "")
+    return any(token in command for token in ("wagents-hook.py", "run-wagents-hook", "{hook_runner}"))
+
+
+def _bundle_timeout(members: list[dict[str, Any]]) -> int:
+    return min(sum(int(member.get("timeout", 5)) for member in members), DEFAULT_HARNESS_HOOK_TIMEOUT)
+
+
+def union_bundle_matchers(members: list[dict[str, Any]]) -> str | None:
+    """Union every member's ``|``-delimited matcher into one deduped matcher string.
+
+    Bundle-group members are not guaranteed to share an identical matcher: for
+    example ``cursor-shell-file-guards`` groups a shell-only guard
+    (``Bash|bash|run_shell_command|shell|terminal``) with a guard that also
+    covers file-write tools (``Write|Edit|MultiEdit|...``). Collapsing them
+    into one rendered entry using only the first member's matcher would
+    silently narrow the surviving matcher and stop firing on tool calls the
+    dropped member used to guard. Dedupe is case-sensitive and preserves
+    first-seen order so the result stays deterministic across renders.
+    """
+    seen: dict[str, None] = {}
+    for member in members:
+        raw = str(member.get("matcher") or "")
+        if not raw:
+            continue
+        for token in raw.split("|"):
+            if token:
+                seen.setdefault(token, None)
+    return "|".join(seen) if seen else None
+
+
+def _shell_bundle_command(members: list[dict[str, Any]]) -> str | None:
+    commands = [str(member.get("command") or "") for member in members]
+    if len(members) == 2 and all(cmd.endswith("auto-format.sh") or cmd.endswith("lint-check.sh") for cmd in commands):
+        return COPILOT_POST_EDIT_SHELL
+    if all(cmd.startswith("./hooks/") for cmd in commands):
+        return commands[0]
+    return None
+
+
+def _synthetic_bundle_hook(members: list[dict[str, Any]], *, harness: str, perf_tier: str) -> dict[str, Any]:
+    group = str(members[0].get("bundle_group") or members[0]["id"])
+    policy_ids = [str(member["id"]) for member in members if _is_dispatcher_backed(member)]
+    timeout = _bundle_timeout(members)
+    bundle_mode = str(members[0].get("bundle_mode") or "enforce-chain")
+    merged: dict[str, Any] = {
+        "id": f"bundle-{group}",
+        "logical_event": members[0]["logical_event"],
+        "timeout": timeout,
+        "harnesses": list(members[0].get("harnesses") or []),
+        "bundle_group": members[0].get("bundle_group"),
+        "logical_policy": members[0].get("logical_policy"),
+        "mode": members[0].get("mode"),
+        "description": members[0].get("description", group),
+    }
+    union_matcher = union_bundle_matchers(members)
+    if union_matcher:
+        merged["matcher"] = union_matcher
+    if members[0].get("status_message"):
+        merged["status_message"] = members[0]["status_message"]
+    if len(policy_ids) == len(members):
+        ids_csv = ",".join(policy_ids)
+        if perf_tier == "worker":
+            merged["command"] = (
+                '{hook_runner} --worker-socket "${{WAGENTS_HOOK_WORKER_SOCKET:-}}" '
+                f"--bundle {ids_csv} --harness {{harness}} "
+                f"--bundle-mode {bundle_mode} --bundle-timeout {timeout}"
+            )
+        else:
+            merged["command"] = (
+                "{hook_runner} "
+                f"--bundle {ids_csv} --harness {{harness}} "
+                f"--bundle-mode {bundle_mode} --bundle-timeout {timeout}"
+            )
+        merged["_bundle_policy_ids"] = policy_ids
+        return merged
+    shell_command = _shell_bundle_command(members)
+    if shell_command is not None:
+        merged["command"] = shell_command
+        return merged
+    return dict(members[0])
+
+
+def collapse_bundle_entries(
+    hooks: list[dict[str, Any]],
+    harness: str,
+    *,
+    perf_tier: str | None = None,
+) -> list[dict[str, Any]]:
+    """Collapse consecutive same-event ``bundle_group`` rows when tier is bundle/worker."""
+    tier = perf_tier or resolve_hook_perf_tier()
+    if tier not in BUNDLE_PERF_TIERS:
+        return hooks
+
+    collapsed: list[dict[str, Any]] = []
+    index = 0
+    while index < len(hooks):
+        hook = hooks[index]
+        group = hook.get("bundle_group")
+        if not group:
+            collapsed.append(hook)
+            index += 1
+            continue
+
+        event = hook.get("logical_event")
+        members = [hook]
+        next_index = index + 1
+        while next_index < len(hooks):
+            candidate = hooks[next_index]
+            if candidate.get("bundle_group") != group or candidate.get("logical_event") != event:
+                break
+            members.append(candidate)
+            next_index += 1
+
+        if len(members) == 1:
+            collapsed.append(hook)
+        else:
+            collapsed.append(_synthetic_bundle_hook(members, harness=harness, perf_tier=tier))
+        index = next_index
+    return collapsed
+
+
+def dedupe_logical_policy_across_events(
+    hooks: list[dict[str, Any]],
+    harness: str,
+    *,
+    perf_tier: str | None = None,
+) -> list[dict[str, Any]]:
+    """Drop duplicate ``logical_policy`` renders across overlapping native events."""
+    tier = perf_tier or resolve_hook_perf_tier()
+    if tier not in BUNDLE_PERF_TIERS:
+        return hooks
+
+    pairs = DEDUPE_EVENT_PAIRS.get(harness, ())
+    if not pairs:
+        return hooks
+
+    policy_events: dict[str, set[str]] = {}
+    for hook in hooks:
+        logical_policy = str(hook.get("logical_policy") or hook.get("id"))
+        event = str(hook.get("logical_event"))
+        policy_events.setdefault(logical_policy, set()).add(event)
+
+    drop_keys: set[tuple[str, str]] = set()
+    for drop_event, keep_event in pairs:
+        for logical_policy, events in policy_events.items():
+            if drop_event in events and keep_event in events:
+                drop_keys.add((logical_policy, drop_event))
+
+    if not drop_keys:
+        return hooks
+
+    return [
+        hook
+        for hook in hooks
+        if (str(hook.get("logical_policy") or hook.get("id")), str(hook.get("logical_event"))) not in drop_keys
+    ]
+
+
+def prepare_hooks_for_render(
+    hook_registry: dict[str, Any],
+    harness: str,
+    *,
+    perf_tier: str | None = None,
+) -> list[dict[str, Any]]:
+    """Enabled harness hooks with optional dedupe + bundle collapse for render."""
+    hooks = enabled_hooks_for_harness(hook_registry, harness)
+    hooks = dedupe_logical_policy_across_events(hooks, harness, perf_tier=perf_tier)
+    return collapse_bundle_entries(hooks, harness, perf_tier=perf_tier)
+
 
 # Logical event -> Cursor native event name.
 # Cursor supports both the generic preToolUse/postToolUse surface and the
@@ -61,6 +270,13 @@ CURSOR_FAIL_CLOSED_EVENTS: frozenset[str] = frozenset({
     "beforeMCPExecution",
     "beforeReadFile",
 })
+
+# Hook ids that must stay fail-open on Cursor regardless of matcher shape. This
+# was previously inferred from ``matcher == ".*"`` (a catch-all matcher implied
+# "too disruptive to fail closed"), but G1 narrows some catch-all matchers for
+# spawn-count wins without changing their intended fail-open crash behavior.
+# Recorded explicitly so narrowing a matcher never silently flips failClosed.
+CURSOR_FAIL_OPEN_HOOK_IDS: frozenset[str] = frozenset({"image-input-optimizer-guard"})
 
 # Logical event -> native event name for the nested-group harnesses. Codex and
 # Claude keep PascalCase native names; Gemini uses its own surface.
@@ -149,8 +365,28 @@ def render_cursor_hook_command(hook: dict[str, Any], harness: str, *, repo_root:
     hook environment. Use the repo runner for all wagents policies so the
     trusted-Python lookup and script path resolution stay centralized.
     """
+    runner = f'"{repo_root}/hooks/run-wagents-hook"'
+    bundle_ids = hook.get("_bundle_policy_ids")
+    if isinstance(bundle_ids, list) and bundle_ids:
+        ids_csv = ",".join(str(policy_id) for policy_id in bundle_ids)
+        bundle_mode = str(hook.get("bundle_mode") or "enforce-chain")
+        timeout = int(hook.get("timeout", DEFAULT_HARNESS_HOOK_TIMEOUT))
+        command = str(hook.get("command") or "")
+        if "--worker-socket" in command or "wagents-hook-worker.py" in command:
+            return (
+                f'{runner} --worker-socket "${{WAGENTS_HOOK_WORKER_SOCKET:-}}" '
+                f"--bundle {shlex.quote(ids_csv)} --harness {shlex.quote(harness)} "
+                f"--bundle-mode {shlex.quote(bundle_mode)} --bundle-timeout {timeout}"
+            )
+        return (
+            f"{runner} --bundle {shlex.quote(ids_csv)} --harness {shlex.quote(harness)} "
+            f"--bundle-mode {shlex.quote(bundle_mode)} --bundle-timeout {timeout}"
+        )
     policy_id = _wagents_policy_id(hook)
-    return f'"{repo_root}/hooks/run-wagents-hook" {shlex.quote(policy_id)} --harness {shlex.quote(harness)}'
+    # Single-policy worker tier is not rendered yet. When enabling --worker-socket here,
+    # pass --forward-timeout from hook["timeout"] so socket forwards exceed policy budgets
+    # (e.g. image-input-optimizer-guard 60s registry vs 5s client default).
+    return f"{runner} {shlex.quote(policy_id)} --harness {shlex.quote(harness)}"
 
 
 def _cursor_flat_entry(
@@ -168,7 +404,8 @@ def _cursor_flat_entry(
     if hook.get("timeout"):
         entry["timeout"] = int(hook["timeout"])
     if hook.get("mode") == "enforce" and event in CURSOR_FAIL_CLOSED_EVENTS:
-        entry["failClosed"] = matcher != ".*"
+        stays_fail_open = str(hook.get("id") or "") in CURSOR_FAIL_OPEN_HOOK_IDS
+        entry["failClosed"] = matcher != ".*" and not stays_fail_open
     return entry
 
 
@@ -178,6 +415,7 @@ def render_cursor_hooks(
     harness: str = "cursor",
     repo_root: str = "$CURSOR_PROJECT_DIR",
     event_map: dict[str, str] | None = None,
+    perf_tier: str | None = None,
 ) -> dict[str, Any] | None:
     """Render the Cursor flat hook shape, or ``None`` when nothing is enabled.
 
@@ -187,7 +425,7 @@ def render_cursor_hooks(
     """
     events = event_map or CURSOR_EVENT_MAP
     rendered: dict[str, list[dict[str, Any]]] = {}
-    for hook in enabled_hooks_for_harness(hook_registry, harness):
+    for hook in prepare_hooks_for_render(hook_registry, harness, perf_tier=perf_tier):
         event = events.get(str(hook.get("logical_event")))
         if not event:
             continue
@@ -254,10 +492,25 @@ def _codex_status_message(hook: dict[str, Any]) -> str:
     return str(hook.get("statusMessage") or hook.get("status_message") or hook.get("description") or hook["id"])
 
 
-def render_codex_hooks(hook_registry: dict[str, Any], *, repo_root: str) -> dict[str, Any]:
+def _codex_matcher(hook: dict[str, Any]) -> str | None:
+    matcher = str(hook.get("matcher") or "")
+    if not matcher:
+        return None
+    if any(token in matcher for token in CODEX_UNSUPPORTED_MATCHER_TOKENS):
+        hook_id = str(hook.get("id") or "<unknown>")
+        raise ValueError(f"Codex hook matcher for {hook_id!r} uses unsupported look-around syntax: {matcher}")
+    return matcher
+
+
+def render_codex_hooks(
+    hook_registry: dict[str, Any],
+    *,
+    repo_root: str,
+    perf_tier: str | None = None,
+) -> dict[str, Any]:
     """Render Codex's nested-group hook shape (single source for sync + APM)."""
     rendered: dict[str, list[dict[str, Any]]] = {}
-    for hook in enabled_hooks_for_harness(hook_registry, "codex"):
+    for hook in prepare_hooks_for_render(hook_registry, "codex", perf_tier=perf_tier):
         event = CODEX_EVENT_MAP.get(str(hook.get("logical_event")))
         if not event:
             continue
@@ -275,16 +528,22 @@ def render_codex_hooks(hook_registry: dict[str, Any], *, repo_root: str) -> dict
                 harness="codex",
             )
         group: dict[str, Any] = {"hooks": [config]}
-        if hook.get("matcher"):
-            group["matcher"] = hook["matcher"]
+        matcher = _codex_matcher(hook)
+        if matcher:
+            group["matcher"] = matcher
         rendered.setdefault(event, []).append(group)
     return {"hooks": rendered}
 
 
-def render_claude_hooks(hook_registry: dict[str, Any], *, repo_root: str) -> dict[str, Any]:
+def render_claude_hooks(
+    hook_registry: dict[str, Any],
+    *,
+    repo_root: str,
+    perf_tier: str | None = None,
+) -> dict[str, Any]:
     """Render Claude Code's nested-group hook shape (single source for sync + APM)."""
     rendered: dict[str, list[dict[str, Any]]] = {}
-    for hook in enabled_hooks_for_harness(hook_registry, "claude-code"):
+    for hook in prepare_hooks_for_render(hook_registry, "claude-code", perf_tier=perf_tier):
         event = CLAUDE_EVENT_MAP.get(str(hook.get("logical_event")))
         if not event:
             continue
@@ -301,10 +560,15 @@ def render_claude_hooks(hook_registry: dict[str, Any], *, repo_root: str) -> dic
     return {"hooks": rendered}
 
 
-def render_gemini_hooks(hook_registry: dict[str, Any], *, repo_root: str) -> dict[str, Any]:
+def render_gemini_hooks(
+    hook_registry: dict[str, Any],
+    *,
+    repo_root: str,
+    perf_tier: str | None = None,
+) -> dict[str, Any]:
     """Render Gemini CLI's nested-group hook shape (single source for sync + APM)."""
     rendered: dict[str, list[dict[str, Any]]] = {}
-    for hook in enabled_hooks_for_harness(hook_registry, "gemini-cli"):
+    for hook in prepare_hooks_for_render(hook_registry, "gemini-cli", perf_tier=perf_tier):
         event = GEMINI_EVENT_MAP.get(str(hook.get("logical_event")))
         if not event:
             continue
@@ -322,10 +586,15 @@ def render_gemini_hooks(hook_registry: dict[str, Any], *, repo_root: str) -> dic
     return {"hooks": rendered}
 
 
-def render_copilot_hooks(hook_registry: dict[str, Any], *, repo_root: str) -> dict[str, Any]:
+def render_copilot_hooks(
+    hook_registry: dict[str, Any],
+    *,
+    repo_root: str,
+    perf_tier: str | None = None,
+) -> dict[str, Any]:
     """Render GitHub Copilot's flat ``bash`` hook shape (single source for sync + APM)."""
     rendered: dict[str, list[dict[str, Any]]] = {}
-    for hook in enabled_hooks_for_harness(hook_registry, "github-copilot"):
+    for hook in prepare_hooks_for_render(hook_registry, "github-copilot", perf_tier=perf_tier):
         event = COPILOT_EVENT_MAP.get(str(hook.get("logical_event")))
         if not event:
             continue

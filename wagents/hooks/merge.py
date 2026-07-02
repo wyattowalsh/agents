@@ -41,7 +41,8 @@ def _entry_commands(entry: dict[str, Any]) -> list[str]:
     Nested (Claude/Codex/Gemini): ``{"matcher"?, "hooks": [{"command"|"bash"}]}``.
     Flat (Cursor/Copilot): ``{"command"|"bash"}`` directly on the entry.
     """
-    hook_configs = entry.get("hooks") if isinstance(entry.get("hooks"), list) else [entry]
+    raw_hooks = entry.get("hooks")
+    hook_configs = raw_hooks if isinstance(raw_hooks, list) else [entry]
     return [
         str(config.get("command") or config.get("bash") or "")
         for config in hook_configs
