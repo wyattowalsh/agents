@@ -8,8 +8,8 @@
     },
     {
       "date": "2026-07-02",
-      "orphan_count": 136,
-      "total_internal_links": 379,
+      "orphan_count": 135,
+      "total_internal_links": 380,
       "total_pages": 874
     }
   ],
@@ -53,6 +53,10 @@
       },
       {
         "backlinks": 1,
+        "slug": "/harness-config/plugin-skill-ownership"
+      },
+      {
+        "backlinks": 1,
         "slug": "/harness-config/token-efficacy"
       },
       {
@@ -70,14 +74,10 @@
       {
         "backlinks": 1,
         "slug": "/reports/llms-txt-coverage"
-      },
-      {
-        "backlinks": 1,
-        "slug": "/runtimes"
       }
     ],
     "note": "Counts absolute-path markdown links only (paths like /foo/); relative links are not resolved.",
-    "orphan_count": 136,
+    "orphan_count": 135,
     "orphan_pages": [
       "/agents/agent-change-recorder",
       "/agents/agent-eval-runner",
@@ -105,7 +105,6 @@
       "/catalog/tags",
       "/catalog/tooling",
       "/harness-config",
-      "/harness-config/plugin-skill-ownership",
       "/harness-config/rtk-integration",
       "/harness-config/sync-manifest",
       "/harness-config/tooling-policy",
@@ -216,7 +215,7 @@
       "/surfaces/instructions",
       "/surfaces/tools"
     ],
-    "total_internal_links": 379,
+    "total_internal_links": 380,
     "total_pages": 874
   }
 }

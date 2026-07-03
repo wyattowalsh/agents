@@ -547,7 +547,7 @@ Produce a triage packet before substantial retrieval for Standard, Deep, and Exh
 4. State the source-support audit strategy, including how citation anchors and support statuses will be checked.
 5. State whether execution continues immediately or pauses for user review.
 
-Pause conditions override continue conditions. Pause for user input when the topic is high-stakes, ambiguous after triage, asks for private or credentialed sources, or the user explicitly requests plan review. In noninteractive harnesses, emit the Plan Gate with blockers and stop before substantial retrieval for those pause cases. Continue without waiting only when the question is clear, non-sensitive, and has no pause condition. Quick tier may skip the formal gate but must include a short methodology note in the answer.
+Pause conditions override continue conditions. Pause for user input when the topic is high-stakes, ambiguous after triage, asks for private or credentialed sources, or the user explicitly requests plan review. When pause is due to user-pivotal scope or audience uncertainty, apply `instructions/global.md` Depth routing and invoke `/grill-me` before substantial retrieval. Factual or evidence gaps stay on the research Plan Gate, not grill-me. In noninteractive harnesses, emit the Plan Gate with blockers and stop before substantial retrieval for those pause cases. Continue without waiting only when the question is clear, non-sensitive, and has no pause condition. Quick tier may skip the formal gate but must include a short methodology note in the answer.
 
 ### Gallery (Empty Arguments)
 
@@ -576,6 +576,8 @@ Before starting research, check if another skill is a better fit:
 | Prompt optimization, model-specific prompting | Suggest `/prompt-engineer` |
 
 If the user confirms they want general research, proceed.
+
+For repo-owned CLI skill-first routing (`/ffmpeg`, `/yt-dlp`, `/pentest`), see the **Repo CLI skills** table in `references/source-selection.md`.
 
 ## Complexity Classification
 
@@ -931,7 +933,6 @@ Completion criteria:
 16. **Stop hook must pass** — `research_hook.py research-stop-verifier` delegates to `verify.py stop` and confirms tracked `skills/research/` files stayed git-clean
 17. **Normalize legacy findings before synthesis** — top-level `source_url`, `source_tool`, and `confidence_raw` must be converted into the canonical `evidence[]` + `confidence` shape
 18. **A citation is not proof by itself** — cited source text must support the exact statement; unsupported or merely topical citations lower confidence and appear in the source-support audit
-
 ````
 
 [Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/research/SKILL.md)
