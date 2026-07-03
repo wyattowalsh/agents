@@ -74,7 +74,7 @@ bash skills/mcphub-operator/scripts/preflight.sh
 just mcphub-generate
 just mcphub-generate-check
 just mcphub-validate
-uv run wagents validate
+uv run python skills/mcphub-operator/scripts/check.py
 ```
 
 Regenerate settings after editing `config/mcp-registry.json` groups or servers.

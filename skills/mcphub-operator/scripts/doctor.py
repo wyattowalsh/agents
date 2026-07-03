@@ -18,6 +18,17 @@ def _make_check(name: str, status: str, summary: str, remediation: str | None = 
     return check
 
 
+def _workflow_group_ids(registry: dict[str, Any]) -> list[str]:
+    groups = registry.get("mcphub", {}).get("groups", {})
+    if not isinstance(groups, dict):
+        return []
+    return sorted(
+        name
+        for name, group in groups.items()
+        if isinstance(group, dict) and group.get("enabled") is not False
+    )
+
+
 def _find_repo_root(start: Path) -> Path | None:
     for candidate in [start, *start.parents]:
         if (candidate / "config" / "mcp-registry.json").is_file() and (candidate / "pyproject.toml").is_file():
@@ -55,7 +66,6 @@ def collect_checks(*, cwd: Path) -> list[dict[str, str]]:
     try:
         from scripts.generate_mcphub_settings import generate_settings, serialize_settings
         from scripts.mcphub.validate_settings import validate_settings
-        from wagents.mcphub.endpoints import mcphub_workflow_group_ids
     except ImportError as exc:
         checks.append(
             _make_check(
@@ -116,7 +126,7 @@ def collect_checks(*, cwd: Path) -> list[dict[str, str]]:
             )
         )
 
-    workflow_groups = mcphub_workflow_group_ids(registry)
+    workflow_groups = _workflow_group_ids(registry)
     checks.append(
         _make_check(
             "workflow-groups",

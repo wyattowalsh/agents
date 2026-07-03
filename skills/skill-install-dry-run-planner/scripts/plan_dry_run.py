@@ -12,8 +12,8 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[3]
 
 PLAN_STEPS = [
-    {"id": "validate", "command": "uv run wagents validate", "required": True},
-    {"id": "dry-run", "command": "uv run wagents skills sync --dry-run --format json", "required": True},
+    {"id": "validate", "action": "Run repo validate gate", "required": True},
+    {"id": "dry-run", "action": "Run skills sync dry-run JSON report", "required": True},
     {"id": "review-gaps", "action": "Inspect missing, unresolved, and skipped rows per harness", "required": True},
     {
         "id": "optional-smoke",
