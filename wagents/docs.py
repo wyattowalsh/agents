@@ -1232,6 +1232,28 @@ def write_cli_page() -> None:
     parts.append("---")
     parts.append("")
 
+    # --- wagents skills cleanup ---
+    parts.append("### `wagents skills cleanup` -- Duplicate Exposure Planner")
+    parts.append("")
+    parts.append(
+        "Read-only inventory of duplicate skill/plugin exposures across local harnesses. "
+        "Pair with [`plugin-skill-ownership`](/harness-config/plugin-skill-ownership/) before changing home configs."
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents skills cleanup --dry-run --format json")
+    parts.append("```")
+    parts.append("")
+    parts.append('<Aside type="caution" title="Dry-run only">')
+    parts.append(
+        "`wagents skills cleanup` and `skills cleanup` remain preview-only until a reviewed apply manifest exists. "
+        "Use `wagents skills sync --apply` only after reviewing dry-run output."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
     # --- wagents catalog ---
     parts.append("### `wagents catalog` -- Catalog SSOT Checks")
     parts.append("")

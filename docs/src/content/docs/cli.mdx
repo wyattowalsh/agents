@@ -432,6 +432,23 @@ GitHub Copilot remains part of config and instruction sync, but the skills inven
 
 
 <details class="cli-command-ref">
+<summary>`wagents skills cleanup` — Duplicate Exposure Planner</summary>
+
+
+Read-only inventory of duplicate skill/plugin exposures across local harnesses. Pair with [`plugin-skill-ownership`](/harness-config/plugin-skill-ownership/) before changing home configs.
+
+```bash
+wagents skills cleanup --dry-run --format json
+```
+
+<Aside type="caution" title="Dry-run only">
+`wagents skills cleanup` and `skills cleanup` remain preview-only until a reviewed apply manifest exists. Use `wagents skills sync --apply` only after reviewing dry-run output.
+</Aside>
+
+</details>
+
+
+<details class="cli-command-ref">
 <summary>`wagents catalog` — Catalog SSOT Checks</summary>
 
 
