@@ -79,6 +79,10 @@ def test_self_doctor_includes_apm_surface_when_manifest_present(tmp_path: Path, 
     (tmp_path / ".apm" / "agents" / "a.agent.md").write_text("x", encoding="utf-8")
     (tmp_path / ".apm" / "instructions").mkdir(parents=True)
     (tmp_path / ".apm" / "instructions" / "b.instructions.md").write_text("x", encoding="utf-8")
+    monkeypatch.setattr(
+        "wagents.platforms.opencode.check_opencode_managed_agents_dir",
+        lambda *args, **kwargs: [],
+    )
     monkeypatch.setattr("wagents.ROOT", tmp_path)
     monkeypatch.chdir(tmp_path)
 

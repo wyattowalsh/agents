@@ -16,7 +16,12 @@ def test_codex_adapter_dry_run_notes_changes(tmp_path, monkeypatch):
     assert ctx.changes
 
 
-def test_copilot_adapter_dry_run_notes_repo_changes():
+def test_copilot_adapter_dry_run_notes_repo_changes(tmp_path, monkeypatch):
+    stale = tmp_path / ".github" / "copilot-instructions.md"
+    stale.parent.mkdir(parents=True)
+    stale.write_text("stale\n", encoding="utf-8")
+    monkeypatch.setattr("scripts.sync_agent_stack.COPILOT_REPO_INSTRUCTIONS_PATH", stale)
+
     ctx = SyncContext(apply=False)
     adapter = get_adapter("github-copilot")
     adapter.sync_repo(ctx, {}, {}, {})
