@@ -739,6 +739,15 @@
       "validation_command": "uv run wagents validate"
     },
     {
+      "path": "~/.cursor/hooks.json",
+      "expected_mode": "merged",
+      "current_state": "external-live",
+      "drift_risk": "high",
+      "owner_change": "agents-c04-cursor-harness",
+      "next_action": "merge-with-redaction",
+      "validation_command": "uv run wagents hooks validate --harness cursor"
+    },
+    {
       "path": "~/.gemini/GEMINI.md",
       "expected_mode": "generated",
       "current_state": "external-live",

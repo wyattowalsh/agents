@@ -70,17 +70,19 @@ class TestWriteIndexPage:
         text = idx.read_text()
         assert "template: splash" in text
         assert "CI status" in text
-        assert "## Get started" in text
-        assert "## Explore" in text
+        assert "## Surface Map" in text
+        assert "## Runtime Matrix" in text
+        assert "## Install Paths" in text
+        assert "## Featured Workflows" in text
         assert "## Visual Map" not in text
         assert "catalogMeshArt" not in text
         assert "## Popular Starting Points" not in text
-        assert 'title="Start Here"' in text
-        assert 'title="Harness Support"' in text
-        assert "npx skills add github:wyattowalsh/agents --all -y -g" in text
+        assert 'title="Install Guide"' in text
+        assert 'href="/surfaces/instructions/"' in text
+        assert "installCommands.all" in text
         assert "OpenCode" in text
-        assert "Run Spec Workflows" in text
-        assert text.count("openspec-workflow") == 1
+        assert 'href="/skills/catalog/custom/review/"' in text
+        assert text.count("openspec-workflow") == 0
         assert "uv run wagents openspec doctor" not in text
 
     def test_no_skills_no_featured_section(self, tmp_repo):
@@ -88,9 +90,9 @@ class TestWriteIndexPage:
         content_dir.mkdir(parents=True, exist_ok=True)
         write_index_page([])
         text = (content_dir / "index.mdx").read_text()
-        assert "## Explore" in text
+        assert "## Featured Workflows" in text
         assert "How these docs work" in text
-        assert "No bundled agents were found" in text
+        assert "0 repo-managed specialist agent definitions" in text
 
     def test_stats_bar_with_installed(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -101,8 +103,8 @@ class TestWriteIndexPage:
         ]
         write_index_page(nodes)
         text = (content_dir / "index.mdx").read_text()
-        assert "Custom Skills" in text
-        assert "External Skills" in text
+        assert "Supported Runtimes" in text
+        assert "catalog entries" in text
         assert "Installed Skills" not in text
 
     def test_skills_index_copy_is_repo_only_without_installed(self, tmp_repo):
@@ -110,7 +112,7 @@ class TestWriteIndexPage:
         content_dir.mkdir(parents=True, exist_ok=True)
         write_index_page([_make_node("skill")])
         text = (content_dir / "index.mdx").read_text()
-        assert "generated detail pages, and convention-skill context" in text
+        assert "Catalog pages are generated from `skills/`" in text
         assert "local agent directories" not in text
 
     def test_does_not_duplicate_mcp_overview_when_no_repo_mcp_nodes_exist(self, tmp_repo):
@@ -124,7 +126,7 @@ class TestWriteIndexPage:
         write_index_page([_make_node("skill")])
 
         text = (content_dir / "index.mdx").read_text()
-        assert text.count('title="MCP Overview"') == 1
+        assert 'href="/mcp/"' in text
         assert "## MCP Servers" not in text
 
 
@@ -161,6 +163,9 @@ class TestWriteCliPage:
         assert "wagents openspec doctor" in text
         assert "OPENSPEC_TELEMETRY=0" in text
         assert "On-Demand Skill Index" in text
+        assert "`wagents skills cleanup`" in text
+        assert "wagents skills cleanup --dry-run --format json" in text
+        assert "`skills cleanup`" in text
 
 
 # ---------------------------------------------------------------------------
@@ -429,12 +434,14 @@ class TestWriteSidebar:
         assert sidebar.exists()
         text = sidebar.read_text()
         assert "navLinks" in text
-        assert "Start Here" in text
-        assert "Contributing" not in text
+        assert "Overview" in text
+        assert "Surfaces" in text
+        assert "Runtimes" in text
+        assert "Reference" in text
         assert "Skills" in text
         assert "Agents" in text
         assert "CLI" in text
-        assert "Harness Support" not in text
+        assert "Hooks" in text
         assert "label: 'Custom'" in text
         assert "label: 'Catalog'" in text
 
@@ -445,8 +452,8 @@ class TestWriteSidebar:
         write_sidebar(nodes)
         text = (docs_src / "generated-sidebar.mjs").read_text()
         assert "Skills" in text
-        # No agents or mcp sections
-        assert "Agents" not in text or "autogenerate" not in text
+        assert "{ slug: 'agents', label: 'Agents' }" in text
+        assert "autogenerate: { directory: 'agents' }" not in text
 
     def test_sidebar_skills_collapsed(self, tmp_repo):
         write_sidebar([_make_node("skill")])
@@ -462,7 +469,7 @@ class TestWriteSidebar:
         write_sidebar([_make_node("skill")])
         text = (tmp_repo / "docs" / "src" / "generated-sidebar.mjs").read_text()
         assert "{ slug: '' }" not in text
-        assert "{ label: 'Home', link: '/' }" in text
+        assert "{ label: 'Overview', link: '/' }" in text
 
 
 class TestRenderSidebarModule:
@@ -487,8 +494,8 @@ class TestRenderSidebarModule:
         (content / "harness-support.mdx").write_text("---\ntitle: Harness Support\n---\n", encoding="utf-8")
         nodes = [_make_node("skill"), _make_node("agent", source_path="agents/test-agent.md")]
         text = render_sidebar_module(nodes)
-        assert "Hooks" not in text
-        assert "Harness Config" not in text
+        assert "label: 'Hooks'" in text
+        assert "harness-support" in text
         n = 0
         in_default = False
         for line in text.splitlines():

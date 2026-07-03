@@ -981,6 +981,18 @@
       "secret_handling": "path-only"
     },
     {
+      "path": "~/.cursor/hooks.json",
+      "mode": "merged",
+      "location_class": "home",
+      "source_tier": "merged-live-config",
+      "owner_change": "agents-c04-cursor-harness",
+      "drift_policy": "merged",
+      "validation_evidence": [
+        "uv run wagents hooks validate --harness cursor"
+      ],
+      "secret_handling": "path-only"
+    },
+    {
       "path": "~/.gemini/GEMINI.md",
       "mode": "generated",
       "location_class": "home",

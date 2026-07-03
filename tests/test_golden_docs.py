@@ -35,10 +35,12 @@ class TestGoldenSidebar:
         for marker in (
             "export const navLinks",
             "export default",
-            "Start Here",
+            "Overview",
+            "Surfaces",
+            "Runtimes",
             "skills/catalog/custom",
             "skills/catalog/external",
-            "{ label: 'Home', link: '/' }",
+            "{ label: 'Overview', link: '/' }",
         ):
             assert marker in text
 

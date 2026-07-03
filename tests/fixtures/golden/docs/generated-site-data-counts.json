@@ -1,10 +1,10 @@
 {
   "bundledAgents": 20,
   "customMcp": 16,
-  "customSkills": 65,
-  "externalMcp": 61,
+  "customSkills": 68,
+  "externalMcp": 44,
   "externalSkills": 313,
-  "mcpTools": 77,
-  "skills": 378,
+  "mcpTools": 60,
+  "skills": 381,
   "supportedHarnesses": 9
 }
