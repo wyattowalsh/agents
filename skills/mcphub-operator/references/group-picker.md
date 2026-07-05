@@ -9,15 +9,15 @@ Workflow-first groups from `config/mcp-registry.json`. Local managed harnesses d
 | `harness` | Default local baseline: bounded high-signal set with search, docs, URL fetch, package metadata, Chrome DevTools, and Penpot |
 | `daily` | Routine opt-in expansion for broader repo, browser, and web reading |
 | `coding` | Code-agent context: docs, URL fetch, repo, dependency, and browser inspection |
-| `research` | Web and reference research across search, read, archive, and wiki surfaces |
+| `research` | Web and reference research across search (including `open-websearch`), read, archive, and wiki surfaces |
 | `review` | Repo review, docs/source lookup, generated evidence, and browser inspection |
 | `release` | Release checks: versions, repo context, source reads, and package metadata |
 | `personal-work` | Account-backed work suites — explicit user intent only |
 | `media-work` | Document, 3D, and web-ingestion suites; prefer **`/ffmpeg`** skill plus local CLIs for deterministic ffmpeg-style media transforms (not ffmpeg MCP by default) |
-| `web-search` | Search APIs across Brave, DuckDuckGo, Tavily, Exa, and Google search |
-| `web-read` | URL ingestion without search APIs (fetch, fetcher, trafilatura, wayback) |
+| `web-search` | Search APIs across Brave, DuckDuckGo, DDGS (metasearch/news), Tavily, Exa, Google search (`g-search`), and no-API-key multi-engine `open-websearch` |
+| `web-read` | URL ingestion without search APIs (fetch, fetcher, trafilatura, wayback; bounded `open-websearch` fetch tools) |
 | `docs` | Library/framework documentation lookup |
-| `repo` | Repo/dependency intelligence (repomix, package-version, ossinsight) |
+| `repo` | Repo/dependency intelligence (repomix, package-version-check-mcp, ossinsight) |
 | `browser` | Live Chrome automation (chrome-devtools) |
 | `reasoning` | Hard problems only — three curated thinkers |
 | `reasoning-lab` | Experimental thinking servers — opt-in |
@@ -31,7 +31,7 @@ Workflow-first groups from `config/mcp-registry.json`. Local managed harnesses d
 | `account-backed` | Personal/account-backed connectors |
 | `live-browser` | Browser/session-bound connectors |
 | `heavy` | High-output or high-runtime servers |
-| `experimental` | Bleeding-edge servers — opt-in |
+| `experimental` | Bleeding-edge servers — opt-in (`open-websearch`, `g-search`, …) |
 | `tunnel` | **ChatGPT remote only** — not for local harness default |
 
 ## Decision flow

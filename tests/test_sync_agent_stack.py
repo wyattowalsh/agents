@@ -299,11 +299,12 @@ def test_repo_workflow_groups_and_bounded_clients():
     assert group_server_names(harness_group) == [
         "brave-search",
         "duckduckgo-search",
+        "ddgs",
         "context7",
         "deepwiki",
         "fetch",
         "fetcher",
-        "package-version",
+        "package-version-check-mcp",
         "chrome-devtools",
         "penpot",
     ]
@@ -311,11 +312,12 @@ def test_repo_workflow_groups_and_bounded_clients():
     assert group_server_names(registry["mcphub"]["groups"]["daily"]) == [
         "brave-search",
         "duckduckgo-search",
+        "ddgs",
         "context7",
         "deepwiki",
         "fetch",
         "fetcher",
-        "package-version",
+        "package-version-check-mcp",
         "trafilatura",
         "repomix",
         "chrome-devtools",
@@ -2543,12 +2545,12 @@ def test_render_codex_mcp_block_uses_current_schema_shape():
                 "timeout_ms": 600000,
                 "tools": ["*"],
             },
-            "package-version": {
-                "command": "/Users/ww/go/bin/mcp-package-version",
-                "args": [],
+            "package-version-check-mcp": {
+                "command": "bash",
+                "args": ["${REPO_ROOT}/scripts/mcphub/package-version-check-mcp.sh"],
                 "enabled": True,
                 "startup_timeout_sec": 90,
-                "tools": ["check_npm_versions"],
+                "tools": ["get_latest_package_versions"],
             },
         }
     }
@@ -2559,7 +2561,7 @@ def test_render_codex_mcp_block_uses_current_schema_shape():
     assert 'env_vars = ["CONTEXT7_API_KEY"]' in rendered
     assert "--api-key" not in rendered
     assert "tool_timeout_sec = 600" in rendered
-    assert 'enabled_tools = ["check_npm_versions"]' in rendered
+    assert 'enabled_tools = ["get_latest_package_versions"]' in rendered
 
 
 def test_render_codex_config_adds_multi_agent_v2_without_legacy_agent_limits_or_secrets():

@@ -320,8 +320,8 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
-[mcp_servers.mcphub_server_package-version]
-url = "http://127.0.0.1:46683/mcp/package-version"
+[mcp_servers.mcphub_server_package-version-check-mcp]
+url = "http://127.0.0.1:46683/mcp/package-version-check-mcp"
 bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
 startup_timeout_sec = 90
 tool_timeout_sec = 90

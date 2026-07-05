@@ -227,9 +227,14 @@
       ],
       "timeout": 600000
     },
-    "package-version": {
-      "command": "~/go/bin/mcp-package-version",
-      "args": [],
+    "package-version-check-mcp": {
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/package-version-check-mcp.sh"
+      ],
+      "env": {
+        "GITHUB_PAT": "${GITHUB_PAT}"
+      },
       "timeout": 600000
     },
     "penpot": {
@@ -449,7 +454,7 @@
         "fetch",
         "duckduckgo-search",
         "repomix",
-        "package-version",
+        "package-version-check-mcp",
         "ossinsight",
         "chrome-devtools"
       ]
@@ -480,7 +485,7 @@
             "fetch_urls"
           ]
         },
-        "package-version",
+        "package-version-check-mcp",
         "trafilatura",
         "repomix",
         "chrome-devtools"
@@ -531,7 +536,7 @@
             "fetch_urls"
           ]
         },
-        "package-version",
+        "package-version-check-mcp",
         "chrome-devtools",
         "penpot"
       ]
@@ -622,7 +627,7 @@
       "name": "release",
       "description": "Release, package, CI artifact, provenance, and eval-readiness workflow.",
       "servers": [
-        "package-version",
+        "package-version-check-mcp",
         "repomix",
         "fetch",
         "trafilatura"
@@ -633,7 +638,7 @@
       "description": "Repository and package intelligence.",
       "servers": [
         "repomix",
-        "package-version",
+        "package-version-check-mcp",
         "ossinsight"
       ]
     },
@@ -651,7 +656,8 @@
         "arxiv",
         "wikipedia",
         "wayback",
-        "deepwiki"
+        "deepwiki",
+        "package-version-check-mcp"
       ]
     },
     "review": {
@@ -662,7 +668,7 @@
         "deepwiki",
         "fetch",
         "duckduckgo-search",
-        "package-version",
+        "package-version-check-mcp",
         "repomix",
         "chrome-devtools"
       ]
@@ -675,7 +681,7 @@
         "context7",
         "deepwiki",
         "fetch",
-        "package-version",
+        "package-version-check-mcp",
         "duckduckgo-search",
         "trafilatura",
         "arxiv",
@@ -691,7 +697,7 @@
         "context7",
         "deepwiki",
         "fetch",
-        "package-version"
+        "package-version-check-mcp"
       ]
     },
     "web-read": {

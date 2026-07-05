@@ -91,15 +91,18 @@ Managed groups are declared in `config/mcp-registry.json` and emitted into
   `review`, `release`, `personal-work`, and `media-work`. For local trim/transcode/thumbnail/GIF work, prefer the repo `/ffmpeg` skill over MCP multimedia servers when the harness has shell access.
 - Capability groups: `web-search`, `web-read`, `docs`, `repo`, `browser`,
   `reasoning`, `reasoning-lab`, `media`, `design`,
-  `productivity`, `accounts`, and `references`.
+  `productivity`, `accounts`, and `references`. The `web-search` and `research`
+  groups include `open-websearch` (no API key; opt-in only, not in default
+  `harness`).
 - Risk/exposure groups: `shared-read`, `credentialed`, `account-backed`,
   `live-browser`, `heavy`, and `experimental`.
 
 The `harness` group is the shared default local harness-facing MCP surface. It
 is not the broad daily bundle; it is the highest-value tool set meant to keep
-MCP schema/context bloat bounded: Brave Search, DuckDuckGo Search, Context7,
-DeepWiki, Fetch, `fetcher` limited to `fetch_urls`, package metadata,
-Chrome DevTools, and Penpot. Broader work should opt into workflow groups such
+MCP schema/context bloat bounded: Brave Search, DuckDuckGo Search, DDGS
+(metasearch/news), Context7, DeepWiki, Fetch, `fetcher` limited to `fetch_urls`,
+package metadata, Chrome DevTools, and Penpot. Prefer DDGS snippet search;
+use `fetch_full_content` only for bounded research (large payloads). Broader work should opt into workflow groups such
 as `daily`, `coding`, `research`, `review`, or `release`. `tunnel` is the
 bounded remote ChatGPT surface and intentionally excludes personal-account,
 live-browser, heavy, and experimental tools.
@@ -129,6 +132,28 @@ After editing the registry, run `just mcphub-generate` and restart MCPHub when
 upstream transport or URL fields change. Dashboard-only OAuth completion does
 not need a registry edit, but you should still verify `/health` and
 `just mcphub-smoke` after reconnecting upstream servers.
+
+When replacing a stdio server slug or launch command, also reconcile machine-local
+`.mcphub/runtime/mcp_settings.json` (gitignored) or restart MCPHub from the
+tracked baseline so the live hub does not keep serving removed servers.
+
+### `package-version-check-mcp` launcher
+
+PyPI `package-version-check-mcp` 1.2.x ships a forward-reference bug in
+`version_parser.py` on Python 3.11+. The repo launches it through
+`scripts/mcphub/package-version-check-mcp.sh`, which patches cached `uvx`
+installs once, then execs `uvx package-version-check-mcp --mode=stdio`.
+
+Warm the launcher before expecting a fast MCPHub connect on cold machines:
+
+```bash
+scripts/mcphub/package-version-check-mcp.sh --help
+just mcphub-doctor
+launchctl kickstart -k "gui/$(id -u)/com.wyattowalsh.mcphub"
+```
+
+Remove the launcher when upstream publishes a fixed wheel; until then keep the
+bash wrapper as the registry `command`.
 
 ## Auth Policy (`auth_policy`)
 

@@ -38,6 +38,8 @@ The official MCP spec describes MCP as an open JSON-RPC based protocol connectin
 
 `supathings` is tracked as an npx-launched stdio MCP from `soycanopa/SupaThings-MCP` using `npx -y supathings-mcp`. Upstream documentation describes a macOS + Things 3 + Node.js 22+ local integration that can read Things data and create or update Things tasks through local automation capabilities.
 
+`open-websearch` is tracked as a stdio MCP from `Aas-ee/open-webSearch` launched via `scripts/mcphub/open-websearch-stdio.sh` → `npx -y open-websearch@latest`. The wrapper forces `MODE=stdio` and `SEARCH_MODE=request` so MCPHub does not start the upstream HTTP daemon or pull Playwright by default. The server is opt-in through MCPHub groups (`web-search`, `research`, `experimental`, plus bounded subsets in `web-read` and `shared-read`) and is excluded from default `harness` and `tunnel` client profiles. Scraping-based engines imply rate limits and untrusted fetched content; proxy and `FETCH_WEB_INSECURE_TLS` overrides belong in user-owned environment only.
+
 ## Provenance
 
 | Claim | Source | Type | Notes |

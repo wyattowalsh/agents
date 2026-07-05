@@ -43,9 +43,9 @@
       "args": ["-y", "fetcher-mcp"],
       "timeout": 600000
     },
-    "package-version": {
-      "command": "/Users/ww/go/bin/mcp-package-version",
-      "args": [],
+    "package-version-check-mcp": {
+      "command": "bash",
+      "args": ["${REPO_ROOT}/scripts/mcphub/package-version-check-mcp.sh"],
       "timeout": 600000
     },
     "repomix": {

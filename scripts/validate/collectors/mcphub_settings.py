@@ -66,11 +66,12 @@ def collect_mcphub_settings_errors(repo_root: Path) -> list[dict[str, str]]:
     expected_harness_servers = [
         "brave-search",
         "duckduckgo-search",
+        "ddgs",
         "context7",
         "deepwiki",
         "fetch",
         "fetcher",
-        "package-version",
+        "package-version-check-mcp",
         "chrome-devtools",
         "penpot",
     ]

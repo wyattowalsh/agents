@@ -58,7 +58,7 @@ NAME_MAP: dict[str, str] = {
     "defaulttools": "default",
     "duck duck go search": "duckduckgo",
     "duckduckgo-search": "duckduckgo",
-    "package version": "package-version",
+    "package version": "package-version-check-mcp",
     "shannon problem solver": "shannon-thinking",
     "structured thinking": "structured-thinking",
 }

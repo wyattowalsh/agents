@@ -193,21 +193,25 @@
       "platform_overrides": {},
       "tools_allow_all": true
     },
-    "package-version": {
+    "package-version-check-mcp": {
       "transport": "stdio",
-      "command": "~/go/bin/mcp-package-version",
-      "args": [],
-      "env": {},
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/package-version-check-mcp.sh"
+      ],
+      "env": {
+        "GITHUB_PAT": {
+          "env_var": "GITHUB_PAT"
+        }
+      },
       "enabled": true,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
-        "check_docker_tags",
-        "check_github_actions",
-        "check_go_versions",
-        "check_npm_versions",
-        "check_pyproject_versions",
-        "check_python_versions"
+        "get_latest_package_versions",
+        "get_github_action_versions_and_args",
+        "get_supported_tools",
+        "get_latest_tool_versions"
       ],
       "tool_approvals": {},
       "platform_overrides": {}
@@ -941,7 +945,7 @@
               "fetch_urls"
             ]
           },
-          "package-version",
+          "package-version-check-mcp",
           "chrome-devtools",
           "penpot"
         ]
@@ -954,7 +958,7 @@
           "context7",
           "deepwiki",
           "fetch",
-          "package-version"
+          "package-version-check-mcp"
         ]
       },
       "daily": {
@@ -972,7 +976,7 @@
               "fetch_urls"
             ]
           },
-          "package-version",
+          "package-version-check-mcp",
           "trafilatura",
           "repomix",
           "chrome-devtools"
@@ -987,7 +991,7 @@
           "fetch",
           "duckduckgo-search",
           "repomix",
-          "package-version",
+          "package-version-check-mcp",
           "ossinsight",
           "chrome-devtools"
         ]
@@ -1006,7 +1010,8 @@
           "arxiv",
           "wikipedia",
           "wayback",
-          "deepwiki"
+          "deepwiki",
+          "package-version-check-mcp"
         ]
       },
       "review": {
@@ -1017,7 +1022,7 @@
           "deepwiki",
           "fetch",
           "duckduckgo-search",
-          "package-version",
+          "package-version-check-mcp",
           "repomix",
           "chrome-devtools"
         ]
@@ -1026,7 +1031,7 @@
         "description": "Release, package, CI artifact, provenance, and eval-readiness workflow.",
         "enabled": true,
         "servers": [
-          "package-version",
+          "package-version-check-mcp",
           "repomix",
           "fetch",
           "trafilatura"
@@ -1086,7 +1091,7 @@
         "enabled": true,
         "servers": [
           "repomix",
-          "package-version",
+          "package-version-check-mcp",
           "ossinsight"
         ]
       },
@@ -1165,7 +1170,7 @@
           "context7",
           "deepwiki",
           "fetch",
-          "package-version",
+          "package-version-check-mcp",
           "duckduckgo-search",
           "trafilatura",
           "arxiv",

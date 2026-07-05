@@ -222,7 +222,7 @@ NAME_MAP = {
     "defaulttools": "default",
     "duck duck go search": "duckduckgo",
     "duckduckgo-search": "duckduckgo",
-    "package version": "package-version",
+    "package version": "package-version-check-mcp",
     "shannon problem solver": "shannon-thinking",
     "structured thinking": "structured-thinking",
 }
@@ -230,6 +230,7 @@ REMOVED_MCP_SERVERS = {
     "ableton",
     "apple-mail",
     "default",
+    "package-version",
     "playwright-headless",
     "serena",
 }
@@ -241,7 +242,7 @@ CORE_INVENTORY = [
     "fetcher",
     "chrome-devtools",
     "docling",
-    "package-version",
+    "package-version-check-mcp",
     "structured-thinking",
     "cascade-thinking",
     "sequential-thinking",
@@ -280,13 +281,11 @@ NORMALIZED_BASES: dict[str, dict[str, Any]] = {
     },
 }
 COPILOT_TOOLS_OVERRIDES = {
-    "package-version": [
-        "check_docker_tags",
-        "check_github_actions",
-        "check_go_versions",
-        "check_npm_versions",
-        "check_pyproject_versions",
-        "check_python_versions",
+    "package-version-check-mcp": [
+        "get_latest_package_versions",
+        "get_github_action_versions_and_args",
+        "get_supported_tools",
+        "get_latest_tool_versions",
     ]
 }
 

@@ -224,9 +224,9 @@
         "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
-    "mcphub_group_harness-safe": {
+    "mcphub_group_harness": {
       "type": "remote",
-      "url": "http://127.0.0.1:46683/mcp/harness-safe",
+      "url": "http://127.0.0.1:46683/mcp/harness",
       "enabled": true,
       "oauth": false,
       "headers": {
@@ -467,9 +467,9 @@
         "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
-    "package-version": {
+    "package-version-check-mcp": {
       "type": "remote",
-      "url": "http://127.0.0.1:46683/mcp/package-version",
+      "url": "http://127.0.0.1:46683/mcp/package-version-check-mcp",
       "enabled": true,
       "oauth": false,
       "headers": {

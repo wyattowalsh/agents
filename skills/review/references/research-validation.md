@@ -50,6 +50,7 @@ Phase 3 (Validate): For each verified hypothesis, spawn research subagent(s). On
 | ---------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | Context7 (resolve-library-id, then query-docs) | Verifying API usage, checking for deprecation, confirming method signatures     | "Is React.createClass still valid in React 18?"      |
 | WebSearch (Brave, DuckDuckGo, Exa)             | Checking current best practices, security advisories, known issues              | "JWT storage best practices 2026"                    |
+| open-websearch MCP (`search`, fetch tools)     | No-API-key multi-engine search and page/README fetch when MCPHub opt-in groups are connected | "current CVE details for library X"                  |
 | WebFetch                                       | Querying package registries, reading changelogs, checking CVE databases         | "https://registry.npmjs.org/express/latest"          |
 | DeepWiki (ask_question)                        | Understanding unfamiliar repo architecture, design decisions, internal patterns | "How does owner/repo handle authentication?"         |
 | gh (GitHub CLI)                                | Checking open issues, security advisories, PR discussions                       | "gh api repos/expressjs/express/security-advisories" |

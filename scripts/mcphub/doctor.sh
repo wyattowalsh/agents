@@ -122,3 +122,15 @@ fi
 
 printf 'SMART_ROUTING_ENABLED: %s\n' "${SMART_ROUTING_ENABLED:-false}"
 printf 'OpenAPI auth note: /api/openapi.json is documented as public; keep MCPHub bound to 127.0.0.1.\n'
+
+launcher="${SCRIPT_DIR}/package-version-check-mcp.sh"
+printf 'package-version-check-mcp launcher: '
+if [[ -x "${launcher}" ]]; then
+  if "${launcher}" --help >/dev/null 2>&1; then
+    printf 'ok\n'
+  else
+    printf 'present but --help failed\n'
+  fi
+else
+  printf 'missing or not executable\n'
+fi

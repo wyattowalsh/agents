@@ -260,10 +260,10 @@
       },
       "disabled": true
     },
-    "mcphub_server_package-version": {
+    "mcphub_server_package-version-check-mcp": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
-        "http://127.0.0.1:46683/mcp/package-version"
+        "http://127.0.0.1:46683/mcp/package-version-check-mcp"
       ],
       "env": {
         "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"

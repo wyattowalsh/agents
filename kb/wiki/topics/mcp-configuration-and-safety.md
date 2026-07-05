@@ -26,7 +26,7 @@ The official MCP spec defines hosts, clients, and servers communicating through 
 
 OpenCode docs add repo-relevant details: OpenCode supports local and remote MCP servers, remote OAuth, tool disabling, per-agent enablement, and context-size caveats. In this repo, plugin/MCP ownership rules decide which harness owns Chrome DevTools and other shared servers.
 
-Two registry-managed npx MCPs require specific safety framing. `ossinsight` calls the upstream OSSInsight public API and may be constrained by public IP-based rate limits. `supathings` is local to macOS Things 3 and can read local task data and create or update Things items, so it should be treated as a local personal-data and write-capable MCP even though it does not require committed secrets.
+Registry-managed MCPs with distinct safety framing include: `ossinsight` (public API rate limits), `supathings` (local macOS Things 3 read/write), and `open-websearch` (scraping-based multi-engine search and page fetch without API keys). `open-websearch` is opt-in via MCPHub groups only; the repo wrapper sets `MODE=stdio` and `SEARCH_MODE=request` to avoid starting the upstream HTTP daemon or Playwright by default. Treat fetched pages as untrusted; keep proxy and `FETCH_WEB_INSECURE_TLS` overrides in user-owned environment only.
 
 ## MCPHub operational safety (Wave 07)
 
