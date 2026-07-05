@@ -6,17 +6,17 @@ Workflow-first groups from `config/mcp-registry.json`. Local managed harnesses d
 
 | Group | When to connect |
 | --- | --- |
-| `harness` | Default local baseline: bounded high-signal set with search, docs, URL fetch, package metadata, Chrome DevTools, and Penpot |
+| `harness` | Default local baseline: bounded high-signal set with search, docs, llms.txt catalog (`llms-txt-explorer` `list_websites` only), URL fetch, package metadata, Chrome DevTools, and Penpot |
 | `daily` | Routine opt-in expansion for broader repo, browser, and web reading |
 | `coding` | Code-agent context: docs, URL fetch, repo, dependency, and browser inspection |
-| `research` | Web and reference research across search (including `open-websearch`), read, archive, and wiki surfaces |
+| `research` | Web and reference research across search (including `open-websearch`), read, archive, wiki, and `scrapling` scraping surfaces |
 | `review` | Repo review, docs/source lookup, generated evidence, and browser inspection |
 | `release` | Release checks: versions, repo context, source reads, and package metadata |
 | `personal-work` | Account-backed work suites — explicit user intent only |
-| `media-work` | Document, 3D, and web-ingestion suites; prefer **`/ffmpeg`** skill plus local CLIs for deterministic ffmpeg-style media transforms (not ffmpeg MCP by default) |
+| `media-work` | Document, 3D, and web-ingestion suites (`scrapling` for advanced page extraction); prefer **`/ffmpeg`** skill plus local CLIs for deterministic ffmpeg-style media transforms (not ffmpeg MCP by default) |
 | `web-search` | Search APIs across Brave, DuckDuckGo, DDGS (metasearch/news), Tavily, Exa, Google search (`g-search`), and no-API-key multi-engine `open-websearch` |
-| `web-read` | URL ingestion without search APIs (fetch, fetcher, trafilatura, wayback; bounded `open-websearch` fetch tools) |
-| `docs` | Library/framework documentation lookup |
+| `web-read` | URL ingestion without search APIs (fetch, fetcher, trafilatura, wayback; bounded `open-websearch` fetch tools; bounded `scrapling` `get`/`bulk_get`) |
+| `docs` | Library/framework documentation lookup plus full `llms-txt-explorer` (`check_website`, `list_websites`) |
 | `repo` | Repo/dependency intelligence (repomix, package-version-check-mcp, ossinsight) |
 | `browser` | Live Chrome automation (chrome-devtools) |
 | `reasoning` | Hard problems only — three curated thinkers |
@@ -29,9 +29,9 @@ Workflow-first groups from `config/mcp-registry.json`. Local managed harnesses d
 | `shared-read` | Broad read-only shared surface for trusted local expansion |
 | `credentialed` | API-key/OAuth-backed shared services |
 | `account-backed` | Personal/account-backed connectors |
-| `live-browser` | Browser/session-bound connectors |
-| `heavy` | High-output or high-runtime servers |
-| `experimental` | Bleeding-edge servers — opt-in (`open-websearch`, `g-search`, …) |
+| `live-browser` | Browser/session-bound connectors (`scrapling` sessions, stealth fetch) |
+| `heavy` | High-output or high-runtime servers (`scrapling` browser spawn) |
+| `experimental` | Bleeding-edge servers — opt-in (`open-websearch`, `scrapling`, `g-search`, …) |
 | `tunnel` | **ChatGPT remote only** — not for local harness default |
 
 ## Decision flow

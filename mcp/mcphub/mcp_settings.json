@@ -219,6 +219,13 @@
       ],
       "timeout": 600000
     },
+    "llms-txt-explorer": {
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/llms-txt-explorer-stdio.sh"
+      ],
+      "timeout": 600000
+    },
     "lotus-wisdom-mcp": {
       "command": "node",
       "args": [
@@ -465,6 +472,7 @@
       "servers": [
         "context7",
         "deepwiki",
+        "llms-txt-explorer",
         "fetch",
         "duckduckgo-search",
         "ddgs",
@@ -494,6 +502,7 @@
         "ddgs",
         "context7",
         "deepwiki",
+        "llms-txt-explorer",
         "fetch",
         {
           "name": "fetcher",
@@ -519,7 +528,8 @@
       "description": "Library, framework, repo docs, and docs graph lookup.",
       "servers": [
         "context7",
-        "deepwiki"
+        "deepwiki",
+        "llms-txt-explorer"
       ]
     },
     "experimental": {
@@ -547,6 +557,12 @@
         "ddgs",
         "context7",
         "deepwiki",
+        {
+          "name": "llms-txt-explorer",
+          "tools": [
+            "list_websites"
+          ]
+        },
         "fetch",
         {
           "name": "fetcher",
@@ -670,6 +686,7 @@
         "tavily",
         "exa",
         "open-websearch",
+        "llms-txt-explorer",
         "fetch",
         "fetcher",
         "trafilatura",
@@ -686,6 +703,7 @@
       "servers": [
         "context7",
         "deepwiki",
+        "llms-txt-explorer",
         "fetch",
         "duckduckgo-search",
         "ddgs",
@@ -701,6 +719,7 @@
         "brave-search",
         "context7",
         "deepwiki",
+        "llms-txt-explorer",
         "fetch",
         "package-version-check-mcp",
         "duckduckgo-search",
@@ -735,6 +754,7 @@
       "servers": [
         "fetch",
         "fetcher",
+        "llms-txt-explorer",
         "trafilatura",
         "wayback",
         {

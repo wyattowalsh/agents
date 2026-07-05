@@ -27,7 +27,7 @@ MCPHub uses this to produce `mcp_settings.json`; `scripts/sync_agent_stack.py` c
 
 ## What It Controls
 
-- ~35 MCP servers (brave-search, duckduckgo-search, ddgs, chrome-devtools, context7, fetch, repomix, docling, arxiv, wikipedia, gmail, linkedin, thinking servers, etc.; ffmpeg is registered but disabled in favor of skill/CLI routing)
+- ~36 MCP servers (brave-search, duckduckgo-search, ddgs, chrome-devtools, context7, llms-txt-explorer, fetch, repomix, docling, arxiv, wikipedia, gmail, linkedin, thinking servers, etc.; ffmpeg is registered but disabled in favor of skill/CLI routing). Default `harness` exposes `llms-txt-explorer` as `list_websites` only; `check_website` is opt-in via workflow groups and excluded from `tunnel`.
 - Per-server: transport, command (often npx/uvx with repo wrappers for chrome-devtools), env (API keys via placeholders), enabled, timeouts, tools list or `*` + tools_allow_all, tool_approvals, platform_overrides, exclude_from_harnesses, ownership rules (plugin vs extension vs repo_mcp)
 - Named groups for targeting (`harness`, `tunnel`, `daily`, `coding`, `research`, `review`, `release`, capability groups, and risk/exposure groups)
 - Client defaults and overrides (transport, auth, included_groups, enable_server_endpoints, etc.)
@@ -43,6 +43,8 @@ Projections target:
 - Repo `mcp.json` (distribution manifest) and `~/.config/...` home merges/generates.
 
 See `config/sync-manifest.json` for which outputs are generated vs merged.
+
+
 
 
 
@@ -660,6 +662,23 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "platform_overrides": {},
       "tools_allow_all": true
     },
+    "llms-txt-explorer": {
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/llms-txt-explorer-stdio.sh"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
     "lotus-wisdom-mcp": {
       "transport": "stdio",
       "command": "node",
@@ -1076,6 +1095,12 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "ddgs",
           "context7",
           "deepwiki",
+          {
+            "name": "llms-txt-explorer",
+            "tools": [
+              "list_websites"
+            ]
+          },
           "fetch",
           {
             "name": "fetcher",
@@ -1108,6 +1133,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "ddgs",
           "context7",
           "deepwiki",
+          "llms-txt-explorer",
           "fetch",
           {
             "name": "fetcher",
@@ -1127,6 +1153,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "servers": [
           "context7",
           "deepwiki",
+          "llms-txt-explorer",
           "fetch",
           "duckduckgo-search",
           "ddgs",
@@ -1146,6 +1173,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "tavily",
           "exa",
           "open-websearch",
+          "llms-txt-explorer",
           "fetch",
           "fetcher",
           "trafilatura",
@@ -1162,6 +1190,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "servers": [
           "context7",
           "deepwiki",
+          "llms-txt-explorer",
           "fetch",
           "duckduckgo-search",
           "ddgs",
@@ -1219,6 +1248,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "servers": [
           "fetch",
           "fetcher",
+          "llms-txt-explorer",
           "trafilatura",
           "wayback",
           {
@@ -1235,7 +1265,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "enabled": true,
         "servers": [
           "context7",
-          "deepwiki"
+          "deepwiki",
+          "llms-txt-explorer"
         ]
       },
       "repo": {
@@ -1321,6 +1352,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "brave-search",
           "context7",
           "deepwiki",
+          "llms-txt-explorer",
           "fetch",
           "package-version-check-mcp",
           "duckduckgo-search",

@@ -1,0 +1,32 @@
+{
+  "audited_at": "2026-07-05",
+  "upstream_repo": "thedaviddias/mcp-llms-txt-explorer",
+  "upstream_head_sha": "main",
+  "npm_package": "@thedaviddias/mcp-llms-txt-explorer",
+  "npm_version": "0.2.0",
+  "npm_runtime_pin": "@thedaviddias/mcp-llms-txt-explorer@0.2.0",
+  "license": "MIT",
+  "quarantine_status": "clear",
+  "skills_cli_list": {
+    "command": "n/a",
+    "skills": [],
+    "catalog_skill": null
+  },
+  "mcp_tools_documented": [
+    "check_website",
+    "list_websites"
+  ],
+  "verification_method": "upstream-readme-plus-runtime-stdio-probe",
+  "mcp_tools_source": "upstream README.md and src/index.ts at audited pin; runtime tools/list in tools-list.json when G3 passes",
+  "fleet_wrapper": "scripts/mcphub/llms-txt-explorer-stdio.sh",
+  "default_harness_membership": "bounded-list_websites-only",
+  "default_tunnel_membership": false,
+  "trust_tier": "install-now-after-trust-gate",
+  "risk_notes": [
+    "check_website fetches arbitrary domains and up to three linked URLs from llms.txt without private-IP blocklist (SSRF risk)",
+    "Returned llms.txt bodies may contain prompt-injection instructions; treat as untrusted evidence",
+    "Cold start fetches websites.json from raw.githubusercontent.com before stdio connect",
+    "Broad network egress on check_website; opt-in workflow groups only for fetch-heavy tool"
+  ],
+  "dedupe_summary": "Complements context7/deepwiki/fetch with llms.txt discovery; harness default is catalog-only via list_websites"
+}

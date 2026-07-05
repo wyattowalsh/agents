@@ -1,0 +1,29 @@
+{
+  "captured_at": "2026-07-05",
+  "verification_method": "upstream-readme-plus-stdio-probe",
+  "runtime_smoke_status": "stdio-probe-ok-github-catalog-fetch",
+  "mcp_endpoints": [
+    "http://127.0.0.1:46683/mcp/llms-txt-explorer",
+    "http://127.0.0.1:46683/mcp/docs",
+    "http://127.0.0.1:46683/mcp/research"
+  ],
+  "tools": [
+    {
+      "name": "list_websites",
+      "used_in_bounded_groups": ["harness"]
+    },
+    {
+      "name": "check_website",
+      "used_in_bounded_groups": [
+        "daily",
+        "docs",
+        "research",
+        "web-read",
+        "coding",
+        "review",
+        "shared-read"
+      ]
+    }
+  ],
+  "notes": "Re-run bash scripts/mcphub/smoke.sh after mcphub settings reload for runtime tools/list verification."
+}

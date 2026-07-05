@@ -558,6 +558,23 @@
       "platform_overrides": {},
       "tools_allow_all": true
     },
+    "llms-txt-explorer": {
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/llms-txt-explorer-stdio.sh"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
     "lotus-wisdom-mcp": {
       "transport": "stdio",
       "command": "node",
@@ -974,6 +991,12 @@
           "ddgs",
           "context7",
           "deepwiki",
+          {
+            "name": "llms-txt-explorer",
+            "tools": [
+              "list_websites"
+            ]
+          },
           "fetch",
           {
             "name": "fetcher",
@@ -1006,6 +1029,7 @@
           "ddgs",
           "context7",
           "deepwiki",
+          "llms-txt-explorer",
           "fetch",
           {
             "name": "fetcher",
@@ -1025,6 +1049,7 @@
         "servers": [
           "context7",
           "deepwiki",
+          "llms-txt-explorer",
           "fetch",
           "duckduckgo-search",
           "ddgs",
@@ -1044,6 +1069,7 @@
           "tavily",
           "exa",
           "open-websearch",
+          "llms-txt-explorer",
           "fetch",
           "fetcher",
           "trafilatura",
@@ -1060,6 +1086,7 @@
         "servers": [
           "context7",
           "deepwiki",
+          "llms-txt-explorer",
           "fetch",
           "duckduckgo-search",
           "ddgs",
@@ -1117,6 +1144,7 @@
         "servers": [
           "fetch",
           "fetcher",
+          "llms-txt-explorer",
           "trafilatura",
           "wayback",
           {
@@ -1133,7 +1161,8 @@
         "enabled": true,
         "servers": [
           "context7",
-          "deepwiki"
+          "deepwiki",
+          "llms-txt-explorer"
         ]
       },
       "repo": {
@@ -1219,6 +1248,7 @@
           "brave-search",
           "context7",
           "deepwiki",
+          "llms-txt-explorer",
           "fetch",
           "package-version-check-mcp",
           "duckduckgo-search",

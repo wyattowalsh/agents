@@ -93,19 +93,25 @@ Managed groups are declared in `config/mcp-registry.json` and emitted into
   `reasoning`, `reasoning-lab`, `media`, `design`,
   `productivity`, `accounts`, and `references`. The `web-search` and `research`
   groups include `open-websearch` (no API key; opt-in only, not in default
-  `harness`).
+  `harness`). `scrapling` (CSS-targeted scraping, anti-bot fetch; opt-in only)
+  is in `research`, `media-work`, `live-browser`, `heavy`, and `experimental`
+  (full server), plus bounded HTTP subsets in `web-read` and `shared-read`.
+  Browser tools require a one-time `scrapling install` on the maintainer machine.
 - Risk/exposure groups: `shared-read`, `credentialed`, `account-backed`,
   `live-browser`, `heavy`, and `experimental`.
 
 The `harness` group is the shared default local harness-facing MCP surface. It
 is not the broad daily bundle; it is the highest-value tool set meant to keep
 MCP schema/context bloat bounded: Brave Search, DuckDuckGo Search, DDGS
-(metasearch/news), Context7, DeepWiki, Fetch, `fetcher` limited to `fetch_urls`,
-package metadata, Chrome DevTools, and Penpot. Prefer DDGS snippet search;
+(metasearch/news), Context7, DeepWiki, `llms-txt-explorer` limited to
+`list_websites`, Fetch, `fetcher` limited to `fetch_urls`, package metadata,
+Chrome DevTools, and Penpot. Use `check_website` only via opt-in workflow groups
+(`daily`, `docs`, `research`, `web-read`, `coding`, `review`, `shared-read`) because it
+performs agent-controlled HTTP fetches. Prefer DDGS snippet search;
 use `fetch_full_content` only for bounded research (large payloads). Broader work should opt into workflow groups such
 as `daily`, `coding`, `research`, `review`, or `release`. `tunnel` is the
-bounded remote ChatGPT surface and intentionally excludes personal-account,
-live-browser, heavy, and experimental tools.
+bounded remote ChatGPT surface and intentionally excludes `llms-txt-explorer`,
+personal-account, live-browser, heavy, and experimental tools.
 
 ## Adding Or Removing Servers
 

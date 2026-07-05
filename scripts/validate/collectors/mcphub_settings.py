@@ -69,6 +69,7 @@ def collect_mcphub_settings_errors(repo_root: Path) -> list[dict[str, str]]:
         "ddgs",
         "context7",
         "deepwiki",
+        "llms-txt-explorer",
         "fetch",
         "fetcher",
         "package-version-check-mcp",

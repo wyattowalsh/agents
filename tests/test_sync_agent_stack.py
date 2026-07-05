@@ -302,6 +302,7 @@ def test_repo_workflow_groups_and_bounded_clients():
         "ddgs",
         "context7",
         "deepwiki",
+        "llms-txt-explorer",
         "fetch",
         "fetcher",
         "package-version-check-mcp",
@@ -309,12 +310,17 @@ def test_repo_workflow_groups_and_bounded_clients():
         "penpot",
     ]
     assert {"name": "fetcher", "tools": ["fetch_urls"]} in harness_group["servers"]
+    assert {
+        "name": "llms-txt-explorer",
+        "tools": ["list_websites"],
+    } in harness_group["servers"]
     assert group_server_names(registry["mcphub"]["groups"]["daily"]) == [
         "brave-search",
         "duckduckgo-search",
         "ddgs",
         "context7",
         "deepwiki",
+        "llms-txt-explorer",
         "fetch",
         "fetcher",
         "package-version-check-mcp",

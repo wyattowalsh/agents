@@ -175,6 +175,13 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_llms-txt-explorer]
+url = "http://127.0.0.1:46683/mcp/llms-txt-explorer"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_lotus-wisdom-mcp]
 url = "http://127.0.0.1:46683/mcp/lotus-wisdom-mcp"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
