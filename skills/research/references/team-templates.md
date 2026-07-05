@@ -39,7 +39,7 @@ Dispatch 3-5 parallel research tasks with the platform's available delegation pr
 >
 > **Sub-question:** [sub_question]
 > **Query context:** [parent query for framing]
-> **Capabilities to use:** docs-index lookup (`llms.txt`/`llms-full.txt`) first, then current docs search, repository analysis, and package-version lookup
+> **Capabilities to use:** docs-index lookup (`llms.txt`/`llms-full.txt`) first, then current docs search, repository analysis, and package-version-check-mcp lookup
 >
 > Search official documentation and repository wikis. For each finding:
 > - Extract the specific technical claim with version context
@@ -90,8 +90,8 @@ Create a research team named `research-{slug}` where slug is 2-4 words from the 
 ```
 Lead: triage (Wave 0), orchestrate waves, judge reconcile (Wave 3), synthesize (Wave 4)
   |-- web-researcher:       brave-search, duckduckgo-search, exa, g-search
-  |-- tech-researcher:      context7, deepwiki, arxiv, semantic-scholar, package-version
-  |-- content-extractor:    fetcher, trafilatura, docling, wikipedia, wayback
+  |-- tech-researcher:      context7, deepwiki, arxiv, semantic-scholar, package-version-check-mcp
+  |-- content-extractor:    /trafilatura (shell), fetcher, trafilatura MCP, docling, wikipedia, wayback
   |-- [academic-researcher: arxiv, semantic-scholar, openalex, crossref, PubMed]
   |-- [adversarial-reviewer: counter-search all emerging findings]
 ```
@@ -233,7 +233,7 @@ Resolve capabilities before dispatching:
 | Need | Preferred | Fallback |
 |------|-----------|----------|
 | Web search | brave-search, duckduckgo-search, exa, g-search, tavily | Any two independent web search engines |
-| Current technical docs | `llms.txt`/`llms-full.txt`, Context7/doc-search, package-version | Official docs via web search with confidence ceiling |
+| Current technical docs | `llms.txt`/`llms-full.txt`, Context7/doc-search, package-version-check-mcp | Official docs via web search with confidence ceiling |
 | Content extraction | fetcher, trafilatura, docling, fetch | Search snippets plus source limitation note |
 | Team delegation | TeamCreate, Task, Codex dynamic subagents, native workers | Serial batches with degraded-orchestration label |
 | Structured reasoning | structured-thinking, cascade-thinking, think-strategies | Inline evidence table and explicit assumptions |

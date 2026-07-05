@@ -12,6 +12,7 @@ Tool names below are preferred implementations, not hard dependencies. If a name
 |------|----------|-----------|---------|
 | Brave Search | `brave-search` → `brave_web_search` | General web, news, local results | Fast |
 | DuckDuckGo | `duckduckgo-search` → `search` | Privacy-respecting index, different ranking | Fast |
+| DDGS | `ddgs` → `search_text`, `search_news` | Multi-engine metasearch, news; optional full-page extract (heavy) | Medium |
 | Exa | `exa` → `search` | Semantic search, embeddings-based retrieval | Medium |
 | G-Search | `g-search` → `search` | Google index via API | Fast |
 | Tavily | `tavily` → `tavily_search`, `tavily_research` | AI-optimized snippets, deep research mode | Medium |
@@ -49,7 +50,7 @@ Tool names below are preferred implementations, not hard dependencies. If a name
 | Tool | MCP Name | Use For |
 |------|----------|---------|
 | Repomix | `repomix` → `pack_codebase`, `pack_remote_repository` | Full codebase analysis, remote repo packing |
-| Package Version | `package-version` → `check_npm_versions`, `check_pyproject_versions`, `check_go_versions` | Dependency version checks, latest release info |
+| Package Version | `package-version-check-mcp` → `get_latest_package_versions`, `get_github_action_versions_and_args`, `get_latest_tool_versions` | Dependency and devtool version checks across npm, PyPI, Go, Docker, Terraform, GitHub Actions, mise tools |
 
 ### Historical
 
@@ -79,6 +80,7 @@ Tool names below are preferred implementations, not hard dependencies. If a name
 |---------------|-----------|----------------------|-------|
 | Local media transform (trim, transcode, concat, thumbnails) | `/ffmpeg` skill + system `ffmpeg`/`ffprobe` | `ffmpeg` MCP only when shell-less | Probe-first recipes; MCP disabled by default in `media-work` |
 | Video/audio URL probe, captions, download | `/yt-dlp` skill + system `yt-dlp` | Fetch MCP / `curl` for static pages | Transcript-first protocol; not for multi-source research synthesis |
+| HTML article / main-text extraction | `/trafilatura` skill + system `trafilatura` CLI | `trafilatura` MCP when shell-less | Stdout-first; discovery `--list` default; batch approval-gated |
 | Authorized live offensive testing (signed ROE) | `/pentest` skill + `scope_check.py` | Operator-owned CLIs after scope gate | Planning/checklists only — no automated exploitation |
 | Pentest tool taxonomy / MCP offload | `/pentest` playbooks + findings schema | `hexstrike` MCP | Prefer skill-first synthesis; avoid hexstrike MCP unless harness has no shell and user explicitly opts in |
 
@@ -88,16 +90,16 @@ Select tools based on the domain signals detected in the query.
 
 | Domain Signal | Primary Tools | Secondary Tools | Notes |
 |--------------|---------------|-----------------|-------|
-| Library/API docs | `llms.txt`/`llms-full.txt`, context7, deepwiki, package-version | brave-search, fetch | Try docs indexes first, then Context7/doc-search, then web search |
+| Library/API docs | `llms.txt`/`llms-full.txt`, context7, deepwiki, package-version-check-mcp | brave-search, fetch | Try docs indexes first, then Context7/doc-search, then web search |
 | Academic/scientific | arxiv, semantic-scholar, PubMed | openalex, crossref, brave-search | Use PubMed only for biomedical; crossref for DOI resolution |
 | Current events/trends | brave-search, exa, tavily | duckduckgo-search, g-search, fetcher | Use 2+ engines; exa for semantic relevance |
-| GitHub repos/OSS | deepwiki, repomix | brave-search, package-version | deepwiki for architecture; repomix for code-level analysis |
+| GitHub repos/OSS | deepwiki, repomix | brave-search, package-version-check-mcp | deepwiki for architecture; repomix for code-level analysis |
 | General knowledge | wikipedia, wikidata, brave-search | fetcher, trafilatura | Wikidata for structured facts; wikipedia for narrative context |
 | Historical content | wayback, brave-search | fetcher, trafilatura | Wayback for deleted/changed pages |
 | Fact-checking | 3+ search engines mandatory | wikidata for structured claims | Use brave-search + duckduckgo-search + exa minimum |
 | PDF/document analysis | docling, trafilatura | fetcher, fetch | Docling for tables/structured data; trafilatura for article text |
 | Market/competitive | brave-search, exa, tavily | fetcher, trafilatura | Combine web search with content extraction for depth |
-| Technical comparison | context7, brave-search, deepwiki | package-version, exa | Ground comparisons in official docs |
+| Technical comparison | context7, brave-search, deepwiki | package-version-check-mcp, exa | Ground comparisons in official docs |
 
 ## Multi-Engine Search Protocol
 
@@ -132,7 +134,7 @@ When tools are unavailable, apply confidence ceilings and use fallbacks. Check a
 | PubMed | 0.6 max | semantic-scholar + brave-search for biomedical | Loses full-text access |
 | fetcher + trafilatura | 0.5 max | brave-search snippets only; skip deep reads | Cannot extract full page content |
 | docling | 0.5 max | trafilatura for HTML; skip PDF analysis | Cannot parse PDFs or tables |
-| package-version | 0.6 max | brave-search + fetcher for registry lookups | Manual version checking |
+| package-version-check-mcp | 0.6 max | brave-search + fetcher for registry lookups | Manual version checking |
 | wayback | 0.6 max | brave-search cache; note historical data unavailable | Cannot access deleted content |
 | All research tools | 0.4 max | LLM knowledge only; label ALL findings "unverified" | Report degraded mode in header |
 
@@ -142,7 +144,7 @@ For library, API, framework, package, or tool research:
 
 1. Try authoritative docs indexes: `{docs_url}/llms.txt`, `{docs_url}/llms-full.txt`, `{domain}/llms.txt`, `docs.{domain}/llms.txt`, then `{domain}/docs/llms.txt`.
 2. If the docs index is unavailable or incomplete, use Context7/doc-search style tools for current API signatures and deprecation notes.
-3. Use package-version tools for release/version facts.
+3. Use package-version-check-mcp tools for release/version facts.
 4. Use web search only after authoritative docs paths are exhausted or when searching for community reports, incidents, or adoption evidence.
 5. Cite the authority level in the finding's evidence metadata.
 
