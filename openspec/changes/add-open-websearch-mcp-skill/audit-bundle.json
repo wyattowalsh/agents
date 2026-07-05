@@ -1,0 +1,35 @@
+{
+  "audited_at": "2026-07-04",
+  "upstream_repo": "Aas-ee/open-webSearch",
+  "upstream_head_sha": "3094fa558fce35a8373e45ed5a6c43362e206906",
+  "npm_package": "open-websearch",
+  "npm_version": "2.1.11",
+  "npm_runtime_pin": "open-websearch@2.1.11",
+  "license": "MIT",
+  "quarantine_status": "clear",
+  "skills_cli_list": {
+    "command": "npx skills add https://github.com/Aas-ee/open-webSearch --list",
+    "skills": [
+      "open-websearch",
+      "open-websearch-maintainer"
+    ],
+    "catalog_skill": "open-websearch"
+  },
+  "mcp_tools_documented": [
+    "search",
+    "fetchWebContent",
+    "fetchGithubReadme"
+  ],
+  "verification_method": "static-skill-allowed-tools-plus-runtime-tools-list",
+  "mcp_tools_source": "upstream skills/open-websearch/SKILL.md allowed-tools at audited HEAD; runtime tools/list in tools-list.json when G3 passes",
+  "fleet_wrapper": "scripts/mcphub/open-websearch-stdio.sh",
+  "default_harness_membership": false,
+  "trust_tier": "install-now-after-trust-gate",
+  "risk_notes": [
+    "Scraping-based search engines; rate limits and ToS apply",
+    "Optional Playwright for Bing; wrapper defaults SEARCH_MODE=request",
+    "Broad network egress; treat fetched content as untrusted",
+    "FETCH_WEB_INSECURE_TLS and proxy settings are user-owned only"
+  ],
+  "dedupe_summary": "Complements brave-search, duckduckgo-search, ddgs, tavily, exa, g-search with no-API-key multi-engine search plus article/README fetch; not a harness default replacement"
+}

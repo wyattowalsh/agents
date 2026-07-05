@@ -11,6 +11,18 @@
       "orphan_count": 135,
       "total_internal_links": 380,
       "total_pages": 874
+    },
+    {
+      "date": "2026-07-04",
+      "orphan_count": 136,
+      "total_internal_links": 380,
+      "total_pages": 875
+    },
+    {
+      "date": "2026-07-05",
+      "orphan_count": 136,
+      "total_internal_links": 381,
+      "total_pages": 876
     }
   ],
   "latest": {
@@ -22,6 +34,10 @@
       {
         "backlinks": 2,
         "slug": "/contributing"
+      },
+      {
+        "backlinks": 2,
+        "slug": "/harness-config/mcp-registry"
       },
       {
         "backlinks": 2,
@@ -49,10 +65,6 @@
       },
       {
         "backlinks": 1,
-        "slug": "/harness-config/mcp-registry"
-      },
-      {
-        "backlinks": 1,
         "slug": "/harness-config/plugin-skill-ownership"
       },
       {
@@ -77,7 +89,7 @@
       }
     ],
     "note": "Counts absolute-path markdown links only (paths like /foo/); relative links are not resolved.",
-    "orphan_count": 135,
+    "orphan_count": 136,
     "orphan_pages": [
       "/agents/agent-change-recorder",
       "/agents/agent-eval-runner",
@@ -202,6 +214,7 @@
       "/skills/catalog/custom/skill-tag-taxonomist",
       "/skills/catalog/custom/skill-token-budget-linter",
       "/skills/catalog/custom/skill-trace-debugger",
+      "/skills/catalog/custom/trafilatura",
       "/skills/catalog/external/a11y-debugging",
       "/skills/catalog/external/apm-cli",
       "/skills/catalog/external/chrome-devtools",
@@ -215,7 +228,7 @@
       "/surfaces/instructions",
       "/surfaces/tools"
     ],
-    "total_internal_links": 380,
-    "total_pages": 874
+    "total_internal_links": 381,
+    "total_pages": 876
   }
 }

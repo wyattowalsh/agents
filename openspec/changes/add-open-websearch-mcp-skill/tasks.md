@@ -1,0 +1,21 @@
+# Tasks
+
+## Implementation
+
+- [x] Add `scripts/mcphub/open-websearch-stdio.sh` with fleet-safe stdio defaults.
+- [x] Add `open-websearch` to `config/mcp-registry.json` with opt-in group memberships.
+- [x] Add `tests/test_open_websearch_registry.py`.
+- [x] Author `docs/src/authoring/skills/open-websearch.mdx`.
+- [x] Regenerate `mcp/mcphub/mcp_settings.json` and repo MCP surfaces.
+- [x] Update maintainer docs (mcphub.md, mcphub-operator, review validation, KB).
+
+## Documentation
+
+- [x] Record audit evidence in `audit-bundle.json` and catalog MDX body.
+- [x] Refresh generated docs surfaces.
+
+## Verification
+
+- [x] Run registry, sync, validate, docs, and catalog dry-run commands.
+- [ ] Runtime mcphub-smoke after hub settings reload (degraded: empty reply during session).
+- [ ] Three atomic git commits C1→C2→C3 (registry still mixed in working tree; use `git add -p` or stash rebuild).

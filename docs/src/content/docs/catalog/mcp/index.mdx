@@ -7,6 +7,25 @@ import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 First-party MCP servers authored under `mcp/<name>/`. Detail pages: [`/mcp/`](/mcp/).
 
-<Aside type="note" title="No MCP servers yet">
-This repository has no first-party MCP packages indexed. Run `wagents new mcp <name>` to scaffold a server, then `wagents docs generate` to refresh this catalog.
-</Aside>
+<div class="stats-bar">
+  <span class="stat stat-mcp">16 MCP servers indexed</span>
+</div>
+
+<CardGrid>
+  <LinkCard title="agent-catalog" href="/mcp/agent-catalog/" description="Read-only MCP server exposing the repo agent catalog (agents/, agent -&gt; skill/mcp cross-reference edges)" />
+  <LinkCard title="changelog-digest" href="/mcp/changelog-digest/" description="Stub MCP server for changelog digest summaries" />
+  <LinkCard title="ci-artifacts" href="/mcp/ci-artifacts/" description="Read-only MCP server for docs/public/generated-reports CI JSON and artifact registry metadata" />
+  <LinkCard title="docs-graph" href="/mcp/docs-graph/" description="Read-only MCP server exposing docs/public/generated-reports/docs-graph-snapshot.json" />
+  <LinkCard title="docs-index" href="/mcp/docs-index/" description="Read-only MCP server exposing generated docs reports (docs/public/generated-reports/*.json) and content page metadata" />
+  <LinkCard title="eval-results" href="/mcp/eval-results/" description="Read-only MCP server exposing wagents eval list/coverage/adequacy/validate results" />
+  <LinkCard title="mcphub" href="/mcp/mcphub/" description="MCPHub control-plane metadata MCP server" />
+  <LinkCard title="oauth-reference" href="/mcp/oauth-reference/" description="Read-only OAuth MCP configuration reference shape for maintainers" />
+  <LinkCard title="registry-publisher" href="/mcp/registry-publisher/" description="Stub MCP server for future registry publishing workflows" />
+  <LinkCard title="release-provenance" href="/mcp/release-provenance/" description="Read-only MCP server for release and provenance manifests and workflows" />
+  <LinkCard title="repo-readonly" href="/mcp/repo-readonly/" description="Read-only MCP server exposing an allowlisted subset of repo files (skills/, agents/, mcp/, docs/, config/, openspec/, ...)" />
+  <LinkCard title="sandbox-profiles" href="/mcp/sandbox-profiles/" description="Stub MCP server for sandbox profile reference data" />
+  <LinkCard title="skill-catalog" href="/mcp/skill-catalog/" description="Read-only MCP server exposing the repo skill catalog (skills/, docs/public/generated-registries/skills-catalog-index.json)" />
+  <LinkCard title="source-url-health" href="/mcp/source-url-health/" description="Read-only MCP server that checks the reachability of skill/agent/mcp source URLs over HTTP" />
+  <LinkCard title="template-smoke" href="/mcp/template-smoke/" description="Read-only MCP server for dry-run MCP scaffold and layout validation" />
+  <LinkCard title="workflow-status" href="/mcp/workflow-status/" description="Read-only MCP server summarizing .github/workflows YAML files" />
+</CardGrid>

@@ -226,6 +226,13 @@
       ],
       "timeout": 600000
     },
+    "open-websearch": {
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/open-websearch-stdio.sh"
+      ],
+      "timeout": 600000
+    },
     "ossinsight": {
       "command": "npx",
       "args": [
@@ -460,11 +467,11 @@
         "deepwiki",
         "fetch",
         "duckduckgo-search",
+        "ddgs",
         "repomix",
         "package-version-check-mcp",
         "ossinsight",
-        "chrome-devtools",
-        "ddgs"
+        "chrome-devtools"
       ]
     },
     "credentialed": {
@@ -484,6 +491,7 @@
       "servers": [
         "brave-search",
         "duckduckgo-search",
+        "ddgs",
         "context7",
         "deepwiki",
         "fetch",
@@ -496,8 +504,7 @@
         "package-version-check-mcp",
         "trafilatura",
         "repomix",
-        "chrome-devtools",
-        "ddgs"
+        "chrome-devtools"
       ]
     },
     "design": {
@@ -521,6 +528,7 @@
       "servers": [
         "exa",
         "g-search",
+        "open-websearch",
         "atom-of-thoughts",
         "crash",
         "creative-thinking",
@@ -536,6 +544,7 @@
       "servers": [
         "brave-search",
         "duckduckgo-search",
+        "ddgs",
         "context7",
         "deepwiki",
         "fetch",
@@ -547,8 +556,7 @@
         },
         "package-version-check-mcp",
         "chrome-devtools",
-        "penpot",
-        "ddgs"
+        "penpot"
       ]
     },
     "heavy": {
@@ -658,8 +666,10 @@
       "servers": [
         "brave-search",
         "duckduckgo-search",
+        "ddgs",
         "tavily",
         "exa",
+        "open-websearch",
         "fetch",
         "fetcher",
         "trafilatura",
@@ -667,8 +677,7 @@
         "wikipedia",
         "wayback",
         "deepwiki",
-        "package-version-check-mcp",
-        "ddgs"
+        "package-version-check-mcp"
       ]
     },
     "review": {
@@ -679,10 +688,10 @@
         "deepwiki",
         "fetch",
         "duckduckgo-search",
+        "ddgs",
         "package-version-check-mcp",
         "repomix",
-        "chrome-devtools",
-        "ddgs"
+        "chrome-devtools"
       ]
     },
     "shared-read": {
@@ -695,11 +704,18 @@
         "fetch",
         "package-version-check-mcp",
         "duckduckgo-search",
+        "ddgs",
         "trafilatura",
         "arxiv",
         "wikipedia",
         "wayback",
-        "ddgs"
+        {
+          "name": "open-websearch",
+          "tools": [
+            "search",
+            "fetchWebContent"
+          ]
+        }
       ]
     },
     "tunnel": {
@@ -720,7 +736,14 @@
         "fetch",
         "fetcher",
         "trafilatura",
-        "wayback"
+        "wayback",
+        {
+          "name": "open-websearch",
+          "tools": [
+            "fetchWebContent",
+            "fetchGithubReadme"
+          ]
+        }
       ]
     },
     "web-search": {
@@ -729,10 +752,11 @@
       "servers": [
         "brave-search",
         "duckduckgo-search",
+        "ddgs",
         "tavily",
         "exa",
         "g-search",
-        "ddgs"
+        "open-websearch"
       ]
     }
   },

@@ -181,7 +181,7 @@ Subagent D → wikipedia / wikidata for factual grounding
 ```
 Lead: triage (Wave 0), orchestrate, judge reconcile (Wave 3), synthesize (Wave 4)
   |-- web-researcher:       brave-search, duckduckgo-search, exa, g-search
-  |-- tech-researcher:      context7, deepwiki, arxiv, semantic-scholar, package-version
+  |-- tech-researcher:      context7, deepwiki, arxiv, semantic-scholar, package-version-check-mcp
   |-- content-extractor:    fetcher, trafilatura, docling, wikipedia, wayback
   |-- [academic-researcher: arxiv, semantic-scholar, openalex, crossref, PubMed]
   |-- [adversarial-reviewer: devil's advocate — counter-search all emerging findings]
@@ -322,7 +322,7 @@ Read `references/source-selection.md` during Wave 0 for the full tool-to-domain 
 
 | Domain Signal | Primary Tools | Secondary Tools |
 |--------------|---------------|-----------------|
-| Library/API docs | `llms.txt`/`llms-full.txt`, context7, deepwiki, package-version | brave-search |
+| Library/API docs | `llms.txt`/`llms-full.txt`, context7, deepwiki, package-version-check-mcp | brave-search |
 | Academic/scientific | arxiv, semantic-scholar, PubMed, openalex | crossref, brave-search |
 | Current events/trends | brave-search, exa, duckduckgo-search, g-search | fetcher, trafilatura |
 | GitHub repos/OSS | deepwiki, repomix | brave-search |
@@ -648,7 +648,7 @@ Subagent D → wikipedia / wikidata for factual grounding
 ```
 Lead: triage (Wave 0), orchestrate, judge reconcile (Wave 3), synthesize (Wave 4)
   |-- web-researcher:       brave-search, duckduckgo-search, exa, g-search
-  |-- tech-researcher:      context7, deepwiki, arxiv, semantic-scholar, package-version
+  |-- tech-researcher:      context7, deepwiki, arxiv, semantic-scholar, package-version-check-mcp
   |-- content-extractor:    fetcher, trafilatura, docling, wikipedia, wayback
   |-- [academic-researcher: arxiv, semantic-scholar, openalex, crossref, PubMed]
   |-- [adversarial-reviewer: devil's advocate — counter-search all emerging findings]
@@ -789,7 +789,7 @@ Read `references/source-selection.md` during Wave 0 for the full tool-to-domain 
 
 | Domain Signal | Primary Tools | Secondary Tools |
 |--------------|---------------|-----------------|
-| Library/API docs | `llms.txt`/`llms-full.txt`, context7, deepwiki, package-version | brave-search |
+| Library/API docs | `llms.txt`/`llms-full.txt`, context7, deepwiki, package-version-check-mcp | brave-search |
 | Academic/scientific | arxiv, semantic-scholar, PubMed, openalex | crossref, brave-search |
 | Current events/trends | brave-search, exa, duckduckgo-search, g-search | fetcher, trafilatura |
 | GitHub repos/OSS | deepwiki, repomix | brave-search |

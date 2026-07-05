@@ -12,7 +12,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Operate MCPHub groups, endpoints, compression, and CLI from repo registry. Use for hub preflight, group picking, tunnel vs local exposure. NOT harness sync."
   installCommand={`npx skills add github:wyattowalsh/agents --skill mcphub-operator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/mcphub-operator [preflight|groups|compression|tunnel|cli|doctor]"
-  badges={[{ text: "mcphub-operator", variant: "note" }, { text: "428 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "mcphub-operator", variant: "note" }, { text: "443 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
@@ -114,7 +114,7 @@ bash skills/mcphub-operator/scripts/preflight.sh
 ### `groups`
 
 1. Default local harnesses attach **`harness`** only, with per-server endpoints available but disabled by default.
-2. Treat **`harness`** as the smallest high-signal set for context-bloat control: Brave Search, Context7, DeepWiki, Fetch, and package metadata.
+2. Treat **`harness`** as the smallest high-signal set for context-bloat control: Brave Search, DuckDuckGo Search, DDGS (metasearch/news), Context7, DeepWiki, Fetch, and package metadata. Prefer DDGS snippets; avoid `fetch_full_content` unless the user needs full pages.
 3. Use **`daily`** for routine opt-in expansion; use **`coding`**, **`research`**, **`review`**, or **`release`** for scoped agentic dev flows.
 4. Escalate to capability groups (`web-search`, `web-read`, `docs`, `repo`, `browser`, `media`, `design`, `productivity`, `accounts`, `references`) when the task needs that surface.
 5. Use **`reasoning`** only for hard problems; keep **`reasoning-lab`** experimental.
@@ -144,7 +144,7 @@ bash skills/mcphub-operator/scripts/preflight.sh
 just mcphub-generate
 just mcphub-generate-check
 just mcphub-validate
-uv run wagents validate
+uv run python skills/mcphub-operator/scripts/check.py
 ```
 
 Regenerate settings after editing `config/mcp-registry.json` groups or servers.

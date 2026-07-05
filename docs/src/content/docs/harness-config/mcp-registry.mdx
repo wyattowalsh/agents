@@ -27,7 +27,7 @@ MCPHub uses this to produce `mcp_settings.json`; `scripts/sync_agent_stack.py` c
 
 ## What It Controls
 
-- ~34 MCP servers (brave-search, duckduckgo-search, chrome-devtools, context7, fetch, repomix, docling, arxiv, wikipedia, gmail, linkedin, thinking servers, etc.; ffmpeg is registered but disabled in favor of skill/CLI routing)
+- ~35 MCP servers (brave-search, duckduckgo-search, ddgs, chrome-devtools, context7, fetch, repomix, docling, arxiv, wikipedia, gmail, linkedin, thinking servers, etc.; ffmpeg is registered but disabled in favor of skill/CLI routing)
 - Per-server: transport, command (often npx/uvx with repo wrappers for chrome-devtools), env (API keys via placeholders), enabled, timeouts, tools list or `*` + tools_allow_all, tool_approvals, platform_overrides, exclude_from_harnesses, ownership rules (plugin vs extension vs repo_mcp)
 - Named groups for targeting (`harness`, `tunnel`, `daily`, `coding`, `research`, `review`, `release`, capability groups, and risk/exposure groups)
 - Client defaults and overrides (transport, auth, included_groups, enable_server_endpoints, etc.)
@@ -43,6 +43,7 @@ Projections target:
 - Repo `mcp.json` (distribution manifest) and `~/.config/...` home merges/generates.
 
 See `config/sync-manifest.json` for which outputs are generated vs merged.
+
 
 
 
@@ -294,21 +295,25 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "platform_overrides": {},
       "tools_allow_all": true
     },
-    "package-version": {
+    "package-version-check-mcp": {
       "transport": "stdio",
-      "command": "~/go/bin/mcp-package-version",
-      "args": [],
-      "env": {},
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/package-version-check-mcp.sh"
+      ],
+      "env": {
+        "GITHUB_PAT": {
+          "env_var": "GITHUB_PAT"
+        }
+      },
       "enabled": true,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
-        "check_docker_tags",
-        "check_github_actions",
-        "check_go_versions",
-        "check_npm_versions",
-        "check_pyproject_versions",
-        "check_python_versions"
+        "get_latest_package_versions",
+        "get_github_action_versions_and_args",
+        "get_supported_tools",
+        "get_latest_tool_versions"
       ],
       "tool_approvals": {},
       "platform_overrides": {}
@@ -551,6 +556,24 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "platform_overrides": {},
       "tools_allow_all": true
     },
+    "ddgs": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "ddgs-mcp-server"
+      ],
+      "auth_policy": "none",
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
     "exa": {
       "transport": "streamable-http",
       "auth_policy": "oauth",
@@ -572,6 +595,23 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "args": [
         "-y",
         "g-search-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "open-websearch": {
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/open-websearch-stdio.sh"
       ],
       "env": {},
       "enabled": true,
@@ -1033,6 +1073,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "servers": [
           "brave-search",
           "duckduckgo-search",
+          "ddgs",
           "context7",
           "deepwiki",
           "fetch",
@@ -1042,7 +1083,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
               "fetch_urls"
             ]
           },
-          "package-version",
+          "package-version-check-mcp",
           "chrome-devtools",
           "penpot"
         ]
@@ -1055,7 +1096,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "context7",
           "deepwiki",
           "fetch",
-          "package-version"
+          "package-version-check-mcp"
         ]
       },
       "daily": {
@@ -1064,6 +1105,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "servers": [
           "brave-search",
           "duckduckgo-search",
+          "ddgs",
           "context7",
           "deepwiki",
           "fetch",
@@ -1073,7 +1115,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
               "fetch_urls"
             ]
           },
-          "package-version",
+          "package-version-check-mcp",
           "trafilatura",
           "repomix",
           "chrome-devtools"
@@ -1087,8 +1129,9 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "deepwiki",
           "fetch",
           "duckduckgo-search",
+          "ddgs",
           "repomix",
-          "package-version",
+          "package-version-check-mcp",
           "ossinsight",
           "chrome-devtools"
         ]
@@ -1099,15 +1142,18 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "servers": [
           "brave-search",
           "duckduckgo-search",
+          "ddgs",
           "tavily",
           "exa",
+          "open-websearch",
           "fetch",
           "fetcher",
           "trafilatura",
           "arxiv",
           "wikipedia",
           "wayback",
-          "deepwiki"
+          "deepwiki",
+          "package-version-check-mcp"
         ]
       },
       "review": {
@@ -1118,7 +1164,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "deepwiki",
           "fetch",
           "duckduckgo-search",
-          "package-version",
+          "ddgs",
+          "package-version-check-mcp",
           "repomix",
           "chrome-devtools"
         ]
@@ -1127,7 +1174,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "description": "Release, package, CI artifact, provenance, and eval-readiness workflow.",
         "enabled": true,
         "servers": [
-          "package-version",
+          "package-version-check-mcp",
           "repomix",
           "fetch",
           "trafilatura"
@@ -1159,9 +1206,11 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "servers": [
           "brave-search",
           "duckduckgo-search",
+          "ddgs",
           "tavily",
           "exa",
-          "g-search"
+          "g-search",
+          "open-websearch"
         ]
       },
       "web-read": {
@@ -1171,7 +1220,14 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "fetch",
           "fetcher",
           "trafilatura",
-          "wayback"
+          "wayback",
+          {
+            "name": "open-websearch",
+            "tools": [
+              "fetchWebContent",
+              "fetchGithubReadme"
+            ]
+          }
         ]
       },
       "docs": {
@@ -1187,7 +1243,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "enabled": true,
         "servers": [
           "repomix",
-          "package-version",
+          "package-version-check-mcp",
           "ossinsight"
         ]
       },
@@ -1266,12 +1322,20 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "context7",
           "deepwiki",
           "fetch",
-          "package-version",
+          "package-version-check-mcp",
           "duckduckgo-search",
+          "ddgs",
           "trafilatura",
           "arxiv",
           "wikipedia",
-          "wayback"
+          "wayback",
+          {
+            "name": "open-websearch",
+            "tools": [
+              "search",
+              "fetchWebContent"
+            ]
+          }
         ]
       },
       "credentialed": {
@@ -1318,6 +1382,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "servers": [
           "exa",
           "g-search",
+          "open-websearch",
           "atom-of-thoughts",
           "crash",
           "creative-thinking",

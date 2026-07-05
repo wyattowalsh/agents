@@ -260,6 +260,16 @@
       },
       "disabled": true
     },
+    "mcphub_server_open-websearch": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/open-websearch"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
     "mcphub_server_ossinsight": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [

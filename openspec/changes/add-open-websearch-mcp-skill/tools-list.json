@@ -1,0 +1,24 @@
+{
+  "captured_at": "2026-07-05",
+  "verification_method": "static-skill-allowed-tools",
+  "runtime_smoke_status": "degraded-mcphub-smoke-hung-reload-settings-recommended",
+  "mcp_endpoints": [
+    "http://127.0.0.1:46683/mcp/open-websearch",
+    "http://127.0.0.1:46683/mcp/web-search"
+  ],
+  "tools": [
+    {
+      "name": "search",
+      "used_in_bounded_groups": ["shared-read", "web-search", "research", "experimental"]
+    },
+    {
+      "name": "fetchWebContent",
+      "used_in_bounded_groups": ["web-read", "shared-read"]
+    },
+    {
+      "name": "fetchGithubReadme",
+      "used_in_bounded_groups": ["web-read"]
+    }
+  ],
+  "notes": "Re-run bash scripts/mcphub/smoke.sh after mcphub settings reload to upgrade to runtime-verified."
+}

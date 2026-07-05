@@ -275,6 +275,9 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
   <Card title="duckduckgo">
     <Badge text="Privacy First" variant="tip" /> Privacy-focused web search via DuckDuckGo. No tracking, no API key required.
   </Card>
+  <Card title="ddgs">
+    <Badge text="Metasearch" variant="tip" /> Multi-engine search and news via DDGS (`search_text`, `search_news`). No API key. Optional full-page extraction is high-latency and token-heavy — use snippets by default.
+  </Card>
   <Card title="arxiv">
     <Badge text="Academic" variant="tip" /> arXiv paper search and metadata retrieval for research workflows, including direct access to paper IDs and summaries.
   </Card>
@@ -335,8 +338,8 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
   <Card title="chrome-devtools">
     <Badge text="CDP Automation" variant="danger" /> Chrome DevTools Protocol automation via Puppeteer. Navigate, click, fill forms, trace performance, inspect network requests, and take screenshots. Requires Node.js v22+.
   </Card>
-  <Card title="package-version">
-    <Badge text="Dependency Mgmt" variant="danger" /> Checks latest versions across npm, PyPI, Go, Maven, Gradle, Swift, Docker, Bedrock models, and GitHub Actions.
+  <Card title="package-version-check-mcp">
+    <Badge text="Dependency Mgmt" variant="danger" /> Checks latest stable versions across npm, PyPI, Go, Maven, Docker, Helm, Terraform, GitHub Actions, and mise-backed devtools via PyPI `uvx`.
   </Card>
   <Card title="docling">
     <Badge text="Doc Processing" variant="danger" /> Converts documents (PDF, DOCX, PPTX, HTML) into structured Docling format. Create, edit, search, and export documents as Markdown.

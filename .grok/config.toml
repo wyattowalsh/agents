@@ -182,6 +182,13 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_open-websearch]
+url = "http://127.0.0.1:46683/mcp/open-websearch"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_ossinsight]
 url = "http://127.0.0.1:46683/mcp/ossinsight"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }

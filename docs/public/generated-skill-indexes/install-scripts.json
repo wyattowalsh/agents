@@ -266,6 +266,10 @@
       "name": "things-manager"
     },
     {
+      "command": "npx skills add github:wyattowalsh/agents --skill trafilatura -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "trafilatura"
+    },
+    {
       "command": "npx skills add github:wyattowalsh/agents --skill wargame -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "wargame"
     },
@@ -275,6 +279,16 @@
     }
   ],
   "externalCommands": [
+    {
+      "command": "npx skills add Aas-ee/open-webSearch@3094fa558fce35a8373e45ed5a6c43362e206906 --skill open-websearch -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "open-websearch"
+      ],
+      "source": "Aas-ee/open-webSearch",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
     {
       "command": "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [

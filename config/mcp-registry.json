@@ -454,6 +454,24 @@
       "platform_overrides": {},
       "tools_allow_all": true
     },
+    "ddgs": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "ddgs-mcp-server"
+      ],
+      "auth_policy": "none",
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
     "exa": {
       "transport": "streamable-http",
       "auth_policy": "oauth",
@@ -475,6 +493,23 @@
       "args": [
         "-y",
         "g-search-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "open-websearch": {
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/open-websearch-stdio.sh"
       ],
       "env": {},
       "enabled": true,
@@ -906,24 +941,6 @@
       ],
       "tool_approvals": {},
       "platform_overrides": {}
-    },
-    "ddgs": {
-      "transport": "stdio",
-      "command": "uvx",
-      "args": [
-        "ddgs-mcp-server"
-      ],
-      "auth_policy": "none",
-      "env": {},
-      "enabled": true,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [
-        "*"
-      ],
-      "tool_approvals": {},
-      "platform_overrides": {},
-      "tools_allow_all": true
     }
   },
   "mcphub": {
@@ -954,6 +971,7 @@
         "servers": [
           "brave-search",
           "duckduckgo-search",
+          "ddgs",
           "context7",
           "deepwiki",
           "fetch",
@@ -965,8 +983,7 @@
           },
           "package-version-check-mcp",
           "chrome-devtools",
-          "penpot",
-          "ddgs"
+          "penpot"
         ]
       },
       "tunnel": {
@@ -986,6 +1003,7 @@
         "servers": [
           "brave-search",
           "duckduckgo-search",
+          "ddgs",
           "context7",
           "deepwiki",
           "fetch",
@@ -998,8 +1016,7 @@
           "package-version-check-mcp",
           "trafilatura",
           "repomix",
-          "chrome-devtools",
-          "ddgs"
+          "chrome-devtools"
         ]
       },
       "coding": {
@@ -1010,11 +1027,11 @@
           "deepwiki",
           "fetch",
           "duckduckgo-search",
+          "ddgs",
           "repomix",
           "package-version-check-mcp",
           "ossinsight",
-          "chrome-devtools",
-          "ddgs"
+          "chrome-devtools"
         ]
       },
       "research": {
@@ -1023,8 +1040,10 @@
         "servers": [
           "brave-search",
           "duckduckgo-search",
+          "ddgs",
           "tavily",
           "exa",
+          "open-websearch",
           "fetch",
           "fetcher",
           "trafilatura",
@@ -1032,8 +1051,7 @@
           "wikipedia",
           "wayback",
           "deepwiki",
-          "package-version-check-mcp",
-          "ddgs"
+          "package-version-check-mcp"
         ]
       },
       "review": {
@@ -1044,10 +1062,10 @@
           "deepwiki",
           "fetch",
           "duckduckgo-search",
+          "ddgs",
           "package-version-check-mcp",
           "repomix",
-          "chrome-devtools",
-          "ddgs"
+          "chrome-devtools"
         ]
       },
       "release": {
@@ -1086,10 +1104,11 @@
         "servers": [
           "brave-search",
           "duckduckgo-search",
+          "ddgs",
           "tavily",
           "exa",
           "g-search",
-          "ddgs"
+          "open-websearch"
         ]
       },
       "web-read": {
@@ -1099,7 +1118,14 @@
           "fetch",
           "fetcher",
           "trafilatura",
-          "wayback"
+          "wayback",
+          {
+            "name": "open-websearch",
+            "tools": [
+              "fetchWebContent",
+              "fetchGithubReadme"
+            ]
+          }
         ]
       },
       "docs": {
@@ -1196,11 +1222,18 @@
           "fetch",
           "package-version-check-mcp",
           "duckduckgo-search",
+          "ddgs",
           "trafilatura",
           "arxiv",
           "wikipedia",
           "wayback",
-          "ddgs"
+          {
+            "name": "open-websearch",
+            "tools": [
+              "search",
+              "fetchWebContent"
+            ]
+          }
         ]
       },
       "credentialed": {
@@ -1247,6 +1280,7 @@
         "servers": [
           "exa",
           "g-search",
+          "open-websearch",
           "atom-of-thoughts",
           "crash",
           "creative-thinking",
