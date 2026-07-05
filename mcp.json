@@ -110,6 +110,16 @@
       },
       "disabled": true
     },
+    "mcphub_server_ddgs": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/ddgs"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
     "mcphub_server_deep-lucid-3d": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [

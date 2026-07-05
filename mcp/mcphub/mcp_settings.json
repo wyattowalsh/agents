@@ -97,6 +97,13 @@
       "args": [],
       "timeout": 600000
     },
+    "ddgs": {
+      "command": "uvx",
+      "args": [
+        "ddgs-mcp-server"
+      ],
+      "timeout": 600000
+    },
     "deep-lucid-3d": {
       "command": "npx",
       "args": [
@@ -456,7 +463,8 @@
         "repomix",
         "package-version-check-mcp",
         "ossinsight",
-        "chrome-devtools"
+        "chrome-devtools",
+        "ddgs"
       ]
     },
     "credentialed": {
@@ -488,7 +496,8 @@
         "package-version-check-mcp",
         "trafilatura",
         "repomix",
-        "chrome-devtools"
+        "chrome-devtools",
+        "ddgs"
       ]
     },
     "design": {
@@ -538,7 +547,8 @@
         },
         "package-version-check-mcp",
         "chrome-devtools",
-        "penpot"
+        "penpot",
+        "ddgs"
       ]
     },
     "heavy": {
@@ -657,7 +667,8 @@
         "wikipedia",
         "wayback",
         "deepwiki",
-        "package-version-check-mcp"
+        "package-version-check-mcp",
+        "ddgs"
       ]
     },
     "review": {
@@ -670,7 +681,8 @@
         "duckduckgo-search",
         "package-version-check-mcp",
         "repomix",
-        "chrome-devtools"
+        "chrome-devtools",
+        "ddgs"
       ]
     },
     "shared-read": {
@@ -686,7 +698,8 @@
         "trafilatura",
         "arxiv",
         "wikipedia",
-        "wayback"
+        "wayback",
+        "ddgs"
       ]
     },
     "tunnel": {
@@ -718,7 +731,8 @@
         "duckduckgo-search",
         "tavily",
         "exa",
-        "g-search"
+        "g-search",
+        "ddgs"
       ]
     }
   },

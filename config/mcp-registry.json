@@ -906,6 +906,24 @@
       ],
       "tool_approvals": {},
       "platform_overrides": {}
+    },
+    "ddgs": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "ddgs-mcp-server"
+      ],
+      "auth_policy": "none",
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
     }
   },
   "mcphub": {
@@ -947,7 +965,8 @@
           },
           "package-version-check-mcp",
           "chrome-devtools",
-          "penpot"
+          "penpot",
+          "ddgs"
         ]
       },
       "tunnel": {
@@ -979,7 +998,8 @@
           "package-version-check-mcp",
           "trafilatura",
           "repomix",
-          "chrome-devtools"
+          "chrome-devtools",
+          "ddgs"
         ]
       },
       "coding": {
@@ -993,7 +1013,8 @@
           "repomix",
           "package-version-check-mcp",
           "ossinsight",
-          "chrome-devtools"
+          "chrome-devtools",
+          "ddgs"
         ]
       },
       "research": {
@@ -1011,7 +1032,8 @@
           "wikipedia",
           "wayback",
           "deepwiki",
-          "package-version-check-mcp"
+          "package-version-check-mcp",
+          "ddgs"
         ]
       },
       "review": {
@@ -1024,7 +1046,8 @@
           "duckduckgo-search",
           "package-version-check-mcp",
           "repomix",
-          "chrome-devtools"
+          "chrome-devtools",
+          "ddgs"
         ]
       },
       "release": {
@@ -1065,7 +1088,8 @@
           "duckduckgo-search",
           "tavily",
           "exa",
-          "g-search"
+          "g-search",
+          "ddgs"
         ]
       },
       "web-read": {
@@ -1175,7 +1199,8 @@
           "trafilatura",
           "arxiv",
           "wikipedia",
-          "wayback"
+          "wayback",
+          "ddgs"
         ]
       },
       "credentialed": {
