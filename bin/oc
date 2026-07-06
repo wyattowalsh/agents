@@ -36,6 +36,16 @@ fi
 SERVER_URL="${OPENCODE_SERVER_URL:-$DEFAULT_SERVER_URL}"
 SERVER_PASSWORD="${OPENCODE_SERVER_PASSWORD:-}"
 SERVER_USERNAME="${OPENCODE_SERVER_USERNAME:-opencode}"
+AUTOSTART="${OPENCODE_OC_AUTOSTART:-1}"
+
+autostart_disabled() {
+  local normalized
+  normalized="$(printf '%s' "$AUTOSTART" | tr '[:upper:]' '[:lower:]')"
+  case "$normalized" in
+    0|false|no|off) return 0 ;;
+    *) return 1 ;;
+  esac
+}
 
 usage() {
   cat <<'EOF'
@@ -67,6 +77,7 @@ Environment:
   OPENCODE_OC_USE_LAUNCHD   use launchctl instead of a background process (default: 0)
   OPENCODE_OC_TAILSCALE     set to 0 to disable Tailscale integration
   OPENCODE_OC_TAILSCALE_HTTPS_PORT  Tailscale Serve HTTPS port (default: 443)
+  OPENCODE_OC_AUTOSTART     set to 0|false|no|off to keep bare `oc` / `oc status` from starting a server
   OC_LAUNCHD_LABEL          macOS launchctl label for wrapper server
   OPENCODE_BIN              optional path to opencode binary
   TAILSCALE_BIN             optional path to tailscale CLI
@@ -949,6 +960,9 @@ cmd_status() {
   done
   dir="$(cd "$dir" && pwd)"
 
+  if [ "$no_start" = "0" ] && autostart_disabled; then
+    no_start="1"
+  fi
   if [ "$no_start" = "0" ]; then
     ensure_server
   elif ! health_ok; then

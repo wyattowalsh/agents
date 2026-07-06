@@ -244,6 +244,170 @@ def test_status_no_start_renders_all_lan_urls(tmp_path: Path) -> None:
     )
 
 
+@pytest.mark.parametrize("autostart_value", ["0", "false", "no", "off"])
+def test_status_autostart_disabled_renders_urls_without_starting_server(
+    tmp_path: Path,
+    autostart_value: str,
+) -> None:
+    tools = tmp_path / "tools"
+    state = tmp_path / "state"
+    tools.mkdir()
+
+    write_executable(
+        tools / "curl",
+        r"""
+        #!/usr/bin/env bash
+        out=""
+        while [ "$#" -gt 0 ]; do
+          case "$1" in
+            -o)
+              out="$2"
+              shift 2
+              ;;
+            -w|-u|--connect-timeout|--max-time|-H|--data|-X)
+              shift 2
+              ;;
+            *)
+              shift
+              ;;
+          esac
+        done
+        printf '{"healthy":true}\n' >"$out"
+        printf '200'
+        """,
+    )
+    write_executable(
+        tools / "jq",
+        r"""
+        #!/usr/bin/env bash
+        if [ "$1" = "-e" ]; then
+          grep -q '"healthy":true' "$3"
+          exit $?
+        fi
+        exit 2
+        """,
+    )
+    write_executable(
+        tools / "route",
+        """
+        #!/usr/bin/env bash
+        printf '   interface: en0\n'
+        """,
+    )
+    write_executable(
+        tools / "ipconfig",
+        """
+        #!/usr/bin/env bash
+        printf '192.168.1.10\n'
+        """,
+    )
+    write_executable(
+        tools / "ifconfig",
+        """
+        #!/usr/bin/env bash
+        cat <<'EOF'
+        en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST>
+            inet 192.168.1.10 netmask 0xffffff00 broadcast 192.168.1.255
+        en1: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST>
+            inet 192.168.1.11 netmask 0xffffff00 broadcast 192.168.1.255
+        utun0: flags=8051<UP,POINTOPOINT,RUNNING,MULTICAST>
+            inet 10.0.0.1 --> 10.0.0.1 netmask 0xffffffff
+        EOF
+        """,
+    )
+    write_executable(
+        tools / "opencode",
+        """
+        #!/usr/bin/env bash
+        printf 'oc test stub must not be invoked when autostart is disabled\\n' >&2
+        exit 99
+        """,
+    )
+
+    env = os.environ.copy()
+    env.update({
+        "OC_STATE_DIR": str(state),
+        "OPENCODE_SERVER_USERNAME": "user",
+        "OPENCODE_SERVER_PASSWORD": "secret",
+        "OPENCODE_SERVER_URL": "http://127.0.0.1:4096",
+        "OPENCODE_OC_AUTOSTART": autostart_value,
+        "PATH": f"{tools}:{env['PATH']}",
+    })
+
+    result = subprocess.run(
+        [str(OC), "status"],
+        check=True,
+        capture_output=True,
+        env=env,
+        text=True,
+    )
+
+    assert "OpenCode server: healthy" in result.stdout
+    assert "iOS URL: http://192.168.1.10:4096" in result.stdout
+
+
+def test_status_autostart_disabled_reports_unavailable_when_server_unhealthy(tmp_path: Path) -> None:
+    tools = tmp_path / "tools"
+    state = tmp_path / "state"
+    tools.mkdir()
+
+    write_executable(
+        tools / "curl",
+        r"""
+        #!/usr/bin/env bash
+        out=""
+        while [ "$#" -gt 0 ]; do
+          case "$1" in
+            -o)
+              out="$2"
+              shift 2
+              ;;
+            -w|-u|--connect-timeout|--max-time|-H|--data|-X)
+              shift 2
+              ;;
+            *)
+              shift
+              ;;
+          esac
+        done
+        printf '{"healthy":false}\n' >"$out"
+        printf '503'
+        """,
+    )
+    write_executable(
+        tools / "jq",
+        r"""
+        #!/usr/bin/env bash
+        exit 1
+        """,
+    )
+
+    env = os.environ.copy()
+    env.update({
+        "OC_STATE_DIR": str(state),
+        "OPENCODE_SERVER_USERNAME": "user",
+        "OPENCODE_SERVER_PASSWORD": "secret",
+        "OPENCODE_SERVER_URL": "http://127.0.0.1:4096",
+        "OPENCODE_OC_AUTOSTART": "0",
+        "PATH": f"{tools}:{env['PATH']}",
+    })
+
+    result = subprocess.run(
+        [str(OC), "status"],
+        capture_output=True,
+        env=env,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert result.stdout == textwrap.dedent(
+        """\
+        OpenCode server: unavailable
+        Local URL: http://127.0.0.1:4096
+        """
+    )
+
+
 def test_ios_status_reports_missing_tailscale_cli_without_blocking_lan(tmp_path: Path) -> None:
     require_jq()
     tools = tmp_path / "tools"
