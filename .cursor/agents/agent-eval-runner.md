@@ -19,8 +19,10 @@ Execute repository structural eval gates and summarize pass/fail evidence for ma
    - `uv run wagents validate`
    - `uv run wagents eval validate --format json`
    - `uv run wagents eval adequacy --strict --format json` when listed in the manifest
+   - `uv run pytest tests/test_agent_eval_manifests.py -q` when agent eval manifests changed
 3. For skill-scoped requests, run `uv run python skills/<name>/scripts/check.py` when present.
-4. Return a concise gate matrix with exit codes and top-level errors.
+4. For agent-scoped requests, load matching `evals/agents/<name>/evals.json` when present.
+5. Return a concise gate matrix with exit codes and top-level errors.
 
 ## Hard Boundary
 
