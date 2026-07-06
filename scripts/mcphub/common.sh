@@ -214,7 +214,8 @@ mcphub_signal_process_tree() {
   local signal="$1"
   local root_pid="$2"
   [[ "${root_pid}" =~ ^[0-9]+$ ]] || return 0
-  if [[ "${root_pid}" == "$$" || "${root_pid}" == "${BASHPID}" ]]; then
+  local bash_pid="${BASHPID:-$$}"
+  if [[ "${root_pid}" == "$$" || "${root_pid}" == "${bash_pid}" ]]; then
     return 0
   fi
   local descendants
@@ -402,7 +403,7 @@ mcphub_start_local() {
   fi
   local pkg_launcher="${MCPHUB_SCRIPT_DIR}/package-version-check-mcp.sh"
   if [[ -x "${pkg_launcher}" ]]; then
-    timeout 45 "${pkg_launcher}" --help >/dev/null 2>&1 || true
+    timeout 120 "${pkg_launcher}" --help >/dev/null 2>&1 || true
   fi
   printf 'starting MCPHub locally with npx @samanhappy/mcphub; logs: %s\n' "${MCPHUB_LOG_FILE}" >&2
   (

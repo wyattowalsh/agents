@@ -292,6 +292,11 @@ mcphub-openapi:
     scripts/mcphub/export-openapi.sh
 
 [group("mcphub")]
+[doc("Sync runtime settings, warm package-version-check-mcp, restart LaunchAgent")]
+mcphub-reconcile-runtime *FLAGS:
+    scripts/mcphub/reconcile-runtime.sh {{FLAGS}}
+
+[group("mcphub")]
 [doc("Run MCPHub health and tools/list smoke test")]
 mcphub-smoke:
     scripts/mcphub/smoke.sh

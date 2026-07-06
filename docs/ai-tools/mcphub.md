@@ -144,23 +144,32 @@ upstream transport or URL fields change. Dashboard-only OAuth completion does
 not need a registry edit, but you should still verify `/health` and
 `just mcphub-smoke` after reconnecting upstream servers.
 
-When replacing a stdio server slug or launch command, also reconcile machine-local
-`.mcphub/runtime/mcp_settings.json` (gitignored) or restart MCPHub from the
-tracked baseline so the live hub does not keep serving removed servers.
+When replacing a stdio server slug or launch command, reconcile machine-local
+runtime settings from the tracked baseline so the live hub does not keep serving
+removed servers:
+
+```bash
+just mcphub-reconcile-runtime --warm --restart
+```
+
+This copies `mcp/mcphub/mcp_settings.json` to `.mcphub/runtime/mcp_settings.json`
+with `cp -f`, warms `package-version-check-mcp`, and kickstarts the LaunchAgent.
 
 ### `package-version-check-mcp` launcher
 
-PyPI `package-version-check-mcp` 1.2.x ships a forward-reference bug in
+PyPI `package-version-check-mcp==1.2.20` ships a forward-reference bug in
 `version_parser.py` on Python 3.11+. The repo launches it through
 `scripts/mcphub/package-version-check-mcp.sh`, which patches cached `uvx`
-installs once, then execs `uvx package-version-check-mcp --mode=stdio`.
+installs once, then execs `uvx --from package-version-check-mcp==1.2.20 ... --mode=stdio`.
 
+Registry `startup_timeout_sec` is **240** because cold `uvx` resolve can exceed 90s.
 Warm the launcher before expecting a fast MCPHub connect on cold machines:
 
 ```bash
+just mcphub-reconcile-runtime --warm --restart
+# or manually:
 scripts/mcphub/package-version-check-mcp.sh --help
 just mcphub-doctor
-launchctl kickstart -k "gui/$(id -u)/com.wyattowalsh.mcphub"
 ```
 
 Remove the launcher when upstream publishes a fixed wheel; until then keep the

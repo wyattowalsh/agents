@@ -21,7 +21,7 @@ MCPHub is the preferred local MCP control plane when enabled in `config/mcp-regi
 ## Why it matters
 
 - Reduces per-harness MCP process sprawl and centralizes auth, routing, and groups.
-- `harness-safe` is the primary shared group for managed harness surfaces (14 servers in that group).
+- `harness` is the primary shared group for managed harness surfaces (bounded default bundle; successor to the deprecated `harness-safe` slug).
 - One-owner-per-harness rules still apply (especially Chrome DevTools).
 - Contributor defaults enforce deny-by-default tool policy with no wildcard opt-in unless explicit.
 
@@ -57,13 +57,13 @@ Runtime state lives in gitignored `.mcphub/` (PID files, logs, optional `cloudfl
 
 ### Tunnel and public surface
 
-Opt-in Cloudflare tunnel (`MCPHUB_TUNNEL_ENABLED` in `.env.mcphub`) exposes `MCPHUB_PUBLIC_URL` (registry: `https://mcp.w4w.dev/mcp`). Managed remote harness configs enable only the **`harness-safe`** group endpoint; per-server endpoints stay disabled unless explicitly opted in locally. Optional `MCPHUB_ZAPIER_WEBHOOK_URL` posts `mcphub_tunnel_ready` on tunnel start.
+Opt-in Cloudflare tunnel (`MCPHUB_TUNNEL_ENABLED` in `.env.mcphub`) exposes `MCPHUB_PUBLIC_URL` (registry: `https://mcp.w4w.dev/mcp`). Managed remote harness configs enable only the **`harness`** group endpoint (`/mcp/harness`); per-server endpoints stay disabled unless explicitly opted in locally. Optional `MCPHUB_ZAPIER_WEBHOOK_URL` posts `mcphub_tunnel_ready` on tunnel start.
 
 ## Groups and client exposure
 
 | Group | Purpose |
 |-------|---------|
-| `harness-safe` | Default shared bundle for search, docs, browser, package metadata, fetch, Gmail |
+| `harness` | Default shared bundle for search, docs, browser, package metadata, fetch, Gmail |
 | `all-managed` | Full enabled server set |
 | `research` / `reasoning` | Retrieval and structured-thinking bundles |
 | `personal` | Gmail, LinkedIn — sensitive |
@@ -71,7 +71,7 @@ Opt-in Cloudflare tunnel (`MCPHUB_TUNNEL_ENABLED` in `.env.mcphub`) exposes `MCP
 
 | Client | Exposure pattern |
 |--------|------------------|
-| `default`, `codex`, `grok`, `chatgpt` | `harness-safe` group only |
+| `default`, `codex`, `grok`, `chatgpt` | `harness` group only |
 | `opencode` | All 11 groups plus per-server endpoints |
 | `stdio_bridge` | stdio bridge for claude-desktop, cursor, gemini-cli, antigravity, github-copilot-cli, crush, chatgpt |
 
@@ -89,7 +89,7 @@ Projection adapters: `codex` → `remote-stdio`; `grok` and `opencode` → `http
 | Claim | Source | Type | Notes |
 |-------|--------|------|-------|
 | 33 servers, 11 groups, MCPHub enabled | `kb/raw/captures/mcp-registry-capture-w03.md` | raw capture | 2026-06-25 registry read |
-| `harness-safe` default client group (14 servers) | `kb/raw/captures/mcp-registry-capture-w03.md`; `kb/raw/captures/mcphub-settings-validation-capture-w07.md` | raw capture | 6 client projections |
+| `harness` default client group (bounded servers) | `kb/raw/captures/mcp-registry-capture-w03.md`; `kb/raw/captures/mcphub-settings-validation-capture-w07.md` | raw capture | 6 client projections; slug renamed from `harness-safe` |
 | Chrome DevTools ownership split | `kb/raw/captures/mcp-registry-capture-w03.md` | raw capture | plugin/extension/repo_mcp lanes |
 | Script fleet, Makefile targets, `.mcphub` runtime | `kb/raw/captures/mcphub-scripts-lifecycle-capture-w07.md` | raw capture | Wave 07 lifecycle inventory |
 | LaunchAgent, tunnel, stdio bridge | `kb/raw/captures/mcphub-launch-tunnel-capture-w07.md` | raw capture | Wave 07 launch/tunnel |

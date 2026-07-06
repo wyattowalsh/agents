@@ -126,8 +126,11 @@ printf 'OpenAPI auth note: /api/openapi.json is documented as public; keep MCPHu
 launcher="${SCRIPT_DIR}/package-version-check-mcp.sh"
 printf 'package-version-check-mcp launcher: '
 if [[ -x "${launcher}" ]]; then
+  start_ms="$(python3 -c 'import time; print(int(time.time()*1000))')"
   if "${launcher}" --help >/dev/null 2>&1; then
-    printf 'ok\n'
+    end_ms="$(python3 -c 'import time; print(int(time.time()*1000))')"
+    elapsed="$((end_ms - start_ms))"
+    printf 'ok (%ss)\n' "$((elapsed / 1000))"
   else
     printf 'present but --help failed\n'
   fi

@@ -3,13 +3,16 @@ set -euo pipefail
 
 # Upstream PyPI 1.2.x references Version before the class is defined in
 # version_parser.py, which crashes on Python 3.11+. Patch cached installs once.
+# Remove this wrapper when upstream ships a fixed wheel (see openspec change
+# replace-package-version-check-mcp).
+PKG_SPEC="package-version-check-mcp==1.2.20"
 STAMP_FILE="${HOME}/.cache/package-version-check-mcp-patched"
-STAMP_VERSION="2"
+STAMP_VERSION="3"
 
 export PATH="/opt/homebrew/bin:/usr/local/bin:${HOME}/.local/bin:${PATH:-}"
 
 launcher_help_ok() {
-  uvx package-version-check-mcp --help >/dev/null 2>&1
+  uvx --from "${PKG_SPEC}" package-version-check-mcp --help >/dev/null 2>&1
 }
 
 patch_version_parser_once() {
@@ -51,7 +54,7 @@ patch_version_parser_once() {
   fi
 
   if [[ "${patched}" -eq 0 ]]; then
-    uvx package-version-check-mcp --help >/dev/null 2>&1 || true
+    uvx --from "${PKG_SPEC}" package-version-check-mcp --help >/dev/null 2>&1 || true
     while IFS= read -r parser; do
       [[ -f "${parser}" ]] || continue
       if head -n 1 "${parser}" | grep -q 'from __future__ import annotations'; then
@@ -79,4 +82,4 @@ patch_version_parser_once() {
 }
 
 patch_version_parser_once
-exec uvx package-version-check-mcp --mode=stdio "$@"
+exec uvx --from "${PKG_SPEC}" package-version-check-mcp --mode=stdio "$@"
