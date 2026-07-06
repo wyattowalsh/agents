@@ -6,7 +6,7 @@ The managed MCP registry does not include `llms-txt-explorer`, so repo and home 
 
 ## Intent
 
-Add `llms-txt-explorer` once to the normalized registry using an npx stdio launch wrapped by repo-managed fleet defaults, wire MCPHub groups (`harness`, `tunnel`, and relevant workflow groups), and update maintainer docs. No curated external skill catalog row (MCP-only).
+Add `llms-txt-explorer` once to the normalized registry using an npx stdio launch wrapped by repo-managed fleet defaults, wire MCPHub groups (`harness` with bounded `list_websites`, opt-in workflow groups for `check_website`, and **exclude** `tunnel`), and update maintainer docs. No curated external skill catalog row (MCP-only).
 
 ## Scope
 

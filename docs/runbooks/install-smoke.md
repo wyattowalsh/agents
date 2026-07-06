@@ -38,6 +38,7 @@ gh workflow run install-smoke-phase3.yml -f harness=cursor
 | Dry-run JSON missing harness | Add harness to `wagents skills sync --dry-run -a <harness>` manually and compare |
 | Phase 2 skips | Confirm `INSTALL_SMOKE=1` is exported |
 | Live install requested | Do **not** run `wagents skills sync --apply` in CI; use phase 3 dispatch with explicit maintainer approval |
+| Apply exits 1 with partial installs | Re-run `wagents skills sync --apply --format json` and inspect `apply_failures` for failed `npx skills add` batches |
 
 ## Related
 

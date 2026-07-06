@@ -62,6 +62,30 @@ uv run python scripts/generate_harness_reconciliation.py
 
 Use `--apply` only for `wagents skills sync` after reviewing the dry-run output. `wagents skills cleanup --apply` intentionally exits until a reviewed apply manifest exists.
 
+### Apply continue-on-error
+
+`wagents skills sync --apply` runs every planned Skills CLI batch for the selected harnesses before exiting. A failed batch does not stop later batches from running. When any batch fails, the command exits non-zero and machine-readable output includes an `apply_failures` array:
+
+```json
+{
+  "ok": false,
+  "mode": "apply",
+  "apply_failures": [
+    {
+      "argv": ["npx", "skills", "add", "..."],
+      "returncode": 1,
+      "text": "npx skills add ..."
+    }
+  ]
+}
+```
+
+Preview the full plan first with `wagents skills sync --dry-run --format json`.
+
+### Installed supersession aliases
+
+Stale one-off installed skill ids that were renamed upstream are listed in `config/skill-installed-supersession.json`. When `--include-installed` is set and the verified catalog already owns the replacement id, sync skips the stale installed row instead of treating it as missing.
+
 ## Duplicate Classes
 
 | Class | Interpretation | Default action |
