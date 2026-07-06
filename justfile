@@ -103,8 +103,14 @@ update:
 # ---------------------------------------------------------------------------- #
 
 [group("sync")]
+[doc("Apply config/agent-delegation-policy.json task allowlists to opencode-agents.json")]
+materialize-opencode-tasks:
+    uv run python scripts/materialize_opencode_task_permissions.py --apply
+
+[group("sync")]
 [doc("Regenerate .opencode/agents from agents/ + config/opencode-agents.json")]
 sync-opencode:
+    uv run python scripts/materialize_opencode_task_permissions.py --apply
     uv run python scripts/sync_agent_stack.py --apply --targets repo --platforms opencode
 
 [group("sync")]

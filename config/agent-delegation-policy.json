@@ -1,0 +1,53 @@
+{
+  "$schema": "./schemas/agent-delegation-policy.schema.json",
+  "version": 1,
+  "delegators": {
+    "orchestrator": {
+      "task_default": "deny",
+      "deny_self": true,
+      "allow": [
+        "general",
+        "explore",
+        "agent-change-recorder",
+        "agent-eval-runner",
+        "agent-permission-simulator",
+        "agent-registry-publisher",
+        "agent-transpiler",
+        "bridge-consistency-checker",
+        "code-reviewer",
+        "docs-writer",
+        "mcp-capability-mapper",
+        "mcp-template-maintainer",
+        "permission-policy-auditor",
+        "planner",
+        "prompt-optimizer",
+        "release-manager",
+        "researcher",
+        "security-auditor",
+        "skill-author",
+        "triage-lead",
+        "performance-profiler"
+      ]
+    },
+    "triage-lead": {
+      "task_default": "deny",
+      "deny_self": true,
+      "allow": [
+        "general",
+        "explore",
+        "planner",
+        "researcher",
+        "code-reviewer",
+        "docs-writer",
+        "security-auditor",
+        "release-manager",
+        "performance-profiler",
+        "mcp-template-maintainer",
+        "mcp-capability-mapper",
+        "skill-author",
+        "bridge-consistency-checker",
+        "permission-policy-auditor"
+      ]
+    }
+  }
+}

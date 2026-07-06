@@ -14,15 +14,20 @@ permission:
   webfetch: deny
   task:
     '*': deny
-    general: allow
     explore: allow
-    planner: allow
-    researcher: allow
+    general: allow
+    bridge-consistency-checker: allow
     code-reviewer: allow
     docs-writer: allow
-    security-auditor: allow
-    release-manager: allow
+    mcp-capability-mapper: allow
+    mcp-template-maintainer: allow
     performance-profiler: allow
+    permission-policy-auditor: allow
+    planner: allow
+    release-manager: allow
+    researcher: allow
+    security-auditor: allow
+    skill-author: allow
 ---
 
 <!-- Managed by wagents sync from agents/ + config/opencode-agents.json -->
