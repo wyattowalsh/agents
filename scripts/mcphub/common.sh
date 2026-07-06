@@ -400,6 +400,10 @@ mcphub_start_local() {
     printf 'MCPHub pid is present but health failed; stopping managed stale process before restart\n' >&2
     mcphub_stop_managed_local
   fi
+  local pkg_launcher="${MCPHUB_SCRIPT_DIR}/package-version-check-mcp.sh"
+  if [[ -x "${pkg_launcher}" ]]; then
+    timeout 45 "${pkg_launcher}" --help >/dev/null 2>&1 || true
+  fi
   printf 'starting MCPHub locally with npx @samanhappy/mcphub; logs: %s\n' "${MCPHUB_LOG_FILE}" >&2
   (
     cd "${MCPHUB_REPO_ROOT}"
