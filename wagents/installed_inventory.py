@@ -89,6 +89,25 @@ AGENT_LABEL_TO_ID = {
     "OpenCode": "opencode",
 }
 
+INSTALLED_SKILL_SUPERSESSION_PATH = ROOT / "config" / "skill-installed-supersession.json"
+
+
+def load_installed_skill_supersession_aliases(*, repo_root: Path | None = None) -> dict[str, str]:
+    """Return stale installed skill ids mapped to verified catalog replacement ids."""
+    path = (repo_root or ROOT) / "config" / "skill-installed-supersession.json"
+    if not path.is_file():
+        return {}
+    data = json.loads(path.read_text(encoding="utf-8"))
+    aliases = data.get("aliases")
+    if not isinstance(aliases, dict):
+        return {}
+    return {
+        str(stale_id): str(replacement_id)
+        for stale_id, replacement_id in aliases.items()
+        if stale_id and replacement_id
+    }
+
+
 # Skills CLI has no native Grok adapter; sync installs via Claude Code paths Grok reads.
 SKILLS_CLI_AGENT_ALIASES = {"grok": "claude-code"}
 
@@ -410,8 +429,8 @@ def collect_installed_inventory(
         repo_owned = _is_repo_owned_skill(resolved_dir, repo_root, name)
         install_command_override = ""
         if repo_owned:
-            source = _repo_source()
-            install_source = _repo_source()
+            install_source = resolve_repo_install_source(name, repo_root=repo_root)
+            source = install_source
             provenance_status = "repo-owned"
             trust_tier = "repo"
             selector_mode = "named"
@@ -568,7 +587,8 @@ def _query_one_harness(
                     raw_agents=tuple(str(agent) for agent in item.get("agents", []) if str(agent).strip()),
                 )
             )
-    return HarnessQueryResult(agent_id=agent_id, ok=True, entries=tuple(entries))
+    query = HarnessQueryResult(agent_id=agent_id, ok=True, entries=tuple(entries))
+    return _merge_local_skill_roots_into_query(query, home=home)
 
 
 def _append_local_skill_root_entries(
@@ -601,6 +621,45 @@ def _append_local_skill_root_entries(
             continue
         entries_by_name[name] = entry
         entries.append(entry)
+
+
+def _merge_local_skill_roots_into_query(
+    query: HarnessQueryResult,
+    *,
+    home: Path,
+) -> HarnessQueryResult:
+    """Augment a successful Skills CLI query with on-disk skill roots.
+
+    ``npx skills ls`` omits ``metadata.internal`` skills and other copies that
+    exist only under harness-specific directories (for example ``~/.cursor/skills``
+    or the universal ``~/.agents/skills`` tree). Merging local roots keeps sync
+    parity aligned with runtime discovery.
+
+    ``installed_agents`` may include a harness when a skill is visible on disk for
+    that harness's configured roots, even if the Skills CLI adapter did not list it.
+    Treat that as disk-visible coverage, not proof that the harness runtime loaded
+    the skill through its primary discovery path.
+    """
+    root_specs = LOCAL_SKILL_ROOT_FALLBACKS.get(query.agent_id)
+    if not root_specs:
+        return query
+    entries = list(query.entries)
+    entries_by_name = {entry.name: entry for entry in entries if entry.name}
+    for relative_root, label in root_specs:
+        _append_local_skill_root_entries(
+            entries,
+            entries_by_name,
+            agent_id=query.agent_id,
+            skill_root=(home / relative_root).expanduser(),
+            label=label,
+            scope="global",
+        )
+    return HarnessQueryResult(
+        agent_id=query.agent_id,
+        ok=query.ok,
+        entries=tuple(entries),
+        error=query.error,
+    )
 
 
 def _query_local_harness_roots(agent_id: str, *, home: Path, reason: str) -> HarnessQueryResult | None:
@@ -810,6 +869,19 @@ def _repo_source() -> str:
     from wagents.site_model import REPO_SOURCE
 
     return REPO_SOURCE
+
+
+def resolve_repo_install_source(name: str, *, repo_root: Path | None = None) -> str:
+    """Prefer the local clone path when a repo-owned skill exists on disk.
+
+    Unpublished repo skills (for example ``trafilatura`` before bundle publish) fail
+    when sync only targets ``github:wyattowalsh/agents``.
+    """
+    root = (repo_root or ROOT).resolve()
+    skill_file = root / "skills" / name / "SKILL.md"
+    if skill_file.is_file():
+        return str(root)
+    return _repo_source()
 
 
 def _source_url(source: str) -> str:
@@ -1305,7 +1377,7 @@ def collect_repo_owned_desired_rows(*, root: Path | None = None) -> list[Install
         name = str(frontmatter.get("name") or skill_dir.name).strip()
         if not name:
             continue
-        install_source = _repo_source()
+        install_source = resolve_repo_install_source(name, repo_root=repo_root)
         rows.append(
             InstalledSkillInventoryRow(
                 name=name,
@@ -1365,7 +1437,15 @@ def merge_desired_with_installed(
             source=row.source or existing.source,
             install_source=row.install_source or existing.install_source,
             source_url=row.source_url or existing.source_url,
-            install_command=row.install_command or existing.install_command,
+            install_command=(
+                row.install_command
+                if row.install_command
+                and (
+                    row.provenance_status == "verified-curated-external"
+                    or row.provenance_status == "repo-owned"
+                )
+                else (row.install_command or existing.install_command)
+            ),
             provenance_status=row.provenance_status or existing.provenance_status,
             trust_tier=row.trust_tier or existing.trust_tier,
             selector_mode=row.selector_mode or existing.selector_mode,

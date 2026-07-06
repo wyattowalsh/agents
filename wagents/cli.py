@@ -37,6 +37,7 @@ from wagents.installed_inventory import (
     build_skill_cleanup_report,
     collect_desired_sync_rows,
     collect_installed_inventory,
+    load_installed_skill_supersession_aliases,
     merge_desired_with_installed,
     mirror_grok_skills_from_claude,
     repo_skill_owner_covered_agents,
@@ -1341,6 +1342,20 @@ def _repo_skill_covered_by_non_cli_owner(row: InstalledSkillInventoryRow, agent_
     return bool(repo_skill_owner_covered_agents(row, (agent_id,)))
 
 
+def _optional_installed_superseded(
+    row: InstalledSkillInventoryRow,
+    verified_rows: list[InstalledSkillInventoryRow],
+) -> bool:
+    """Skip stale lockfile names when the verified catalog already owns the replacement."""
+    if row.provenance_status != "installed-external":
+        return False
+    replacement = load_installed_skill_supersession_aliases().get(row.name)
+    if not replacement:
+        return False
+    verified_names = {verified_row.name for verified_row in verified_rows}
+    return replacement in verified_names
+
+
 def _build_sync_report(
     target_agents: tuple[str, ...],
     *,
@@ -1398,6 +1413,9 @@ def _build_sync_report(
 
         for row in optional_installed:
             if not include_installed:
+                skipped.append(row)
+                continue
+            if _optional_installed_superseded(row, verified_rows):
                 skipped.append(row)
                 continue
             if agent_id in row.installed_agents:
@@ -1467,6 +1485,8 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
         json_payload["error"] = report.get("error")
     if "error_type" in report:
         json_payload["error_type"] = report.get("error_type")
+    if "apply_failures" in report:
+        json_payload["apply_failures"] = report.get("apply_failures")
     if format_ != "text":
         _emit_structured_output(
             format_,
@@ -1927,7 +1947,13 @@ def skills_sync(
     ),
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
-    """Additively sync repo and curated external skills across supported harnesses."""
+    """Additively sync repo and curated external skills across supported harnesses.
+
+    Dry-run previews missing installs per harness. Apply runs every planned Skills CLI
+    batch across all target harnesses before exiting; partial failures set ``ok: false``
+    and populate ``apply_failures`` in JSON/JSONL output with ``argv``, ``returncode``,
+    and ``text`` for each failed command.
+    """
     if not shutil.which("npx"):
         typer.echo("Error: npx not found. Install Node.js first.", err=True)
         raise typer.Exit(code=1)
@@ -1951,24 +1977,52 @@ def skills_sync(
         external_entries=external_entries,
     )
     agent_reports = cast("list[dict[str, object]]", report.get("agents") or [])
-    _emit_sync_report(report, dry_run=dry_run, format_=format_)
-    if not bool(report.get("ok", True)):
-        raise typer.Exit(code=1)
+    structured_output = format_ in {"json", "jsonl"}
+
     if dry_run:
+        _emit_sync_report(report, dry_run=True, format_=format_)
+        if not bool(report.get("ok", True)):
+            raise typer.Exit(code=1)
         return
 
+    if not structured_output:
+        _emit_sync_report(report, dry_run=False, format_=format_)
+    if not bool(report.get("ok", True)):
+        if structured_output:
+            _emit_sync_report(report, dry_run=False, format_=format_)
+        raise typer.Exit(code=1)
+
     grok_mirror_needed = False
+    apply_failures: list[tuple[list[str], int]] = []
     for payload in agent_reports:
         if payload.get("agent") == "grok" and payload.get("_command_argvs"):
             grok_mirror_needed = True
         for argv in cast("list[list[str]]", payload.get("_command_argvs") or []):
             result = subprocess.run(argv, capture_output=False)
             if result.returncode != 0:
-                raise typer.Exit(code=result.returncode)
+                apply_failures.append((argv, result.returncode))
     if grok_mirror_needed:
         mirrored = mirror_grok_skills_from_claude()
         if mirrored:
             typer.echo(f"Mirrored {mirrored} skill(s) into ~/.grok/skills")
+    if apply_failures:
+        report["ok"] = False
+        report["apply_failures"] = [
+            {"argv": argv, "returncode": returncode, "text": _command_text(argv)}
+            for argv, returncode in apply_failures
+        ]
+        if structured_output:
+            _emit_sync_report(report, dry_run=False, format_=format_)
+        else:
+            for argv, returncode in apply_failures:
+                typer.echo(
+                    f"apply failed ({returncode}): {' '.join(argv)}",
+                    err=True,
+                )
+        raise typer.Exit(code=1)
+
+    if structured_output:
+        _emit_sync_report(report, dry_run=False, format_=format_)
 
 
 @catalog_app.command("index")

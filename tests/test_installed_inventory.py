@@ -17,10 +17,13 @@ from wagents.installed_inventory import (
     DUPLICATE_CLASS_SAME_REALPATH,
     EXPOSURE_OWNER_DIRECT_REPO_PATH,
     EXPOSURE_OWNER_PLUGIN,
+    HarnessQueryResult,
+    _merge_local_skill_roots_into_query,
     _run_harness_command,
     build_skill_cleanup_report,
     collect_installed_inventory,
     collect_skill_cleanup_exposures,
+    load_installed_skill_supersession_aliases,
     mirror_grok_skills_from_claude,
     query_harness_skills,
     repo_skill_exposure_owner_for_agent,
@@ -123,12 +126,12 @@ npx skills add vercel-labs/agent-skills --skill curated-skill -y -g -a codex cla
     by_name = {row.name: row for row in snapshot.rows}
 
     assert by_name["repo-skill"].provenance_status == "repo-owned"
-    assert by_name["repo-skill"].install_source == "github:wyattowalsh/agents"
+    assert by_name["repo-skill"].install_source == str(root.resolve())
     assert by_name["repo-skill"].version == "1.2.3"
 
     assert by_name["curated-skill"].provenance_status == "verified-curated-external"
     assert by_name["curated-skill"].source == "vercel-labs/agent-skills"
-    assert by_name["curated-skill"].installed_agents == ("claude-code", "codex")
+    assert by_name["curated-skill"].installed_agents == ("antigravity", "claude-code", "codex")
 
     assert by_name["lock-skill"].provenance_status == "installed-external"
     assert by_name["lock-skill"].source == "example/skills"
@@ -397,6 +400,27 @@ def test_repo_skill_exposure_owner_prefers_codex_plugin_when_enabled(tmp_path):
     assert repo_skill_exposure_owner_for_agent("codex", home=home, root=repo) == "skills-cli"
 
 
+def test_merge_local_skill_roots_into_query_adds_internal_skills(tmp_path):
+    home = tmp_path / "home"
+    internal_dir = home / ".cursor" / "skills" / "skill-registry-lock"
+    internal_dir.mkdir(parents=True)
+    (internal_dir / "SKILL.md").write_text(
+        "---\n"
+        "name: skill-registry-lock\n"
+        "description: Internal scaffold\n"
+        "metadata:\n"
+        "  internal: true\n"
+        "---\n\n"
+        "# Skill Registry Lock\n",
+        encoding="utf-8",
+    )
+
+    query = HarnessQueryResult(agent_id="cursor", ok=True, entries=())
+    merged = _merge_local_skill_roots_into_query(query, home=home)
+    names = {entry.name for entry in merged.entries}
+    assert "skill-registry-lock" in names
+
+
 def test_repo_skill_exposure_owner_prefers_opencode_direct_repo_path(tmp_path):
     home = tmp_path / "home"
     repo = tmp_path / "repo"
@@ -512,3 +536,24 @@ def test_build_skill_cleanup_report_classifies_codex_plugin_cache_heads(
     assert codex_row["cleanup_action"] == expected_action
     assert codex_row["risk"] == expected_risk
     assert codex_row["installed_state"] == {"cache_head": cache_head[:12], "repo_head": repo_head[:12]}
+
+
+def test_load_installed_skill_supersession_aliases_reads_config(tmp_path):
+    repo = tmp_path / "repo"
+    config_dir = repo / "config"
+    config_dir.mkdir(parents=True)
+    (config_dir / "skill-installed-supersession.json").write_text(
+        json.dumps({"aliases": {"stale-skill": "verified-skill"}}),
+        encoding="utf-8",
+    )
+
+    assert load_installed_skill_supersession_aliases(repo_root=repo) == {
+        "stale-skill": "verified-skill",
+    }
+
+
+def test_load_installed_skill_supersession_aliases_returns_empty_when_missing(tmp_path):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+
+    assert load_installed_skill_supersession_aliases(repo_root=repo) == {}

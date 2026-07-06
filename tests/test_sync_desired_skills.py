@@ -5,7 +5,7 @@ import subprocess
 
 from typer.testing import CliRunner
 
-from wagents.cli import app
+from wagents.cli import _build_sync_report, _optional_installed_superseded, app
 from wagents.external_skills import (
     ExternalSkillCatalogError,
     ExternalSkillEntry,
@@ -20,6 +20,7 @@ from wagents.installed_inventory import (
     collect_installed_inventory,
     external_entry_to_inventory_row,
     merge_desired_with_installed,
+    resolve_repo_install_source,
 )
 
 runner = CliRunner()
@@ -573,6 +574,178 @@ def test_collect_desired_sync_rows_includes_repo_owned_skills(tmp_path):
 
     assert by_name["demo-skill"].provenance_status == "repo-owned"
     assert by_name["demo-skill"].installed_agents == ()
+    assert by_name["demo-skill"].install_source == str(repo.resolve())
+
+
+def test_resolve_repo_install_source_prefers_local_clone(tmp_path):
+    repo = tmp_path / "repo"
+    skill_dir = repo / "skills" / "trafilatura"
+    skill_dir.mkdir(parents=True)
+    (skill_dir / "SKILL.md").write_text(
+        "---\nname: trafilatura\ndescription: Local only\n---\n\n# Trafilatura\n",
+        encoding="utf-8",
+    )
+
+    assert resolve_repo_install_source("trafilatura", repo_root=repo) == str(repo.resolve())
+    assert resolve_repo_install_source("missing-skill", repo_root=repo) == "github:wyattowalsh/agents"
+
+
+def _flutter_verified_row(name: str) -> InstalledSkillInventoryRow:
+    return InstalledSkillInventoryRow(
+        name=name,
+        path="",
+        source_path="",
+        scope="desired",
+        description="Flutter catalog",
+        license="",
+        version="",
+        author="",
+        source="flutter/skills",
+        install_source="flutter/skills",
+        source_url="",
+        install_command=f"npx skills add flutter/skills --skill {name} -y -g",
+        provenance_status="verified-curated-external",
+        trust_tier="curated-trust-gated",
+        selector_mode="named",
+        installed_agents=(),
+        discovered_in=(),
+        target_agents=("codex",),
+        sync_kind="skills-cli",
+    )
+
+
+def _flutter_stale_installed_row(name: str) -> InstalledSkillInventoryRow:
+    return InstalledSkillInventoryRow(
+        name=name,
+        path="/tmp/flutter-old",
+        source_path="/tmp/flutter-old/SKILL.md",
+        scope="installed",
+        description="Stale flutter lockfile",
+        license="",
+        version="",
+        author="",
+        source="flutter/skills",
+        install_source="flutter/skills",
+        source_url="",
+        install_command=f"npx skills add flutter/skills --skill {name} -y -g",
+        provenance_status="installed-external",
+        trust_tier="installed",
+        selector_mode="named",
+        installed_agents=(),
+        discovered_in=("codex",),
+        target_agents=("codex",),
+        sync_kind="skills-cli",
+    )
+
+
+def test_optional_installed_superseded_flutter_stale_id():
+    verified = [_flutter_verified_row("flutter-apply-architecture-best-practices")]
+    stale = _flutter_stale_installed_row("flutter-architecting-apps")
+
+    assert _optional_installed_superseded(stale, verified) is True
+    assert _optional_installed_superseded(verified[0], verified) is False
+
+
+def test_optional_installed_superseded_does_not_skip_unaliased_flutter_installed():
+    verified = [_flutter_verified_row("flutter-apply-architecture-best-practices")]
+    installed = _flutter_stale_installed_row("flutter-build-responsive-layout")
+
+    assert _optional_installed_superseded(installed, verified) is False
+
+
+def test_sync_include_installed_skips_superseded_flutter_stale_id(monkeypatch):
+    verified = _flutter_verified_row("flutter-apply-architecture-best-practices")
+    stale = _flutter_stale_installed_row("flutter-architecting-apps")
+    snapshot = InstalledInventorySnapshot(
+        rows=(stale,),
+        queries=(HarnessQueryResult("codex", True, (), ""),),
+    )
+
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: snapshot)
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (verified,))
+
+    report = _build_sync_report(("codex",), include_installed=True, external_entries=[])
+    agent = report["agents"][0]
+
+    skipped_names = [line.split()[0] for line in agent["skipped"]]
+    missing_names = [line.split()[0] for line in agent["missing"]]
+    assert "flutter-architecting-apps" in skipped_names
+    assert "flutter-architecting-apps" not in missing_names
+
+
+def test_sync_apply_partial_failure_json_includes_apply_failures(monkeypatch):
+    row = _repo_owned_desired_row()
+    calls: list[list[str]] = []
+
+    def mock_run(cmd, **kwargs):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(cmd, 1 if len(calls) == 1 else 0)
+
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+    monkeypatch.setattr("wagents.cli.subprocess.run", mock_run)
+
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply", "--format", "json"])
+
+    assert result.exit_code == 1
+    assert len(calls) == 1
+    payload = json.loads(result.output)
+    assert payload["ok"] is False
+    assert payload["mode"] == "apply"
+    assert len(payload["apply_failures"]) == 1
+    assert payload["apply_failures"][0]["returncode"] == 1
+
+
+def test_sync_apply_continue_on_error_runs_all_batches(monkeypatch):
+    row_a = _repo_owned_desired_row()
+    row_b = InstalledSkillInventoryRow(
+        name="cursor-only-skill",
+        path="",
+        source_path="skills/cursor-only-skill/SKILL.md",
+        scope="desired",
+        description="Cursor target skill.",
+        license="",
+        version="",
+        author="",
+        source="github:wyattowalsh/agents",
+        install_source="github:wyattowalsh/agents",
+        source_url="https://github.com/wyattowalsh/agents",
+        install_command="npx skills add github:wyattowalsh/agents --skill cursor-only-skill -y -g",
+        provenance_status="repo-owned",
+        trust_tier="repo-owned",
+        selector_mode="named",
+        installed_agents=(),
+        discovered_in=(),
+        target_agents=("cursor",),
+        sync_kind="skills-cli",
+    )
+    calls: list[list[str]] = []
+
+    def mock_run(cmd, **kwargs):
+        calls.append(cmd)
+        returncode = 1 if "repo-owned-skill" in cmd else 0
+        return subprocess.CompletedProcess(cmd, returncode)
+
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row_a, row_b))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+    monkeypatch.setattr("wagents.cli.subprocess.run", mock_run)
+
+    result = runner.invoke(
+        app,
+        ["skills", "sync", "--agent", "codex", "--agent", "cursor", "--apply", "--format", "json"],
+    )
+
+    assert result.exit_code == 1
+    assert len(calls) == 2
+    payload = json.loads(result.output)
+    assert payload["ok"] is False
+    assert len(payload["apply_failures"]) == 1
 
 
 def test_collect_installed_inventory_respects_empty_external_entries(monkeypatch):
