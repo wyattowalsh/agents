@@ -18,7 +18,21 @@
     "close_session",
     "list_sessions"
   ],
-  "verification_method": "upstream-docs-plus-uvx-version-probe",
+  "verification_method": "runtime-stdio-tools-list-plus-upstream-docs-cross-check",
+  "mcp_tools_runtime_verified_at": "2026-07-06",
+  "mcp_tools_runtime": [
+    "open_session",
+    "close_session",
+    "list_sessions",
+    "get",
+    "bulk_get",
+    "fetch",
+    "bulk_fetch",
+    "stealthy_fetch",
+    "bulk_stealthy_fetch",
+    "screenshot"
+  ],
+  "mcp_tools_source": "runtime stdio tools/list via scripts/mcphub/scrapling-stdio.sh @scrapling[ai]==0.4.10 (MCP serverInfo version 1.28.1); bounded registry subset cross-checked against tests/test_scrapling_registry.py",
   "fleet_wrapper": "scripts/mcphub/scrapling-stdio.sh",
   "default_harness_membership": false,
   "browser_prerequisite": "scrapling install (one-time maintainer; HTTP tools work without)",

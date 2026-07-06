@@ -1,18 +1,36 @@
 {
-  "server": "scrapling",
-  "tools": [
+  "captured_at": "2026-07-06",
+  "verification_method": "runtime-stdio-tools-list",
+  "runtime_smoke_status": "stdio-probe-ok",
+  "runtime_confirmed": true,
+  "probe_command": "bash scripts/mcphub/scrapling-stdio.sh (JSON-RPC initialize + notifications/initialized + tools/list)",
+  "pypi_runtime_pin": "scrapling[ai]==0.4.10",
+  "mcp_server_version": "1.28.1",
+  "mcp_endpoints": [
+    "http://127.0.0.1:46683/mcp/scrapling"
+  ],
+  "tools_runtime": [
+    "open_session",
+    "close_session",
+    "list_sessions",
     "get",
     "bulk_get",
     "fetch",
     "bulk_fetch",
     "stealthy_fetch",
     "bulk_stealthy_fetch",
-    "screenshot",
-    "open_session",
-    "close_session",
-    "list_sessions"
+    "screenshot"
+  ],
+  "tools_bounded_registry": [
+    {
+      "name": "get",
+      "used_in_bounded_groups": ["web-read", "shared-read"]
+    },
+    {
+      "name": "bulk_get",
+      "used_in_bounded_groups": ["web-read"]
+    }
   ],
   "source": "https://scrapling.readthedocs.io/en/latest/ai/mcp-server.html",
-  "verification_method": "upstream-docs",
-  "runtime_confirmed": false
+  "notes": "All bounded registry tool names verified at runtime. Extra upstream tools (fetch, bulk_fetch, stealthy_fetch, bulk_stealthy_fetch, screenshot, open_session, close_session, list_sessions) are present at runtime but only get/bulk_get are projected in bounded web-read; shared-read exposes get only. MCPHub endpoint-level tools/list deferred until hub reload; stdio probe is authoritative for this change."
 }
