@@ -9,3 +9,4 @@
 | OpenCode sync parity | `uv run python scripts/sync_agent_stack.py --check --targets repo --platforms opencode` | exit 0 |
 | OpenCode regen | `just sync-opencode` | updates `.opencode/agents/` task blocks |
 | Portable validate | `uv run wagents validate` | pass or only unrelated MCP drift outside this change |
+| OpenSpec strict | `npx @fission-ai/openspec@latest validate remediate-agent-fleet-governance --strict` | exit 0 |
