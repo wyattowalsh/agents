@@ -522,6 +522,23 @@
       "platform_overrides": {},
       "tools_allow_all": true
     },
+    "scrapling": {
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/scrapling-stdio.sh"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 120,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
     "gmail": {
       "transport": "stdio",
       "command": "npx",
@@ -1109,6 +1126,7 @@
           "wayback",
           "deepwiki",
           "package-version-check-mcp",
+          "scrapling",
           {
             "name": "jupyter-mcp-server",
             "tools": [
@@ -1173,7 +1191,8 @@
           "docling",
           "deep-lucid-3d",
           "fetch",
-          "trafilatura"
+          "trafilatura",
+          "scrapling"
         ]
       },
       "web-search": {
@@ -1203,6 +1222,13 @@
             "tools": [
               "fetchWebContent",
               "fetchGithubReadme"
+            ]
+          },
+          {
+            "name": "scrapling",
+            "tools": [
+              "get",
+              "bulk_get"
             ]
           }
         ]
@@ -1321,6 +1347,12 @@
               "search",
               "fetchWebContent"
             ]
+          },
+          {
+            "name": "scrapling",
+            "tools": [
+              "get"
+            ]
           }
         ]
       },
@@ -1351,7 +1383,8 @@
         "enabled": true,
         "servers": [
           "chrome-devtools",
-          "linkedin"
+          "linkedin",
+          "scrapling"
         ]
       },
       "heavy": {
@@ -1361,7 +1394,8 @@
           "repomix",
           "docling",
           "deep-lucid-3d",
-          "jupyter-mcp-server"
+          "jupyter-mcp-server",
+          "scrapling"
         ]
       },
       "experimental": {
@@ -1371,6 +1405,7 @@
           "exa",
           "g-search",
           "open-websearch",
+          "scrapling",
           "jupyter-mcp-server",
           "atom-of-thoughts",
           "crash",

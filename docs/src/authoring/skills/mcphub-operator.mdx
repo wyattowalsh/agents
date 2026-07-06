@@ -48,7 +48,7 @@ bash skills/mcphub-operator/scripts/preflight.sh
 3. Use **`daily`** for routine opt-in expansion; use **`coding`**, **`research`**, **`review`**, or **`release`** for scoped agentic dev flows.
 4. Escalate to capability groups (`web-search`, `web-read`, `docs`, `repo`, `browser`, `media`, `notebooks`, `design`, `productivity`, `accounts`, `references`) when the task needs that surface.
 5. Use **`reasoning`** only for hard problems; keep **`reasoning-lab`** experimental.
-6. Attach account-backed, live-browser, heavy, or experimental groups only with explicit user intent.
+6. Attach account-backed, **live-browser** (Chrome DevTools and Scrapling headless scrape sessions), heavy, or experimental groups only with explicit user intent.
 7. Never attach **`tunnel`** to local harness configs unless testing the remote consumer shape.
 
 ### `compression`

@@ -27,7 +27,7 @@ Workflow-first groups from `config/mcp-registry.json`. Local managed harnesses d
 | `productivity` | Productivity connectors |
 | `accounts` | Account connectors — explicit user intent only |
 | `references` | Academic/archive lookup (arxiv, wikipedia, wayback) |
-| `shared-read` | Broad read-only shared surface for trusted local expansion |
+| `shared-read` | Broad read-only shared surface (bounded `scrapling` `get`; bounded `open-websearch` search/fetch) |
 | `credentialed` | API-key/OAuth-backed shared services (includes `jupyter-mcp-server` via `JUPYTER_TOKEN`) |
 | `account-backed` | Personal/account-backed connectors |
 | `live-browser` | Browser/session-bound connectors (`scrapling` sessions, stealth fetch) |

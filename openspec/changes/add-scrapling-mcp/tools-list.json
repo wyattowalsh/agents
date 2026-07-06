@@ -1,0 +1,18 @@
+{
+  "server": "scrapling",
+  "tools": [
+    "get",
+    "bulk_get",
+    "fetch",
+    "bulk_fetch",
+    "stealthy_fetch",
+    "bulk_stealthy_fetch",
+    "screenshot",
+    "open_session",
+    "close_session",
+    "list_sessions"
+  ],
+  "source": "https://scrapling.readthedocs.io/en/latest/ai/mcp-server.html",
+  "verification_method": "upstream-docs",
+  "runtime_confirmed": false
+}

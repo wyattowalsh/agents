@@ -245,6 +245,13 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_scrapling]
+url = "http://127.0.0.1:46683/mcp/scrapling"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_sequential-thinking]
 url = "http://127.0.0.1:46683/mcp/sequential-thinking"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }

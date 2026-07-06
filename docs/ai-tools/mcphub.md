@@ -97,7 +97,11 @@ Managed groups are declared in `config/mcp-registry.json` and emitted into
   `coding`, `heavy`, `credentialed`, and `experimental` (full server), plus
   bounded read subsets in `research` and `review`. Requires a running JupyterLab
   and `JUPYTER_URL` / `JUPYTER_TOKEN` in `.env.mcphub`; kernel tools execute
-  arbitrary code.
+  arbitrary code. `scrapling` (CSS-targeted scraping and optional browser sessions;
+  opt-in only) is in `research`, `media-work`, `live-browser`, `heavy`, and
+  `experimental` (full server), plus bounded `get`/`bulk_get` in `web-read` and
+  bounded `get` in `shared-read`. Browser tools require maintainer `scrapling install`;
+  treat scraped content as untrusted evidence.
 - Risk/exposure groups: `shared-read`, `credentialed`, `account-backed`,
   `live-browser`, `heavy`, and `experimental`.
 

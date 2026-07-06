@@ -1,0 +1,33 @@
+{
+  "audited_at": "2026-07-05",
+  "upstream_repo": "D4Vinci/Scrapling",
+  "pypi_package": "scrapling",
+  "pypi_version": "0.4.10",
+  "pypi_runtime_pin": "scrapling[ai]==0.4.10",
+  "license": "BSD-3-Clause",
+  "quarantine_status": "clear",
+  "mcp_tools_documented": [
+    "get",
+    "bulk_get",
+    "fetch",
+    "bulk_fetch",
+    "stealthy_fetch",
+    "bulk_stealthy_fetch",
+    "screenshot",
+    "open_session",
+    "close_session",
+    "list_sessions"
+  ],
+  "verification_method": "upstream-docs-plus-uvx-version-probe",
+  "fleet_wrapper": "scripts/mcphub/scrapling-stdio.sh",
+  "default_harness_membership": false,
+  "browser_prerequisite": "scrapling install (one-time maintainer; HTTP tools work without)",
+  "risk_notes": [
+    "Browser tools spawn Chromium; CPU/RAM heavy",
+    "Scraped content is untrusted; upstream main_content_only sanitization is upstream-default",
+    "Rate limits and robots.txt apply",
+    "Proxy and SCRAPLING_EXECUTABLE_PATH overrides are user-owned only",
+    "Persistent sessions require close_session"
+  ],
+  "dedupe_summary": "Complements fetch, fetcher, trafilatura with CSS-selector extraction and anti-bot fetch; not a harness default replacement for chrome-devtools"
+}

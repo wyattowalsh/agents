@@ -44,6 +44,8 @@ The official MCP spec describes MCP as an open JSON-RPC based protocol connectin
 
 `jupyter-mcp-server` is tracked as a stdio MCP from `datalayer/jupyter-mcp-server` launched via `scripts/mcphub/jupyter-mcp-server-stdio.sh` → `uvx --from jupyter-mcp-server==1.0.2 jupyter-mcp-server`. Tools include notebook listing/reading, cell CRUD, and kernel execution (`execute_cell`, `execute_code`). The server is opt-in through MCPHub groups (`notebooks`, `coding`, `heavy`, `credentialed`, `experimental` full; bounded read tools in `research` and `review`) and is excluded from default `harness`, `tunnel`, and `shared-read`. Requires a user-owned running JupyterLab plus `JUPYTER_URL` and `JUPYTER_TOKEN` in `.env.mcphub` only; kernel tools execute arbitrary code. Notebook outputs and plots are untrusted evidence.
 
+`scrapling` is tracked as a stdio MCP from `D4Vinci/Scrapling` launched via `scripts/mcphub/scrapling-stdio.sh` → `uvx --from scrapling[ai]==0.4.10 scrapling mcp`. Tools include HTTP `get`/`bulk_get`, CSS-selector extraction, stealth fetch, and optional headless browser sessions. The server is opt-in through MCPHub groups (`research`, `media-work`, `live-browser`, `heavy`, `experimental` full; bounded `get`/`bulk_get` in `web-read`; bounded `get` in `shared-read`) and is excluded from default `harness`, `tunnel`, and `browser`. Browser tools require maintainer `scrapling install`; scraped page content is untrusted evidence. Keep proxy and `SCRAPLING_EXECUTABLE_PATH` overrides in user-owned environment only; close persistent browser sessions with `close_session`.
+
 ## Provenance
 
 | Claim | Source | Type | Notes |

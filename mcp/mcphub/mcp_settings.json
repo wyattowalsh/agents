@@ -318,6 +318,13 @@
       ],
       "timeout": 600000
     },
+    "scrapling": {
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/scrapling-stdio.sh"
+      ],
+      "timeout": 600000
+    },
     "sequential-thinking": {
       "command": "npx",
       "args": [
@@ -554,6 +561,7 @@
         "exa",
         "g-search",
         "open-websearch",
+        "scrapling",
         "jupyter-mcp-server",
         "atom-of-thoughts",
         "crash",
@@ -598,7 +606,8 @@
         "repomix",
         "docling",
         "deep-lucid-3d",
-        "jupyter-mcp-server"
+        "jupyter-mcp-server",
+        "scrapling"
       ]
     },
     "live-browser": {
@@ -606,7 +615,8 @@
       "description": "Tools that automate or depend on live browser/session state.",
       "servers": [
         "chrome-devtools",
-        "linkedin"
+        "linkedin",
+        "scrapling"
       ]
     },
     "media": {
@@ -624,7 +634,8 @@
         "docling",
         "deep-lucid-3d",
         "fetch",
-        "trafilatura"
+        "trafilatura",
+        "scrapling"
       ]
     },
     "notebooks": {
@@ -719,6 +730,7 @@
         "wayback",
         "deepwiki",
         "package-version-check-mcp",
+        "scrapling",
         {
           "name": "jupyter-mcp-server",
           "tools": [
@@ -778,6 +790,12 @@
             "search",
             "fetchWebContent"
           ]
+        },
+        {
+          "name": "scrapling",
+          "tools": [
+            "get"
+          ]
         }
       ]
     },
@@ -806,6 +824,13 @@
           "tools": [
             "fetchWebContent",
             "fetchGithubReadme"
+          ]
+        },
+        {
+          "name": "scrapling",
+          "tools": [
+            "get",
+            "bulk_get"
           ]
         }
       ]

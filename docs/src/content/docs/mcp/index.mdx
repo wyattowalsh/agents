@@ -8,7 +8,7 @@ import { Card, CardGrid, Badge, Aside, Steps } from '@astrojs/starlight/componen
 
 > Hand-maintained catalog of MCP servers configured in this environment, organized by category.
 
-<Badge text="61 configured servers" variant="note" size="large" />
+<Badge text="62 configured servers" variant="note" size="large" />
 
 <Aside type="tip" title="What is MCP?">
 The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standard for connecting AI agents to external tools and data sources. Each server below exposes one or more tools that agents can invoke during a session.
@@ -307,6 +307,9 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
   </Card>
   <Card title="trafilatura">
     <Badge text="Content Extraction" variant="caution" /> High-quality web content extraction using the Trafilatura library. Strips boilerplate to return clean article text and metadata.
+  </Card>
+  <Card title="scrapling">
+    <Badge text="Opt-in Scraping" variant="caution" /> CSS-targeted web scraping with stealth HTTP fetch and optional headless browser sessions. Opt-in via MCPHub `research`, `web-read`, `live-browser`, and related groups; not in default `harness`. Run `scrapling install` for browser tools.
   </Card>
 </CardGrid>
 
