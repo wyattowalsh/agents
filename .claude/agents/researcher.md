@@ -3,7 +3,7 @@ name: researcher
 description: Investigate a technical question deeply and return a concise evidence-backed
   summary.
 tools: all
-permissionMode: default
+permissionMode: plan
 ---
 
 ## Role

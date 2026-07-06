@@ -26,3 +26,5 @@ Do not edit live MCPHub secrets or `.env.mcphub`. Do not register servers withou
 ## Output Contract
 
 Return capability matrix (server → tools → registry row → docs route), gaps, and validation commands.
+
+OpenSpec MCP changes must include this mapper step per `openspec/schemas/mcp-server-change-tasks.md`. Document bypass rationale in the change `design.md` when mapping is done manually.

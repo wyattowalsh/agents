@@ -2,7 +2,7 @@
 name: planner
 description: Create a codebase-grounded implementation plan before coding.
 tools: all
-permissionMode: default
+permissionMode: plan
 ---
 
 ## Role
