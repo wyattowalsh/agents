@@ -97,6 +97,7 @@
     "context7": {
       "transport": "streamable-http",
       "auth_policy": "oauth",
+      "owner": "admin",
       "url": "https://mcp.context7.com/mcp/oauth",
       "env": {},
       "enabled": true,
