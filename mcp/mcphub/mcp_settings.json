@@ -100,7 +100,7 @@
     "ddgs": {
       "command": "uvx",
       "args": [
-        "ddgs-mcp-server"
+        "ddgs-mcp-server==0.5.1"
       ],
       "timeout": 600000
     },

@@ -205,7 +205,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "get_latest_package_versions",
@@ -458,7 +458,7 @@
       "transport": "stdio",
       "command": "uvx",
       "args": [
-        "ddgs-mcp-server"
+        "ddgs-mcp-server==0.5.1"
       ],
       "auth_policy": "none",
       "env": {},

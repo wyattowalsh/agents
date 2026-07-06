@@ -13,5 +13,10 @@
 
 - [x] `just mcphub-generate-check`, `just mcphub-validate`
 - [x] `uv run wagents validate`, `uv run wagents openspec validate`
-- [x] Pytest MCPHub subset
-- [x] `uv run wagents docs generate --no-installed` and `uv run wagents docs build`
+- [x] Pytest MCPHub subset (`tests/test_ddgs_registry.py`, scrapling/harness parity)
+- [x] `uv run wagents docs compose --regen-configs --config mcp-registry` + targeted site stats regen
+- [ ] `uv run wagents docs build` — **waived**: `starlight-site-graph` Vite resolve failure (pre-existing; track separately)
+
+## Blockers
+
+- `wagents docs build` fails on `starlight-site-graph` integration — does not block MCP registry ship.

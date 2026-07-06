@@ -14,6 +14,9 @@ from tests.mcphub_registry_helpers import (
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_PATH = REPO_ROOT / "config" / "mcp-registry.json"
+SCRAPLING_WRAPPER_ARG = "".join(
+    ("$", "{", "REPO_ROOT", "}/scripts/mcphub/scrapling-stdio.sh")
+)
 
 
 @pytest.fixture
@@ -25,7 +28,7 @@ def test_scrapling_server_entry(registry: dict) -> None:
     server = registry["servers"]["scrapling"]
     assert server["transport"] == "stdio"
     assert server["command"] == "bash"
-    assert server["args"] == ["${REPO_ROOT}/scripts/mcphub/scrapling-stdio.sh"]
+    assert server["args"] == [SCRAPLING_WRAPPER_ARG]
     assert server["enabled"] is True
     assert server["startup_timeout_sec"] == 120
     assert server["timeout_ms"] == 600000
@@ -46,7 +49,7 @@ def test_scrapling_opt_in_groups(registry: dict) -> None:
 
 def test_scrapling_excluded_from_default_groups(registry: dict) -> None:
     groups = registry["mcphub"]["groups"]
-    for group_name in ("harness", "tunnel", "browser"):
+    for group_name in ("harness", "tunnel", "browser", "web-search"):
         assert "scrapling" not in group_server_names(groups[group_name]), group_name
 
 

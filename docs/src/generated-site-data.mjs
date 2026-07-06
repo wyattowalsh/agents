@@ -4,9 +4,9 @@ const baseSiteData = {
     "bundledAgents": 20,
     "customMcp": 16,
     "customSkills": 69,
-    "externalMcp": 46,
+    "externalMcp": 49,
     "externalSkills": 314,
-    "mcpTools": 62,
+    "mcpTools": 65,
     "skills": 383,
     "supportedHarnesses": 9
   },
@@ -29581,7 +29581,7 @@ const skillIndexes = {
           "scripts/preflight.sh"
         ],
         "templates": [],
-        "wordCount": 443
+        "wordCount": 463
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -37214,7 +37214,7 @@ const skillIndexes = {
           "scripts/preflight.sh"
         ],
         "templates": [],
-        "wordCount": 443
+        "wordCount": 463
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -91743,7 +91743,7 @@ const skillIndexes = {
           "scripts/preflight.sh"
         ],
         "templates": [],
-        "wordCount": 443
+        "wordCount": 463
       },
       "license": "MIT",
       "licenseStatus": "",

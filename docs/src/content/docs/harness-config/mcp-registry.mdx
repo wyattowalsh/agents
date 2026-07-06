@@ -27,7 +27,7 @@ MCPHub uses this to produce `mcp_settings.json`; `scripts/sync_agent_stack.py` c
 
 ## What It Controls
 
-- ~37 MCP servers (brave-search, duckduckgo-search, ddgs, chrome-devtools, context7, jupyter-mcp-server, llms-txt-explorer, fetch, repomix, docling, arxiv, wikipedia, gmail, linkedin, thinking servers, etc.; ffmpeg is registered but disabled in favor of skill/CLI routing). Default `harness` exposes `llms-txt-explorer` as `list_websites` only; `check_website` is opt-in via workflow groups and excluded from `tunnel`. `jupyter-mcp-server` is opt-in via `notebooks` and workflow groups; requires user-owned JupyterLab.
+- ~38 MCP servers (brave-search, duckduckgo-search, ddgs, chrome-devtools, context7, jupyter-mcp-server, llms-txt-explorer, fetch, repomix, docling, arxiv, wikipedia, gmail, linkedin, thinking servers, etc.; ffmpeg is registered but disabled in favor of skill/CLI routing). Default `harness` exposes `llms-txt-explorer` as `list_websites` only; `check_website` is opt-in via workflow groups and excluded from `tunnel`. `jupyter-mcp-server` is opt-in via `notebooks` and workflow groups; requires user-owned JupyterLab. `scrapling` (CSS-targeted scraping, anti-bot fetch) is opt-in via `research`, `media-work`, `live-browser`, `heavy`, and `experimental`, with bounded `get`/`bulk_get` in `web-read` and `get` only in `shared-read`; excluded from `harness`, `tunnel`, and `browser`.
 - Per-server: transport, command (often npx/uvx with repo wrappers for chrome-devtools), env (API keys via placeholders), enabled, timeouts, tools list or `*` + tools_allow_all, tool_approvals, platform_overrides, exclude_from_harnesses, ownership rules (plugin vs extension vs repo_mcp)
 - Named groups for targeting (`harness`, `tunnel`, `daily`, `coding`, `research`, `review`, `release`, capability groups, and risk/exposure groups)
 - Client defaults and overrides (transport, auth, included_groups, enable_server_endpoints, etc.)
@@ -43,6 +43,7 @@ Projections target:
 - Repo `mcp.json` (distribution manifest) and `~/.config/...` home merges/generates.
 
 See `config/sync-manifest.json` for which outputs are generated vs merged.
+
 
 
 
@@ -562,7 +563,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "transport": "stdio",
       "command": "uvx",
       "args": [
-        "ddgs-mcp-server"
+        "ddgs-mcp-server==0.5.1"
       ],
       "auth_policy": "none",
       "env": {},
@@ -626,6 +627,23 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "platform_overrides": {},
       "tools_allow_all": true
     },
+    "scrapling": {
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/scrapling-stdio.sh"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 120,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
     "gmail": {
       "transport": "stdio",
       "command": "npx",
@@ -654,6 +672,36 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "env": {},
       "enabled": true,
       "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "jupyter-mcp-server": {
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/jupyter-mcp-server-stdio.sh"
+      ],
+      "env": {
+        "JUPYTER_URL": {
+          "env_var": "JUPYTER_URL"
+        },
+        "JUPYTER_TOKEN": {
+          "env_var": "JUPYTER_TOKEN"
+        },
+        "ALLOW_IMG_OUTPUT": {
+          "env_var": "ALLOW_IMG_OUTPUT"
+        },
+        "JUPYTER_DOCUMENT_ID": {
+          "env_var": "JUPYTER_DOCUMENT_ID"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 120,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -1160,7 +1208,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "repomix",
           "package-version-check-mcp",
           "ossinsight",
-          "chrome-devtools"
+          "chrome-devtools",
+          "jupyter-mcp-server"
         ]
       },
       "research": {
@@ -1181,7 +1230,18 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "wikipedia",
           "wayback",
           "deepwiki",
-          "package-version-check-mcp"
+          "package-version-check-mcp",
+          "scrapling",
+          {
+            "name": "jupyter-mcp-server",
+            "tools": [
+              "list_files",
+              "list_kernels",
+              "list_notebooks",
+              "read_notebook",
+              "read_cell"
+            ]
+          }
         ]
       },
       "review": {
@@ -1196,7 +1256,17 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "ddgs",
           "package-version-check-mcp",
           "repomix",
-          "chrome-devtools"
+          "chrome-devtools",
+          {
+            "name": "jupyter-mcp-server",
+            "tools": [
+              "list_files",
+              "list_kernels",
+              "list_notebooks",
+              "read_notebook",
+              "read_cell"
+            ]
+          }
         ]
       },
       "release": {
@@ -1226,7 +1296,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "docling",
           "deep-lucid-3d",
           "fetch",
-          "trafilatura"
+          "trafilatura",
+          "scrapling"
         ]
       },
       "web-search": {
@@ -1256,6 +1327,13 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
             "tools": [
               "fetchWebContent",
               "fetchGithubReadme"
+            ]
+          },
+          {
+            "name": "scrapling",
+            "tools": [
+              "get",
+              "bulk_get"
             ]
           }
         ]
@@ -1314,6 +1392,13 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "deep-lucid-3d"
         ]
       },
+      "notebooks": {
+        "description": "Jupyter notebook management and kernel execution against a user-owned JupyterLab server.",
+        "enabled": true,
+        "servers": [
+          "jupyter-mcp-server"
+        ]
+      },
       "design": {
         "description": "Design tooling.",
         "enabled": true,
@@ -1367,6 +1452,12 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
               "search",
               "fetchWebContent"
             ]
+          },
+          {
+            "name": "scrapling",
+            "tools": [
+              "get"
+            ]
           }
         ]
       },
@@ -1378,7 +1469,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "context7",
           "tavily",
           "exa",
-          "penpot"
+          "penpot",
+          "jupyter-mcp-server"
         ]
       },
       "account-backed": {
@@ -1396,7 +1488,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "enabled": true,
         "servers": [
           "chrome-devtools",
-          "linkedin"
+          "linkedin",
+          "scrapling"
         ]
       },
       "heavy": {
@@ -1405,7 +1498,9 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "servers": [
           "repomix",
           "docling",
-          "deep-lucid-3d"
+          "deep-lucid-3d",
+          "jupyter-mcp-server",
+          "scrapling"
         ]
       },
       "experimental": {
@@ -1415,6 +1510,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "exa",
           "g-search",
           "open-websearch",
+          "scrapling",
+          "jupyter-mcp-server",
           "atom-of-thoughts",
           "crash",
           "creative-thinking",
