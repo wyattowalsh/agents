@@ -2,6 +2,7 @@
 
 import json
 import subprocess
+from typing import cast
 
 from typer.testing import CliRunner
 
@@ -665,10 +666,11 @@ def test_sync_include_installed_skips_superseded_flutter_stale_id(monkeypatch):
     monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (verified,))
 
     report = _build_sync_report(("codex",), include_installed=True, external_entries=[])
-    agent = report["agents"][0]
+    agent_reports = cast("list[dict[str, object]]", report["agents"])
+    agent = agent_reports[0]
 
-    skipped_names = [line.split()[0] for line in agent["skipped"]]
-    missing_names = [line.split()[0] for line in agent["missing"]]
+    skipped_names = [line.split()[0] for line in cast("list[str]", agent["skipped"])]
+    missing_names = [line.split()[0] for line in cast("list[str]", agent["missing"])]
     assert "flutter-architecting-apps" in skipped_names
     assert "flutter-architecting-apps" not in missing_names
 
