@@ -18,6 +18,7 @@ fi
 if [[ -n "${MCPHUB_BEARER_TOKEN:-}" ]]; then
   launchctl setenv MCPHUB_BEARER_TOKEN "${MCPHUB_BEARER_TOKEN}" >/dev/null 2>&1 || true
 fi
+launchctl setenv REPO_ROOT "${REPO_ROOT:-${MCPHUB_REPO_ROOT}}" >/dev/null 2>&1 || true
 
 MCPHUB_CHILD_PID=""
 
@@ -29,6 +30,7 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 cd "${MCPHUB_REPO_ROOT}"
+export REPO_ROOT="${REPO_ROOT:-${MCPHUB_REPO_ROOT}}"
 npx -y @samanhappy/mcphub &
 MCPHUB_CHILD_PID="$!"
 printf '%s\n' "${MCPHUB_CHILD_PID}" >"${MCPHUB_CHILD_PID_FILE}"

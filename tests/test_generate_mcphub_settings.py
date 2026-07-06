@@ -9,7 +9,13 @@ from pathlib import Path
 import jsonschema
 import pytest
 
-from scripts.generate_mcphub_settings import generate_settings, render_groups, render_server_entry, serialize_settings
+from scripts.generate_mcphub_settings import (
+    generate_settings,
+    group_id_for_name,
+    render_groups,
+    render_server_entry,
+    serialize_settings,
+)
 from scripts.mcphub.validate_settings import validate_settings
 
 
@@ -63,12 +69,15 @@ def test_generate_settings_matches_registry_servers_and_groups():
     }
 
     registry_groups = registry["mcphub"]["groups"]
-    assert set(generated["groups"]) == {
+    generated_groups = {group["name"]: group for group in generated["groups"]}
+    assert set(generated_groups) == {
         name for name, group in registry_groups.items() if group.get("enabled") is not False
     }
-    for group_name, group in generated["groups"].items():
+    for group_name, group in generated_groups.items():
         registry_servers = registry_groups[group_name]["servers"]
         assert group["servers"] == registry_servers
+        assert group["id"] == group_id_for_name(group_name)
+    assert isinstance(generated["groups"], list)
 
     assert validate_settings(generated, registry) == []
     assert validate_settings(settings, registry) == []
@@ -95,7 +104,8 @@ def test_generate_settings_preserves_group_tool_filters():
 
     generated = generate_settings(registry)
 
-    assert generated["groups"]["harness"]["servers"] == [
+    harness = next(group for group in generated["groups"] if group["name"] == "harness")
+    assert harness["servers"] == [
         {"name": "fetcher", "tools": ["fetch_urls"]},
         "other",
     ]
@@ -149,7 +159,13 @@ def test_validate_settings_rejects_invalid_registry_group_membership():
     ]
     settings = {
         "mcpServers": {"fetcher": {}, "ffmpeg": {"disabled": True}},
-        "groups": {"harness": {"servers": [{"name": "fetcher", "tools": ["fetch_urls"]}]}},
+        "groups": [
+            {
+                "id": group_id_for_name("harness"),
+                "name": "harness",
+                "servers": [{"name": "fetcher", "tools": ["fetch_urls"]}],
+            }
+        ],
         "systemConfig": valid_system_config(),
     }
 

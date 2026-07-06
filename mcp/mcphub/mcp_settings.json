@@ -78,6 +78,7 @@
     "context7": {
       "type": "streamable-http",
       "url": "https://mcp.context7.com/mcp/oauth",
+      "owner": "admin",
       "timeout": 600000
     },
     "crash": {
@@ -460,8 +461,9 @@
       "disabled": true
     }
   },
-  "groups": {
-    "account-backed": {
+  "groups": [
+    {
+      "id": "6bafd489-97d7-500f-89f2-6d033ccbbb5b",
       "name": "account-backed",
       "description": "Tools backed by user accounts or personal app state.",
       "servers": [
@@ -471,7 +473,8 @@
         "penpot"
       ]
     },
-    "accounts": {
+    {
+      "id": "34b63ac8-e6c0-553c-a0e1-90d0648670fa",
       "name": "accounts",
       "description": "Account-backed connectors.",
       "servers": [
@@ -479,14 +482,16 @@
         "linkedin"
       ]
     },
-    "browser": {
+    {
+      "id": "2e955ef8-d3be-5bb0-982f-2656ea5a8979",
       "name": "browser",
       "description": "Live browser automation.",
       "servers": [
         "chrome-devtools"
       ]
     },
-    "coding": {
+    {
+      "id": "20a5db0e-0d1b-53ae-97da-b7cbfca070ca",
       "name": "coding",
       "description": "Coding, dependency lookup, repo inspection, and browser validation workflow.",
       "servers": [
@@ -503,7 +508,8 @@
         "jupyter-mcp-server"
       ]
     },
-    "credentialed": {
+    {
+      "id": "12e2a936-9d9c-5a3a-95a2-af082750e393",
       "name": "credentialed",
       "description": "Tools that rely on provider API keys, OAuth, or user-owned account tokens.",
       "servers": [
@@ -515,7 +521,8 @@
         "jupyter-mcp-server"
       ]
     },
-    "daily": {
+    {
+      "id": "87c46c56-7420-5bbf-85d3-f51507061830",
       "name": "daily",
       "description": "Broader local workhorse bundle for routine agentic development.",
       "servers": [
@@ -538,14 +545,16 @@
         "chrome-devtools"
       ]
     },
-    "design": {
+    {
+      "id": "d8d08642-90d8-5cd3-b803-a8e5f2be4004",
       "name": "design",
       "description": "Design tooling.",
       "servers": [
         "penpot"
       ]
     },
-    "docs": {
+    {
+      "id": "39e30650-6fd9-5eb3-b3e8-5fae30675714",
       "name": "docs",
       "description": "Library, framework, repo docs, and docs graph lookup.",
       "servers": [
@@ -554,7 +563,8 @@
         "llms-txt-explorer"
       ]
     },
-    "experimental": {
+    {
+      "id": "9a3e58fd-ae73-5f4f-a6ee-f464d432cd1e",
       "name": "experimental",
       "description": "Bleeding-edge, less-proven, or high-variance tools.",
       "servers": [
@@ -572,7 +582,8 @@
         "think-strategies"
       ]
     },
-    "harness": {
+    {
+      "id": "bdc0417e-55e2-52d2-9492-22b77ac98954",
       "name": "harness",
       "description": "Default local harness bundle: highest-value tools with bounded schema/context cost.",
       "servers": [
@@ -599,7 +610,8 @@
         "penpot"
       ]
     },
-    "heavy": {
+    {
+      "id": "5dcf120f-cd84-55bd-9d56-c1f66b377548",
       "name": "heavy",
       "description": "Large-output or heavier processing tools.",
       "servers": [
@@ -610,7 +622,8 @@
         "scrapling"
       ]
     },
-    "live-browser": {
+    {
+      "id": "4449b76e-a23d-5648-baf1-f4316390f1bc",
       "name": "live-browser",
       "description": "Tools that automate or depend on live browser/session state.",
       "servers": [
@@ -619,7 +632,8 @@
         "scrapling"
       ]
     },
-    "media": {
+    {
+      "id": "52868b83-88f4-5ec4-aa7a-2cab5e2dd8a5",
       "name": "media",
       "description": "Document and 3D processing.",
       "servers": [
@@ -627,7 +641,8 @@
         "deep-lucid-3d"
       ]
     },
-    "media-work": {
+    {
+      "id": "c82676b9-0144-5f17-99fa-676879078ba3",
       "name": "media-work",
       "description": "Document, 3D, and web-ingestion workflow; prefer an agent skill plus ffmpeg CLI for deterministic media transforms.",
       "servers": [
@@ -638,14 +653,16 @@
         "scrapling"
       ]
     },
-    "notebooks": {
+    {
+      "id": "b767ec01-dfd3-5434-990e-cbae4745009a",
       "name": "notebooks",
       "description": "Jupyter notebook management and kernel execution against a user-owned JupyterLab server.",
       "servers": [
         "jupyter-mcp-server"
       ]
     },
-    "personal-work": {
+    {
+      "id": "c582bbdd-fa3e-5920-8080-5d06b1233cf5",
       "name": "personal-work",
       "description": "Explicit personal-account and design/productivity workflow.",
       "servers": [
@@ -655,14 +672,16 @@
         "penpot"
       ]
     },
-    "productivity": {
+    {
+      "id": "b8b4f9ef-490f-5731-87f7-4b631fa2671d",
       "name": "productivity",
       "description": "Productivity tooling.",
       "servers": [
         "supathings"
       ]
     },
-    "reasoning": {
+    {
+      "id": "651c5aad-8247-5b78-8019-252dc3075c61",
       "name": "reasoning",
       "description": "Curated structured-thinking servers (three proven tools only).",
       "servers": [
@@ -671,7 +690,8 @@
         "structured-thinking"
       ]
     },
-    "reasoning-lab": {
+    {
+      "id": "9276d569-e370-5d48-875d-4c493f989b70",
       "name": "reasoning-lab",
       "description": "Experimental or less-proven reasoning tools.",
       "servers": [
@@ -683,7 +703,8 @@
         "think-strategies"
       ]
     },
-    "references": {
+    {
+      "id": "152cadfe-b1bf-5fb5-8794-fcbbe0285285",
       "name": "references",
       "description": "Academic papers, encyclopedia, and archive lookup.",
       "servers": [
@@ -692,7 +713,8 @@
         "wayback"
       ]
     },
-    "release": {
+    {
+      "id": "20f26477-d1cc-59de-b81d-a41f15d61c6e",
       "name": "release",
       "description": "Release, package, CI artifact, provenance, and eval-readiness workflow.",
       "servers": [
@@ -702,7 +724,8 @@
         "trafilatura"
       ]
     },
-    "repo": {
+    {
+      "id": "f1991925-6f61-506c-8bc7-dcd0d61b5e8c",
       "name": "repo",
       "description": "Repository and package intelligence.",
       "servers": [
@@ -711,7 +734,8 @@
         "ossinsight"
       ]
     },
-    "research": {
+    {
+      "id": "30e49d44-5c3f-5012-b54b-168529bfbc89",
       "name": "research",
       "description": "Search, retrieval, public references, and source inspection workflow.",
       "servers": [
@@ -743,7 +767,8 @@
         }
       ]
     },
-    "review": {
+    {
+      "id": "fd0bc14d-ea99-58e3-bf14-a1e909e4c9e0",
       "name": "review",
       "description": "Code, docs, eval, source-health, workflow-status, and browser-backed review workflow.",
       "servers": [
@@ -768,7 +793,8 @@
         }
       ]
     },
-    "shared-read": {
+    {
+      "id": "32970608-afb9-598f-8363-39e70b526b82",
       "name": "shared-read",
       "description": "Broad read-oriented pool for explicit opt-in without personal or browser tools.",
       "servers": [
@@ -799,7 +825,8 @@
         }
       ]
     },
-    "tunnel": {
+    {
+      "id": "8b9435d6-ea8b-5ad1-af65-de04c139cfb0",
       "name": "tunnel",
       "description": "Minimal remote ChatGPT tunnel surface without personal, browser, or heavy tools.",
       "servers": [
@@ -810,7 +837,8 @@
         "package-version-check-mcp"
       ]
     },
-    "web-read": {
+    {
+      "id": "f0475676-b7ba-54a9-acbd-652c55066ee5",
       "name": "web-read",
       "description": "URL and page ingestion without search APIs.",
       "servers": [
@@ -835,7 +863,8 @@
         }
       ]
     },
-    "web-search": {
+    {
+      "id": "ee60a51b-0139-5831-8653-4b331bad275f",
       "name": "web-search",
       "description": "Web search providers.",
       "servers": [
@@ -848,7 +877,7 @@
         "open-websearch"
       ]
     }
-  },
+  ],
   "systemConfig": {
     "routing": {
       "enableGlobalRoute": true,

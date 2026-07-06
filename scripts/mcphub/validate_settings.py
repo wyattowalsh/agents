@@ -46,7 +46,24 @@ def validate_settings(settings: dict[str, Any], registry: dict[str, Any]) -> lis
         if extra:
             errors.append("mcp_settings.json has servers not in registry: " + ", ".join(extra))
 
-    groups = settings.get("groups", {})
+    groups_raw = settings.get("groups", {})
+    groups: dict[str, Any] = {}
+    if isinstance(groups_raw, list):
+        for entry in groups_raw:
+            if not isinstance(entry, dict):
+                errors.append("groups entries must be objects")
+                continue
+            group_name = entry.get("name")
+            if not isinstance(group_name, str) or not group_name:
+                errors.append("groups entries require a non-empty name")
+                continue
+            groups[group_name] = entry
+    elif isinstance(groups_raw, dict):
+        groups = groups_raw
+    else:
+        errors.append("groups must be an array or object")
+        groups_raw = {}
+
     if isinstance(groups, dict) and isinstance(servers, dict):
         for group_name, group in groups.items():
             if not isinstance(group, dict):

@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -103,8 +104,12 @@ def render_server_entry(entry: dict[str, Any]) -> dict[str, Any]:
     return server
 
 
-def render_groups(mcphub_groups: dict[str, Any], registry_servers: dict[str, Any]) -> dict[str, Any]:
-    groups: dict[str, Any] = {}
+def group_id_for_name(name: str) -> str:
+    return str(uuid.uuid5(uuid.NAMESPACE_URL, f"agents-mcphub-group:{name}"))
+
+
+def render_groups(mcphub_groups: dict[str, Any], registry_servers: dict[str, Any]) -> list[dict[str, Any]]:
+    groups: list[dict[str, Any]] = []
     for name in sorted(mcphub_groups):
         group = mcphub_groups[name]
         if not isinstance(group, dict):
@@ -114,11 +119,14 @@ def render_groups(mcphub_groups: dict[str, Any], registry_servers: dict[str, Any
         errors = validate_enabled_registry_group(name, group, registry_servers)
         if errors:
             raise ValueError("; ".join(errors))
-        groups[name] = {
-            "name": name,
-            "description": str(group.get("description", "")),
-            "servers": [render_group_server(server) for server in group.get("servers", [])],
-        }
+        groups.append(
+            {
+                "id": group_id_for_name(name),
+                "name": name,
+                "description": str(group.get("description", "")),
+                "servers": [render_group_server(server) for server in group.get("servers", [])],
+            }
+        )
     return groups
 
 

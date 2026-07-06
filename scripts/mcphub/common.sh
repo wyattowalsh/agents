@@ -80,8 +80,10 @@ mcphub_load_env() {
   MCPHUB_TUNNEL_PROTOCOL="${MCPHUB_TUNNEL_PROTOCOL:-http2}"
   MCPHUB_TUNNEL_TOKEN="${MCPHUB_TUNNEL_TOKEN:-}"
   MCPHUB_ZAPIER_WEBHOOK_URL="${MCPHUB_ZAPIER_WEBHOOK_URL:-}"
+  REPO_ROOT="${REPO_ROOT:-${MCPHUB_REPO_ROOT}}"
   export PORT BASE_PATH MCPHUB_BASE_URL MCPHUB_SETTING_PATH MCPHUB_TUNNEL_TARGET_URL
   export MCPHUB_TUNNEL_PROVIDER MCPHUB_TUNNEL_PROTOCOL MCPHUB_TUNNEL_TOKEN MCPHUB_ZAPIER_WEBHOOK_URL
+  export REPO_ROOT
 }
 
 mcphub_health_url() {
@@ -184,7 +186,7 @@ mcphub_tunnel_enabled() {
 mcphub_descendant_pids() {
   local root_pid="$1"
   [[ "${root_pid}" =~ ^[0-9]+$ ]] || return 0
-  ps -axo pid=,ppid= | awk -v root="${root_pid}" -v self="$$" -v shell_pid="${BASHPID}" '
+  ps -axo pid=,ppid= | awk -v root="${root_pid}" -v self="$$" -v shell_pid="${BASHPID:-$$}" '
     {
       pid[NR] = $1
       ppid[NR] = $2
