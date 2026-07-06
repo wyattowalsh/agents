@@ -8,7 +8,7 @@ import { Card, CardGrid, Badge, Aside, Steps } from '@astrojs/starlight/componen
 
 > Hand-maintained catalog of MCP servers configured in this environment, organized by category.
 
-<Badge text="60 configured servers" variant="note" size="large" />
+<Badge text="61 configured servers" variant="note" size="large" />
 
 <Aside type="tip" title="What is MCP?">
 The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standard for connecting AI agents to external tools and data sources. Each server below exposes one or more tools that agents can invoke during a session.
@@ -325,6 +325,18 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
   </Card>
   <Card title="repomix">
     <Badge text="Codebase Context" variant="success" /> Packs entire codebases into AI-friendly context. Supports local directories and remote repositories with grep and directory browsing.
+  </Card>
+</CardGrid>
+
+---
+
+## Notebooks (1)
+
+> Live Jupyter notebook management and kernel execution. Requires a user-owned JupyterLab instance and opt-in MCPHub groups (`notebooks`, `coding`, `heavy`, etc.); not in default `harness`.
+
+<CardGrid>
+  <Card title="jupyter-mcp-server">
+    <Badge text="Opt-in Notebooks" variant="caution" /> Datalayer Jupyter MCP: list/read notebooks and cells, edit cells, execute code in kernels, multimodal outputs. Connect via MCPHub `/mcp/notebooks` or workflow groups; set `JUPYTER_URL` and `JUPYTER_TOKEN` in `.env.mcphub`.
   </Card>
 </CardGrid>
 

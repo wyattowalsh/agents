@@ -558,6 +558,36 @@
       "platform_overrides": {},
       "tools_allow_all": true
     },
+    "jupyter-mcp-server": {
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/jupyter-mcp-server-stdio.sh"
+      ],
+      "env": {
+        "JUPYTER_URL": {
+          "env_var": "JUPYTER_URL"
+        },
+        "JUPYTER_TOKEN": {
+          "env_var": "JUPYTER_TOKEN"
+        },
+        "ALLOW_IMG_OUTPUT": {
+          "env_var": "ALLOW_IMG_OUTPUT"
+        },
+        "JUPYTER_DOCUMENT_ID": {
+          "env_var": "JUPYTER_DOCUMENT_ID"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 120,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
     "llms-txt-explorer": {
       "transport": "stdio",
       "command": "bash",
@@ -1056,7 +1086,8 @@
           "repomix",
           "package-version-check-mcp",
           "ossinsight",
-          "chrome-devtools"
+          "chrome-devtools",
+          "jupyter-mcp-server"
         ]
       },
       "research": {
@@ -1077,7 +1108,17 @@
           "wikipedia",
           "wayback",
           "deepwiki",
-          "package-version-check-mcp"
+          "package-version-check-mcp",
+          {
+            "name": "jupyter-mcp-server",
+            "tools": [
+              "list_files",
+              "list_kernels",
+              "list_notebooks",
+              "read_notebook",
+              "read_cell"
+            ]
+          }
         ]
       },
       "review": {
@@ -1092,7 +1133,17 @@
           "ddgs",
           "package-version-check-mcp",
           "repomix",
-          "chrome-devtools"
+          "chrome-devtools",
+          {
+            "name": "jupyter-mcp-server",
+            "tools": [
+              "list_files",
+              "list_kernels",
+              "list_notebooks",
+              "read_notebook",
+              "read_cell"
+            ]
+          }
         ]
       },
       "release": {
@@ -1210,6 +1261,13 @@
           "deep-lucid-3d"
         ]
       },
+      "notebooks": {
+        "description": "Jupyter notebook management and kernel execution against a user-owned JupyterLab server.",
+        "enabled": true,
+        "servers": [
+          "jupyter-mcp-server"
+        ]
+      },
       "design": {
         "description": "Design tooling.",
         "enabled": true,
@@ -1274,7 +1332,8 @@
           "context7",
           "tavily",
           "exa",
-          "penpot"
+          "penpot",
+          "jupyter-mcp-server"
         ]
       },
       "account-backed": {
@@ -1301,7 +1360,8 @@
         "servers": [
           "repomix",
           "docling",
-          "deep-lucid-3d"
+          "deep-lucid-3d",
+          "jupyter-mcp-server"
         ]
       },
       "experimental": {
@@ -1311,6 +1371,7 @@
           "exa",
           "g-search",
           "open-websearch",
+          "jupyter-mcp-server",
           "atom-of-thoughts",
           "crash",
           "creative-thinking",

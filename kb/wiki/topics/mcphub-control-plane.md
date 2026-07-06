@@ -29,7 +29,7 @@ MCPHub is the preferred local MCP control plane when enabled in `config/mcp-regi
 
 | Component | Role |
 |-----------|------|
-| `config/mcp-registry.json` | Canonical SSOT: 33 servers, 11 groups, 6 client projections |
+| `config/mcp-registry.json` | Canonical SSOT: registry servers + MCPHub groups + client projections |
 | `mcp/mcphub/mcp_settings.json` | Tracked derived settings (placeholders only) |
 | `scripts/mcphub/` | Launch, doctor, validate, remote-stdio bridge, tunnel helpers |
 | `scripts/sync_agent_stack.py` | Renders per-harness MCP projections |
@@ -53,7 +53,7 @@ Runtime state lives in gitignored `.mcphub/` (PID files, logs, optional `cloudfl
 
 - **13** top-level shell scripts + **11** harness wrappers under `scripts/mcphub/wrappers/` (each wrapper calls `ensure-running.sh` then execs the harness CLI).
 - `remote-stdio.sh` bridges stdio clients via `mcp-remote` + bearer header (registry `stdio_bridge` client; Codex `remote-stdio` adapter).
-- `chrome-devtools-browser-url.sh` and `docling-stdio.sh` are repo-local server launchers referenced from tracked settings.
+- `chrome-devtools-browser-url.sh`, `docling-stdio.sh`, and `jupyter-mcp-server-stdio.sh` are repo-local server launchers referenced from tracked settings.
 
 ### Tunnel and public surface
 

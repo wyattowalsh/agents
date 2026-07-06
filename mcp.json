@@ -240,6 +240,16 @@
       },
       "disabled": true
     },
+    "mcphub_server_jupyter-mcp-server": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/jupyter-mcp-server"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
     "mcphub_server_linkedin": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [

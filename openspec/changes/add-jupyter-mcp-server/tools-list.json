@@ -1,0 +1,28 @@
+{
+  "server": "jupyter-mcp-server",
+  "tools": [
+    "list_files",
+    "list_kernels",
+    "connect_to_jupyter",
+    "use_notebook",
+    "list_notebooks",
+    "restart_notebook",
+    "unuse_notebook",
+    "read_notebook",
+    "read_cell",
+    "insert_cell",
+    "delete_cell",
+    "move_cell",
+    "overwrite_cell_source",
+    "edit_cell_source",
+    "execute_cell",
+    "insert_execute_code_cell",
+    "execute_code",
+    "notebook_run-all-cells",
+    "notebook_get-selected-cell"
+  ],
+  "prompts": ["jupyter-cite"],
+  "source": "https://jupyter-mcp-server.datalayer.tech/tools",
+  "verification_method": "upstream-docs",
+  "runtime_confirmed": false
+}

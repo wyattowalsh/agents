@@ -211,6 +211,19 @@
       ],
       "timeout": 600000
     },
+    "jupyter-mcp-server": {
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/jupyter-mcp-server-stdio.sh"
+      ],
+      "env": {
+        "JUPYTER_URL": "${JUPYTER_URL}",
+        "JUPYTER_TOKEN": "${JUPYTER_TOKEN}",
+        "ALLOW_IMG_OUTPUT": "${ALLOW_IMG_OUTPUT}",
+        "JUPYTER_DOCUMENT_ID": "${JUPYTER_DOCUMENT_ID}"
+      },
+      "timeout": 600000
+    },
     "linkedin": {
       "command": "uvx",
       "args": [
@@ -479,7 +492,8 @@
         "repomix",
         "package-version-check-mcp",
         "ossinsight",
-        "chrome-devtools"
+        "chrome-devtools",
+        "jupyter-mcp-server"
       ]
     },
     "credentialed": {
@@ -490,7 +504,8 @@
         "context7",
         "tavily",
         "exa",
-        "penpot"
+        "penpot",
+        "jupyter-mcp-server"
       ]
     },
     "daily": {
@@ -539,6 +554,7 @@
         "exa",
         "g-search",
         "open-websearch",
+        "jupyter-mcp-server",
         "atom-of-thoughts",
         "crash",
         "creative-thinking",
@@ -581,7 +597,8 @@
       "servers": [
         "repomix",
         "docling",
-        "deep-lucid-3d"
+        "deep-lucid-3d",
+        "jupyter-mcp-server"
       ]
     },
     "live-browser": {
@@ -608,6 +625,13 @@
         "deep-lucid-3d",
         "fetch",
         "trafilatura"
+      ]
+    },
+    "notebooks": {
+      "name": "notebooks",
+      "description": "Jupyter notebook management and kernel execution against a user-owned JupyterLab server.",
+      "servers": [
+        "jupyter-mcp-server"
       ]
     },
     "personal-work": {
@@ -694,7 +718,17 @@
         "wikipedia",
         "wayback",
         "deepwiki",
-        "package-version-check-mcp"
+        "package-version-check-mcp",
+        {
+          "name": "jupyter-mcp-server",
+          "tools": [
+            "list_files",
+            "list_kernels",
+            "list_notebooks",
+            "read_notebook",
+            "read_cell"
+          ]
+        }
       ]
     },
     "review": {
@@ -709,7 +743,17 @@
         "ddgs",
         "package-version-check-mcp",
         "repomix",
-        "chrome-devtools"
+        "chrome-devtools",
+        {
+          "name": "jupyter-mcp-server",
+          "tools": [
+            "list_files",
+            "list_kernels",
+            "list_notebooks",
+            "read_notebook",
+            "read_cell"
+          ]
+        }
       ]
     },
     "shared-read": {

@@ -8,9 +8,9 @@ Workflow-first groups from `config/mcp-registry.json`. Local managed harnesses d
 | --- | --- |
 | `harness` | Default local baseline: bounded high-signal set with search, docs, llms.txt catalog (`llms-txt-explorer` `list_websites` only), URL fetch, package metadata, Chrome DevTools, and Penpot |
 | `daily` | Routine opt-in expansion for broader repo, browser, and web reading |
-| `coding` | Code-agent context: docs, URL fetch, repo, dependency, and browser inspection |
-| `research` | Web and reference research across search (including `open-websearch`), read, archive, wiki, and `scrapling` scraping surfaces |
-| `review` | Repo review, docs/source lookup, generated evidence, and browser inspection |
+| `coding` | Code-agent context: docs, URL fetch, repo, dependency, browser inspection, and full `jupyter-mcp-server` when JupyterLab is running |
+| `research` | Web and reference research across search (including `open-websearch`), read, archive, wiki, `scrapling` scraping, and bounded `jupyter-mcp-server` notebook reads |
+| `review` | Repo review, docs/source lookup, generated evidence, browser inspection, and bounded `jupyter-mcp-server` notebook reads |
 | `release` | Release checks: versions, repo context, source reads, and package metadata |
 | `personal-work` | Account-backed work suites — explicit user intent only |
 | `media-work` | Document, 3D, and web-ingestion suites (`scrapling` for advanced page extraction); prefer **`/ffmpeg`** skill plus local CLIs for deterministic ffmpeg-style media transforms (not ffmpeg MCP by default) |
@@ -22,15 +22,16 @@ Workflow-first groups from `config/mcp-registry.json`. Local managed harnesses d
 | `reasoning` | Hard problems only — three curated thinkers |
 | `reasoning-lab` | Experimental thinking servers — opt-in |
 | `media` | Document and 3D processing servers |
+| `notebooks` | Jupyter notebook read/write and kernel execution (`jupyter-mcp-server`; requires user-owned JupyterLab + `JUPYTER_TOKEN` in `.env.mcphub`) |
 | `design` | Design connectors |
 | `productivity` | Productivity connectors |
 | `accounts` | Account connectors — explicit user intent only |
 | `references` | Academic/archive lookup (arxiv, wikipedia, wayback) |
 | `shared-read` | Broad read-only shared surface for trusted local expansion |
-| `credentialed` | API-key/OAuth-backed shared services |
+| `credentialed` | API-key/OAuth-backed shared services (includes `jupyter-mcp-server` via `JUPYTER_TOKEN`) |
 | `account-backed` | Personal/account-backed connectors |
 | `live-browser` | Browser/session-bound connectors (`scrapling` sessions, stealth fetch) |
-| `heavy` | High-output or high-runtime servers (`scrapling` browser spawn) |
+| `heavy` | High-output or high-runtime servers (`scrapling` browser spawn, `jupyter-mcp-server` kernel execution) |
 | `experimental` | Bleeding-edge servers — opt-in (`open-websearch`, `scrapling`, `g-search`, …) |
 | `tunnel` | **ChatGPT remote only** — not for local harness default |
 

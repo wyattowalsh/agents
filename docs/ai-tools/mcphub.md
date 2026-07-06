@@ -90,13 +90,14 @@ Managed groups are declared in `config/mcp-registry.json` and emitted into
 - Default/workflow groups: `harness`, `tunnel`, `daily`, `coding`, `research`,
   `review`, `release`, `personal-work`, and `media-work`. For local trim/transcode/thumbnail/GIF work, prefer the repo `/ffmpeg` skill over MCP multimedia servers when the harness has shell access.
 - Capability groups: `web-search`, `web-read`, `docs`, `repo`, `browser`,
-  `reasoning`, `reasoning-lab`, `media`, `design`,
+  `reasoning`, `reasoning-lab`, `media`, `notebooks`, `design`,
   `productivity`, `accounts`, and `references`. The `web-search` and `research`
   groups include `open-websearch` (no API key; opt-in only, not in default
-  `harness`). `scrapling` (CSS-targeted scraping, anti-bot fetch; opt-in only)
-  is in `research`, `media-work`, `live-browser`, `heavy`, and `experimental`
-  (full server), plus bounded HTTP subsets in `web-read` and `shared-read`.
-  Browser tools require a one-time `scrapling install` on the maintainer machine.
+  `harness`). `jupyter-mcp-server` (Datalayer Jupyter MCP; opt-in only) is in `notebooks`,
+  `coding`, `heavy`, `credentialed`, and `experimental` (full server), plus
+  bounded read subsets in `research` and `review`. Requires a running JupyterLab
+  and `JUPYTER_URL` / `JUPYTER_TOKEN` in `.env.mcphub`; kernel tools execute
+  arbitrary code.
 - Risk/exposure groups: `shared-read`, `credentialed`, `account-backed`,
   `live-browser`, `heavy`, and `experimental`.
 

@@ -1,0 +1,43 @@
+{
+  "audited_at": "2026-07-05",
+  "upstream_repo": "datalayer/jupyter-mcp-server",
+  "pypi_package": "jupyter-mcp-server",
+  "pypi_version": "1.0.2",
+  "pypi_runtime_pin": "jupyter-mcp-server==1.0.2",
+  "license": "BSD-3-Clause",
+  "quarantine_status": "clear",
+  "mcp_tools_documented": [
+    "list_files",
+    "list_kernels",
+    "connect_to_jupyter",
+    "use_notebook",
+    "list_notebooks",
+    "restart_notebook",
+    "unuse_notebook",
+    "read_notebook",
+    "read_cell",
+    "insert_cell",
+    "delete_cell",
+    "move_cell",
+    "overwrite_cell_source",
+    "edit_cell_source",
+    "execute_cell",
+    "insert_execute_code_cell",
+    "execute_code",
+    "notebook_run-all-cells",
+    "notebook_get-selected-cell"
+  ],
+  "verification_method": "upstream-docs-plus-uvx-help-probe",
+  "fleet_wrapper": "scripts/mcphub/jupyter-mcp-server-stdio.sh",
+  "default_harness_membership": false,
+  "jupyter_prerequisite": "User-owned JupyterLab with jupyter-collaboration RTC; start before attaching notebooks group",
+  "risk_notes": [
+    "execute_cell and execute_code run arbitrary kernel code",
+    "JUPYTER_TOKEN is a secret; .env.mcphub only",
+    "connect_to_jupyter exposes token to the model; avoid in production",
+    "Notebook outputs and plots are untrusted evidence",
+    "ALLOW_IMG_OUTPUT can inflate multimodal context",
+    "Child process fails when JupyterLab is unreachable"
+  ],
+  "dedupe_summary": "Complements docling (static documents) and new-project notebook presets; does not replace local Jupyter skill guidance"
+}
