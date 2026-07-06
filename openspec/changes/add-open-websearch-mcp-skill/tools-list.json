@@ -1,12 +1,22 @@
 {
-  "captured_at": "2026-07-05",
-  "verification_method": "static-skill-allowed-tools",
-  "runtime_smoke_status": "degraded-mcphub-smoke-hung-reload-settings-recommended",
+  "captured_at": "2026-07-06",
+  "verification_method": "runtime-stdio-tools-list",
+  "runtime_smoke_status": "stdio-probe-ok-mcphub-smoke-degraded-hub-init",
+  "probe_command": "bash scripts/mcphub/open-websearch-stdio.sh (JSON-RPC initialize + tools/list)",
+  "npm_runtime_pin": "open-websearch@2.1.11",
   "mcp_endpoints": [
     "http://127.0.0.1:46683/mcp/open-websearch",
     "http://127.0.0.1:46683/mcp/web-search"
   ],
-  "tools": [
+  "tools_runtime": [
+    "search",
+    "fetchLinuxDoArticle",
+    "fetchCsdnArticle",
+    "fetchGithubReadme",
+    "fetchWebContent",
+    "fetchJuejinArticle"
+  ],
+  "tools_bounded_registry": [
     {
       "name": "search",
       "used_in_bounded_groups": ["shared-read", "web-search", "research", "experimental"]
@@ -20,5 +30,5 @@
       "used_in_bounded_groups": ["web-read"]
     }
   ],
-  "notes": "Re-run bash scripts/mcphub/smoke.sh after mcphub settings reload to upgrade to runtime-verified."
+  "notes": "All bounded registry tool names verified at runtime. Extra upstream tools (fetchLinuxDoArticle, fetchCsdnArticle, fetchJuejinArticle) are not projected in bounded groups. MCPHub smoke still fails during hub-wide init (context7 SSRF, partial /mcp 404); re-run bash scripts/mcphub/smoke.sh after hub reload for endpoint-level evidence."
 }

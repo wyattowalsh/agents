@@ -20,8 +20,17 @@
     "fetchWebContent",
     "fetchGithubReadme"
   ],
-  "verification_method": "static-skill-allowed-tools-plus-runtime-tools-list",
-  "mcp_tools_source": "upstream skills/open-websearch/SKILL.md allowed-tools at audited HEAD; runtime tools/list in tools-list.json when G3 passes",
+  "verification_method": "runtime-stdio-tools-list-plus-static-skill-cross-check",
+  "mcp_tools_runtime_verified_at": "2026-07-06",
+  "mcp_tools_runtime": [
+    "search",
+    "fetchLinuxDoArticle",
+    "fetchCsdnArticle",
+    "fetchGithubReadme",
+    "fetchWebContent",
+    "fetchJuejinArticle"
+  ],
+  "mcp_tools_source": "runtime stdio tools/list via scripts/mcphub/open-websearch-stdio.sh @2.1.11; bounded registry subset cross-checked against upstream SKILL.md",
   "fleet_wrapper": "scripts/mcphub/open-websearch-stdio.sh",
   "default_harness_membership": false,
   "trust_tier": "install-now-after-trust-gate",
