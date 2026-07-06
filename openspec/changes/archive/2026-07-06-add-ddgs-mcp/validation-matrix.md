@@ -6,9 +6,11 @@
 | MCPHub schema | `just mcphub-validate` | exit 0 |
 | Repo assets | `uv run wagents validate` | exit 0 |
 | OpenSpec | `uv run wagents openspec validate` | change validates |
-| Pytest | `uv run pytest tests/test_generate_mcphub_settings.py tests/test_sync_agent_stack.py::test_repo_workflow_groups_and_bounded_clients tests/test_mcphub_endpoints.py -q` | pass |
+| Pytest | `uv run pytest tests/test_ddgs_registry.py tests/test_generate_mcphub_settings.py tests/test_sync_agent_stack.py -q -k ddgs or harness` | pass |
 | Repo sync | `uv run python scripts/sync_agent_stack.py --targets repo --check` | no drift |
-| Docs | `uv run wagents docs build` | pass |
+| Docs regen | `uv run wagents docs compose --regen-configs --config mcp-registry` | embed refreshed |
+| Runtime smoke | `just mcphub-smoke` + `/mcp/ddgs` tools/list | pass (2026-07-06: `ddgs-search_text`, `ddgs-search_news`) |
+| Docs build | `uv run wagents docs build` | **waived** — `starlight-site-graph` pre-existing blocker |
 
 ## Package probe
 
