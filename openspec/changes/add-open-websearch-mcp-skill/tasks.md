@@ -19,4 +19,4 @@
 - [x] Run registry, sync, validate, docs, and catalog dry-run commands.
 - [x] Runtime tools/list via direct stdio probe (`open-websearch@2.1.11`; bounded tool names verified).
 - [ ] MCPHub endpoint smoke (`bash scripts/mcphub/smoke.sh`) — hub-wide init still degraded (context7 SSRF, /mcp 404 during partial startup).
-- [ ] Three atomic git commits C1→C2→C3 (registry still mixed in working tree; use `git add -p` or stash rebuild).
+- [x] Three atomic git commits C1→C2→C3 landed (`9f3c3246` package-version-check-mcp → `73eeb44b` ddgs → `0d934208` open-websearch; follow-ups `7157b329`, `d726a602`).
