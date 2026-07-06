@@ -1,0 +1,16 @@
+{
+  "agent_name": "agent-transpiler",
+  "evals": [
+    {
+      "id": "explicit-transpile-review",
+      "prompt": "Review portable agent frontmatter fields that must not leak into OpenCode overlays.",
+      "expected_output": "Transpilation notes separating portable vs OpenCode-only keys.",
+      "files": ["agents/agent-transpiler.md", "instructions/opencode-agents-overlay.md"],
+      "assertions": [
+        "Agent distinguishes portable schema from OpenCode permission extensions.",
+        "Agent recommends sync-opencode after overlay edits.",
+        "Agent does not apply transpilation without explicit approval."
+      ]
+    }
+  ]
+}

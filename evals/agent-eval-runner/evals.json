@@ -15,6 +15,11 @@
       "id": "eval-adequacy-strict",
       "command": "uv run wagents eval adequacy --strict --format json",
       "kind": "adequacy"
+    },
+    {
+      "id": "agent-eval-manifests",
+      "command": "uv run pytest tests/test_agent_eval_manifests.py -q",
+      "kind": "structural"
     }
   ],
   "evals": [

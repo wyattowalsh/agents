@@ -1,0 +1,38 @@
+{
+  "agent_name": "prompt-optimizer",
+  "evals": [
+    {
+      "id": "explicit-optimize",
+      "prompt": "Optimize this agent prompt for token budget without changing behavior.",
+      "expected_output": "Behavior-preserving compression suggestions with invariant checklist.",
+      "files": ["agents/prompt-optimizer.md"],
+      "assertions": [
+        "Agent treats optimization as read-only analysis unless apply is requested.",
+        "Agent preserves hard boundaries and output contracts.",
+        "Agent flags semantic-change risk explicitly."
+      ]
+    },
+    {
+      "id": "skill-body-review",
+      "prompt": "Tighten the review skill description under 200 characters.",
+      "expected_output": "Suggested description rewrite with character count and NOT-for boundary preserved.",
+      "files": ["agents/prompt-optimizer.md", "skills/review/SKILL.md"],
+      "assertions": [
+        "Agent respects skill description budget guidance.",
+        "Agent keeps NOT-for exclusions accurate.",
+        "Agent does not invent install or runtime behavior."
+      ]
+    },
+    {
+      "id": "negative-broad-rewrite",
+      "prompt": "Replace the orchestrator agent with a single generic assistant prompt.",
+      "expected_output": "Rejects semantic rewrite; offers bounded clarity improvements only.",
+      "files": ["agents/prompt-optimizer.md", "agents/orchestrator.md"],
+      "assertions": [
+        "Agent refuses broad semantic replacement of orchestration contracts.",
+        "Agent cites behavior-preserving optimization scope.",
+        "Agent recommends incremental edits with invariant list."
+      ]
+    }
+  ]
+}

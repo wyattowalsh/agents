@@ -1,0 +1,16 @@
+{
+  "agent_name": "agent-registry-publisher",
+  "evals": [
+    {
+      "id": "explicit-publish-plan",
+      "prompt": "Plan catalog registry publication for the portable agent corpus.",
+      "expected_output": "Scaffold publication steps without writing generated registry artifacts by hand.",
+      "files": ["agents/agent-registry-publisher.md"],
+      "assertions": [
+        "Agent treats publication as planned/scaffold workflow.",
+        "Agent references docs generation and validation instead of hand-editing indexes.",
+        "Agent stays read-only unless publish is explicitly approved."
+      ]
+    }
+  ]
+}

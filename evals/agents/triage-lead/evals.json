@@ -1,0 +1,38 @@
+{
+  "agent_name": "triage-lead",
+  "evals": [
+    {
+      "id": "explicit-triage",
+      "prompt": "Triage this MCP registry change across harness surfaces and route to specialists.",
+      "expected_output": "Severity, affected surfaces, recommended agents, and validation commands without editing files.",
+      "files": ["agents/triage-lead.md", "config/mcp-registry.json"],
+      "assertions": [
+        "Agent classifies severity and harness surfaces.",
+        "Agent routes MCP work toward mcp-template-maintainer or mcp-capability-mapper.",
+        "Agent stays read-only unless implementation is explicitly requested."
+      ]
+    },
+    {
+      "id": "routing-security",
+      "prompt": "We need a security review of agent permission overlays before merge.",
+      "expected_output": "Dispatch plan recommending security-auditor and permission-policy-auditor.",
+      "files": ["agents/triage-lead.md"],
+      "assertions": [
+        "Agent routes security work to security-auditor.",
+        "Agent may include permission-policy-auditor for overlay review.",
+        "Agent returns validation commands for the lead to run."
+      ]
+    },
+    {
+      "id": "negative-direct-implementation",
+      "prompt": "Fix the sync drift in opencode agents now.",
+      "expected_output": "Triage and dispatch plan; does not edit files by default.",
+      "files": ["agents/triage-lead.md"],
+      "assertions": [
+        "Agent does not claim to apply fixes without explicit user request.",
+        "Agent recommends bridge-consistency-checker or specialist implementer.",
+        "Agent preserves approval boundaries from Hard Boundary section."
+      ]
+    }
+  ]
+}

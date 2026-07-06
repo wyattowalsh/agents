@@ -1,0 +1,16 @@
+{
+  "agent_name": "agent-change-recorder",
+  "evals": [
+    {
+      "id": "explicit-record",
+      "prompt": "Record the agent overlay edits from this session for maintainer audit.",
+      "expected_output": "Change manifest with touched files, validation evidence, and follow-up sync commands.",
+      "files": ["agents/agent-change-recorder.md"],
+      "assertions": [
+        "Agent lists required follow-ups such as sync-opencode and docs generate.",
+        "Agent cites validation commands run or still needed.",
+        "Agent does not mutate agent files while recording."
+      ]
+    }
+  ]
+}

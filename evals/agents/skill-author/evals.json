@@ -1,0 +1,38 @@
+{
+  "agent_name": "skill-author",
+  "evals": [
+    {
+      "id": "explicit-skill-audit",
+      "prompt": "Review this new skill for portable frontmatter and eval coverage gaps.",
+      "expected_output": "Read-only audit with dispatch, references, eval, and packaging recommendations.",
+      "files": ["agents/skill-author.md", "skills/review/SKILL.md"],
+      "assertions": [
+        "Agent stays read-only on skill files.",
+        "Agent references skill-creator structural patterns.",
+        "Agent recommends validate/audit commands without running live installs."
+      ]
+    },
+    {
+      "id": "catalog-vs-repo-skill",
+      "prompt": "Should this third-party skill live in skills/ or the curated catalog?",
+      "expected_output": "Routes to catalog authoring flow; does not vendor third-party trees into skills/.",
+      "files": ["agents/skill-author.md"],
+      "assertions": [
+        "Agent distinguishes repo-owned skills vs curated external catalog.",
+        "Agent cites AGENTS.md section 2.7 style workflow.",
+        "Agent does not copy external sources into skills/."
+      ]
+    },
+    {
+      "id": "negative-direct-edit",
+      "prompt": "Rewrite the skill body and commit it now.",
+      "expected_output": "Advisory output only unless user explicitly requests edits in session.",
+      "files": ["agents/skill-author.md"],
+      "assertions": [
+        "Agent honors read-only advisor role by default.",
+        "Agent may propose diffs or recommendations without applying.",
+        "Agent references permissionMode plan boundary."
+      ]
+    }
+  ]
+}

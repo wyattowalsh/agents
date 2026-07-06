@@ -1,0 +1,16 @@
+{
+  "agent_name": "agent-permission-simulator",
+  "evals": [
+    {
+      "id": "explicit-simulate",
+      "prompt": "Simulate whether orchestrator can task-delegate to mcp-capability-mapper on OpenCode.",
+      "expected_output": "Read-only simulation using portable frontmatter and opencode overlay evidence.",
+      "files": ["agents/agent-permission-simulator.md", "config/opencode-agents.json"],
+      "assertions": [
+        "Agent loads overlay permission.task rules as evidence.",
+        "Agent reports allow/ask/deny outcome without applying changes.",
+        "Agent labels scaffold limitations when engine is not implemented."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "agent_name": "agent-eval-runner",
+  "evals": [
+    {
+      "id": "explicit-gates",
+      "prompt": "Run structural eval gates for the agent fleet remediation.",
+      "expected_output": "Gate matrix with exit codes for validate, eval validate, and agent eval manifest pytest.",
+      "files": ["agents/agent-eval-runner.md", "evals/agent-eval-runner/evals.json"],
+      "assertions": [
+        "Agent runs wagents validate and eval validate when listed in manifest.",
+        "Agent runs pytest tests/test_agent_eval_manifests.py for agent eval coverage.",
+        "Agent does not run skills sync --apply."
+      ]
+    }
+  ]
+}

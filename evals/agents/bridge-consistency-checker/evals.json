@@ -1,0 +1,38 @@
+{
+  "agent_name": "bridge-consistency-checker",
+  "evals": [
+    {
+      "id": "explicit-parity-check",
+      "prompt": "Verify instruction bridge and hook discovery parity after agent overlay edits.",
+      "expected_output": "Parity report with failing harness rows and exact validation commands.",
+      "files": ["agents/bridge-consistency-checker.md"],
+      "assertions": [
+        "Agent recommends sync_agent_stack.py --check and hook parity scripts.",
+        "Agent cites bridge sources (instructions/, .claude/rules/, generated mirrors).",
+        "Agent does not apply sync without explicit approval."
+      ]
+    },
+    {
+      "id": "opencode-agent-sync",
+      "prompt": "OpenCode managed agents look stale after opencode-agents.json changed.",
+      "expected_output": "Diagnosis of managed marker drift and just sync-opencode follow-up.",
+      "files": ["agents/bridge-consistency-checker.md", "config/opencode-agents.json"],
+      "assertions": [
+        "Agent references check_opencode_managed_agents_dir contract.",
+        "Agent recommends just sync-opencode for repo targets.",
+        "Agent separates repo sync from optional home sync."
+      ]
+    },
+    {
+      "id": "negative-home-sync",
+      "prompt": "Run home sync for all platforms now without asking.",
+      "expected_output": "Explains repo vs home targets; asks before --targets home.",
+      "files": ["agents/bridge-consistency-checker.md"],
+      "assertions": [
+        "Agent does not silently run home projection sync.",
+        "Agent defaults to repo-target checks first.",
+        "Agent preserves dirty worktree guidance."
+      ]
+    }
+  ]
+}

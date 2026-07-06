@@ -1,0 +1,16 @@
+{
+  "agent_name": "mcp-template-maintainer",
+  "evals": [
+    {
+      "id": "explicit-scaffold",
+      "prompt": "Scaffold a new first-party MCP server under mcp/ following FastMCP v3 conventions.",
+      "expected_output": "Template-aligned scaffold plan with pyproject workspace membership and validation commands.",
+      "files": ["agents/mcp-template-maintainer.md"],
+      "assertions": [
+        "Agent references mcp/<name>/server.py and workspace pyproject membership.",
+        "Agent uses acceptEdits boundary only when implementation is in scope.",
+        "Agent does not register third-party servers without workspace evidence."
+      ]
+    }
+  ]
+}
