@@ -3,18 +3,18 @@
     {
       "date": "2026-07-07",
       "orphan_count": 27,
-      "total_internal_links": 2158,
-      "total_pages": 1165
+      "total_internal_links": 2162,
+      "total_pages": 1167
     }
   ],
   "latest": {
     "most_linked_pages": [
       {
-        "backlinks": 756,
+        "backlinks": 758,
         "slug": "/cli"
       },
       {
-        "backlinks": 690,
+        "backlinks": 692,
         "slug": "/skills/catalog"
       },
       {
@@ -101,7 +101,7 @@
       "/skill-research/ui-ux-pro-max",
       "/skill-research/web-design-guidelines"
     ],
-    "total_internal_links": 2158,
-    "total_pages": 1165
+    "total_internal_links": 2162,
+    "total_pages": 1167
   }
 }

@@ -1,0 +1,178 @@
+---
+title: "swift-security-expert"
+description: "Review Swift and Apple-platform security, keychain handling, privacy, cryptography, transport security, injection risks, and secure coding patterns."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="swift-security-expert"
+  description="Review Swift and Apple-platform security, keychain handling, privacy, cryptography, transport security, injection risks, and secure coding patterns."
+  installCommand={`npx skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/swift-security-expert"
+  badges={[{ text: "swift-security-expert", variant: "note" }, { text: "416 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/swift-security-expert.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Security changes can affect credential handling, privacy, cryptography, signing, and platform compliance; require explicit confirmation before touching secrets or signing assets.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | bda2e0ccee6a64d45ec2b93790d0876c90e4eb89 |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | prompt-and-reference-files-only; no bundled executable scripts in the reviewed installed skill tree |
+| Credential behavior | No credentials, tokens, OAuth strings, cookies, or API key patterns were detected in the reviewed installed skill tree. |
+| Network access | No network behavior is declared in the installed skill; the skill provides Apple-platform review and generation guidance only. |
+| File access | Reads and edits user-selected Swift, security, signing, and CI-adjacent files when explicitly invoked by the user. |
+| Live-action risk | Security changes can affect credential handling, privacy, cryptography, signing, and platform compliance; require explicit confirmation before touching secrets or signing assets. |
+| Risk category | apple-swift-security-review |
+| Dedupe notes | Raw indexes covered: 84 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/swift-security-expert.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `ivan-magda/swift-security-skill` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `ivan-magda/swift-security-skill` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `swift-security-expert` |
+| License | MIT |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "swift-security-expert"
+description: "Review Swift and Apple-platform security, keychain handling, privacy, cryptography, transport security, injection risks, and secure coding patterns."
+title: "Swift Security Expert"
+source_kind: "curated-external"
+source: "ivan-magda/swift-security-skill"
+install_source: "ivan-magda/swift-security-skill"
+install_command: "npx skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/ivan-magda/swift-security-skill"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "bda2e0ccee6a64d45ec2b93790d0876c90e4eb89"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "prompt-and-reference-files-only; no bundled executable scripts in the reviewed installed skill tree"
+credential_behavior: "No credentials, tokens, OAuth strings, cookies, or API key patterns were detected in the reviewed installed skill tree."
+network_access: "No network behavior is declared in the installed skill; the skill provides Apple-platform review and generation guidance only."
+file_access: "Reads and edits user-selected Swift, security, signing, and CI-adjacent files when explicitly invoked by the user."
+live_action_risk: "Security changes can affect credential handling, privacy, cryptography, signing, and platform compliance; require explicit confirmation before touching secrets or signing assets."
+risk_category: "apple-swift-security-review"
+dedupe_notes: "Raw indexes covered: 84"
+notes: "Review Swift and Apple-platform security, keychain handling, privacy, cryptography, transport security, injection risks, and secure coding patterns."
+risk_notes: "Security changes can affect credential handling, privacy, cryptography, signing, and platform compliance; require explicit confirmation before touching secrets or signing assets."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, MIT metadata, installed SKILL.md and reference files, credential scan output, and local harness install output; re-run source/security review before adapting upstream content beyond the skill entry."
+provenance_evidence: "Read-only source-list evidence found 1 skill selector; this row promotes swift-security-expert. Local Skills CLI commands installed swift-security-expert into the supported harness skill roots; the repeated claude-code command records the repo's Grok mirror route through the Claude Code adapter. Skills CLI risk output reported Gen Safe, Socket 0 alerts, and Snyk Low Risk. Many credential-looking strings are intentional security examples and CI env var names such as KEYCHAIN_PASSWORD and P12_PASSWORD; no live secrets or executable scripts were found."
+---
+
+# Swift Security Expert
+
+This row promotes `ivan-magda/swift-security-skill` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 84
+- Normalized URL: [https://github.com/ivan-magda/swift-security-skill](https://github.com/ivan-magda/swift-security-skill)
+- Selected skill: `swift-security-expert`
+- Install command: `npx skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `bda2e0ccee6a64d45ec2b93790d0876c90e4eb89`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add ivan-magda/swift-security-skill --skill swift-security-expert --dry-run`
+- Executed command: `npx --yes skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a antigravity`
+- Executed command: `npx --yes skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a claude-code`
+- Executed command: `npx --yes skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a codex`
+- Executed command: `npx --yes skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a crush`
+- Executed command: `npx --yes skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a cursor`
+- Executed command: `npx --yes skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a gemini-cli`
+- Executed command: `npx --yes skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a github-copilot`
+- Executed command: `npx --yes skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a claude-code`
+- Executed command: `npx --yes skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a opencode`
+- Installed path: `~/.agents/skills/swift-security-expert`
+- Installed path: `~/.claude/skills/swift-security-expert`
+- Installed path: `~/.config/crush/skills/swift-security-expert`
+- Install evidence note: The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.
+
+## Safety Notes
+
+- Credential behavior: No credentials, tokens, OAuth strings, cookies, or API key patterns were detected in the reviewed installed skill tree.
+- Network access: No network behavior is declared in the installed skill; the skill provides Apple-platform review and generation guidance only.
+- File access: Reads and edits user-selected Swift, security, signing, and CI-adjacent files when explicitly invoked by the user.
+- Live action risk: Security changes can affect credential handling, privacy, cryptography, signing, and platform compliance; require explicit confirmation before touching secrets or signing assets.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

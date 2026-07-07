@@ -1,0 +1,178 @@
+---
+title: "html"
+description: "Author and review effective HTML documents with clear structure, semantic markup, responsive behavior, and useful self-contained presentation patterns."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="html"
+  description="Author and review effective HTML documents with clear structure, semantic markup, responsive behavior, and useful self-contained presentation patterns."
+  installCommand={`npx skills add plannotator/effective-html --skill html -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/html"
+  badges={[{ text: "html", variant: "note" }, { text: "419 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/html.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add plannotator/effective-html --skill html -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Generated HTML may expose data through embedded content or remote assets; keep sensitive data local, review asset provenance, and avoid committing private files.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | 50260e15d9a0d1b8522f0625694718d735bf31ab |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Selected html skill contains static HTML and JavaScript examples only; companion diagram and planning selectors were not promoted in this wave. |
+| Credential behavior | No credentials are required. Demo API-key and session strings in examples are illustrative placeholders, not live secrets. |
+| Network access | No required network behavior is declared in the selected skill; generated HTML should keep remote assets and external scripts explicit and provenance-checked. |
+| File access | Reads and edits user-selected HTML, markdown, assets, and documentation files when explicitly invoked by the user. |
+| Live-action risk | Generated HTML may expose data through embedded content or remote assets; keep sensitive data local, review asset provenance, and avoid committing private files. |
+| Risk category | effective-html-review |
+| Dedupe notes | Raw indexes covered: 21 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/html.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `plannotator/effective-html` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `plannotator/effective-html` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `html` |
+| License | MIT |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "html"
+description: "Author and review effective HTML documents with clear structure, semantic markup, responsive behavior, and useful self-contained presentation patterns."
+title: "Effective HTML"
+source_kind: "curated-external"
+source: "plannotator/effective-html"
+install_source: "plannotator/effective-html"
+install_command: "npx skills add plannotator/effective-html --skill html -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/plannotator/effective-html"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "50260e15d9a0d1b8522f0625694718d735bf31ab"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Selected html skill contains static HTML and JavaScript examples only; companion diagram and planning selectors were not promoted in this wave."
+credential_behavior: "No credentials are required. Demo API-key and session strings in examples are illustrative placeholders, not live secrets."
+network_access: "No required network behavior is declared in the selected skill; generated HTML should keep remote assets and external scripts explicit and provenance-checked."
+file_access: "Reads and edits user-selected HTML, markdown, assets, and documentation files when explicitly invoked by the user."
+live_action_risk: "Generated HTML may expose data through embedded content or remote assets; keep sensitive data local, review asset provenance, and avoid committing private files."
+risk_category: "effective-html-review"
+dedupe_notes: "Raw indexes covered: 21"
+notes: "Author and review effective HTML documents with clear structure, semantic markup, responsive behavior, and useful self-contained presentation patterns."
+risk_notes: "Generated HTML may expose data through embedded content or remote assets; keep sensitive data local, review asset provenance, and avoid committing private files."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, license metadata, installed selector behavior, credential scan notes, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found 3 selectors; this row promotes only html. Local Skills CLI commands installed html into the supported harness skill roots. Skills CLI risk output reported Gen Safe, Socket 0 alerts, and Snyk Low Risk. Attribution for bundled effective-HTML references is preserved through source and audited commit metadata."
+---
+
+# Html
+
+This row promotes `plannotator/effective-html` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 21
+- Normalized URL: [https://github.com/plannotator/effective-html](https://github.com/plannotator/effective-html)
+- Selected skill: `html`
+- Install command: `npx skills add plannotator/effective-html --skill html -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `50260e15d9a0d1b8522f0625694718d735bf31ab`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add plannotator/effective-html --skill html --dry-run`
+- Executed command: `npx --yes skills add plannotator/effective-html --skill html -y -g -a antigravity`
+- Executed command: `npx --yes skills add plannotator/effective-html --skill html -y -g -a claude-code`
+- Executed command: `npx --yes skills add plannotator/effective-html --skill html -y -g -a codex`
+- Executed command: `npx --yes skills add plannotator/effective-html --skill html -y -g -a crush`
+- Executed command: `npx --yes skills add plannotator/effective-html --skill html -y -g -a cursor`
+- Executed command: `npx --yes skills add plannotator/effective-html --skill html -y -g -a gemini-cli`
+- Executed command: `npx --yes skills add plannotator/effective-html --skill html -y -g -a github-copilot`
+- Executed command: `npx --yes skills add plannotator/effective-html --skill html -y -g -a claude-code`
+- Executed command: `npx --yes skills add plannotator/effective-html --skill html -y -g -a opencode`
+- Installed path: `~/.agents/skills/html`
+- Installed path: `~/.claude/skills/html`
+- Installed path: `~/.config/crush/skills/html`
+- Install evidence note: The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required. Demo API-key and session strings in examples are illustrative placeholders, not live secrets.
+- Network access: No required network behavior is declared in the selected skill; generated HTML should keep remote assets and external scripts explicit and provenance-checked.
+- File access: Reads and edits user-selected HTML, markdown, assets, and documentation files when explicitly invoked by the user.
+- Live action risk: Generated HTML may expose data through embedded content or remote assets; keep sensitive data local, review asset provenance, and avoid committing private files.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

@@ -1,0 +1,79 @@
+---
+name: "wpds"
+description: "Use WordPress Design System guidance for interface structure, component choices, tokens, accessibility, and product UI review."
+title: "WordPress Design System"
+source_kind: "curated-external"
+source: "WordPress/agent-skills"
+install_source: "WordPress/agent-skills"
+install_command: "npx skills add WordPress/agent-skills --skill wpds -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/WordPress/agent-skills"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "aecc4d6f6f1ffcc0b508cddc5c40f55bae324ad1"
+license: "GPL-2.0-or-later"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Selected wpds skill is prompt-only; broader upstream maintenance scripts and workflows were not imported or endorsed."
+credential_behavior: "No credentials are required for the selected wpds skill. Upstream maintenance workflow references ANTHROPIC_API_KEY, but that workflow is not part of the selected install."
+network_access: "No network behavior is declared in the selected installed skill; it provides WordPress design guidance only."
+file_access: "Reads and edits user-selected design, documentation, and UI implementation files when explicitly invoked by the user."
+live_action_risk: "Design-system changes can affect public WordPress UI, accessibility, localization, and brand consistency; preserve platform conventions and validate user-facing changes."
+risk_category: "wordpress-design-system-review"
+dedupe_notes: "Raw indexes covered: 9"
+notes: "Use WordPress Design System guidance for interface structure, component choices, tokens, accessibility, and product UI review."
+risk_notes: "Design-system changes can affect public WordPress UI, accessibility, localization, and brand consistency; preserve platform conventions and validate user-facing changes."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, license metadata, installed selector behavior, credential scan notes, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found 17 selectors; this row promotes only wpds. Local Skills CLI commands installed wpds into the supported harness skill roots. Skills CLI risk output reported Gen Safe, Socket 0 alerts, and Snyk Med Risk. Anthropic key references are limited to upstream maintenance workflow files outside the selected skill payload."
+---
+
+# Wpds
+
+This row promotes `WordPress/agent-skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 9
+- Normalized URL: [https://github.com/WordPress/agent-skills](https://github.com/WordPress/agent-skills)
+- Selected skill: `wpds`
+- Install command: `npx skills add WordPress/agent-skills --skill wpds -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `aecc4d6f6f1ffcc0b508cddc5c40f55bae324ad1`
+- License status: `GPL-2.0-or-later`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add WordPress/agent-skills --skill wpds --dry-run`
+- Executed command: `npx --yes skills add WordPress/agent-skills --skill wpds -y -g -a antigravity`
+- Executed command: `npx --yes skills add WordPress/agent-skills --skill wpds -y -g -a claude-code`
+- Executed command: `npx --yes skills add WordPress/agent-skills --skill wpds -y -g -a codex`
+- Executed command: `npx --yes skills add WordPress/agent-skills --skill wpds -y -g -a crush`
+- Executed command: `npx --yes skills add WordPress/agent-skills --skill wpds -y -g -a cursor`
+- Executed command: `npx --yes skills add WordPress/agent-skills --skill wpds -y -g -a gemini-cli`
+- Executed command: `npx --yes skills add WordPress/agent-skills --skill wpds -y -g -a github-copilot`
+- Executed command: `npx --yes skills add WordPress/agent-skills --skill wpds -y -g -a claude-code`
+- Executed command: `npx --yes skills add WordPress/agent-skills --skill wpds -y -g -a opencode`
+- Installed path: `~/.agents/skills/wpds`
+- Installed path: `~/.claude/skills/wpds`
+- Installed path: `~/.config/crush/skills/wpds`
+- Install evidence note: The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required for the selected wpds skill. Upstream maintenance workflow references ANTHROPIC_API_KEY, but that workflow is not part of the selected install.
+- Network access: No network behavior is declared in the selected installed skill; it provides WordPress design guidance only.
+- File access: Reads and edits user-selected design, documentation, and UI implementation files when explicitly invoked by the user.
+- Live action risk: Design-system changes can affect public WordPress UI, accessibility, localization, and brand consistency; preserve platform conventions and validate user-facing changes.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.

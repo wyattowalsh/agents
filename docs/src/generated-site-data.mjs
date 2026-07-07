@@ -5,9 +5,9 @@ const baseSiteData = {
     "customMcp": 16,
     "customSkills": 69,
     "externalMcp": 49,
-    "externalSkills": 609,
+    "externalSkills": 611,
     "mcpTools": 65,
-    "skills": 678,
+    "skills": 680,
     "supportedHarnesses": 9
   },
   "distributionPaths": [
@@ -103,7 +103,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-082-core-data-agent-skill"
+          "core-data-expert"
         ],
         "source": "AvdLee/Core-Data-Agent-Skill"
       },
@@ -117,7 +117,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-070-swift-testing-agent-skill"
+          "swift-testing-expert"
         ],
         "source": "AvdLee/Swift-Testing-Agent-Skill"
       },
@@ -138,7 +138,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-029-axiom"
+          "axiom-design"
         ],
         "source": "CharlesWiltgen/Axiom"
       },
@@ -199,7 +199,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-071-swift-api-design-guidelines-agent-skill"
+          "swift-api-design-guidelines-skill"
         ],
         "source": "Erikote04/Swift-API-Design-Guidelines-Agent-Skill"
       },
@@ -269,7 +269,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-035-codex-complexity-optimizer"
+          "complexity-optimizer"
         ],
         "source": "Kappaemme-git/codex-complexity-optimizer"
       },
@@ -290,7 +290,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-055-motion-design-skill"
+          "motion-design"
         ],
         "source": "LottieFiles/motion-design-skill"
       },
@@ -381,7 +381,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-074-swift-accessibility-skill"
+          "swift-accessibility-skill"
         ],
         "source": "PasqualeVittoriosi/swift-accessibility-skill"
       },
@@ -488,7 +488,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-009-agent-skills"
+          "wpds"
         ],
         "source": "WordPress/agent-skills"
       },
@@ -714,7 +714,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-069-swift-testing-agent-skill"
+          "swift-testing"
         ],
         "source": "bocato/swift-testing-agent-skill"
       },
@@ -814,7 +814,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-073-ios-accessibility-agent-skill"
+          "ios-accessibility"
         ],
         "source": "dadederk/iOS-Accessibility-Agent-Skill"
       },
@@ -837,14 +837,14 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-036-power-bi-agentic-development"
+          "pbi-report-design"
         ],
         "source": "data-goblin/power-bi-agentic-development"
       },
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-053-dbt-agent-skills"
+          "fetching-dbt-docs"
         ],
         "source": "dbt-labs/dbt-agent-skills"
       },
@@ -916,7 +916,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-080-swift-architecture-skill"
+          "swift-architecture-skill"
         ],
         "source": "efremidze/swift-architecture-skill"
       },
@@ -1235,7 +1235,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-084-swift-security-skill"
+          "swift-security-expert"
         ],
         "source": "ivan-magda/swift-security-skill"
       },
@@ -1450,7 +1450,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-083-swift-focusengine-agent-skill"
+          "swift-focusengine-pro"
         ],
         "source": "mhaviv/Swift-FocusEngine-Agent-Skill"
       },
@@ -1541,21 +1541,21 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-076-app-intents-agent-skill"
+          "app-intents"
         ],
         "source": "n0an/App-Intents-Agent-Skill"
       },
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-081-background-execution-agent-skill"
+          "background-execution"
         ],
         "source": "n0an/Background-Execution-Agent-Skill"
       },
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-072-swift-formatstyle-agent-skill"
+          "swift-format-style"
         ],
         "source": "n0an/Swift-FormatStyle-Agent-Skill"
       },
@@ -1770,7 +1770,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-021-effective-html"
+          "html"
         ],
         "source": "plannotator/effective-html"
       },
@@ -1863,9 +1863,11 @@ const baseSiteData = {
         "source": "render-oss/skills"
       },
       {
-        "count": 1,
+        "count": 3,
         "skills": [
-          "candidate-corpus-075-apple-accessibility-skills"
+          "appkit-accessibility-auditor",
+          "swiftui-accessibility-auditor",
+          "uikit-accessibility-auditor"
         ],
         "source": "rgmez/apple-accessibility-skills"
       },
@@ -2009,14 +2011,14 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-078-app-store-aso-skill"
+          "app-store-aso"
         ],
         "source": "timbroddin/app-store-aso-skill"
       },
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-010-pg-aiguide"
+          "design-postgres-tables"
         ],
         "source": "timescale/pg-aiguide"
       },
@@ -2059,14 +2061,14 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-066-swift-concurrency-agent-skill"
+          "swift-concurrency-pro"
         ],
         "source": "twostraws/Swift-Concurrency-Agent-Skill"
       },
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-068-swift-testing-agent-skill"
+          "swift-testing-pro"
         ],
         "source": "twostraws/Swift-Testing-Agent-Skill"
       },
@@ -2087,7 +2089,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-065-swiftdata-agent-skill"
+          "swiftdata-expert-skill"
         ],
         "source": "vanab/swiftdata-agent-skill"
       },
@@ -2276,7 +2278,7 @@ const baseSiteData = {
         "status": "catalog-reference"
       },
       {
-        "count": 296,
+        "count": 271,
         "skills": [
           "anthropics-skills-all",
           "candidate-corpus-004-skills",
@@ -2284,8 +2286,6 @@ const baseSiteData = {
           "candidate-corpus-006-mcp-excalidraw",
           "candidate-corpus-007-skills",
           "candidate-corpus-008-transitions-dev",
-          "candidate-corpus-009-agent-skills",
-          "candidate-corpus-010-pg-aiguide",
           "candidate-corpus-011-designer-skills",
           "candidate-corpus-012-aso-skills",
           "candidate-corpus-013-lathe",
@@ -2296,7 +2296,6 @@ const baseSiteData = {
           "candidate-corpus-018-rust-skills",
           "candidate-corpus-019-app-store-preflight-skills",
           "candidate-corpus-020-tot",
-          "candidate-corpus-021-effective-html",
           "candidate-corpus-022-ios-simulator-skill",
           "candidate-corpus-023-gtm-engineer-skills",
           "candidate-corpus-024-x-research-skill",
@@ -2304,14 +2303,11 @@ const baseSiteData = {
           "candidate-corpus-026-aws-agent-skills",
           "candidate-corpus-027-figmirror",
           "candidate-corpus-028-webgpu-claude-skill",
-          "candidate-corpus-029-axiom",
           "candidate-corpus-030-pretty-mermaid-skills",
           "candidate-corpus-031-tech-debt-skill",
           "candidate-corpus-032-academic-paper-skills",
           "candidate-corpus-033-claude-skills-llm-council",
           "candidate-corpus-034-scipilot-figure-skill",
-          "candidate-corpus-035-codex-complexity-optimizer",
-          "candidate-corpus-036-power-bi-agentic-development",
           "candidate-corpus-037-solana-dev-skill",
           "candidate-corpus-038-academic-pptx-skill",
           "candidate-corpus-039-agent-skill",
@@ -2328,9 +2324,7 @@ const baseSiteData = {
           "candidate-corpus-050-awesome-legal-skills",
           "candidate-corpus-051-solid-skills",
           "candidate-corpus-052-paper-plot-skills",
-          "candidate-corpus-053-dbt-agent-skills",
           "candidate-corpus-054-seo-audit-skill",
-          "candidate-corpus-055-motion-design-skill",
           "candidate-corpus-057-affiliate-skills",
           "candidate-corpus-058-newsjack",
           "candidate-corpus-059-travel-hacking-toolkit",
@@ -2339,26 +2333,9 @@ const baseSiteData = {
           "candidate-corpus-062-awesome-econ-ai-stuff",
           "candidate-corpus-063-opendirectory",
           "candidate-corpus-064-agent-skills",
-          "candidate-corpus-065-swiftdata-agent-skill",
-          "candidate-corpus-066-swift-concurrency-agent-skill",
           "candidate-corpus-067-swift-concurrency-agent-skill",
-          "candidate-corpus-068-swift-testing-agent-skill",
-          "candidate-corpus-069-swift-testing-agent-skill",
-          "candidate-corpus-070-swift-testing-agent-skill",
-          "candidate-corpus-071-swift-api-design-guidelines-agent-skill",
-          "candidate-corpus-072-swift-formatstyle-agent-skill",
-          "candidate-corpus-073-ios-accessibility-agent-skill",
-          "candidate-corpus-074-swift-accessibility-skill",
-          "candidate-corpus-075-apple-accessibility-skills",
-          "candidate-corpus-076-app-intents-agent-skill",
           "candidate-corpus-077-app-store-connect-cli-skills",
-          "candidate-corpus-078-app-store-aso-skill",
           "candidate-corpus-079-appstore-review",
-          "candidate-corpus-080-swift-architecture-skill",
-          "candidate-corpus-081-background-execution-agent-skill",
-          "candidate-corpus-082-core-data-agent-skill",
-          "candidate-corpus-083-swift-focusengine-agent-skill",
-          "candidate-corpus-084-swift-security-skill",
           "candidate-corpus-085-ios-code-audit",
           "candidate-corpus-087-figma-to-swiftui-skill",
           "candidate-corpus-088-writing-for-interfaces",
@@ -2754,7 +2731,7 @@ const baseSiteData = {
         "status": "inspect-then-install"
       },
       {
-        "count": 137,
+        "count": 164,
         "skills": [
           "a11y-debugging",
           "ab-testing",
@@ -2767,6 +2744,11 @@ const baseSiteData = {
           "apollo-connectors",
           "apollo-federation",
           "apollo-server",
+          "app-intents",
+          "app-store-aso",
+          "appkit-accessibility-auditor",
+          "axiom-design",
+          "background-execution",
           "best-practices",
           "better-auth-best-practices",
           "biome-developer",
@@ -2780,18 +2762,22 @@ const baseSiteData = {
           "cold-email",
           "commit",
           "competitor-profiling",
+          "complexity-optimizer",
           "content-strategy",
           "copywriting",
+          "core-data-expert",
           "core-web-vitals",
           "cro",
           "csvglow",
           "debug-optimize-lcp",
           "debugging-strategies",
           "deno-expert",
+          "design-postgres-tables",
           "durable-objects",
           "emails",
           "executing-plans",
           "fastapi-templates",
+          "fetching-dbt-docs",
           "flutter-add-integration-test",
           "flutter-add-widget-test",
           "flutter-apply-architecture-best-practices",
@@ -2804,7 +2790,9 @@ const baseSiteData = {
           "graphql-schema",
           "grill-me",
           "helm-chart-scaffolding",
+          "html",
           "improve-codebase-architecture",
+          "ios-accessibility",
           "k8s-manifest-generator",
           "k8s-security-policies",
           "langchain-architecture",
@@ -2815,6 +2803,7 @@ const baseSiteData = {
           "marketing-ideas",
           "marketing-psychology",
           "memory-leak-debugging",
+          "motion-design",
           "multi-stage-dockerfile",
           "next-best-practices",
           "next-cache-components",
@@ -2829,6 +2818,7 @@ const baseSiteData = {
           "open-websearch",
           "openapi-spec-generation",
           "paywalls",
+          "pbi-report-design",
           "performance",
           "plannotator-annotate",
           "plannotator-compound",
@@ -2863,8 +2853,20 @@ const baseSiteData = {
           "supabase",
           "supabase-postgres-best-practices",
           "svelte5-best-practices",
+          "swift-accessibility-skill",
+          "swift-api-design-guidelines-skill",
+          "swift-architecture-skill",
           "swift-concurrency",
+          "swift-concurrency-pro",
+          "swift-focusengine-pro",
+          "swift-format-style",
+          "swift-security-expert",
+          "swift-testing",
+          "swift-testing-expert",
+          "swift-testing-pro",
+          "swiftdata-expert-skill",
           "swiftdata-pro",
+          "swiftui-accessibility-auditor",
           "swiftui-design-principles",
           "swiftui-expert-skill",
           "systematic-debugging",
@@ -2878,6 +2880,7 @@ const baseSiteData = {
           "to-prd",
           "troubleshooting",
           "turborepo-caching",
+          "uikit-accessibility-auditor",
           "upgrade-stripe",
           "uv-package-manager",
           "vercel-composition-patterns",
@@ -2891,6 +2894,7 @@ const baseSiteData = {
           "vue-best-practices",
           "web-quality-audit",
           "workers-best-practices",
+          "wpds",
           "wrangler",
           "writing-plans"
         ],
@@ -3245,6 +3249,36 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add AvdLee/Core-Data-Agent-Skill --skill core-data-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "core-data-expert"
+        ],
+        "source": "AvdLee/Core-Data-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add AvdLee/Swift-Testing-Agent-Skill --skill swift-testing-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swift-testing-expert"
+        ],
+        "source": "AvdLee/Swift-Testing-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add CharlesWiltgen/Axiom --skill axiom-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "axiom-design"
+        ],
+        "source": "CharlesWiltgen/Axiom",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "a11y-debugging",
@@ -3260,6 +3294,36 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add Erikote04/Swift-API-Design-Guidelines-Agent-Skill --skill swift-api-design-guidelines-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swift-api-design-guidelines-skill"
+        ],
+        "source": "Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "complexity-optimizer"
+        ],
+        "source": "Kappaemme-git/codex-complexity-optimizer",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add LottieFiles/motion-design-skill --skill motion-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "motion-design"
+        ],
+        "source": "LottieFiles/motion-design-skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add P4nda0s/reverse-skills --skill rev-frida --list",
         "skills": [
           "reverse-skills"
@@ -3267,6 +3331,16 @@ const baseSiteData = {
         "source": "P4nda0s/reverse-skills",
         "sourceType": "curated-external",
         "status": "catalog-reference",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add PasqualeVittoriosi/swift-accessibility-skill --skill swift-accessibility-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swift-accessibility-skill"
+        ],
+        "source": "PasqualeVittoriosi/swift-accessibility-skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
       },
       {
@@ -3296,6 +3370,16 @@ const baseSiteData = {
           "csvglow"
         ],
         "source": "Ratnaditya-J/csvglow",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add WordPress/agent-skills --skill wpds -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "wpds"
+        ],
+        "source": "WordPress/agent-skills",
         "sourceType": "curated-external",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
@@ -3469,6 +3553,16 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add bocato/swift-testing-agent-skill --skill swift-testing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swift-testing"
+        ],
+        "source": "bocato/swift-testing-agent-skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add boristane/agent-skills --skill logging-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "logging-best-practices"
@@ -3575,6 +3669,16 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add dadederk/iOS-Accessibility-Agent-Skill --skill ios-accessibility -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "ios-accessibility"
+        ],
+        "source": "dadederk/iOS-Accessibility-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "otel-collector",
@@ -3585,6 +3689,26 @@ const baseSiteData = {
         "sourceType": "curated-external",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add data-goblin/power-bi-agentic-development --skill pbi-report-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "pbi-report-design"
+        ],
+        "source": "data-goblin/power-bi-agentic-development",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "fetching-dbt-docs"
+        ],
+        "source": "dbt-labs/dbt-agent-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
       },
       {
         "command": "npx skills add deckardger/tanstack-agent-skills --skill tanstack-query-best-practices --skill tanstack-start-best-practices --skill tanstack-router-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -3604,6 +3728,16 @@ const baseSiteData = {
           "deno-expert"
         ],
         "source": "denoland/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add efremidze/swift-architecture-skill --skill swift-architecture-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swift-architecture-skill"
+        ],
+        "source": "efremidze/swift-architecture-skill",
         "sourceType": "curated-external",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
@@ -3853,6 +3987,16 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
+        "command": "npx skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swift-security-expert"
+        ],
+        "source": "ivan-magda/swift-security-skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add jeffallan/claude-skills --skill kubernetes-specialist -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "kubernetes-specialist"
@@ -4002,6 +4146,16 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
+        "command": "npx skills add mhaviv/Swift-FocusEngine-Agent-Skill --skill swift-focusengine-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swift-focusengine-pro"
+        ],
+        "source": "mhaviv/Swift-FocusEngine-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "pip install apm-cli",
         "skills": [
           "apm-cli"
@@ -4029,6 +4183,36 @@ const baseSiteData = {
         "source": "mukul975/Anthropic-Cybersecurity-Skills",
         "sourceType": "curated-external",
         "status": "catalog-reference",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "app-intents"
+        ],
+        "source": "n0an/App-Intents-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add n0an/Background-Execution-Agent-Skill --skill background-execution -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "background-execution"
+        ],
+        "source": "n0an/Background-Execution-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add n0an/Swift-FormatStyle-Agent-Skill --skill swift-format-style -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swift-format-style"
+        ],
+        "source": "n0an/Swift-FormatStyle-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
       },
       {
@@ -4117,6 +4301,16 @@ const baseSiteData = {
         "sourceType": "curated-external",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add plannotator/effective-html --skill html -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "html"
+        ],
+        "source": "plannotator/effective-html",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
       },
       {
         "command": "npx skills add prisma/skills --skill prisma-client-api --skill prisma-cli --skill prisma-upgrade-v7 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -4251,6 +4445,36 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
+        "command": "npx skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "appkit-accessibility-auditor"
+        ],
+        "source": "rgmez/apple-accessibility-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add rgmez/apple-accessibility-skills --skill swiftui-accessibility-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swiftui-accessibility-auditor"
+        ],
+        "source": "rgmez/apple-accessibility-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add rgmez/apple-accessibility-skills --skill uikit-accessibility-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "uikit-accessibility-auditor"
+        ],
+        "source": "rgmez/apple-accessibility-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "golang-benchmark",
@@ -4334,6 +4558,26 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
+        "command": "npx skills add timbroddin/app-store-aso-skill --skill app-store-aso -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "app-store-aso"
+        ],
+        "source": "timbroddin/app-store-aso-skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add timescale/pg-aiguide --skill design-postgres-tables -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "design-postgres-tables"
+        ],
+        "source": "timescale/pg-aiguide",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "codeql",
@@ -4361,11 +4605,41 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
+        "command": "npx skills add twostraws/Swift-Concurrency-Agent-Skill --skill swift-concurrency-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swift-concurrency-pro"
+        ],
+        "source": "twostraws/Swift-Concurrency-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add twostraws/Swift-Testing-Agent-Skill --skill swift-testing-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swift-testing-pro"
+        ],
+        "source": "twostraws/Swift-Testing-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add twostraws/SwiftData-Agent-Skill --skill swiftdata-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "swiftdata-pro"
         ],
         "source": "twostraws/SwiftData-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add vanab/swiftdata-agent-skill --skill swiftdata-expert-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swiftdata-expert-skill"
+        ],
+        "source": "vanab/swiftdata-agent-skill",
         "sourceType": "curated-external",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"

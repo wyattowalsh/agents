@@ -48,14 +48,16 @@ EXPECTED_DUPLICATES = {
     "https://github.com/MohamedAbdallah-14/unslop",
 }
 PROMOTED_SKILL_NAMES = {
-    "csvglow",
-    "swiftdata-pro",
-    "swiftui-design-principles",
+    override["skill_name"]
+    for override in json.loads(
+        (MANIFEST_DIR / "promotion-overrides.json").read_text(encoding="utf-8")
+    )["overrides"]
 }
 PROMOTED_CANDIDATE_NAMES = {
-    "candidate-corpus-001-csvglow",
-    "candidate-corpus-002-swiftdata-agent-skill",
-    "candidate-corpus-003-swiftui-design-principles",
+    override["candidate_authoring_name"]
+    for override in json.loads(
+        (MANIFEST_DIR / "promotion-overrides.json").read_text(encoding="utf-8")
+    )["overrides"]
 }
 
 REQUIRED_RECORD_FIELDS = {
@@ -177,22 +179,22 @@ def test_every_unique_target_has_catalog_authoring_row() -> None:
     catalog_paths = sorted(CATALOG_DIR.glob(f"{CATALOG_PREFIX}*.mdx"))
     source_list_counts = summary["source_list_status_counts"]
 
-    assert summary["rows_written"] == 289
+    assert summary["rows_written"] == 289 - len(PROMOTED_CANDIDATE_NAMES) + len(PROMOTED_SKILL_NAMES)
     assert summary["unique_targets"] == 289
     assert summary["install_commands_published"] == len(PROMOTED_SKILL_NAMES)
     assert summary["live_installs_recorded"] == len(PROMOTED_SKILL_NAMES)
     assert summary["status_counts"] == {
-        "global-only-or-avoid": 289 - len(PROMOTED_SKILL_NAMES),
+        "global-only-or-avoid": 289 - len(PROMOTED_CANDIDATE_NAMES),
         "install-now-after-trust-gate": len(PROMOTED_SKILL_NAMES),
     }
     assert summary["sync_kind_counts"] == {
-        "none": 289 - len(PROMOTED_SKILL_NAMES),
+        "none": 289 - len(PROMOTED_CANDIDATE_NAMES),
         "skills-cli": len(PROMOTED_SKILL_NAMES),
     }
     assert sum(source_list_counts.values()) == 289
     assert source_list_counts["source-list-found"] >= 13
     assert "not-run" not in source_list_counts
-    assert len(catalog_paths) == 289 - len(PROMOTED_SKILL_NAMES)
+    assert len(catalog_paths) == 289 - len(PROMOTED_CANDIDATE_NAMES)
     for skill_name in PROMOTED_SKILL_NAMES:
         assert (CATALOG_DIR / f"{skill_name}.mdx").exists()
 
@@ -302,12 +304,12 @@ def test_candidate_catalog_authoring_rows_track_promoted_installable_override() 
         if row.get("name") in PROMOTED_SKILL_NAMES
     }
 
-    assert summary["rows_written"] == 289
+    assert summary["rows_written"] == 289 - len(PROMOTED_CANDIDATE_NAMES) + len(PROMOTED_SKILL_NAMES)
     assert summary["unique_targets"] == 289
     assert summary["install_commands_published"] == len(PROMOTED_SKILL_NAMES)
     assert summary["live_installs_recorded"] == len(PROMOTED_SKILL_NAMES)
-    assert len(generated_rows) == 289 - len(PROMOTED_SKILL_NAMES)
-    assert len(indexed_rows) == 289 - len(PROMOTED_SKILL_NAMES)
+    assert len(generated_rows) == 289 - len(PROMOTED_CANDIDATE_NAMES)
+    assert len(indexed_rows) == 289 - len(PROMOTED_CANDIDATE_NAMES)
     assert {row["syncKind"] for row in indexed_rows} == {"none"}
     assert {row["status"] for row in indexed_rows} == {"global-only-or-avoid"}
     assert not any(row.get("installCommand") for row in indexed_rows)

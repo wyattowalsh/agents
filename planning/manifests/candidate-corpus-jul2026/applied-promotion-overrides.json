@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T11:48:11.103466+00:00",
-  "applied_count": 3,
+  "generated_at": "2026-07-07T12:23:55.283253+00:00",
+  "applied_count": 30,
   "items": [
     {
       "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
@@ -20,6 +20,168 @@
       "skill_name": "swiftui-design-principles",
       "path": "docs/src/authoring/skills/swiftui-design-principles.mdx",
       "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-003-swiftui-design-principles.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/vanab/swiftdata-agent-skill",
+      "skill_name": "swiftdata-expert-skill",
+      "path": "docs/src/authoring/skills/swiftdata-expert-skill.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-065-swiftdata-agent-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/twostraws/Swift-Concurrency-Agent-Skill",
+      "skill_name": "swift-concurrency-pro",
+      "path": "docs/src/authoring/skills/swift-concurrency-pro.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-066-swift-concurrency-agent-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/twostraws/Swift-Testing-Agent-Skill",
+      "skill_name": "swift-testing-pro",
+      "path": "docs/src/authoring/skills/swift-testing-pro.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-068-swift-testing-agent-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/bocato/swift-testing-agent-skill",
+      "skill_name": "swift-testing",
+      "path": "docs/src/authoring/skills/swift-testing.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-069-swift-testing-agent-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/AvdLee/Swift-Testing-Agent-Skill",
+      "skill_name": "swift-testing-expert",
+      "path": "docs/src/authoring/skills/swift-testing-expert.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-070-swift-testing-agent-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
+      "skill_name": "swift-api-design-guidelines-skill",
+      "path": "docs/src/authoring/skills/swift-api-design-guidelines-skill.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-071-swift-api-design-guidelines-agent-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/n0an/Swift-FormatStyle-Agent-Skill",
+      "skill_name": "swift-format-style",
+      "path": "docs/src/authoring/skills/swift-format-style.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-072-swift-formatstyle-agent-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/dadederk/iOS-Accessibility-Agent-Skill",
+      "skill_name": "ios-accessibility",
+      "path": "docs/src/authoring/skills/ios-accessibility.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-073-ios-accessibility-agent-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/PasqualeVittoriosi/swift-accessibility-skill",
+      "skill_name": "swift-accessibility-skill",
+      "path": "docs/src/authoring/skills/swift-accessibility-skill.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-074-swift-accessibility-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/rgmez/apple-accessibility-skills",
+      "skill_name": "appkit-accessibility-auditor",
+      "path": "docs/src/authoring/skills/appkit-accessibility-auditor.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-075-apple-accessibility-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/rgmez/apple-accessibility-skills",
+      "skill_name": "swiftui-accessibility-auditor",
+      "path": "docs/src/authoring/skills/swiftui-accessibility-auditor.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-075-apple-accessibility-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/rgmez/apple-accessibility-skills",
+      "skill_name": "uikit-accessibility-auditor",
+      "path": "docs/src/authoring/skills/uikit-accessibility-auditor.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-075-apple-accessibility-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/n0an/App-Intents-Agent-Skill",
+      "skill_name": "app-intents",
+      "path": "docs/src/authoring/skills/app-intents.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-076-app-intents-agent-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/timbroddin/app-store-aso-skill",
+      "skill_name": "app-store-aso",
+      "path": "docs/src/authoring/skills/app-store-aso.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-078-app-store-aso-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/efremidze/swift-architecture-skill",
+      "skill_name": "swift-architecture-skill",
+      "path": "docs/src/authoring/skills/swift-architecture-skill.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-080-swift-architecture-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/n0an/Background-Execution-Agent-Skill",
+      "skill_name": "background-execution",
+      "path": "docs/src/authoring/skills/background-execution.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-081-background-execution-agent-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/AvdLee/Core-Data-Agent-Skill",
+      "skill_name": "core-data-expert",
+      "path": "docs/src/authoring/skills/core-data-expert.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-082-core-data-agent-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/mhaviv/Swift-FocusEngine-Agent-Skill",
+      "skill_name": "swift-focusengine-pro",
+      "path": "docs/src/authoring/skills/swift-focusengine-pro.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-083-swift-focusengine-agent-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/ivan-magda/swift-security-skill",
+      "skill_name": "swift-security-expert",
+      "path": "docs/src/authoring/skills/swift-security-expert.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-084-swift-security-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/WordPress/agent-skills",
+      "skill_name": "wpds",
+      "path": "docs/src/authoring/skills/wpds.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-009-agent-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/CharlesWiltgen/Axiom",
+      "skill_name": "axiom-design",
+      "path": "docs/src/authoring/skills/axiom-design.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-029-axiom.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/data-goblin/power-bi-agentic-development",
+      "skill_name": "pbi-report-design",
+      "path": "docs/src/authoring/skills/pbi-report-design.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-036-power-bi-agentic-development.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/timescale/pg-aiguide",
+      "skill_name": "design-postgres-tables",
+      "path": "docs/src/authoring/skills/design-postgres-tables.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-010-pg-aiguide.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/plannotator/effective-html",
+      "skill_name": "html",
+      "path": "docs/src/authoring/skills/html.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-021-effective-html.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Kappaemme-git/codex-complexity-optimizer",
+      "skill_name": "complexity-optimizer",
+      "path": "docs/src/authoring/skills/complexity-optimizer.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-035-codex-complexity-optimizer.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/dbt-labs/dbt-agent-skills",
+      "skill_name": "fetching-dbt-docs",
+      "path": "docs/src/authoring/skills/fetching-dbt-docs.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-053-dbt-agent-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/LottieFiles/motion-design-skill",
+      "skill_name": "motion-design",
+      "path": "docs/src/authoring/skills/motion-design.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-055-motion-design-skill.mdx"
     }
   ]
 }

@@ -1,0 +1,178 @@
+---
+title: "appkit-accessibility-auditor"
+description: "Audit macOS AppKit accessibility semantics, focus, labels, actions, keyboard navigation, Dynamic Type equivalents, and assistive-technology behavior."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="appkit-accessibility-auditor"
+  description="Audit macOS AppKit accessibility semantics, focus, labels, actions, keyboard navigation, Dynamic Type equivalents, and assistive-technology behavior."
+  installCommand={`npx skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/appkit-accessibility-auditor"
+  badges={[{ text: "appkit-accessibility-auditor", variant: "note" }, { text: "412 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/appkit-accessibility-auditor.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: AppKit accessibility changes can alter macOS keyboard, VoiceOver, and focus behavior; require manual assistive-technology checks before release.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | 48ee0edafa38b990925c9a82598041b41974a9c0 |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | prompt-and-reference-files-only; no bundled executable scripts in the reviewed installed skill tree |
+| Credential behavior | No credentials, tokens, OAuth strings, cookies, or API key patterns were detected in the reviewed installed skill tree. |
+| Network access | No network behavior is declared in the installed skill; the skill provides Apple-platform review and generation guidance only. |
+| File access | Reads and edits user-selected AppKit/macOS source and accessibility test files when explicitly invoked by the user. |
+| Live-action risk | AppKit accessibility changes can alter macOS keyboard, VoiceOver, and focus behavior; require manual assistive-technology checks before release. |
+| Risk category | apple-appkit-accessibility-review |
+| Dedupe notes | Raw indexes covered: 75 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/appkit-accessibility-auditor.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `rgmez/apple-accessibility-skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `rgmez/apple-accessibility-skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `appkit-accessibility-auditor` |
+| License | MIT |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "appkit-accessibility-auditor"
+description: "Audit macOS AppKit accessibility semantics, focus, labels, actions, keyboard navigation, Dynamic Type equivalents, and assistive-technology behavior."
+title: "AppKit Accessibility Auditor"
+source_kind: "curated-external"
+source: "rgmez/apple-accessibility-skills"
+install_source: "rgmez/apple-accessibility-skills"
+install_command: "npx skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/rgmez/apple-accessibility-skills"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "48ee0edafa38b990925c9a82598041b41974a9c0"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "prompt-and-reference-files-only; no bundled executable scripts in the reviewed installed skill tree"
+credential_behavior: "No credentials, tokens, OAuth strings, cookies, or API key patterns were detected in the reviewed installed skill tree."
+network_access: "No network behavior is declared in the installed skill; the skill provides Apple-platform review and generation guidance only."
+file_access: "Reads and edits user-selected AppKit/macOS source and accessibility test files when explicitly invoked by the user."
+live_action_risk: "AppKit accessibility changes can alter macOS keyboard, VoiceOver, and focus behavior; require manual assistive-technology checks before release."
+risk_category: "apple-appkit-accessibility-review"
+dedupe_notes: "Raw indexes covered: 75"
+notes: "Audit macOS AppKit accessibility semantics, focus, labels, actions, keyboard navigation, Dynamic Type equivalents, and assistive-technology behavior."
+risk_notes: "AppKit accessibility changes can alter macOS keyboard, VoiceOver, and focus behavior; require manual assistive-technology checks before release."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, MIT metadata, installed SKILL.md and reference files, credential scan output, and local harness install output; re-run source/security review before adapting upstream content beyond the skill entry."
+provenance_evidence: "Read-only source-list evidence found 3 skill selectors; this row promotes appkit-accessibility-auditor. Local Skills CLI commands installed appkit-accessibility-auditor into the supported harness skill roots; the repeated claude-code command records the repo's Grok mirror route through the Claude Code adapter. Skills CLI risk output reported Gen Safe, Socket 0 alerts, and Snyk Low Risk. Promoted as one selector in a three-skill accessibility family from the same source; no real secrets or executable scripts were found."
+---
+
+# Appkit Accessibility Auditor
+
+This row promotes `rgmez/apple-accessibility-skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 75
+- Normalized URL: [https://github.com/rgmez/apple-accessibility-skills](https://github.com/rgmez/apple-accessibility-skills)
+- Selected skill: `appkit-accessibility-auditor`
+- Install command: `npx skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `48ee0edafa38b990925c9a82598041b41974a9c0`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor --dry-run`
+- Executed command: `npx --yes skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a antigravity`
+- Executed command: `npx --yes skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a claude-code`
+- Executed command: `npx --yes skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a codex`
+- Executed command: `npx --yes skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a crush`
+- Executed command: `npx --yes skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a cursor`
+- Executed command: `npx --yes skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a gemini-cli`
+- Executed command: `npx --yes skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a github-copilot`
+- Executed command: `npx --yes skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a claude-code`
+- Executed command: `npx --yes skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a opencode`
+- Installed path: `~/.agents/skills/appkit-accessibility-auditor`
+- Installed path: `~/.claude/skills/appkit-accessibility-auditor`
+- Installed path: `~/.config/crush/skills/appkit-accessibility-auditor`
+- Install evidence note: The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.
+
+## Safety Notes
+
+- Credential behavior: No credentials, tokens, OAuth strings, cookies, or API key patterns were detected in the reviewed installed skill tree.
+- Network access: No network behavior is declared in the installed skill; the skill provides Apple-platform review and generation guidance only.
+- File access: Reads and edits user-selected AppKit/macOS source and accessibility test files when explicitly invoked by the user.
+- Live action risk: AppKit accessibility changes can alter macOS keyboard, VoiceOver, and focus behavior; require manual assistive-technology checks before release.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

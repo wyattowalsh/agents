@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from collections import Counter
+from collections import Counter, defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -194,11 +194,9 @@ def apply_overrides() -> dict[str, Any]:
     rows = summary.get("rows", [])
     if not isinstance(rows, list):
         raise ValueError("catalog-authoring-summary.json rows must be a list")
-    rows_by_url = {
-        row.get("normalized_url"): row
-        for row in rows
-        if isinstance(row, dict) and row.get("normalized_url")
-    }
+    overrides_by_url: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for override in overrides:
+        overrides_by_url[str(override["normalized_url"])].append(override)
 
     applied = []
     for override in overrides:
@@ -210,8 +208,6 @@ def apply_overrides() -> dict[str, Any]:
         candidate_path = AUTHORING_DIR / f"{candidate_name}.mdx" if candidate_name else None
         if candidate_path and candidate_path.exists():
             candidate_path.unlink()
-        previous = rows_by_url.get(normalized_url)
-        rows_by_url[normalized_url] = promoted_summary_row(override, previous)
         applied.append(
             {
                 "normalized_url": normalized_url,
@@ -221,15 +217,24 @@ def apply_overrides() -> dict[str, Any]:
             }
         )
 
-    original_order = [
-        row.get("normalized_url")
-        for row in rows
-        if isinstance(row, dict) and row.get("normalized_url") in rows_by_url
-    ]
-    for url in rows_by_url:
-        if url not in original_order:
-            original_order.append(url)
-    updated_rows = [rows_by_url[url] for url in original_order]
+    updated_rows: list[dict[str, Any]] = []
+    seen_urls: set[str] = set()
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        normalized_url = str(row.get("normalized_url", ""))
+        if normalized_url in overrides_by_url:
+            if normalized_url not in seen_urls:
+                seen_urls.add(normalized_url)
+                for override in overrides_by_url[normalized_url]:
+                    updated_rows.append(promoted_summary_row(override, row))
+        else:
+            updated_rows.append(row)
+    for normalized_url, url_overrides in overrides_by_url.items():
+        if normalized_url in seen_urls:
+            continue
+        for override in url_overrides:
+            updated_rows.append(promoted_summary_row(override, None))
     status_counts = Counter(str(row.get("status", "")) for row in updated_rows)
     sync_kind_counts = Counter(str(row.get("sync_kind", "")) for row in updated_rows)
     summary["rows"] = updated_rows
@@ -257,10 +262,10 @@ def validate() -> dict[str, Any]:
     overrides = load_overrides()
     summary = load_json(SUMMARY)
     rows = summary.get("rows", [])
-    rows_by_url = {
-        row.get("normalized_url"): row
+    rows_by_key = {
+        (row.get("normalized_url"), row.get("name")): row
         for row in rows
-        if isinstance(row, dict) and row.get("normalized_url")
+        if isinstance(row, dict) and row.get("normalized_url") and row.get("name")
     }
     errors = []
     for override in overrides:
@@ -271,12 +276,10 @@ def validate() -> dict[str, Any]:
             is_live_install_command(command) for command in executed_commands
         ):
             errors.append(f"live install for {normalized_url} lacks non-dry-run install command evidence")
-        row = rows_by_url.get(normalized_url)
+        row = rows_by_key.get((normalized_url, skill_name))
         if not row:
-            errors.append(f"missing summary row for {normalized_url}")
+            errors.append(f"missing summary row for {normalized_url} / {skill_name}")
             continue
-        if row.get("name") != skill_name:
-            errors.append(f"summary row for {normalized_url} is not promoted to {skill_name}")
         if not row.get("install_command"):
             errors.append(f"summary row for {normalized_url} has no install command")
         if not (AUTHORING_DIR / f"{skill_name}.mdx").exists():

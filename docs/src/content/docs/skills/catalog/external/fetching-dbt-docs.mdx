@@ -1,0 +1,178 @@
+---
+title: "fetching-dbt-docs"
+description: "Fetch, cache, and consult dbt documentation safely for dbt project work while keeping warehouse and admin actions credential-gated."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="fetching-dbt-docs"
+  description="Fetch, cache, and consult dbt documentation safely for dbt project work while keeping warehouse and admin actions credential-gated."
+  installCommand={`npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/fetching-dbt-docs"
+  badges={[{ text: "fetching-dbt-docs", variant: "note" }, { text: "432 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/fetching-dbt-docs.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Documentation fetches are low risk, but dbt project changes can affect data pipelines; require tests, dry runs, and least-privilege credentials before live dbt or warehouse actions.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | 9eee2733ed63bb26edb8fcd0237d8c4589a773e6 |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Selected fetching-dbt-docs skill uses documented curl/cache behavior for dbt llms-full.txt; dbt CLI, MCP, admin, job, and warehouse selectors were not imported or endorsed. |
+| Credential behavior | No credentials are required for the selected docs-fetching skill. Warehouse, dbt Cloud, and MCP credentials remain out of scope and must use user-owned environment variables. |
+| Network access | Fetches public dbt documentation over the network and caches it locally when explicitly invoked; no private warehouse access is required. |
+| File access | Reads and writes local documentation cache files and user-selected dbt project files when explicitly invoked by the user. |
+| Live-action risk | Documentation fetches are low risk, but dbt project changes can affect data pipelines; require tests, dry runs, and least-privilege credentials before live dbt or warehouse actions. |
+| Risk category | dbt-docs-fetch-review |
+| Dedupe notes | Raw indexes covered: 53 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/fetching-dbt-docs.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `dbt-labs/dbt-agent-skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `dbt-labs/dbt-agent-skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `fetching-dbt-docs` |
+| License | Apache-2.0 |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "fetching-dbt-docs"
+description: "Fetch, cache, and consult dbt documentation safely for dbt project work while keeping warehouse and admin actions credential-gated."
+title: "Fetching dbt Docs"
+source_kind: "curated-external"
+source: "dbt-labs/dbt-agent-skills"
+install_source: "dbt-labs/dbt-agent-skills"
+install_command: "npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/dbt-labs/dbt-agent-skills"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "9eee2733ed63bb26edb8fcd0237d8c4589a773e6"
+license: "Apache-2.0"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Selected fetching-dbt-docs skill uses documented curl/cache behavior for dbt llms-full.txt; dbt CLI, MCP, admin, job, and warehouse selectors were not imported or endorsed."
+credential_behavior: "No credentials are required for the selected docs-fetching skill. Warehouse, dbt Cloud, and MCP credentials remain out of scope and must use user-owned environment variables."
+network_access: "Fetches public dbt documentation over the network and caches it locally when explicitly invoked; no private warehouse access is required."
+file_access: "Reads and writes local documentation cache files and user-selected dbt project files when explicitly invoked by the user."
+live_action_risk: "Documentation fetches are low risk, but dbt project changes can affect data pipelines; require tests, dry runs, and least-privilege credentials before live dbt or warehouse actions."
+risk_category: "dbt-docs-fetch-review"
+dedupe_notes: "Raw indexes covered: 53"
+notes: "Fetch, cache, and consult dbt documentation safely for dbt project work while keeping warehouse and admin actions credential-gated."
+risk_notes: "Documentation fetches are low risk, but dbt project changes can affect data pipelines; require tests, dry runs, and least-privilege credentials before live dbt or warehouse actions."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, license metadata, installed selector behavior, credential scan notes, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found 14 selectors; this row promotes only fetching-dbt-docs. Local Skills CLI commands installed fetching-dbt-docs into the supported harness skill roots. Skills CLI risk output reported Gen Safe, Socket 0 alerts, and Snyk Low Risk. Command, MCP, job, and warehouse selectors remain blocked for separate operational review."
+---
+
+# Fetching Dbt Docs
+
+This row promotes `dbt-labs/dbt-agent-skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 53
+- Normalized URL: [https://github.com/dbt-labs/dbt-agent-skills](https://github.com/dbt-labs/dbt-agent-skills)
+- Selected skill: `fetching-dbt-docs`
+- Install command: `npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `9eee2733ed63bb26edb8fcd0237d8c4589a773e6`
+- License status: `Apache-2.0`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs --dry-run`
+- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity`
+- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a claude-code`
+- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a codex`
+- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a crush`
+- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a cursor`
+- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a gemini-cli`
+- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a github-copilot`
+- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a claude-code`
+- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a opencode`
+- Installed path: `~/.agents/skills/fetching-dbt-docs`
+- Installed path: `~/.claude/skills/fetching-dbt-docs`
+- Installed path: `~/.config/crush/skills/fetching-dbt-docs`
+- Install evidence note: The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required for the selected docs-fetching skill. Warehouse, dbt Cloud, and MCP credentials remain out of scope and must use user-owned environment variables.
+- Network access: Fetches public dbt documentation over the network and caches it locally when explicitly invoked; no private warehouse access is required.
+- File access: Reads and writes local documentation cache files and user-selected dbt project files when explicitly invoked by the user.
+- Live action risk: Documentation fetches are low risk, but dbt project changes can affect data pipelines; require tests, dry runs, and least-privilege credentials before live dbt or warehouse actions.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T11:48:11.097728+00:00",
+  "generated_at": "2026-07-07T12:23:55.281645+00:00",
   "marker": "GENERATED-CANDIDATE-CORPUS-JUL2026",
-  "rows_written": 289,
+  "rows_written": 291,
   "unique_targets": 289,
   "stale_generated_rows_removed": 288,
   "status": "mixed",
   "sync_kind": "mixed",
-  "install_commands_published": 3,
+  "install_commands_published": 30,
   "source_list_status_counts": {
     "source-list-error": 21,
     "source-list-found": 236,
@@ -179,45 +179,42 @@
       ]
     },
     {
-      "name": "candidate-corpus-009-agent-skills",
-      "path": "docs/src/authoring/skills/candidate-corpus-009-agent-skills.mdx",
+      "name": "wpds",
+      "path": "docs/src/authoring/skills/wpds.mdx",
       "normalized_url": "https://github.com/WordPress/agent-skills",
       "source_name": "WordPress/agent-skills",
       "raw_indexes": [
         9
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add WordPress/agent-skills --skill wpds -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 17,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-010-pg-aiguide",
-      "path": "docs/src/authoring/skills/candidate-corpus-010-pg-aiguide.mdx",
+      "name": "design-postgres-tables",
+      "path": "docs/src/authoring/skills/design-postgres-tables.mdx",
       "normalized_url": "https://github.com/timescale/pg-aiguide",
       "source_name": "timescale/pg-aiguide",
       "raw_indexes": [
         10
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add timescale/pg-aiguide --skill design-postgres-tables -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 10,
-      "remaining_blockers": [
-        "decide reference-only vs curated installability",
-        "database connection-string boundary review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-011-designer-skills",
@@ -430,25 +427,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-021-effective-html",
-      "path": "docs/src/authoring/skills/candidate-corpus-021-effective-html.mdx",
+      "name": "html",
+      "path": "docs/src/authoring/skills/html.mdx",
       "normalized_url": "https://github.com/plannotator/effective-html",
       "source_name": "plannotator/effective-html",
       "raw_indexes": [
         21
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add plannotator/effective-html --skill html -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 3,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-022-ios-simulator-skill",
@@ -599,25 +594,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-029-axiom",
-      "path": "docs/src/authoring/skills/candidate-corpus-029-axiom.mdx",
+      "name": "axiom-design",
+      "path": "docs/src/authoring/skills/axiom-design.mdx",
       "normalized_url": "https://github.com/CharlesWiltgen/Axiom",
       "source_name": "CharlesWiltgen/Axiom",
       "raw_indexes": [
         29
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add CharlesWiltgen/Axiom --skill axiom-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 27,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-030-pretty-mermaid-skills",
@@ -725,46 +718,42 @@
       ]
     },
     {
-      "name": "candidate-corpus-035-codex-complexity-optimizer",
-      "path": "docs/src/authoring/skills/candidate-corpus-035-codex-complexity-optimizer.mdx",
+      "name": "complexity-optimizer",
+      "path": "docs/src/authoring/skills/complexity-optimizer.mdx",
       "normalized_url": "https://github.com/Kappaemme-git/codex-complexity-optimizer",
       "source_name": "Kappaemme-git/codex-complexity-optimizer",
       "raw_indexes": [
         35
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-036-power-bi-agentic-development",
-      "path": "docs/src/authoring/skills/candidate-corpus-036-power-bi-agentic-development.mdx",
+      "name": "pbi-report-design",
+      "path": "docs/src/authoring/skills/pbi-report-design.mdx",
       "normalized_url": "https://github.com/data-goblin/power-bi-agentic-development",
       "source_name": "data-goblin/power-bi-agentic-development",
       "raw_indexes": [
         36
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add data-goblin/power-bi-agentic-development --skill pbi-report-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 30,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-037-solana-dev-skill",
@@ -1104,24 +1093,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-053-dbt-agent-skills",
-      "path": "docs/src/authoring/skills/candidate-corpus-053-dbt-agent-skills.mdx",
+      "name": "fetching-dbt-docs",
+      "path": "docs/src/authoring/skills/fetching-dbt-docs.mdx",
       "normalized_url": "https://github.com/dbt-labs/dbt-agent-skills",
       "source_name": "dbt-labs/dbt-agent-skills",
       "raw_indexes": [
         53
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
-      "found_skill_count": 13,
-      "remaining_blockers": [
-        "dbt credentials and warehouse boundary review",
-        "MCP routing review",
-        "target-specific validation"
-      ]
+      "found_skill_count": 14,
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-054-seo-audit-skill",
@@ -1145,25 +1133,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-055-motion-design-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-055-motion-design-skill.mdx",
+      "name": "motion-design",
+      "path": "docs/src/authoring/skills/motion-design.mdx",
       "normalized_url": "https://github.com/LottieFiles/motion-design-skill",
       "source_name": "LottieFiles/motion-design-skill",
       "raw_indexes": [
         55
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add LottieFiles/motion-design-skill --skill motion-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-057-affiliate-skills",
@@ -1333,46 +1319,42 @@
       ]
     },
     {
-      "name": "candidate-corpus-065-swiftdata-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-065-swiftdata-agent-skill.mdx",
+      "name": "swiftdata-expert-skill",
+      "path": "docs/src/authoring/skills/swiftdata-expert-skill.mdx",
       "normalized_url": "https://github.com/vanab/swiftdata-agent-skill",
       "source_name": "vanab/swiftdata-agent-skill",
       "raw_indexes": [
         65
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add vanab/swiftdata-agent-skill --skill swiftdata-expert-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-066-swift-concurrency-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-066-swift-concurrency-agent-skill.mdx",
+      "name": "swift-concurrency-pro",
+      "path": "docs/src/authoring/skills/swift-concurrency-pro.mdx",
       "normalized_url": "https://github.com/twostraws/Swift-Concurrency-Agent-Skill",
       "source_name": "twostraws/Swift-Concurrency-Agent-Skill",
       "raw_indexes": [
         66
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add twostraws/Swift-Concurrency-Agent-Skill --skill swift-concurrency-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-067-swift-concurrency-agent-skill",
@@ -1395,193 +1377,213 @@
       ]
     },
     {
-      "name": "candidate-corpus-068-swift-testing-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-068-swift-testing-agent-skill.mdx",
+      "name": "swift-testing-pro",
+      "path": "docs/src/authoring/skills/swift-testing-pro.mdx",
       "normalized_url": "https://github.com/twostraws/Swift-Testing-Agent-Skill",
       "source_name": "twostraws/Swift-Testing-Agent-Skill",
       "raw_indexes": [
         68
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add twostraws/Swift-Testing-Agent-Skill --skill swift-testing-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-069-swift-testing-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-069-swift-testing-agent-skill.mdx",
+      "name": "swift-testing",
+      "path": "docs/src/authoring/skills/swift-testing.mdx",
       "normalized_url": "https://github.com/bocato/swift-testing-agent-skill",
       "source_name": "bocato/swift-testing-agent-skill",
       "raw_indexes": [
         69
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add bocato/swift-testing-agent-skill --skill swift-testing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-070-swift-testing-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-070-swift-testing-agent-skill.mdx",
+      "name": "swift-testing-expert",
+      "path": "docs/src/authoring/skills/swift-testing-expert.mdx",
       "normalized_url": "https://github.com/AvdLee/Swift-Testing-Agent-Skill",
       "source_name": "AvdLee/Swift-Testing-Agent-Skill",
       "raw_indexes": [
         70
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add AvdLee/Swift-Testing-Agent-Skill --skill swift-testing-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-071-swift-api-design-guidelines-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-071-swift-api-design-guidelines-agent-skill.mdx",
+      "name": "swift-api-design-guidelines-skill",
+      "path": "docs/src/authoring/skills/swift-api-design-guidelines-skill.mdx",
       "normalized_url": "https://github.com/Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
       "source_name": "Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
       "raw_indexes": [
         71
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Erikote04/Swift-API-Design-Guidelines-Agent-Skill --skill swift-api-design-guidelines-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-072-swift-formatstyle-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-072-swift-formatstyle-agent-skill.mdx",
+      "name": "swift-format-style",
+      "path": "docs/src/authoring/skills/swift-format-style.mdx",
       "normalized_url": "https://github.com/n0an/Swift-FormatStyle-Agent-Skill",
       "source_name": "n0an/Swift-FormatStyle-Agent-Skill",
       "raw_indexes": [
         72
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add n0an/Swift-FormatStyle-Agent-Skill --skill swift-format-style -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-073-ios-accessibility-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-073-ios-accessibility-agent-skill.mdx",
+      "name": "ios-accessibility",
+      "path": "docs/src/authoring/skills/ios-accessibility.mdx",
       "normalized_url": "https://github.com/dadederk/iOS-Accessibility-Agent-Skill",
       "source_name": "dadederk/iOS-Accessibility-Agent-Skill",
       "raw_indexes": [
         73
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add dadederk/iOS-Accessibility-Agent-Skill --skill ios-accessibility -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-074-swift-accessibility-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-074-swift-accessibility-skill.mdx",
+      "name": "swift-accessibility-skill",
+      "path": "docs/src/authoring/skills/swift-accessibility-skill.mdx",
       "normalized_url": "https://github.com/PasqualeVittoriosi/swift-accessibility-skill",
       "source_name": "PasqualeVittoriosi/swift-accessibility-skill",
       "raw_indexes": [
         74
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add PasqualeVittoriosi/swift-accessibility-skill --skill swift-accessibility-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-075-apple-accessibility-skills",
-      "path": "docs/src/authoring/skills/candidate-corpus-075-apple-accessibility-skills.mdx",
+      "name": "appkit-accessibility-auditor",
+      "path": "docs/src/authoring/skills/appkit-accessibility-auditor.mdx",
       "normalized_url": "https://github.com/rgmez/apple-accessibility-skills",
       "source_name": "rgmez/apple-accessibility-skills",
       "raw_indexes": [
         75
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 3,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-076-app-intents-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-076-app-intents-agent-skill.mdx",
+      "name": "swiftui-accessibility-auditor",
+      "path": "docs/src/authoring/skills/swiftui-accessibility-auditor.mdx",
+      "normalized_url": "https://github.com/rgmez/apple-accessibility-skills",
+      "source_name": "rgmez/apple-accessibility-skills",
+      "raw_indexes": [
+        75
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add rgmez/apple-accessibility-skills --skill swiftui-accessibility-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 3,
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "uikit-accessibility-auditor",
+      "path": "docs/src/authoring/skills/uikit-accessibility-auditor.mdx",
+      "normalized_url": "https://github.com/rgmez/apple-accessibility-skills",
+      "source_name": "rgmez/apple-accessibility-skills",
+      "raw_indexes": [
+        75
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add rgmez/apple-accessibility-skills --skill uikit-accessibility-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 3,
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "app-intents",
+      "path": "docs/src/authoring/skills/app-intents.mdx",
       "normalized_url": "https://github.com/n0an/App-Intents-Agent-Skill",
       "source_name": "n0an/App-Intents-Agent-Skill",
       "raw_indexes": [
         76
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-077-app-store-connect-cli-skills",
@@ -1605,25 +1607,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-078-app-store-aso-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-078-app-store-aso-skill.mdx",
+      "name": "app-store-aso",
+      "path": "docs/src/authoring/skills/app-store-aso.mdx",
       "normalized_url": "https://github.com/timbroddin/app-store-aso-skill",
       "source_name": "timbroddin/app-store-aso-skill",
       "raw_indexes": [
         78
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
-      "risk_tier": "review-required",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add timbroddin/app-store-aso-skill --skill app-store-aso -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-079-appstore-review",
@@ -1647,109 +1647,99 @@
       ]
     },
     {
-      "name": "candidate-corpus-080-swift-architecture-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-080-swift-architecture-skill.mdx",
+      "name": "swift-architecture-skill",
+      "path": "docs/src/authoring/skills/swift-architecture-skill.mdx",
       "normalized_url": "https://github.com/efremidze/swift-architecture-skill",
       "source_name": "efremidze/swift-architecture-skill",
       "raw_indexes": [
         80
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add efremidze/swift-architecture-skill --skill swift-architecture-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-081-background-execution-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-081-background-execution-agent-skill.mdx",
+      "name": "background-execution",
+      "path": "docs/src/authoring/skills/background-execution.mdx",
       "normalized_url": "https://github.com/n0an/Background-Execution-Agent-Skill",
       "source_name": "n0an/Background-Execution-Agent-Skill",
       "raw_indexes": [
         81
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add n0an/Background-Execution-Agent-Skill --skill background-execution -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-082-core-data-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-082-core-data-agent-skill.mdx",
+      "name": "core-data-expert",
+      "path": "docs/src/authoring/skills/core-data-expert.mdx",
       "normalized_url": "https://github.com/AvdLee/Core-Data-Agent-Skill",
       "source_name": "AvdLee/Core-Data-Agent-Skill",
       "raw_indexes": [
         82
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add AvdLee/Core-Data-Agent-Skill --skill core-data-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-083-swift-focusengine-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-083-swift-focusengine-agent-skill.mdx",
+      "name": "swift-focusengine-pro",
+      "path": "docs/src/authoring/skills/swift-focusengine-pro.mdx",
       "normalized_url": "https://github.com/mhaviv/Swift-FocusEngine-Agent-Skill",
       "source_name": "mhaviv/Swift-FocusEngine-Agent-Skill",
       "raw_indexes": [
         83
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add mhaviv/Swift-FocusEngine-Agent-Skill --skill swift-focusengine-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-084-swift-security-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-084-swift-security-skill.mdx",
+      "name": "swift-security-expert",
+      "path": "docs/src/authoring/skills/swift-security-expert.mdx",
       "normalized_url": "https://github.com/ivan-magda/swift-security-skill",
       "source_name": "ivan-magda/swift-security-skill",
       "raw_indexes": [
         84
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-085-ios-code-audit",
@@ -6078,12 +6068,12 @@
     }
   ],
   "status_counts": {
-    "global-only-or-avoid": 286,
-    "install-now-after-trust-gate": 3
+    "global-only-or-avoid": 261,
+    "install-now-after-trust-gate": 30
   },
   "sync_kind_counts": {
-    "none": 286,
-    "skills-cli": 3
+    "none": 261,
+    "skills-cli": 30
   },
-  "live_installs_recorded": 3
+  "live_installs_recorded": 30
 }
