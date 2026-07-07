@@ -2,47 +2,46 @@
 
 - Raw candidates processed: 293
 - Unique normalized targets: 289
-- Added count: 289
-- Catalog authoring rows added: 289
-- Live install additions: 0
-- Adapted count: 0
-- Reference-only count: 269
-- Skipped count: 9
-- Duplicates deduped: 4
+- Added count: 1213
+- Catalog authoring rows added: 1213
+- Installable curated rows: 1038
+- Live install additions: 1038
+- Live install unique skill names: 1038
+- Adapted count: 1038
+- Reference-only count: 175
+- Skipped/deduped selector collisions: 0
+- Duplicates deduped: 4 raw duplicate URLs plus selector-name collisions in the promotion overlay
 - Raw research lanes: 293
 - Unique target synthesis lanes: 289
 - Research leaf checks tracked: 7879
 - Raw promotion research packets: 293
 - Unique promotion research packets: 289
-- Live install command preview: 0 commands emitted
-- Source-list evidence: 289 list-only probes recorded (236 found, 53 blocked/error/no-skills), 0 installs
+- Source-list evidence: 289 list-only source probes recorded; 1038 installable rows were promoted after additional live selector checks and local installs.
 - GitHub metadata status: ok=292, unavailable=1
-- GitHub license labels detected: 9
-- Existing integration coverage: covered-by-existing-installable-catalog=14, covered-by-existing-reference=1, needs-promotion-review=274
-- Covered by existing installable catalog rows: 14
-- Promotion waves: W00=14, W01=15, W02=28, W03=27, W04=22, W05=26, W06=21, W07=30, W08=101, W99=5
-- Full integration phase: `research-graph-ready`
-- Live install status: `no-new-live-installs-eligible`
+- Auth requirements: 49 source targets require auth or credential-boundary review; promoted auth-bearing skills use placeholder-only docs and remain user-invoked.
+- Full integration phase: `promotion-overlay-installed`
+- Live install status: `live-installs-recorded`
 
 ## Observed Generated Evidence
 
 - Generator emitted manifest, matrix, packet, report, and catalog-authoring artifacts from local inputs.
-- Candidate code was not installed, executed, vendored, adapted, or enabled.
-- Live install command preview emitted 0 commands.
-- Trust gates remain open for blocked targets; existing installable catalog rows are credited without new live install commands.
+- Promotion overlay converted reviewed, installed Skills CLI selectors into curated external authoring rows.
+- No third-party source trees were vendored into `skills/`.
+- Credentialed/account-backed tools remain explicit user-invoked skills or disabled docs examples; no secrets were committed.
 
 ## Command Checklist
 
-- `uv run python scripts/generate_candidate_corpus_shards.py --check-coverage`
-- `uv run python scripts/promote_candidate_corpus.py --write --check-coverage`
-- `uv run pytest tests/test_candidate_corpus.py -q`
-- `uv run ruff check scripts/generate_candidate_corpus_shards.py scripts/promote_candidate_corpus.py tests/test_candidate_corpus.py`
-- `uv run wagents validate`
-- `uv run wagents docs generate --no-installed`
-- `uv run wagents readme`
-- `uv run wagents readme --check`
-- `uv run wagents skills sync --dry-run`
-- `uv run wagents docs lint`
-- `uv run wagents docs build`
-- `OPENSPEC_TELEMETRY=0 npx -y @fission-ai/openspec@latest validate integrate-candidate-corpus-jul2026 --strict --json`
-- `uv run wagents openspec validate`
+- `uv run python scripts/apply_candidate_corpus_promotions.py --check` passed for 1038 promotion overrides.
+- `uv run wagents validate` passed.
+- `uv run wagents catalog index --check` passed.
+- `uv run wagents docs generate --no-installed --check` passed.
+- `uv run wagents readme --check` passed.
+- `uv run pytest tests/test_candidate_corpus.py tests/test_site_model.py tests/test_skill_index.py tests/test_catalog_rows.py tests/test_rendering.py -q` passed.
+- `uv run pytest tests/test_candidate_corpus.py tests/test_rendering.py tests/test_site_model.py tests/test_docs_reports.py -q` passed with 102 tests.
+- `uv run ruff check scripts/apply_candidate_corpus_promotions.py wagents/site_model.py wagents/catalog_rows.py wagents/rendering.py tests/test_candidate_corpus.py tests/test_site_model.py tests/test_rendering.py` passed.
+- `uv run ruff check scripts/apply_candidate_corpus_promotions.py scripts/promote_candidate_corpus.py tests/test_candidate_corpus.py tests/test_rendering.py tests/test_site_model.py tests/test_docs_reports.py wagents/catalog_rows.py wagents/rendering.py wagents/site_model.py` passed.
+- `uv run wagents docs build` passed; Astro generated `docs/dist/` and reported all internal links valid.
+- `scripts/mcphub/validate-settings.sh` passed.
+- `uv run python scripts/generate_mcphub_settings.py --check` passed.
+- `uv run wagents skills sync --dry-run --format json` passed in dry-run mode.
+- `git diff --check` passed.

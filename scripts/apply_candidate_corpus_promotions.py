@@ -240,6 +240,12 @@ def apply_overrides() -> dict[str, Any]:
             updated_rows.append(promoted_summary_row(override, None))
     status_counts = Counter(str(row.get("status", "")) for row in updated_rows)
     sync_kind_counts = Counter(str(row.get("sync_kind", "")) for row in updated_rows)
+    source_list_by_url = {
+        str(row.get("normalized_url", "")): str(row.get("source_list_evidence", ""))
+        for row in updated_rows
+        if row.get("normalized_url")
+    }
+    source_list_status_counts = Counter(source_list_by_url.values())
     summary["rows"] = updated_rows
     summary["generated_at"] = now()
     summary["rows_written"] = len(updated_rows)
@@ -247,6 +253,7 @@ def apply_overrides() -> dict[str, Any]:
     summary["status_counts"] = dict(sorted(status_counts.items()))
     summary["sync_kind"] = "mixed" if len(sync_kind_counts) > 1 else next(iter(sync_kind_counts), "none")
     summary["sync_kind_counts"] = dict(sorted(sync_kind_counts.items()))
+    summary["source_list_status_counts"] = dict(sorted(source_list_status_counts.items()))
     summary["install_commands_published"] = sum(1 for row in updated_rows if row.get("install_command"))
     summary["live_installs_recorded"] = sum(1 for row in updated_rows if row.get("live_install_executed"))
     write_json(SUMMARY, summary)

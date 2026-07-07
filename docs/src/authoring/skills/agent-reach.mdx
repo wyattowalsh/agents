@@ -1,0 +1,74 @@
+---
+name: "agent-reach"
+description: "Use the Agent Reach skill from Panniantong/Agent-Reach as a curated, trust-gated external workflow."
+title: "Agent Reach"
+source_kind: "curated-external"
+source: "Panniantong/Agent-Reach"
+install_source: "Panniantong/Agent-Reach"
+install_command: "npx skills add Panniantong/Agent-Reach --skill agent-reach -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "agent-reach"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/Panniantong/Agent-Reach"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "e825f6740d24c6c315c3b0dc41907e6c87ff39a5"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "May require user-owned API keys, OAuth grants, service credentials, local account state, or platform CLI login. Use placeholder environment variables only in examples and never commit credentials."
+network_access: "May call external APIs, CLIs, MCP servers, or hosted services only when explicitly invoked by the user; keep account-backed operations out of shared defaults."
+file_access: "Reads and writes only user-selected project files, generated artifacts, reports, or local tool outputs when explicitly invoked; do not process private data without user intent."
+live_action_risk: "Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations. Use dry-run/read-only modes where available and confirm before credentialed writes."
+risk_category: "credentialed-or-live-service-review"
+dedupe_notes: "Raw indexes covered: 157"
+notes: "Use the Agent Reach skill from Panniantong/Agent-Reach as a curated, trust-gated external workflow."
+risk_notes: "Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations. Use dry-run/read-only modes where available and confirm before credentialed writes."
+promotion_policy: "Installable curated row is allowed after source-list evidence, compatible license metadata, collision/dedupe review, local harness installation, and docs-steward catalog generation; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Source-list evidence found selector `agent-reach` in `Panniantong/Agent-Reach`. Upstream license `MIT` and audited HEAD `e825f6740d24c6c315c3b0dc41907e6c87ff39a5` were captured before promotion. Local Skills CLI installed the containing collection and repaired duplicate owner state for selected collisions. This row records dedupe/collision handling and keeps external services opt-in."
+---
+
+# Agent Reach
+
+This row promotes `Panniantong/Agent-Reach` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 157
+- Normalized URL: [https://github.com/Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach)
+- Catalog skill id: `agent-reach`
+- Upstream install selector: `agent-reach`
+- Install command: `npx skills add Panniantong/Agent-Reach --skill agent-reach -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `e825f6740d24c6c315c3b0dc41907e6c87ff39a5`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add https://github.com/Panniantong/Agent-Reach --list`
+- Executed command: `npx skills add https://github.com/Panniantong/Agent-Reach -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Executed command: `npx skills add https://github.com/Panniantong/Agent-Reach --skill agent-reach -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Installed path: `~/.agents/skills/agent-reach`
+- Installed path: `~/.claude/skills/agent-reach`
+- Installed path: `~/.config/crush/skills/agent-reach`
+- Install evidence note: Live collection install plus collision repair installed this skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming Claude-compatible mirrored skills. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: May require user-owned API keys, OAuth grants, service credentials, local account state, or platform CLI login. Use placeholder environment variables only in examples and never commit credentials.
+- Network access: May call external APIs, CLIs, MCP servers, or hosted services only when explicitly invoked by the user; keep account-backed operations out of shared defaults.
+- File access: Reads and writes only user-selected project files, generated artifacts, reports, or local tool outputs when explicitly invoked; do not process private data without user intent.
+- Live action risk: Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations. Use dry-run/read-only modes where available and confirm before credentialed writes.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.

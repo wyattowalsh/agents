@@ -14,6 +14,13 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_antv-chart]
+url = "http://127.0.0.1:46683/mcp/antv-chart"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_arxiv]
 url = "http://127.0.0.1:46683/mcp/arxiv"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
@@ -28,6 +35,13 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_better-icons]
+url = "http://127.0.0.1:46683/mcp/better-icons"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_brave-search]
 url = "http://127.0.0.1:46683/mcp/brave-search"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
@@ -37,6 +51,13 @@ enabled = false
 
 [mcp_servers.mcphub_server_cascade-thinking]
 url = "http://127.0.0.1:46683/mcp/cascade-thinking"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_charted]
+url = "http://127.0.0.1:46683/mcp/charted"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
 startup_timeout_sec = 90
 tool_timeout_sec = 90
@@ -175,6 +196,13 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_langfuse-mcp]
+url = "http://127.0.0.1:46683/mcp/langfuse-mcp"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_linkedin]
 url = "http://127.0.0.1:46683/mcp/linkedin"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
@@ -196,8 +224,29 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_mcp-excalidraw]
+url = "http://127.0.0.1:46683/mcp/mcp-excalidraw"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_nullcost]
+url = "http://127.0.0.1:46683/mcp/nullcost"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_open-websearch]
 url = "http://127.0.0.1:46683/mcp/open-websearch"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_openspec-mcp]
+url = "http://127.0.0.1:46683/mcp/openspec-mcp"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
 startup_timeout_sec = 90
 tool_timeout_sec = 90
@@ -217,6 +266,20 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_paper-search-mcp]
+url = "http://127.0.0.1:46683/mcp/paper-search-mcp"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_papersflow]
+url = "http://127.0.0.1:46683/mcp/papersflow"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_penpot]
 url = "http://127.0.0.1:46683/mcp/penpot"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
@@ -226,6 +289,13 @@ enabled = false
 
 [mcp_servers.mcphub_server_release-provenance]
 url = "http://127.0.0.1:46683/mcp/release-provenance"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_remotion-docs]
+url = "http://127.0.0.1:46683/mcp/remotion-docs"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
 startup_timeout_sec = 90
 tool_timeout_sec = 90
@@ -247,6 +317,13 @@ enabled = false
 
 [mcp_servers.mcphub_server_scrapling]
 url = "http://127.0.0.1:46683/mcp/scrapling"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_semiotic]
+url = "http://127.0.0.1:46683/mcp/semiotic"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
 startup_timeout_sec = 90
 tool_timeout_sec = 90

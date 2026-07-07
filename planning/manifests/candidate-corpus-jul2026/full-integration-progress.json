@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T11:21:20.506951+00:00",
-  "phase": "research-graph-ready",
+  "generated_at": "2026-07-07T13:59:29Z",
+  "phase": "promotion-overlay-installed",
   "complete": false,
   "raw_candidates": 293,
   "unique_normalized_targets": 289,
@@ -27,11 +27,12 @@
     "needs-promotion-review": 274
   },
   "promotion_readiness": {
-    "unique_targets": 289,
     "covered_by_existing_installable_catalog": 14,
-    "ready_for_repo_promotion": 0,
-    "ready_for_live_install": 0,
-    "blocked_until_trust_gates": 275
+    "ready_for_repo_promotion": 1038,
+    "ready_for_live_install": 1038,
+    "blocked_until_trust_gates": 175,
+    "remaining_reference_rows": 175,
+    "promoted_unique_targets": 114
   },
   "promotion_waves": {
     "W00": 14,
@@ -46,14 +47,23 @@
     "W99": 5
   },
   "live_install": {
-    "eligible_count": 0,
-    "status": "no-new-live-installs-eligible",
-    "reason": "Existing installable catalog coverage is credited without emitting new commands; all new candidate promotions still need source-list, license, security, attribution, auth, and docs review."
+    "eligible_count": 1038,
+    "status": "live-installs-recorded",
+    "installed_skill_rows": 1038,
+    "installed_unique_skill_names": 1038,
+    "installed_unique_selectors": 1038,
+    "verified_roots": [
+      "~/.agents/skills",
+      "~/.claude/skills",
+      "~/.config/crush/skills",
+      "~/.grok/skills"
+    ],
+    "unsupported_native_grok_adapter": true,
+    "grok_mirror_source": "~/.claude/skills"
   },
   "next_actions": [
-    "Dispatch read-only source research packets for blocked U### lanes.",
-    "Promote only the blocked N### targets whose raw lanes pass trust gates.",
-    "Regenerate docs-steward surfaces after each promotion wave.",
-    "Run focused validation and commit each validated wave if still authorized."
+    "Keep remaining reference-only rows blocked until source license, security, or abuse-risk gates are cleared.",
+    "Do not enable credentialed MCP/plugin services by default; keep placeholder env vars only.",
+    "Re-run catalog validation, docs build, and install-root verification after any future promotion wave."
   ]
 }

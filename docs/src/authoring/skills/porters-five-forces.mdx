@@ -1,0 +1,74 @@
+---
+name: "porters-five-forces"
+description: "Perform Porter's Five Forces analysis — competitive rivalry, supplier power, buyer power, threat of substitutes, and threat of new entrants. Use when analyzing industry dynamics, assessing competitive forces, or evaluating market attractiveness."
+title: "Porters Five Forces"
+source_kind: "curated-external"
+source: "phuryn/pm-skills"
+install_source: "phuryn/pm-skills"
+install_command: "npx skills add phuryn/pm-skills --skill porters-five-forces -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "porters-five-forces"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/phuryn/pm-skills"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "18468a95b427e70e258b51389796367c6f684e7d"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "No credentials are required by the installed skill body by default; any downstream CLI, cloud, or account access remains user-owned and must stay out of the repo."
+network_access: "No background network service is enabled by this catalog row; any network access is explicit, user-directed, and inherited from the invoked skill instructions or external CLI."
+file_access: "Reads and writes only user-selected project files, generated artifacts, reports, or local tool outputs when explicitly invoked; do not process private data without user intent."
+live_action_risk: "Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations."
+risk_category: "standard-review"
+dedupe_notes: "Raw indexes covered: 145"
+notes: "Perform Porter's Five Forces analysis — competitive rivalry, supplier power, buyer power, threat of substitutes, and threat of new entrants. Use when analyzing industry dynamics, assessing competitive forces, or evaluating market attractiveness."
+risk_notes: "Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations."
+promotion_policy: "Installable curated row is allowed after source-list evidence, compatible license metadata, collision/dedupe review, local harness installation, and docs-steward catalog generation; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Source-list evidence found selector `porters-five-forces` in `phuryn/pm-skills`. Upstream license `MIT` and audited HEAD `18468a95b427e70e258b51389796367c6f684e7d` were captured before promotion. Local Skills CLI installed the containing collection and repaired duplicate owner state for selected collisions. This row records dedupe/collision handling and keeps external services opt-in."
+---
+
+# Porters Five Forces
+
+This row promotes `phuryn/pm-skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 145
+- Normalized URL: [https://github.com/phuryn/pm-skills](https://github.com/phuryn/pm-skills)
+- Catalog skill id: `porters-five-forces`
+- Upstream install selector: `porters-five-forces`
+- Install command: `npx skills add phuryn/pm-skills --skill porters-five-forces -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `18468a95b427e70e258b51389796367c6f684e7d`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add https://github.com/phuryn/pm-skills --list`
+- Executed command: `npx skills add https://github.com/phuryn/pm-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Executed command: `npx skills add https://github.com/phuryn/pm-skills --skill porters-five-forces -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Installed path: `~/.agents/skills/porters-five-forces`
+- Installed path: `~/.claude/skills/porters-five-forces`
+- Installed path: `~/.config/crush/skills/porters-five-forces`
+- Install evidence note: Live collection install plus collision repair installed this skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming Claude-compatible mirrored skills. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required by the installed skill body by default; any downstream CLI, cloud, or account access remains user-owned and must stay out of the repo.
+- Network access: No background network service is enabled by this catalog row; any network access is explicit, user-directed, and inherited from the invoked skill instructions or external CLI.
+- File access: Reads and writes only user-selected project files, generated artifacts, reports, or local tool outputs when explicitly invoked; do not process private data without user intent.
+- Live action risk: Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.

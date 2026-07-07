@@ -20,6 +20,16 @@
       },
       "disabled": true
     },
+    "mcphub_server_antv-chart": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/antv-chart"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
     "mcphub_server_arxiv": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
@@ -40,6 +50,16 @@
       },
       "disabled": true
     },
+    "mcphub_server_better-icons": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/better-icons"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
     "mcphub_server_brave-search": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
@@ -54,6 +74,16 @@
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/cascade-thinking"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
+    "mcphub_server_charted": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/charted"
       ],
       "env": {
         "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
@@ -250,6 +280,16 @@
       },
       "disabled": true
     },
+    "mcphub_server_langfuse-mcp": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/langfuse-mcp"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
     "mcphub_server_linkedin": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
@@ -280,10 +320,40 @@
       },
       "disabled": true
     },
+    "mcphub_server_mcp-excalidraw": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/mcp-excalidraw"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
+    "mcphub_server_nullcost": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/nullcost"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
     "mcphub_server_open-websearch": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/open-websearch"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
+    "mcphub_server_openspec-mcp": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/openspec-mcp"
       ],
       "env": {
         "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
@@ -310,6 +380,26 @@
       },
       "disabled": true
     },
+    "mcphub_server_paper-search-mcp": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/paper-search-mcp"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
+    "mcphub_server_papersflow": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/papersflow"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
     "mcphub_server_penpot": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
@@ -324,6 +414,16 @@
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/release-provenance"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
+    "mcphub_server_remotion-docs": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/remotion-docs"
       ],
       "env": {
         "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
@@ -354,6 +454,16 @@
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/scrapling"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
+    "mcphub_server_semiotic": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/semiotic"
       ],
       "env": {
         "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"

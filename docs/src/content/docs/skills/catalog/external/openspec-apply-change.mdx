@@ -1,0 +1,172 @@
+---
+title: "openspec-apply-change"
+description: "Implement tasks from an OpenSpec change after proposal/spec/task artifacts are ready."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="openspec-apply-change"
+  description="Implement tasks from an OpenSpec change after proposal/spec/task artifacts are ready."
+  installCommand={`npx skills add jixoai/openspecui --skill openspec-apply-change -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/openspec-apply-change"
+  badges={[{ text: "openspec-apply-change", variant: "note" }, { text: "383 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/openspec-apply-change.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add jixoai/openspecui --skill openspec-apply-change -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Overlaps repo-native OpenSpec workflows and can move, archive, or generate project files; require explicit change selection, dry-run/review where available, and validation before destructive archive or broad implementation steps.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | 0676d44b0620ce76e4fa9fe7c7d80f7969c6954f |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row. |
+| Credential behavior | No credentials are required by the skill body. GitHub CLI authentication was used only by the installer after anonymous clone rate limits; tokens remain local and uncommitted. |
+| Network access | No network behavior is required by default after installation. Any OpenSpec CLI or repository operations remain explicit user-directed local commands. |
+| File access | Reads and writes OpenSpec proposal, design, spec, task, and test artifacts only when explicitly invoked for a user-selected change. |
+| Live-action risk | Overlaps repo-native OpenSpec workflows and can move, archive, or generate project files; require explicit change selection, dry-run/review where available, and validation before destructive archive or broad implementation steps. |
+| Risk category | openspec-overlap-workflow-review |
+| Dedupe notes | Raw indexes covered: 182 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/openspec-apply-change.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `jixoai/openspecui` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `jixoai/openspecui` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `openspec-apply-change` |
+| License | MIT |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "openspec-apply-change"
+description: "Implement tasks from an OpenSpec change after proposal/spec/task artifacts are ready."
+title: "Openspec Apply Change"
+source_kind: "curated-external"
+source: "jixoai/openspecui"
+install_source: "jixoai/openspecui"
+install_command: "npx skills add jixoai/openspecui --skill openspec-apply-change -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "openspec-apply-change"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/jixoai/openspecui"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "0676d44b0620ce76e4fa9fe7c7d80f7969c6954f"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "No credentials are required by the skill body. GitHub CLI authentication was used only by the installer after anonymous clone rate limits; tokens remain local and uncommitted."
+network_access: "No network behavior is required by default after installation. Any OpenSpec CLI or repository operations remain explicit user-directed local commands."
+file_access: "Reads and writes OpenSpec proposal, design, spec, task, and test artifacts only when explicitly invoked for a user-selected change."
+live_action_risk: "Overlaps repo-native OpenSpec workflows and can move, archive, or generate project files; require explicit change selection, dry-run/review where available, and validation before destructive archive or broad implementation steps."
+risk_category: "openspec-overlap-workflow-review"
+dedupe_notes: "Raw indexes covered: 182"
+notes: "Implement tasks from an OpenSpec change after proposal/spec/task artifacts are ready."
+risk_notes: "Overlaps repo-native OpenSpec workflows and can move, archive, or generate project files; require explicit change selection, dry-run/review where available, and validation before destructive archive or broad implementation steps."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, upstream license, selector behavior, duplicate/overlap against repo-native OpenSpec surfaces, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found selector `openspec-apply-change` in `jixoai/openspecui`. Upstream license `MIT` and audited HEAD `0676d44b0620ce76e4fa9fe7c7d80f7969c6954f` were captured before promotion. Local Skills CLI installed `openspec-apply-change` into supported harness roots as `openspec-apply-change`. Skills CLI output reported Gen Safe, Socket 0 alerts, and Snyk Med Risk. This row records overlap with the repo-native OpenSpec workflow and keeps MCP/background service behavior opt-in."
+---
+
+# Openspec Apply Change
+
+This row promotes `jixoai/openspecui` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 182
+- Normalized URL: [https://github.com/jixoai/openspecui](https://github.com/jixoai/openspecui)
+- Catalog skill id: `openspec-apply-change`
+- Upstream install selector: `openspec-apply-change`
+- Install command: `npx skills add jixoai/openspecui --skill openspec-apply-change -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `0676d44b0620ce76e4fa9fe7c7d80f7969c6954f`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add jixoai/openspecui --list`
+- Executed command: `npx --yes skills add jixoai/openspecui --skill openspec-apply-change -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Installed path: `~/.agents/skills/openspec-apply-change`
+- Installed path: `~/.claude/skills/openspec-apply-change`
+- Installed path: `~/.config/crush/skills/openspec-apply-change`
+- Install evidence note: Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Several installs used the local GitHub CLI login only after anonymous GitHub rate limits were reached; no token or account identifier was printed or committed. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required by the skill body. GitHub CLI authentication was used only by the installer after anonymous clone rate limits; tokens remain local and uncommitted.
+- Network access: No network behavior is required by default after installation. Any OpenSpec CLI or repository operations remain explicit user-directed local commands.
+- File access: Reads and writes OpenSpec proposal, design, spec, task, and test artifacts only when explicitly invoked for a user-selected change.
+- Live action risk: Overlaps repo-native OpenSpec workflows and can move, archive, or generate project files; require explicit change selection, dry-run/review where available, and validation before destructive archive or broad implementation steps.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

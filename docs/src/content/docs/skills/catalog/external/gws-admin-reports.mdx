@@ -1,0 +1,173 @@
+---
+title: "gws-admin-reports"
+description: "Google Workspace Admin SDK: Audit logs and usage reports."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="gws-admin-reports"
+  description="Google Workspace Admin SDK: Audit logs and usage reports."
+  installCommand={`npx skills add googleworkspace/cli --skill gws-admin-reports -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/gws-admin-reports"
+  badges={[{ text: "gws-admin-reports", variant: "note" }, { text: "380 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/gws-admin-reports.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add googleworkspace/cli --skill gws-admin-reports -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations. Use dry-run/read-only modes where available and confirm before credentialed writes.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | a3768d0e82ad83cca2da97724e46bea4ff0e6dbd |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row. |
+| Credential behavior | May require user-owned API keys, OAuth grants, service credentials, local account state, or platform CLI login. Use placeholder environment variables only in examples and never commit credentials. |
+| Network access | May call external APIs, CLIs, MCP servers, or hosted services only when explicitly invoked by the user; keep account-backed operations out of shared defaults. |
+| File access | Reads and writes only user-selected project files, generated artifacts, reports, or local tool outputs when explicitly invoked; do not process private data without user intent. |
+| Live-action risk | Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations. Use dry-run/read-only modes where available and confirm before credentialed writes. |
+| Risk category | credentialed-or-live-service-review |
+| Dedupe notes | Raw indexes covered: 142 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/gws-admin-reports.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `googleworkspace/cli` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `googleworkspace/cli` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `gws-admin-reports` |
+| License | Apache-2.0 |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "gws-admin-reports"
+description: "Google Workspace Admin SDK: Audit logs and usage reports."
+title: "Gws Admin Reports"
+source_kind: "curated-external"
+source: "googleworkspace/cli"
+install_source: "googleworkspace/cli"
+install_command: "npx skills add googleworkspace/cli --skill gws-admin-reports -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "gws-admin-reports"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/googleworkspace/cli"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "a3768d0e82ad83cca2da97724e46bea4ff0e6dbd"
+license: "Apache-2.0"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "May require user-owned API keys, OAuth grants, service credentials, local account state, or platform CLI login. Use placeholder environment variables only in examples and never commit credentials."
+network_access: "May call external APIs, CLIs, MCP servers, or hosted services only when explicitly invoked by the user; keep account-backed operations out of shared defaults."
+file_access: "Reads and writes only user-selected project files, generated artifacts, reports, or local tool outputs when explicitly invoked; do not process private data without user intent."
+live_action_risk: "Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations. Use dry-run/read-only modes where available and confirm before credentialed writes."
+risk_category: "credentialed-or-live-service-review"
+dedupe_notes: "Raw indexes covered: 142"
+notes: "Google Workspace Admin SDK: Audit logs and usage reports."
+risk_notes: "Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations. Use dry-run/read-only modes where available and confirm before credentialed writes."
+promotion_policy: "Installable curated row is allowed after source-list evidence, compatible license metadata, collision/dedupe review, local harness installation, and docs-steward catalog generation; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Source-list evidence found selector `gws-admin-reports` in `googleworkspace/cli`. Upstream license `Apache-2.0` and audited HEAD `a3768d0e82ad83cca2da97724e46bea4ff0e6dbd` were captured before promotion. Local Skills CLI installed the containing collection and repaired duplicate owner state for selected collisions. This row records dedupe/collision handling and keeps external services opt-in."
+---
+
+# Gws Admin Reports
+
+This row promotes `googleworkspace/cli` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 142
+- Normalized URL: [https://github.com/googleworkspace/cli](https://github.com/googleworkspace/cli)
+- Catalog skill id: `gws-admin-reports`
+- Upstream install selector: `gws-admin-reports`
+- Install command: `npx skills add googleworkspace/cli --skill gws-admin-reports -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `a3768d0e82ad83cca2da97724e46bea4ff0e6dbd`
+- License status: `Apache-2.0`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add https://github.com/googleworkspace/cli --list`
+- Executed command: `npx skills add https://github.com/googleworkspace/cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Executed command: `npx skills add https://github.com/googleworkspace/cli --skill gws-admin-reports -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Installed path: `~/.agents/skills/gws-admin-reports`
+- Installed path: `~/.claude/skills/gws-admin-reports`
+- Installed path: `~/.config/crush/skills/gws-admin-reports`
+- Install evidence note: Live collection install plus collision repair installed this skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming Claude-compatible mirrored skills. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: May require user-owned API keys, OAuth grants, service credentials, local account state, or platform CLI login. Use placeholder environment variables only in examples and never commit credentials.
+- Network access: May call external APIs, CLIs, MCP servers, or hosted services only when explicitly invoked by the user; keep account-backed operations out of shared defaults.
+- File access: Reads and writes only user-selected project files, generated artifacts, reports, or local tool outputs when explicitly invoked; do not process private data without user intent.
+- Live action risk: Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations. Use dry-run/read-only modes where available and confirm before credentialed writes.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

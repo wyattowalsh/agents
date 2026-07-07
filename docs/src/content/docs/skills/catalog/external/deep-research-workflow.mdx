@@ -13,7 +13,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   installCommand={`npx skills add Weizhena/Deep-Research-skills --skill research -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   installLabel="Install"
   usage="/research"
-  badges={[{ text: "deep-research-workflow", variant: "note" }, { text: "332 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "deep-research-workflow", variant: "note" }, { text: "345 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
@@ -142,10 +142,12 @@ This row promotes `Weizhena/Deep-Research-skills` from the July 2026 candidate c
 - Executed command: `npx --yes skills add Weizhena/Deep-Research-skills --list`
 - Executed command: `npx --yes skills add Weizhena/Deep-Research-skills --skill research --dry-run`
 - Executed command: `npx --yes skills add Weizhena/Deep-Research-skills --skill research -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
-- Installed path: `~/.agents/skills/research`
-- Installed path: `~/.claude/skills/research`
-- Installed path: `~/.config/crush/skills/research`
-- Install evidence note: Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+- Executed command: `local alias install: copied audited upstream `research` selector to `deep-research-workflow` in harness skill roots to avoid first-party `/research` collision`
+- Installed path: `~/.agents/skills/deep-research-workflow`
+- Installed path: `~/.claude/skills/deep-research-workflow`
+- Installed path: `~/.config/crush/skills/deep-research-workflow`
+- Installed path: `~/.grok/skills/deep-research-workflow`
+- Install evidence note: Upstream selector `research` collides with this repo-owned `/research` skill. The audited upstream research selector was installed locally as collision-safe alias `deep-research-workflow` in the supported harness roots; repo-owned `/research` remains intact.
 
 ## Safety Notes
 

@@ -1,0 +1,173 @@
+---
+title: "vid-sizzle-reel"
+description: "Generates a high-energy sizzle reel or hype video (MP4) from brand assets and key messages. Fast-paced montage format with dynamic cuts, bold text overlays, and optional music."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="vid-sizzle-reel"
+  description="Generates a high-energy sizzle reel or hype video (MP4) from brand assets and key messages. Fast-paced montage format with dynamic cuts, bold text overlays, and optional music."
+  installCommand={`npx skills add Varnan-Tech/opendirectory --skill vid-sizzle-reel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/vid-sizzle-reel"
+  badges={[{ text: "vid-sizzle-reel", variant: "note" }, { text: "372 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/vid-sizzle-reel.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add Varnan-Tech/opendirectory --skill vid-sizzle-reel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | 26ff3bbad0bdd7c15d814501533e254f9af7da53 |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row. |
+| Credential behavior | No credentials are required by the installed skill body by default; any downstream CLI, cloud, or account access remains user-owned and must stay out of the repo. |
+| Network access | No background network service is enabled by this catalog row; any network access is explicit, user-directed, and inherited from the invoked skill instructions or external CLI. |
+| File access | Reads and writes only user-selected project files, generated artifacts, reports, or local tool outputs when explicitly invoked; do not process private data without user intent. |
+| Live-action risk | Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations. |
+| Risk category | standard-review |
+| Dedupe notes | Raw indexes covered: 63 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/vid-sizzle-reel.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `Varnan-Tech/opendirectory` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `Varnan-Tech/opendirectory` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `vid-sizzle-reel` |
+| License | MIT |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "vid-sizzle-reel"
+description: "Generates a high-energy sizzle reel or hype video (MP4) from brand assets and key messages. Fast-paced montage format with dynamic cuts, bold text overlays, and optional music. 4-section structure: Cold Open, Build, Peak, Land. 4 tone presets. Beat-sync cuts when music is provided. Built on HyperFrames (GSAP + headless Chromium + FFmpeg). Trigger when user says \"sizzle reel\", \"hype video\", \"highlight reel\", \"launch hype\", \"conference opener\", \"event promo video\", \"investor pitch video\", or \"brand video montage\"."
+title: "Vid Sizzle Reel"
+source_kind: "curated-external"
+source: "Varnan-Tech/opendirectory"
+install_source: "Varnan-Tech/opendirectory"
+install_command: "npx skills add Varnan-Tech/opendirectory --skill vid-sizzle-reel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "vid-sizzle-reel"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/Varnan-Tech/opendirectory"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "26ff3bbad0bdd7c15d814501533e254f9af7da53"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "No credentials are required by the installed skill body by default; any downstream CLI, cloud, or account access remains user-owned and must stay out of the repo."
+network_access: "No background network service is enabled by this catalog row; any network access is explicit, user-directed, and inherited from the invoked skill instructions or external CLI."
+file_access: "Reads and writes only user-selected project files, generated artifacts, reports, or local tool outputs when explicitly invoked; do not process private data without user intent."
+live_action_risk: "Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations."
+risk_category: "standard-review"
+dedupe_notes: "Raw indexes covered: 63"
+notes: "Generates a high-energy sizzle reel or hype video (MP4) from brand assets and key messages. Fast-paced montage format with dynamic cuts, bold text overlays, and optional music. 4-section structure: Cold Open, Build, Peak, Land. 4 tone presets. Beat-sync cuts when music is provided. Built on HyperFrames (GSAP + headless Chromium + FFmpeg). Trigger when user says \"sizzle reel\", \"hype video\", \"highlight reel\", \"launch hype\", \"conference opener\", \"event promo video\", \"investor pitch video\", or \"brand video montage\"."
+risk_notes: "Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations."
+promotion_policy: "Installable curated row is allowed after source-list evidence, compatible license metadata, collision/dedupe review, local harness installation, and docs-steward catalog generation; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Source-list evidence found selector `vid-sizzle-reel` in `Varnan-Tech/opendirectory`. Upstream license `MIT` and audited HEAD `26ff3bbad0bdd7c15d814501533e254f9af7da53` were captured before promotion. Local Skills CLI installed the containing collection and repaired duplicate owner state for selected collisions. This row records dedupe/collision handling and keeps external services opt-in."
+---
+
+# Vid Sizzle Reel
+
+This row promotes `Varnan-Tech/opendirectory` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 63
+- Normalized URL: [https://github.com/Varnan-Tech/opendirectory](https://github.com/Varnan-Tech/opendirectory)
+- Catalog skill id: `vid-sizzle-reel`
+- Upstream install selector: `vid-sizzle-reel`
+- Install command: `npx skills add Varnan-Tech/opendirectory --skill vid-sizzle-reel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `26ff3bbad0bdd7c15d814501533e254f9af7da53`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add https://github.com/Varnan-Tech/opendirectory --list`
+- Executed command: `npx skills add https://github.com/Varnan-Tech/opendirectory -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Executed command: `npx skills add https://github.com/Varnan-Tech/opendirectory --skill vid-sizzle-reel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Installed path: `~/.agents/skills/vid-sizzle-reel`
+- Installed path: `~/.claude/skills/vid-sizzle-reel`
+- Installed path: `~/.config/crush/skills/vid-sizzle-reel`
+- Install evidence note: Live collection install plus collision repair installed this skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming Claude-compatible mirrored skills. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required by the installed skill body by default; any downstream CLI, cloud, or account access remains user-owned and must stay out of the repo.
+- Network access: No background network service is enabled by this catalog row; any network access is explicit, user-directed, and inherited from the invoked skill instructions or external CLI.
+- File access: Reads and writes only user-selected project files, generated artifacts, reports, or local tool outputs when explicitly invoked; do not process private data without user intent.
+- Live action risk: Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

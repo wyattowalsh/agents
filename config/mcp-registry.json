@@ -1006,6 +1006,220 @@
       ],
       "tool_approvals": {},
       "platform_overrides": {}
+    },
+    "antv-chart": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@antv/mcp-server-chart"
+      ],
+      "env": {
+        "VIS_REQUEST_SERVER": {
+          "env_var": "VIS_REQUEST_SERVER"
+        },
+        "SERVICE_ID": {
+          "env_var": "SERVICE_ID"
+        },
+        "DISABLED_TOOLS": {
+          "env_var": "ANTV_CHART_DISABLED_TOOLS"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled external chart-rendering MCP example from antvis/mcp-server-chart; opt in only after local network/rendering review."
+    },
+    "better-icons": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "better-icons",
+        "mcp"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled external icon lookup MCP example from better-auth/better-icons; opt in per project before writing icon assets."
+    },
+    "charted": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "charted[mcp]",
+        "charted-mcp"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled local chart generation MCP example from marzukia/charted."
+    },
+    "langfuse-mcp": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "langfuse-mcp"
+      ],
+      "env": {
+        "LANGFUSE_PUBLIC_KEY": {
+          "env_var": "LANGFUSE_PUBLIC_KEY"
+        },
+        "LANGFUSE_SECRET_KEY": {
+          "env_var": "LANGFUSE_SECRET_KEY"
+        },
+        "LANGFUSE_HOST": {
+          "env_var": "LANGFUSE_HOST"
+        },
+        "LANGFUSE_MCP_READ_ONLY": {
+          "value": "true"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled credentialed Langfuse observability MCP example; read-only mode is the tracked default."
+    },
+    "mcp-excalidraw": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-excalidraw-server"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled local Excalidraw canvas MCP example from yctimlin/mcp_excalidraw."
+    },
+    "nullcost": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "nullcost-plugin@latest",
+        "mcp-server"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled external cost-estimation MCP example; opt in only after provider/pricing review."
+    },
+    "openspec-mcp": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "openspec-mcp",
+        "${REPO_ROOT}"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled external OpenSpec MCP compatibility example; repo-native wagents OpenSpec remains the default."
+    },
+    "paper-search-mcp": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "paper-search-mcp"
+      ],
+      "env": {
+        "PAPER_SEARCH_MCP_CORE_API_KEY": {
+          "env_var": "PAPER_SEARCH_MCP_CORE_API_KEY"
+        },
+        "SEMANTIC_SCHOLAR_API_KEY": {
+          "env_var": "SEMANTIC_SCHOLAR_API_KEY"
+        },
+        "ZENODO_ACCESS_TOKEN": {
+          "env_var": "ZENODO_ACCESS_TOKEN"
+        },
+        "UNPAYWALL_EMAIL": {
+          "env_var": "UNPAYWALL_EMAIL"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled academic paper search MCP example; opt in with provider ToS and credential review."
+    },
+    "papersflow": {
+      "transport": "streamable-http",
+      "url": "https://doxa.papersflow.ai/mcp",
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled hosted Papersflow research MCP example; account/OAuth boundary required before use.",
+      "oauth": {
+        "enabled": false
+      }
+    },
+    "remotion-docs": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@remotion/mcp@latest"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled official Remotion documentation MCP example."
+    },
+    "semiotic": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "semiotic",
+        "semiotic-mcp"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled Semiotic visualization MCP example; keep HTTP/cloud modes local opt-in only."
     }
   },
   "mcphub": {

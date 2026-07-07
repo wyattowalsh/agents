@@ -1,0 +1,173 @@
+---
+title: "fit-scorer"
+description: "Use when the user asks to &quot;score this influencer&quot;, &quot;rank these creators for our campaign&quot;, or &quot;tell me which influencer is the best fit&quot;; produces weighted fit scores across audience match, content…"
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="fit-scorer"
+  description="Use when the user asks to &quot;score this influencer&quot;, &quot;rank these creators for our campaign&quot;, or &quot;tell me which influencer is the best fit&quot;; produces weighted fit scores across audience match, content…"
+  installCommand={`npx skills add aaron-he-zhu/aaron-marketing-skills --skill fit-scorer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/fit-scorer"
+  badges={[{ text: "fit-scorer", variant: "note" }, { text: "371 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/fit-scorer.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add aaron-he-zhu/aaron-marketing-skills --skill fit-scorer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | 4d08b97a78c4730bb8b544c785770fb362e88b6f |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row. |
+| Credential behavior | No credentials are required by the installed skill body by default; any downstream CLI, cloud, or account access remains user-owned and must stay out of the repo. |
+| Network access | No background network service is enabled by this catalog row; any network access is explicit, user-directed, and inherited from the invoked skill instructions or external CLI. |
+| File access | Reads and writes only user-selected project files, generated artifacts, reports, or local tool outputs when explicitly invoked; do not process private data without user intent. |
+| Live-action risk | Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations. |
+| Risk category | standard-review |
+| Dedupe notes | Raw indexes covered: 95 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/fit-scorer.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `aaron-he-zhu/aaron-marketing-skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `aaron-he-zhu/aaron-marketing-skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `fit-scorer` |
+| License | Apache-2.0 |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "fit-scorer"
+description: "Use when the user asks to \"score this influencer\", \"rank these creators for our campaign\", or \"tell me which influencer is the best fit\"; produces weighted fit scores across audience match, content quality, brand alignment, engagement authenticity, and partnership potential, plus a ranked comparison and a go/pass verdict. Not for finding new influencers — use influencer-discovery; not for sending outreach — use outreach-manager."
+title: "Fit Scorer"
+source_kind: "curated-external"
+source: "aaron-he-zhu/aaron-marketing-skills"
+install_source: "aaron-he-zhu/aaron-marketing-skills"
+install_command: "npx skills add aaron-he-zhu/aaron-marketing-skills --skill fit-scorer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "fit-scorer"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/aaron-he-zhu/aaron-marketing-skills"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "4d08b97a78c4730bb8b544c785770fb362e88b6f"
+license: "Apache-2.0"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "No credentials are required by the installed skill body by default; any downstream CLI, cloud, or account access remains user-owned and must stay out of the repo."
+network_access: "No background network service is enabled by this catalog row; any network access is explicit, user-directed, and inherited from the invoked skill instructions or external CLI."
+file_access: "Reads and writes only user-selected project files, generated artifacts, reports, or local tool outputs when explicitly invoked; do not process private data without user intent."
+live_action_risk: "Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations."
+risk_category: "standard-review"
+dedupe_notes: "Raw indexes covered: 95"
+notes: "Use when the user asks to \"score this influencer\", \"rank these creators for our campaign\", or \"tell me which influencer is the best fit\"; produces weighted fit scores across audience match, content quality, brand alignment, engagement authenticity, and partnership potential, plus a ranked comparison and a go/pass verdict. Not for finding new influencers — use influencer-discovery; not for sending outreach — use outreach-manager."
+risk_notes: "Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations."
+promotion_policy: "Installable curated row is allowed after source-list evidence, compatible license metadata, collision/dedupe review, local harness installation, and docs-steward catalog generation; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Source-list evidence found selector `fit-scorer` in `aaron-he-zhu/aaron-marketing-skills`. Upstream license `Apache-2.0` and audited HEAD `4d08b97a78c4730bb8b544c785770fb362e88b6f` were captured before promotion. Local Skills CLI installed the containing collection and repaired duplicate owner state for selected collisions. This row records dedupe/collision handling and keeps external services opt-in."
+---
+
+# Fit Scorer
+
+This row promotes `aaron-he-zhu/aaron-marketing-skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 95
+- Normalized URL: [https://github.com/aaron-he-zhu/aaron-marketing-skills](https://github.com/aaron-he-zhu/aaron-marketing-skills)
+- Catalog skill id: `fit-scorer`
+- Upstream install selector: `fit-scorer`
+- Install command: `npx skills add aaron-he-zhu/aaron-marketing-skills --skill fit-scorer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `4d08b97a78c4730bb8b544c785770fb362e88b6f`
+- License status: `Apache-2.0`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add https://github.com/aaron-he-zhu/aaron-marketing-skills --list`
+- Executed command: `npx skills add https://github.com/aaron-he-zhu/aaron-marketing-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Executed command: `npx skills add https://github.com/aaron-he-zhu/aaron-marketing-skills --skill fit-scorer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Installed path: `~/.agents/skills/fit-scorer`
+- Installed path: `~/.claude/skills/fit-scorer`
+- Installed path: `~/.config/crush/skills/fit-scorer`
+- Install evidence note: Live collection install plus collision repair installed this skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming Claude-compatible mirrored skills. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required by the installed skill body by default; any downstream CLI, cloud, or account access remains user-owned and must stay out of the repo.
+- Network access: No background network service is enabled by this catalog row; any network access is explicit, user-directed, and inherited from the invoked skill instructions or external CLI.
+- File access: Reads and writes only user-selected project files, generated artifacts, reports, or local tool outputs when explicitly invoked; do not process private data without user intent.
+- Live action risk: Installed skill runs with agent permissions when invoked; review commands before live cloud, account, filesystem, outreach, media, or destructive operations.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

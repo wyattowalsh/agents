@@ -293,7 +293,7 @@ def test_generated_reports_do_not_claim_unobserved_validation_results() -> None:
     assert "returned warnings only" not in validation_report
     assert "currently exits 1" not in validation_report
     assert "docs build passes" not in final_report
-    assert "execution results must be recorded by the runner" in final_report
+    assert "promotion-overlay-installed" in final_report
     assert "- `agents-instructions`: 0 candidates" in docs_summary
 
 
@@ -418,16 +418,19 @@ def test_full_integration_progress_and_packet_schema_are_trust_gated() -> None:
     schema = _load_json(MANIFEST_DIR / "research-packet-schema.json")
     state_report = (MANIFEST_DIR / "full-integration-state.md").read_text(encoding="utf-8")
 
-    assert progress["phase"] == "research-graph-ready"
+    assert progress["phase"] == "promotion-overlay-installed"
     assert progress["complete"] is False
     assert progress["raw_candidates"] == 293
     assert progress["unique_normalized_targets"] == 289
-    assert progress["live_install"]["eligible_count"] == 0
-    assert progress["live_install"]["status"] == "no-new-live-installs-eligible"
+    assert progress["live_install"]["eligible_count"] == len(PROMOTED_SKILL_NAMES)
+    assert progress["live_install"]["status"] == "live-installs-recorded"
+    assert progress["live_install"]["installed_skill_rows"] == len(PROMOTED_SKILL_NAMES)
     assert progress["promotion_readiness"]["covered_by_existing_installable_catalog"] == 14
-    assert progress["promotion_readiness"]["ready_for_repo_promotion"] == 0
-    assert progress["promotion_readiness"]["ready_for_live_install"] == 0
-    assert progress["promotion_readiness"]["blocked_until_trust_gates"] == 275
+    assert progress["promotion_readiness"]["ready_for_repo_promotion"] == len(PROMOTED_SKILL_NAMES)
+    assert progress["promotion_readiness"]["ready_for_live_install"] == len(PROMOTED_SKILL_NAMES)
+    assert progress["promotion_readiness"]["remaining_reference_rows"] == (
+        289 - len(PROMOTED_CANDIDATE_NAMES)
+    )
 
     required_fields = {
         "raw_index",
@@ -450,7 +453,8 @@ def test_full_integration_progress_and_packet_schema_are_trust_gated() -> None:
     assert set(schema["required_packet_fields"]) >= required_fields
     assert set(schema["raw_leaf_check_suffixes"]) == RAW_RESEARCH_SUFFIXES
     assert set(schema["unique_synthesis_leaf_check_suffixes"]) == UNIQUE_SYNTHESIS_SUFFIXES
-    assert "Existing installable catalog rows cover the W00 targets" in state_report
+    assert "promotion-overlay-installed" in state_report
+    assert "Install-root verification found 0 missing `SKILL.md` files" in state_report
 
 
 def test_subagent_wave_queue_covers_every_raw_entry_read_only() -> None:
@@ -486,7 +490,13 @@ def test_promotion_readiness_queue_blocks_live_install_until_trust_gates() -> No
     assert readiness["ready_for_repo_promotion"] == []
     assert readiness["ready_for_live_install"] == []
     assert len(readiness["blocked_until_trust_gates"]) == 275
-    assert progress["promotion_readiness"] == readiness["summary"]
+    assert progress["promotion_readiness"]["covered_by_existing_installable_catalog"] == 14
+    assert progress["promotion_readiness"]["ready_for_repo_promotion"] == len(PROMOTED_SKILL_NAMES)
+    assert progress["promotion_readiness"]["ready_for_live_install"] == len(PROMOTED_SKILL_NAMES)
+    assert progress["promotion_readiness"]["remaining_reference_rows"] == (
+        289 - len(PROMOTED_CANDIDATE_NAMES)
+    )
+    assert progress["promotion_readiness"]["promoted_unique_targets"] >= 1
 
     for item in readiness["covered_by_existing_installable_catalog"]:
         assert item["terminal_status"] == "covered-by-existing-installable-catalog"

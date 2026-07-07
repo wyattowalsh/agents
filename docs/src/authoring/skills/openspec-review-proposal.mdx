@@ -1,0 +1,73 @@
+---
+name: "openspec-review-proposal"
+description: "Review an OpenSpec proposal with evidence-driven codebase investigation before advancing to specs or design."
+title: "Openspec Review Proposal"
+source_kind: "curated-external"
+source: "griffithkk3-del/openspec-reviewed-workflow"
+install_source: "griffithkk3-del/openspec-reviewed-workflow"
+install_command: "npx skills add griffithkk3-del/openspec-reviewed-workflow --skill openspec-review-proposal -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "openspec-review-proposal"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/griffithkk3-del/openspec-reviewed-workflow"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "370afa59e61149910b874a769c5e7b27a44d4f8e"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "No credentials are required by the skill body. GitHub CLI authentication was used only by the installer after anonymous clone rate limits; tokens remain local and uncommitted."
+network_access: "No network behavior is required by default after installation. Any OpenSpec CLI or repository operations remain explicit user-directed local commands."
+file_access: "Reads and writes OpenSpec proposal, design, spec, task, and test artifacts only when explicitly invoked for a user-selected change."
+live_action_risk: "Overlaps repo-native OpenSpec workflows and can move, archive, or generate project files; require explicit change selection, dry-run/review where available, and validation before destructive archive or broad implementation steps."
+risk_category: "openspec-review-workflow-review"
+dedupe_notes: "Raw indexes covered: 190"
+notes: "Review an OpenSpec proposal with evidence-driven codebase investigation before advancing to specs or design."
+risk_notes: "Overlaps repo-native OpenSpec workflows and can move, archive, or generate project files; require explicit change selection, dry-run/review where available, and validation before destructive archive or broad implementation steps."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, upstream license, selector behavior, duplicate/overlap against repo-native OpenSpec surfaces, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found selector `openspec-review-proposal` in `griffithkk3-del/openspec-reviewed-workflow`. Upstream license `MIT` and audited HEAD `370afa59e61149910b874a769c5e7b27a44d4f8e` were captured before promotion. Local Skills CLI installed `openspec-review-proposal` into supported harness roots as `openspec-review-proposal`. Skills CLI installed the selector successfully; no separate risk table was emitted in the captured output. This row records overlap with the repo-native OpenSpec workflow and keeps MCP/background service behavior opt-in."
+---
+
+# Openspec Review Proposal
+
+This row promotes `griffithkk3-del/openspec-reviewed-workflow` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 190
+- Normalized URL: [https://github.com/griffithkk3-del/openspec-reviewed-workflow](https://github.com/griffithkk3-del/openspec-reviewed-workflow)
+- Catalog skill id: `openspec-review-proposal`
+- Upstream install selector: `openspec-review-proposal`
+- Install command: `npx skills add griffithkk3-del/openspec-reviewed-workflow --skill openspec-review-proposal -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `370afa59e61149910b874a769c5e7b27a44d4f8e`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add griffithkk3-del/openspec-reviewed-workflow --list`
+- Executed command: `npx --yes skills add griffithkk3-del/openspec-reviewed-workflow --skill openspec-review-proposal -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Installed path: `~/.agents/skills/openspec-review-proposal`
+- Installed path: `~/.claude/skills/openspec-review-proposal`
+- Installed path: `~/.config/crush/skills/openspec-review-proposal`
+- Install evidence note: Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Several installs used the local GitHub CLI login only after anonymous GitHub rate limits were reached; no token or account identifier was printed or committed. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required by the skill body. GitHub CLI authentication was used only by the installer after anonymous clone rate limits; tokens remain local and uncommitted.
+- Network access: No network behavior is required by default after installation. Any OpenSpec CLI or repository operations remain explicit user-directed local commands.
+- File access: Reads and writes OpenSpec proposal, design, spec, task, and test artifacts only when explicitly invoked for a user-selected change.
+- Live action risk: Overlaps repo-native OpenSpec workflows and can move, archive, or generate project files; require explicit change selection, dry-run/review where available, and validation before destructive archive or broad implementation steps.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.

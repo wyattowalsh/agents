@@ -15,6 +15,21 @@
       "timeout": 600000,
       "disabled": true
     },
+    "antv-chart": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@antv/mcp-server-chart"
+      ],
+      "env": {
+        "VIS_REQUEST_SERVER": "${VIS_REQUEST_SERVER}",
+        "SERVICE_ID": "${SERVICE_ID}",
+        "DISABLED_TOOLS": "${ANTV_CHART_DISABLED_TOOLS}"
+      },
+      "description": "Disabled external chart-rendering MCP example from antvis/mcp-server-chart; opt in only after local network/rendering review.",
+      "timeout": 600000,
+      "disabled": true
+    },
     "arxiv": {
       "command": "bash",
       "args": [
@@ -29,6 +44,17 @@
         "${REPO_ROOT}/mcp/servers/MCP_Atom_of_Thoughts/build/index.js"
       ],
       "timeout": 600000
+    },
+    "better-icons": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "better-icons",
+        "mcp"
+      ],
+      "description": "Disabled external icon lookup MCP example from better-auth/better-icons; opt in per project before writing icon assets.",
+      "timeout": 600000,
+      "disabled": true
     },
     "brave-search": {
       "command": "npx",
@@ -48,6 +74,17 @@
         "cascade-thinking-mcp"
       ],
       "timeout": 600000
+    },
+    "charted": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "charted[mcp]",
+        "charted-mcp"
+      ],
+      "description": "Disabled local chart generation MCP example from marzukia/charted.",
+      "timeout": 600000,
+      "disabled": true
     },
     "chrome-devtools": {
       "command": "bash",
@@ -225,6 +262,21 @@
       },
       "timeout": 600000
     },
+    "langfuse-mcp": {
+      "command": "uvx",
+      "args": [
+        "langfuse-mcp"
+      ],
+      "env": {
+        "LANGFUSE_PUBLIC_KEY": "${LANGFUSE_PUBLIC_KEY}",
+        "LANGFUSE_SECRET_KEY": "${LANGFUSE_SECRET_KEY}",
+        "LANGFUSE_HOST": "${LANGFUSE_HOST}",
+        "LANGFUSE_MCP_READ_ONLY": "true"
+      },
+      "description": "Disabled credentialed Langfuse observability MCP example; read-only mode is the tracked default.",
+      "timeout": 600000,
+      "disabled": true
+    },
     "linkedin": {
       "command": "uvx",
       "args": [
@@ -247,12 +299,44 @@
       ],
       "timeout": 600000
     },
+    "mcp-excalidraw": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-excalidraw-server"
+      ],
+      "description": "Disabled local Excalidraw canvas MCP example from yctimlin/mcp_excalidraw.",
+      "timeout": 600000,
+      "disabled": true
+    },
+    "nullcost": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "nullcost-plugin@latest",
+        "mcp-server"
+      ],
+      "description": "Disabled external cost-estimation MCP example; opt in only after provider/pricing review.",
+      "timeout": 600000,
+      "disabled": true
+    },
     "open-websearch": {
       "command": "bash",
       "args": [
         "${REPO_ROOT}/scripts/mcphub/open-websearch-stdio.sh"
       ],
       "timeout": 600000
+    },
+    "openspec-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "openspec-mcp",
+        "${REPO_ROOT}"
+      ],
+      "description": "Disabled external OpenSpec MCP compatibility example; repo-native wagents OpenSpec remains the default.",
+      "timeout": 600000,
+      "disabled": true
     },
     "ossinsight": {
       "command": "npx",
@@ -271,6 +355,31 @@
         "GITHUB_PAT": "${GITHUB_PAT}"
       },
       "timeout": 600000
+    },
+    "paper-search-mcp": {
+      "command": "uvx",
+      "args": [
+        "paper-search-mcp"
+      ],
+      "env": {
+        "PAPER_SEARCH_MCP_CORE_API_KEY": "${PAPER_SEARCH_MCP_CORE_API_KEY}",
+        "SEMANTIC_SCHOLAR_API_KEY": "${SEMANTIC_SCHOLAR_API_KEY}",
+        "ZENODO_ACCESS_TOKEN": "${ZENODO_ACCESS_TOKEN}",
+        "UNPAYWALL_EMAIL": "${UNPAYWALL_EMAIL}"
+      },
+      "description": "Disabled academic paper search MCP example; opt in with provider ToS and credential review.",
+      "timeout": 600000,
+      "disabled": true
+    },
+    "papersflow": {
+      "type": "streamable-http",
+      "url": "https://doxa.papersflow.ai/mcp",
+      "description": "Disabled hosted Papersflow research MCP example; account/OAuth boundary required before use.",
+      "oauth": {
+        "enabled": false
+      },
+      "timeout": 600000,
+      "disabled": true
     },
     "penpot": {
       "type": "streamable-http",
@@ -292,6 +401,16 @@
       "env": {
         "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
       },
+      "timeout": 600000,
+      "disabled": true
+    },
+    "remotion-docs": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@remotion/mcp@latest"
+      ],
+      "description": "Disabled official Remotion documentation MCP example.",
       "timeout": 600000,
       "disabled": true
     },
@@ -325,6 +444,17 @@
         "${REPO_ROOT}/scripts/mcphub/scrapling-stdio.sh"
       ],
       "timeout": 600000
+    },
+    "semiotic": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "semiotic",
+        "semiotic-mcp"
+      ],
+      "description": "Disabled Semiotic visualization MCP example; keep HTTP/cloud modes local opt-in only.",
+      "timeout": 600000,
+      "disabled": true
     },
     "sequential-thinking": {
       "command": "npx",
