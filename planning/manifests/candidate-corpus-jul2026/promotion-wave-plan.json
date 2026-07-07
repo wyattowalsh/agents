@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T01:50:58.008124+00:00",
+  "generated_at": "2026-07-07T06:47:25.632688+00:00",
   "total_targets": 289,
   "waves": [
     {
@@ -7582,12 +7582,17 @@
           "risk_tier": "standard-review",
           "auth_required": false,
           "docs_steward_surfaces": [
+            "README",
             "auth-matrix",
+            "catalog-authoring",
+            "catalog-generated",
             "changelog",
             "decision-log",
             "generated-drift",
+            "install-docs",
             "openspec",
-            "reports"
+            "reports",
+            "skill-research"
           ],
           "next_gate": "Source could not be resolved through public Git metadata."
         },
@@ -7602,13 +7607,18 @@
           "risk_tier": "quarantine",
           "auth_required": true,
           "docs_steward_surfaces": [
+            "README",
             "auth-matrix",
+            "catalog-authoring",
+            "catalog-generated",
             "changelog",
             "decision-log",
             "generated-drift",
+            "install-docs",
             "openspec",
             "reports",
-            "runbooks"
+            "runbooks",
+            "skill-research"
           ],
           "next_gate": "Quarantine trigger detected; keep reference-only pending explicit approval."
         },
@@ -7623,13 +7633,18 @@
           "risk_tier": "quarantine",
           "auth_required": true,
           "docs_steward_surfaces": [
+            "README",
             "auth-matrix",
+            "catalog-authoring",
+            "catalog-generated",
             "changelog",
             "decision-log",
             "generated-drift",
+            "install-docs",
             "openspec",
             "reports",
-            "runbooks"
+            "runbooks",
+            "skill-research"
           ],
           "next_gate": "Quarantine trigger detected; keep reference-only pending explicit approval."
         },
@@ -7644,13 +7659,18 @@
           "risk_tier": "quarantine",
           "auth_required": true,
           "docs_steward_surfaces": [
+            "README",
             "auth-matrix",
+            "catalog-authoring",
+            "catalog-generated",
             "changelog",
             "decision-log",
             "generated-drift",
+            "install-docs",
             "openspec",
             "reports",
-            "runbooks"
+            "runbooks",
+            "skill-research"
           ],
           "next_gate": "Quarantine trigger detected; keep reference-only pending explicit approval."
         },
@@ -7665,13 +7685,18 @@
           "risk_tier": "quarantine",
           "auth_required": true,
           "docs_steward_surfaces": [
+            "README",
             "auth-matrix",
+            "catalog-authoring",
+            "catalog-generated",
             "changelog",
             "decision-log",
             "generated-drift",
+            "install-docs",
             "openspec",
             "reports",
-            "runbooks"
+            "runbooks",
+            "skill-research"
           ],
           "next_gate": "Quarantine trigger detected; keep reference-only pending explicit approval."
         }

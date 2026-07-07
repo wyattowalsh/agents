@@ -2,13 +2,13 @@
 
 Generated docs-steward packets cover:
 
-- `README`: 284 candidates
-- `catalog-authoring`: 284 candidates
-- `catalog-generated`: 284 candidates
-- `skill-research`: 284 candidates
+- `README`: 289 candidates
+- `catalog-authoring`: 289 candidates
+- `catalog-generated`: 289 candidates
+- `skill-research`: 289 candidates
 - `mcp-tools`: 27 candidates
 - `auth-matrix`: 293 candidates
-- `install-docs`: 284 candidates
+- `install-docs`: 289 candidates
 - `openspec`: 293 candidates
 - `runbooks`: 49 candidates
 - `decision-log`: 293 candidates

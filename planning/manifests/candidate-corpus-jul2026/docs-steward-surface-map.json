@@ -3,22 +3,22 @@
   "surfaces": [
     {
       "surface": "README",
-      "candidate_count": 284,
+      "candidate_count": 289,
       "status": "packet-generated"
     },
     {
       "surface": "catalog-authoring",
-      "candidate_count": 284,
+      "candidate_count": 289,
       "status": "packet-generated"
     },
     {
       "surface": "catalog-generated",
-      "candidate_count": 284,
+      "candidate_count": 289,
       "status": "packet-generated"
     },
     {
       "surface": "skill-research",
-      "candidate_count": 284,
+      "candidate_count": 289,
       "status": "packet-generated"
     },
     {
@@ -33,7 +33,7 @@
     },
     {
       "surface": "install-docs",
-      "candidate_count": 284,
+      "candidate_count": 289,
       "status": "packet-generated"
     },
     {

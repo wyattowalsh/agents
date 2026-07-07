@@ -573,7 +573,14 @@ def decision(
 
 def docs_surfaces(categories: list[str], dec: str, tier: str) -> list[str]:
     surfaces = {"reports", "decision-log", "auth-matrix", "changelog", "openspec", "generated-drift"}
-    if dec in {"catalog_add", "catalog_update", "merge_into_existing", "reference_only"}:
+    if dec in {
+        "catalog_add",
+        "catalog_update",
+        "merge_into_existing",
+        "quarantine",
+        "reference_only",
+        "skip_inaccessible",
+    }:
         surfaces.update({"README", "catalog-authoring", "catalog-generated", "skill-research", "install-docs"})
     if any(category in categories for category in ("MCP server", "plugin", "CLI/tool")):
         surfaces.add("mcp-tools")
@@ -2142,6 +2149,33 @@ def write_reports(
         if r["install_or_integration_decision"].startswith("skip")
         or r["install_or_integration_decision"] == "quarantine"
     ]
+    source_list_evidence_path = MANIFEST_DIR / "safe-wave-source-list-evidence.json"
+    if source_list_evidence_path.exists():
+        source_list_evidence_raw = json.loads(source_list_evidence_path.read_text(encoding="utf-8"))
+    else:
+        source_list_evidence_raw = {"items": [], "install_command_count": 0, "summary": {}}
+    source_list_evidence: dict[str, Any] = (
+        source_list_evidence_raw if isinstance(source_list_evidence_raw, dict) else {}
+    )
+    source_list_items_raw = source_list_evidence.get("items", [])
+    source_list_items = source_list_items_raw if isinstance(source_list_items_raw, list) else []
+    source_list_summary_raw = source_list_evidence.get("summary", {})
+    source_list_summary: dict[str, Any] = (
+        source_list_summary_raw if isinstance(source_list_summary_raw, dict) else {}
+    )
+    source_list_status_counts_raw = source_list_summary.get("status_counts", {})
+    source_list_status_counts: dict[str, Any] = (
+        source_list_status_counts_raw if isinstance(source_list_status_counts_raw, dict) else {}
+    )
+    source_list_count_raw = source_list_summary.get("recorded_target_count")
+    source_list_count = source_list_count_raw if isinstance(source_list_count_raw, int) else len(source_list_items)
+    source_list_found = source_list_status_counts.get("source-list-found", 0)
+    source_list_other = source_list_count - source_list_found
+    source_list_line = (
+        f"- Source-list evidence: {source_list_count} list-only probes recorded "
+        f"({source_list_found} found, {source_list_other} blocked/error/no-skills), "
+        f"{source_list_evidence.get('install_command_count', 0)} installs"
+    )
     decision_log = [
         "# Candidate Corpus July 2026 Decision Log",
         "",
@@ -2184,7 +2218,7 @@ def write_reports(
         f"- Raw promotion research packets: {stats['raw_count']}",
         f"- Unique promotion research packets: {stats['unique_count']}",
         "- Live install command preview: 0 commands emitted",
-        "- Starter-wave source-list evidence: 13 list-only probes recorded, 0 installs",
+        source_list_line,
         "- GitHub metadata status: "
         + ", ".join(f"{key}={value}" for key, value in sorted(github_status_counts.items())),
         f"- GitHub license labels detected: {len(github_license_counts)}",
@@ -2252,7 +2286,7 @@ def write_reports(
         f"- Full integration phase: `{progress['phase']}`; live install remains "
         f"`{progress['live_install']['status']}`.",
         "- Promotion packet outputs: 293 raw packets, 289 unique packets, 289 gate rows, 0 install commands.",
-        "- Starter-wave source-list evidence: 13 `npx skills add ... --list` probes, all list-only, 0 installs.",
+        source_list_line,
         (
             "- Generator-owned docs-steward packets emitted: manifest surface map, auth matrix, decision log, "
             "catalog authoring summary, existing integration coverage, promotion wave plan, research task "
@@ -2320,7 +2354,10 @@ def write_reports(
             "- Added raw and unique promotion research packets, promotion gate matrix, and live install "
             "command preview with zero emitted commands."
         ),
-        "- Added starter-wave source-list evidence for 13 W00/W01 safe candidates with zero installs.",
+        (
+            f"- Added source-list evidence for {source_list_count} candidates "
+            f"with {source_list_evidence.get('install_command_count', 0)} installs."
+        ),
         "- Added trust-gated promotion readiness and parallel subagent wave queue artifacts.",
         (
             "- Added exact existing-catalog coverage so already integrated curated sources are not "

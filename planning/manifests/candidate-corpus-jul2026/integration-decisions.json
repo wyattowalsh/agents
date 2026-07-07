@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T01:50:58.031121+00:00",
+  "generated_at": "2026-07-07T06:47:25.862885+00:00",
   "summary": {
-    "generated_at": "2026-07-07T01:50:57.781115+00:00",
+    "generated_at": "2026-07-07T06:47:23.736467+00:00",
     "raw_count": 293,
     "unique_count": 289,
     "duplicates_deduped": 4,
@@ -410,13 +410,18 @@
       "reason": "Quarantine trigger detected; keep reference-only pending explicit approval.",
       "risk_tier": "quarantine",
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ]
     },
     {
@@ -845,13 +850,18 @@
       "reason": "Quarantine trigger detected; keep reference-only pending explicit approval.",
       "risk_tier": "quarantine",
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ]
     },
     {
@@ -1331,12 +1341,17 @@
       "reason": "Source could not be resolved through public Git metadata.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
-        "reports"
+        "reports",
+        "skill-research"
       ]
     },
     {
@@ -3285,13 +3300,18 @@
       "reason": "Quarantine trigger detected; keep reference-only pending explicit approval.",
       "risk_tier": "quarantine",
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ]
     },
     {
@@ -3375,13 +3395,18 @@
       "reason": "Quarantine trigger detected; keep reference-only pending explicit approval.",
       "risk_tier": "quarantine",
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ]
     },
     {

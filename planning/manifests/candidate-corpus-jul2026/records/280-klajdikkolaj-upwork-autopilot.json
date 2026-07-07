@@ -147,13 +147,18 @@
     ]
   },
   "docs_steward_surfaces": [
+    "README",
     "auth-matrix",
+    "catalog-authoring",
+    "catalog-generated",
     "changelog",
     "decision-log",
     "generated-drift",
+    "install-docs",
     "openspec",
     "reports",
-    "runbooks"
+    "runbooks",
+    "skill-research"
   ],
   "docs_steward_status": "packet-generated",
   "decision_packet": {

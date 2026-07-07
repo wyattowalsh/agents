@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T01:50:58.015927+00:00",
+  "generated_at": "2026-07-07T06:47:25.798154+00:00",
   "status": "research-graph-generated",
   "raw_lane_count": 293,
   "unique_target_lane_count": 289,
@@ -67631,12 +67631,17 @@
       "risk_tier": "standard-review",
       "auth_required": false,
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
-        "reports"
+        "reports",
+        "skill-research"
       ],
       "live_install_eligible": false,
       "leaf_checks": [
@@ -72283,13 +72288,18 @@
       "risk_tier": "quarantine",
       "auth_required": true,
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ],
       "live_install_eligible": false,
       "leaf_checks": [
@@ -74526,13 +74536,18 @@
       "risk_tier": "quarantine",
       "auth_required": true,
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ],
       "live_install_eligible": false,
       "leaf_checks": [
@@ -80013,13 +80028,18 @@
       "risk_tier": "quarantine",
       "auth_required": true,
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ],
       "live_install_eligible": false,
       "leaf_checks": [
@@ -87898,13 +87918,18 @@
       "risk_tier": "quarantine",
       "auth_required": true,
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ],
       "live_install_eligible": false,
       "leaf_checks": [

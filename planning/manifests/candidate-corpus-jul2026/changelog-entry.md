@@ -6,7 +6,7 @@
 - Added generated source research, source support, security, license, compliance/auth, docs impact, dedupe, decisions, validation, and review outputs.
 - Added full-integration research graph, packet schema, progress JSON, and state report for every raw candidate and normalized target.
 - Added raw and unique promotion research packets, promotion gate matrix, and live install command preview with zero emitted commands.
-- Added starter-wave source-list evidence for 13 W00/W01 safe candidates with zero installs.
+- Added source-list evidence for 289 candidates with 0 installs.
 - Added trust-gated promotion readiness and parallel subagent wave queue artifacts.
 - Added exact existing-catalog coverage so already integrated curated sources are not duplicated by candidate-corpus rows.
 - Added target-level promotion wave plan for serialized integration waves.

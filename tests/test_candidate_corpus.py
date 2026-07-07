@@ -6,6 +6,7 @@ import importlib.util
 import json
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -91,6 +92,20 @@ def _load_generator_module():
     return module
 
 
+def _load_source_list_audit_module():
+    module_name = "_candidate_source_list_auditor"
+    spec = importlib.util.spec_from_file_location(
+        module_name,
+        ROOT / "scripts" / "audit_candidate_source_lists.py",
+    )
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
 def test_candidate_corpus_counts_and_duplicates() -> None:
     raw_urls = [
         line.strip()
@@ -156,6 +171,8 @@ def test_every_unique_target_has_non_installable_catalog_authoring_row() -> None
 def test_docs_steward_surfaces_are_all_accounted_for() -> None:
     surface_map = _load_json(MANIFEST_DIR / "docs-steward-surface-map.json")
     docs_impact = _load_json(MANIFEST_DIR / "docs-impact-matrix.json")
+    decisions_summary = _load_json(MANIFEST_DIR / "integration-decisions.json")["summary"]
+    unique_count = decisions_summary["unique_count"]
     surfaces = {entry["surface"]: entry for entry in surface_map["surfaces"]}
     for required in [
         "README",
@@ -179,6 +196,8 @@ def test_docs_steward_surfaces_are_all_accounted_for() -> None:
     assert "agents-instructions" in surface_map["omitted_zero_count_surfaces"]
     assert "agents-instructions" in docs_impact["omitted_zero_count_surfaces"]
     assert all(entry["candidate_count"] > 0 for entry in surface_map["surfaces"])
+    for catalog_surface in ["README", "catalog-authoring", "catalog-generated", "skill-research", "install-docs"]:
+        assert surfaces[catalog_surface]["candidate_count"] == unique_count
 
 
 def test_reference_only_count_uses_unique_terminal_decisions() -> None:
@@ -504,13 +523,18 @@ def test_promotion_gate_matrix_and_install_preview_keep_live_installs_blocked() 
         "blocked_until_trust_gates": 289,
     }
     assert len(matrix["items"]) == 289
-    assert matrix["gate_status_counts"]["auth review"]["auth-required-review"] == 52
-    assert matrix["gate_status_counts"]["auth review"]["metadata-only-no-auth-detected"] == 237
-    assert matrix["gate_status_counts"]["source-list evidence"] == {
-        "existing-installable-catalog-row-present": 5,
-        "pending-source-list-output": 271,
-        "source-list-found-existing-installable-catalog": 8,
-        "source-list-found-pending-promotion-review": 5,
+    auth_counts = matrix["gate_status_counts"]["auth review"]
+    assert sum(auth_counts.values()) == 289
+    assert auth_counts["auth-required-review"] == sum(1 for item in matrix["items"] if item["auth_required"])
+    assert auth_counts["metadata-only-no-auth-detected"] == sum(
+        1 for item in matrix["items"] if not item["auth_required"]
+    )
+    source_counts = matrix["gate_status_counts"]["source-list evidence"]
+    assert source_counts == {
+        "source-list-error-needs-manual-review": 21,
+        "source-list-found-existing-installable-catalog": 13,
+        "source-list-found-pending-promotion-review": 223,
+        "source-list-timeout-needs-retry": 32,
     }
     assert matrix["gate_status_counts"]["live install"] == {"blocked": 289}
     assert all(item["final_status"] == "blocked-until-trust-gates" for item in matrix["items"])
@@ -546,12 +570,118 @@ def test_promotion_packet_coverage_cli() -> None:
 def test_safe_wave_source_list_evidence_is_list_only() -> None:
     evidence = _load_json(MANIFEST_DIR / "safe-wave-source-list-evidence.json")
 
-    assert evidence["status"] == "starter-wave-source-list-evidence-recorded"
+    assert evidence["status"] in {
+        "starter-wave-source-list-evidence-recorded",
+        "source-list-evidence-recorded",
+    }
     assert evidence["live_install_executed"] is False
     assert evidence["install_command_count"] == 0
-    assert len(evidence["items"]) == 13
-    assert {item["wave_id"] for item in evidence["items"]} <= {"W00", "W01"}
-    assert all(item["exit_code"] == 0 for item in evidence["items"])
-    assert all(item["found_skill_count"] > 0 for item in evidence["items"])
+    assert len(evidence["items"]) == 289
+    assert evidence["summary"]["recorded_target_count"] == 289
+    assert evidence["summary"]["remaining_target_count"] == 0
+    assert {item["wave_id"] for item in evidence["items"]}
+    assert sum(1 for item in evidence["items"] if item["evidence_status"] == "source-list-found") >= 13
     assert all("--list" in item["command"] and "--skill" not in item["command"] for item in evidence["items"])
     assert all(item["remaining_blockers"] for item in evidence["items"])
+    assert all(item["evidence_status"].startswith("source-list-") for item in evidence["items"])
+    assert all("stdout_excerpt" not in item and "listed_skills" not in item for item in evidence["items"])
+
+
+def test_source_list_audit_check_requires_complete_evidence() -> None:
+    result = subprocess.run(
+        [
+            "uv",
+            "run",
+            "python",
+            "scripts/audit_candidate_source_lists.py",
+            "--check",
+            "--require-complete",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    payload = json.loads(result.stdout)
+
+    assert payload["ok"] is True
+    assert payload["items"] == 289
+    assert payload["unique_targets"] == 289
+    assert payload["complete"] is True
+    assert payload["summary"]["remaining_target_count"] == 0
+
+
+def test_source_list_audit_parser_extracts_available_skills() -> None:
+    auditor = _load_source_list_audit_module()
+    output = """
+│
+◇  Found 2 skills
+│
+◇  Available Skills
+│
+│    workers-best-practices
+│
+│      Reviews and authors Cloudflare Workers code.
+│
+│    wrangler
+│
+│      Cloudflare Workers CLI.
+│
+└  Use --skill <name> to install specific skills
+"""
+
+    parsed = auditor.parse_skill_list_output(output)
+
+    assert parsed == {
+        "reported_skill_count": 2,
+        "parsed_skill_count": 2,
+        "listed_skills": ["workers-best-practices", "wrangler"],
+    }
+
+
+def test_source_list_audit_plan_is_read_only() -> None:
+    result = subprocess.run(
+        [
+            "uv",
+            "run",
+            "python",
+            "scripts/audit_candidate_source_lists.py",
+            "--wave",
+            "W01",
+            "--limit",
+            "2",
+            "--force",
+            "--plan-only",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    payload = json.loads(result.stdout)
+
+    assert payload["selected_count"] == 2
+    assert all("--list" in item["command"] for item in payload["targets"])
+    assert not any("--skill" in item["command"] for item in payload["targets"])
+    assert not any("--apply" in item["command"] for item in payload["targets"])
+
+
+def test_source_list_audit_timeout_kills_descendant_processes() -> None:
+    auditor = _load_source_list_audit_module()
+    command = [
+        sys.executable,
+        "-c",
+        (
+            "import subprocess, sys, time; "
+            "subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(10)']); "
+            "time.sleep(10)"
+        ),
+    ]
+
+    started = time.monotonic()
+    exit_code, timed_out, _, _ = auditor.run_command_capture(command, timeout_seconds=1)
+    duration = time.monotonic() - started
+
+    assert exit_code == 124
+    assert timed_out is True
+    assert duration < 5

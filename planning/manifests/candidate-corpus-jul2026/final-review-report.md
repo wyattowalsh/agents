@@ -16,9 +16,9 @@
 - Promotion waves: W00=13, W01=15, W02=28, W03=27, W04=22, W05=26, W06=21, W07=30, W08=102, W99=5
 - Full integration phase: `research-graph-ready`; live install remains `blocked-until-trust-gates`.
 - Promotion packet outputs: 293 raw packets, 289 unique packets, 289 gate rows, 0 install commands.
-- Starter-wave source-list evidence: 13 `npx skills add ... --list` probes, all list-only, 0 installs.
+- Source-list evidence: 289 list-only probes recorded (236 found, 53 blocked/error/no-skills), 0 installs
 - Generator-owned docs-steward packets emitted: manifest surface map, auth matrix, decision log, catalog authoring summary, existing integration coverage, promotion wave plan, research task graph, research packet schema, raw/unique research packets, promotion gate matrix, live install command preview, GitHub metadata audit, subagent wave queue, promotion readiness queue, integration progress, changelog entry, validation report, and final review report.
-- Covered docs-steward surfaces: `README`=284, `catalog-authoring`=284, `catalog-generated`=284, `skill-research`=284, `mcp-tools`=27, `auth-matrix`=293, `install-docs`=284, `openspec`=293, `runbooks`=49, `decision-log`=293, `changelog`=293, `reports`=293, `generated-drift`=293.
+- Covered docs-steward surfaces: `README`=289, `catalog-authoring`=289, `catalog-generated`=289, `skill-research`=289, `mcp-tools`=27, `auth-matrix`=293, `install-docs`=289, `openspec`=293, `runbooks`=49, `decision-log`=293, `changelog`=293, `reports`=293, `generated-drift`=293.
 - Zero-count docs-steward surfaces omitted from covered lists: `agents-instructions`.
 - Validation command checklist: see `validation-report.md`; execution results must be recorded by the runner.
 - Review findings addressed in generator-owned outputs: coverage/schema gates are automated, catalog-only rows publish no install/use commands, and generated reports no longer imply unobserved validation passes.

@@ -1688,12 +1688,17 @@
       "source_name": "NVIDIA/skills-",
       "decision": "skip_inaccessible",
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
-        "reports"
+        "reports",
+        "skill-research"
       ]
     },
     {
@@ -2424,13 +2429,18 @@
       "source_name": "ComposioHQ/awesome-codex-skills",
       "decision": "quarantine",
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ]
     },
     {
@@ -2746,13 +2756,18 @@
       "source_name": "ComposioHQ/awesome-codex-skills",
       "decision": "quarantine",
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ]
     },
     {
@@ -3722,13 +3737,18 @@
       "source_name": "jihe520/social-push",
       "decision": "quarantine",
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ]
     },
     {
@@ -5082,13 +5102,18 @@
       "source_name": "klajdikkolaj/upwork-autopilot",
       "decision": "quarantine",
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ]
     },
     {

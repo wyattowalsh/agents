@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T01:50:58.021364+00:00",
+  "generated_at": "2026-07-07T06:47:25.821644+00:00",
   "records": [
     {
       "raw_url": "https://github.com/Ratnaditya-J/csvglow",
@@ -15936,12 +15936,17 @@
         "env_vars_or_credentials": []
       },
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
-        "reports"
+        "reports",
+        "skill-research"
       ],
       "docs_steward_status": "packet-generated",
       "decision_packet": {
@@ -23148,13 +23153,18 @@
         ]
       },
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ],
       "docs_steward_status": "packet-generated",
       "decision_packet": {
@@ -26388,13 +26398,18 @@
         ]
       },
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ],
       "docs_steward_status": "packet-generated",
       "decision_packet": {
@@ -35614,13 +35629,18 @@
         ]
       },
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ],
       "docs_steward_status": "packet-generated",
       "decision_packet": {
@@ -48124,13 +48144,18 @@
         ]
       },
       "docs_steward_surfaces": [
+        "README",
         "auth-matrix",
+        "catalog-authoring",
+        "catalog-generated",
         "changelog",
         "decision-log",
         "generated-drift",
+        "install-docs",
         "openspec",
         "reports",
-        "runbooks"
+        "runbooks",
+        "skill-research"
       ],
       "docs_steward_status": "packet-generated",
       "decision_packet": {

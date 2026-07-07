@@ -15,7 +15,7 @@
 - Raw promotion research packets: 293
 - Unique promotion research packets: 289
 - Live install command preview: 0 commands emitted
-- Starter-wave source-list evidence: 13 list-only probes recorded, 0 installs
+- Source-list evidence: 289 list-only probes recorded (236 found, 53 blocked/error/no-skills), 0 installs
 - GitHub metadata status: ok=292, unavailable=1
 - GitHub license labels detected: 9
 - Existing integration coverage: covered-by-existing-installable-catalog=13, covered-by-existing-reference=1, needs-promotion-review=275

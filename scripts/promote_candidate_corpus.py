@@ -301,16 +301,36 @@ def build_unique_packets(context: dict[str, Any], raw_packets: list[dict[str, An
 
 def gate_statuses(packet: dict[str, Any]) -> dict[str, str]:
     has_existing_installable = packet["existing_integration_status"] == "covered-by-existing-installable-catalog"
-    has_source_list = bool(packet.get("source_list_evidence"))
+    source_list_evidence = packet.get("source_list_evidence") or {}
+    source_list_evidence_status = source_list_evidence.get("evidence_status")
+    has_source_list = bool(source_list_evidence)
     license_status = "metadata-present-needs-file-review" if packet["licenses"] else "missing-license-review"
     if any(str(license_value).lower().startswith("not-fetched") for license_value in packet["licenses"]):
         license_status = "license-unavailable-needs-review"
-    if has_source_list and has_existing_installable:
+    if source_list_evidence_status == "source-list-found" and has_existing_installable:
         source_list_status = "source-list-found-existing-installable-catalog"
-    elif has_source_list:
+    elif source_list_evidence_status == "source-list-found":
         source_list_status = "source-list-found-pending-promotion-review"
+    elif source_list_evidence_status == "source-list-no-skills-listed":
+        source_list_status = "source-list-reviewed-no-installable-skills"
+    elif source_list_evidence_status == "source-list-timeout":
+        source_list_status = "source-list-timeout-needs-retry"
+    elif source_list_evidence_status == "source-list-unavailable":
+        source_list_status = "source-list-unavailable-needs-manual-review"
+    elif source_list_evidence_status == "source-list-empty-or-unparsed":
+        source_list_status = "source-list-empty-or-unparsed-needs-parser-review"
+    elif source_list_evidence_status == "source-list-error":
+        source_list_status = "source-list-error-needs-manual-review"
+    elif source_list_evidence_status == "source-list-unavailable":
+        source_list_status = "source-list-unavailable-needs-manual-review"
+    elif source_list_evidence_status == "source-list-empty-or-unparsed":
+        source_list_status = "source-list-empty-or-unparsed-needs-manual-review"
     elif has_existing_installable:
         source_list_status = "existing-installable-catalog-row-present"
+    elif has_source_list and source_list_evidence_status:
+        source_list_status = f"{source_list_evidence_status}-needs-review"
+    elif has_source_list:
+        source_list_status = "source-list-evidence-unclassified"
     else:
         source_list_status = "pending-source-list-output"
     return {
