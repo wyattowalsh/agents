@@ -232,24 +232,10 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/canvas-design.",
-      "href": "/skills/catalog/external/candidate-corpus-149-canvas-design/",
-      "lane": "avoid",
-      "name": "candidate-corpus-149-canvas-design",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/image-enhancer.",
       "href": "/skills/catalog/external/candidate-corpus-150-image-enhancer/",
       "lane": "avoid",
       "name": "candidate-corpus-150-image-enhancer",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/slack-gif-creator.",
-      "href": "/skills/catalog/external/candidate-corpus-151-slack-gif-creator/",
-      "lane": "avoid",
-      "name": "candidate-corpus-151-slack-gif-creator",
       "sourceType": "curated-external"
     },
     {
@@ -379,13 +365,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for MohamedAbdallah-14/unslop.",
-      "href": "/skills/catalog/external/candidate-corpus-132-unslop/",
-      "lane": "avoid",
-      "name": "candidate-corpus-132-unslop",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for NVIDIA/SkillSpector.",
       "href": "/skills/catalog/external/candidate-corpus-116-skillspector/",
       "lane": "avoid",
@@ -428,24 +407,10 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for PapiScholz/roadmapsmith.",
-      "href": "/skills/catalog/external/candidate-corpus-177-roadmapsmith/",
-      "lane": "avoid",
-      "name": "candidate-corpus-177-roadmapsmith",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for PleasePrompto/notebooklm-skill.",
       "href": "/skills/catalog/external/candidate-corpus-111-notebooklm-skill/",
       "lane": "avoid",
       "name": "candidate-corpus-111-notebooklm-skill",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for Pythoughts-labs/designer-skill.",
-      "href": "/skills/catalog/external/candidate-corpus-163-designer-skill/",
-      "lane": "avoid",
-      "name": "candidate-corpus-163-designer-skill",
       "sourceType": "curated-external"
     },
     {
@@ -621,13 +586,6 @@
       "href": "/skills/catalog/external/candidate-corpus-170-langfuse-mcp/",
       "lane": "avoid",
       "name": "candidate-corpus-170-langfuse-mcp",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for bcanfield/agentic-tech-debt.",
-      "href": "/skills/catalog/external/candidate-corpus-162-agentic-tech-debt/",
-      "lane": "avoid",
-      "name": "candidate-corpus-162-agentic-tech-debt",
       "sourceType": "curated-external"
     },
     {
@@ -1758,13 +1716,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for shaom/infocard-skills.",
-      "href": "/skills/catalog/external/candidate-corpus-159-infocard-skills/",
-      "lane": "avoid",
-      "name": "candidate-corpus-159-infocard-skills",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for solana-foundation/solana-dev-skill.",
       "href": "/skills/catalog/external/candidate-corpus-037-solana-dev-skill/",
       "lane": "avoid",
@@ -1797,13 +1748,6 @@
       "href": "/skills/catalog/external/candidate-corpus-146-notebooklm-py/",
       "lane": "avoid",
       "name": "candidate-corpus-146-notebooklm-py",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for tim-osterhus/codex-remotion-plugin.",
-      "href": "/skills/catalog/external/candidate-corpus-174-codex-remotion-plugin/",
-      "lane": "avoid",
-      "name": "candidate-corpus-174-codex-remotion-plugin",
       "sourceType": "curated-external"
     },
     {
@@ -1870,13 +1814,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for wgwtest/novel-writing.",
-      "href": "/skills/catalog/external/candidate-corpus-131-novel-writing/",
-      "lane": "avoid",
-      "name": "candidate-corpus-131-novel-writing",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for wxhou/openspec-playwright.",
       "href": "/skills/catalog/external/candidate-corpus-186-openspec-playwright/",
       "lane": "avoid",
@@ -1916,13 +1853,6 @@
       "href": "/skills/catalog/external/candidate-corpus-188-openspec-tdd/",
       "lane": "avoid",
       "name": "candidate-corpus-188-openspec-tdd",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for zarazhangrui/frontend-slides.",
-      "href": "/skills/catalog/external/candidate-corpus-144-frontend-slides/",
-      "lane": "avoid",
-      "name": "candidate-corpus-144-frontend-slides",
       "sourceType": "curated-external"
     },
     {
@@ -3200,6 +3130,20 @@
       "sourceType": "curated-external"
     },
     {
+      "description": "Create and review Canvas-style visual design assets while preserving brand, copyright, and source-asset provenance.",
+      "href": "/skills/catalog/external/canvas-design/",
+      "lane": "install-now",
+      "name": "canvas-design",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Create lightweight Slack-ready GIF assets while preserving copyright, brand, privacy, and upload boundaries.",
+      "href": "/skills/catalog/external/slack-gif-creator/",
+      "lane": "install-now",
+      "name": "slack-gif-creator",
+      "sourceType": "curated-external"
+    },
+    {
       "description": "Review Swift APIs for clarity, naming, type design, mutability, error handling, documentation, and Apple-style API ergonomics.",
       "href": "/skills/catalog/external/swift-api-design-guidelines-skill/",
       "lane": "install-now",
@@ -3218,6 +3162,41 @@
       "href": "/skills/catalog/external/motion-design/",
       "lane": "install-now",
       "name": "motion-design",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Review and revise AI-generated prose to remove generic phrasing while preserving meaning and attribution.",
+      "href": "/skills/catalog/external/unslop/",
+      "lane": "install-now",
+      "name": "unslop",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Improve commit messages and change summaries so they are concrete, specific, and reviewable.",
+      "href": "/skills/catalog/external/unslop-commit/",
+      "lane": "install-now",
+      "name": "unslop-commit",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Provide compact guidance for using the unslop skill family safely and effectively.",
+      "href": "/skills/catalog/external/unslop-help/",
+      "lane": "install-now",
+      "name": "unslop-help",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Review text for generic AI-style phrasing and suggest grounded, source-faithful improvements.",
+      "href": "/skills/catalog/external/unslop-review/",
+      "lane": "install-now",
+      "name": "unslop-review",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Update roadmap artifacts from evidence-backed project context with explicit user intent before repository mutations.",
+      "href": "/skills/catalog/external/roadmap-update/",
+      "lane": "install-now",
+      "name": "roadmap-update",
       "sourceType": "curated-external"
     },
     {
@@ -3246,6 +3225,13 @@
       "href": "/skills/catalog/external/vitest/",
       "lane": "install-now",
       "name": "vitest",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Convert or refine raster logo concepts into SVG assets with provenance, brand, and trademark-safety checks.",
+      "href": "/skills/catalog/external/raster-logo-svg/",
+      "lane": "install-now",
+      "name": "raster-logo-svg",
       "sourceType": "curated-external"
     },
     {
@@ -3428,6 +3414,20 @@
       "href": "/skills/catalog/external/plannotator-review/",
       "lane": "install-now",
       "name": "plannotator-review",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Summarize technical-debt metrics from existing local debt registry data without initializing or mutating registries.",
+      "href": "/skills/catalog/external/debt-ops-metrics/",
+      "lane": "install-now",
+      "name": "debt-ops-metrics",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Review existing technical-debt registry entries and produce read-only prioritization guidance.",
+      "href": "/skills/catalog/external/debt-ops-review/",
+      "lane": "install-now",
+      "name": "debt-ops-review",
       "sourceType": "curated-external"
     },
     {
@@ -4047,6 +4047,13 @@
       "sourceType": "curated-external"
     },
     {
+      "description": "Create editorial infocard screenshots with browser-rendered visual output and explicit source/asset provenance checks.",
+      "href": "/skills/catalog/external/editorial-card-screenshot/",
+      "lane": "install-now",
+      "name": "editorial-card-screenshot",
+      "sourceType": "curated-external"
+    },
+    {
       "description": "Curated third-party skill source. Run /review source before repo promotion.",
       "href": "/skills/catalog/external/upgrade-stripe/",
       "lane": "install-now",
@@ -4065,6 +4072,13 @@
       "href": "/skills/catalog/external/supabase-postgres-best-practices/",
       "lane": "install-now",
       "name": "supabase-postgres-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Build, review, and refactor Remotion video projects while keeping renders, publishes, and package installs user-controlled.",
+      "href": "/skills/catalog/external/remotion-video-builder/",
+      "lane": "install-now",
+      "name": "remotion-video-builder",
       "sourceType": "curated-external"
     },
     {
@@ -4156,6 +4170,13 @@
       "href": "/skills/catalog/external/next-upgrade/",
       "lane": "install-now",
       "name": "next-upgrade",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Plan, draft, and revise long-form fiction with structured character, plot, scene, and prose review workflows.",
+      "href": "/skills/catalog/external/novel-writing/",
+      "lane": "install-now",
+      "name": "novel-writing",
       "sourceType": "curated-external"
     },
     {
@@ -4275,6 +4296,13 @@
       "href": "/skills/catalog/external/uv-package-manager/",
       "lane": "install-now",
       "name": "uv-package-manager",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Create frontend-focused technical slide decks with structured narrative, visuals, and implementation-oriented examples.",
+      "href": "/skills/catalog/external/frontend-slides/",
+      "lane": "install-now",
+      "name": "frontend-slides",
       "sourceType": "curated-external"
     }
   ]

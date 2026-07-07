@@ -1,0 +1,170 @@
+---
+title: "remotion-video-builder"
+description: "Build, review, and refactor Remotion video projects while keeping renders, publishes, and package installs user-controlled."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="remotion-video-builder"
+  description="Build, review, and refactor Remotion video projects while keeping renders, publishes, and package installs user-controlled."
+  installCommand={`npx skills add tim-osterhus/codex-remotion-plugin --skill remotion-video-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/remotion-video-builder"
+  badges={[{ text: "remotion-video-builder", variant: "note" }, { text: "313 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/remotion-video-builder.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add tim-osterhus/codex-remotion-plugin --skill remotion-video-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Video generation can use copyrighted media, large renders, and package scripts; preserve asset provenance, avoid auto-render/publish, and keep Remotion package versions aligned.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | 2990778a3e46baaf870625b8e3385b2f0bb9da52 |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Selected skill is guidance for Remotion project work; rendering, package installation, and publishing remain explicit user actions. |
+| Credential behavior | No credentials are required for the selected skill. |
+| Network access | May reference public Remotion docs when exact APIs matter; no networked publish or account access is declared in the selected skill. |
+| File access | Reads and writes user-selected Remotion project files and media assets when explicitly invoked. |
+| Live-action risk | Video generation can use copyrighted media, large renders, and package scripts; preserve asset provenance, avoid auto-render/publish, and keep Remotion package versions aligned. |
+| Risk category | remotion-video-review |
+| Dedupe notes | Raw indexes covered: 174 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/remotion-video-builder.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `tim-osterhus/codex-remotion-plugin` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `tim-osterhus/codex-remotion-plugin` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `remotion-video-builder` |
+| License | Apache-2.0 |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "remotion-video-builder"
+description: "Build, review, and refactor Remotion video projects while keeping renders, publishes, and package installs user-controlled."
+title: "Remotion Video Builder"
+source_kind: "curated-external"
+source: "tim-osterhus/codex-remotion-plugin"
+install_source: "tim-osterhus/codex-remotion-plugin"
+install_command: "npx skills add tim-osterhus/codex-remotion-plugin --skill remotion-video-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/tim-osterhus/codex-remotion-plugin"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "2990778a3e46baaf870625b8e3385b2f0bb9da52"
+license: "Apache-2.0"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Selected skill is guidance for Remotion project work; rendering, package installation, and publishing remain explicit user actions."
+credential_behavior: "No credentials are required for the selected skill."
+network_access: "May reference public Remotion docs when exact APIs matter; no networked publish or account access is declared in the selected skill."
+file_access: "Reads and writes user-selected Remotion project files and media assets when explicitly invoked."
+live_action_risk: "Video generation can use copyrighted media, large renders, and package scripts; preserve asset provenance, avoid auto-render/publish, and keep Remotion package versions aligned."
+risk_category: "remotion-video-review"
+dedupe_notes: "Raw indexes covered: 174"
+notes: "Build, review, and refactor Remotion video projects while keeping renders, publishes, and package installs user-controlled."
+risk_notes: "Video generation can use copyrighted media, large renders, and package scripts; preserve asset provenance, avoid auto-render/publish, and keep Remotion package versions aligned."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, license metadata, selected selector behavior, credential scan notes, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found one selector, remotion-video-builder. Local Skills CLI command installed the selector into supported harness roots. The source repository HEAD was inspected and license metadata resolved as Apache-2.0."
+---
+
+# Remotion Video Builder
+
+This row promotes `tim-osterhus/codex-remotion-plugin` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 174
+- Normalized URL: [https://github.com/tim-osterhus/codex-remotion-plugin](https://github.com/tim-osterhus/codex-remotion-plugin)
+- Selected skill: `remotion-video-builder`
+- Install command: `npx skills add tim-osterhus/codex-remotion-plugin --skill remotion-video-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `2990778a3e46baaf870625b8e3385b2f0bb9da52`
+- License status: `Apache-2.0`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add tim-osterhus/codex-remotion-plugin --skill remotion-video-builder --dry-run`
+- Executed command: `npx --yes skills add tim-osterhus/codex-remotion-plugin --skill remotion-video-builder -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Installed path: `~/.agents/skills/remotion-video-builder`
+- Installed path: `~/.claude/skills/remotion-video-builder`
+- Installed path: `~/.config/crush/skills/remotion-video-builder`
+- Install evidence note: Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required for the selected skill.
+- Network access: May reference public Remotion docs when exact APIs matter; no networked publish or account access is declared in the selected skill.
+- File access: Reads and writes user-selected Remotion project files and media assets when explicitly invoked.
+- Live action risk: Video generation can use copyrighted media, large renders, and package scripts; preserve asset provenance, avoid auto-render/publish, and keep Remotion package versions aligned.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

@@ -1,0 +1,178 @@
+---
+title: "unslop-commit"
+description: "Improve commit messages and change summaries so they are concrete, specific, and reviewable."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="unslop-commit"
+  description="Improve commit messages and change summaries so they are concrete, specific, and reviewable."
+  installCommand={`npx skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/unslop-commit"
+  badges={[{ text: "unslop-commit", variant: "note" }, { text: "398 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/unslop-commit.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Writing rewrites can alter claims, tone, and attribution; preserve facts, provenance, and user intent, and avoid fabricating rationale.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | 5af59d9fcdbd0df7b1a0762be958f78c7805fc09 |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Selected unslop selector is prompt/markdown guidance; write-heavy unslop-file and reasoning-trace selectors remain unpromoted. |
+| Credential behavior | No credentials or service tokens are required for the selected selector. |
+| Network access | No network behavior is declared in the selected installed selector. |
+| File access | Reads and edits user-selected text or commit-message material only when explicitly invoked. |
+| Live-action risk | Writing rewrites can alter claims, tone, and attribution; preserve facts, provenance, and user intent, and avoid fabricating rationale. |
+| Risk category | writing-quality-review |
+| Dedupe notes | Raw indexes covered: 132, 175 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/unslop-commit.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `MohamedAbdallah-14/unslop` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `MohamedAbdallah-14/unslop` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `unslop-commit` |
+| License | MIT |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "unslop-commit"
+description: "Improve commit messages and change summaries so they are concrete, specific, and reviewable."
+title: "Unslop Commit"
+source_kind: "curated-external"
+source: "MohamedAbdallah-14/unslop"
+install_source: "MohamedAbdallah-14/unslop"
+install_command: "npx skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/MohamedAbdallah-14/unslop"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "5af59d9fcdbd0df7b1a0762be958f78c7805fc09"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Selected unslop selector is prompt/markdown guidance; write-heavy unslop-file and reasoning-trace selectors remain unpromoted."
+credential_behavior: "No credentials or service tokens are required for the selected selector."
+network_access: "No network behavior is declared in the selected installed selector."
+file_access: "Reads and edits user-selected text or commit-message material only when explicitly invoked."
+live_action_risk: "Writing rewrites can alter claims, tone, and attribution; preserve facts, provenance, and user intent, and avoid fabricating rationale."
+risk_category: "writing-quality-review"
+dedupe_notes: "Raw indexes covered: 132, 175"
+notes: "Improve commit messages and change summaries so they are concrete, specific, and reviewable."
+risk_notes: "Writing rewrites can alter claims, tone, and attribution; preserve facts, provenance, and user intent, and avoid fabricating rationale."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, license metadata, selected selector behavior, credential scan notes, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found six selectors; this row promotes only unslop-commit. Local Skills CLI commands installed unslop-commit into supported harness roots. Skills CLI risk output reported Gen Safe, Socket 0 alerts, and Snyk Low Risk. unslop-file and unslop-reasoning remain blocked for separate review."
+---
+
+# Unslop Commit
+
+This row promotes `MohamedAbdallah-14/unslop` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 132, 175
+- Normalized URL: [https://github.com/MohamedAbdallah-14/unslop](https://github.com/MohamedAbdallah-14/unslop)
+- Selected skill: `unslop-commit`
+- Install command: `npx skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `5af59d9fcdbd0df7b1a0762be958f78c7805fc09`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add MohamedAbdallah-14/unslop --skill unslop-commit --dry-run`
+- Executed command: `npx --yes skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a antigravity`
+- Executed command: `npx --yes skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a claude-code`
+- Executed command: `npx --yes skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a codex`
+- Executed command: `npx --yes skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a crush`
+- Executed command: `npx --yes skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a cursor`
+- Executed command: `npx --yes skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a gemini-cli`
+- Executed command: `npx --yes skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a github-copilot`
+- Executed command: `npx --yes skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a claude-code`
+- Executed command: `npx --yes skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a opencode`
+- Installed path: `~/.agents/skills/unslop-commit`
+- Installed path: `~/.claude/skills/unslop-commit`
+- Installed path: `~/.config/crush/skills/unslop-commit`
+- Install evidence note: Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials or service tokens are required for the selected selector.
+- Network access: No network behavior is declared in the selected installed selector.
+- File access: Reads and edits user-selected text or commit-message material only when explicitly invoked.
+- Live action risk: Writing rewrites can alter claims, tone, and attribution; preserve facts, provenance, and user intent, and avoid fabricating rationale.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

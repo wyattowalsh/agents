@@ -2,5 +2,5 @@
   "broken_count": 0,
   "broken_internal_links": [],
   "note": "Complements the build-time starlight-links-validator check; scans absolute markdown links only.",
-  "total_pages_scanned": 1167
+  "total_pages_scanned": 1171
 }

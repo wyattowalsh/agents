@@ -5,9 +5,9 @@ const baseSiteData = {
     "customMcp": 16,
     "customSkills": 69,
     "externalMcp": 49,
-    "externalSkills": 611,
+    "externalSkills": 615,
     "mcpTools": 65,
-    "skills": 680,
+    "skills": 684,
     "supportedHarnesses": 9
   },
   "distributionPaths": [
@@ -180,12 +180,12 @@ const baseSiteData = {
           "candidate-corpus-138-domain-name-brainstormer",
           "candidate-corpus-147-raffle-winner-picker",
           "candidate-corpus-148-langsmith-fetch",
-          "candidate-corpus-149-canvas-design",
           "candidate-corpus-150-image-enhancer",
-          "candidate-corpus-151-slack-gif-creator",
           "candidate-corpus-152-video-downloader",
           "candidate-corpus-272-mcp-builder",
-          "candidate-corpus-273-file-organizer"
+          "candidate-corpus-273-file-organizer",
+          "canvas-design",
+          "slack-gif-creator"
         ],
         "source": "ComposioHQ/awesome-codex-skills"
       },
@@ -316,9 +316,12 @@ const baseSiteData = {
         "source": "MohamedAbdallah-14/prompt-to-asset"
       },
       {
-        "count": 1,
+        "count": 4,
         "skills": [
-          "candidate-corpus-132-unslop"
+          "unslop",
+          "unslop-commit",
+          "unslop-help",
+          "unslop-review"
         ],
         "source": "MohamedAbdallah-14/unslop"
       },
@@ -374,7 +377,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-177-roadmapsmith"
+          "roadmap-update"
         ],
         "source": "PapiScholz/roadmapsmith"
       },
@@ -404,7 +407,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-163-designer-skill"
+          "raster-logo-svg"
         ],
         "source": "Pythoughts-labs/designer-skill"
       },
@@ -677,9 +680,10 @@ const baseSiteData = {
         "source": "backnotprop/plannotator/apps/skills/core"
       },
       {
-        "count": 1,
+        "count": 2,
         "skills": [
-          "candidate-corpus-162-agentic-tech-debt"
+          "debt-ops-metrics",
+          "debt-ops-review"
         ],
         "source": "bcanfield/agentic-tech-debt"
       },
@@ -1930,7 +1934,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-159-infocard-skills"
+          "editorial-card-screenshot"
         ],
         "source": "shaom/infocard-skills"
       },
@@ -2004,7 +2008,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-174-codex-remotion-plugin"
+          "remotion-video-builder"
         ],
         "source": "tim-osterhus/codex-remotion-plugin"
       },
@@ -2146,7 +2150,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-131-novel-writing"
+          "novel-writing"
         ],
         "source": "wgwtest/novel-writing"
       },
@@ -2238,7 +2242,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-144-frontend-slides"
+          "frontend-slides"
         ],
         "source": "zarazhangrui/frontend-slides"
       },
@@ -2278,7 +2282,7 @@ const baseSiteData = {
         "status": "catalog-reference"
       },
       {
-        "count": 271,
+        "count": 261,
         "skills": [
           "anthropics-skills-all",
           "candidate-corpus-004-skills",
@@ -2381,8 +2385,6 @@ const baseSiteData = {
           "candidate-corpus-128-changelog-generator",
           "candidate-corpus-129-diasporic-intelligence",
           "candidate-corpus-130-content-research-writer",
-          "candidate-corpus-131-novel-writing",
-          "candidate-corpus-132-unslop",
           "candidate-corpus-133-spreadsheet-formula-helper",
           "candidate-corpus-134-competitive-ads-extractor",
           "candidate-corpus-135-datadog-logs",
@@ -2394,14 +2396,11 @@ const baseSiteData = {
           "candidate-corpus-141-css-protips",
           "candidate-corpus-142-cli",
           "candidate-corpus-143-agent-skills",
-          "candidate-corpus-144-frontend-slides",
           "candidate-corpus-145-pm-skills",
           "candidate-corpus-146-notebooklm-py",
           "candidate-corpus-147-raffle-winner-picker",
           "candidate-corpus-148-langsmith-fetch",
-          "candidate-corpus-149-canvas-design",
           "candidate-corpus-150-image-enhancer",
-          "candidate-corpus-151-slack-gif-creator",
           "candidate-corpus-152-video-downloader",
           "candidate-corpus-153-andrej-karpathy-skills",
           "candidate-corpus-154-mobile-mcp",
@@ -2409,11 +2408,8 @@ const baseSiteData = {
           "candidate-corpus-156-hyperframes",
           "candidate-corpus-157-agent-reach",
           "candidate-corpus-158-pm-skills",
-          "candidate-corpus-159-infocard-skills",
           "candidate-corpus-160-claude-design-card",
           "candidate-corpus-161-mcp-server-chart",
-          "candidate-corpus-162-agentic-tech-debt",
-          "candidate-corpus-163-designer-skill",
           "candidate-corpus-164-env-lint",
           "candidate-corpus-165-hol-guard-plugin",
           "candidate-corpus-166-secret-guard",
@@ -2424,9 +2420,7 @@ const baseSiteData = {
           "candidate-corpus-171-nullcost-plugin",
           "candidate-corpus-172-prompt-to-asset",
           "candidate-corpus-173-seo-dungeon",
-          "candidate-corpus-174-codex-remotion-plugin",
           "candidate-corpus-176-zotero-research-plugin",
-          "candidate-corpus-177-roadmapsmith",
           "candidate-corpus-178-openspec-assistant",
           "candidate-corpus-179-openflow",
           "candidate-corpus-180-ralphy-openspec",
@@ -2731,7 +2725,7 @@ const baseSiteData = {
         "status": "inspect-then-install"
       },
       {
-        "count": 164,
+        "count": 178,
         "skills": [
           "a11y-debugging",
           "ab-testing",
@@ -2753,6 +2747,7 @@ const baseSiteData = {
           "better-auth-best-practices",
           "biome-developer",
           "brainstorming",
+          "canvas-design",
           "changelog-automation",
           "chrome-devtools",
           "chrome-devtools-cli",
@@ -2769,11 +2764,14 @@ const baseSiteData = {
           "core-web-vitals",
           "cro",
           "csvglow",
+          "debt-ops-metrics",
+          "debt-ops-review",
           "debug-optimize-lcp",
           "debugging-strategies",
           "deno-expert",
           "design-postgres-tables",
           "durable-objects",
+          "editorial-card-screenshot",
           "emails",
           "executing-plans",
           "fastapi-templates",
@@ -2785,6 +2783,7 @@ const baseSiteData = {
           "flutter-fix-layout-issues",
           "flutter-setup-declarative-routing",
           "flutter-setup-localization",
+          "frontend-slides",
           "gitops-workflow",
           "graphql-operations",
           "graphql-schema",
@@ -2809,6 +2808,7 @@ const baseSiteData = {
           "next-cache-components",
           "next-upgrade",
           "nodejs-backend-patterns",
+          "novel-writing",
           "nx-workspace-patterns",
           "obsidian-cli",
           "obsidian-markdown",
@@ -2837,9 +2837,12 @@ const baseSiteData = {
           "pulumi-best-practices",
           "pulumi-component",
           "pulumi-esc",
+          "raster-logo-svg",
           "redis-core",
           "remotion-best-practices",
+          "remotion-video-builder",
           "revops",
+          "roadmap-update",
           "rover",
           "rust-best-practices",
           "schema",
@@ -2847,6 +2850,7 @@ const baseSiteData = {
           "seo-audit",
           "signup",
           "site-architecture",
+          "slack-gif-creator",
           "slidev",
           "sql-optimization",
           "sql-optimization-patterns",
@@ -2881,6 +2885,10 @@ const baseSiteData = {
           "troubleshooting",
           "turborepo-caching",
           "uikit-accessibility-auditor",
+          "unslop",
+          "unslop-commit",
+          "unslop-help",
+          "unslop-review",
           "upgrade-stripe",
           "uv-package-manager",
           "vercel-composition-patterns",
@@ -3294,6 +3302,26 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add ComposioHQ/awesome-codex-skills --skill canvas-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "canvas-design"
+        ],
+        "source": "ComposioHQ/awesome-codex-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add ComposioHQ/awesome-codex-skills --skill slack-gif-creator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "slack-gif-creator"
+        ],
+        "source": "ComposioHQ/awesome-codex-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add Erikote04/Swift-API-Design-Guidelines-Agent-Skill --skill swift-api-design-guidelines-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "swift-api-design-guidelines-skill"
@@ -3324,6 +3352,46 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add MohamedAbdallah-14/unslop --skill unslop -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "unslop"
+        ],
+        "source": "MohamedAbdallah-14/unslop",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "unslop-commit"
+        ],
+        "source": "MohamedAbdallah-14/unslop",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add MohamedAbdallah-14/unslop --skill unslop-help -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "unslop-help"
+        ],
+        "source": "MohamedAbdallah-14/unslop",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add MohamedAbdallah-14/unslop --skill unslop-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "unslop-review"
+        ],
+        "source": "MohamedAbdallah-14/unslop",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add P4nda0s/reverse-skills --skill rev-frida --list",
         "skills": [
           "reverse-skills"
@@ -3331,6 +3399,16 @@ const baseSiteData = {
         "source": "P4nda0s/reverse-skills",
         "sourceType": "curated-external",
         "status": "catalog-reference",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add PapiScholz/roadmapsmith --skill roadmap-update -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "roadmap-update"
+        ],
+        "source": "PapiScholz/roadmapsmith",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
       },
       {
@@ -3360,6 +3438,16 @@ const baseSiteData = {
           "vitest"
         ],
         "source": "PaulRBerg/agent-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Pythoughts-labs/designer-skill --skill raster-logo-svg -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "raster-logo-svg"
+        ],
+        "source": "Pythoughts-labs/designer-skill",
         "sourceType": "curated-external",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
@@ -3528,6 +3616,26 @@ const baseSiteData = {
           "plannotator-review"
         ],
         "source": "backnotprop/plannotator/apps/skills/core",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "debt-ops-metrics"
+        ],
+        "source": "bcanfield/agentic-tech-debt",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add bcanfield/agentic-tech-debt --skill debt-ops-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "debt-ops-review"
+        ],
+        "source": "bcanfield/agentic-tech-debt",
         "sourceType": "curated-external",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
@@ -4505,6 +4613,16 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
+        "command": "npx skills add shaom/infocard-skills --skill editorial-card-screenshot -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "editorial-card-screenshot"
+        ],
+        "source": "shaom/infocard-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add shopify/shopify-ai-toolkit --skill shopify-dev --skill shopify-liquid --skill shopify-storefront-graphql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "shopify-dev",
@@ -4556,6 +4674,16 @@ const baseSiteData = {
         "sourceType": "curated-external",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add tim-osterhus/codex-remotion-plugin --skill remotion-video-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "remotion-video-builder"
+        ],
+        "source": "tim-osterhus/codex-remotion-plugin",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
       },
       {
         "command": "npx skills add timbroddin/app-store-aso-skill --skill app-store-aso -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -4681,6 +4809,16 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add wgwtest/novel-writing --skill novel-writing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "novel-writing"
+        ],
+        "source": "wgwtest/novel-writing",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add wshobson/agents --skill fastapi-templates --skill nodejs-backend-patterns --skill postmortem-writing --skill on-call-handoff-patterns --skill nx-workspace-patterns --skill turborepo-caching --skill langchain-architecture --skill llm-evaluation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "fastapi-templates",
@@ -4754,6 +4892,16 @@ const baseSiteData = {
         "source": "yaklang/hack-skills",
         "sourceType": "curated-external",
         "status": "catalog-reference",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add zarazhangrui/frontend-slides --skill frontend-slides -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "frontend-slides"
+        ],
+        "source": "zarazhangrui/frontend-slides",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
       },
       {

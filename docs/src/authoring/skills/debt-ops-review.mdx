@@ -1,0 +1,71 @@
+---
+name: "debt-ops-review"
+description: "Review existing technical-debt registry entries and produce read-only prioritization guidance."
+title: "Debt Ops Review"
+source_kind: "curated-external"
+source: "bcanfield/agentic-tech-debt"
+install_source: "bcanfield/agentic-tech-debt"
+install_command: "npx skills add bcanfield/agentic-tech-debt --skill debt-ops-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/bcanfield/agentic-tech-debt"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "2c931cd26af3f9a3dac3a138ae2a59ab4df67dff"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Selected debt-ops selector is read-only against existing debt artifacts; debt-ops-add and debt-ops-init were not promoted because they write registries and AGENTS.md surfaces."
+credential_behavior: "No credentials are required for the selected selector."
+network_access: "No network behavior is declared in the selected installed selector."
+file_access: "Reads local debt registry and project documentation; write selectors remain unpromoted."
+live_action_risk: "Technical-debt findings can steer roadmap decisions; keep recommendations evidence-based and do not mutate registries unless separately authorized."
+risk_category: "technical-debt-registry-review"
+dedupe_notes: "Raw indexes covered: 162"
+notes: "Review existing technical-debt registry entries and produce read-only prioritization guidance."
+risk_notes: "Technical-debt findings can steer roadmap decisions; keep recommendations evidence-based and do not mutate registries unless separately authorized."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, license metadata, selected selector behavior, credential scan notes, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found eight selectors; this row promotes only debt-ops-review. Local Skills CLI command installed debt-ops-review into supported harness roots. debt-ops-add and debt-ops-init remain blocked for write-surface review."
+---
+
+# Debt Ops Review
+
+This row promotes `bcanfield/agentic-tech-debt` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 162
+- Normalized URL: [https://github.com/bcanfield/agentic-tech-debt](https://github.com/bcanfield/agentic-tech-debt)
+- Selected skill: `debt-ops-review`
+- Install command: `npx skills add bcanfield/agentic-tech-debt --skill debt-ops-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `2c931cd26af3f9a3dac3a138ae2a59ab4df67dff`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add bcanfield/agentic-tech-debt --skill debt-ops-review --dry-run`
+- Executed command: `npx --yes skills add bcanfield/agentic-tech-debt --skill debt-ops-review -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Installed path: `~/.agents/skills/debt-ops-review`
+- Installed path: `~/.claude/skills/debt-ops-review`
+- Installed path: `~/.config/crush/skills/debt-ops-review`
+- Install evidence note: Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required for the selected selector.
+- Network access: No network behavior is declared in the selected installed selector.
+- File access: Reads local debt registry and project documentation; write selectors remain unpromoted.
+- Live action risk: Technical-debt findings can steer roadmap decisions; keep recommendations evidence-based and do not mutate registries unless separately authorized.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.

@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T12:23:55.283253+00:00",
-  "applied_count": 30,
+  "generated_at": "2026-07-07T12:56:43.204211+00:00",
+  "applied_count": 44,
   "items": [
     {
       "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
@@ -182,6 +182,90 @@
       "skill_name": "motion-design",
       "path": "docs/src/authoring/skills/motion-design.mdx",
       "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-055-motion-design-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/wgwtest/novel-writing",
+      "skill_name": "novel-writing",
+      "path": "docs/src/authoring/skills/novel-writing.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-131-novel-writing.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
+      "skill_name": "unslop",
+      "path": "docs/src/authoring/skills/unslop.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-132-unslop.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
+      "skill_name": "unslop-review",
+      "path": "docs/src/authoring/skills/unslop-review.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-132-unslop.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
+      "skill_name": "unslop-commit",
+      "path": "docs/src/authoring/skills/unslop-commit.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-132-unslop.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
+      "skill_name": "unslop-help",
+      "path": "docs/src/authoring/skills/unslop-help.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-132-unslop.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/zarazhangrui/frontend-slides",
+      "skill_name": "frontend-slides",
+      "path": "docs/src/authoring/skills/frontend-slides.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-144-frontend-slides.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/shaom/infocard-skills",
+      "skill_name": "editorial-card-screenshot",
+      "path": "docs/src/authoring/skills/editorial-card-screenshot.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-159-infocard-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/bcanfield/agentic-tech-debt",
+      "skill_name": "debt-ops-review",
+      "path": "docs/src/authoring/skills/debt-ops-review.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-162-agentic-tech-debt.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/bcanfield/agentic-tech-debt",
+      "skill_name": "debt-ops-metrics",
+      "path": "docs/src/authoring/skills/debt-ops-metrics.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-162-agentic-tech-debt.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Pythoughts-labs/designer-skill",
+      "skill_name": "raster-logo-svg",
+      "path": "docs/src/authoring/skills/raster-logo-svg.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-163-designer-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/tim-osterhus/codex-remotion-plugin",
+      "skill_name": "remotion-video-builder",
+      "path": "docs/src/authoring/skills/remotion-video-builder.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-174-codex-remotion-plugin.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/PapiScholz/roadmapsmith",
+      "skill_name": "roadmap-update",
+      "path": "docs/src/authoring/skills/roadmap-update.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-177-roadmapsmith.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/canvas-design",
+      "skill_name": "canvas-design",
+      "path": "docs/src/authoring/skills/canvas-design.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-149-canvas-design.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/slack-gif-creator",
+      "skill_name": "slack-gif-creator",
+      "path": "docs/src/authoring/skills/slack-gif-creator.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-151-slack-gif-creator.mdx"
     }
   ]
 }
