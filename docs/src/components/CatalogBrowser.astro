@@ -101,7 +101,7 @@ const serialized = skills.map(serializeSkill);
     currentScript.previousElementSibling.matches('[data-catalog-browser]')
       ? currentScript.previousElementSibling
       : null;
-  const root = scriptRoot || document.querySelector('[data-catalog-browser]');
+  const root = scriptRoot;
   if (!root) {
     // no-op when component is not mounted
   } else {

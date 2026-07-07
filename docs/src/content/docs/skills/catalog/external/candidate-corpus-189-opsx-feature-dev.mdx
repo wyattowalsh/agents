@@ -13,7 +13,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   installCommand={`Catalog-only entry: no portable install command is published until promotion gates pass.`}
   installLabel="Catalog status"
   usage=""
-  badges={[{ text: "candidate-corpus-189-opsx-feature-dev", variant: "note" }, { text: "185 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
+  badges={[{ text: "candidate-corpus-189-opsx-feature-dev", variant: "note" }, { text: "218 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
@@ -42,7 +42,7 @@ Risk notes: No elevated keyword risk detected.
 | Audited HEAD | e61e31cd5611c3c06541c9c14bd7d0eec0f90d6e |
 | Pin policy | pin-before-install |
 | No-pin rationale | No install command is published until the candidate passes promotion review. |
-| Source-list evidence | not-run |
+| Source-list evidence | source-list-error |
 | Executable surface | not-detected-in-static-intake |
 | Credential behavior | placeholder-only; credentials must remain user-owned and uncommitted |
 | Network access | public Git metadata only during corpus intake |
@@ -98,7 +98,7 @@ audit_date: "2026-07-06"
 audited_head: "e61e31cd5611c3c06541c9c14bd7d0eec0f90d6e"
 pin_policy: "pin-before-install"
 no_pin_rationale: "No install command is published until the candidate passes promotion review."
-source_list_evidence: "not-run"
+source_list_evidence: "source-list-error"
 executable_surface: "not-detected-in-static-intake"
 credential_behavior: "placeholder-only; credentials must remain user-owned and uncommitted"
 network_access: "public Git metadata only during corpus intake"
@@ -109,7 +109,7 @@ dedupe_notes: "Raw indexes covered: 189"
 notes: "Trust-gated July 2026 candidate corpus entry for mbertani/opsx-feature-dev. Catalog metadata only; do not install, vendor, adapt, or promote until source-list, license, security, and docs-steward review pass."
 risk_notes: "No elevated keyword risk detected."
 promotion_policy: "Keep non-installable until source-list, license, security, attribution, auth, and docs-steward gates pass."
-provenance_evidence: "Generated from planning/manifests/candidate-corpus-jul2026 records; no npx skills add --list evidence captured yet."
+provenance_evidence: "Generated from planning/manifests/candidate-corpus-jul2026 records and read-only npx skills add --list evidence; source-list status: source-list-error. Probe did not complete successfully; promotion remains blocked."
 ---
 
 {/* GENERATED-CANDIDATE-CORPUS-JUL2026: source=planning/manifests/candidate-corpus-jul2026 */}
@@ -129,10 +129,15 @@ It is intentionally non-installable. Do not publish an install command, run cand
 - Risk tier: `standard-review`
 - Inspected commit SHA: `e61e31cd5611c3c06541c9c14bd7d0eec0f90d6e`
 - License status: `MIT`
+- Source-list evidence: `source-list-error` (manual retry or review required)
+- Remaining blocker: selector-level security review
+- Remaining blocker: license and attribution file review
+- Remaining blocker: docs-steward promotion review
+- Remaining blocker: target-specific validation
 
 ## Promotion Gates
 
-- Run read-only source-list discovery, for example `npx skills add <source> --list`, when applicable.
+- Re-run read-only source-list discovery if evidence errored, timed out, or becomes stale.
 - Verify license compatibility and attribution before adapting any content.
 - Review hooks, scripts, commands, allowed tools, dependencies, network calls, and credential handling.
 - Route MCP servers, plugins, CLIs, libraries, and broad collections through their native repo surfaces.

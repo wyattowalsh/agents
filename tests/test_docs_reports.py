@@ -50,6 +50,23 @@ def test_site_graph_counts_static_mdx_href_links(tmp_path, monkeypatch):
     assert "/agents/agent-change-recorder" not in report["orphan_pages"]
 
 
+def test_content_page_iterator_excludes_generated_reports(tmp_path, monkeypatch):
+    content_dir = tmp_path / "docs"
+    reports_dir = content_dir / "reports"
+    reports_dir.mkdir(parents=True)
+    (content_dir / "index.mdx").write_text("---\ntitle: Home\n---\n", encoding="utf-8")
+    (reports_dir / "site-graph-insights.mdx").write_text(
+        "---\ntitle: Generated report\n---\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(docs_reports, "CONTENT_DIR", content_dir)
+    monkeypatch.setattr(docs_reports, "REPORTS_CONTENT_DIR", reports_dir)
+
+    pages = docs_reports.iter_content_pages()
+
+    assert pages == [content_dir / "index.mdx"]
+
+
 def test_dependency_drift_allows_accounted_non_integration_plugins(tmp_path, monkeypatch):
     docs_dir = tmp_path / "docs"
     config_dir = tmp_path / "config"

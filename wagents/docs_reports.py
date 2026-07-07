@@ -50,7 +50,18 @@ def _slug_for_content_path(page: Path) -> str:
 def _iter_content_pages() -> list[Path]:
     if not CONTENT_DIR.exists():
         return []
-    return sorted(p for p in CONTENT_DIR.rglob("*.mdx") if p.is_file())
+    reports_dir = REPORTS_CONTENT_DIR.resolve()
+    pages: list[Path] = []
+    for path in CONTENT_DIR.rglob("*.mdx"):
+        if not path.is_file():
+            continue
+        try:
+            if path.resolve().is_relative_to(reports_dir):
+                continue
+        except OSError:
+            continue
+        pages.append(path)
+    return sorted(pages)
 
 
 def _read_frontmatter(page: Path) -> dict[str, Any]:

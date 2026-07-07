@@ -13,7 +13,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   installCommand={`Catalog-only entry: no portable install command is published until promotion gates pass.`}
   installLabel="Catalog status"
   usage=""
-  badges={[{ text: "candidate-corpus-007-skills", variant: "note" }, { text: "183 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
+  badges={[{ text: "candidate-corpus-007-skills", variant: "note" }, { text: "219 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
@@ -42,7 +42,7 @@ Risk notes: No elevated keyword risk detected.
 | Audited HEAD | 27ce0c0e159225caa7ed30ebefd4107aa6c52497 |
 | Pin policy | pin-before-install |
 | No-pin rationale | No install command is published until the candidate passes promotion review. |
-| Source-list evidence | not-run |
+| Source-list evidence | source-list-found |
 | Executable surface | not-detected-in-static-intake |
 | Credential behavior | placeholder-only; credentials must remain user-owned and uncommitted |
 | Network access | public Git metadata only during corpus intake |
@@ -98,7 +98,7 @@ audit_date: "2026-07-06"
 audited_head: "27ce0c0e159225caa7ed30ebefd4107aa6c52497"
 pin_policy: "pin-before-install"
 no_pin_rationale: "No install command is published until the candidate passes promotion review."
-source_list_evidence: "not-run"
+source_list_evidence: "source-list-found"
 executable_surface: "not-detected-in-static-intake"
 credential_behavior: "placeholder-only; credentials must remain user-owned and uncommitted"
 network_access: "public Git metadata only during corpus intake"
@@ -109,7 +109,7 @@ dedupe_notes: "Raw indexes covered: 7"
 notes: "Trust-gated July 2026 candidate corpus entry for cloudflare/skills. Catalog metadata only; do not install, vendor, adapt, or promote until source-list, license, security, and docs-steward review pass."
 risk_notes: "No elevated keyword risk detected."
 promotion_policy: "Keep non-installable until source-list, license, security, attribution, auth, and docs-steward gates pass."
-provenance_evidence: "Generated from planning/manifests/candidate-corpus-jul2026 records; no npx skills add --list evidence captured yet."
+provenance_evidence: "Generated from planning/manifests/candidate-corpus-jul2026 records and read-only npx skills add --list evidence; source-list status: source-list-found. Listed 11 candidate skill(s); no install command is published."
 ---
 
 {/* GENERATED-CANDIDATE-CORPUS-JUL2026: source=planning/manifests/candidate-corpus-jul2026 */}
@@ -129,10 +129,15 @@ It is intentionally non-installable. Do not publish an install command, run cand
 - Risk tier: `standard-review`
 - Inspected commit SHA: `27ce0c0e159225caa7ed30ebefd4107aa6c52497`
 - License status: `Apache-2.0`
+- Source-list evidence: `source-list-found` (11 skill(s) listed by read-only discovery)
+- Remaining blocker: do not duplicate existing installable catalog rows
+- Remaining blocker: selector-level security review
+- Remaining blocker: docs-steward promotion review
+- Remaining blocker: target-specific validation
 
 ## Promotion Gates
 
-- Run read-only source-list discovery, for example `npx skills add <source> --list`, when applicable.
+- Re-run read-only source-list discovery if evidence errored, timed out, or becomes stale.
 - Verify license compatibility and attribution before adapting any content.
 - Review hooks, scripts, commands, allowed tools, dependencies, network calls, and credential handling.
 - Route MCP servers, plugins, CLIs, libraries, and broad collections through their native repo surfaces.

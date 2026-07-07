@@ -45,6 +45,8 @@ from wagents.skill_index import (
 )
 from wagents.skill_index import (
     write_catalog_browser_index as write_skills_catalog_browser_index,
+)
+from wagents.skill_index import (
     write_catalog_index as write_skills_catalog_index,
 )
 from wagents.skill_research import (
@@ -2892,7 +2894,6 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
         write_mcp_index(mcps)
         typer.echo("  Generated mcp/index.mdx")
 
-    write_site_data(nodes, external_entries)
     write_harness_support_page()
     typer.echo("  Generated harness-support.mdx")
     write_runtimes_page()
@@ -2912,7 +2913,12 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
     write_reports_pages()
     typer.echo("  Generated reports/* (MDX + generated-reports/*.json)")
 
-    write_sidebar(nodes)
+    # The generated indexes include the post-generation docs tree. Reports and
+    # discovery pages must exist before this runs, or `docs generate --check`
+    # computes a different page graph from the one written by `docs generate`.
+    final_nodes = collect_all_doc_nodes(include_installed=include_installed, include_drafts=include_drafts)
+    write_site_data(final_nodes, external_entries)
+    write_sidebar(final_nodes)
     typer.echo("  Generated generated-sidebar.mjs")
 
     typer.echo(f"Generated {len(nodes)} pages + indexes + sidebar")

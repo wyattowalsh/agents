@@ -2031,27 +2031,46 @@ def catalog_index(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Inspect or verify the generated skills catalog index bundle."""
-    from wagents.skill_index import CATALOG_INDEX_PATH, catalog_browser_index_stale_reason, catalog_index_stale_reason
+    from wagents.skill_index import (
+        CATALOG_BROWSER_INDEX_PATH,
+        CATALOG_INDEX_PATH,
+        catalog_browser_index_stale_reason,
+        catalog_index_stale_reason,
+    )
 
     reasons = [reason for reason in (catalog_index_stale_reason(), catalog_browser_index_stale_reason()) if reason]
     reason = "; ".join(reasons)
     if check:
         if reason:
             if format_ == "json" or format_ == "jsonl":
-                typer.echo(json.dumps({"ok": False, "error": reason, "path": str(CATALOG_INDEX_PATH)}))
+                typer.echo(
+                    json.dumps(
+                        {
+                            "ok": False,
+                            "error": reason,
+                            "paths": [str(CATALOG_INDEX_PATH), str(CATALOG_BROWSER_INDEX_PATH)],
+                        }
+                    )
+                )
             else:
                 typer.echo(reason, err=True)
             raise SystemExit(1)
         if format_ == "json" or format_ == "jsonl":
-            typer.echo(json.dumps({"ok": True, "path": str(CATALOG_INDEX_PATH)}))
+            typer.echo(json.dumps({"ok": True, "paths": [str(CATALOG_INDEX_PATH), str(CATALOG_BROWSER_INDEX_PATH)]}))
         else:
-            typer.echo(f"{CATALOG_INDEX_PATH.relative_to(ROOT)} is up to date")
+            typer.echo(
+                f"{CATALOG_INDEX_PATH.relative_to(ROOT)} and "
+                f"{CATALOG_BROWSER_INDEX_PATH.relative_to(ROOT)} are up to date"
+            )
         return
 
     if reason:
         typer.echo(reason)
     else:
-        typer.echo(f"{CATALOG_INDEX_PATH.relative_to(ROOT)} is up to date")
+        typer.echo(
+            f"{CATALOG_INDEX_PATH.relative_to(ROOT)} and "
+            f"{CATALOG_BROWSER_INDEX_PATH.relative_to(ROOT)} are up to date"
+        )
 
 
 @catalog_app.command("audit")

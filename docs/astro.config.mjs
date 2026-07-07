@@ -69,6 +69,18 @@ const astroDeferredContentModuleResolver = () => ({
   name: 'docs:astro-deferred-content-module-resolver',
   enforce: 'pre',
   async resolveId(id) {
+    if (id.endsWith('?astroPropagatedAssets')) {
+      const [fileName] = id.split('?');
+      if (!fileName || !URL.canParse(fileName, docsRoot.toString())) {
+        return null;
+      }
+      const contentUrl = new URL(fileName, docsRoot);
+      if (contentUrl.protocol !== 'file:' || !contentUrl.href.startsWith(docsRoot.href)) {
+        return null;
+      }
+      const contentPath = fileURLToPath(contentUrl);
+      return this.resolve(`${contentPath}?astroPropagatedAssets`, undefined, { skipSelf: true });
+    }
     if (!id.startsWith('astro:content-layer-deferred-module?') || !id.includes('astroContentModuleFlag')) {
       return null;
     }
@@ -97,7 +109,6 @@ export default defineConfig({
   site: 'https://agents.w4w.dev',
   redirects: {
     '/external-skills': '/skills/catalog/external/',
-    '/external-skills/': '/skills/catalog/external/',
   },
   markdown: {
     processor: unified({
