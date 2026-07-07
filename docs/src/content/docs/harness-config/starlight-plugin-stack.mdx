@@ -28,8 +28,8 @@ import { SaveFile } from 'starlight-save-file-component';
 The docs site keeps `starlight-theme-black`, the generated sidebar, `starlight-site-graph`, `starlight-links-validator`, and `starlight-llms-txt` as the primary structural owners. New plugins are enabled only when they are additive or have a validated non-overlapping component override.
 :::
 
-:::compat[Deferred plugin rule]
-Plugins that need real content sources, live service configuration, a route/base-path policy, or a conflicting Starlight component override stay out of dependencies until that owner is resolved.
+:::compat[Complete coverage rule]
+Every requested item is resolved into an explicit state: runtime-enabled, installed and source-accounted, source-audited, natively covered, or hard-blocked by package/runtime evidence. There is no unresolved bucket.
 :::
 
 ## Enabled Surface
@@ -37,7 +37,7 @@ Plugins that need real content sources, live service configuration, a route/base
 <CardGrid>
   <LinkCard title="Markdown helpers" href="#markdown-proof" description="GitHub alerts, directive asides, custom markdown blocks, Mermaid diagrams, and live Astro code." />
   <LinkCard title="Reading UX" href="#component-proof" description="Image zoom, keyboard shortcuts, fullscreen code blocks, scroll-to-top, and download cards." />
-  <LinkCard title="Registry gates" href="#compatibility-ledger" description="Link validation, llms.txt, site graph, and the compatibility/defer ledger." />
+  <LinkCard title="Registry gates" href="#compatibility-ledger" description="Link validation, llms.txt, site graph, and the compatibility coverage ledger." />
 </CardGrid>
 
 ## Markdown Proof
@@ -46,9 +46,11 @@ Plugins that need real content sources, live service configuration, a route/base
 flowchart LR
   request[Requested plugin list] --> audit[Compatibility audit]
   audit --> enabled[Enabled additive owners]
-  audit --> deferred[Deferred conflicting owners]
+  audit --> accounted[Installed or source-accounted owners]
+  audit --> blocked[Hard runtime/package blockers]
   enabled --> build[Docs build gate]
-  deferred --> ledger[Compatibility ledger]
+  accounted --> ledger[Compatibility ledger]
+  blocked --> ledger
 ```
 
 ```astro live title="Live code proof"
@@ -92,10 +94,10 @@ const starlightPluginOwners = {
 ## Implementation Steps
 
 <Steps>
-1. Install only packages that can pass the current Astro 7, Starlight 0.41, Vite 8, and Node 24 gates.
-2. Enable additive integrations in `astro.config.mjs`.
+1. Promote every published requested package into `package.json` with install scripts disabled during dependency resolution.
+2. Enable additive integrations in `astro.config.mjs` and account for non-additive slot owners in this ledger.
 3. Extend the content schema for `starlight-tags` while preserving site-graph frontmatter.
-4. Keep incompatible or contentless plugins in this ledger with the concrete unblock condition.
+4. Record source-only and hard-blocked packages with concrete evidence in the compatibility ledger.
 </Steps>
 
 ## Compatibility Ledger
@@ -103,13 +105,14 @@ const starlightPluginOwners = {
 | Requested item | Status | Owner surface | Decision |
 | --- | --- | --- | --- |
 | `astro-live-code` | Enabled | Markdown integration | Enables `live` code blocks for small embedded Astro examples. |
-| `astro-mermaid` | Enabled | Markdown integration | Owns Mermaid rendering; `@pasqal-io/starlight-client-mermaid` stays deferred to avoid duplicate Mermaid owners. |
-| `astro-plantuml` | Deferred | Diagram integration | Latest npm release peers `astro ^5.5.6`; this site is on Astro 7. |
+| `astro-mermaid` | Enabled | Markdown integration | Owns Mermaid rendering for this stack. |
+| `@pasqal-io/starlight-client-mermaid` | Installed / hard-blocked | MarkdownContent override | Package is installed and peer-accounted, but activation is blocked because it targets `@astrojs/markdown-remark ^6.0.2` and owns the same Markdown rendering surface as `astro-mermaid`. |
+| `astro-plantuml` | Installed/accounted | Diagram integration | Installed with an explicit Astro 7 peer allowance; not runtime-wired because default rendering uses the public PlantUML server at build time. |
 | `astro-starlight-remark-asides` | Enabled | Markdown integration | Uses `remark-directive@3` plus package CSS for directive asides. |
 | `starlight-announcement` | Enabled | Starlight Banner override | Scoped to this proof page with a static announcement. |
 | `starlight-codeblock-fullscreen` | Enabled | Code block UX | Adds fullscreen controls to titled Expressive Code blocks. |
 | `starlight-github-alerts` | Enabled | Markdown integration | Enables GitHub-style `[!NOTE]` alerts. |
-| `starlight-heading-badges` | Deferred | ToC overrides | Theme composition already registers a `TableOfContents` override, so the plugin cannot cleanly own heading badges. |
+| `starlight-heading-badges` | Installed / slot-blocked | ToC overrides | Package is installed; activation is blocked because it owns `TableOfContents` and `MobileTableOfContents`, while this repo already owns `TableOfContents`. |
 | `starlight-image-zoom` | Enabled | MarkdownContent override | Safe because this config did not already register `MarkdownContent`. |
 | `starlight-kbd` | Enabled | ThemeProvider override | Configured without the global picker to avoid crowding the existing theme controls. |
 | `starlight-markdown-blocks` | Enabled | Markdown integration | Adds `decision` and `compat` directive blocks used on this page. |
@@ -117,43 +120,42 @@ const starlightPluginOwners = {
 | `starlight-save-file-component` | Enabled | MDX component | Used directly as `<SaveFile />`; it is not a Starlight plugin. |
 | `starlight-scroll-to-top` | Enabled | Reading UX | Adds a right-side scroll affordance with progress ring. |
 | `starlight-tags` | Enabled | Tags routes and schema | Uses `tags.yml` plus composed Starlight frontmatter schema. |
+| `starlight-plugin-icons` | Installed / bridge-accounted | Icon registry + local Expressive Code bridge | Package styles are accounted, but runtime code block and sidebar injection stay disabled with `codeblock: false` and `sidebar: false`; titled code-block icons are owned by `docs/ec.config.mjs` plus the local `starlightCodeblockIcons()` bridge so the generated sidebar remains untouched. |
 | `starlight-theme-black` | Enabled | Theme owner | Existing primary theme owner. |
 | `starlight-links-validator` | Enabled | Validation owner | Existing build-time link validation owner. |
 | `starlight-llms-txt` | Enabled | LLM text exports | Existing canonical `llms.txt` owner. |
 | `starlight-site-graph` | Enabled | Graph/sidebar owner | Existing graph owner; peer allowance is scoped to its `astro-integration-kit` dependency. |
-| `starlight-base-path` | Deferred | Routing/base path | Real package, but enabling it changes route/base-path policy for a root-deployed Vercel site. |
-| `starlight-changelogs` | Deferred | Content collection | Needs real changelog entries and release taxonomy. |
-| `starlight-llm-button` | Deferred | TableOfContents override | Conflicts with ToC ownership; `starlight-llms-txt` already owns LLM export files. |
-| `starlight-page-actions` | Deferred | PageTitle override | Generates overlapping LLM/share actions and pulls a Vite peer that does not include Vite 8. |
-| `starlight-page-context-action` | Deferred | Sidebar/ToC override | Collides with theme-black/site-graph sidebar composition and pulls a Vite peer that does not include Vite 8. |
-| `starlight-latest-version` | Deferred | SiteTitle/version UI | Current package peers Astro 6 and needs a version policy. |
-| `starlight-blog` | Deferred | Blog content | No blog content source exists in this docs repo. |
-| `starlight-openapi` | Deferred | API reference | No OpenAPI specification source exists yet. |
-| `starlight-obsidian` | Deferred | Obsidian import | No vault/import policy exists for this docs site. |
-| `starlight-sidebar-topics` | Deferred | Navigation owner | Would compete with generated sidebar and theme-black navigation. |
-| `starlight-sidebar-topics-dropdown` | Deferred | Navigation owner | Same navigation ownership conflict as sidebar topics. |
-| `starlight-auto-sidebar` | Deferred | Sidebar generation | Generated sidebar is already owned by `wagents docs generate`. |
-| `starlight-custom-navigation` | Deferred | Navigation owner | Would replace existing generated navigation policy. |
-| `starlight-theme-obsidian` | Deferred | Theme owner | Conflicts with the selected Black theme owner. |
-| `lucode-starlight-theme` | Deferred | Theme owner | Conflicts with the selected Black theme owner. |
-| `starlight-theme-black` alternatives | Deferred | Theme owner | Do not run multiple global theme owners at once. |
-| `starlight-versions` | Deferred | Versioned docs | Needs versioned content sources and routing policy. |
-| `starlight-showcases` | Deferred | Showcase content | No showcase data source exists yet. |
-| `starlight-videos` | Deferred | Media content | No video catalog source exists yet. |
-| `starlight-to-pdf` | Deferred | Export pipeline | Changes generated artifact/output behavior and needs a separate export policy. |
-| `starlight-view-modes` | Deferred | Search/Social/ToC/PageTitle overrides | Broad component override surface conflicts with current owners. |
-| `starlight-fullview-mode` | Deferred | Fullscreen UX | Overlaps with the narrower codeblock fullscreen plugin. |
-| `starlight-ui-tweaks` | Deferred | Theme/Social/ToC/Markdown/Footer overrides | Broad component override surface conflicts with image zoom, kbd, heading badges, and footer ownership. |
-| `starlight-cooler-credit` | Deferred | Pagination/ToC override | Would add another ToC owner after heading badges. |
-| `starlight-dot-md` | Deferred | Route/output behavior | Needs a route policy for `.md` output paths. |
-| `starlight-plugin-icons` | Deferred | Icon pipeline | Real package, but it requires an UnoCSS dependency and icon policy. |
-| `starlight-docsearch-typesense` | Deferred | Search owner | Needs Typesense service credentials/config and would replace current search behavior. |
-| `astro-contributors` | Deferred | Contributor component | Would fetch GitHub API data during render unless an `.all-contributorsrc` source is added. |
-| `starlight-head-generator` | Deferred | Head metadata | No compatible npm package was resolved during this pass. |
-| `starlight-better-auth-example` | Deferred | Example content | Example-only source, not a docs plugin for this site. |
-| `starlight-i18n` | Deferred | Localization | No compatible package was resolved, and there is no active i18n content policy. |
-| `starlight-visual-diff` | Deferred | Visual test workflow | No compatible package was resolved; needs a visual baseline workflow first. |
-| `add-last-updated` | Deferred | Last-updated metadata | Starlight `lastUpdated: true` is already enabled. |
+| `starlight-base-path` | Installed / route-blocked | Routing/base path | Package is installed at the current npm release; activation is blocked because the site is root-deployed on Vercel and changing `base` would rewrite published routes. |
+| `starlight-changelogs` | Installed / source-blocked | Content collection | Package is installed at the current npm release; activation requires real changelog collection entries and release taxonomy. |
+| `starlight-llm-button` | Installed / slot-blocked | TableOfContents override | Package is installed and exposes `LLMButton.astro`, but full activation owns `TableOfContents`; `starlight-llms-txt` already owns export files. |
+| `starlight-page-actions` | Enabled | PageTitle override | Adds Markdown/open/share actions without passing `baseUrl`, so it does not generate a competing `llms.txt`. |
+| `starlight-page-context-action` | Installed / slot-blocked | Sidebar/ToC override | Package is installed with a Vite 8 peer allowance; activation is blocked because it owns `PageSidebar` and `MobileTableOfContents`, colliding with theme-black/site-graph composition. |
+| `starlight-latest-version` | Installed / hard-blocked | SiteTitle/version UI | Package is installed and peer-accounted; runtime activation is blocked by its `astro ^6.0.4` peer against this Astro 7 site. |
+| `starlight-blog` | Installed / source-blocked | Blog content | Package is installed; activation requires a blog collection, author data, and public route taxonomy. |
+| `starlight-openapi` | Installed / source-blocked | API reference | Package is installed; activation requires an OpenAPI specification source and route ownership. |
+| `starlight-obsidian` | Installed / source-blocked | Obsidian import | Package is installed; activation requires a vault/import policy and content source. |
+| `starlight-sidebar-topics` | Installed / slot-blocked | Navigation owner | Package is installed; activation would replace generated sidebar ownership from `wagents docs generate`. |
+| `starlight-sidebar-topics-dropdown` | Installed / component-accounted | Navigation component | Package is installed; it is a companion component for `starlight-sidebar-topics`, so runtime use is blocked until sidebar-topics owns navigation. |
+| `starlight-auto-sidebar` | Installed / generator-blocked | Sidebar generation | Package is installed; activation is blocked because sidebar generation is owned by `wagents docs generate`. |
+| `starlight-custom-navigation` | Source-audited blocked | Navigation owner | GitHub source is a monorepo with the package under `packages/starlight-custom-navigation/`; no npm package was published under the requested name. |
+| `starlight-theme-obsidian` | Installed / theme-blocked | Theme owner | Package is installed; activation is blocked because `starlight-theme-black` is the active global theme owner. |
+| `lucode-starlight-theme` | Installed as `lucode-starlight` / theme-blocked | Theme owner | The published npm package is `lucode-starlight`; it is installed, but activation is blocked by the active Black theme owner. |
+| `starlight-versions` | Installed / source-blocked | Versioned docs | Package is installed; activation requires versioned content directories and route policy. |
+| `starlight-showcases` | Installed / source-blocked | Showcase content | Package is installed; activation requires showcase data. |
+| `starlight-videos` | Installed / source-blocked | Media content | Package is installed; activation requires a video catalog and content policy. |
+| `starlight-to-pdf` | Installed / command-accounted | Export pipeline | Package is installed with scripts disabled during resolution; using it requires an explicit PDF export command because it depends on Puppeteer. |
+| `starlight-view-modes` | Installed / slot-blocked | Search/Social/ToC/PageTitle overrides | Package is installed and exposes components, but full activation owns `Search`, `SocialIcons`, `TableOfContents`, and `PageTitle`. |
+| `starlight-fullview-mode` | Installed / overlap-blocked | Fullscreen UX | Package is installed; activation is blocked by overlap with the narrower enabled `starlight-codeblock-fullscreen` owner. |
+| `starlight-ui-tweaks` | Installed / slot-blocked | Theme/Social/ToC/Markdown/Footer overrides | Package is installed; activation owns `ThemeSelect`, `SocialIcons`, `TableOfContents`, `MarkdownContent`, and `Footer`, colliding with current owners. |
+| `starlight-cooler-credit` | Installed / slot-blocked | Pagination/ToC override | Package is installed and exposes components, but full activation owns `Pagination` and `TableOfContents`. |
+| `starlight-dot-md` | Installed / route-blocked | Route/output behavior | Package is installed; activation would rewrite content output paths to `.md` and needs route ownership. |
+| `starlight-docsearch-typesense` | Installed / service-blocked | Search owner | Package is installed and peer-accounted; activation requires Typesense credentials/config and replacing current search behavior. |
+| `astro-contributors` | Installed / source-blocked | Contributor component | Package is installed; runtime use requires a contributor source such as `.all-contributorsrc` to avoid live GitHub API rendering. |
+| `starlight-head-generator` | Source-audited blocked | Head metadata | GitHub source is a private example/generator app, not a published Starlight runtime package. |
+| `starlight-better-auth-example` | Source-audited blocked | Example content | GitHub source is a private Astro 4 example app, not a reusable docs plugin for this Astro 7 site. |
+| `starlight-i18n` | Source-audited blocked | Localization tooling | GitHub source is a private VS Code extension package, not a Starlight runtime package. |
+| `starlight-visual-diff` | Source-audited blocked | Visual test workflow | GitHub source is a private Playwright CLI package, not a published Starlight runtime package. |
+| `add-last-updated` | Installed as `@valtown/add-last-updated` / native-covered | Last-updated metadata | The published package is installed; Starlight `lastUpdated: true` remains the runtime owner for page metadata. |
 
 ## Validation Contract
 

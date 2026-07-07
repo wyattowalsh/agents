@@ -12,9 +12,11 @@ dependency upgrade without proof that the latest docs stack still builds.
 
 Close the findings as one docs-hardening lane: use latest working docs package
 versions, keep Vite CSS minification enabled through `esbuild`, preserve the
-Astro/Starlight/astro-og-canvas contracts verified by current docs, server-render
-install commands before client hydration, keep generated catalog research from
-overriding canonical install commands, and regenerate public docs from source.
+Astro/Starlight/astro-og-canvas contracts verified by current docs, keep the
+Starlight docs static by default while admin/API routes opt into on-demand
+rendering, pre-render install commands before client hydration, keep generated
+catalog research from overriding canonical install commands, and regenerate
+public docs from source.
 
 ## Scope
 

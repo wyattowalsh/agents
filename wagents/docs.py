@@ -16,7 +16,7 @@ from wagents import CONTENT_DIR, DOCS_DIR, ROOT
 # Authoring SSOT + catalog index (W3)
 from wagents.authoring_sync import sync_custom_authoring_from_skills
 from wagents.catalog import collect_edges
-from wagents.docs_catalog import write_catalog_pages
+from wagents.docs_catalog import render_catalog_page_artifacts, write_catalog_pages
 from wagents.docs_reports import reports_stale_reasons, write_reports_pages
 from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
 from wagents.parsing import escape_attr, truncate_sentence
@@ -41,9 +41,11 @@ from wagents.skill_docs import (
 )
 from wagents.skill_index import (
     build_catalog_index,
+    catalog_browser_index_stale_reason,
     load_authoring_entries,
 )
 from wagents.skill_index import (
+    write_catalog_browser_index as write_skills_catalog_browser_index,
     write_catalog_index as write_skills_catalog_index,
 )
 from wagents.skill_research import (
@@ -2114,6 +2116,21 @@ def _external_lane(node) -> str:
     return _EXTERNAL_LANE_BY_STATUS.get(status, "inspect")
 
 
+def _catalog_browser_preview_rows(nodes: list, *, limit: int = 48) -> list[dict[str, str]]:
+    rows = []
+    for node in nodes[:limit]:
+        metadata = node.metadata or {}
+        name = str(metadata.get("name") or node.id)
+        rows.append({
+            "name": name,
+            "description": truncate_sentence(str(node.description or ""), 160),
+            "href": skill_detail_href(node.id, node=node),
+            "lane": _external_lane(node),
+            "sourceType": str(metadata.get("source_kind") or metadata.get("sourceType") or "curated-external"),
+        })
+    return rows
+
+
 def write_catalog_external_index(nodes: list) -> None:
     """Write skills/catalog/external/index.mdx for curated and installed external skills."""
     external = [n for n in nodes if n.kind == "skill" and skill_catalog_group(node=n) == "external"]
@@ -2128,10 +2145,6 @@ def write_catalog_external_index(nodes: list) -> None:
     ]
     if use_catalog_browser:
         imports.append(f"import CatalogBrowser from '{external_import_prefix}components/CatalogBrowser.astro';")
-        imports.append(
-            "import { externalSkillIndex as externalSkillBrowserRows } "
-            f"from '{external_import_prefix}generated-skill-indexes.mjs';"
-        )
     else:
         imports.append(f"import CatalogSkillFilter from '{external_import_prefix}components/CatalogSkillFilter.astro';")
 
@@ -2161,10 +2174,14 @@ def write_catalog_external_index(nodes: list) -> None:
         "",
     ]
     if use_catalog_browser:
+        preview_rows = json.dumps(_catalog_browser_preview_rows(external), ensure_ascii=False)
         parts.extend([
             "Use search and lane filters to browse the external catalog without loading every card at once.",
             "",
-            "<CatalogBrowser skills={externalSkillBrowserRows} />",
+            (
+                '<CatalogBrowser src="/generated-registries/skills-catalog-browser-index.json" '
+                f'indexKey="externalSkillIndex" skills={{{preview_rows}}} />'
+            ),
             "",
         ])
     else:
@@ -2711,6 +2728,9 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
     catalog_reason = catalog_index_stale_reason()
     if catalog_reason:
         reasons.append(catalog_reason)
+    catalog_browser_reason = catalog_browser_index_stale_reason()
+    if catalog_browser_reason:
+        reasons.append(catalog_browser_reason)
 
     mcp_badge_reason = _mcp_overview_badge_stale_reason()
     if mcp_badge_reason:
@@ -2792,6 +2812,13 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
 
     reasons.extend(reports_stale_reasons())
 
+    for path, expected in render_catalog_page_artifacts(nodes=nodes).items():
+        display_path = path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
+        if not path.exists():
+            reasons.append(f"{display_path} missing; run `uv run wagents docs generate --no-installed`")
+        elif path.read_text(encoding="utf-8") != expected:
+            reasons.append(f"{display_path} is stale; run `uv run wagents docs generate --no-installed`")
+
     return reasons
 
 
@@ -2803,17 +2830,18 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
     entries = load_authoring_entries()
     index = build_catalog_index(entries)
     write_skills_catalog_index(index)
-    typer.echo("  Synced custom authoring MDX + wrote skills-catalog-index.json")
+    write_skills_catalog_browser_index(index)
+    typer.echo("  Synced custom authoring MDX + wrote skills-catalog-index.json and skills-catalog-browser-index.json")
 
     for subdir in ["skills", "agents", "mcp", "surfaces"]:
         _clean_content_subdir(CONTENT_DIR / subdir)
     for f in ["index.mdx", "install.mdx", "runtimes.mdx", "reference.mdx", "cli.mdx", "harness-support.mdx"]:
         p = CONTENT_DIR / f
         if p.exists() and not _is_hand_maintained_mdx(p):
-            p.unlink()
+            p.unlink(missing_ok=True)
     external_path = CONTENT_DIR / "external-skills.mdx"
     if external_path.exists():
-        external_path.unlink()
+        external_path.unlink(missing_ok=True)
 
     nodes = collect_all_doc_nodes(include_installed=include_installed, include_drafts=include_drafts)
     external_entries = read_external_skill_entries()
@@ -2930,12 +2958,17 @@ def docs_dev():
     subprocess.run(["pnpm", "dev"], cwd=str(DOCS_DIR))
 
 
+def _clean_docs_build_outputs() -> None:
+    for relative in ("dist", ".astro", ".vercel/output"):
+        shutil.rmtree(DOCS_DIR / relative, ignore_errors=True)
+
+
 @docs_app.command("build")
 def docs_build():
     """Generate content and build static site."""
     _docs_generate_impl(include_drafts=False, include_installed=False)
     typer.echo("Building...")
-    shutil.rmtree(DOCS_DIR / "dist", ignore_errors=True)
+    _clean_docs_build_outputs()
     result = subprocess.run(["pnpm", "build"], cwd=str(DOCS_DIR))
     if result.returncode != 0:
         typer.echo("Error: build failed", err=True)
@@ -2948,7 +2981,7 @@ def docs_preview():
     """Generate, build, and preview the site."""
     _docs_generate_impl(include_drafts=False, include_installed=False)
     typer.echo("Building...")
-    shutil.rmtree(DOCS_DIR / "dist", ignore_errors=True)
+    _clean_docs_build_outputs()
     result = subprocess.run(["pnpm", "build"], cwd=str(DOCS_DIR))
     if result.returncode != 0:
         typer.echo("Error: build failed", err=True)

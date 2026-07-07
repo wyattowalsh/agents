@@ -12,6 +12,7 @@ apm_modules/
 .vscode/settings.json
 docs/dist/
 docs/.astro/
+docs/.starlight-icons/
 docs/node_modules/
 skills/*.zip
 

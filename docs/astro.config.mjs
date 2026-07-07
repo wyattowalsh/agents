@@ -18,6 +18,8 @@ import starlightThemeBlack from 'starlight-theme-black';
 import starlightLinksValidator from 'starlight-links-validator';
 import starlightLlmsTxt from 'starlight-llms-txt';
 import starlightMarkdownBlocks, { Aside as MarkdownBlockAside } from 'starlight-markdown-blocks';
+import starlightPageActions from 'starlight-page-actions';
+import { starlightIconsPlugin } from 'starlight-plugin-icons';
 import starlightScrollToTop from 'starlight-scroll-to-top';
 import starlightSiteGraphIntegration from 'starlight-site-graph/integration';
 import { starlightSiteGraphConfig } from 'starlight-site-graph/config';
@@ -53,12 +55,50 @@ const siteGraphConfig = {
     styleRules: new Map(starlightSiteGraphConfig.sitemapConfig.styleRules),
   },
 };
+const docsRoot = new URL('./', import.meta.url);
+const docsServerManualChunks = (id) => {
+  const normalizedId = id.replaceAll('\\', '/');
+  if (normalizedId.includes('/starlight-site-graph/components/graph/pixi/')) {
+    return 'sitegraph-pixi';
+  }
+  if (normalizedId.includes('/node_modules/d3') || normalizedId.includes('/node_modules/.pnpm/d3-')) {
+    return 'vendor-d3';
+  }
+};
+const astroDeferredContentModuleResolver = () => ({
+  name: 'docs:astro-deferred-content-module-resolver',
+  enforce: 'pre',
+  async resolveId(id) {
+    if (!id.startsWith('astro:content-layer-deferred-module?') || !id.includes('astroContentModuleFlag')) {
+      return null;
+    }
+    const [, query] = id.split('?');
+    const fileName = new URLSearchParams(query).get('fileName');
+    if (!fileName || !URL.canParse(fileName, docsRoot.toString())) {
+      return null;
+    }
+    const contentUrl = new URL(fileName, docsRoot);
+    if (contentUrl.protocol !== 'file:' || !contentUrl.href.startsWith(docsRoot.href)) {
+      return null;
+    }
+    const contentPath = fileURLToPath(contentUrl);
+    return this.resolve(`${contentPath}?astroRenderContent`, undefined, { skipSelf: true });
+  },
+});
 
 export default defineConfig({
   adapter: vercel(),
   devToolbar: { enabled: false },
-  output: 'server',
+  // Keep the Starlight docs static; admin/API routes opt into Vercel functions with `prerender = false`.
+  output: 'static',
+  build: {
+    concurrency: 1,
+  },
   site: 'https://agents.w4w.dev',
+  redirects: {
+    '/external-skills': '/skills/catalog/external/',
+    '/external-skills/': '/skills/catalog/external/',
+  },
   markdown: {
     processor: unified({
       remarkPlugins: [remarkDirective, safeStarlightRemarkAsides],
@@ -67,25 +107,46 @@ export default defineConfig({
   vite: {
     build: {
       chunkSizeWarningLimit: 900,
-      // Vite 8's Lightning CSS path rejects a transformed third-party pseudo-selector in this docs stack.
+      reportCompressedSize: false,
+      // Vite 8's default CSS path rejects a transformed third-party pseudo-selector in this docs stack.
       cssMinify: 'esbuild',
-      rollupOptions: {
+      rolldownOptions: {
         output: {
-          manualChunks(id) {
-            const normalizedId = id.replaceAll('\\', '/');
-            if (normalizedId.includes('/starlight-site-graph/components/graph/pixi/')) {
-              return 'sitegraph-pixi';
-            }
-            if (normalizedId.includes('/node_modules/d3') || normalizedId.includes('/node_modules/.pnpm/d3-')) {
-              return 'vendor-d3';
-            }
-          },
+          manualChunks: docsServerManualChunks,
         },
       },
     },
     plugins: [
+      astroDeferredContentModuleResolver(),
       tailwindcss(),
     ],
+    environments: {
+      client: {
+        build: {
+          emptyOutDir: false,
+        },
+      },
+      prerender: {
+        build: {
+          emptyOutDir: false,
+          rolldownOptions: {
+            output: {
+              manualChunks: docsServerManualChunks,
+            },
+          },
+        },
+      },
+      ssr: {
+        build: {
+          emptyOutDir: false,
+          rolldownOptions: {
+            output: {
+              manualChunks: docsServerManualChunks,
+            },
+          },
+        },
+      },
+    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -137,6 +198,10 @@ export default defineConfig({
           },
         }),
         starlightImageZoom(),
+        starlightIconsPlugin({
+          codeblock: false,
+          sidebar: false,
+        }),
         starlightKbd({
           globalPicker: false,
           types: [
@@ -156,6 +221,20 @@ export default defineConfig({
               showOn: ['/harness-config/starlight-plugin-stack/'],
             },
           ],
+        }),
+        starlightPageActions({
+          prompt: 'Read {url} and summarize the implementation decisions.',
+          actions: {
+            chatgpt: true,
+            claude: true,
+            t3chat: false,
+            v0: false,
+            cursor: true,
+            perplexity: false,
+            githubCopilot: true,
+            markdown: true,
+          },
+          share: true,
         }),
         starlightCodeblockFullscreen({
           fullscreenButtonTooltip: 'Open code block fullscreen',
@@ -192,6 +271,7 @@ export default defineConfig({
         'starlight-site-graph/styles/starlight.css',
         'starlight-site-graph/styles/variables.css',
         'astro-starlight-remark-asides/styles.css',
+        'starlight-plugin-icons/styles/main.css',
         './src/styles/tailwind.css',
         '@fontsource/geist-sans/400.css',
         '@fontsource/geist-sans/500.css',

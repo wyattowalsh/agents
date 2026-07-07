@@ -18,7 +18,7 @@ diff --git a/integration.ts b/integration.ts
 index 3333333..4444444 100644
 --- a/integration.ts
 +++ b/integration.ts
-@@ -76,10 +76,9 @@ export default defineIntegration({
+@@ -87,10 +87,9 @@ export default defineIntegration({
  								settings.sitemapConfig.sitemap = builder.process().toSitemap();
  								logger.info('Finished retrieving links from Markdown content');
  							} catch (e) {
@@ -35,7 +35,7 @@ diff --git a/sitemap/build.ts b/sitemap/build.ts
 index 5555555..6666666 100644
 --- a/sitemap/build.ts
 +++ b/sitemap/build.ts
-@@ -115,7 +115,12 @@ export class SiteMapBuilder {
+@@ -148,7 +148,12 @@ export class SiteMapBuilder {
  		for await (const p of walk(folder)) {
  			if (path.extname(p) === '.md' || path.extname(p) === '.mdx' || path.extname(p) === '.mdoc') {
  				if (firstMatchingPattern(p, patterns, false)) {

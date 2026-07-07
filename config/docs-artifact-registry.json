@@ -9,6 +9,35 @@
     "agent-bundle.json",
     "docs/src/authoring/skills/"
   ],
+  "docs_dependency_drift": {
+    "accounted_plugin_dependencies": {
+      "starlight-auto-sidebar": "blocked because wagents docs generate owns sidebar generation",
+      "starlight-base-path": "blocked because the site is root-deployed on Vercel",
+      "starlight-blog": "blocked until a blog collection and route taxonomy exist",
+      "starlight-changelogs": "blocked until changelog collection entries and release taxonomy exist",
+      "starlight-cooler-credit": "blocked because it owns pagination and table-of-contents slots",
+      "starlight-docsearch-typesense": "blocked until Typesense credentials and search ownership are configured",
+      "starlight-dot-md": "blocked because it rewrites content output paths",
+      "starlight-fullview-mode": "blocked by the narrower enabled starlight-codeblock-fullscreen owner",
+      "starlight-heading-badges": "blocked because it owns table-of-contents slots",
+      "starlight-latest-version": "blocked by its Astro 6 peer range against this Astro 7 site",
+      "starlight-llm-button": "blocked because it owns table-of-contents slots",
+      "starlight-obsidian": "blocked until a vault import policy and content source exist",
+      "starlight-openapi": "blocked until an OpenAPI source and route ownership exist",
+      "starlight-package-managers": "used directly as an MDX component, not an Astro integration",
+      "starlight-page-context-action": "blocked because it owns sidebar and table-of-contents slots",
+      "starlight-save-file-component": "used directly as an MDX component, not an Astro integration",
+      "starlight-showcases": "blocked until showcase data exists",
+      "starlight-sidebar-topics": "blocked because wagents docs generate owns sidebar generation",
+      "starlight-sidebar-topics-dropdown": "companion component blocked with starlight-sidebar-topics",
+      "starlight-theme-obsidian": "blocked because starlight-theme-black owns the active global theme",
+      "starlight-to-pdf": "blocked behind explicit PDF export commands because it depends on Puppeteer",
+      "starlight-ui-tweaks": "blocked because it owns theme, social, table-of-contents, markdown, and footer slots",
+      "starlight-versions": "blocked until versioned content directories and route policy exist",
+      "starlight-videos": "blocked until a video catalog and content policy exist",
+      "starlight-view-modes": "blocked because it owns search, social, table-of-contents, and page-title slots"
+    }
+  },
   "artifacts": [
     {
       "path": "README.md",

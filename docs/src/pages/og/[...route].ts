@@ -5,9 +5,17 @@ import { visualAssets } from '../../generated-site-data.mjs';
 const docs = (await getCollection('docs')) as CollectionEntry<'docs'>[];
 const visualAssetById = Object.fromEntries(visualAssets.map((asset) => [asset.id, asset]));
 const localAssetPath = (src: string) => (src.startsWith('/src/') ? `.${src}` : `./public${src}`);
+const highVolumeGeneratedOgPrefixes = [
+  'skill-research/',
+  'skills/catalog/external/candidate-corpus-',
+];
+const shouldPrerenderOgPage = (id: string) =>
+  !highVolumeGeneratedOgPrefixes.some((prefix) => id.startsWith(prefix));
 
 const pages = Object.fromEntries(
-  docs.map(({ id, data }) => [id, { title: data.title, description: data.description || '' }])
+  docs
+    .filter(({ id }) => shouldPrerenderOgPage(id))
+    .map(({ id, data }) => [id, { title: data.title, description: data.description || '' }])
 );
 
 export const prerender = true;

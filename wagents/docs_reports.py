@@ -109,7 +109,16 @@ def collect_docs_dependency_drift() -> dict[str, Any]:
 
     deps = {**package_json.get("dependencies", {}), **package_json.get("devDependencies", {})}
     plugin_deps = sorted(name for name in deps if name.startswith(_STARLIGHT_PLUGIN_PREFIXES))
-    unregistered_plugins = [name for name in plugin_deps if name not in astro_config_text]
+    accounted_plugins = registry.get("docs_dependency_drift", {}).get("accounted_plugin_dependencies", {})
+    if not isinstance(accounted_plugins, dict):
+        accounted_plugins = {}
+    registered_plugins = [name for name in plugin_deps if name in astro_config_text]
+    accounted_plugin_deps = sorted(
+        name for name in plugin_deps if name in accounted_plugins and name not in registered_plugins
+    )
+    unregistered_plugins = [
+        name for name in plugin_deps if name not in registered_plugins and name not in accounted_plugin_deps
+    ]
 
     missing_artifacts = [
         artifact["path"] for artifact in registry.get("artifacts", []) if not (ROOT / artifact["path"]).exists()
@@ -125,6 +134,11 @@ def collect_docs_dependency_drift() -> dict[str, Any]:
             "config/docs-artifact-registry.json",
         ],
         "plugin_dependencies": plugin_deps,
+        "registered_plugin_dependencies": registered_plugins,
+        "accounted_plugin_dependencies": {
+            name: str(accounted_plugins.get(name) or "accounted outside astro.config.mjs")
+            for name in accounted_plugin_deps
+        },
         "unregistered_plugin_dependencies": unregistered_plugins,
         "missing_registered_artifacts": missing_artifacts,
         "missing_source_registries": missing_source_registries,
@@ -147,18 +161,22 @@ def render_docs_dependency_drift_mdx(data: dict[str, Any]) -> str:
         "",
         f"**Status:** {status}",
         "",
-        "Checks that every `starlight-*` npm dependency in `docs/package.json` is registered as a "
-        "plugin in `docs/astro.config.mjs`, and that every artifact/source path declared in "
-        "`config/docs-artifact-registry.json` still exists on disk.",
+        "Checks that every `starlight-*` npm dependency in `docs/package.json` is either registered as "
+        "a plugin in `docs/astro.config.mjs` or explicitly accounted in "
+        "`config/docs-artifact-registry.json`, and that every declared artifact/source path still exists on disk.",
         "",
         "## Starlight plugin dependencies",
         "",
     ]
     if data["plugin_dependencies"]:
         for name in data["plugin_dependencies"]:
-            flag = (
-                " ⚠️ not referenced in astro.config.mjs" if name in data["unregistered_plugin_dependencies"] else " ✅"
-            )
+            if name in data["unregistered_plugin_dependencies"]:
+                flag = " ⚠️ not referenced in astro.config.mjs or accounted registry"
+            elif name in data.get("accounted_plugin_dependencies", {}):
+                reason = data["accounted_plugin_dependencies"][name]
+                flag = f" ✅ accounted — {reason}"
+            else:
+                flag = " ✅"
             parts.append(f"- `{name}`{flag}")
     else:
         parts.append("_No `starlight-*` dependencies found in `docs/package.json`._")

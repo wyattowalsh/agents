@@ -232,9 +232,10 @@ class TestWriteCatalogIndexes:
         ]
         write_catalog_external_index(nodes)
         text = (content_dir / "skills" / "catalog" / "external" / "index.mdx").read_text()
-        assert "externalSkillIndex as externalSkillBrowserRows" in text
-        assert "<CatalogBrowser skills={externalSkillBrowserRows} />" in text
-        assert "generated-skill-indexes.mjs" in text
+        assert 'src="/generated-registries/skills-catalog-index.json"' in text
+        assert 'indexKey="externalSkillIndex"' in text
+        assert "<CatalogBrowser" in text
+        assert "generated-skill-indexes.mjs" not in text
         assert "CatalogSkillFilter" not in text
         assert "<LinkCard" not in text
 
@@ -253,6 +254,27 @@ class TestWriteCatalogIndexes:
 
 
 class TestDocsGenerate:
+    def test_check_detects_catalog_discovery_page_drift(self, tmp_repo, monkeypatch):
+        nodes = [
+            _make_node("skill"),
+            _make_node("agent", source_path="agents/test-agent.md"),
+            _make_node(
+                "mcp",
+                id_suffix="test-mcp",
+                metadata={"project": {}},
+                source_path="mcp/test-mcp/server.py",
+            ),
+        ]
+        monkeypatch.setattr("wagents.docs.collect_all_doc_nodes", lambda **kwargs: nodes)
+
+        stale_page = tmp_repo / "docs" / "src" / "content" / "docs" / "catalog" / "agents" / "index.mdx"
+        stale_page.parent.mkdir(parents=True, exist_ok=True)
+        stale_page.write_text("---\ntitle: Agent Catalog\n---\n\n0 agents indexed\n", encoding="utf-8")
+
+        reasons = _docs_generate_stale_reasons(include_drafts=False, include_installed=False)
+
+        assert any("docs/src/content/docs/catalog/agents/index.mdx is stale" in reason for reason in reasons)
+
     def test_excludes_installed_skills_by_default(self, tmp_repo, monkeypatch):
         custom = _make_node("skill")
         installed = _make_node("skill", id_suffix="ext", source="installed")
@@ -624,6 +646,16 @@ class TestSkillHubPages:
             assert "/skills/catalog/" in text
 
 
+class TestOgRoutes:
+    def test_candidate_corpus_pages_do_not_prerender_og_images(self):
+        route = REPO_ROOT / "docs" / "src" / "pages" / "og" / "[...route].ts"
+        text = route.read_text(encoding="utf-8")
+
+        assert "shouldPrerenderOgPage" in text
+        assert "skills/catalog/external/candidate-corpus-" in text
+        assert ".filter(({ id }) => shouldPrerenderOgPage(id))" in text
+
+
 class TestResearchCoverageTypes:
     def test_all_includes_installed_when_requested(self):
         from wagents.docs import _research_coverage_types
@@ -793,6 +825,7 @@ def test_docs_generate_check_does_not_rewrite_research_manifest(tmp_repo, monkey
     monkeypatch.setattr(docs_mod, "render_visual_assets_css", lambda: "css")
     monkeypatch.setattr(docs_mod, "render_research_manifest", lambda: "research")
     monkeypatch.setattr(docs_mod, "reports_stale_reasons", lambda: [])
+    monkeypatch.setattr(docs_mod, "render_catalog_page_artifacts", lambda **kwargs: {})
     monkeypatch.setattr("wagents.skill_research.MANIFEST_PATH", manifest)
     monkeypatch.setattr(
         docs_mod,

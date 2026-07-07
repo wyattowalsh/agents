@@ -5,15 +5,17 @@
   "sections": {
     "docs-dependency-drift": {
       "keys": [
+        "accounted_plugin_dependencies",
         "checked_sources",
         "drift_detected",
         "missing_registered_artifacts",
         "missing_source_registries",
         "plugin_dependencies",
+        "registered_plugin_dependencies",
         "unregistered_plugin_dependencies"
       ],
       "path": "docs/public/generated-reports/docs-dependency-drift.json",
-      "summary": "drift detected"
+      "summary": "no drift"
     },
     "docs-graph-snapshot": {
       "keys": [
@@ -21,7 +23,7 @@
         "latest"
       ],
       "path": "docs/public/generated-reports/docs-graph-snapshot.json",
-      "summary": "5 snapshots"
+      "summary": "1 snapshots"
     },
     "docs-link-check": {
       "keys": [

@@ -12,11 +12,13 @@ interface SkillRow {
 }
 
 interface Props {
-  skills: SkillRow[];
+  skills?: SkillRow[];
+  src?: string;
+  indexKey?: string;
   pageSize?: number;
 }
 
-const { skills, pageSize = 48 } = Astro.props;
+const { skills = [], src = '', indexKey = 'externalSkillIndex', pageSize = 48 } = Astro.props;
 
 const laneByStatus: Record<string, string> = {
   'install-now-after-trust-gate': 'install-now',
@@ -24,16 +26,18 @@ const laneByStatus: Record<string, string> = {
   'global-only-or-avoid': 'avoid',
 };
 
-const serialized = skills.map((skill) => ({
+const serializeSkill = (skill: SkillRow) => ({
   name: skill.name,
   description: (skill.description || '').slice(0, 160),
   href: `/skills/catalog/external/${encodeURIComponent(skill.name)}/`,
   lane: laneByStatus[String(skill.status || '')] || 'inspect',
   sourceType: skill.sourceType || 'curated-external',
-}));
+});
+
+const serialized = skills.map(serializeSkill);
 ---
 
-<div class="catalog-browser" data-catalog-browser data-page-size={pageSize}>
+<div class="catalog-browser" data-catalog-browser data-page-size={pageSize} data-catalog-src={src} data-catalog-index-key={indexKey}>
   <div class="catalog-browser__toolbar" role="toolbar" aria-label="Browse external skills">
     <label class="catalog-browser__search">
       <span class="sr-only">Search external skills</span>
@@ -58,17 +62,23 @@ const serialized = skills.map((skill) => ({
 
   <div class="catalog-browser__grid" data-catalog-grid></div>
   <noscript>
-    <p class="catalog-browser__meta">Showing the first {Math.min(serialized.length, pageSize)} external skills. Enable JavaScript to search and filter the full catalog.</p>
-    <div class="catalog-browser__grid">
-      {serialized.slice(0, pageSize).map((skill) => (
-        <article class="catalog-browser__card sl-link-card">
-          <a class="catalog-browser__card-link sl-link-card__link" href={skill.href}>
-            <span class="catalog-browser__card-title sl-link-card__title">{skill.name}</span>
-            <span class="catalog-browser__card-desc sl-link-card__description">{skill.description}</span>
-          </a>
-        </article>
-      ))}
-    </div>
+    {serialized.length > 0 ? (
+      <>
+        <p class="catalog-browser__meta">Showing the first {Math.min(serialized.length, pageSize)} external skills. Enable JavaScript to search and filter the full catalog.</p>
+        <div class="catalog-browser__grid">
+          {serialized.slice(0, pageSize).map((skill) => (
+            <article class="catalog-browser__card sl-link-card">
+              <a class="catalog-browser__card-link sl-link-card__link" href={skill.href}>
+                <span class="catalog-browser__card-title sl-link-card__title">{skill.name}</span>
+                <span class="catalog-browser__card-desc sl-link-card__description">{skill.description}</span>
+              </a>
+            </article>
+          ))}
+        </div>
+      </>
+    ) : (
+      <p class="catalog-browser__meta">Enable JavaScript to load, search, and filter the external skill catalog.</p>
+    )}
   </noscript>
 
   <div class="catalog-browser__footer">
@@ -76,12 +86,12 @@ const serialized = skills.map((skill) => ({
   </div>
 </div>
 
-<script is:inline define:vars={{ serialized, pageSize }}>
+<script is:inline define:vars={{ serialized, src, indexKey, pageSize }}>
   const root = document.querySelector('[data-catalog-browser]');
   if (!root) {
     // no-op when component is not mounted
   } else {
-    const skills = serialized;
+    let skills = serialized;
     const grid = root.querySelector('[data-catalog-grid]');
     const meta = root.querySelector('[data-catalog-meta]');
     const searchInput = root.querySelector('[data-catalog-search]');
@@ -92,8 +102,23 @@ const serialized = skills.map((skill) => ({
     let query = '';
     let visibleCount = pageSize;
     let filtered = skills;
+    let loadError = '';
 
     const normalize = (value) => String(value || '').toLowerCase();
+    const normalizeSkill = (skill) => {
+      const name = String(skill?.name || '');
+      return {
+        name,
+        description: String(skill?.description || '').slice(0, 160),
+        href: `/skills/catalog/external/${encodeURIComponent(name)}/`,
+        lane: {
+          'install-now-after-trust-gate': 'install-now',
+          'inspect-then-install': 'inspect',
+          'global-only-or-avoid': 'avoid',
+        }[String(skill?.status || '')] || 'inspect',
+        sourceType: skill?.sourceType || 'curated-external',
+      };
+    };
 
     const applyFilters = () => {
       const needle = normalize(query);
@@ -137,9 +162,11 @@ const serialized = skills.map((skill) => ({
       const showing = slice.length;
       const total = filtered.length;
       meta.textContent =
-        total === 0
-          ? 'No skills match the current filters.'
-          : `Showing ${showing} of ${total} external skill${total === 1 ? '' : 's'}.`;
+        total === 0 && loadError
+          ? loadError
+          : total === 0
+            ? 'No skills match the current filters.'
+            : `Showing ${showing} of ${total} external skill${total === 1 ? '' : 's'}.`;
       if (moreBtn instanceof HTMLButtonElement) {
         const hasMore = showing < total;
         moreBtn.hidden = !hasMore;
@@ -183,6 +210,32 @@ const serialized = skills.map((skill) => ({
 
     applyFilters();
     render();
+
+    if (src) {
+      if (meta instanceof HTMLElement) {
+        meta.textContent = skills.length > 0 ? 'Refreshing external skill catalog...' : 'Loading external skill catalog...';
+      }
+      fetch(src)
+        .then((response) => {
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.json();
+        })
+        .then((data) => {
+          const rows = Array.isArray(data) ? data : Array.isArray(data?.[indexKey]) ? data[indexKey] : [];
+          skills = rows.map(normalizeSkill).filter((skill) => skill.name);
+          loadError = '';
+          applyFilters();
+          render();
+        })
+        .catch(() => {
+          loadError =
+            skills.length > 0
+              ? 'Using preview data; unable to refresh the generated catalog index.'
+              : 'Unable to load the generated catalog index.';
+          applyFilters();
+          render();
+        });
+    }
   }
 </script>
 

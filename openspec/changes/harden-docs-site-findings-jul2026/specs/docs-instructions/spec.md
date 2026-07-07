@@ -24,7 +24,7 @@ The repository SHALL close public docs-site hardening changes through source-own
 
 - **GIVEN** the skill install page renders generated install commands
 - **WHEN** JavaScript is disabled or JSON hydration fails
-- **THEN** the page SHALL still expose server-rendered command blocks from generated site data
+- **THEN** the page SHALL still expose pre-rendered command blocks from generated site data
 - **AND** SHALL retain a link to the generated JSON source for inspection.
 
 #### Scenario: Starlight override placement preserves valid accessible HTML

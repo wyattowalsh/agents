@@ -15,11 +15,11 @@ The docs site SHALL enable Astro and Starlight plugins only when their package p
 
 - **GIVEN** a requested plugin would replace an existing theme, sidebar, table-of-contents, search, route, output, or generated-docs owner
 - **WHEN** the plugin is not enabled
-- **THEN** the docs site SHALL record the deferral and concrete unblock condition in a hand-maintained compatibility ledger.
+- **THEN** the docs site SHALL record the exact blocked owner, package status, and evidence in a hand-maintained compatibility ledger.
 
 #### Scenario: Requested plugin needs a content or service source
 
 - **GIVEN** a requested plugin needs changelog entries, OpenAPI specs, versioned docs, blog posts, videos, Obsidian vault data, contributor data, or search service credentials
 - **WHEN** that source is not present
-- **THEN** the plugin SHALL remain out of direct dependencies
-- **AND** the ledger SHALL identify the required source or service configuration.
+- **THEN** the plugin package SHALL still be promoted into direct dependencies when a published package exists
+- **AND** runtime activation SHALL remain blocked until the ledger-identified source or service configuration exists.

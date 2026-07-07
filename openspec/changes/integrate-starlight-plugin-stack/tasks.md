@@ -17,4 +17,5 @@
 - `pnpm exec astro check`: passed with 0 errors, 0 warnings, and 0 hints.
 - `public/generated-reports/docs-link-check.json`: `broken_count` is 0 across 1172 scanned pages.
 - `uv run wagents openspec validate`: `integrate-starlight-plugin-stack` is valid, but repo-wide OpenSpec validation is blocked by unrelated existing changes `add-open-websearch-mcp` and `replace-package-version-check-mcp` having no deltas.
-- `pnpm exec astro build`: blocked after generated catalog refresh. Latest clean Node 24 build with `dist` and `.astro` removed plus `NODE_OPTIONS=--max-old-space-size=16384` exited 143 during Vite server-entrypoint bundling after the Mermaid transform; no successful build completion was emitted.
+- `pnpm exec astro build --force`: passed after a clean `dist`, `.astro`, and `.vercel/output` rebuild with `NODE_OPTIONS=--max-old-space-size=6144`; Pagefind found 1176 HTML files, internal links were valid, sitemap/sitegraph outputs were emitted, and Astro completed with `Server built in 2m 36s` / `Complete!`.
+- Build warning retained: local Node.js 26 is not a supported Vercel Serverless Functions runtime; the Vercel adapter reports Node.js 24 will be used for deployment.
