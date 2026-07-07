@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T08:11:00.808080+00:00",
+  "generated_at": "2026-07-07T11:21:21.116637+00:00",
   "packet_count": 293,
   "required_packet_fields": [
     "raw_index",
@@ -46,7 +46,7 @@
       "env_vars_or_credentials": [],
       "security_notes": "No elevated keyword risk detected.",
       "attribution_notes": "Preserve attribution to Ratnaditya-J/csvglow; verify license before adapting content.",
-      "surface_decision": "docs-reference",
+      "surface_decision": "merged",
       "install_command": "",
       "live_install_eligible": false,
       "docs_steward_surfaces": [
@@ -66,22 +66,26 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
-      "current_intake_decision": "reference_only",
+      "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
       "risk_keywords": [],
       "canonical_source": "https://github.com/Ratnaditya-J/csvglow",
-      "existing_integration_status": "needs-promotion-review",
-      "existing_rows": [],
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "csvglow",
+          "path": "docs/src/authoring/skills/csvglow.mdx",
+          "source": "Ratnaditya-J/csvglow",
+          "install_source": "Ratnaditya-J/csvglow",
+          "source_url": "https://github.com/Ratnaditya-J/csvglow",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
       "source_list_evidence": {
         "rank": 183,
         "raw_indexes": [
@@ -264,7 +268,7 @@
           "required_check": "Select the target integration surface or blocker.",
           "required_evidence": "routing_decision",
           "status": "provisional-static-intake",
-          "notes": "Provisional intake decision: reference_only."
+          "notes": "Provisional intake decision: merge_into_existing."
         },
         {
           "leaf_id": "U001.PROMOTE",

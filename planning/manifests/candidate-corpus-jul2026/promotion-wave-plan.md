@@ -11,10 +11,10 @@
 ### W00 existing-catalog-coverage
 
 - Objective: Already covered by existing curated/installable catalog entries.
-- Unique targets: 13
-- Raw entries: 14
-- Coverage: covered-by-existing-installable-catalog=13
-- Risk tiers: standard-review=13
+- Unique targets: 14
+- Raw entries: 15
+- Coverage: covered-by-existing-installable-catalog=14
+- Risk tiers: standard-review=14
 - Promotion policy: read-only source research first; mutation only after all trust gates pass.
 
 ### W01 official-vendor-platform-data
@@ -83,10 +83,10 @@
 ### W08 openspec-workflow-docs-obsidian-composio-pedronauck
 
 - Objective: OpenSpec, workflow, docs, Obsidian, Composio, and Pedronauck.
-- Unique targets: 102
-- Raw entries: 103
-- Coverage: needs-promotion-review=102
-- Risk tiers: standard-review=101, review-required=1
+- Unique targets: 101
+- Raw entries: 102
+- Coverage: needs-promotion-review=101
+- Risk tiers: standard-review=100, review-required=1
 - Promotion policy: read-only source research first; mutation only after all trust gates pass.
 
 ### W99 quarantine-or-blocked

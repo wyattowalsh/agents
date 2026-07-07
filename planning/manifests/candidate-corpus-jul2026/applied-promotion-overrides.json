@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "generated_at": "2026-07-07T11:48:11.103466+00:00",
+  "applied_count": 3,
+  "items": [
+    {
+      "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
+      "skill_name": "csvglow",
+      "path": "docs/src/authoring/skills/csvglow.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-001-csvglow.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/twostraws/SwiftData-Agent-Skill",
+      "skill_name": "swiftdata-pro",
+      "path": "docs/src/authoring/skills/swiftdata-pro.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-002-swiftdata-agent-skill.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/arjitj2/swiftui-design-principles",
+      "skill_name": "swiftui-design-principles",
+      "path": "docs/src/authoring/skills/swiftui-design-principles.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-003-swiftui-design-principles.mdx"
+    }
+  ]
+}

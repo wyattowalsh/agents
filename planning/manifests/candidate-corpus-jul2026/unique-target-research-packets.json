@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T08:11:00.808083+00:00",
+  "generated_at": "2026-07-07T11:21:21.116640+00:00",
   "packet_count": 289,
   "packets": [
     {
@@ -11606,10 +11606,22 @@
       "attribution_notes": [
         "Preserve attribution to Ratnaditya-J/csvglow; verify license before adapting content."
       ],
-      "current_intake_decision": "reference_only",
-      "surface_decision": "provisional-intake-only",
-      "existing_integration_status": "needs-promotion-review",
-      "existing_rows": [],
+      "current_intake_decision": "merge_into_existing",
+      "surface_decision": "covered-by-existing-catalog",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "csvglow",
+          "path": "docs/src/authoring/skills/csvglow.mdx",
+          "source": "Ratnaditya-J/csvglow",
+          "install_source": "Ratnaditya-J/csvglow",
+          "source_url": "https://github.com/Ratnaditya-J/csvglow",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
       "source_list_evidence": {
         "rank": 183,
         "raw_indexes": [
@@ -11656,15 +11668,7 @@
         "reports",
         "skill-research"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "leaf_checks": [
         {
           "leaf_id": "N001.RAW-MAP",
@@ -11672,7 +11676,7 @@
           "mode": "R",
           "required_check": "List all raw entries that map to this normalized target.",
           "required_evidence": "raw_index_list",
-          "status": "complete-static",
+          "status": "covered-by-existing-catalog",
           "notes": "Raw indexes covered: 1"
         },
         {
@@ -11690,8 +11694,8 @@
           "mode": "R",
           "required_check": "Merge raw-lane routing into one terminal surface decision.",
           "required_evidence": "terminal_decision",
-          "status": "provisional-static-intake",
-          "notes": "Provisional terminal surface decision: reference_only."
+          "status": "covered-by-existing-catalog",
+          "notes": "Existing curated catalog row is the integration surface."
         },
         {
           "leaf_id": "N001.ATTRIB",
@@ -11708,7 +11712,7 @@
           "mode": "R/E",
           "required_check": "Consolidate auth requirements and setup links.",
           "required_evidence": "auth_guide",
-          "status": "provisional-static-intake",
+          "status": "covered-by-existing-catalog",
           "notes": "No auth requirement detected in the static intake packet."
         },
         {
@@ -11717,8 +11721,8 @@
           "mode": "S/M/E",
           "required_check": "Show exact install/apply command if live install is eligible.",
           "required_evidence": "install_command_packet",
-          "status": "blocked-until-trust-gates",
-          "notes": "No live install command is eligible until all trust gates pass."
+          "status": "covered-by-existing-catalog",
+          "notes": "Existing curated catalog row already owns install command; no duplicate command is published."
         },
         {
           "leaf_id": "N001.DOCS",
@@ -11726,7 +11730,7 @@
           "mode": "S/M",
           "required_check": "Update docs-steward surfaces for the final decision.",
           "required_evidence": "docs_update",
-          "status": "provisional-static-intake",
+          "status": "covered-by-existing-catalog",
           "notes": "Docs-steward surfaces are mapped, but generated docs must be rerun after any promotion."
         },
         {
@@ -11735,15 +11739,15 @@
           "mode": "S/R",
           "required_check": "Validate generated rows, config, docs, and install preview/apply result.",
           "required_evidence": "validation_result",
-          "status": "blocked-until-trust-gates",
-          "notes": "Validation waits for concrete repo or live-harness mutation."
+          "status": "covered-by-existing-catalog",
+          "notes": "Covered by existing catalog validation and skills sync dry-run."
         }
       ],
       "promotion_wave": {
-        "wave_id": "W08",
-        "name": "openspec-workflow-docs-obsidian-composio-pedronauck",
-        "description": "OpenSpec, workflow, docs, Obsidian, Composio, and Pedronauck.",
-        "mutation_policy": "single integrator only after read-only research packets pass"
+        "wave_id": "W00",
+        "name": "existing-catalog-coverage",
+        "description": "Already covered by existing curated/installable catalog entries.",
+        "mutation_policy": "no mutation; use existing catalog rows"
       },
       "reviewer_notes": "Unique-target synthesis packet; final promotion requires all raw packet gates to pass."
     },

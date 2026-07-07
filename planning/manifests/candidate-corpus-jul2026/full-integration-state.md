@@ -8,14 +8,14 @@
 - Unique synthesis leaf checks: 2312
 - Total leaf checks: 7879
 - Live install eligible: 0
-- Existing integration coverage: covered-by-existing-installable-catalog=13, covered-by-existing-reference=1, needs-promotion-review=275
-- Covered by existing installable catalog rows: 13
+- Existing integration coverage: covered-by-existing-installable-catalog=14, covered-by-existing-reference=1, needs-promotion-review=274
+- Covered by existing installable catalog rows: 14
 - Ready for repo promotion: 0
-- Blocked until trust gates: 276
+- Blocked until trust gates: 275
 
 ## Promotion Waves
 
-- `W00`: 13 targets
+- `W00`: 14 targets
 - `W01`: 15 targets
 - `W02`: 28 targets
 - `W03`: 27 targets
@@ -23,7 +23,7 @@
 - `W05`: 26 targets
 - `W06`: 21 targets
 - `W07`: 30 targets
-- `W08`: 102 targets
+- `W08`: 101 targets
 - `W99`: 5 targets
 
 ## Current Gate

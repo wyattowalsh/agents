@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T08:10:47.937944+00:00",
+  "generated_at": "2026-07-07T11:21:20.493313+00:00",
   "summary": {
-    "covered-by-existing-installable-catalog": 13,
+    "covered-by-existing-installable-catalog": 14,
     "covered-by-existing-reference": 1,
-    "needs-promotion-review": 275
+    "needs-promotion-review": 274
   },
   "items": [
     {
@@ -13,10 +13,22 @@
       "raw_indexes": [
         1
       ],
-      "intake_decision": "reference_only",
-      "coverage_status": "needs-promotion-review",
-      "existing_rows": [],
-      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "csvglow",
+          "path": "docs/src/authoring/skills/csvglow.mdx",
+          "source": "Ratnaditya-J/csvglow",
+          "install_source": "Ratnaditya-J/csvglow",
+          "source_url": "https://github.com/Ratnaditya-J/csvglow",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
     },
     {
       "normalized_url": "https://github.com/twostraws/SwiftData-Agent-Skill",

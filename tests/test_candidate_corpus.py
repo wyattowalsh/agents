@@ -47,6 +47,16 @@ EXPECTED_DUPLICATES = {
     "https://github.com/ramziddin/solid-skills",
     "https://github.com/MohamedAbdallah-14/unslop",
 }
+PROMOTED_SKILL_NAMES = {
+    "csvglow",
+    "swiftdata-pro",
+    "swiftui-design-principles",
+}
+PROMOTED_CANDIDATE_NAMES = {
+    "candidate-corpus-001-csvglow",
+    "candidate-corpus-002-swiftdata-agent-skill",
+    "candidate-corpus-003-swiftui-design-principles",
+}
 
 REQUIRED_RECORD_FIELDS = {
     "raw_url",
@@ -162,18 +172,29 @@ def test_auth_matrix_uses_placeholders_only() -> None:
             assert value == "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
 
 
-def test_every_unique_target_has_non_installable_catalog_authoring_row() -> None:
+def test_every_unique_target_has_catalog_authoring_row() -> None:
     summary = _load_json(MANIFEST_DIR / "catalog-authoring-summary.json")
     catalog_paths = sorted(CATALOG_DIR.glob(f"{CATALOG_PREFIX}*.mdx"))
     source_list_counts = summary["source_list_status_counts"]
 
     assert summary["rows_written"] == 289
     assert summary["unique_targets"] == 289
-    assert summary["install_commands_published"] == 0
+    assert summary["install_commands_published"] == len(PROMOTED_SKILL_NAMES)
+    assert summary["live_installs_recorded"] == len(PROMOTED_SKILL_NAMES)
+    assert summary["status_counts"] == {
+        "global-only-or-avoid": 289 - len(PROMOTED_SKILL_NAMES),
+        "install-now-after-trust-gate": len(PROMOTED_SKILL_NAMES),
+    }
+    assert summary["sync_kind_counts"] == {
+        "none": 289 - len(PROMOTED_SKILL_NAMES),
+        "skills-cli": len(PROMOTED_SKILL_NAMES),
+    }
     assert sum(source_list_counts.values()) == 289
     assert source_list_counts["source-list-found"] >= 13
     assert "not-run" not in source_list_counts
-    assert len(catalog_paths) == 289
+    assert len(catalog_paths) == 289 - len(PROMOTED_SKILL_NAMES)
+    for skill_name in PROMOTED_SKILL_NAMES:
+        assert (CATALOG_DIR / f"{skill_name}.mdx").exists()
 
     row_urls = {row["normalized_url"] for row in summary["rows"]}
     normalized = _load_json(MANIFEST_DIR / "normalized-urls.json")
@@ -268,35 +289,51 @@ def test_generated_reports_do_not_claim_unobserved_validation_results() -> None:
     assert "- `agents-instructions`: 0 candidates" in docs_summary
 
 
-def test_candidate_catalog_authoring_rows_are_non_installable() -> None:
+def test_candidate_catalog_authoring_rows_track_promoted_installable_override() -> None:
     summary = _load_json(MANIFEST_DIR / "catalog-authoring-summary.json")
     generated_rows = sorted(AUTHORING_DIR.glob("candidate-corpus-*.mdx"))
     catalog_index = _load_json(CATALOG_INDEX)
     indexed_rows = [
         row for row in catalog_index["externalSkillIndex"] if str(row.get("name", "")).startswith("candidate-corpus-")
     ]
+    promoted_rows = {
+        row.get("name"): row
+        for row in catalog_index["externalSkillIndex"]
+        if row.get("name") in PROMOTED_SKILL_NAMES
+    }
 
     assert summary["rows_written"] == 289
     assert summary["unique_targets"] == 289
-    assert summary["install_commands_published"] == 0
-    assert len(generated_rows) == 289
-    assert len(indexed_rows) == 289
+    assert summary["install_commands_published"] == len(PROMOTED_SKILL_NAMES)
+    assert summary["live_installs_recorded"] == len(PROMOTED_SKILL_NAMES)
+    assert len(generated_rows) == 289 - len(PROMOTED_SKILL_NAMES)
+    assert len(indexed_rows) == 289 - len(PROMOTED_SKILL_NAMES)
     assert {row["syncKind"] for row in indexed_rows} == {"none"}
     assert {row["status"] for row in indexed_rows} == {"global-only-or-avoid"}
     assert not any(row.get("installCommand") for row in indexed_rows)
     assert not any(row.get("useCommand") for row in indexed_rows)
+    assert set(promoted_rows) == PROMOTED_SKILL_NAMES
+    for skill_name, promoted_row in promoted_rows.items():
+        assert promoted_row["syncKind"] == "skills-cli"
+        assert promoted_row["status"] == "install-now-after-trust-gate"
+        assert promoted_row["installCommand"].startswith("npx skills add ")
+        assert f"--skill {skill_name}" in promoted_row["installCommand"]
     assert {row["source_list_evidence"] for row in summary["rows"]} <= {
         "source-list-error",
         "source-list-found",
         "source-list-timeout",
     }
 
-    generated_page = GENERATED_EXTERNAL_DIR / "candidate-corpus-001-csvglow.mdx"
-    text = generated_page.read_text(encoding="utf-8")
-    assert "Catalog status" in text
-    assert "Catalog-only curated external entry." in text
-    assert "No harness install is enabled for this catalog row" in text
-    assert "Targets all supported agent harnesses via the install command below." not in text
+    for candidate_name in PROMOTED_CANDIDATE_NAMES:
+        assert not (GENERATED_EXTERNAL_DIR / f"{candidate_name}.mdx").exists()
+    for skill_name in PROMOTED_SKILL_NAMES:
+        generated_page = GENERATED_EXTERNAL_DIR / f"{skill_name}.mdx"
+        text = generated_page.read_text(encoding="utf-8")
+        assert "SkillPageHeader" in text
+        assert "Harness Coverage" in text
+        assert "Portable multi-harness install command" in text
+        assert "Trust / Audit" in text
+        assert f"--skill {skill_name}" in text
 
 
 def test_github_metadata_audit_covers_unique_sources() -> None:
@@ -379,10 +416,10 @@ def test_full_integration_progress_and_packet_schema_are_trust_gated() -> None:
     assert progress["unique_normalized_targets"] == 289
     assert progress["live_install"]["eligible_count"] == 0
     assert progress["live_install"]["status"] == "no-new-live-installs-eligible"
-    assert progress["promotion_readiness"]["covered_by_existing_installable_catalog"] == 13
+    assert progress["promotion_readiness"]["covered_by_existing_installable_catalog"] == 14
     assert progress["promotion_readiness"]["ready_for_repo_promotion"] == 0
     assert progress["promotion_readiness"]["ready_for_live_install"] == 0
-    assert progress["promotion_readiness"]["blocked_until_trust_gates"] == 276
+    assert progress["promotion_readiness"]["blocked_until_trust_gates"] == 275
 
     required_fields = {
         "raw_index",
@@ -432,15 +469,15 @@ def test_promotion_readiness_queue_blocks_live_install_until_trust_gates() -> No
     assert readiness["status"] == "existing-coverage-reconciled-with-trust-gated-backlog"
     assert readiness["summary"] == {
         "unique_targets": 289,
-        "covered_by_existing_installable_catalog": 13,
+        "covered_by_existing_installable_catalog": 14,
         "ready_for_repo_promotion": 0,
         "ready_for_live_install": 0,
-        "blocked_until_trust_gates": 276,
+        "blocked_until_trust_gates": 275,
     }
-    assert len(readiness["covered_by_existing_installable_catalog"]) == 13
+    assert len(readiness["covered_by_existing_installable_catalog"]) == 14
     assert readiness["ready_for_repo_promotion"] == []
     assert readiness["ready_for_live_install"] == []
-    assert len(readiness["blocked_until_trust_gates"]) == 276
+    assert len(readiness["blocked_until_trust_gates"]) == 275
     assert progress["promotion_readiness"] == readiness["summary"]
 
     for item in readiness["covered_by_existing_installable_catalog"]:
@@ -558,10 +595,10 @@ def test_promotion_gate_matrix_and_install_preview_keep_live_installs_blocked() 
 
     assert matrix["summary"] == {
         "unique_targets": 289,
-        "covered_by_existing_installable_catalog": 13,
+        "covered_by_existing_installable_catalog": 14,
         "ready_for_repo_promotion": 0,
         "ready_for_live_install": 0,
-        "blocked_until_trust_gates": 276,
+        "blocked_until_trust_gates": 275,
     }
     assert len(matrix["items"]) == 289
     auth_counts = matrix["gate_status_counts"]["auth review"]
@@ -574,28 +611,28 @@ def test_promotion_gate_matrix_and_install_preview_keep_live_installs_blocked() 
     source_counts = matrix["gate_status_counts"]["source-list evidence"]
     assert source_counts == {
         "source-list-error-needs-manual-review": 21,
-        "source-list-found-existing-installable-catalog": 13,
-        "source-list-found-pending-promotion-review": 223,
+        "source-list-found-existing-installable-catalog": 14,
+        "source-list-found-pending-promotion-review": 222,
         "source-list-timeout-needs-retry": 32,
     }
     assert matrix["gate_status_counts"]["live install"] == {
-        "blocked": 276,
-        "no-new-live-install-command-emitted": 13,
+        "blocked": 275,
+        "no-new-live-install-command-emitted": 14,
     }
     final_counts = {
         status: sum(1 for item in matrix["items"] if item["final_status"] == status)
         for status in {item["final_status"] for item in matrix["items"]}
     }
-    assert final_counts == {"blocked-until-trust-gates": 276, "covered-by-existing-installable-catalog": 13}
+    assert final_counts == {"blocked-until-trust-gates": 275, "covered-by-existing-installable-catalog": 14}
     assert not any(item["install_command"] for item in matrix["items"])
 
     assert preview["status"] == "no-live-install-commands-emitted"
     assert preview["command_count"] == 0
     assert preview["commands"] == []
-    assert preview["covered_existing_target_count"] == 13
-    assert len(preview["covered_existing_targets"]) == 13
-    assert preview["blocked_target_count"] == 276
-    assert len(preview["blocked_targets"]) == 276
+    assert preview["covered_existing_target_count"] == 14
+    assert len(preview["covered_existing_targets"]) == 14
+    assert preview["blocked_target_count"] == 275
+    assert len(preview["blocked_targets"]) == 275
     assert "remaining packet files are promotion work queues" in summary
 
 

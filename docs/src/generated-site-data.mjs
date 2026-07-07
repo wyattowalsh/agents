@@ -418,7 +418,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-001-csvglow"
+          "csvglow"
         ],
         "source": "Ratnaditya-J/csvglow"
       },
@@ -604,7 +604,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-003-swiftui-design-principles"
+          "swiftui-design-principles"
         ],
         "source": "arjitj2/swiftui-design-principles"
       },
@@ -2080,7 +2080,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-002-swiftdata-agent-skill"
+          "swiftdata-pro"
         ],
         "source": "twostraws/SwiftData-Agent-Skill"
       },
@@ -2276,12 +2276,9 @@ const baseSiteData = {
         "status": "catalog-reference"
       },
       {
-        "count": 299,
+        "count": 296,
         "skills": [
           "anthropics-skills-all",
-          "candidate-corpus-001-csvglow",
-          "candidate-corpus-002-swiftdata-agent-skill",
-          "candidate-corpus-003-swiftui-design-principles",
           "candidate-corpus-004-skills",
           "candidate-corpus-005-terraform-skill",
           "candidate-corpus-006-mcp-excalidraw",
@@ -2757,7 +2754,7 @@ const baseSiteData = {
         "status": "inspect-then-install"
       },
       {
-        "count": 134,
+        "count": 137,
         "skills": [
           "a11y-debugging",
           "ab-testing",
@@ -2787,6 +2784,7 @@ const baseSiteData = {
           "copywriting",
           "core-web-vitals",
           "cro",
+          "csvglow",
           "debug-optimize-lcp",
           "debugging-strategies",
           "deno-expert",
@@ -2866,6 +2864,8 @@ const baseSiteData = {
           "supabase-postgres-best-practices",
           "svelte5-best-practices",
           "swift-concurrency",
+          "swiftdata-pro",
+          "swiftui-design-principles",
           "swiftui-expert-skill",
           "systematic-debugging",
           "tanstack-query-best-practices",
@@ -3291,6 +3291,16 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add Ratnaditya-J/csvglow --skill csvglow -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "csvglow"
+        ],
+        "source": "Ratnaditya-J/csvglow",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "best-practices",
@@ -3369,6 +3379,16 @@ const baseSiteData = {
           "rust-best-practices"
         ],
         "source": "apollographql/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add arjitj2/swiftui-design-principles --skill swiftui-design-principles -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swiftui-design-principles"
+        ],
+        "source": "arjitj2/swiftui-design-principles",
         "sourceType": "curated-external",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
@@ -4339,6 +4359,16 @@ const baseSiteData = {
         "sourceType": "curated-external",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add twostraws/SwiftData-Agent-Skill --skill swiftdata-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swiftdata-pro"
+        ],
+        "source": "twostraws/SwiftData-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
       },
       {
         "command": "npx skills add vercel-labs/agent-skills --skill deploy-to-vercel --skill vercel-optimize -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",

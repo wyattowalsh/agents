@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T08:10:47.957340+00:00",
+  "generated_at": "2026-07-07T11:21:20.506951+00:00",
   "phase": "research-graph-ready",
   "complete": false,
   "raw_candidates": 293,
@@ -11,30 +11,30 @@
     "unique_target_lanes": 289,
     "total_leaf_checks": 7879,
     "leaf_status_counts": {
-      "blocked-until-trust-gates": 1138,
+      "blocked-until-trust-gates": 1136,
       "complete-public-git-metadata": 584,
-      "complete-static": 569,
+      "complete-static": 568,
       "complete-with-warning": 2,
-      "covered-by-existing-catalog": 78,
+      "covered-by-existing-catalog": 84,
       "pending-deep-source-research": 1461,
       "pending-license-review": 289,
-      "provisional-static-intake": 3758
+      "provisional-static-intake": 3755
     }
   },
   "existing_integration_coverage": {
-    "covered-by-existing-installable-catalog": 13,
+    "covered-by-existing-installable-catalog": 14,
     "covered-by-existing-reference": 1,
-    "needs-promotion-review": 275
+    "needs-promotion-review": 274
   },
   "promotion_readiness": {
     "unique_targets": 289,
-    "covered_by_existing_installable_catalog": 13,
+    "covered_by_existing_installable_catalog": 14,
     "ready_for_repo_promotion": 0,
     "ready_for_live_install": 0,
-    "blocked_until_trust_gates": 276
+    "blocked_until_trust_gates": 275
   },
   "promotion_waves": {
-    "W00": 13,
+    "W00": 14,
     "W01": 15,
     "W02": 28,
     "W03": 27,
@@ -42,7 +42,7 @@
     "W05": 26,
     "W06": 21,
     "W07": 30,
-    "W08": 102,
+    "W08": 101,
     "W99": 5
   },
   "live_install": {

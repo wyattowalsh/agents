@@ -6,7 +6,7 @@
 - Catalog authoring rows added: 289
 - Live install additions: 0
 - Adapted count: 0
-- Reference-only count: 270
+- Reference-only count: 269
 - Skipped count: 9
 - Duplicates deduped: 4
 - Raw research lanes: 293
@@ -18,9 +18,9 @@
 - Source-list evidence: 289 list-only probes recorded (236 found, 53 blocked/error/no-skills), 0 installs
 - GitHub metadata status: ok=292, unavailable=1
 - GitHub license labels detected: 9
-- Existing integration coverage: covered-by-existing-installable-catalog=13, covered-by-existing-reference=1, needs-promotion-review=275
-- Covered by existing installable catalog rows: 13
-- Promotion waves: W00=13, W01=15, W02=28, W03=27, W04=22, W05=26, W06=21, W07=30, W08=102, W99=5
+- Existing integration coverage: covered-by-existing-installable-catalog=14, covered-by-existing-reference=1, needs-promotion-review=274
+- Covered by existing installable catalog rows: 14
+- Promotion waves: W00=14, W01=15, W02=28, W03=27, W04=22, W05=26, W06=21, W07=30, W08=101, W99=5
 - Full integration phase: `research-graph-ready`
 - Live install status: `no-new-live-installs-eligible`
 

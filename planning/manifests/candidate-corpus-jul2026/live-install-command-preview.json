@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T08:11:00.808067+00:00",
+  "generated_at": "2026-07-07T11:21:21.116633+00:00",
   "status": "no-live-install-commands-emitted",
   "command_count": 0,
   "commands": [],
-  "covered_existing_target_count": 13,
+  "covered_existing_target_count": 14,
   "covered_existing_targets": [
     {
       "packet_id": "N009",
@@ -19,6 +19,26 @@
           "source": "avdlee/swift-concurrency-agent-skill",
           "install_source": "avdlee/swift-concurrency-agent-skill",
           "source_url": "https://github.com/avdlee/swift-concurrency-agent-skill",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
+      "packet_id": "N067",
+      "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
+      "raw_indexes": [
+        1
+      ],
+      "existing_rows": [
+        {
+          "name": "csvglow",
+          "path": "docs/src/authoring/skills/csvglow.mdx",
+          "source": "Ratnaditya-J/csvglow",
+          "install_source": "Ratnaditya-J/csvglow",
+          "source_url": "https://github.com/Ratnaditya-J/csvglow",
           "status": "install-now-after-trust-gate",
           "trust_tier": "curated-trust-gated",
           "sync_kind": "skills-cli",
@@ -1038,7 +1058,7 @@
       ]
     }
   ],
-  "blocked_target_count": 276,
+  "blocked_target_count": 275,
   "blocked_targets": [
     {
       "packet_id": "N001",
@@ -2076,22 +2096,6 @@
       "normalized_url": "https://github.com/RKiding/Awesome-finance-skills",
       "raw_indexes": [
         99
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ]
-    },
-    {
-      "packet_id": "N067",
-      "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
-      "raw_indexes": [
-        1
       ],
       "blocking_gates": [
         "source-list evidence",

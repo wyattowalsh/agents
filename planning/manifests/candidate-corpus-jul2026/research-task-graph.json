@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T08:10:47.953881+00:00",
+  "generated_at": "2026-07-07T11:21:20.503626+00:00",
   "status": "research-graph-generated",
   "raw_lane_count": 293,
   "unique_target_lane_count": 289,
@@ -9,9 +9,9 @@
   "total_leaf_check_count": 7879,
   "live_install_eligible_count": 0,
   "existing_integration_summary": {
-    "covered-by-existing-installable-catalog": 13,
+    "covered-by-existing-installable-catalog": 14,
     "covered-by-existing-reference": 1,
-    "needs-promotion-review": 275
+    "needs-promotion-review": 274
   },
   "raw_leaf_check_template": [
     {
@@ -192,7 +192,7 @@
       "tree_subpath": "",
       "duplicate_group": [],
       "is_duplicate_raw": false,
-      "current_intake_decision": "reference_only",
+      "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
       "live_install_eligible": false,
       "promotion_blocked_by": [
@@ -355,7 +355,7 @@
           "required_check": "Select the target integration surface or blocker.",
           "required_evidence": "routing_decision",
           "status": "provisional-static-intake",
-          "notes": "Provisional intake decision: reference_only."
+          "notes": "Provisional intake decision: merge_into_existing."
         },
         {
           "leaf_id": "U001.PROMOTE",
@@ -57937,10 +57937,22 @@
       "raw_lane_ids": [
         "U001"
       ],
-      "current_intake_decision": "reference_only",
-      "terminal_decision_status": "provisional-intake-only",
-      "existing_integration_status": "needs-promotion-review",
-      "existing_rows": [],
+      "current_intake_decision": "merge_into_existing",
+      "terminal_decision_status": "covered-by-existing-catalog",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "csvglow",
+          "path": "docs/src/authoring/skills/csvglow.mdx",
+          "source": "Ratnaditya-J/csvglow",
+          "install_source": "Ratnaditya-J/csvglow",
+          "source_url": "https://github.com/Ratnaditya-J/csvglow",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
       "risk_tier": "standard-review",
       "auth_required": false,
       "docs_steward_surfaces": [
@@ -57964,7 +57976,7 @@
           "mode": "R",
           "required_check": "List all raw entries that map to this normalized target.",
           "required_evidence": "raw_index_list",
-          "status": "complete-static",
+          "status": "covered-by-existing-catalog",
           "notes": "Raw indexes covered: 1"
         },
         {
@@ -57982,8 +57994,8 @@
           "mode": "R",
           "required_check": "Merge raw-lane routing into one terminal surface decision.",
           "required_evidence": "terminal_decision",
-          "status": "provisional-static-intake",
-          "notes": "Provisional terminal surface decision: reference_only."
+          "status": "covered-by-existing-catalog",
+          "notes": "Existing curated catalog row is the integration surface."
         },
         {
           "leaf_id": "N001.ATTRIB",
@@ -58000,7 +58012,7 @@
           "mode": "R/E",
           "required_check": "Consolidate auth requirements and setup links.",
           "required_evidence": "auth_guide",
-          "status": "provisional-static-intake",
+          "status": "covered-by-existing-catalog",
           "notes": "No auth requirement detected in the static intake packet."
         },
         {
@@ -58009,8 +58021,8 @@
           "mode": "S/M/E",
           "required_check": "Show exact install/apply command if live install is eligible.",
           "required_evidence": "install_command_packet",
-          "status": "blocked-until-trust-gates",
-          "notes": "No live install command is eligible until all trust gates pass."
+          "status": "covered-by-existing-catalog",
+          "notes": "Existing curated catalog row already owns install command; no duplicate command is published."
         },
         {
           "leaf_id": "N001.DOCS",
@@ -58018,7 +58030,7 @@
           "mode": "S/M",
           "required_check": "Update docs-steward surfaces for the final decision.",
           "required_evidence": "docs_update",
-          "status": "provisional-static-intake",
+          "status": "covered-by-existing-catalog",
           "notes": "Docs-steward surfaces are mapped, but generated docs must be rerun after any promotion."
         },
         {
@@ -58027,8 +58039,8 @@
           "mode": "S/R",
           "required_check": "Validate generated rows, config, docs, and install preview/apply result.",
           "required_evidence": "validation_result",
-          "status": "blocked-until-trust-gates",
-          "notes": "Validation waits for concrete repo or live-harness mutation."
+          "status": "covered-by-existing-catalog",
+          "notes": "Covered by existing catalog validation and skills sync dry-run."
         }
       ]
     },

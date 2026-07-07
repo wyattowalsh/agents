@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T08:11:00.806889+00:00",
+  "generated_at": "2026-07-07T11:21:21.115662+00:00",
   "summary": {
     "unique_targets": 289,
-    "covered_by_existing_installable_catalog": 13,
+    "covered_by_existing_installable_catalog": 14,
     "ready_for_repo_promotion": 0,
     "ready_for_live_install": 0,
-    "blocked_until_trust_gates": 276
+    "blocked_until_trust_gates": 275
   },
   "trust_gates": [
     "source-list evidence",
@@ -19,39 +19,39 @@
   ],
   "gate_status_counts": {
     "attribution review": {
-      "pending-source-specific-attribution-note": 276,
-      "existing-catalog-row-owns-attribution": 13
+      "pending-source-specific-attribution-note": 275,
+      "existing-catalog-row-owns-attribution": 14
     },
     "auth review": {
-      "metadata-only-no-auth-detected": 227,
+      "metadata-only-no-auth-detected": 226,
       "auth-required-review": 49,
-      "existing-catalog-row-owns-auth-boundaries": 13
+      "existing-catalog-row-owns-auth-boundaries": 14
     },
     "docs-steward promotion": {
-      "catalog-intake-present-final-docs-pending": 276,
-      "existing-catalog-row-generated-and-indexed": 13
+      "catalog-intake-present-final-docs-pending": 275,
+      "existing-catalog-row-generated-and-indexed": 14
     },
     "license review": {
-      "metadata-present-needs-file-review": 276,
-      "existing-catalog-row-owns-license-and-attribution": 13
+      "metadata-present-needs-file-review": 275,
+      "existing-catalog-row-owns-license-and-attribution": 14
     },
     "live install": {
-      "blocked": 276,
-      "no-new-live-install-command-emitted": 13
+      "blocked": 275,
+      "no-new-live-install-command-emitted": 14
     },
     "security review": {
-      "pending-executable-surface-review": 276,
-      "existing-catalog-row-owns-executable-surface-review": 13
+      "pending-executable-surface-review": 275,
+      "existing-catalog-row-owns-executable-surface-review": 14
     },
     "source-list evidence": {
       "source-list-timeout-needs-retry": 32,
-      "source-list-found-pending-promotion-review": 223,
+      "source-list-found-pending-promotion-review": 222,
       "source-list-error-needs-manual-review": 21,
-      "source-list-found-existing-installable-catalog": 13
+      "source-list-found-existing-installable-catalog": 14
     },
     "target-specific validation": {
-      "pending-target-validation": 276,
-      "existing-catalog-row-covered-by-repo-validation": 13
+      "pending-target-validation": 275,
+      "existing-catalog-row-covered-by-repo-validation": 14
     }
   },
   "items": [
@@ -1448,19 +1448,19 @@
       "raw_indexes": [
         1
       ],
-      "existing_integration_status": "needs-promotion-review",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
       "auth_required": false,
       "gate_statuses": {
-        "source-list evidence": "source-list-found-pending-promotion-review",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "source-list evidence": "source-list-found-existing-installable-catalog",
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {

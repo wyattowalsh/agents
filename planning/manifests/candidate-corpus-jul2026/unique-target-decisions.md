@@ -68,7 +68,7 @@
 | `PleasePrompto/notebooklm-skill` | 111 | `reference_only` | Discovery-only pending source-list, license, security, and docs-steward promotion gates. |
 | `Pythoughts-labs/designer-skill` | 163 | `reference_only` | Discovery-only pending source-list, license, security, and docs-steward promotion gates. |
 | `RKiding/Awesome-finance-skills` | 99 | `reference_only` | Collection source should not be vendored wholesale. |
-| `Ratnaditya-J/csvglow` | 1 | `reference_only` | Discovery-only pending source-list, license, security, and docs-steward promotion gates. |
+| `Ratnaditya-J/csvglow` | 1 | `merge_into_existing` | Existing repo catalog or registry surface already covers this source/domain. |
 | `Rycen7822/codex-rg-guard` | 195 | `reference_only` | Discovery-only pending source-list, license, security, and docs-steward promotion gates. |
 | `SharpAI/DeepCamera` | 102 | `reference_only` | Discovery-only pending source-list, license, security, and docs-steward promotion gates. |
 | `TanStack/cli` | 17 | `reference_only` | Executable candidate requires deeper package/script review before promotion. |

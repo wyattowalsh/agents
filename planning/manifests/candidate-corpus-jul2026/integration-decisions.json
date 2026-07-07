@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T08:10:47.971053+00:00",
+  "generated_at": "2026-07-07T11:21:20.515094+00:00",
   "summary": {
-    "generated_at": "2026-07-07T08:10:47.479264+00:00",
+    "generated_at": "2026-07-07T11:21:20.311600+00:00",
     "raw_count": 293,
     "unique_count": 289,
     "duplicates_deduped": 4,
     "decisions": {
-      "merge_into_existing": 14,
+      "merge_into_existing": 15,
       "quarantine": 4,
-      "reference_only": 270,
+      "reference_only": 269,
       "skip_duplicate": 4,
       "skip_inaccessible": 1
     },
@@ -23,7 +23,7 @@
     "catalog_authoring_added_count": 289,
     "live_install_added_count": 0,
     "adapted_count": 0,
-    "reference_only_count": 270,
+    "reference_only_count": 269,
     "skipped_count": 9,
     "auth_required_count": 49
   },
@@ -1571,8 +1571,8 @@
         1
       ],
       "source_name": "Ratnaditya-J/csvglow",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",

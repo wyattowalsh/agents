@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T08:10:47.954072+00:00",
+  "generated_at": "2026-07-07T11:21:20.503862+00:00",
   "status": "existing-coverage-reconciled-with-trust-gated-backlog",
   "summary": {
     "unique_targets": 289,
-    "covered_by_existing_installable_catalog": 13,
+    "covered_by_existing_installable_catalog": 14,
     "ready_for_repo_promotion": 0,
     "ready_for_live_install": 0,
-    "blocked_until_trust_gates": 276
+    "blocked_until_trust_gates": 275
   },
   "covered_by_existing_installable_catalog": [
     {
@@ -33,6 +33,37 @@
           "source": "avdlee/swift-concurrency-agent-skill",
           "install_source": "avdlee/swift-concurrency-agent-skill",
           "source_url": "https://github.com/avdlee/swift-concurrency-agent-skill",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    },
+    {
+      "lane_id": "N001",
+      "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
+      "source_name": "Ratnaditya-J/csvglow",
+      "raw_indexes": [
+        1
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "csvglow",
+          "path": "docs/src/authoring/skills/csvglow.mdx",
+          "source": "Ratnaditya-J/csvglow",
+          "install_source": "Ratnaditya-J/csvglow",
+          "source_url": "https://github.com/Ratnaditya-J/csvglow",
           "status": "install-now-after-trust-gate",
           "trust_tier": "curated-trust-gated",
           "sync_kind": "skills-cli",
@@ -2800,31 +2831,6 @@
       "existing_integration_status": "needs-promotion-review",
       "risk_tier": "review-required",
       "auth_required": true,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false,
-      "terminal_status": "blocked-until-trust-gates"
-    },
-    {
-      "lane_id": "N001",
-      "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
-      "source_name": "Ratnaditya-J/csvglow",
-      "raw_indexes": [
-        1
-      ],
-      "current_intake_decision": "reference_only",
-      "existing_integration_status": "needs-promotion-review",
-      "risk_tier": "standard-review",
-      "auth_required": false,
       "blocking_gates": [
         "source-list evidence",
         "license review",

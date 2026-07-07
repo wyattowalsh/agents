@@ -505,13 +505,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for Ratnaditya-J/csvglow.",
-      "href": "/skills/catalog/external/candidate-corpus-001-csvglow/",
-      "lane": "avoid",
-      "name": "candidate-corpus-001-csvglow",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for Rycen7822/codex-rg-guard.",
       "href": "/skills/catalog/external/candidate-corpus-195-codex-rg-guard/",
       "lane": "avoid",
@@ -656,13 +649,6 @@
       "href": "/skills/catalog/external/candidate-corpus-092-agent-skills/",
       "lane": "avoid",
       "name": "candidate-corpus-092-agent-skills",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for arjitj2/swiftui-design-principles.",
-      "href": "/skills/catalog/external/candidate-corpus-003-swiftui-design-principles/",
-      "lane": "avoid",
-      "name": "candidate-corpus-003-swiftui-design-principles",
       "sourceType": "curated-external"
     },
     {
@@ -2014,13 +2000,6 @@
       "href": "/skills/catalog/external/candidate-corpus-090-swiftagents/",
       "lane": "avoid",
       "name": "candidate-corpus-090-swiftagents",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for twostraws/SwiftData-Agent-Skill.",
-      "href": "/skills/catalog/external/candidate-corpus-002-swiftdata-agent-skill/",
-      "lane": "avoid",
-      "name": "candidate-corpus-002-swiftdata-agent-skill",
       "sourceType": "curated-external"
     },
     {
@@ -3396,6 +3375,13 @@
       "sourceType": "curated-external"
     },
     {
+      "description": "Generate interactive HTML dashboards from CSV, TSV, XLS, and XLSX files using the local csvglow CLI.",
+      "href": "/skills/catalog/external/csvglow/",
+      "lane": "install-now",
+      "name": "csvglow",
+      "sourceType": "curated-external"
+    },
+    {
       "description": "Curated third-party skill source. Run /review source before repo promotion.",
       "href": "/skills/catalog/external/best-practices/",
       "lane": "install-now",
@@ -3498,6 +3484,13 @@
       "href": "/skills/catalog/external/rust-best-practices/",
       "lane": "install-now",
       "name": "rust-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Apply polished native SwiftUI and WidgetKit design principles for spacing, typography, color, hierarchy, layout, and accessibility-aware interface work.",
+      "href": "/skills/catalog/external/swiftui-design-principles/",
+      "lane": "install-now",
+      "name": "swiftui-design-principles",
       "sourceType": "curated-external"
     },
     {
@@ -4093,6 +4086,13 @@
       "href": "/skills/catalog/external/supabase-postgres-best-practices/",
       "lane": "install-now",
       "name": "supabase-postgres-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Write, review, and improve SwiftData code using modern APIs, CloudKit constraints, predicates, indexes, and migration-aware model patterns.",
+      "href": "/skills/catalog/external/swiftdata-pro/",
+      "lane": "install-now",
+      "name": "swiftdata-pro",
       "sourceType": "curated-external"
     },
     {

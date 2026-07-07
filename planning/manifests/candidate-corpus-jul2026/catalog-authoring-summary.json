@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T08:10:47.474344+00:00",
+  "generated_at": "2026-07-07T11:48:11.097728+00:00",
   "marker": "GENERATED-CANDIDATE-CORPUS-JUL2026",
   "rows_written": 289,
   "unique_targets": 289,
-  "stale_generated_rows_removed": 289,
-  "status": "global-only-or-avoid",
-  "sync_kind": "none",
-  "install_commands_published": 0,
+  "stale_generated_rows_removed": 288,
+  "status": "mixed",
+  "sync_kind": "mixed",
+  "install_commands_published": 3,
   "source_list_status_counts": {
     "source-list-error": 21,
     "source-list-found": 236,
@@ -15,67 +15,61 @@
   },
   "rows": [
     {
-      "name": "candidate-corpus-001-csvglow",
-      "path": "docs/src/authoring/skills/candidate-corpus-001-csvglow.mdx",
+      "name": "csvglow",
+      "path": "docs/src/authoring/skills/csvglow.mdx",
       "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
       "source_name": "Ratnaditya-J/csvglow",
       "raw_indexes": [
         1
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Ratnaditya-J/csvglow --skill csvglow -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots. The generated live-install preview remains a trust-gate planner and intentionally emits no new bulk install commands.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-002-swiftdata-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-002-swiftdata-agent-skill.mdx",
+      "name": "swiftdata-pro",
+      "path": "docs/src/authoring/skills/swiftdata-pro.mdx",
       "normalized_url": "https://github.com/twostraws/SwiftData-Agent-Skill",
       "source_name": "twostraws/SwiftData-Agent-Skill",
       "raw_indexes": [
         2
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add twostraws/SwiftData-Agent-Skill --skill swiftdata-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-003-swiftui-design-principles",
-      "path": "docs/src/authoring/skills/candidate-corpus-003-swiftui-design-principles.mdx",
+      "name": "swiftui-design-principles",
+      "path": "docs/src/authoring/skills/swiftui-design-principles.mdx",
       "normalized_url": "https://github.com/arjitj2/swiftui-design-principles",
       "source_name": "arjitj2/swiftui-design-principles",
       "raw_indexes": [
         3
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add arjitj2/swiftui-design-principles --skill swiftui-design-principles -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "The repeated claude-code command records the Grok mirror route: this repo installs Grok-targeted Skills CLI assets through the Claude Code adapter and mirrors them into Grok-discoverable skill roots.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-004-skills",
@@ -6082,5 +6076,14 @@
         "target-specific validation"
       ]
     }
-  ]
+  ],
+  "status_counts": {
+    "global-only-or-avoid": 286,
+    "install-now-after-trust-gate": 3
+  },
+  "sync_kind_counts": {
+    "none": 286,
+    "skills-cli": 3
+  },
+  "live_installs_recorded": 3
 }

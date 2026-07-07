@@ -22,7 +22,7 @@
     {
       "raw_index": 1,
       "source_name": "Ratnaditya-J/csvglow",
-      "decision": "reference_only",
+      "decision": "merge_into_existing",
       "docs_steward_surfaces": [
         "README",
         "auth-matrix",

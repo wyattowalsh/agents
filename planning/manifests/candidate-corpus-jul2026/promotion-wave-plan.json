@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T08:10:47.941702+00:00",
+  "generated_at": "2026-07-07T11:21:20.497321+00:00",
   "total_targets": 289,
   "waves": [
     {
@@ -8,6 +8,31 @@
       "name": "existing-catalog-coverage",
       "description": "Already covered by existing curated/installable catalog entries.",
       "targets": [
+        {
+          "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
+          "source_name": "Ratnaditya-J/csvglow",
+          "raw_indexes": [
+            1
+          ],
+          "coverage_status": "covered-by-existing-installable-catalog",
+          "intake_decision": "merge_into_existing",
+          "risk_tier": "standard-review",
+          "auth_required": false,
+          "docs_steward_surfaces": [
+            "README",
+            "auth-matrix",
+            "catalog-authoring",
+            "catalog-generated",
+            "changelog",
+            "decision-log",
+            "generated-drift",
+            "install-docs",
+            "openspec",
+            "reports",
+            "skill-research"
+          ],
+          "next_gate": "Existing installable catalog row owns integration; no duplicate install command."
+        },
         {
           "normalized_url": "https://github.com/antonbabenko/terraform-skill",
           "source_name": "antonbabenko/terraform-skill",
@@ -335,8 +360,9 @@
           "next_gate": "Existing installable catalog row owns integration; no duplicate install command."
         }
       ],
-      "target_count": 13,
+      "target_count": 14,
       "raw_indexes": [
+        1,
         5,
         7,
         40,
@@ -4906,31 +4932,6 @@
       "description": "OpenSpec, workflow, docs, Obsidian, Composio, and Pedronauck.",
       "targets": [
         {
-          "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
-          "source_name": "Ratnaditya-J/csvglow",
-          "raw_indexes": [
-            1
-          ],
-          "coverage_status": "needs-promotion-review",
-          "intake_decision": "reference_only",
-          "risk_tier": "standard-review",
-          "auth_required": false,
-          "docs_steward_surfaces": [
-            "README",
-            "auth-matrix",
-            "catalog-authoring",
-            "catalog-generated",
-            "changelog",
-            "decision-log",
-            "generated-drift",
-            "install-docs",
-            "openspec",
-            "reports",
-            "skill-research"
-          ],
-          "next_gate": "Workflow/docs source; dedupe against repo skills and docs-steward surfaces."
-        },
-        {
           "normalized_url": "https://github.com/Dimillian/Skills",
           "source_name": "Dimillian/Skills",
           "raw_indexes": [
@@ -7458,9 +7459,8 @@
           "next_gate": "Workflow/docs source; dedupe against repo skills and docs-steward surfaces."
         }
       ],
-      "target_count": 102,
+      "target_count": 101,
       "raw_indexes": [
-        1,
         4,
         8,
         13,
