@@ -416,29 +416,75 @@ def render_docs_link_check_mdx(data: dict[str, Any]) -> str:
 _GRAPH_SNAPSHOT_HISTORY_WINDOW = 90
 
 
-def collect_docs_graph_snapshot() -> dict[str, Any]:
-    """Snapshot today's graph metrics and append to a rolling trend history."""
-    insights = collect_site_graph_insights()
-    today = date.today().isoformat()
-    json_path = REPORTS_JSON_DIR / "docs-graph-snapshot.json"
-    history: list[dict[str, Any]] = []
-    if json_path.exists():
-        try:
-            prior = json.loads(json_path.read_text(encoding="utf-8"))
-            history = [h for h in prior.get("history", []) if h.get("date") != today]
-        except (OSError, json.JSONDecodeError):
-            history = []
-    history.append({
-        "date": today,
+def _docs_graph_snapshot_today() -> str:
+    return date.today().isoformat()
+
+
+def _docs_graph_snapshot_history_entry(insights: dict[str, Any], snapshot_date: str) -> dict[str, Any]:
+    return {
+        "date": snapshot_date,
         "total_pages": insights["total_pages"],
         "total_internal_links": insights["total_internal_links"],
         "orphan_count": insights["orphan_count"],
-    })
+    }
+
+
+def _normalize_docs_graph_snapshot_history_entry(entry: Any) -> dict[str, Any] | None:
+    if not isinstance(entry, dict):
+        return None
+    entry_date = entry.get("date")
+    if not isinstance(entry_date, str):
+        return None
+    try:
+        date.fromisoformat(entry_date)
+    except ValueError:
+        return None
+    normalized = {"date": entry_date}
+    for key in ("total_pages", "total_internal_links", "orphan_count"):
+        value = entry.get(key)
+        if not isinstance(value, int) or isinstance(value, bool):
+            return None
+        normalized[key] = value
+    return normalized
+
+
+def _merge_docs_graph_snapshot_history(existing_history: Any, entry: dict[str, Any]) -> list[dict[str, Any]]:
+    if not isinstance(existing_history, list):
+        existing_history = []
+    history = [
+        normalized
+        for item in existing_history
+        if (normalized := _normalize_docs_graph_snapshot_history_entry(item)) is not None
+        and normalized["date"] != entry["date"]
+    ]
+    history.append(entry)
     history.sort(key=lambda h: h["date"])
+    return history[-_GRAPH_SNAPSHOT_HISTORY_WINDOW:]
+
+
+def _expected_docs_graph_snapshot_payload(existing_payload: Any | None = None) -> dict[str, Any]:
+    insights = collect_site_graph_insights()
+    today = _docs_graph_snapshot_today()
+    existing_history = existing_payload.get("history") if isinstance(existing_payload, dict) else []
     return {
         "latest": insights,
-        "history": history[-_GRAPH_SNAPSHOT_HISTORY_WINDOW:],
+        "history": _merge_docs_graph_snapshot_history(
+            existing_history,
+            _docs_graph_snapshot_history_entry(insights, today),
+        ),
     }
+
+
+def collect_docs_graph_snapshot() -> dict[str, Any]:
+    """Snapshot today's graph metrics and append to a rolling trend history."""
+    json_path = REPORTS_JSON_DIR / "docs-graph-snapshot.json"
+    prior_payload = None
+    if json_path.exists():
+        try:
+            prior_payload = json.loads(json_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            prior_payload = None
+    return _expected_docs_graph_snapshot_payload(prior_payload)
 
 
 def render_docs_graph_snapshot_mdx(data: dict[str, Any]) -> str:
@@ -648,6 +694,10 @@ def write_reports_pages() -> None:
 
 def _docs_graph_snapshot_stale_reasons(spec: ReportSpec, mdx_path: Path, json_path: Path) -> list[str]:
     reasons: list[str] = []
+    json_stale_reason = (
+        "docs/public/generated-reports/docs-graph-snapshot.json is stale; "
+        "run `uv run wagents docs generate --no-installed`"
+    )
     if not mdx_path.exists() or not json_path.exists():
         reasons.append(
             "docs/src/content/docs/reports/docs-graph-snapshot.mdx or its JSON payload is missing; "
@@ -655,38 +705,26 @@ def _docs_graph_snapshot_stale_reasons(spec: ReportSpec, mdx_path: Path, json_pa
         )
         return reasons
 
+    payload: Any | None
     try:
         payload = json.loads(json_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
-        reasons.append(
-            "docs/public/generated-reports/docs-graph-snapshot.json is stale; "
-            "run `uv run wagents docs generate --no-installed`"
-        )
-        return reasons
+        payload = None
+        reasons.append(json_stale_reason)
 
-    if not isinstance(payload, dict):
-        reasons.append(
-            "docs/public/generated-reports/docs-graph-snapshot.json is stale; "
-            "run `uv run wagents docs generate --no-installed`"
-        )
-        return reasons
+    if payload is not None and not isinstance(payload, dict):
+        reasons.append(json_stale_reason)
 
-    expected_latest = collect_site_graph_insights()
-    if payload.get("latest") != expected_latest:
-        reasons.append(
-            "docs/public/generated-reports/docs-graph-snapshot.json is stale; "
-            "run `uv run wagents docs generate --no-installed`"
-        )
-
+    expected_payload = _expected_docs_graph_snapshot_payload(payload if isinstance(payload, dict) else None)
+    expected_json = json.dumps(expected_payload, indent=2, sort_keys=True) + "\n"
     try:
-        expected_mdx = spec.render_mdx(payload)
-    except (KeyError, TypeError):
-        reasons.append(
-            "docs/public/generated-reports/docs-graph-snapshot.json is stale; "
-            "run `uv run wagents docs generate --no-installed`"
-        )
-        return reasons
+        actual_json = json_path.read_text(encoding="utf-8")
+    except OSError:
+        actual_json = None
+    if actual_json != expected_json and json_stale_reason not in reasons:
+        reasons.append(json_stale_reason)
 
+    expected_mdx = spec.render_mdx(expected_payload)
     try:
         actual_mdx = mdx_path.read_text(encoding="utf-8")
     except OSError:

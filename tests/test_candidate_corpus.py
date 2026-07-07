@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import importlib.util
 import json
 import subprocess
@@ -97,6 +98,20 @@ def _load_source_list_audit_module():
     spec = importlib.util.spec_from_file_location(
         module_name,
         ROOT / "scripts" / "audit_candidate_source_lists.py",
+    )
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def _load_promoter_module():
+    module_name = "_candidate_corpus_promoter"
+    spec = importlib.util.spec_from_file_location(
+        module_name,
+        ROOT / "scripts" / "promote_candidate_corpus.py",
     )
     assert spec is not None
     assert spec.loader is not None
@@ -601,6 +616,165 @@ def test_promotion_packet_coverage_cli() -> None:
         "ok": True,
         "errors": [],
     }
+
+
+def _write_promoter_json(tmp_path, name, payload):
+    (tmp_path / name).write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def _prepare_promoter_validation_fixture(tmp_path, monkeypatch):
+    promoter = _load_promoter_module()
+    monkeypatch.setattr(promoter, "MANIFEST_DIR", tmp_path)
+    monkeypatch.setattr(promoter, "EXPECTED_RAW_COUNT", 2)
+    monkeypatch.setattr(promoter, "EXPECTED_UNIQUE_COUNT", 2)
+    raw_packets = [
+        {
+            "raw_index": 1,
+            "normalized_url": "https://example.test/covered",
+            "live_install_eligible": False,
+            "install_command": "",
+        },
+        {
+            "raw_index": 2,
+            "normalized_url": "https://example.test/blocked",
+            "live_install_eligible": False,
+            "install_command": "",
+        },
+    ]
+    unique_packets = [
+        {
+            "packet_id": "N001",
+            "normalized_url": "https://example.test/covered",
+            "raw_indexes": [1],
+            "existing_integration_status": "covered-by-existing-installable-catalog",
+            "existing_rows": [{"name": "existing-covered"}],
+            "auth_required": False,
+            "licenses": ["MIT"],
+            "source_list_evidence": {"evidence_status": "source-list-found"},
+            "blockers": [],
+            "live_install_eligible": False,
+            "repo_mutation_eligible": False,
+            "install_command": "",
+        },
+        {
+            "packet_id": "N002",
+            "normalized_url": "https://example.test/blocked",
+            "raw_indexes": [2],
+            "existing_integration_status": "needs-promotion-review",
+            "existing_rows": [],
+            "auth_required": True,
+            "licenses": ["MIT"],
+            "source_list_evidence": {"evidence_status": "source-list-found"},
+            "blockers": ["source-list evidence"],
+            "live_install_eligible": False,
+            "repo_mutation_eligible": False,
+            "install_command": "",
+        },
+    ]
+    matrix = promoter.build_gate_matrix(unique_packets)
+    preview = promoter.build_install_preview(unique_packets)
+    _write_promoter_json(tmp_path, promoter.RAW_PACKET_FILE, {"packets": raw_packets})
+    _write_promoter_json(tmp_path, promoter.UNIQUE_PACKET_FILE, {"packets": unique_packets})
+    _write_promoter_json(tmp_path, promoter.GATE_MATRIX_FILE, matrix)
+    _write_promoter_json(tmp_path, promoter.INSTALL_PREVIEW_FILE, preview)
+    _write_promoter_json(
+        tmp_path,
+        "research-packet-schema.json",
+        {"required_packet_fields": ["raw_index", "normalized_url", "live_install_eligible", "install_command"]},
+    )
+    _write_promoter_json(
+        tmp_path,
+        "normalized-urls.json",
+        {"unique_targets": ["https://example.test/covered", "https://example.test/blocked"]},
+    )
+    (tmp_path / promoter.SUMMARY_FILE).write_text(
+        promoter.promotion_gate_summary_text(matrix, preview),
+        encoding="utf-8",
+    )
+    return promoter
+
+
+def test_promotion_validator_detects_missing_matrix_row(tmp_path, monkeypatch):
+    promoter = _prepare_promoter_validation_fixture(tmp_path, monkeypatch)
+    matrix = promoter.load_json(promoter.GATE_MATRIX_FILE)
+    matrix["items"].pop()
+    _write_promoter_json(tmp_path, promoter.GATE_MATRIX_FILE, matrix)
+
+    result = promoter.validate_outputs()
+
+    assert result["ok"] is False
+    assert "gate matrix item count 1 != 2" in result["errors"]
+
+
+def test_promotion_validator_detects_matrix_identity_drift(tmp_path, monkeypatch):
+    promoter = _prepare_promoter_validation_fixture(tmp_path, monkeypatch)
+    matrix = promoter.load_json(promoter.GATE_MATRIX_FILE)
+    matrix["items"][0]["normalized_url"] = "https://example.test/wrong"
+    _write_promoter_json(tmp_path, promoter.GATE_MATRIX_FILE, matrix)
+
+    result = promoter.validate_outputs()
+
+    assert result["ok"] is False
+    assert "gate matrix target rows do not match unique packet order" in result["errors"]
+
+
+def test_promotion_validator_detects_gate_count_drift(tmp_path, monkeypatch):
+    promoter = _prepare_promoter_validation_fixture(tmp_path, monkeypatch)
+    matrix = promoter.load_json(promoter.GATE_MATRIX_FILE)
+    matrix["gate_status_counts"]["live install"] = {"blocked": 2}
+    _write_promoter_json(tmp_path, promoter.GATE_MATRIX_FILE, matrix)
+
+    result = promoter.validate_outputs()
+
+    assert result["ok"] is False
+    assert "gate matrix gate status counts do not match rows" in result["errors"]
+
+
+def test_promotion_validator_detects_preview_identity_drift(tmp_path, monkeypatch):
+    promoter = _prepare_promoter_validation_fixture(tmp_path, monkeypatch)
+    preview = promoter.load_json(promoter.INSTALL_PREVIEW_FILE)
+    preview["covered_existing_targets"][0]["normalized_url"] = "https://example.test/wrong"
+    _write_promoter_json(tmp_path, promoter.INSTALL_PREVIEW_FILE, preview)
+
+    result = promoter.validate_outputs()
+
+    assert result["ok"] is False
+    assert "live install preview covered targets do not match unique packets" in result["errors"]
+
+
+def test_promotion_validator_detects_preview_count_drift(tmp_path, monkeypatch):
+    promoter = _prepare_promoter_validation_fixture(tmp_path, monkeypatch)
+    preview = promoter.load_json(promoter.INSTALL_PREVIEW_FILE)
+    preview["blocked_target_count"] = 99
+    _write_promoter_json(tmp_path, promoter.INSTALL_PREVIEW_FILE, preview)
+
+    result = promoter.validate_outputs()
+
+    assert result["ok"] is False
+    assert "live install preview blocked target count does not match rows" in result["errors"]
+
+
+def test_promotion_validator_detects_summary_markdown_drift(tmp_path, monkeypatch):
+    promoter = _prepare_promoter_validation_fixture(tmp_path, monkeypatch)
+    (tmp_path / promoter.SUMMARY_FILE).write_text("stale\n", encoding="utf-8")
+
+    result = promoter.validate_outputs()
+
+    assert result["ok"] is False
+    assert "promotion gate summary markdown is stale" in result["errors"]
+
+
+def test_promotion_validator_detects_unique_packet_install_drift(tmp_path, monkeypatch):
+    promoter = _prepare_promoter_validation_fixture(tmp_path, monkeypatch)
+    unique = promoter.load_json(promoter.UNIQUE_PACKET_FILE)
+    unique["packets"] = copy.deepcopy(unique["packets"])
+    unique["packets"][0]["install_command"] = "npx skills add example"
+    _write_promoter_json(tmp_path, promoter.UNIQUE_PACKET_FILE, unique)
+
+    result = promoter.validate_outputs()
+
+    assert result["ok"] is False
+    assert "a packet unexpectedly emitted an install command" in result["errors"]
 
 
 def test_safe_wave_source_list_evidence_is_list_only() -> None:

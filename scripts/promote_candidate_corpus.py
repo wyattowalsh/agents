@@ -445,7 +445,66 @@ def build_install_preview(unique_packets: list[dict[str, Any]]) -> dict[str, Any
     }
 
 
-def write_summary(matrix: dict[str, Any], preview: dict[str, Any]) -> None:
+def promotion_target_key(item: dict[str, Any]) -> tuple[Any, Any, tuple[Any, ...]]:
+    return (item.get("packet_id"), item.get("normalized_url"), tuple(item.get("raw_indexes") or []))
+
+
+def promotion_final_status(item: dict[str, Any]) -> str:
+    if item.get("existing_integration_status") == "covered-by-existing-installable-catalog":
+        return "covered-by-existing-installable-catalog"
+    return "blocked-until-trust-gates"
+
+
+def expected_matrix_summary(items: list[dict[str, Any]]) -> dict[str, int]:
+    covered = sum(
+        1 for item in items if item.get("existing_integration_status") == "covered-by-existing-installable-catalog"
+    )
+    return {
+        "unique_targets": len(items),
+        "covered_by_existing_installable_catalog": covered,
+        "ready_for_repo_promotion": 0,
+        "ready_for_live_install": 0,
+        "blocked_until_trust_gates": len(items) - covered,
+    }
+
+
+def expected_gate_status_counts(items: list[dict[str, Any]]) -> dict[str, dict[str, int]]:
+    counts: dict[str, Counter[str]] = defaultdict(Counter)
+    for item in items:
+        statuses = item.get("gate_statuses") or {}
+        for gate, status in statuses.items():
+            counts[gate][status] += 1
+    return {gate: dict(counter) for gate, counter in sorted(counts.items())}
+
+
+def expected_preview_partitions(
+    unique_packets: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    covered = []
+    blocked = []
+    for packet in unique_packets:
+        if packet.get("existing_integration_status") == "covered-by-existing-installable-catalog":
+            covered.append(
+                {
+                    "packet_id": packet.get("packet_id"),
+                    "normalized_url": packet.get("normalized_url"),
+                    "raw_indexes": packet.get("raw_indexes"),
+                    "existing_rows": packet.get("existing_rows"),
+                }
+            )
+        else:
+            blocked.append(
+                {
+                    "packet_id": packet.get("packet_id"),
+                    "normalized_url": packet.get("normalized_url"),
+                    "raw_indexes": packet.get("raw_indexes"),
+                    "blocking_gates": packet.get("blockers"),
+                }
+            )
+    return covered, blocked
+
+
+def promotion_gate_summary_text(matrix: dict[str, Any], preview: dict[str, Any]) -> str:
     covered_count = matrix["summary"].get("covered_by_existing_installable_catalog", 0)
     lines = [
         "# Candidate Corpus Promotion Gate Summary",
@@ -460,7 +519,11 @@ def write_summary(matrix: dict[str, Any], preview: dict[str, Any]) -> None:
         "Existing installable catalog coverage is credited without emitting new live install commands.",
         "The remaining packet files are promotion work queues, not proof of completed adaptation or installation.",
     ]
-    (MANIFEST_DIR / SUMMARY_FILE).write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return "\n".join(lines) + "\n"
+
+
+def write_summary(matrix: dict[str, Any], preview: dict[str, Any]) -> None:
+    (MANIFEST_DIR / SUMMARY_FILE).write_text(promotion_gate_summary_text(matrix, preview), encoding="utf-8")
 
 
 def build_payloads() -> dict[str, Any]:
@@ -508,8 +571,9 @@ def validate_outputs() -> dict[str, Any]:
 
     errors: list[str] = []
     required = set(schema["required_packet_fields"])
-    raw_packets = raw.get("packets", [])
-    unique_packets = unique.get("packets", [])
+    raw_packets = raw.get("packets", []) if isinstance(raw, dict) else []
+    unique_packets = unique.get("packets", []) if isinstance(unique, dict) else []
+    matrix_items = matrix.get("items", []) if isinstance(matrix, dict) else []
     if len(raw_packets) != EXPECTED_RAW_COUNT:
         errors.append(f"raw packet count {len(raw_packets)} != {EXPECTED_RAW_COUNT}")
     if len(unique_packets) != EXPECTED_UNIQUE_COUNT:
@@ -517,8 +581,8 @@ def validate_outputs() -> dict[str, Any]:
     if [packet.get("raw_index") for packet in raw_packets] != list(range(1, EXPECTED_RAW_COUNT + 1)):
         errors.append("raw packet indexes are not contiguous 1..293")
     missing_fields = [
-        packet["raw_index"]
-        for packet in raw_packets
+        packet.get("raw_index", f"position-{index}")
+        for index, packet in enumerate(raw_packets, 1)
         if not required.issubset(packet)
     ]
     if missing_fields:
@@ -534,16 +598,74 @@ def validate_outputs() -> dict[str, Any]:
         errors.append("a packet unexpectedly emitted an install command")
     if preview.get("command_count") != 0 or preview.get("commands") != []:
         errors.append("live install preview emitted commands before trust gates")
+
     summary = matrix.get("summary", {})
     covered = int(summary.get("covered_by_existing_installable_catalog", 0))
     blocked = int(summary.get("blocked_until_trust_gates", 0))
     if covered + blocked != EXPECTED_UNIQUE_COUNT:
         errors.append("gate matrix does not account for every unique target")
+    if len(matrix_items) != EXPECTED_UNIQUE_COUNT:
+        errors.append(f"gate matrix item count {len(matrix_items)} != {EXPECTED_UNIQUE_COUNT}")
+
+    unique_keys = [promotion_target_key(packet) for packet in unique_packets]
+    matrix_keys = [promotion_target_key(item) for item in matrix_items]
+    if len(set(matrix_keys)) != len(matrix_keys):
+        errors.append("gate matrix contains duplicate target rows")
+    if matrix_keys != unique_keys:
+        errors.append("gate matrix target rows do not match unique packet order")
+
+    unique_by_key = {promotion_target_key(packet): packet for packet in unique_packets}
+    expected_status_keys = set(TRUST_GATES) | {"live install"}
+    for item in matrix_items:
+        key = promotion_target_key(item)
+        packet = unique_by_key.get(key)
+        if packet is None:
+            continue
+        for field in ("existing_integration_status", "auth_required"):
+            if item.get(field) != packet.get(field):
+                errors.append(f"gate matrix row {item.get('packet_id')} {field} drifted from unique packet")
+        expected_statuses = gate_statuses(packet)
+        if item.get("gate_statuses") != expected_statuses:
+            errors.append(f"gate matrix row {item.get('packet_id')} gate statuses drifted")
+        if set((item.get("gate_statuses") or {}).keys()) != expected_status_keys:
+            errors.append(f"gate matrix row {item.get('packet_id')} has invalid gate status keys")
+        expected_final = promotion_final_status(item)
+        if item.get("final_status") != expected_final:
+            errors.append(f"gate matrix row {item.get('packet_id')} final status drifted")
+        if item.get("install_command"):
+            errors.append(f"gate matrix row {item.get('packet_id')} unexpectedly emitted an install command")
+
+    expected_summary = expected_matrix_summary(matrix_items)
+    if summary != expected_summary:
+        errors.append("gate matrix summary does not match matrix rows")
+    if matrix.get("trust_gates") != TRUST_GATES:
+        errors.append("gate matrix trust gates drifted")
+    if matrix.get("gate_status_counts") != expected_gate_status_counts(matrix_items):
+        errors.append("gate matrix gate status counts do not match rows")
+
+    if preview.get("command_count") != len(preview.get("commands", [])):
+        errors.append("live install preview command count does not match commands")
+    expected_covered, expected_blocked = expected_preview_partitions(unique_packets)
+    if preview.get("covered_existing_target_count") != len(preview.get("covered_existing_targets", [])):
+        errors.append("live install preview covered target count does not match rows")
+    if preview.get("blocked_target_count") != len(preview.get("blocked_targets", [])):
+        errors.append("live install preview blocked target count does not match rows")
+    if preview.get("covered_existing_targets") != expected_covered:
+        errors.append("live install preview covered targets do not match unique packets")
+    if preview.get("blocked_targets") != expected_blocked:
+        errors.append("live install preview blocked targets do not match unique packets")
+
+    try:
+        summary_text = (MANIFEST_DIR / SUMMARY_FILE).read_text(encoding="utf-8")
+    except OSError:
+        summary_text = None
+    if summary_text != promotion_gate_summary_text(matrix, preview):
+        errors.append("promotion gate summary markdown is stale")
 
     return {
         "raw": len(raw_packets),
         "unique": len(unique_packets),
-        "matrix_items": len(matrix.get("items", [])),
+        "matrix_items": len(matrix_items),
         "command_count": preview.get("command_count"),
         "ok": not errors,
         "errors": errors,

@@ -151,14 +151,47 @@ def _write_graph_snapshot(
     (reports_dir / "docs-graph-snapshot.mdx").write_text(mdx_text, encoding="utf-8")
 
 
-def _prepare_graph_snapshot_stale_test(tmp_path, monkeypatch, current_latest):
+def _prepare_graph_snapshot_stale_test(tmp_path, monkeypatch, current_latest, snapshot_date="2026-07-06"):
     reports_dir = tmp_path / "content" / "reports"
     reports_json_dir = tmp_path / "public" / "generated-reports"
     monkeypatch.setattr(docs_reports, "REPORTS_CONTENT_DIR", reports_dir)
     monkeypatch.setattr(docs_reports, "REPORTS_JSON_DIR", reports_json_dir)
     monkeypatch.setattr(docs_reports, "REPORT_SPECS", (_graph_snapshot_spec(),))
     monkeypatch.setattr(docs_reports, "collect_site_graph_insights", lambda: current_latest)
+    monkeypatch.setattr(docs_reports, "_docs_graph_snapshot_today", lambda: snapshot_date)
     return reports_dir, reports_json_dir
+
+
+def test_collect_docs_graph_snapshot_replaces_today_history_row(tmp_path, monkeypatch):
+    current_latest = {"total_pages": 3, "total_internal_links": 4, "orphan_count": 0}
+    reports_json_dir = tmp_path / "public" / "generated-reports"
+    reports_json_dir.mkdir(parents=True)
+    (reports_json_dir / "docs-graph-snapshot.json").write_text(
+        json.dumps(
+            {
+                "latest": {"total_pages": 1, "total_internal_links": 1, "orphan_count": 1},
+                "history": [
+                    {"date": "2026-07-05", "total_pages": 1, "total_internal_links": 1, "orphan_count": 1},
+                    {"date": "2026-07-06", "total_pages": 1, "total_internal_links": 1, "orphan_count": 1},
+                    {"date": "not-a-date", "total_pages": 9, "total_internal_links": 9, "orphan_count": 9},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(docs_reports, "REPORTS_JSON_DIR", reports_json_dir)
+    monkeypatch.setattr(docs_reports, "collect_site_graph_insights", lambda: current_latest)
+    monkeypatch.setattr(docs_reports, "_docs_graph_snapshot_today", lambda: "2026-07-06")
+
+    payload = docs_reports.collect_docs_graph_snapshot()
+
+    assert payload == {
+        "latest": current_latest,
+        "history": [
+            {"date": "2026-07-05", "total_pages": 1, "total_internal_links": 1, "orphan_count": 1},
+            {"date": "2026-07-06", "total_pages": 3, "total_internal_links": 4, "orphan_count": 0},
+        ],
+    }
 
 
 def test_reports_stale_reasons_detects_stale_docs_graph_snapshot_latest(tmp_path, monkeypatch):
@@ -175,6 +208,22 @@ def test_reports_stale_reasons_detects_stale_docs_graph_snapshot_latest(tmp_path
     assert "docs/public/generated-reports/docs-graph-snapshot.json is stale" in "\n".join(reasons)
 
 
+def test_reports_stale_reasons_detects_stale_docs_graph_snapshot_today_history(tmp_path, monkeypatch):
+    current_latest = {"total_pages": 2, "total_internal_links": 1, "orphan_count": 0}
+    reports_dir, reports_json_dir = _prepare_graph_snapshot_stale_test(tmp_path, monkeypatch, current_latest)
+    stale_payload = {
+        "latest": current_latest,
+        "history": [{"date": "2026-07-06", "total_pages": 1, "total_internal_links": 1, "orphan_count": 0}],
+    }
+    _write_graph_snapshot(reports_dir, reports_json_dir, stale_payload)
+
+    reasons = docs_reports.reports_stale_reasons()
+
+    joined = "\n".join(reasons)
+    assert "docs/public/generated-reports/docs-graph-snapshot.json is stale" in joined
+    assert "docs/src/content/docs/reports/docs-graph-snapshot.mdx is stale" in joined
+
+
 def test_reports_stale_reasons_detects_stale_docs_graph_snapshot_mdx(tmp_path, monkeypatch):
     current_latest = {"total_pages": 2, "total_internal_links": 1, "orphan_count": 0}
     reports_dir, reports_json_dir = _prepare_graph_snapshot_stale_test(tmp_path, monkeypatch, current_latest)
@@ -187,6 +236,29 @@ def test_reports_stale_reasons_detects_stale_docs_graph_snapshot_mdx(tmp_path, m
     reasons = docs_reports.reports_stale_reasons()
 
     assert "docs/src/content/docs/reports/docs-graph-snapshot.mdx is stale" in "\n".join(reasons)
+
+
+def test_reports_stale_reasons_detects_malformed_docs_graph_snapshot_json(tmp_path, monkeypatch):
+    current_latest = {"total_pages": 2, "total_internal_links": 1, "orphan_count": 0}
+    reports_dir, reports_json_dir = _prepare_graph_snapshot_stale_test(tmp_path, monkeypatch, current_latest)
+    reports_dir.mkdir(parents=True)
+    reports_json_dir.mkdir(parents=True)
+    (reports_dir / "docs-graph-snapshot.mdx").write_text("stale\n", encoding="utf-8")
+    (reports_json_dir / "docs-graph-snapshot.json").write_text("{not json", encoding="utf-8")
+
+    reasons = docs_reports.reports_stale_reasons()
+
+    assert "docs/public/generated-reports/docs-graph-snapshot.json is stale" in "\n".join(reasons)
+
+
+def test_reports_stale_reasons_detects_non_object_docs_graph_snapshot_json(tmp_path, monkeypatch):
+    current_latest = {"total_pages": 2, "total_internal_links": 1, "orphan_count": 0}
+    reports_dir, reports_json_dir = _prepare_graph_snapshot_stale_test(tmp_path, monkeypatch, current_latest)
+    _write_graph_snapshot(reports_dir, reports_json_dir, [], mdx_text="stale\n")
+
+    reasons = docs_reports.reports_stale_reasons()
+
+    assert "docs/public/generated-reports/docs-graph-snapshot.json is stale" in "\n".join(reasons)
 
 
 def test_reports_stale_reasons_accepts_current_docs_graph_snapshot(tmp_path, monkeypatch):
