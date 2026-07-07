@@ -771,6 +771,7 @@ def catalog_description(record: dict[str, Any]) -> str:
 
 def write_catalog_authoring(records: list[dict[str, Any]]) -> dict[str, Any]:
     CATALOG_DIR.mkdir(parents=True, exist_ok=True)
+    source_list_evidence_by_url = load_source_list_evidence_by_url()
     stale_removed = 0
     for path in sorted(CATALOG_DIR.glob(f"{CATALOG_ENTRY_PREFIX}-*.mdx")):
         if CATALOG_ENTRY_MARKER in path.read_text(encoding="utf-8", errors="replace"):
@@ -778,6 +779,7 @@ def write_catalog_authoring(records: list[dict[str, Any]]) -> dict[str, Any]:
             stale_removed += 1
 
     rows = []
+    source_list_status_counts: Counter[str] = Counter()
     for group in unique_record_groups(records):
         record = group["primary"]
         name = catalog_entry_name(record)
@@ -786,7 +788,25 @@ def write_catalog_authoring(records: list[dict[str, Any]]) -> dict[str, Any]:
         source = record["source_name"]
         install_source = record["normalized_url"]
         audited_head = record["inspected_commit_sha"]
-        source_list_status = "not-run"
+        source_list_evidence = source_list_evidence_by_url.get(record["normalized_url"], {})
+        source_list_status = str(source_list_evidence.get("evidence_status") or "not-run")
+        source_list_status_counts[source_list_status] += 1
+        found_skill_count = int(source_list_evidence.get("found_skill_count") or 0)
+        remaining_blockers = [
+            str(blocker)
+            for blocker in source_list_evidence.get("remaining_blockers", [])
+            if str(blocker).strip()
+        ]
+        provenance_evidence = (
+            "Generated from planning/manifests/candidate-corpus-jul2026 records and read-only "
+            f"npx skills add --list evidence; source-list status: {source_list_status}."
+        )
+        if source_list_status == "source-list-found":
+            provenance_evidence += f" Listed {found_skill_count} candidate skill(s); no install command is published."
+        elif source_list_status in {"source-list-error", "source-list-timeout"}:
+            provenance_evidence += " Probe did not complete successfully; promotion remains blocked."
+        else:
+            provenance_evidence += " Promotion remains blocked until source-list evidence is complete."
         risk_category = record["risk_tier"]
         description = catalog_description(record)
         executable_surface = (
@@ -845,13 +865,16 @@ def write_catalog_authoring(records: list[dict[str, Any]]) -> dict[str, Any]:
             ),
             (
                 "provenance_evidence: "
-                + yaml_string(
-                    "Generated from planning/manifests/candidate-corpus-jul2026 records; "
-                    "no npx skills add --list evidence captured yet."
-                )
+                + yaml_string(provenance_evidence)
             ),
             "---",
         ]
+        source_list_line = f"- Source-list evidence: `{source_list_status}`"
+        if source_list_status == "source-list-found":
+            source_list_line += f" ({found_skill_count} skill(s) listed by read-only discovery)"
+        elif source_list_status in {"source-list-error", "source-list-timeout"}:
+            source_list_line += " (manual retry or review required)"
+        blocker_lines = [f"- Remaining blocker: {blocker}" for blocker in remaining_blockers]
         body = [
             "",
             f"{{/* {CATALOG_ENTRY_MARKER}: source=planning/manifests/candidate-corpus-jul2026 */}}",
@@ -873,10 +896,12 @@ def write_catalog_authoring(records: list[dict[str, Any]]) -> dict[str, Any]:
             f"- Risk tier: `{record['risk_tier']}`",
             f"- Inspected commit SHA: `{audited_head or 'unresolved'}`",
             f"- License status: `{record['license']}`",
+            source_list_line,
+            *blocker_lines,
             "",
             "## Promotion Gates",
             "",
-            "- Run read-only source-list discovery, for example `npx skills add <source> --list`, when applicable.",
+            "- Re-run read-only source-list discovery if evidence errored, timed out, or becomes stale.",
             "- Verify license compatibility and attribution before adapting any content.",
             "- Review hooks, scripts, commands, allowed tools, dependencies, network calls, and credential handling.",
             "- Route MCP servers, plugins, CLIs, libraries, and broad collections through their native repo surfaces.",
@@ -902,6 +927,9 @@ def write_catalog_authoring(records: list[dict[str, Any]]) -> dict[str, Any]:
             "sync_kind": "none",
             "risk_tier": record["risk_tier"],
             "intake_decision": record["install_or_integration_decision"],
+            "source_list_evidence": source_list_status,
+            "found_skill_count": found_skill_count,
+            "remaining_blockers": remaining_blockers,
         })
 
     summary_payload = {
@@ -914,6 +942,7 @@ def write_catalog_authoring(records: list[dict[str, Any]]) -> dict[str, Any]:
         "status": "global-only-or-avoid",
         "sync_kind": "none",
         "install_commands_published": 0,
+        "source_list_status_counts": dict(sorted(source_list_status_counts.items())),
         "rows": rows,
     }
     (MANIFEST_DIR / "catalog-authoring-summary.json").write_text(
@@ -994,6 +1023,27 @@ def unique_decisions(data: dict[str, Any], records: list[dict[str, Any]]) -> lis
 
 def write_json(name: str, payload: Any) -> None:
     (MANIFEST_DIR / name).write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def load_source_list_evidence_by_url() -> dict[str, dict[str, Any]]:
+    evidence_path = MANIFEST_DIR / "safe-wave-source-list-evidence.json"
+    if not evidence_path.exists():
+        return {}
+    try:
+        payload = json.loads(evidence_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    items = payload.get("items", []) if isinstance(payload, dict) else []
+    if not isinstance(items, list):
+        return {}
+    evidence_by_url = {}
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        normalized_url = str(item.get("normalized_url") or "").strip()
+        if normalized_url:
+            evidence_by_url[normalized_url] = item
+    return evidence_by_url
 
 
 def source_match_keys(record: dict[str, Any]) -> set[str]:

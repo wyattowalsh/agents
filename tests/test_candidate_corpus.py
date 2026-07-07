@@ -150,10 +150,14 @@ def test_auth_matrix_uses_placeholders_only() -> None:
 def test_every_unique_target_has_non_installable_catalog_authoring_row() -> None:
     summary = _load_json(MANIFEST_DIR / "catalog-authoring-summary.json")
     catalog_paths = sorted(CATALOG_DIR.glob(f"{CATALOG_PREFIX}*.mdx"))
+    source_list_counts = summary["source_list_status_counts"]
 
     assert summary["rows_written"] == 289
     assert summary["unique_targets"] == 289
     assert summary["install_commands_published"] == 0
+    assert sum(source_list_counts.values()) == 289
+    assert source_list_counts["source-list-found"] >= 13
+    assert "not-run" not in source_list_counts
     assert len(catalog_paths) == 289
 
     row_urls = {row["normalized_url"] for row in summary["rows"]}
@@ -165,6 +169,7 @@ def test_every_unique_target_has_non_installable_catalog_authoring_row() -> None
         assert "GENERATED-CANDIDATE-CORPUS-JUL2026" in text
         assert 'status: "global-only-or-avoid"' in text
         assert 'sync_kind: "none"' in text
+        assert 'source_list_evidence: "not-run"' not in text
         assert "install_command:" not in text
 
 
@@ -265,6 +270,11 @@ def test_candidate_catalog_authoring_rows_are_non_installable() -> None:
     assert {row["status"] for row in indexed_rows} == {"global-only-or-avoid"}
     assert not any(row.get("installCommand") for row in indexed_rows)
     assert not any(row.get("useCommand") for row in indexed_rows)
+    assert {row["source_list_evidence"] for row in summary["rows"]} <= {
+        "source-list-error",
+        "source-list-found",
+        "source-list-timeout",
+    }
 
     generated_page = GENERATED_EXTERNAL_DIR / "candidate-corpus-001-csvglow.mdx"
     text = generated_page.read_text(encoding="utf-8")

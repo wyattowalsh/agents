@@ -17,7 +17,7 @@ audit_date: "2026-07-06"
 audited_head: "cab98ce1ed65b52d2ab056c61ccdcddad01aa0ee"
 pin_policy: "pin-before-install"
 no_pin_rationale: "No install command is published until the candidate passes promotion review."
-source_list_evidence: "not-run"
+source_list_evidence: "source-list-found"
 executable_surface: "not-detected-in-static-intake"
 credential_behavior: "placeholder-only; credentials must remain user-owned and uncommitted"
 network_access: "public Git metadata only during corpus intake"
@@ -28,7 +28,7 @@ dedupe_notes: "Raw indexes covered: 169"
 notes: "Trust-gated July 2026 candidate corpus entry for BestLemoon/codex-seo. Catalog metadata only; do not install, vendor, adapt, or promote until source-list, license, security, and docs-steward review pass."
 risk_notes: "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
 promotion_policy: "Keep non-installable until source-list, license, security, attribution, auth, and docs-steward gates pass."
-provenance_evidence: "Generated from planning/manifests/candidate-corpus-jul2026 records; no npx skills add --list evidence captured yet."
+provenance_evidence: "Generated from planning/manifests/candidate-corpus-jul2026 records and read-only npx skills add --list evidence; source-list status: source-list-found. Listed 19 candidate skill(s); no install command is published."
 ---
 
 {/* GENERATED-CANDIDATE-CORPUS-JUL2026: source=planning/manifests/candidate-corpus-jul2026 */}
@@ -48,10 +48,15 @@ It is intentionally non-installable. Do not publish an install command, run cand
 - Risk tier: `review-required`
 - Inspected commit SHA: `cab98ce1ed65b52d2ab056c61ccdcddad01aa0ee`
 - License status: `MIT`
+- Source-list evidence: `source-list-found` (19 skill(s) listed by read-only discovery)
+- Remaining blocker: selector-level security review
+- Remaining blocker: license and attribution file review
+- Remaining blocker: docs-steward promotion review
+- Remaining blocker: target-specific validation
 
 ## Promotion Gates
 
-- Run read-only source-list discovery, for example `npx skills add <source> --list`, when applicable.
+- Re-run read-only source-list discovery if evidence errored, timed out, or becomes stale.
 - Verify license compatibility and attribution before adapting any content.
 - Review hooks, scripts, commands, allowed tools, dependencies, network calls, and credential handling.
 - Route MCP servers, plugins, CLIs, libraries, and broad collections through their native repo surfaces.

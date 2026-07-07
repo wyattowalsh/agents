@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T06:47:23.733775+00:00",
+  "generated_at": "2026-07-07T07:08:01.143108+00:00",
   "marker": "GENERATED-CANDIDATE-CORPUS-JUL2026",
   "rows_written": 289,
   "unique_targets": 289,
@@ -8,6 +8,11 @@
   "status": "global-only-or-avoid",
   "sync_kind": "none",
   "install_commands_published": 0,
+  "source_list_status_counts": {
+    "source-list-error": 21,
+    "source-list-found": 236,
+    "source-list-timeout": 32
+  },
   "rows": [
     {
       "name": "candidate-corpus-001-csvglow",
@@ -20,7 +25,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-002-swiftdata-agent-skill",
@@ -33,7 +46,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-003-swiftui-design-principles",
@@ -46,7 +67,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-004-skills",
@@ -59,7 +88,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-005-terraform-skill",
@@ -73,7 +110,16 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "do not duplicate existing installable catalog rows",
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-006-mcp-excalidraw",
@@ -86,7 +132,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-007-skills",
@@ -99,7 +153,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 11,
+      "remaining_blockers": [
+        "do not duplicate existing installable catalog rows",
+        "selector-level security review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-008-transitions-dev",
@@ -112,7 +174,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-009-agent-skills",
@@ -125,7 +195,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 17,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-010-pg-aiguide",
@@ -138,7 +216,14 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 10,
+      "remaining_blockers": [
+        "decide reference-only vs curated installability",
+        "database connection-string boundary review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-011-designer-skills",
@@ -151,7 +236,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 96,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-012-aso-skills",
@@ -164,7 +257,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-013-lathe",
@@ -177,7 +278,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 7,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-014-deep-research-skills",
@@ -190,7 +299,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-015-ai-legal-claude",
@@ -203,7 +320,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-016-logo-generator-skill",
@@ -216,7 +341,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-017-cli",
@@ -229,7 +362,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-018-rust-skills",
@@ -242,7 +383,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 38,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-019-app-store-preflight-skills",
@@ -255,7 +404,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-020-tot",
@@ -268,7 +425,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-021-effective-html",
@@ -281,7 +446,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 3,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-022-ios-simulator-skill",
@@ -295,7 +468,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-023-gtm-engineer-skills",
@@ -308,7 +489,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-024-x-research-skill",
@@ -321,7 +510,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-025-better-icons",
@@ -334,7 +531,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-026-aws-agent-skills",
@@ -347,7 +552,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 18,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-027-figmirror",
@@ -360,7 +573,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-028-webgpu-claude-skill",
@@ -373,7 +594,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-029-axiom",
@@ -386,7 +615,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 27,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-030-pretty-mermaid-skills",
@@ -399,7 +636,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-031-tech-debt-skill",
@@ -412,7 +657,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-032-academic-paper-skills",
@@ -425,7 +678,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-033-claude-skills-llm-council",
@@ -438,7 +699,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-034-scipilot-figure-skill",
@@ -451,7 +720,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-035-codex-complexity-optimizer",
@@ -464,7 +741,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-036-power-bi-agentic-development",
@@ -477,7 +762,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 30,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-037-solana-dev-skill",
@@ -490,7 +783,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-038-academic-pptx-skill",
@@ -503,7 +804,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-039-agent-skill",
@@ -516,7 +825,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 2,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-040-langchain-skills",
@@ -529,7 +846,16 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 14,
+      "remaining_blockers": [
+        "do not duplicate existing installable catalog rows",
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-041-claude-deep-research-skill",
@@ -542,7 +868,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-042-duckdb-skills",
@@ -555,7 +889,14 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 9,
+      "remaining_blockers": [
+        "local file and remote object-store boundary review",
+        "selector-level security review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-043-yahoo-finance2",
@@ -568,7 +909,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-044-ai-sales-team-claude",
@@ -581,7 +930,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-045-agentic-seo-skill",
@@ -594,7 +951,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-046-buffett-skills",
@@ -607,7 +972,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-047-cc-thinking-skills",
@@ -620,7 +993,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 39,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-048-macos-app-skills",
@@ -633,7 +1014,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 6,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-049-skill-color-expert",
@@ -646,7 +1035,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-050-awesome-legal-skills",
@@ -659,7 +1056,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-051-solid-skills",
@@ -673,7 +1078,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-052-paper-plot-skills",
@@ -686,7 +1099,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-053-dbt-agent-skills",
@@ -699,7 +1120,14 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 13,
+      "remaining_blockers": [
+        "dbt credentials and warehouse boundary review",
+        "MCP routing review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-054-seo-audit-skill",
@@ -712,7 +1140,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 2,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-055-motion-design-skill",
@@ -725,7 +1161,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-057-affiliate-skills",
@@ -738,7 +1182,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-058-newsjack",
@@ -751,7 +1203,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 21,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-059-travel-hacking-toolkit",
@@ -764,7 +1224,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 44,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-060-agentkits-marketing",
@@ -777,7 +1245,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-061-geo-optimizer-skill",
@@ -790,7 +1266,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-062-awesome-econ-ai-stuff",
@@ -803,7 +1287,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-063-opendirectory",
@@ -816,7 +1308,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 61,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-064-agent-skills",
@@ -829,7 +1329,14 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 35,
+      "remaining_blockers": [
+        "Elastic Cloud/API key boundary review",
+        "security operations safety review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-065-swiftdata-agent-skill",
@@ -842,7 +1349,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-066-swift-concurrency-agent-skill",
@@ -855,7 +1370,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-067-swift-concurrency-agent-skill",
@@ -868,7 +1391,14 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "do not duplicate existing installable catalog rows",
+        "Swift/Xcode/platform assumptions review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-068-swift-testing-agent-skill",
@@ -881,7 +1411,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-069-swift-testing-agent-skill",
@@ -894,7 +1432,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-070-swift-testing-agent-skill",
@@ -907,7 +1453,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-071-swift-api-design-guidelines-agent-skill",
@@ -920,7 +1474,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-072-swift-formatstyle-agent-skill",
@@ -933,7 +1495,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-073-ios-accessibility-agent-skill",
@@ -946,7 +1516,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-074-swift-accessibility-skill",
@@ -959,7 +1537,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-075-apple-accessibility-skills",
@@ -972,7 +1558,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 3,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-076-app-intents-agent-skill",
@@ -985,7 +1579,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-077-app-store-connect-cli-skills",
@@ -998,7 +1600,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 23,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-078-app-store-aso-skill",
@@ -1011,7 +1621,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-079-appstore-review",
@@ -1024,7 +1642,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-080-swift-architecture-skill",
@@ -1037,7 +1663,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-081-background-execution-agent-skill",
@@ -1050,7 +1684,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-082-core-data-agent-skill",
@@ -1063,7 +1705,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-083-swift-focusengine-agent-skill",
@@ -1076,7 +1726,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-084-swift-security-skill",
@@ -1089,7 +1747,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-085-ios-code-audit",
@@ -1102,7 +1768,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-087-figma-to-swiftui-skill",
@@ -1115,7 +1789,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-088-writing-for-interfaces",
@@ -1128,7 +1810,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-089-widgets-agent-skill",
@@ -1141,7 +1831,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-090-swiftagents",
@@ -1154,7 +1852,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-091-make-interfaces-feel-better",
@@ -1167,7 +1873,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-092-agent-skills",
@@ -1180,7 +1894,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-093-skills",
@@ -1193,7 +1915,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "skip_inaccessible"
+      "intake_decision": "skip_inaccessible",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-094-agent-skills",
@@ -1206,7 +1936,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 2,
+      "remaining_blockers": [
+        "do not duplicate existing installable catalog rows",
+        "auth and RLS boundary review",
+        "selector-level security review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-095-aaron-marketing-skills",
@@ -1219,7 +1957,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 120,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-096-cc-skills-golang",
@@ -1232,7 +1978,14 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 46,
+      "remaining_blockers": [
+        "do not duplicate existing installable catalog rows",
+        "broad selector dedupe review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-097-web-quality-skills",
@@ -1245,7 +1998,14 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 6,
+      "remaining_blockers": [
+        "do not duplicate existing installable catalog rows",
+        "selector-level security review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-098-threejs-skills",
@@ -1258,7 +2018,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 10,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-099-awesome-finance-skills",
@@ -1271,7 +2039,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-100-archify",
@@ -1284,7 +2060,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-101-ai-marketing-skills",
@@ -1297,7 +2081,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 9,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-102-deepcamera",
@@ -1310,7 +2102,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-103-finance-skills",
@@ -1323,7 +2123,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-104-obsidian-second-brain",
@@ -1336,7 +2144,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-105-skills",
@@ -1349,7 +2165,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 15,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-106-codex-ppt-skill",
@@ -1362,7 +2186,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-107-hallmark",
@@ -1375,7 +2207,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-108-skills",
@@ -1388,7 +2228,16 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "do not duplicate existing installable catalog rows",
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-109-academic-research-skills-codex",
@@ -1401,7 +2250,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-110-product-manager-skills",
@@ -1414,7 +2271,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 55,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-111-notebooklm-skill",
@@ -1427,7 +2292,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-112-text-to-cad",
@@ -1440,7 +2313,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 11,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-113-visual-explainer",
@@ -1453,7 +2334,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-114-claude-seo",
@@ -1466,7 +2355,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 25,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-115-skills",
@@ -1479,7 +2376,14 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 19,
+      "remaining_blockers": [
+        "promote from reference-only row only after review",
+        "Hugging Face token and remote job boundary review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-116-skillspector",
@@ -1492,7 +2396,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 22,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-117-stop-slop",
@@ -1505,7 +2417,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-118-react-doctor",
@@ -1518,7 +2438,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 11,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-119-skills",
@@ -1531,7 +2459,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 58,
+      "remaining_blockers": [
+        "do not duplicate existing installable catalog rows",
+        "Google Cloud auth and billing boundary review",
+        "selector-level security review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-120-brooks-lint",
@@ -1544,7 +2480,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 9,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-121-codebase-recon-skill",
@@ -1557,7 +2501,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-122-gh-address-comments",
@@ -1570,7 +2522,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-123-gh-fix-ci",
@@ -1583,7 +2543,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-124-notion-knowledge-capture",
@@ -1596,7 +2564,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-125-internal-comms",
@@ -1609,7 +2585,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-126-paperjsx",
@@ -1622,7 +2606,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-127-email-draft-polish",
@@ -1635,7 +2627,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-128-changelog-generator",
@@ -1648,7 +2648,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-129-diasporic-intelligence",
@@ -1661,7 +2669,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-130-content-research-writer",
@@ -1674,7 +2690,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-131-novel-writing",
@@ -1687,7 +2711,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-132-unslop",
@@ -1701,7 +2733,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 6,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-133-spreadsheet-formula-helper",
@@ -1714,7 +2754,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-134-competitive-ads-extractor",
@@ -1727,7 +2775,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "quarantine",
-      "intake_decision": "quarantine"
+      "intake_decision": "quarantine",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-135-datadog-logs",
@@ -1740,7 +2796,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-136-developer-growth-analysis",
@@ -1753,7 +2817,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-137-lead-research-assistant",
@@ -1766,7 +2838,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-138-domain-name-brainstormer",
@@ -1779,7 +2859,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-139-obsidian-skills",
@@ -1792,7 +2880,14 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "remaining_blockers": [
+        "do not duplicate existing installable catalog rows",
+        "local vault/filesystem boundary review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-140-marketingskills",
@@ -1805,7 +2900,16 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 47,
+      "remaining_blockers": [
+        "do not duplicate existing installable catalog rows",
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-141-css-protips",
@@ -1818,7 +2922,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-142-cli",
@@ -1831,7 +2943,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 95,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-143-agent-skills",
@@ -1844,7 +2964,16 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 9,
+      "remaining_blockers": [
+        "do not duplicate existing installable catalog rows",
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-144-frontend-slides",
@@ -1857,7 +2986,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-145-pm-skills",
@@ -1870,7 +3007,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 68,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-146-notebooklm-py",
@@ -1883,7 +3028,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-147-raffle-winner-picker",
@@ -1896,7 +3049,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-148-langsmith-fetch",
@@ -1909,7 +3070,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-149-canvas-design",
@@ -1922,7 +3091,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-150-image-enhancer",
@@ -1935,7 +3112,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-151-slack-gif-creator",
@@ -1948,7 +3133,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-152-video-downloader",
@@ -1961,7 +3154,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "quarantine",
-      "intake_decision": "quarantine"
+      "intake_decision": "quarantine",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-153-andrej-karpathy-skills",
@@ -1974,7 +3175,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-154-mobile-mcp",
@@ -1987,7 +3196,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-155-inspector",
@@ -2000,7 +3217,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-156-hyperframes",
@@ -2013,7 +3238,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 20,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-157-agent-reach",
@@ -2026,7 +3259,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-158-pm-skills",
@@ -2039,7 +3280,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 68,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-159-infocard-skills",
@@ -2052,7 +3301,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-160-claude-design-card",
@@ -2065,7 +3322,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-161-mcp-server-chart",
@@ -2078,7 +3343,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-162-agentic-tech-debt",
@@ -2091,7 +3364,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 4,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-163-designer-skill",
@@ -2104,7 +3385,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 3,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-164-env-lint",
@@ -2117,7 +3406,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-165-hol-guard-plugin",
@@ -2130,7 +3427,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-166-secret-guard",
@@ -2143,7 +3448,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-167-tailtest-codex",
@@ -2156,7 +3469,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-168-universal-design-principles",
@@ -2169,7 +3490,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 137,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-169-codex-seo",
@@ -2182,7 +3511,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 19,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-170-langfuse-mcp",
@@ -2195,7 +3532,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-171-nullcost-plugin",
@@ -2208,7 +3553,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 3,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-172-prompt-to-asset",
@@ -2221,7 +3574,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 13,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-173-seo-dungeon",
@@ -2234,7 +3595,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 25,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-174-codex-remotion-plugin",
@@ -2247,7 +3616,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-176-zotero-research-plugin",
@@ -2260,7 +3637,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-177-roadmapsmith",
@@ -2273,7 +3658,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 2,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-178-openspec-assistant",
@@ -2286,7 +3679,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-179-openflow",
@@ -2299,7 +3700,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-180-ralphy-openspec",
@@ -2312,7 +3721,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-181-opencode-plugin-openspec",
@@ -2325,7 +3742,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-182-openspecui",
@@ -2338,7 +3763,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 10,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-183-openspec-plus",
@@ -2351,7 +3784,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 6,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-184-openspec-ui",
@@ -2364,7 +3805,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-185-specboard",
@@ -2377,7 +3826,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-186-openspec-playwright",
@@ -2390,7 +3847,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-187-openspec-mcp",
@@ -2403,7 +3868,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-188-openspec-tdd",
@@ -2416,7 +3889,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-189-opsx-feature-dev",
@@ -2429,7 +3910,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-190-openspec-reviewed-workflow",
@@ -2442,7 +3931,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-191-fable-mode",
@@ -2455,7 +3952,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-192-latex-document-skill",
@@ -2468,7 +3973,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-193-opencode-spec",
@@ -2481,7 +3994,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 4,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-194-commit-narrator",
@@ -2494,7 +4015,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-195-codex-rg-guard",
@@ -2507,7 +4036,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-196-solidworks-automation-skill",
@@ -2520,7 +4057,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-197-clipify",
@@ -2533,7 +4078,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-198-tapestry-skills",
@@ -2546,7 +4099,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 7,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-199-visualise",
@@ -2559,7 +4120,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-200-architecture-diagram",
@@ -2572,7 +4141,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-201-agent-md-refactor",
@@ -2585,7 +4162,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-202-brainstorming",
@@ -2598,7 +4183,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-203-ai-business-skills",
@@ -2611,7 +4204,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 48,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-204-claude-code-apple-skills",
@@ -2624,7 +4225,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 22,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-205-social-push",
@@ -2637,7 +4246,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "quarantine",
-      "intake_decision": "quarantine"
+      "intake_decision": "quarantine",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 2,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-206-research-units-pipeline-skills",
@@ -2650,7 +4267,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-207-documentation-writer",
@@ -2663,7 +4288,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-208-exa-web-search-free",
@@ -2676,7 +4309,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-209-extreme-software-optimization",
@@ -2689,7 +4330,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-210-game-changing-features",
@@ -2702,7 +4351,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-211-golang-pro",
@@ -2715,7 +4372,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-212-hono",
@@ -2728,7 +4393,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-213-lesson-learned",
@@ -2741,7 +4414,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-214-next-best-practices",
@@ -2754,7 +4435,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-215-shadcn",
@@ -2767,7 +4456,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-216-systematic-debugging",
@@ -2780,7 +4477,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-217-tui-design",
@@ -2793,7 +4498,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-218-vercel-composition-patterns",
@@ -2806,7 +4519,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-219-vercel-react-best-practices",
@@ -2819,7 +4540,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-220-vitest",
@@ -2832,7 +4561,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-221-zod",
@@ -2845,7 +4582,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-222-zustand",
@@ -2858,7 +4603,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-223-alex-hormozi-pitch",
@@ -2871,7 +4624,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-224-brand-storytelling",
@@ -2884,7 +4645,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-225-content-research-writer",
@@ -2897,7 +4666,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-226-copywriting",
@@ -2910,7 +4687,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-227-fundraising",
@@ -2923,7 +4708,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-228-google-ads",
@@ -2936,7 +4729,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-229-hormozi-ad-factory",
@@ -2949,7 +4750,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-230-humanizer",
@@ -2962,7 +4771,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-231-pitch-deck",
@@ -2975,7 +4792,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-232-pitch-deck-visuals",
@@ -2988,7 +4813,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-233-pitch-gen",
@@ -3001,7 +4834,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-234-pptx-creator",
@@ -3014,7 +4855,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-235-professional-communication",
@@ -3027,7 +4876,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-236-sales-methodology-implementer",
@@ -3040,7 +4897,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-237-startup-validator",
@@ -3053,7 +4918,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-238-viz",
@@ -3066,7 +4939,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-239-writing-clearly-and-concisely",
@@ -3079,7 +4960,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-240-adversarial-review",
@@ -3092,7 +4981,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-241-ai-sdk",
@@ -3105,7 +5002,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-242-building-components",
@@ -3118,7 +5023,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-243-crafting-effective-readmes",
@@ -3131,7 +5044,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-244-creating-spec",
@@ -3144,7 +5065,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-245-design-spec-extraction",
@@ -3157,7 +5086,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-246-devops-engineer",
@@ -3170,7 +5107,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-247-drizzle-orm",
@@ -3183,7 +5128,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-248-drizzle-postgres",
@@ -3196,7 +5149,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-249-electron-builder",
@@ -3209,7 +5170,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-250-electron-dev",
@@ -3222,7 +5191,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-251-electron-release",
@@ -3235,7 +5212,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-252-es-toolkit",
@@ -3248,7 +5233,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-253-executing-plans",
@@ -3261,7 +5254,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-254-fixing-motion-performance",
@@ -3274,7 +5275,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-255-helm-chart-scaffolding",
@@ -3287,7 +5296,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-256-hetzner-server",
@@ -3300,7 +5317,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-257-kubernetes-specialist",
@@ -3313,7 +5338,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-258-mermaid-diagrams",
@@ -3326,7 +5359,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-259-motion",
@@ -3339,7 +5380,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-260-motion-react",
@@ -3352,7 +5401,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-261-obsidian-bases",
@@ -3365,7 +5422,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-262-obsidian-cli",
@@ -3378,7 +5443,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-263-obsidian-markdown",
@@ -3391,7 +5464,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-264-remotion-best-practices",
@@ -3404,7 +5485,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-265-requirements-clarity",
@@ -3417,7 +5506,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-266-ship-learn-next",
@@ -3430,7 +5527,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-267-tauri-v2",
@@ -3443,7 +5548,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-268-terraform-style-guide",
@@ -3456,7 +5569,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-269-workflow",
@@ -3469,7 +5590,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-270-wrangler",
@@ -3482,7 +5611,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-271-headroom",
@@ -3495,7 +5632,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-272-mcp-builder",
@@ -3508,7 +5653,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-273-file-organizer",
@@ -3521,7 +5674,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-274-paper-search-mcp",
@@ -3534,7 +5695,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-275-dotagents",
@@ -3547,7 +5716,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-276-espresso",
@@ -3560,7 +5737,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-277-llm-transpile",
@@ -3573,7 +5758,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-error",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-278-codex-mem",
@@ -3586,7 +5779,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-279-papersflow-codex-plugin",
@@ -3599,7 +5800,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 4,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-280-upwork-autopilot",
@@ -3612,7 +5821,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "quarantine",
-      "intake_decision": "quarantine"
+      "intake_decision": "quarantine",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-281-openspec-badge-action",
@@ -3625,7 +5842,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 10,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-282-token-diet",
@@ -3638,7 +5863,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-283-database-skills",
@@ -3651,7 +5884,14 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing"
+      "intake_decision": "merge_into_existing",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 4,
+      "remaining_blockers": [
+        "do not duplicate existing installable catalog rows",
+        "database connection-string boundary review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-285-coldoutboundskills",
@@ -3664,7 +5904,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-286-mcp-dashboards",
@@ -3677,7 +5925,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-287-charted",
@@ -3690,7 +5946,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-288-semiotic",
@@ -3703,7 +5967,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "executable-surface-review-required",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-289-better-auth-best-practices",
@@ -3716,7 +5988,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-290-better-auth-organization-best-practices",
@@ -3729,7 +6009,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-291-awesome-scientific-skills",
@@ -3742,7 +6030,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-timeout",
+      "found_skill_count": 0,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-292-find-rules",
@@ -3755,7 +6051,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     },
     {
       "name": "candidate-corpus-293-find-skills",
@@ -3768,7 +6072,15 @@
       "status": "global-only-or-avoid",
       "sync_kind": "none",
       "risk_tier": "standard-review",
-      "intake_decision": "reference_only"
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "remaining_blockers": [
+        "selector-level security review",
+        "license and attribution file review",
+        "docs-steward promotion review",
+        "target-specific validation"
+      ]
     }
   ]
 }
