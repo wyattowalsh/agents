@@ -7,6 +7,8 @@
 interface SkillRow {
   name: string;
   description?: string;
+  href?: string;
+  lane?: string;
   status?: string;
   sourceType?: string;
 }
@@ -26,13 +28,18 @@ const laneByStatus: Record<string, string> = {
   'global-only-or-avoid': 'avoid',
 };
 
-const serializeSkill = (skill: SkillRow) => ({
-  name: skill.name,
-  description: (skill.description || '').slice(0, 160),
-  href: `/skills/catalog/external/${encodeURIComponent(skill.name)}/`,
-  lane: laneByStatus[String(skill.status || '')] || 'inspect',
-  sourceType: skill.sourceType || 'curated-external',
-});
+const serializeSkill = (skill: SkillRow) => {
+  const lane = skill.lane && ['install-now', 'inspect', 'avoid'].includes(skill.lane)
+    ? skill.lane
+    : laneByStatus[String(skill.status || '')] || 'inspect';
+  return {
+    name: skill.name,
+    description: (skill.description || '').slice(0, 160),
+    href: skill.href || `/skills/catalog/external/${encodeURIComponent(skill.name)}/`,
+    lane,
+    sourceType: skill.sourceType || 'curated-external',
+  };
+};
 
 const serialized = skills.map(serializeSkill);
 ---
@@ -87,7 +94,14 @@ const serialized = skills.map(serializeSkill);
 </div>
 
 <script is:inline define:vars={{ serialized, src, indexKey, pageSize }}>
-  const root = document.querySelector('[data-catalog-browser]');
+  const currentScript = document.currentScript;
+  const scriptRoot =
+    currentScript instanceof HTMLScriptElement &&
+    currentScript.previousElementSibling instanceof HTMLElement &&
+    currentScript.previousElementSibling.matches('[data-catalog-browser]')
+      ? currentScript.previousElementSibling
+      : null;
+  const root = scriptRoot || document.querySelector('[data-catalog-browser]');
   if (!root) {
     // no-op when component is not mounted
   } else {
@@ -107,15 +121,18 @@ const serialized = skills.map(serializeSkill);
     const normalize = (value) => String(value || '').toLowerCase();
     const normalizeSkill = (skill) => {
       const name = String(skill?.name || '');
+      const lane = ['install-now', 'inspect', 'avoid'].includes(String(skill?.lane || ''))
+        ? String(skill.lane)
+        : {
+            'install-now-after-trust-gate': 'install-now',
+            'inspect-then-install': 'inspect',
+            'global-only-or-avoid': 'avoid',
+          }[String(skill?.status || '')] || 'inspect';
       return {
         name,
         description: String(skill?.description || '').slice(0, 160),
-        href: `/skills/catalog/external/${encodeURIComponent(name)}/`,
-        lane: {
-          'install-now-after-trust-gate': 'install-now',
-          'inspect-then-install': 'inspect',
-          'global-only-or-avoid': 'avoid',
-        }[String(skill?.status || '')] || 'inspect',
+        href: String(skill?.href || `/skills/catalog/external/${encodeURIComponent(name)}/`),
+        lane,
         sourceType: skill?.sourceType || 'curated-external',
       };
     };

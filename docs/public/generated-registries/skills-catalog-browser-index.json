@@ -1,0 +1,4267 @@
+{
+  "externalSkillIndex": [
+    {
+      "description": "Curated P4nda0s/reverse-skills RE helper bundle (8 skills). Pentest hybrid alternates for mobile/ios static analysis.",
+      "href": "/skills/catalog/external/reverse-skills/",
+      "lane": "inspect",
+      "name": "reverse-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated elementalsouls/Claude-OSINT passive OSINT skills (osint-methodology, offensive-osint). Pentest hybrid canonical osint-passive source.",
+      "href": "/skills/catalog/external/claude-osint/",
+      "lane": "inspect",
+      "name": "claude-osint",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated ljagiello/ctf-skills dispatcher bundle (11 skills). Pentest hybrid CTF tier routes; lab scope only \u2014 not production ROE pentest.",
+      "href": "/skills/catalog/external/ctf-skills-bundle/",
+      "lane": "inspect",
+      "name": "ctf-skills-bundle",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated mukul975/Anthropic-Cybersecurity-Skills bundle (817 skills). Pentest hybrid network/cloud/OSINT depth.",
+      "href": "/skills/catalog/external/acs-pentest-skills/",
+      "lane": "inspect",
+      "name": "acs-pentest-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated yaklang/hack-skills offensive-security skill bundle (102 skills). Pentest hybrid canonical web/API/binary source. Trust-gated catalog install only.",
+      "href": "/skills/catalog/external/hack-skills/",
+      "lane": "inspect",
+      "name": "hack-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated zhaoxuya520/reverse-skill mobile/binary RE bundle (12 skills). Pentest hybrid canonical apk-reverse and reverse-engineering slugs.",
+      "href": "/skills/catalog/external/reverse-skill/",
+      "lane": "inspect",
+      "name": "reverse-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for 199-biotechnologies/claude-deep-research-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-041-claude-deep-research-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-041-claude-deep-research-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for 2kDarki/codex-mem.",
+      "href": "/skills/catalog/external/candidate-corpus-278-codex-mem/",
+      "lane": "avoid",
+      "name": "candidate-corpus-278-codex-mem",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for 3paws-ai/mobile-ai-skills/skills/appstore-review.",
+      "href": "/skills/catalog/external/candidate-corpus-079-appstore-review/",
+      "lane": "avoid",
+      "name": "candidate-corpus-079-appstore-review",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Affitor/affiliate-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-057-affiliate-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-057-affiliate-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for AgriciDaniel/claude-seo.",
+      "href": "/skills/catalog/external/candidate-corpus-114-claude-seo/",
+      "lane": "avoid",
+      "name": "candidate-corpus-114-claude-seo",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for AllThingsSmitty/css-protips.",
+      "href": "/skills/catalog/external/candidate-corpus-141-css-protips/",
+      "lane": "avoid",
+      "name": "candidate-corpus-141-css-protips",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Auriti-Labs/geo-optimizer-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-061-geo-optimizer-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-061-geo-optimizer-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for AvdLee/Core-Data-Agent-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-082-core-data-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-082-core-data-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for AvdLee/Swift-Concurrency-Agent-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-067-swift-concurrency-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-067-swift-concurrency-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for AvdLee/Swift-Testing-Agent-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-070-swift-testing-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-070-swift-testing-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for BestLemoon/codex-seo.",
+      "href": "/skills/catalog/external/candidate-corpus-169-codex-seo/",
+      "lane": "avoid",
+      "name": "candidate-corpus-169-codex-seo",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Bhanunamikaze/Agentic-SEO-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-045-agentic-seo-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-045-agentic-seo-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for CharlesWiltgen/Axiom.",
+      "href": "/skills/catalog/external/candidate-corpus-029-axiom/",
+      "lane": "avoid",
+      "name": "candidate-corpus-029-axiom",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for CloudAI-X/threejs-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-098-threejs-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-098-threejs-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/gh-address-comments.",
+      "href": "/skills/catalog/external/candidate-corpus-122-gh-address-comments/",
+      "lane": "avoid",
+      "name": "candidate-corpus-122-gh-address-comments",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/gh-fix-ci.",
+      "href": "/skills/catalog/external/candidate-corpus-123-gh-fix-ci/",
+      "lane": "avoid",
+      "name": "candidate-corpus-123-gh-fix-ci",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/notion-knowledge-capture.",
+      "href": "/skills/catalog/external/candidate-corpus-124-notion-knowledge-capture/",
+      "lane": "avoid",
+      "name": "candidate-corpus-124-notion-knowledge-capture",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/internal-comms.",
+      "href": "/skills/catalog/external/candidate-corpus-125-internal-comms/",
+      "lane": "avoid",
+      "name": "candidate-corpus-125-internal-comms",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/paperjsx.",
+      "href": "/skills/catalog/external/candidate-corpus-126-paperjsx/",
+      "lane": "avoid",
+      "name": "candidate-corpus-126-paperjsx",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/email-draft-polish.",
+      "href": "/skills/catalog/external/candidate-corpus-127-email-draft-polish/",
+      "lane": "avoid",
+      "name": "candidate-corpus-127-email-draft-polish",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/changelog-generator.",
+      "href": "/skills/catalog/external/candidate-corpus-128-changelog-generator/",
+      "lane": "avoid",
+      "name": "candidate-corpus-128-changelog-generator",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/content-research-writer.",
+      "href": "/skills/catalog/external/candidate-corpus-130-content-research-writer/",
+      "lane": "avoid",
+      "name": "candidate-corpus-130-content-research-writer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/spreadsheet-formula-helper.",
+      "href": "/skills/catalog/external/candidate-corpus-133-spreadsheet-formula-helper/",
+      "lane": "avoid",
+      "name": "candidate-corpus-133-spreadsheet-formula-helper",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/competitive-ads-extractor.",
+      "href": "/skills/catalog/external/candidate-corpus-134-competitive-ads-extractor/",
+      "lane": "avoid",
+      "name": "candidate-corpus-134-competitive-ads-extractor",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/datadog-logs.",
+      "href": "/skills/catalog/external/candidate-corpus-135-datadog-logs/",
+      "lane": "avoid",
+      "name": "candidate-corpus-135-datadog-logs",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/developer-growth-analysis.",
+      "href": "/skills/catalog/external/candidate-corpus-136-developer-growth-analysis/",
+      "lane": "avoid",
+      "name": "candidate-corpus-136-developer-growth-analysis",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/lead-research-assistant.",
+      "href": "/skills/catalog/external/candidate-corpus-137-lead-research-assistant/",
+      "lane": "avoid",
+      "name": "candidate-corpus-137-lead-research-assistant",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/domain-name-brainstormer.",
+      "href": "/skills/catalog/external/candidate-corpus-138-domain-name-brainstormer/",
+      "lane": "avoid",
+      "name": "candidate-corpus-138-domain-name-brainstormer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/raffle-winner-picker.",
+      "href": "/skills/catalog/external/candidate-corpus-147-raffle-winner-picker/",
+      "lane": "avoid",
+      "name": "candidate-corpus-147-raffle-winner-picker",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/langsmith-fetch.",
+      "href": "/skills/catalog/external/candidate-corpus-148-langsmith-fetch/",
+      "lane": "avoid",
+      "name": "candidate-corpus-148-langsmith-fetch",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/canvas-design.",
+      "href": "/skills/catalog/external/candidate-corpus-149-canvas-design/",
+      "lane": "avoid",
+      "name": "candidate-corpus-149-canvas-design",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/image-enhancer.",
+      "href": "/skills/catalog/external/candidate-corpus-150-image-enhancer/",
+      "lane": "avoid",
+      "name": "candidate-corpus-150-image-enhancer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/slack-gif-creator.",
+      "href": "/skills/catalog/external/candidate-corpus-151-slack-gif-creator/",
+      "lane": "avoid",
+      "name": "candidate-corpus-151-slack-gif-creator",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/video-downloader.",
+      "href": "/skills/catalog/external/candidate-corpus-152-video-downloader/",
+      "lane": "avoid",
+      "name": "candidate-corpus-152-video-downloader",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/mcp-builder.",
+      "href": "/skills/catalog/external/candidate-corpus-272-mcp-builder/",
+      "lane": "avoid",
+      "name": "candidate-corpus-272-mcp-builder",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ComposioHQ/awesome-codex-skills/file-organizer.",
+      "href": "/skills/catalog/external/candidate-corpus-273-file-organizer/",
+      "lane": "avoid",
+      "name": "candidate-corpus-273-file-organizer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Dimillian/Skills.",
+      "href": "/skills/catalog/external/candidate-corpus-004-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-004-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Erikote04/Swift-API-Design-Guidelines-Agent-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-071-swift-api-design-guidelines-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-071-swift-api-design-guidelines-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Eronred/aso-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-012-aso-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-012-aso-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ForceInjection/awesome-skills/skills/openspec-assistant.",
+      "href": "/skills/catalog/external/candidate-corpus-178-openspec-assistant/",
+      "lane": "avoid",
+      "name": "candidate-corpus-178-openspec-assistant",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Gabberflast/academic-pptx-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-038-academic-pptx-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-038-academic-pptx-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for HDeibler/universal-design-principles.",
+      "href": "/skills/catalog/external/candidate-corpus-168-universal-design-principles/",
+      "lane": "avoid",
+      "name": "candidate-corpus-168-universal-design-principles",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Haojae/scipilot-figure-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-034-scipilot-figure-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-034-scipilot-figure-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Imbad0202/academic-research-skills-codex.",
+      "href": "/skills/catalog/external/candidate-corpus-109-academic-research-skills-codex/",
+      "lane": "avoid",
+      "name": "candidate-corpus-109-academic-research-skills-codex",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for InternScience/Awesome-Scientific-Skills.",
+      "href": "/skills/catalog/external/candidate-corpus-291-awesome-scientific-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-291-awesome-scientific-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Jakubantalik/transitions.dev.",
+      "href": "/skills/catalog/external/candidate-corpus-008-transitions-dev/",
+      "lane": "avoid",
+      "name": "candidate-corpus-008-transitions-dev",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for JeffLi1993/seo-audit-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-054-seo-audit-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-054-seo-audit-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Kappaemme-git/codex-complexity-optimizer.",
+      "href": "/skills/catalog/external/candidate-corpus-035-codex-complexity-optimizer/",
+      "lane": "avoid",
+      "name": "candidate-corpus-035-codex-complexity-optimizer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Kulaxyz/token-diet.",
+      "href": "/skills/catalog/external/candidate-corpus-282-token-diet/",
+      "lane": "avoid",
+      "name": "candidate-corpus-282-token-diet",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for KyuRish/mcp-dashboards.",
+      "href": "/skills/catalog/external/candidate-corpus-286-mcp-dashboards/",
+      "lane": "avoid",
+      "name": "candidate-corpus-286-mcp-dashboards",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for LottieFiles/motion-design-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-055-motion-design-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-055-motion-design-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Lumiaqian/openspec-mcp.",
+      "href": "/skills/catalog/external/candidate-corpus-187-openspec-mcp/",
+      "lane": "avoid",
+      "name": "candidate-corpus-187-openspec-mcp",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for MinistaJazz/diasporic-intelligence.",
+      "href": "/skills/catalog/external/candidate-corpus-129-diasporic-intelligence/",
+      "lane": "avoid",
+      "name": "candidate-corpus-129-diasporic-intelligence",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for MohamedAbdallah-14/prompt-to-asset.",
+      "href": "/skills/catalog/external/candidate-corpus-172-prompt-to-asset/",
+      "lane": "avoid",
+      "name": "candidate-corpus-172-prompt-to-asset",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for MohamedAbdallah-14/unslop.",
+      "href": "/skills/catalog/external/candidate-corpus-132-unslop/",
+      "lane": "avoid",
+      "name": "candidate-corpus-132-unslop",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for NVIDIA/SkillSpector.",
+      "href": "/skills/catalog/external/candidate-corpus-116-skillspector/",
+      "lane": "avoid",
+      "name": "candidate-corpus-116-skillspector",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for NVIDIA/skills-.",
+      "href": "/skills/catalog/external/candidate-corpus-093-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-093-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Nutlope/hallmark.",
+      "href": "/skills/catalog/external/candidate-corpus-107-hallmark/",
+      "lane": "avoid",
+      "name": "candidate-corpus-107-hallmark",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Octane0411/opencode-plugin-openspec.",
+      "href": "/skills/catalog/external/candidate-corpus-181-opencode-plugin-openspec/",
+      "lane": "avoid",
+      "name": "candidate-corpus-181-opencode-plugin-openspec",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Owl-Listener/designer-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-011-designer-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-011-designer-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Panniantong/Agent-Reach.",
+      "href": "/skills/catalog/external/candidate-corpus-157-agent-reach/",
+      "lane": "avoid",
+      "name": "candidate-corpus-157-agent-reach",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for PapiScholz/roadmapsmith.",
+      "href": "/skills/catalog/external/candidate-corpus-177-roadmapsmith/",
+      "lane": "avoid",
+      "name": "candidate-corpus-177-roadmapsmith",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for PasqualeVittoriosi/swift-accessibility-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-074-swift-accessibility-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-074-swift-accessibility-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for PleasePrompto/notebooklm-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-111-notebooklm-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-111-notebooklm-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Pythoughts-labs/designer-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-163-designer-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-163-designer-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for RKiding/Awesome-finance-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-099-awesome-finance-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-099-awesome-finance-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Ratnaditya-J/csvglow.",
+      "href": "/skills/catalog/external/candidate-corpus-001-csvglow/",
+      "lane": "avoid",
+      "name": "candidate-corpus-001-csvglow",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Rycen7822/codex-rg-guard.",
+      "href": "/skills/catalog/external/candidate-corpus-195-codex-rg-guard/",
+      "lane": "avoid",
+      "name": "candidate-corpus-195-codex-rg-guard",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for SharpAI/DeepCamera.",
+      "href": "/skills/catalog/external/candidate-corpus-102-deepcamera/",
+      "lane": "avoid",
+      "name": "candidate-corpus-102-deepcamera",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for TanStack/cli.",
+      "href": "/skills/catalog/external/candidate-corpus-017-cli/",
+      "lane": "avoid",
+      "name": "candidate-corpus-017-cli",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ToruAI/openspec-ui.",
+      "href": "/skills/catalog/external/candidate-corpus-184-openspec-ui/",
+      "lane": "avoid",
+      "name": "candidate-corpus-184-openspec-ui",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Trae1ounG/paper-plot-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-052-paper-plot-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-052-paper-plot-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for VILA-Lab/FigMirror.",
+      "href": "/skills/catalog/external/candidate-corpus-027-figmirror/",
+      "lane": "avoid",
+      "name": "candidate-corpus-027-figmirror",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Varnan-Tech/opendirectory.",
+      "href": "/skills/catalog/external/candidate-corpus-063-opendirectory/",
+      "lane": "avoid",
+      "name": "candidate-corpus-063-opendirectory",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for WILLOSCAR/research-units-pipeline-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-206-research-units-pipeline-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-206-research-units-pipeline-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for Weizhena/Deep-Research-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-014-deep-research-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-014-deep-research-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for WordPress/agent-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-009-agent-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-009-agent-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for aaron-he-zhu/aaron-marketing-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-095-aaron-marketing-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-095-aaron-marketing-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for actionbook/rust-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-018-rust-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-018-rust-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for addyosmani/web-quality-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-097-web-quality-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-097-web-quality-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for agi-now/buffett-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-046-buffett-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-046-buffett-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for aitytech/agentkits-marketing.",
+      "href": "/skills/catalog/external/candidate-corpus-060-agentkits-marketing/",
+      "lane": "avoid",
+      "name": "candidate-corpus-060-agentkits-marketing",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for aiwithremy/claude-skills-llm-council.",
+      "href": "/skills/catalog/external/candidate-corpus-033-claude-skills-llm-council/",
+      "lane": "avoid",
+      "name": "candidate-corpus-033-claude-skills-llm-council",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for andrewgleave/skills/writing-for-interfaces.",
+      "href": "/skills/catalog/external/candidate-corpus-088-writing-for-interfaces/",
+      "lane": "avoid",
+      "name": "candidate-corpus-088-writing-for-interfaces",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "inspect case-by-case; many skills duplicate local/system skills.",
+      "href": "/skills/catalog/external/anthropics-skills-all/",
+      "lane": "avoid",
+      "name": "anthropics-skills-all",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for antonbabenko/terraform-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-005-terraform-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-005-terraform-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for antvis/mcp-server-chart.",
+      "href": "/skills/catalog/external/candidate-corpus-161-mcp-server-chart/",
+      "lane": "avoid",
+      "name": "candidate-corpus-161-mcp-server-chart",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for apify/agent-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-092-agent-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-092-agent-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for arjitj2/swiftui-design-principles.",
+      "href": "/skills/catalog/external/candidate-corpus-003-swiftui-design-principles/",
+      "lane": "avoid",
+      "name": "candidate-corpus-003-swiftui-design-principles",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ast-grep/agent-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-039-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-039-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for avalonreset/seo-dungeon.",
+      "href": "/skills/catalog/external/candidate-corpus-173-seo-dungeon/",
+      "lane": "avoid",
+      "name": "candidate-corpus-173-seo-dungeon",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for avansaber/tailtest-codex.",
+      "href": "/skills/catalog/external/candidate-corpus-167-tailtest-codex/",
+      "lane": "avoid",
+      "name": "candidate-corpus-167-tailtest-codex",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for avivsinai/langfuse-mcp.",
+      "href": "/skills/catalog/external/candidate-corpus-170-langfuse-mcp/",
+      "lane": "avoid",
+      "name": "candidate-corpus-170-langfuse-mcp",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for bcanfield/agentic-tech-debt.",
+      "href": "/skills/catalog/external/candidate-corpus-162-agentic-tech-debt/",
+      "lane": "avoid",
+      "name": "candidate-corpus-162-agentic-tech-debt",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for bentossell/visualise.",
+      "href": "/skills/catalog/external/candidate-corpus-199-visualise/",
+      "lane": "avoid",
+      "name": "candidate-corpus-199-visualise",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for better-auth/better-icons.",
+      "href": "/skills/catalog/external/candidate-corpus-025-better-icons/",
+      "lane": "avoid",
+      "name": "candidate-corpus-025-better-icons",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for bocato/swift-testing-agent-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-069-swift-testing-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-069-swift-testing-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for borski/travel-hacking-toolkit.",
+      "href": "/skills/catalog/external/candidate-corpus-059-travel-hacking-toolkit/",
+      "lane": "avoid",
+      "name": "candidate-corpus-059-travel-hacking-toolkit",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for cloudflare/skills.",
+      "href": "/skills/catalog/external/candidate-corpus-007-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-007-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "community Excalidraw skill; prefer `github/awesome-copilot@excalidraw-diagram-generator`.",
+      "href": "/skills/catalog/external/coleam00-excalidraw-diagram-skill-all/",
+      "lane": "avoid",
+      "name": "coleam00-excalidraw-diagram-skill-all",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for conorluddy/ios-simulator-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-022-ios-simulator-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-022-ios-simulator-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for coreyhaines31/marketingskills.",
+      "href": "/skills/catalog/external/candidate-corpus-140-marketingskills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-140-marketingskills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for dadederk/iOS-Accessibility-Agent-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-073-ios-accessibility-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-073-ios-accessibility-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for daetojemax/figma-to-swiftui-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-087-figma-to-swiftui-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-087-figma-to-swiftui-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for data-goblin/power-bi-agentic-development.",
+      "href": "/skills/catalog/external/candidate-corpus-036-power-bi-agentic-development/",
+      "lane": "avoid",
+      "name": "candidate-corpus-036-power-bi-agentic-development",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for dbt-labs/dbt-agent-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-053-dbt-agent-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-053-dbt-agent-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for deanpeters/Product-Manager-Skills.",
+      "href": "/skills/catalog/external/candidate-corpus-110-product-manager-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-110-product-manager-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for devcxl/opencode-spec.",
+      "href": "/skills/catalog/external/candidate-corpus-193-opencode-spec/",
+      "lane": "avoid",
+      "name": "candidate-corpus-193-opencode-spec",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for devenjarvis/lathe.",
+      "href": "/skills/catalog/external/candidate-corpus-013-lathe/",
+      "lane": "avoid",
+      "name": "candidate-corpus-013-lathe",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for dgreenheck/webgpu-claude-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-028-webgpu-claude-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-028-webgpu-claude-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "registry syntax and provenance still need verification before automated sync/install.",
+      "href": "/skills/catalog/external/stripe-best-practices/",
+      "lane": "avoid",
+      "name": "stripe-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for duckdb/duckdb-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-042-duckdb-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-042-duckdb-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for earthtojake/text-to-cad.",
+      "href": "/skills/catalog/external/candidate-corpus-112-text-to-cad/",
+      "lane": "avoid",
+      "name": "candidate-corpus-112-text-to-cad",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for efremidze/swift-architecture-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-080-swift-architecture-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-080-swift-architecture-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for elastic/agent-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-064-agent-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-064-agent-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for elvisun/newsjack.",
+      "href": "/skills/catalog/external/candidate-corpus-058-newsjack/",
+      "lane": "avoid",
+      "name": "candidate-corpus-058-newsjack",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for epicsagas/llm-transpile.",
+      "href": "/skills/catalog/external/candidate-corpus-277-llm-transpile/",
+      "lane": "avoid",
+      "name": "candidate-corpus-277-llm-transpile",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ericosiu/ai-marketing-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-101-ai-marketing-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-101-ai-marketing-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for eugeniughelbur/obsidian-second-brain.",
+      "href": "/skills/catalog/external/candidate-corpus-104-obsidian-second-brain/",
+      "lane": "avoid",
+      "name": "candidate-corpus-104-obsidian-second-brain",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for fastknifes/openflow.",
+      "href": "/skills/catalog/external/candidate-corpus-179-openflow/",
+      "lane": "avoid",
+      "name": "candidate-corpus-179-openflow",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for fayazara/macos-app-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-048-macos-app-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-048-macos-app-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested.",
+      "href": "/skills/catalog/external/firecrawl-cli-all/",
+      "lane": "avoid",
+      "name": "firecrawl-cli-all",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for gadicc/yahoo-finance2.",
+      "href": "/skills/catalog/external/candidate-corpus-043-yahoo-finance2/",
+      "lane": "avoid",
+      "name": "candidate-corpus-043-yahoo-finance2",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for geekjourneyx/claude-design-card.",
+      "href": "/skills/catalog/external/candidate-corpus-160-claude-design-card/",
+      "lane": "avoid",
+      "name": "candidate-corpus-160-claude-design-card",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for google/skills.",
+      "href": "/skills/catalog/external/candidate-corpus-119-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-119-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for googleworkspace/cli.",
+      "href": "/skills/catalog/external/candidate-corpus-142-cli/",
+      "lane": "avoid",
+      "name": "candidate-corpus-142-cli",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for griffithkk3-del/openspec-reviewed-workflow.",
+      "href": "/skills/catalog/external/candidate-corpus-190-openspec-reviewed-workflow/",
+      "lane": "avoid",
+      "name": "candidate-corpus-190-openspec-reviewed-workflow",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for growthenginenowoslawski/coldoutboundskills.",
+      "href": "/skills/catalog/external/candidate-corpus-285-coldoutboundskills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-285-coldoutboundskills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for hardikpandya/stop-slop.",
+      "href": "/skills/catalog/external/candidate-corpus-117-stop-slop/",
+      "lane": "avoid",
+      "name": "candidate-corpus-117-stop-slop",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for hashgraph-online/awesome-codex-plugins/plugins/mturac/env-lint.",
+      "href": "/skills/catalog/external/candidate-corpus-164-env-lint/",
+      "lane": "avoid",
+      "name": "candidate-corpus-164-env-lint",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for hashgraph-online/awesome-codex-plugins/plugins/mturac/secret-guard.",
+      "href": "/skills/catalog/external/candidate-corpus-166-secret-guard/",
+      "lane": "avoid",
+      "name": "candidate-corpus-166-secret-guard",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for hashgraph-online/awesome-codex-plugins/plugins/mturac/commit-narrator.",
+      "href": "/skills/catalog/external/candidate-corpus-194-commit-narrator/",
+      "lane": "avoid",
+      "name": "candidate-corpus-194-commit-narrator",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for hashgraph-online/hol-guard-plugin.",
+      "href": "/skills/catalog/external/candidate-corpus-165-hol-guard-plugin/",
+      "lane": "avoid",
+      "name": "candidate-corpus-165-hol-guard-plugin",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for headroomlabs-ai/headroom.",
+      "href": "/skills/catalog/external/candidate-corpus-271-headroom/",
+      "lane": "avoid",
+      "name": "candidate-corpus-271-headroom",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for heygen-com/hyperframes.",
+      "href": "/skills/catalog/external/candidate-corpus-156-hyperframes/",
+      "lane": "avoid",
+      "name": "candidate-corpus-156-hyperframes",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for himself65/finance-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-103-finance-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-103-finance-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for huggingface/skills.",
+      "href": "/skills/catalog/external/candidate-corpus-115-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-115-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "keep global unless ML workflows become frequent.",
+      "href": "/skills/catalog/external/huggingface-skills-all/",
+      "lane": "avoid",
+      "name": "huggingface-skills-all",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for hyhmrright/brooks-lint.",
+      "href": "/skills/catalog/external/candidate-corpus-120-brooks-lint/",
+      "lane": "avoid",
+      "name": "candidate-corpus-120-brooks-lint",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for iannuttall/dotagents.",
+      "href": "/skills/catalog/external/candidate-corpus-275-dotagents/",
+      "lane": "avoid",
+      "name": "candidate-corpus-275-dotagents",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for imxv/Pretty-mermaid-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-030-pretty-mermaid-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-030-pretty-mermaid-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "third-party Notion REST guide; prefer official `makenotion/skills@notion-cli` for catalog promotion.",
+      "href": "/skills/catalog/external/notion-api/",
+      "lane": "avoid",
+      "name": "notion-api",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for itsmostafa/aws-agent-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-026-aws-agent-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-026-aws-agent-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ivan-magda/swift-security-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-084-swift-security-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-084-swift-security-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for jakubkrehel/make-interfaces-feel-better.",
+      "href": "/skills/catalog/external/candidate-corpus-091-make-interfaces-feel-better/",
+      "lane": "avoid",
+      "name": "candidate-corpus-091-make-interfaces-feel-better",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for jazzychad/ios-code-audit.",
+      "href": "/skills/catalog/external/candidate-corpus-085-ios-code-audit/",
+      "lane": "avoid",
+      "name": "candidate-corpus-085-ios-code-audit",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for jihe520/social-push.",
+      "href": "/skills/catalog/external/candidate-corpus-205-social-push/",
+      "lane": "avoid",
+      "name": "candidate-corpus-205-social-push",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for jixoai/openspecui.",
+      "href": "/skills/catalog/external/candidate-corpus-182-openspecui/",
+      "lane": "avoid",
+      "name": "candidate-corpus-182-openspecui",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for johnvouros/nullcost-plugin.",
+      "href": "/skills/catalog/external/candidate-corpus-171-nullcost-plugin/",
+      "lane": "avoid",
+      "name": "candidate-corpus-171-nullcost-plugin",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for kepano/obsidian-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-139-obsidian-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-139-obsidian-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for klajdikkolaj/upwork-autopilot.",
+      "href": "/skills/catalog/external/candidate-corpus-280-upwork-autopilot/",
+      "lane": "avoid",
+      "name": "candidate-corpus-280-upwork-autopilot",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ksimback/tech-debt-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-031-tech-debt-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-031-tech-debt-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for langchain-ai/langchain-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-040-langchain-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-040-langchain-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for lawve-ai/awesome-legal-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-050-awesome-legal-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-050-awesome-legal-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for lishix520/academic-paper-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-032-academic-paper-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-032-academic-paper-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for louisedesadeleer/clipify.",
+      "href": "/skills/catalog/external/candidate-corpus-197-clipify/",
+      "lane": "avoid",
+      "name": "candidate-corpus-197-clipify",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for markdown-viewer/skills.",
+      "href": "/skills/catalog/external/candidate-corpus-105-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-105-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for marzukia/charted.",
+      "href": "/skills/catalog/external/candidate-corpus-287-charted/",
+      "lane": "avoid",
+      "name": "candidate-corpus-287-charted",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for mbertani/opsx-feature-dev.",
+      "href": "/skills/catalog/external/candidate-corpus-189-opsx-feature-dev/",
+      "lane": "avoid",
+      "name": "candidate-corpus-189-opsx-feature-dev",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for meleantonio/awesome-econ-ai-stuff.",
+      "href": "/skills/catalog/external/candidate-corpus-062-awesome-econ-ai-stuff/",
+      "lane": "avoid",
+      "name": "candidate-corpus-062-awesome-econ-ai-stuff",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for meodai/skill.color-expert.",
+      "href": "/skills/catalog/external/candidate-corpus-049-skill-color-expert/",
+      "lane": "avoid",
+      "name": "candidate-corpus-049-skill-color-expert",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for mhaviv/Swift-FocusEngine-Agent-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-083-swift-focusengine-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-083-swift-focusengine-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for michalparkola/tapestry-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-198-tapestry-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-198-tapestry-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "massive Azure bundle; cherry-pick only if a concrete need appears \u2014 do not bulk-promote.",
+      "href": "/skills/catalog/external/microsoft-azure-skills-all/",
+      "lane": "avoid",
+      "name": "microsoft-azure-skills-all",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for millionco/react-doctor.",
+      "href": "/skills/catalog/external/candidate-corpus-118-react-doctor/",
+      "lane": "avoid",
+      "name": "candidate-corpus-118-react-doctor",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for minhnv0807/ai-business-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-203-ai-business-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-203-ai-business-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for mirkobozzetto/espresso.",
+      "href": "/skills/catalog/external/candidate-corpus-276-espresso/",
+      "lane": "avoid",
+      "name": "candidate-corpus-276-espresso",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for mobile-next/mobile-mcp.",
+      "href": "/skills/catalog/external/candidate-corpus-154-mobile-mcp/",
+      "lane": "avoid",
+      "name": "candidate-corpus-154-mobile-mcp",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for modelcontextprotocol/inspector.",
+      "href": "/skills/catalog/external/candidate-corpus-155-inspector/",
+      "lane": "avoid",
+      "name": "candidate-corpus-155-inspector",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for mrtooher/fable-mode.",
+      "href": "/skills/catalog/external/candidate-corpus-191-fable-mode/",
+      "lane": "avoid",
+      "name": "candidate-corpus-191-fable-mode",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for multica-ai/andrej-karpathy-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-153-andrej-karpathy-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-153-andrej-karpathy-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for n0an/App-Intents-Agent-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-076-app-intents-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-076-app-intents-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for n0an/Background-Execution-Agent-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-081-background-execution-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-081-background-execution-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for n0an/Swift-FormatStyle-Agent-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-072-swift-formatstyle-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-072-swift-formatstyle-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for n0an/Widgets-Agent-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-089-widgets-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-089-widgets-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ndpvt-web/latex-document-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-192-latex-document-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-192-latex-document-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for nicobailon/visual-explainer.",
+      "href": "/skills/catalog/external/candidate-corpus-113-visual-explainer/",
+      "lane": "avoid",
+      "name": "candidate-corpus-113-visual-explainer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ningzimu/codex-ppt-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-106-codex-ppt-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-106-codex-ppt-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for nteract/semiotic.",
+      "href": "/skills/catalog/external/candidate-corpus-288-semiotic/",
+      "lane": "avoid",
+      "name": "candidate-corpus-288-semiotic",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for onvoyage-ai/gtm-engineer-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-023-gtm-engineer-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-023-gtm-engineer-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for op7418/logo-generator-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-016-logo-generator-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-016-logo-generator-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for openags/paper-search-mcp.",
+      "href": "/skills/catalog/external/candidate-corpus-274-paper-search-mcp/",
+      "lane": "avoid",
+      "name": "candidate-corpus-274-paper-search-mcp",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for papersflow-ai/papersflow-codex-plugin.",
+      "href": "/skills/catalog/external/candidate-corpus-279-papersflow-codex-plugin/",
+      "lane": "avoid",
+      "name": "candidate-corpus-279-papersflow-codex-plugin",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/architecture-diagram.",
+      "href": "/skills/catalog/external/candidate-corpus-200-architecture-diagram/",
+      "lane": "avoid",
+      "name": "candidate-corpus-200-architecture-diagram",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/agent-md-refactor.",
+      "href": "/skills/catalog/external/candidate-corpus-201-agent-md-refactor/",
+      "lane": "avoid",
+      "name": "candidate-corpus-201-agent-md-refactor",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/brainstorming.",
+      "href": "/skills/catalog/external/candidate-corpus-202-brainstorming/",
+      "lane": "avoid",
+      "name": "candidate-corpus-202-brainstorming",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/documentation-writer.",
+      "href": "/skills/catalog/external/candidate-corpus-207-documentation-writer/",
+      "lane": "avoid",
+      "name": "candidate-corpus-207-documentation-writer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/exa-web-search-free.",
+      "href": "/skills/catalog/external/candidate-corpus-208-exa-web-search-free/",
+      "lane": "avoid",
+      "name": "candidate-corpus-208-exa-web-search-free",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/extreme-software-optimization.",
+      "href": "/skills/catalog/external/candidate-corpus-209-extreme-software-optimization/",
+      "lane": "avoid",
+      "name": "candidate-corpus-209-extreme-software-optimization",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/game-changing-features.",
+      "href": "/skills/catalog/external/candidate-corpus-210-game-changing-features/",
+      "lane": "avoid",
+      "name": "candidate-corpus-210-game-changing-features",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/golang-pro.",
+      "href": "/skills/catalog/external/candidate-corpus-211-golang-pro/",
+      "lane": "avoid",
+      "name": "candidate-corpus-211-golang-pro",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/hono.",
+      "href": "/skills/catalog/external/candidate-corpus-212-hono/",
+      "lane": "avoid",
+      "name": "candidate-corpus-212-hono",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/lesson-learned.",
+      "href": "/skills/catalog/external/candidate-corpus-213-lesson-learned/",
+      "lane": "avoid",
+      "name": "candidate-corpus-213-lesson-learned",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/next-best-practices.",
+      "href": "/skills/catalog/external/candidate-corpus-214-next-best-practices/",
+      "lane": "avoid",
+      "name": "candidate-corpus-214-next-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/shadcn.",
+      "href": "/skills/catalog/external/candidate-corpus-215-shadcn/",
+      "lane": "avoid",
+      "name": "candidate-corpus-215-shadcn",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/systematic-debugging.",
+      "href": "/skills/catalog/external/candidate-corpus-216-systematic-debugging/",
+      "lane": "avoid",
+      "name": "candidate-corpus-216-systematic-debugging",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/tui-design.",
+      "href": "/skills/catalog/external/candidate-corpus-217-tui-design/",
+      "lane": "avoid",
+      "name": "candidate-corpus-217-tui-design",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/vercel-composition-patterns.",
+      "href": "/skills/catalog/external/candidate-corpus-218-vercel-composition-patterns/",
+      "lane": "avoid",
+      "name": "candidate-corpus-218-vercel-composition-patterns",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/vercel-react-best-practices.",
+      "href": "/skills/catalog/external/candidate-corpus-219-vercel-react-best-practices/",
+      "lane": "avoid",
+      "name": "candidate-corpus-219-vercel-react-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/vitest.",
+      "href": "/skills/catalog/external/candidate-corpus-220-vitest/",
+      "lane": "avoid",
+      "name": "candidate-corpus-220-vitest",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/zod.",
+      "href": "/skills/catalog/external/candidate-corpus-221-zod/",
+      "lane": "avoid",
+      "name": "candidate-corpus-221-zod",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/zustand.",
+      "href": "/skills/catalog/external/candidate-corpus-222-zustand/",
+      "lane": "avoid",
+      "name": "candidate-corpus-222-zustand",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/alex-hormozi-pitch.",
+      "href": "/skills/catalog/external/candidate-corpus-223-alex-hormozi-pitch/",
+      "lane": "avoid",
+      "name": "candidate-corpus-223-alex-hormozi-pitch",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/brand-storytelling.",
+      "href": "/skills/catalog/external/candidate-corpus-224-brand-storytelling/",
+      "lane": "avoid",
+      "name": "candidate-corpus-224-brand-storytelling",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/content-research-writer.",
+      "href": "/skills/catalog/external/candidate-corpus-225-content-research-writer/",
+      "lane": "avoid",
+      "name": "candidate-corpus-225-content-research-writer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/copywriting.",
+      "href": "/skills/catalog/external/candidate-corpus-226-copywriting/",
+      "lane": "avoid",
+      "name": "candidate-corpus-226-copywriting",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/fundraising.",
+      "href": "/skills/catalog/external/candidate-corpus-227-fundraising/",
+      "lane": "avoid",
+      "name": "candidate-corpus-227-fundraising",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/google-ads.",
+      "href": "/skills/catalog/external/candidate-corpus-228-google-ads/",
+      "lane": "avoid",
+      "name": "candidate-corpus-228-google-ads",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/hormozi-ad-factory.",
+      "href": "/skills/catalog/external/candidate-corpus-229-hormozi-ad-factory/",
+      "lane": "avoid",
+      "name": "candidate-corpus-229-hormozi-ad-factory",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/humanizer.",
+      "href": "/skills/catalog/external/candidate-corpus-230-humanizer/",
+      "lane": "avoid",
+      "name": "candidate-corpus-230-humanizer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/pitch-deck.",
+      "href": "/skills/catalog/external/candidate-corpus-231-pitch-deck/",
+      "lane": "avoid",
+      "name": "candidate-corpus-231-pitch-deck",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/pitch-deck-visuals.",
+      "href": "/skills/catalog/external/candidate-corpus-232-pitch-deck-visuals/",
+      "lane": "avoid",
+      "name": "candidate-corpus-232-pitch-deck-visuals",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/pitch-gen.",
+      "href": "/skills/catalog/external/candidate-corpus-233-pitch-gen/",
+      "lane": "avoid",
+      "name": "candidate-corpus-233-pitch-gen",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/pptx-creator.",
+      "href": "/skills/catalog/external/candidate-corpus-234-pptx-creator/",
+      "lane": "avoid",
+      "name": "candidate-corpus-234-pptx-creator",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/professional-communication.",
+      "href": "/skills/catalog/external/candidate-corpus-235-professional-communication/",
+      "lane": "avoid",
+      "name": "candidate-corpus-235-professional-communication",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/sales-methodology-implementer.",
+      "href": "/skills/catalog/external/candidate-corpus-236-sales-methodology-implementer/",
+      "lane": "avoid",
+      "name": "candidate-corpus-236-sales-methodology-implementer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/startup-validator.",
+      "href": "/skills/catalog/external/candidate-corpus-237-startup-validator/",
+      "lane": "avoid",
+      "name": "candidate-corpus-237-startup-validator",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/viz.",
+      "href": "/skills/catalog/external/candidate-corpus-238-viz/",
+      "lane": "avoid",
+      "name": "candidate-corpus-238-viz",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/marketing/writing-clearly-and-concisely.",
+      "href": "/skills/catalog/external/candidate-corpus-239-writing-clearly-and-concisely/",
+      "lane": "avoid",
+      "name": "candidate-corpus-239-writing-clearly-and-concisely",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/adversarial-review.",
+      "href": "/skills/catalog/external/candidate-corpus-240-adversarial-review/",
+      "lane": "avoid",
+      "name": "candidate-corpus-240-adversarial-review",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/ai-sdk.",
+      "href": "/skills/catalog/external/candidate-corpus-241-ai-sdk/",
+      "lane": "avoid",
+      "name": "candidate-corpus-241-ai-sdk",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/building-components.",
+      "href": "/skills/catalog/external/candidate-corpus-242-building-components/",
+      "lane": "avoid",
+      "name": "candidate-corpus-242-building-components",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/crafting-effective-readmes.",
+      "href": "/skills/catalog/external/candidate-corpus-243-crafting-effective-readmes/",
+      "lane": "avoid",
+      "name": "candidate-corpus-243-crafting-effective-readmes",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/creating-spec.",
+      "href": "/skills/catalog/external/candidate-corpus-244-creating-spec/",
+      "lane": "avoid",
+      "name": "candidate-corpus-244-creating-spec",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/design-spec-extraction.",
+      "href": "/skills/catalog/external/candidate-corpus-245-design-spec-extraction/",
+      "lane": "avoid",
+      "name": "candidate-corpus-245-design-spec-extraction",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/devops-engineer.",
+      "href": "/skills/catalog/external/candidate-corpus-246-devops-engineer/",
+      "lane": "avoid",
+      "name": "candidate-corpus-246-devops-engineer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/drizzle-orm.",
+      "href": "/skills/catalog/external/candidate-corpus-247-drizzle-orm/",
+      "lane": "avoid",
+      "name": "candidate-corpus-247-drizzle-orm",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/drizzle-postgres.",
+      "href": "/skills/catalog/external/candidate-corpus-248-drizzle-postgres/",
+      "lane": "avoid",
+      "name": "candidate-corpus-248-drizzle-postgres",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/electron-builder.",
+      "href": "/skills/catalog/external/candidate-corpus-249-electron-builder/",
+      "lane": "avoid",
+      "name": "candidate-corpus-249-electron-builder",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/electron-dev.",
+      "href": "/skills/catalog/external/candidate-corpus-250-electron-dev/",
+      "lane": "avoid",
+      "name": "candidate-corpus-250-electron-dev",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/electron-release.",
+      "href": "/skills/catalog/external/candidate-corpus-251-electron-release/",
+      "lane": "avoid",
+      "name": "candidate-corpus-251-electron-release",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/es-toolkit.",
+      "href": "/skills/catalog/external/candidate-corpus-252-es-toolkit/",
+      "lane": "avoid",
+      "name": "candidate-corpus-252-es-toolkit",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/executing-plans.",
+      "href": "/skills/catalog/external/candidate-corpus-253-executing-plans/",
+      "lane": "avoid",
+      "name": "candidate-corpus-253-executing-plans",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/fixing-motion-performance.",
+      "href": "/skills/catalog/external/candidate-corpus-254-fixing-motion-performance/",
+      "lane": "avoid",
+      "name": "candidate-corpus-254-fixing-motion-performance",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/helm-chart-scaffolding.",
+      "href": "/skills/catalog/external/candidate-corpus-255-helm-chart-scaffolding/",
+      "lane": "avoid",
+      "name": "candidate-corpus-255-helm-chart-scaffolding",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/hetzner-server.",
+      "href": "/skills/catalog/external/candidate-corpus-256-hetzner-server/",
+      "lane": "avoid",
+      "name": "candidate-corpus-256-hetzner-server",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/kubernetes-specialist.",
+      "href": "/skills/catalog/external/candidate-corpus-257-kubernetes-specialist/",
+      "lane": "avoid",
+      "name": "candidate-corpus-257-kubernetes-specialist",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/mermaid-diagrams.",
+      "href": "/skills/catalog/external/candidate-corpus-258-mermaid-diagrams/",
+      "lane": "avoid",
+      "name": "candidate-corpus-258-mermaid-diagrams",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/motion.",
+      "href": "/skills/catalog/external/candidate-corpus-259-motion/",
+      "lane": "avoid",
+      "name": "candidate-corpus-259-motion",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/motion-react.",
+      "href": "/skills/catalog/external/candidate-corpus-260-motion-react/",
+      "lane": "avoid",
+      "name": "candidate-corpus-260-motion-react",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/obsidian-bases.",
+      "href": "/skills/catalog/external/candidate-corpus-261-obsidian-bases/",
+      "lane": "avoid",
+      "name": "candidate-corpus-261-obsidian-bases",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/obsidian-cli.",
+      "href": "/skills/catalog/external/candidate-corpus-262-obsidian-cli/",
+      "lane": "avoid",
+      "name": "candidate-corpus-262-obsidian-cli",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/obsidian-markdown.",
+      "href": "/skills/catalog/external/candidate-corpus-263-obsidian-markdown/",
+      "lane": "avoid",
+      "name": "candidate-corpus-263-obsidian-markdown",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/remotion-best-practices.",
+      "href": "/skills/catalog/external/candidate-corpus-264-remotion-best-practices/",
+      "lane": "avoid",
+      "name": "candidate-corpus-264-remotion-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/requirements-clarity.",
+      "href": "/skills/catalog/external/candidate-corpus-265-requirements-clarity/",
+      "lane": "avoid",
+      "name": "candidate-corpus-265-requirements-clarity",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/ship-learn-next.",
+      "href": "/skills/catalog/external/candidate-corpus-266-ship-learn-next/",
+      "lane": "avoid",
+      "name": "candidate-corpus-266-ship-learn-next",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/tauri-v2.",
+      "href": "/skills/catalog/external/candidate-corpus-267-tauri-v2/",
+      "lane": "avoid",
+      "name": "candidate-corpus-267-tauri-v2",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/terraform-style-guide.",
+      "href": "/skills/catalog/external/candidate-corpus-268-terraform-style-guide/",
+      "lane": "avoid",
+      "name": "candidate-corpus-268-terraform-style-guide",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/workflow.",
+      "href": "/skills/catalog/external/candidate-corpus-269-workflow/",
+      "lane": "avoid",
+      "name": "candidate-corpus-269-workflow",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/wrangler.",
+      "href": "/skills/catalog/external/candidate-corpus-270-wrangler/",
+      "lane": "avoid",
+      "name": "candidate-corpus-270-wrangler",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/better-auth-best-practices.",
+      "href": "/skills/catalog/external/candidate-corpus-289-better-auth-best-practices/",
+      "lane": "avoid",
+      "name": "candidate-corpus-289-better-auth-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/better-auth-organization-best-practices.",
+      "href": "/skills/catalog/external/candidate-corpus-290-better-auth-organization-best-practices/",
+      "lane": "avoid",
+      "name": "candidate-corpus-290-better-auth-organization-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/find-rules.",
+      "href": "/skills/catalog/external/candidate-corpus-292-find-rules/",
+      "lane": "avoid",
+      "name": "candidate-corpus-292-find-rules",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/community/find-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-293-find-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-293-find-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for phuryn/pm-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-145-pm-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-145-pm-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for planetscale/database-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-283-database-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-283-database-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for plannotator/effective-html.",
+      "href": "/skills/catalog/external/candidate-corpus-021-effective-html/",
+      "lane": "avoid",
+      "name": "candidate-corpus-021-effective-html",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for plannotator/tot.",
+      "href": "/skills/catalog/external/candidate-corpus-020-tot/",
+      "lane": "avoid",
+      "name": "candidate-corpus-020-tot",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for product-on-purpose/pm-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-158-pm-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-158-pm-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for ramziddin/solid-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-051-solid-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-051-solid-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for remotion-dev/skills.",
+      "href": "/skills/catalog/external/candidate-corpus-108-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-108-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for rgmez/apple-accessibility-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-075-apple-accessibility-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-075-apple-accessibility-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for rohunvora/x-research-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-024-x-research-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-024-x-research-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for rorkai/app-store-connect-cli-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-077-app-store-connect-cli-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-077-app-store-connect-cli-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for rshankras/claude-code-apple-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-204-claude-code-apple-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-204-claude-code-apple-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for samber/cc-skills-golang.",
+      "href": "/skills/catalog/external/candidate-corpus-096-cc-skills-golang/",
+      "lane": "avoid",
+      "name": "candidate-corpus-096-cc-skills-golang",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for sflueckiger/specboard.",
+      "href": "/skills/catalog/external/candidate-corpus-185-specboard/",
+      "lane": "avoid",
+      "name": "candidate-corpus-185-specboard",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for shaom/infocard-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-159-infocard-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-159-infocard-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for solana-foundation/solana-dev-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-037-solana-dev-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-037-solana-dev-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for sudokar/openspec-plus.",
+      "href": "/skills/catalog/external/candidate-corpus-183-openspec-plus/",
+      "lane": "avoid",
+      "name": "candidate-corpus-183-openspec-plus",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for summer521521/Zotero_Research_plugin.",
+      "href": "/skills/catalog/external/candidate-corpus-176-zotero-research-plugin/",
+      "lane": "avoid",
+      "name": "candidate-corpus-176-zotero-research-plugin",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for supabase/agent-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-094-agent-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-094-agent-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for teng-lin/notebooklm-py.",
+      "href": "/skills/catalog/external/candidate-corpus-146-notebooklm-py/",
+      "lane": "avoid",
+      "name": "candidate-corpus-146-notebooklm-py",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for tim-osterhus/codex-remotion-plugin.",
+      "href": "/skills/catalog/external/candidate-corpus-174-codex-remotion-plugin/",
+      "lane": "avoid",
+      "name": "candidate-corpus-174-codex-remotion-plugin",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for timbroddin/app-store-aso-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-078-app-store-aso-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-078-app-store-aso-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for timescale/pg-aiguide.",
+      "href": "/skills/catalog/external/candidate-corpus-010-pg-aiguide/",
+      "lane": "avoid",
+      "name": "candidate-corpus-010-pg-aiguide",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for tjboudreaux/cc-thinking-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-047-cc-thinking-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-047-cc-thinking-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for truongduy2611/app-store-preflight-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-019-app-store-preflight-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-019-app-store-preflight-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for tt-a1i/archify.",
+      "href": "/skills/catalog/external/candidate-corpus-100-archify/",
+      "lane": "avoid",
+      "name": "candidate-corpus-100-archify",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for twostraws/Swift-Concurrency-Agent-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-066-swift-concurrency-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-066-swift-concurrency-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for twostraws/Swift-Testing-Agent-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-068-swift-testing-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-068-swift-testing-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for twostraws/SwiftAgents.",
+      "href": "/skills/catalog/external/candidate-corpus-090-swiftagents/",
+      "lane": "avoid",
+      "name": "candidate-corpus-090-swiftagents",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for twostraws/SwiftData-Agent-Skill.",
+      "href": "/skills/catalog/external/candidate-corpus-002-swiftdata-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-002-swiftdata-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for vanab/swiftdata-agent-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-065-swiftdata-agent-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-065-swiftdata-agent-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "useful, but broad operational scope and overlaps browser automation.",
+      "href": "/skills/catalog/external/vercel-labs-agent-browser-all/",
+      "lane": "avoid",
+      "name": "vercel-labs-agent-browser-all",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for vercel-labs/agent-skills.",
+      "href": "/skills/catalog/external/candidate-corpus-143-agent-skills/",
+      "lane": "avoid",
+      "name": "candidate-corpus-143-agent-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "duplicate of `harness-master` discover (systematic gap pipeline).",
+      "href": "/skills/catalog/external/find-skills/",
+      "lane": "avoid",
+      "name": "find-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for wearetechnative/openspec-badge-action.",
+      "href": "/skills/catalog/external/candidate-corpus-281-openspec-badge-action/",
+      "lane": "avoid",
+      "name": "candidate-corpus-281-openspec-badge-action",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for wenqingyu/ralphy-openspec.",
+      "href": "/skills/catalog/external/candidate-corpus-180-ralphy-openspec/",
+      "lane": "avoid",
+      "name": "candidate-corpus-180-ralphy-openspec",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for wgwtest/novel-writing.",
+      "href": "/skills/catalog/external/candidate-corpus-131-novel-writing/",
+      "lane": "avoid",
+      "name": "candidate-corpus-131-novel-writing",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for wxhou/openspec-playwright.",
+      "href": "/skills/catalog/external/candidate-corpus-186-openspec-playwright/",
+      "lane": "avoid",
+      "name": "candidate-corpus-186-openspec-playwright",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for wzyn20051216/solidworks-automation-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-196-solidworks-automation-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-196-solidworks-automation-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface.",
+      "href": "/skills/catalog/external/github-actions-docs/",
+      "lane": "avoid",
+      "name": "github-actions-docs",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for yctimlin/mcp_excalidraw.",
+      "href": "/skills/catalog/external/candidate-corpus-006-mcp-excalidraw/",
+      "lane": "avoid",
+      "name": "candidate-corpus-006-mcp-excalidraw",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for yujiachen-y/codebase-recon-skill.",
+      "href": "/skills/catalog/external/candidate-corpus-121-codebase-recon-skill/",
+      "lane": "avoid",
+      "name": "candidate-corpus-121-codebase-recon-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for yuritoledo/openspec-tdd.",
+      "href": "/skills/catalog/external/candidate-corpus-188-openspec-tdd/",
+      "lane": "avoid",
+      "name": "candidate-corpus-188-openspec-tdd",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for zarazhangrui/frontend-slides.",
+      "href": "/skills/catalog/external/candidate-corpus-144-frontend-slides/",
+      "lane": "avoid",
+      "name": "candidate-corpus-144-frontend-slides",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for zubair-trabzada/ai-legal-claude.",
+      "href": "/skills/catalog/external/candidate-corpus-015-ai-legal-claude/",
+      "lane": "avoid",
+      "name": "candidate-corpus-015-ai-legal-claude",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Trust-gated July 2026 candidate corpus entry for zubair-trabzada/ai-sales-team-claude.",
+      "href": "/skills/catalog/external/candidate-corpus-044-ai-sales-team-claude/",
+      "lane": "avoid",
+      "name": "candidate-corpus-044-ai-sales-team-claude",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/vue/",
+      "lane": "inspect",
+      "name": "vue",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/terraform-skill/",
+      "lane": "inspect",
+      "name": "terraform-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/apollo-ios/",
+      "lane": "inspect",
+      "name": "apollo-ios",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/apollo-mcp-server/",
+      "lane": "inspect",
+      "name": "apollo-mcp-server",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/apollo-router/",
+      "lane": "inspect",
+      "name": "apollo-router",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/aws-iam/",
+      "lane": "inspect",
+      "name": "aws-iam",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/aws-serverless/",
+      "lane": "inspect",
+      "name": "aws-serverless",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/clickhouse-architecture-advisor/",
+      "lane": "inspect",
+      "name": "clickhouse-architecture-advisor",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/clickhouse-best-practices/",
+      "lane": "inspect",
+      "name": "clickhouse-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/getting-started/",
+      "lane": "inspect",
+      "name": "getting-started",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines.",
+      "href": "/skills/catalog/external/otel-collector/",
+      "lane": "inspect",
+      "name": "otel-collector",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines.",
+      "href": "/skills/catalog/external/otel-instrumentation/",
+      "lane": "inspect",
+      "name": "otel-instrumentation",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines.",
+      "href": "/skills/catalog/external/otel-semantic-conventions/",
+      "lane": "inspect",
+      "name": "otel-semantic-conventions",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/expo-cicd-workflows/",
+      "lane": "inspect",
+      "name": "expo-cicd-workflows",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/expo-deployment/",
+      "lane": "inspect",
+      "name": "expo-deployment",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/expo-dev-client/",
+      "lane": "inspect",
+      "name": "expo-dev-client",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/upgrading-expo/",
+      "lane": "inspect",
+      "name": "upgrading-expo",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/firebase-ai-logic-basics/",
+      "lane": "inspect",
+      "name": "firebase-ai-logic-basics",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/firebase-app-hosting-basics/",
+      "lane": "inspect",
+      "name": "firebase-app-hosting-basics",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/firebase-auth-basics/",
+      "lane": "inspect",
+      "name": "firebase-auth-basics",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/sentry-fix-issues/",
+      "lane": "inspect",
+      "name": "sentry-fix-issues",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/sentry-sdk-setup/",
+      "lane": "inspect",
+      "name": "sentry-sdk-setup",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/sentry-setup-ai-monitoring/",
+      "lane": "inspect",
+      "name": "sentry-setup-ai-monitoring",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Sentry engineering-process skills beyond curated `skill-scanner`. `gha-security-review` analyzes GitHub Actions workflows for pwn-request patterns.",
+      "href": "/skills/catalog/external/code-review/",
+      "lane": "inspect",
+      "name": "code-review",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Sentry engineering-process skills beyond curated `skill-scanner`. `gha-security-review` analyzes GitHub Actions workflows for pwn-request patterns.",
+      "href": "/skills/catalog/external/find-bugs/",
+      "lane": "inspect",
+      "name": "find-bugs",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Sentry engineering-process skills beyond curated `skill-scanner`. `gha-security-review` analyzes GitHub Actions workflows for pwn-request patterns.",
+      "href": "/skills/catalog/external/gha-security-review/",
+      "lane": "inspect",
+      "name": "gha-security-review",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Sentry engineering-process skills beyond curated `skill-scanner`. `gha-security-review` analyzes GitHub Actions workflows for pwn-request patterns.",
+      "href": "/skills/catalog/external/iterate-pr/",
+      "lane": "inspect",
+      "name": "iterate-pr",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/skill-scanner/",
+      "lane": "inspect",
+      "name": "skill-scanner",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/agent-governance/",
+      "lane": "inspect",
+      "name": "agent-governance",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/agent-owasp-compliance/",
+      "lane": "inspect",
+      "name": "agent-owasp-compliance",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/agent-supply-chain/",
+      "lane": "inspect",
+      "name": "agent-supply-chain",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/agentic-eval/",
+      "lane": "inspect",
+      "name": "agentic-eval",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/arize-evaluator/",
+      "lane": "inspect",
+      "name": "arize-evaluator",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/arize-instrumentation/",
+      "lane": "inspect",
+      "name": "arize-instrumentation",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/arize-prompt-optimization/",
+      "lane": "inspect",
+      "name": "arize-prompt-optimization",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/create-implementation-plan/",
+      "lane": "inspect",
+      "name": "create-implementation-plan",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/eval-driven-dev/",
+      "lane": "inspect",
+      "name": "eval-driven-dev",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "`excalidraw-diagram-generator` bundles three Python helper scripts with no scanner findings; still review executable surface before install-now promotion.",
+      "href": "/skills/catalog/external/excalidraw-diagram-generator/",
+      "lane": "inspect",
+      "name": "excalidraw-diagram-generator",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/mcp-security-audit/",
+      "lane": "inspect",
+      "name": "mcp-security-audit",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/phoenix-evals/",
+      "lane": "inspect",
+      "name": "phoenix-evals",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/phoenix-tracing/",
+      "lane": "inspect",
+      "name": "phoenix-tracing",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Rust MCP server scaffolding from `github/awesome-copilot`.",
+      "href": "/skills/catalog/external/rust-mcp-server-generator/",
+      "lane": "inspect",
+      "name": "rust-mcp-server-generator",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/secret-scanning/",
+      "lane": "inspect",
+      "name": "secret-scanning",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/sql-code-review/",
+      "lane": "inspect",
+      "name": "sql-code-review",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/threat-model-analyst/",
+      "lane": "inspect",
+      "name": "threat-model-analyst",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/drizzle-orm-patterns/",
+      "lane": "inspect",
+      "name": "drizzle-orm-patterns",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/gemini-api/",
+      "lane": "inspect",
+      "name": "gemini-api",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/aws-ami-builder/",
+      "lane": "inspect",
+      "name": "aws-ami-builder",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/terraform-search-import/",
+      "lane": "inspect",
+      "name": "terraform-search-import",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/terraform-stacks/",
+      "lane": "inspect",
+      "name": "terraform-stacks",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Inngest durable-workflow core subset only. Route TS serverless step workflows here; keep remaining Inngest skills global-only unless explicitly requested.",
+      "href": "/skills/catalog/external/inngest-durable-functions/",
+      "lane": "inspect",
+      "name": "inngest-durable-functions",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Inngest durable-workflow core subset only. Route TS serverless step workflows here; keep remaining Inngest skills global-only unless explicitly requested.",
+      "href": "/skills/catalog/external/inngest-events/",
+      "lane": "inspect",
+      "name": "inngest-events",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Inngest durable-workflow core subset only. Route TS serverless step workflows here; keep remaining Inngest skills global-only unless explicitly requested.",
+      "href": "/skills/catalog/external/inngest-setup/",
+      "lane": "inspect",
+      "name": "inngest-setup",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Inngest durable-workflow core subset only. Route TS serverless step workflows here; keep remaining Inngest skills global-only unless explicitly requested.",
+      "href": "/skills/catalog/external/inngest-steps/",
+      "lane": "inspect",
+      "name": "inngest-steps",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/kubernetes-specialist/",
+      "lane": "inspect",
+      "name": "kubernetes-specialist",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Authoritative FastMCP maintainer skills. `fastmcp-client-cli` invokes MCP tool calls; review scripts before promotion.",
+      "href": "/skills/catalog/external/fastmcp-client-cli/",
+      "lane": "inspect",
+      "name": "fastmcp-client-cli",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Authoritative FastMCP maintainer skills. `fastmcp-client-cli` invokes MCP tool calls; review scripts before promotion.",
+      "href": "/skills/catalog/external/testing-python/",
+      "lane": "inspect",
+      "name": "testing-python",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops.",
+      "href": "/skills/catalog/external/deep-agents-core/",
+      "lane": "inspect",
+      "name": "deep-agents-core",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops.",
+      "href": "/skills/catalog/external/deep-agents-memory/",
+      "lane": "inspect",
+      "name": "deep-agents-memory",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops.",
+      "href": "/skills/catalog/external/deep-agents-orchestration/",
+      "lane": "inspect",
+      "name": "deep-agents-orchestration",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops.",
+      "href": "/skills/catalog/external/ecosystem-primer/",
+      "lane": "inspect",
+      "name": "ecosystem-primer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops.",
+      "href": "/skills/catalog/external/langchain-dependencies/",
+      "lane": "inspect",
+      "name": "langchain-dependencies",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops.",
+      "href": "/skills/catalog/external/langchain-fundamentals/",
+      "lane": "inspect",
+      "name": "langchain-fundamentals",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops.",
+      "href": "/skills/catalog/external/langchain-middleware/",
+      "lane": "inspect",
+      "name": "langchain-middleware",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops.",
+      "href": "/skills/catalog/external/langchain-rag/",
+      "lane": "inspect",
+      "name": "langchain-rag",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops.",
+      "href": "/skills/catalog/external/langgraph-fundamentals/",
+      "lane": "inspect",
+      "name": "langgraph-fundamentals",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops.",
+      "href": "/skills/catalog/external/langgraph-human-in-the-loop/",
+      "lane": "inspect",
+      "name": "langgraph-human-in-the-loop",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops.",
+      "href": "/skills/catalog/external/langgraph-persistence/",
+      "lane": "inspect",
+      "name": "langgraph-persistence",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops.",
+      "href": "/skills/catalog/external/managed-deep-agents/",
+      "lane": "inspect",
+      "name": "managed-deep-agents",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access.",
+      "href": "/skills/catalog/external/langsmith-dataset/",
+      "lane": "inspect",
+      "name": "langsmith-dataset",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access.",
+      "href": "/skills/catalog/external/langsmith-evaluator/",
+      "lane": "inspect",
+      "name": "langsmith-evaluator",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access.",
+      "href": "/skills/catalog/external/langsmith-trace/",
+      "lane": "inspect",
+      "name": "langsmith-trace",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work.",
+      "href": "/skills/catalog/external/ctf-ai-ml/",
+      "lane": "inspect",
+      "name": "ctf-ai-ml",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work.",
+      "href": "/skills/catalog/external/ctf-crypto/",
+      "lane": "inspect",
+      "name": "ctf-crypto",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work.",
+      "href": "/skills/catalog/external/ctf-forensics/",
+      "lane": "inspect",
+      "name": "ctf-forensics",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work.",
+      "href": "/skills/catalog/external/ctf-malware/",
+      "lane": "inspect",
+      "name": "ctf-malware",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work.",
+      "href": "/skills/catalog/external/ctf-misc/",
+      "lane": "inspect",
+      "name": "ctf-misc",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work.",
+      "href": "/skills/catalog/external/ctf-osint/",
+      "lane": "inspect",
+      "name": "ctf-osint",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work.",
+      "href": "/skills/catalog/external/ctf-pwn/",
+      "lane": "inspect",
+      "name": "ctf-pwn",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work.",
+      "href": "/skills/catalog/external/ctf-reverse/",
+      "lane": "inspect",
+      "name": "ctf-reverse",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work.",
+      "href": "/skills/catalog/external/ctf-web/",
+      "lane": "inspect",
+      "name": "ctf-web",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work.",
+      "href": "/skills/catalog/external/ctf-writeup/",
+      "lane": "inspect",
+      "name": "ctf-writeup",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work.",
+      "href": "/skills/catalog/external/solve-challenge/",
+      "lane": "inspect",
+      "name": "solve-challenge",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Notion CLI skill from `makenotion/skills`. Wraps the `ntn` CLI and requires API token handling.",
+      "href": "/skills/catalog/external/notion-cli/",
+      "lane": "inspect",
+      "name": "notion-cli",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/chatgpt-app-builder/",
+      "lane": "inspect",
+      "name": "chatgpt-app-builder",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/mcp-builder/",
+      "lane": "inspect",
+      "name": "mcp-builder",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control.",
+      "href": "/skills/catalog/external/playwright-cli/",
+      "lane": "inspect",
+      "name": "playwright-cli",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/claimable-postgres/",
+      "lane": "inspect",
+      "name": "claimable-postgres",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/neon-ai-gateway/",
+      "lane": "inspect",
+      "name": "neon-ai-gateway",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/neon-functions/",
+      "lane": "inspect",
+      "name": "neon-functions",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Neon Postgres skills. Prefer this source over generic community Neon skills; audit hooks and network behavior before promoting to install-now.",
+      "href": "/skills/catalog/external/neon-postgres/",
+      "lane": "inspect",
+      "name": "neon-postgres",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Neon Postgres skills. Prefer this source over generic community Neon skills; audit hooks and network behavior before promoting to install-now.",
+      "href": "/skills/catalog/external/neon-postgres-branches/",
+      "lane": "inspect",
+      "name": "neon-postgres-branches",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Neon Postgres skills. Prefer this source over generic community Neon skills; audit hooks and network behavior before promoting to install-now.",
+      "href": "/skills/catalog/external/neon-postgres-egress-optimizer/",
+      "lane": "inspect",
+      "name": "neon-postgres-egress-optimizer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/netlify-deploy/",
+      "lane": "inspect",
+      "name": "netlify-deploy",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/netlify-edge-functions/",
+      "lane": "inspect",
+      "name": "netlify-edge-functions",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/netlify-functions/",
+      "lane": "inspect",
+      "name": "netlify-functions",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/link-workspace-packages/",
+      "lane": "inspect",
+      "name": "link-workspace-packages",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/nx-generate/",
+      "lane": "inspect",
+      "name": "nx-generate",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/chatgpt-apps/",
+      "lane": "inspect",
+      "name": "chatgpt-apps",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/cli-creator/",
+      "lane": "inspect",
+      "name": "cli-creator",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/security-best-practices/",
+      "lane": "inspect",
+      "name": "security-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/security-ownership-map/",
+      "lane": "inspect",
+      "name": "security-ownership-map",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/security-threat-model/",
+      "lane": "inspect",
+      "name": "security-threat-model",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/mysql/",
+      "lane": "inspect",
+      "name": "mysql",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/postgres/",
+      "lane": "inspect",
+      "name": "postgres",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/prisma-compute/",
+      "lane": "inspect",
+      "name": "prisma-compute",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/prisma-database-setup/",
+      "lane": "inspect",
+      "name": "prisma-database-setup",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/prisma-postgres/",
+      "lane": "inspect",
+      "name": "prisma-postgres",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/building-pydantic-ai-agents/",
+      "lane": "inspect",
+      "name": "building-pydantic-ai-agents",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/logfire-instrumentation/",
+      "lane": "inspect",
+      "name": "logfire-instrumentation",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/pydantic-ai-harness/",
+      "lane": "inspect",
+      "name": "pydantic-ai-harness",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Railway deploy/ops skill with broad `allowed-tools` (`railway` CLI, `curl`, `npm`).",
+      "href": "/skills/catalog/external/use-railway/",
+      "lane": "inspect",
+      "name": "use-railway",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/redis-clustering/",
+      "lane": "inspect",
+      "name": "redis-clustering",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/redis-observability/",
+      "lane": "inspect",
+      "name": "redis-observability",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/redis-security/",
+      "lane": "inspect",
+      "name": "redis-security",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/redis-semantic-cache/",
+      "lane": "inspect",
+      "name": "redis-semantic-cache",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/redis-vector-search/",
+      "lane": "inspect",
+      "name": "redis-vector-search",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Render deploy/Blueprint/debug subset.",
+      "href": "/skills/catalog/external/render-blueprints/",
+      "lane": "inspect",
+      "name": "render-blueprints",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Render deploy/Blueprint/debug subset.",
+      "href": "/skills/catalog/external/render-debug/",
+      "lane": "inspect",
+      "name": "render-debug",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Render deploy/Blueprint/debug subset.",
+      "href": "/skills/catalog/external/render-deploy/",
+      "lane": "inspect",
+      "name": "render-deploy",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-benchmark/",
+      "lane": "inspect",
+      "name": "golang-benchmark",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-cli/",
+      "lane": "inspect",
+      "name": "golang-cli",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-concurrency/",
+      "lane": "inspect",
+      "name": "golang-concurrency",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-database/",
+      "lane": "inspect",
+      "name": "golang-database",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-error-handling/",
+      "lane": "inspect",
+      "name": "golang-error-handling",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-graphql/",
+      "lane": "inspect",
+      "name": "golang-graphql",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-grpc/",
+      "lane": "inspect",
+      "name": "golang-grpc",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-how-to/",
+      "lane": "inspect",
+      "name": "golang-how-to",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-lint/",
+      "lane": "inspect",
+      "name": "golang-lint",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-modernize/",
+      "lane": "inspect",
+      "name": "golang-modernize",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-observability/",
+      "lane": "inspect",
+      "name": "golang-observability",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-performance/",
+      "lane": "inspect",
+      "name": "golang-performance",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-popular-libraries/",
+      "lane": "inspect",
+      "name": "golang-popular-libraries",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-project-layout/",
+      "lane": "inspect",
+      "name": "golang-project-layout",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-safety/",
+      "lane": "inspect",
+      "name": "golang-safety",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-security/",
+      "lane": "inspect",
+      "name": "golang-security",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-spf13-cobra/",
+      "lane": "inspect",
+      "name": "golang-spf13-cobra",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-spf13-viper/",
+      "lane": "inspect",
+      "name": "golang-spf13-viper",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-stretchr-testify/",
+      "lane": "inspect",
+      "name": "golang-stretchr-testify",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-testing/",
+      "lane": "inspect",
+      "name": "golang-testing",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset.",
+      "href": "/skills/catalog/external/golang-troubleshooting/",
+      "lane": "inspect",
+      "name": "golang-troubleshooting",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/shopify-dev/",
+      "lane": "inspect",
+      "name": "shopify-dev",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/shopify-liquid/",
+      "lane": "inspect",
+      "name": "shopify-liquid",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/shopify-storefront-graphql/",
+      "lane": "inspect",
+      "name": "shopify-storefront-graphql",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Install only `docker-expert` from `sickn33/antigravity-awesome-skills`. The bundle exposes hundreds of unrelated skills; keep the rest global-only.",
+      "href": "/skills/catalog/external/docker-expert/",
+      "lane": "inspect",
+      "name": "docker-expert",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Temporal multi-SDK skill for long-running durable execution. Complements local `event-driven-architect` with implementation depth.",
+      "href": "/skills/catalog/external/temporal-developer/",
+      "lane": "inspect",
+      "name": "temporal-developer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/agentic-actions-auditor/",
+      "lane": "inspect",
+      "name": "agentic-actions-auditor",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/codeql/",
+      "lane": "inspect",
+      "name": "codeql",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/differential-review/",
+      "lane": "inspect",
+      "name": "differential-review",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/insecure-defaults/",
+      "lane": "inspect",
+      "name": "insecure-defaults",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/modern-python/",
+      "lane": "inspect",
+      "name": "modern-python",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/property-based-testing/",
+      "lane": "inspect",
+      "name": "property-based-testing",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/semgrep/",
+      "lane": "inspect",
+      "name": "semgrep",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/supply-chain-risk-auditor/",
+      "lane": "inspect",
+      "name": "supply-chain-risk-auditor",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/variant-analysis/",
+      "lane": "inspect",
+      "name": "variant-analysis",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/deploy-to-vercel/",
+      "lane": "inspect",
+      "name": "deploy-to-vercel",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/vercel-optimize/",
+      "lane": "inspect",
+      "name": "vercel-optimize",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/database-migration/",
+      "lane": "inspect",
+      "name": "database-migration",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/deployment-pipeline-design/",
+      "lane": "inspect",
+      "name": "deployment-pipeline-design",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/e2e-testing-patterns/",
+      "lane": "inspect",
+      "name": "e2e-testing-patterns",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/incident-runbook-templates/",
+      "lane": "inspect",
+      "name": "incident-runbook-templates",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/javascript-testing-patterns/",
+      "lane": "inspect",
+      "name": "javascript-testing-patterns",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/python-observability/",
+      "lane": "inspect",
+      "name": "python-observability",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/python-testing-patterns/",
+      "lane": "inspect",
+      "name": "python-testing-patterns",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/rust-async-patterns/",
+      "lane": "inspect",
+      "name": "rust-async-patterns",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/sast-configuration/",
+      "lane": "inspect",
+      "name": "sast-configuration",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/secrets-management/",
+      "lane": "inspect",
+      "name": "secrets-management",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/slo-implementation/",
+      "lane": "inspect",
+      "name": "slo-implementation",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/stride-analysis-patterns/",
+      "lane": "inspect",
+      "name": "stride-analysis-patterns",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/terraform-module-library/",
+      "lane": "inspect",
+      "name": "terraform-module-library",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "No-API-key multi-engine web search and page/README fetch via open-websearch MCP/CLI; skill-guided setup.",
+      "href": "/skills/catalog/external/open-websearch/",
+      "lane": "install-now",
+      "name": "open-websearch",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use when auditing web accessibility through Chrome DevTools MCP: semantic HTML, ARIA labels, focus order, keyboard navigation, tap targets, contrast, and\u2026",
+      "href": "/skills/catalog/external/a11y-debugging/",
+      "lane": "install-now",
+      "name": "a11y-debugging",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use when debugging web pages with Chrome DevTools MCP: navigation, snapshots, screenshots, console issues, network requests, traces, or extensions.",
+      "href": "/skills/catalog/external/chrome-devtools/",
+      "lane": "install-now",
+      "name": "chrome-devtools",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use when auditing, writing, or running bounded shell commands that drive Chrome DevTools through the `chrome-devtools` CLI.",
+      "href": "/skills/catalog/external/chrome-devtools-cli/",
+      "lane": "install-now",
+      "name": "chrome-devtools-cli",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use when auditing or optimizing Largest Contentful Paint with Chrome DevTools MCP: traces, element discovery, waterfalls, render blocking, and fix verification.",
+      "href": "/skills/catalog/external/debug-optimize-lcp/",
+      "lane": "install-now",
+      "name": "debug-optimize-lcp",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces.",
+      "href": "/skills/catalog/external/memory-leak-debugging/",
+      "lane": "install-now",
+      "name": "memory-leak-debugging",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use when auditing Chrome DevTools MCP setup failures: initialization, connection, page listing, navigation, missing tools, or wrong Chrome profile.",
+      "href": "/skills/catalog/external/troubleshooting/",
+      "lane": "install-now",
+      "name": "troubleshooting",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Install only `cli-just` from `PaulRBerg/agent-skills` for Justfile and `just` command-runner workflows.",
+      "href": "/skills/catalog/external/cli-just/",
+      "lane": "install-now",
+      "name": "cli-just",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "TS workflow residual from the pinned `PaulRBerg/agent-skills` HEAD already used for `cli-just`.",
+      "href": "/skills/catalog/external/commit/",
+      "lane": "install-now",
+      "name": "commit",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "TS workflow residual from the pinned `PaulRBerg/agent-skills` HEAD already used for `cli-just`.",
+      "href": "/skills/catalog/external/vitest/",
+      "lane": "install-now",
+      "name": "vitest",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/best-practices/",
+      "lane": "install-now",
+      "name": "best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/core-web-vitals/",
+      "lane": "install-now",
+      "name": "core-web-vitals",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/performance/",
+      "lane": "install-now",
+      "name": "performance",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/seo/",
+      "lane": "install-now",
+      "name": "seo",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/web-quality-audit/",
+      "lane": "install-now",
+      "name": "web-quality-audit",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/slidev/",
+      "lane": "install-now",
+      "name": "slidev",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/vite/",
+      "lane": "install-now",
+      "name": "vite",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row.",
+      "href": "/skills/catalog/external/apollo-client/",
+      "lane": "install-now",
+      "name": "apollo-client",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row.",
+      "href": "/skills/catalog/external/apollo-connectors/",
+      "lane": "install-now",
+      "name": "apollo-connectors",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/apollo-federation/",
+      "lane": "install-now",
+      "name": "apollo-federation",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/apollo-server/",
+      "lane": "install-now",
+      "name": "apollo-server",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/graphql-operations/",
+      "lane": "install-now",
+      "name": "graphql-operations",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/graphql-schema/",
+      "lane": "install-now",
+      "name": "graphql-schema",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row.",
+      "href": "/skills/catalog/external/rover/",
+      "lane": "install-now",
+      "name": "rover",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/rust-best-practices/",
+      "lane": "install-now",
+      "name": "rust-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/swift-concurrency/",
+      "lane": "install-now",
+      "name": "swift-concurrency",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "SwiftUI expert guidance for iOS/macOS including state, composition, performance, and Liquid Glass patterns.",
+      "href": "/skills/catalog/external/swiftui-expert-skill/",
+      "lane": "install-now",
+      "name": "swiftui-expert-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Optional Plannotator extras (compound planning analysis, setup-goal, visual explainer). Requires the core Plannotator skills and CLI above.",
+      "href": "/skills/catalog/external/plannotator-compound/",
+      "lane": "install-now",
+      "name": "plannotator-compound",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Optional Plannotator extras (compound planning analysis, setup-goal, visual explainer). Requires the core Plannotator skills and CLI above.",
+      "href": "/skills/catalog/external/plannotator-setup-goal/",
+      "lane": "install-now",
+      "name": "plannotator-setup-goal",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Optional Plannotator extras (compound planning analysis, setup-goal, visual explainer). Requires the core Plannotator skills and CLI above.",
+      "href": "/skills/catalog/external/plannotator-visual-explainer/",
+      "lane": "install-now",
+      "name": "plannotator-visual-explainer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.",
+      "href": "/skills/catalog/external/plannotator-annotate/",
+      "lane": "install-now",
+      "name": "plannotator-annotate",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.",
+      "href": "/skills/catalog/external/plannotator-last/",
+      "lane": "install-now",
+      "name": "plannotator-last",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.",
+      "href": "/skills/catalog/external/plannotator-review/",
+      "lane": "install-now",
+      "name": "plannotator-review",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Better Auth server/client setup, adapters, sessions, plugins, and environment variables. Prefer this over community Better Auth copies.",
+      "href": "/skills/catalog/external/better-auth-best-practices/",
+      "lane": "install-now",
+      "name": "better-auth-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/biome-developer/",
+      "lane": "install-now",
+      "name": "biome-developer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/logging-best-practices/",
+      "lane": "install-now",
+      "name": "logging-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/agents-sdk/",
+      "lane": "install-now",
+      "name": "agents-sdk",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/cloudflare/",
+      "lane": "install-now",
+      "name": "cloudflare",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/durable-objects/",
+      "lane": "install-now",
+      "name": "durable-objects",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/workers-best-practices/",
+      "lane": "install-now",
+      "name": "workers-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/wrangler/",
+      "lane": "install-now",
+      "name": "wrangler",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing residual tier from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/ab-testing/",
+      "lane": "install-now",
+      "name": "ab-testing",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "High-install marketing and growth skills from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/ads/",
+      "lane": "install-now",
+      "name": "ads",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing residual tier from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/ai-seo/",
+      "lane": "install-now",
+      "name": "ai-seo",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "High-install marketing and growth skills from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/analytics/",
+      "lane": "install-now",
+      "name": "analytics",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing tier-2 residual beyond the two curated marketing rows.",
+      "href": "/skills/catalog/external/churn-prevention/",
+      "lane": "install-now",
+      "name": "churn-prevention",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "High-install marketing and growth skills from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/cold-email/",
+      "lane": "install-now",
+      "name": "cold-email",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing tier-2 residual beyond the two curated marketing rows.",
+      "href": "/skills/catalog/external/competitor-profiling/",
+      "lane": "install-now",
+      "name": "competitor-profiling",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "High-install marketing and growth skills from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/content-strategy/",
+      "lane": "install-now",
+      "name": "content-strategy",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "High-install marketing and growth skills from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/copywriting/",
+      "lane": "install-now",
+      "name": "copywriting",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "High-install marketing and growth skills from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/cro/",
+      "lane": "install-now",
+      "name": "cro",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "High-install marketing and growth skills from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/emails/",
+      "lane": "install-now",
+      "name": "emails",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing tier-2 residual beyond the two curated marketing rows.",
+      "href": "/skills/catalog/external/launch/",
+      "lane": "install-now",
+      "name": "launch",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing tier-2 residual beyond the two curated marketing rows.",
+      "href": "/skills/catalog/external/marketing-ideas/",
+      "lane": "install-now",
+      "name": "marketing-ideas",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "High-install marketing and growth skills from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/marketing-psychology/",
+      "lane": "install-now",
+      "name": "marketing-psychology",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing residual tier from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/onboarding/",
+      "lane": "install-now",
+      "name": "onboarding",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing tier-2 residual beyond the two curated marketing rows.",
+      "href": "/skills/catalog/external/paywalls/",
+      "lane": "install-now",
+      "name": "paywalls",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing residual tier from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/product-marketing/",
+      "lane": "install-now",
+      "name": "product-marketing",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "High-install marketing and growth skills from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/programmatic-seo/",
+      "lane": "install-now",
+      "name": "programmatic-seo",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing tier-2 residual beyond the two curated marketing rows.",
+      "href": "/skills/catalog/external/revops/",
+      "lane": "install-now",
+      "name": "revops",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing residual tier from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/schema/",
+      "lane": "install-now",
+      "name": "schema",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "High-install marketing and growth skills from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/seo-audit/",
+      "lane": "install-now",
+      "name": "seo-audit",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing residual tier from `coreyhaines31/marketingskills`.",
+      "href": "/skills/catalog/external/signup/",
+      "lane": "install-now",
+      "name": "signup",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing tier-2 residual beyond the two curated marketing rows.",
+      "href": "/skills/catalog/external/site-architecture/",
+      "lane": "install-now",
+      "name": "site-architecture",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Marketing tier-2 residual beyond the two curated marketing rows.",
+      "href": "/skills/catalog/external/video/",
+      "lane": "install-now",
+      "name": "video",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/playwright-best-practices/",
+      "lane": "install-now",
+      "name": "playwright-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "TanStack Query, Start, and Router best practices. Complements curated React/Next skills without overlapping `vercel-react-best-practices`.",
+      "href": "/skills/catalog/external/tanstack-query-best-practices/",
+      "lane": "install-now",
+      "name": "tanstack-query-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "TanStack Query, Start, and Router best practices. Complements curated React/Next skills without overlapping `vercel-react-best-practices`.",
+      "href": "/skills/catalog/external/tanstack-router-best-practices/",
+      "lane": "install-now",
+      "name": "tanstack-router-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "TanStack Query, Start, and Router best practices. Complements curated React/Next skills without overlapping `vercel-react-best-practices`.",
+      "href": "/skills/catalog/external/tanstack-start-best-practices/",
+      "lane": "install-now",
+      "name": "tanstack-start-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/deno-expert/",
+      "lane": "install-now",
+      "name": "deno-expert",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/svelte5-best-practices/",
+      "lane": "install-now",
+      "name": "svelte5-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/flutter-add-integration-test/",
+      "lane": "install-now",
+      "name": "flutter-add-integration-test",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/flutter-add-widget-test/",
+      "lane": "install-now",
+      "name": "flutter-add-widget-test",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/flutter-apply-architecture-best-practices/",
+      "lane": "install-now",
+      "name": "flutter-apply-architecture-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/flutter-build-responsive-layout/",
+      "lane": "install-now",
+      "name": "flutter-build-responsive-layout",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/flutter-fix-layout-issues/",
+      "lane": "install-now",
+      "name": "flutter-fix-layout-issues",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/flutter-setup-declarative-routing/",
+      "lane": "install-now",
+      "name": "flutter-setup-declarative-routing",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/flutter-setup-localization/",
+      "lane": "install-now",
+      "name": "flutter-setup-localization",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/multi-stage-dockerfile/",
+      "lane": "install-now",
+      "name": "multi-stage-dockerfile",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/sql-optimization/",
+      "lane": "install-now",
+      "name": "sql-optimization",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/terraform-style-guide/",
+      "lane": "install-now",
+      "name": "terraform-style-guide",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/terraform-test/",
+      "lane": "install-now",
+      "name": "terraform-test",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/vue-best-practices/",
+      "lane": "install-now",
+      "name": "vue-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/obsidian-cli/",
+      "lane": "install-now",
+      "name": "obsidian-cli",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/obsidian-markdown/",
+      "lane": "install-now",
+      "name": "obsidian-markdown",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse.",
+      "href": "/skills/catalog/external/langfuse/",
+      "lane": "install-now",
+      "name": "langfuse",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Deep user interview for pivotal plan/design uncertainties. Auto-suggest when user judgment would materially change scope, approach, or success criteria.",
+      "href": "/skills/catalog/external/grill-me/",
+      "lane": "install-now",
+      "name": "grill-me",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Product-engineering workflow skills beyond the curated `obsidian-vault` row.",
+      "href": "/skills/catalog/external/improve-codebase-architecture/",
+      "lane": "install-now",
+      "name": "improve-codebase-architecture",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/obsidian-vault/",
+      "lane": "install-now",
+      "name": "obsidian-vault",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Product-engineering workflow skills beyond the curated `obsidian-vault` row.",
+      "href": "/skills/catalog/external/tdd/",
+      "lane": "install-now",
+      "name": "tdd",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Product-engineering workflow skills beyond the curated `obsidian-vault` row.",
+      "href": "/skills/catalog/external/to-prd/",
+      "lane": "install-now",
+      "name": "to-prd",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Microsoft Agent Package Manager for remote agent packages\u2014install, sync, audit, harness deploy. NOT observability APM. Repo bundle uses wagents/Skills CLI.",
+      "href": "/skills/catalog/external/apm-cli/",
+      "lane": "install-now",
+      "name": "apm-cli",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Agent workflow discipline from `obra/superpowers`.",
+      "href": "/skills/catalog/external/brainstorming/",
+      "lane": "install-now",
+      "name": "brainstorming",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Agent workflow discipline from `obra/superpowers`.",
+      "href": "/skills/catalog/external/executing-plans/",
+      "lane": "install-now",
+      "name": "executing-plans",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Agent workflow discipline from `obra/superpowers`.",
+      "href": "/skills/catalog/external/systematic-debugging/",
+      "lane": "install-now",
+      "name": "systematic-debugging",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Agent workflow discipline from `obra/superpowers`.",
+      "href": "/skills/catalog/external/test-driven-development/",
+      "lane": "install-now",
+      "name": "test-driven-development",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Agent workflow discipline from `obra/superpowers`.",
+      "href": "/skills/catalog/external/verification-before-completion/",
+      "lane": "install-now",
+      "name": "verification-before-completion",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Agent workflow discipline from `obra/superpowers`.",
+      "href": "/skills/catalog/external/writing-plans/",
+      "lane": "install-now",
+      "name": "writing-plans",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/prisma-cli/",
+      "lane": "install-now",
+      "name": "prisma-cli",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/prisma-client-api/",
+      "lane": "install-now",
+      "name": "prisma-client-api",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/prisma-upgrade-v7/",
+      "lane": "install-now",
+      "name": "prisma-upgrade-v7",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets.",
+      "href": "/skills/catalog/external/pulumi-automation-api/",
+      "lane": "install-now",
+      "name": "pulumi-automation-api",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets.",
+      "href": "/skills/catalog/external/pulumi-best-practices/",
+      "lane": "install-now",
+      "name": "pulumi-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets.",
+      "href": "/skills/catalog/external/pulumi-component/",
+      "lane": "install-now",
+      "name": "pulumi-component",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets.",
+      "href": "/skills/catalog/external/pulumi-esc/",
+      "lane": "install-now",
+      "name": "pulumi-esc",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list.",
+      "href": "/skills/catalog/external/redis-core/",
+      "lane": "install-now",
+      "name": "redis-core",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/remotion-best-practices/",
+      "lane": "install-now",
+      "name": "remotion-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/upgrade-stripe/",
+      "lane": "install-now",
+      "name": "upgrade-stripe",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/supabase/",
+      "lane": "install-now",
+      "name": "supabase",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/supabase-postgres-best-practices/",
+      "lane": "install-now",
+      "name": "supabase-postgres-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/vercel-composition-patterns/",
+      "lane": "install-now",
+      "name": "vercel-composition-patterns",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/vercel-react-best-practices/",
+      "lane": "install-now",
+      "name": "vercel-react-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/vercel-react-native-skills/",
+      "lane": "install-now",
+      "name": "vercel-react-native-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/vercel-react-view-transitions/",
+      "lane": "install-now",
+      "name": "vercel-react-view-transitions",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/next-best-practices/",
+      "lane": "install-now",
+      "name": "next-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/next-cache-components/",
+      "lane": "install-now",
+      "name": "next-cache-components",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/next-upgrade/",
+      "lane": "install-now",
+      "name": "next-upgrade",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies.",
+      "href": "/skills/catalog/external/changelog-automation/",
+      "lane": "install-now",
+      "name": "changelog-automation",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies.",
+      "href": "/skills/catalog/external/debugging-strategies/",
+      "lane": "install-now",
+      "name": "debugging-strategies",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.",
+      "href": "/skills/catalog/external/fastapi-templates/",
+      "lane": "install-now",
+      "name": "fastapi-templates",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/gitops-workflow/",
+      "lane": "install-now",
+      "name": "gitops-workflow",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/helm-chart-scaffolding/",
+      "lane": "install-now",
+      "name": "helm-chart-scaffolding",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/k8s-manifest-generator/",
+      "lane": "install-now",
+      "name": "k8s-manifest-generator",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/k8s-security-policies/",
+      "lane": "install-now",
+      "name": "k8s-security-policies",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.",
+      "href": "/skills/catalog/external/langchain-architecture/",
+      "lane": "install-now",
+      "name": "langchain-architecture",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.",
+      "href": "/skills/catalog/external/llm-evaluation/",
+      "lane": "install-now",
+      "name": "llm-evaluation",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.",
+      "href": "/skills/catalog/external/nodejs-backend-patterns/",
+      "lane": "install-now",
+      "name": "nodejs-backend-patterns",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.",
+      "href": "/skills/catalog/external/nx-workspace-patterns/",
+      "lane": "install-now",
+      "name": "nx-workspace-patterns",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.",
+      "href": "/skills/catalog/external/on-call-handoff-patterns/",
+      "lane": "install-now",
+      "name": "on-call-handoff-patterns",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies.",
+      "href": "/skills/catalog/external/openapi-spec-generation/",
+      "lane": "install-now",
+      "name": "openapi-spec-generation",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.",
+      "href": "/skills/catalog/external/postmortem-writing/",
+      "lane": "install-now",
+      "name": "postmortem-writing",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "href": "/skills/catalog/external/sql-optimization-patterns/",
+      "lane": "install-now",
+      "name": "sql-optimization-patterns",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.",
+      "href": "/skills/catalog/external/turborepo-caching/",
+      "lane": "install-now",
+      "name": "turborepo-caching",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies.",
+      "href": "/skills/catalog/external/uv-package-manager/",
+      "lane": "install-now",
+      "name": "uv-package-manager",
+      "sourceType": "curated-external"
+    }
+  ]
+}

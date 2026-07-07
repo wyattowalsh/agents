@@ -2031,9 +2031,10 @@ def catalog_index(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Inspect or verify the generated skills catalog index bundle."""
-    from wagents.skill_index import CATALOG_INDEX_PATH, catalog_index_stale_reason
+    from wagents.skill_index import CATALOG_INDEX_PATH, catalog_browser_index_stale_reason, catalog_index_stale_reason
 
-    reason = catalog_index_stale_reason()
+    reasons = [reason for reason in (catalog_index_stale_reason(), catalog_browser_index_stale_reason()) if reason]
+    reason = "; ".join(reasons)
     if check:
         if reason:
             if format_ == "json" or format_ == "jsonl":

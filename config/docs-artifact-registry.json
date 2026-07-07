@@ -89,6 +89,13 @@
       "validation": "uv run wagents catalog index --check"
     },
     {
+      "path": "docs/public/generated-registries/skills-catalog-browser-index.json",
+      "mode": "generated",
+      "owner_change": "harden-docs-site-findings-jul2026",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents catalog index --check"
+    },
+    {
       "path": "docs/src/content/docs/skills/",
       "mode": "generated",
       "owner_change": "agents-c08-docs-instructions",

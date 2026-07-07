@@ -5,11 +5,12 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
+from urllib.parse import quote
 
 import wagents
 from wagents.catalog import CatalogNode
 from wagents.external_skills import SYNC_KIND_SKILLS_CLI, ExternalSkillEntry, infer_sync_kind
-from wagents.parsing import parse_frontmatter, to_title
+from wagents.parsing import parse_frontmatter, to_title, truncate_sentence
 from wagents.site_model import use_command_for_catalog_row
 
 if TYPE_CHECKING:
@@ -17,7 +18,16 @@ if TYPE_CHECKING:
 
 AUTHORING_SKILLS_DIR = wagents.ROOT / "docs" / "src" / "authoring" / "skills"
 CATALOG_INDEX_PATH = wagents.ROOT / "docs" / "public" / "generated-registries" / "skills-catalog-index.json"
+CATALOG_BROWSER_INDEX_PATH = (
+    wagents.ROOT / "docs" / "public" / "generated-registries" / "skills-catalog-browser-index.json"
+)
 EXTERNAL_AUTHORING_SOURCE_KINDS = {"curated-external", "external"}
+CATALOG_BROWSER_LANE_BY_STATUS = {
+    "install-now-after-trust-gate": "install-now",
+    "inspect-then-install": "inspect",
+    "global-only-or-avoid": "avoid",
+}
+CATALOG_BROWSER_LANES = frozenset({"install-now", "inspect", "avoid"})
 
 
 def _is_external_authoring_source_kind(source_kind: str) -> bool:
@@ -279,6 +289,38 @@ def write_catalog_index(index: dict[str, Any], path: Path | None = None) -> Path
     return out
 
 
+def _catalog_browser_lane(status: Any) -> str:
+    return CATALOG_BROWSER_LANE_BY_STATUS.get(str(status or ""), "inspect")
+
+
+def build_catalog_browser_index(index: dict[str, Any]) -> dict[str, list[dict[str, str]]]:
+    """Project the full catalog index to the small browser payload used by docs UI."""
+    rows: list[dict[str, str]] = []
+    for entry in index.get("externalSkillIndex", []):
+        if not isinstance(entry, dict):
+            continue
+        name = str(entry.get("name") or "").strip()
+        if not name:
+            continue
+        source_type = str(entry.get("sourceType") or "curated-external").strip() or "curated-external"
+        rows.append({
+            "name": name,
+            "description": truncate_sentence(str(entry.get("description") or ""), 160),
+            "href": f"/skills/catalog/external/{quote(name, safe='')}/",
+            "lane": _catalog_browser_lane(entry.get("status")),
+            "sourceType": source_type,
+        })
+    return {"externalSkillIndex": rows}
+
+
+def write_catalog_browser_index(index: dict[str, Any], path: Path | None = None) -> Path:
+    """Write the slim browser catalog JSON next to the full generated registry."""
+    out = path or CATALOG_BROWSER_INDEX_PATH
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(build_catalog_browser_index(index), indent=2, sort_keys=True), encoding="utf-8")
+    return out
+
+
 def read_catalog_index(path: Path | None = None, *, strict: bool = False) -> dict[str, Any] | None:
     """Read the catalog index JSON if present."""
     p = path or CATALOG_INDEX_PATH
@@ -289,6 +331,19 @@ def read_catalog_index(path: Path | None = None, *, strict: bool = False) -> dic
     except Exception as exc:
         if strict:
             raise RuntimeError(f"Invalid catalog index JSON in {p}: {exc}") from exc
+        return None
+
+
+def read_catalog_browser_index(path: Path | None = None, *, strict: bool = False) -> dict[str, Any] | None:
+    """Read the slim browser catalog index JSON if present."""
+    p = path or CATALOG_BROWSER_INDEX_PATH
+    if not p.exists():
+        return None
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception as exc:
+        if strict:
+            raise RuntimeError(f"Invalid catalog browser index JSON in {p}: {exc}") from exc
         return None
 
 
@@ -307,6 +362,21 @@ def catalog_index_stale_reason(path: Path | None = None) -> str | None:
         return None
     existing = read_catalog_index(path)
     out = path or CATALOG_INDEX_PATH
+    if existing is None:
+        return f"{out.relative_to(wagents.ROOT)} missing; run `uv run wagents docs generate --no-installed`"
+    if json.dumps(expected, indent=2, sort_keys=True) != json.dumps(existing, indent=2, sort_keys=True):
+        return f"{out.relative_to(wagents.ROOT)} is stale; run `uv run wagents docs generate --no-installed`"
+    return None
+
+
+def catalog_browser_index_stale_reason(path: Path | None = None) -> str | None:
+    """Return a remediation message when the committed browser index drifts."""
+    expected_source = build_catalog_index_from_authoring()
+    if expected_source is None:
+        return None
+    expected = build_catalog_browser_index(expected_source)
+    existing = read_catalog_browser_index(path)
+    out = path or CATALOG_BROWSER_INDEX_PATH
     if existing is None:
         return f"{out.relative_to(wagents.ROOT)} missing; run `uv run wagents docs generate --no-installed`"
     if json.dumps(expected, indent=2, sort_keys=True) != json.dumps(existing, indent=2, sort_keys=True):

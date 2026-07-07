@@ -40,6 +40,13 @@ def tmp_repo(tmp_path, monkeypatch):
     monkeypatch.setattr("wagents.docs.ROOT", tmp_path)
     monkeypatch.setattr("wagents.docs.DOCS_DIR", tmp_path / "docs")
     monkeypatch.setattr("wagents.docs.CONTENT_DIR", tmp_path / "docs/src/content/docs")
+    monkeypatch.setattr("wagents.docs_catalog.ROOT", tmp_path)
+    monkeypatch.setattr("wagents.docs_catalog.CONTENT_DIR", tmp_path / "docs/src/content/docs")
+    monkeypatch.setattr("wagents.docs_catalog.CATALOG_CONTENT_DIR", tmp_path / "docs/src/content/docs/catalog")
+    monkeypatch.setattr(
+        "wagents.docs_catalog.ARCHITECTURE_CONTENT_DIR",
+        tmp_path / "docs/src/content/docs/architecture",
+    )
     return tmp_path
 
 
