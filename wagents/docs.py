@@ -41,7 +41,6 @@ from wagents.skill_docs import (
 )
 from wagents.skill_index import (
     build_catalog_index,
-    catalog_browser_index_stale_reason,
     load_authoring_entries,
 )
 from wagents.skill_index import (
@@ -2728,9 +2727,6 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
     catalog_reason = catalog_index_stale_reason()
     if catalog_reason:
         reasons.append(catalog_reason)
-    catalog_browser_reason = catalog_browser_index_stale_reason()
-    if catalog_browser_reason:
-        reasons.append(catalog_browser_reason)
 
     mcp_badge_reason = _mcp_overview_badge_stale_reason()
     if mcp_badge_reason:
