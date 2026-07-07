@@ -396,7 +396,7 @@ def catalog_browser_index_contract_reason(
     return None
 
 
-def catalog_index_stale_reason(path: Path | None = None, *, browser_path: Path | None = None) -> str | None:
+def catalog_index_stale_reason(path: Path | None = None) -> str | None:
     """Return a remediation message when the committed index drifts from authoring SSOT."""
     expected = build_catalog_index_from_authoring()
     if expected is None:
@@ -407,11 +407,6 @@ def catalog_index_stale_reason(path: Path | None = None, *, browser_path: Path |
         return f"{out.relative_to(wagents.ROOT)} missing; run `uv run wagents docs generate --no-installed`"
     if json.dumps(expected, indent=2, sort_keys=True) != json.dumps(existing, indent=2, sort_keys=True):
         return f"{out.relative_to(wagents.ROOT)} is stale; run `uv run wagents docs generate --no-installed`"
-    if path is not None and browser_path is None:
-        return None
-    browser_reason = catalog_browser_index_stale_reason(browser_path, full_index=expected)
-    if browser_reason:
-        return browser_reason
     return None
 
 

@@ -5,7 +5,7 @@
       "slug": "/cli"
     },
     {
-      "backlinks": 688,
+      "backlinks": 690,
       "slug": "/skills/catalog"
     },
     {
@@ -30,15 +30,15 @@
     },
     {
       "backlinks": 7,
-      "slug": "/harness-support"
-    },
-    {
-      "backlinks": 7,
       "slug": "/skills/catalog/custom/mcp-creator"
     },
     {
       "backlinks": 6,
       "slug": "/harness-config/mcp-registry"
+    },
+    {
+      "backlinks": 6,
+      "slug": "/harness-support"
     },
     {
       "backlinks": 6,
@@ -92,6 +92,6 @@
     "/skill-research/ui-ux-pro-max",
     "/skill-research/web-design-guidelines"
   ],
-  "total_internal_links": 2171,
+  "total_internal_links": 2172,
   "total_pages": 1172
 }
