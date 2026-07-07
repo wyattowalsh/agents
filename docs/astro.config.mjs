@@ -55,7 +55,6 @@ const siteGraphConfig = {
     styleRules: new Map(starlightSiteGraphConfig.sitemapConfig.styleRules),
   },
 };
-const docsRoot = new URL('./', import.meta.url);
 const docsServerManualChunks = (id) => {
   const normalizedId = id.replaceAll('\\', '/');
   if (normalizedId.includes('/starlight-site-graph/components/graph/pixi/')) {
@@ -65,38 +64,6 @@ const docsServerManualChunks = (id) => {
     return 'vendor-d3';
   }
 };
-const astroDeferredContentModuleResolver = () => ({
-  name: 'docs:astro-deferred-content-module-resolver',
-  enforce: 'pre',
-  async resolveId(id) {
-    if (id.endsWith('?astroPropagatedAssets')) {
-      const [fileName] = id.split('?');
-      if (!fileName || !URL.canParse(fileName, docsRoot.toString())) {
-        return null;
-      }
-      const contentUrl = new URL(fileName, docsRoot);
-      if (contentUrl.protocol !== 'file:' || !contentUrl.href.startsWith(docsRoot.href)) {
-        return null;
-      }
-      const contentPath = fileURLToPath(contentUrl);
-      return this.resolve(`${contentPath}?astroPropagatedAssets`, undefined, { skipSelf: true });
-    }
-    if (!id.startsWith('astro:content-layer-deferred-module?') || !id.includes('astroContentModuleFlag')) {
-      return null;
-    }
-    const [, query] = id.split('?');
-    const fileName = new URLSearchParams(query).get('fileName');
-    if (!fileName || !URL.canParse(fileName, docsRoot.toString())) {
-      return null;
-    }
-    const contentUrl = new URL(fileName, docsRoot);
-    if (contentUrl.protocol !== 'file:' || !contentUrl.href.startsWith(docsRoot.href)) {
-      return null;
-    }
-    const contentPath = fileURLToPath(contentUrl);
-    return this.resolve(`${contentPath}?astroRenderContent`, undefined, { skipSelf: true });
-  },
-});
 
 export default defineConfig({
   adapter: vercel(),
@@ -128,7 +95,6 @@ export default defineConfig({
       },
     },
     plugins: [
-      astroDeferredContentModuleResolver(),
       tailwindcss(),
     ],
     environments: {
