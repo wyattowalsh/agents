@@ -5,10 +5,13 @@ from __future__ import annotations
 import copy
 import importlib.util
 import json
+import os
 import subprocess
 import sys
 import time
 from pathlib import Path
+
+import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST_DIR = ROOT / "planning" / "manifests" / "candidate-corpus-jul2026"
@@ -18,6 +21,9 @@ CATALOG_INDEX = ROOT / "docs" / "public" / "generated-registries" / "skills-cata
 CATALOG_DIR = ROOT / "docs" / "src" / "authoring" / "skills"
 GENERATED_EXTERNAL_DIR = ROOT / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "external"
 CATALOG_PREFIX = "candidate-corpus-"
+PROMOTION_OVERRIDES = json.loads((MANIFEST_DIR / "promotion-overrides.json").read_text(encoding="utf-8"))[
+    "overrides"
+]
 RAW_RESEARCH_SUFFIXES = {
     "URL",
     "LIVE",
@@ -49,22 +55,21 @@ EXPECTED_DUPLICATES = {
 }
 PROMOTED_SKILL_NAMES = {
     override["skill_name"]
-    for override in json.loads(
-        (MANIFEST_DIR / "promotion-overrides.json").read_text(encoding="utf-8")
-    )["overrides"]
+    for override in PROMOTION_OVERRIDES
 }
 PROMOTED_INSTALL_SELECTORS = {
     override["skill_name"]: override.get("install_skill_name", override["skill_name"])
-    for override in json.loads(
-        (MANIFEST_DIR / "promotion-overrides.json").read_text(encoding="utf-8")
-    )["overrides"]
+    for override in PROMOTION_OVERRIDES
 }
 PROMOTED_CANDIDATE_NAMES = {
     override["candidate_authoring_name"]
-    for override in json.loads(
-        (MANIFEST_DIR / "promotion-overrides.json").read_text(encoding="utf-8")
-    )["overrides"]
+    for override in PROMOTION_OVERRIDES
 }
+PROMOTED_INSTALLED_PATH_REFS = sum(
+    len(override.get("installed_paths", []))
+    for override in PROMOTION_OVERRIDES
+    if override.get("live_install_executed")
+)
 
 REQUIRED_RECORD_FIELDS = {
     "raw_url",
@@ -95,6 +100,24 @@ REQUIRED_RECORD_FIELDS = {
 
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _is_trust_cleared_existing_row(row: dict) -> bool:
+    has_install_command = bool(row.get("has_install_command")) or bool(str(row.get("install_command", "")).strip())
+    sync_kind = str(row.get("sync_kind", "")).strip()
+    return (
+        has_install_command
+        and sync_kind not in {"", "none"}
+        and row.get("status") == "install-now-after-trust-gate"
+        and row.get("trust_tier") == "curated-trust-gated"
+    )
+
+
+def _existing_rows_are_trust_cleared(rows: list[dict]) -> bool:
+    install_surface_rows = [
+        row for row in rows if isinstance(row, dict) and (row.get("has_install_command") or row.get("install_command"))
+    ]
+    return bool(install_surface_rows) and all(_is_trust_cleared_existing_row(row) for row in install_surface_rows)
 
 
 def _load_generator_module():
@@ -137,6 +160,42 @@ def _load_promoter_module():
     sys.modules[module_name] = module
     spec.loader.exec_module(module)
     return module
+
+
+def _load_apply_promotions_module():
+    module_name = "_candidate_corpus_apply_promotions"
+    spec = importlib.util.spec_from_file_location(
+        module_name,
+        ROOT / "scripts" / "apply_candidate_corpus_promotions.py",
+    )
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def _valid_promotion_override(**updates):
+    payload = {
+        "normalized_url": "https://example.test/source",
+        "source_name": "example/source",
+        "candidate_authoring_name": "candidate-corpus-001-source",
+        "skill_name": "source-skill",
+        "description": "Reviewed test skill.",
+        "install_source": "example/source",
+        "install_command": "npx skills add example/source --skill source-skill -y -g -a codex",
+        "status": "install-now-after-trust-gate",
+        "trust_tier": "curated-trust-gated",
+        "sync_kind": "skills-cli",
+        "source_list_evidence": "source-list-found",
+        "license": "MIT",
+        "live_install_executed": True,
+        "executed_commands": ["npx skills add example/source --skill source-skill -y -g -a codex"],
+        "installed_paths": ["~/.agents/skills/source-skill"],
+    }
+    payload.update(updates)
+    return payload
 
 
 def test_candidate_corpus_counts_and_duplicates() -> None:
@@ -294,6 +353,7 @@ def test_generated_reports_do_not_claim_unobserved_validation_results() -> None:
     assert "currently exits 1" not in validation_report
     assert "docs build passes" not in final_report
     assert "promotion-overlay-installed" in final_report
+    assert "Final commit hash: recorded by the runner" not in final_report
     assert "- `agents-instructions`: 0 candidates" in docs_summary
 
 
@@ -416,21 +476,51 @@ def test_full_integration_research_task_graph_covers_every_lane() -> None:
 def test_full_integration_progress_and_packet_schema_are_trust_gated() -> None:
     progress = _load_json(MANIFEST_DIR / "full-integration-progress.json")
     schema = _load_json(MANIFEST_DIR / "research-packet-schema.json")
+    coverage = _load_json(MANIFEST_DIR / "existing-integration-coverage.json")
+    readiness = _load_json(MANIFEST_DIR / "promotion-readiness-queue.json")
+    preview = _load_json(MANIFEST_DIR / "live-install-command-preview.json")
     state_report = (MANIFEST_DIR / "full-integration-state.md").read_text(encoding="utf-8")
+    covered_existing = coverage["summary"]["covered-by-existing-installable-catalog"]
+    readiness_summary = readiness["summary"]
 
     assert progress["phase"] == "promotion-overlay-installed"
-    assert progress["complete"] is False
+    assert progress["complete"] is True
+    assert "Complete for the July 2026 candidate-corpus goal" in progress["completion_scope"]
     assert progress["raw_candidates"] == 293
     assert progress["unique_normalized_targets"] == 289
-    assert progress["live_install"]["eligible_count"] == len(PROMOTED_SKILL_NAMES)
-    assert progress["live_install"]["status"] == "live-installs-recorded"
+    assert progress["live_install"]["eligible_count"] == preview["command_count"] == 0
+    assert progress["live_install"]["status"] == preview["status"] == "no-live-install-commands-emitted"
     assert progress["live_install"]["installed_skill_rows"] == len(PROMOTED_SKILL_NAMES)
-    assert progress["promotion_readiness"]["covered_by_existing_installable_catalog"] == 14
-    assert progress["promotion_readiness"]["ready_for_repo_promotion"] == len(PROMOTED_SKILL_NAMES)
-    assert progress["promotion_readiness"]["ready_for_live_install"] == len(PROMOTED_SKILL_NAMES)
+    assert progress["live_install"]["recorded_install_evidence_rows"] == len(PROMOTED_SKILL_NAMES)
+    assert progress["live_install"]["new_live_install_commands_emitted"] == 0
+    assert progress["live_install"]["installed_path_refs"] == PROMOTED_INSTALLED_PATH_REFS
+    assert progress["live_install"]["verified_skill_md_count"] == PROMOTED_INSTALLED_PATH_REFS
+    assert progress["live_install"]["missing_skill_md_count"] == 0
+    assert progress["promotion_readiness"]["covered_by_existing_installable_catalog"] == covered_existing
+    assert progress["promotion_readiness"]["covered_by_existing_installable_catalog"] == (
+        readiness_summary["covered_by_existing_installable_catalog"]
+    )
+    assert readiness_summary["ready_for_repo_promotion"] == 0
+    assert readiness_summary["ready_for_live_install"] == 0
+    assert progress["promotion_readiness"]["ready_for_repo_promotion"] == 0
+    assert progress["promotion_readiness"]["ready_for_live_install"] == 0
+    assert progress["promotion_readiness"]["blocked_until_trust_gates"] == (
+        readiness_summary["blocked_until_trust_gates"]
+    )
+    assert progress["promotion_readiness"]["promoted_installable_rows"] == len(PROMOTED_SKILL_NAMES)
+    assert progress["promotion_readiness"]["recorded_install_evidence_rows"] == len(PROMOTED_SKILL_NAMES)
     assert progress["promotion_readiness"]["remaining_reference_rows"] == (
         289 - len(PROMOTED_CANDIDATE_NAMES)
     )
+    assert progress["terminal_decisions"] == {
+        "raw_candidates_processed": 293,
+        "unique_normalized_targets": 289,
+        "installable_curated_rows": len(PROMOTED_SKILL_NAMES),
+        "live_installs_recorded": len(PROMOTED_SKILL_NAMES),
+        "new_live_install_commands_emitted": 0,
+        "reference_only_or_terminal_gated_rows": 289 - len(PROMOTED_CANDIDATE_NAMES),
+        "duplicate_raw_groups": 4,
+    }
 
     required_fields = {
         "raw_index",
@@ -454,6 +544,14 @@ def test_full_integration_progress_and_packet_schema_are_trust_gated() -> None:
     assert set(schema["raw_leaf_check_suffixes"]) == RAW_RESEARCH_SUFFIXES
     assert set(schema["unique_synthesis_leaf_check_suffixes"]) == UNIQUE_SYNTHESIS_SUFFIXES
     assert "promotion-overlay-installed" in state_report
+    assert "Complete: `true`" in state_report
+    assert "Live install eligible: 0" in state_report
+    assert (
+        f"Installed path references verified: {PROMOTED_INSTALLED_PATH_REFS}/{PROMOTED_INSTALLED_PATH_REFS}"
+        in state_report
+    )
+    assert "Ready for repo promotion: 0" in state_report
+    assert f"Promoted installable catalog rows: {len(PROMOTED_SKILL_NAMES)}" in state_report
     assert "Install-root verification found 0 missing `SKILL.md` files" in state_report
 
 
@@ -477,22 +575,25 @@ def test_subagent_wave_queue_covers_every_raw_entry_read_only() -> None:
 def test_promotion_readiness_queue_blocks_live_install_until_trust_gates() -> None:
     readiness = _load_json(MANIFEST_DIR / "promotion-readiness-queue.json")
     progress = _load_json(MANIFEST_DIR / "full-integration-progress.json")
+    covered_existing = len(readiness["covered_by_existing_installable_catalog"])
+    blocked_count = len(readiness["blocked_until_trust_gates"])
 
     assert readiness["status"] == "existing-coverage-reconciled-with-trust-gated-backlog"
     assert readiness["summary"] == {
         "unique_targets": 289,
-        "covered_by_existing_installable_catalog": 14,
+        "covered_by_existing_installable_catalog": covered_existing,
         "ready_for_repo_promotion": 0,
         "ready_for_live_install": 0,
-        "blocked_until_trust_gates": 275,
+        "blocked_until_trust_gates": blocked_count,
     }
-    assert len(readiness["covered_by_existing_installable_catalog"]) == 14
     assert readiness["ready_for_repo_promotion"] == []
     assert readiness["ready_for_live_install"] == []
-    assert len(readiness["blocked_until_trust_gates"]) == 275
-    assert progress["promotion_readiness"]["covered_by_existing_installable_catalog"] == 14
-    assert progress["promotion_readiness"]["ready_for_repo_promotion"] == len(PROMOTED_SKILL_NAMES)
-    assert progress["promotion_readiness"]["ready_for_live_install"] == len(PROMOTED_SKILL_NAMES)
+    assert covered_existing + blocked_count == 289
+    assert progress["promotion_readiness"]["covered_by_existing_installable_catalog"] == covered_existing
+    assert progress["promotion_readiness"]["ready_for_repo_promotion"] == 0
+    assert progress["promotion_readiness"]["ready_for_live_install"] == 0
+    assert progress["promotion_readiness"]["promoted_installable_rows"] == len(PROMOTED_SKILL_NAMES)
+    assert progress["promotion_readiness"]["recorded_install_evidence_rows"] == len(PROMOTED_SKILL_NAMES)
     assert progress["promotion_readiness"]["remaining_reference_rows"] == (
         289 - len(PROMOTED_CANDIDATE_NAMES)
     )
@@ -504,6 +605,7 @@ def test_promotion_readiness_queue_blocks_live_install_until_trust_gates() -> No
         assert item["repo_mutation_eligible"] is False
         assert item["install_command"] == ""
         assert item["existing_rows"]
+        assert _existing_rows_are_trust_cleared(item["existing_rows"])
         assert item["blocking_gates"] == []
 
     for item in readiness["blocked_until_trust_gates"]:
@@ -513,6 +615,19 @@ def test_promotion_readiness_queue_blocks_live_install_until_trust_gates() -> No
         assert item["install_command"] == ""
         assert "source-list evidence" in item["blocking_gates"]
         assert "target-specific validation" in item["blocking_gates"]
+
+    terraform = next(
+        item
+        for item in readiness["blocked_until_trust_gates"]
+        if item["source_name"].lower() == "antonbabenko/terraform-skill"
+    )
+    assert terraform["existing_integration_status"] == "covered-by-existing-inspection-required"
+    assert terraform["terminal_status"] == "blocked-until-trust-gates"
+    assert "license review" in terraform["blocking_gates"]
+    assert "security review" in terraform["blocking_gates"]
+    assert "target-specific validation" in terraform["blocking_gates"]
+    assert terraform["existing_rows"]
+    assert not _existing_rows_are_trust_cleared(terraform["existing_rows"])
 
 
 def test_existing_integration_coverage_maps_exact_curated_rows() -> None:
@@ -529,25 +644,162 @@ def test_existing_integration_coverage_maps_exact_curated_rows() -> None:
     for source in [
         "cloudflare/skills",
         "supabase/agent-skills",
-        "antonbabenko/terraform-skill",
         "avdlee/swift-concurrency-agent-skill",
     ]:
         item = by_source[source]
         assert item["coverage_status"] == "covered-by-existing-installable-catalog"
         assert item["existing_rows"]
-        assert any(row["has_install_command"] for row in item["existing_rows"])
+        assert _existing_rows_are_trust_cleared(item["existing_rows"])
+
+    terraform = by_source["antonbabenko/terraform-skill"]
+    assert terraform["coverage_status"] == "covered-by-existing-inspection-required"
+    assert terraform["existing_rows"]
+    assert any(row["status"] == "inspect-then-install" for row in terraform["existing_rows"])
+    assert any(row["trust_tier"] == "needs-inspection" for row in terraform["existing_rows"])
+    assert not _existing_rows_are_trust_cleared(terraform["existing_rows"])
 
     by_decision_url = {item["normalized_url"].lower(): item for item in decisions["decisions"]}
-    for source in ["wordpress/agent-skills", "tanstack/cli", "dimillian/skills"]:
-        item = by_source[source]
+    needs_promotion = [item for item in coverage["items"] if item["coverage_status"] == "needs-promotion-review"]
+    assert needs_promotion
+    for item in needs_promotion[:3]:
         assert item["coverage_status"] == "needs-promotion-review"
         assert item["existing_rows"] == []
-        assert by_decision_url[item["normalized_url"].lower()]["decision"] == "reference_only"
+        assert by_decision_url[item["normalized_url"].lower()]["decision"] in {
+            "merge_into_existing",
+            "quarantine",
+            "reference_only",
+            "skip_inaccessible",
+        }
+    for source in ["wordpress/agent-skills", "tanstack/cli", "dimillian/skills"]:
+        item = by_source[source]
+        assert item["coverage_status"] == "covered-by-existing-installable-catalog"
+        assert item["existing_rows"]
+        assert _existing_rows_are_trust_cleared(item["existing_rows"])
 
     by_url = {lane["normalized_url"].lower(): lane for lane in graph["unique_target_lanes"]}
     cloudflare = by_url["https://github.com/cloudflare/skills"]
     assert cloudflare["existing_integration_status"] == "covered-by-existing-installable-catalog"
     assert cloudflare["terminal_decision_status"] == "covered-by-existing-catalog"
+
+
+def test_existing_integration_coverage_distinguishes_trust_cleared_from_inspection_required(monkeypatch) -> None:
+    generator = _load_generator_module()
+    monkeypatch.setattr(
+        generator,
+        "catalog_authoring_rows",
+        lambda: [
+            {
+                "name": "trusted",
+                "path": "trusted.mdx",
+                "source": "trusted/source",
+                "install_source": "trusted/source",
+                "source_url": "https://github.com/trusted/source",
+                "install_command": "npx skills add trusted/source --skill trusted -y -g -a codex",
+                "status": "install-now-after-trust-gate",
+                "trust_tier": "curated-trust-gated",
+                "sync_kind": "skills-cli",
+            },
+            {
+                "name": "needs-inspection",
+                "path": "needs-inspection.mdx",
+                "source": "inspect/source",
+                "install_source": "inspect/source",
+                "source_url": "https://github.com/inspect/source",
+                "install_command": "npx skills add inspect/source --skill inspect -y -g -a codex",
+                "status": "inspect-then-install",
+                "trust_tier": "needs-inspection",
+                "sync_kind": "skills-cli",
+            },
+            {
+                "name": "reference",
+                "path": "reference.mdx",
+                "source": "reference/source",
+                "install_source": "reference/source",
+                "source_url": "https://github.com/reference/source",
+                "install_command": "",
+                "status": "catalog-reference",
+                "trust_tier": "curated-trust-gated",
+                "sync_kind": "none",
+            },
+        ],
+    )
+    records = [
+        {
+            "raw_index": 1,
+            "source_name": "trusted/source",
+            "normalized_url": "https://github.com/trusted/source",
+            "tree_subpath": "",
+            "canonical_source": "https://github.com/trusted/source",
+            "install_or_integration_decision": "reference_only",
+        },
+        {
+            "raw_index": 2,
+            "source_name": "inspect/source",
+            "normalized_url": "https://github.com/inspect/source",
+            "tree_subpath": "",
+            "canonical_source": "https://github.com/inspect/source",
+            "install_or_integration_decision": "reference_only",
+        },
+        {
+            "raw_index": 3,
+            "source_name": "reference/source",
+            "normalized_url": "https://github.com/reference/source",
+            "tree_subpath": "",
+            "canonical_source": "https://github.com/reference/source",
+            "install_or_integration_decision": "reference_only",
+        },
+    ]
+
+    coverage = generator.build_existing_integration_coverage(records)
+
+    by_source = {item["source_name"]: item for item in coverage["items"]}
+    assert by_source["trusted/source"]["coverage_status"] == "covered-by-existing-installable-catalog"
+    assert by_source["inspect/source"]["coverage_status"] == "covered-by-existing-inspection-required"
+    assert by_source["reference/source"]["coverage_status"] == "covered-by-existing-reference"
+
+
+def test_promotion_readiness_keeps_inspection_required_existing_rows_blocked() -> None:
+    generator = _load_generator_module()
+    decisions = [
+        {
+            "normalized_url": "https://github.com/inspect/source",
+            "source_name": "inspect/source",
+            "raw_indexes": [1],
+            "decision": "reference_only",
+        }
+    ]
+    graph = {
+        "unique_target_lanes": [
+            {
+                "lane_id": "N001",
+                "normalized_url": "https://github.com/inspect/source",
+                "existing_integration_status": "covered-by-existing-inspection-required",
+                "existing_rows": [
+                    {
+                        "name": "inspect",
+                        "status": "inspect-then-install",
+                        "trust_tier": "needs-inspection",
+                        "has_install_command": True,
+                        "sync_kind": "skills-cli",
+                    }
+                ],
+                "risk_tier": "standard-review",
+                "auth_required": False,
+            }
+        ]
+    }
+
+    readiness = generator.build_promotion_readiness_queue(decisions, graph)
+
+    assert readiness["covered_by_existing_installable_catalog"] == []
+    assert readiness["summary"]["covered_by_existing_installable_catalog"] == 0
+    assert readiness["summary"]["blocked_until_trust_gates"] == 1
+    blocked = readiness["blocked_until_trust_gates"][0]
+    assert blocked["terminal_status"] == "blocked-until-trust-gates"
+    assert blocked["existing_rows"]
+    assert "license review" in blocked["blocking_gates"]
+    assert "security review" in blocked["blocking_gates"]
+    assert "target-specific validation" in blocked["blocking_gates"]
 
 
 def test_promotion_wave_plan_assigns_every_unique_target_once() -> None:
@@ -567,7 +819,16 @@ def test_promotion_wave_plan_assigns_every_unique_target_once() -> None:
     by_wave = {wave["wave_id"]: wave for wave in wave_plan["waves"]}
     assert by_wave["W00"]["target_count"] == coverage["summary"]["covered-by-existing-installable-catalog"]
     assert by_wave["W00"]["mutation_policy"] == "no mutation; use existing catalog rows"
-    assert by_wave["W99"]["target_count"] >= 1
+    assert sum(wave["target_count"] for wave in wave_plan["waves"][1:]) == 289 - coverage["summary"][
+        "covered-by-existing-installable-catalog"
+    ]
+    assert all(
+        target["coverage_status"] == "covered-by-existing-installable-catalog"
+        for target in by_wave["W00"]["targets"]
+    )
+    assert "https://github.com/antonbabenko/terraform-skill" not in {
+        target["normalized_url"] for target in by_wave["W00"]["targets"]
+    }
 
 
 def test_promotion_research_packets_cover_every_raw_and_unique_target() -> None:
@@ -604,53 +865,104 @@ def test_promotion_research_packets_cover_every_raw_and_unique_target() -> None:
         assert packet["repo_mutation_eligible"] is False
         assert packet["raw_packet_ids"] == [f"U{raw_index:03d}" for raw_index in packet["raw_indexes"]]
         assert {leaf["suffix"] for leaf in packet["leaf_checks"]} == UNIQUE_SYNTHESIS_SUFFIXES
+        if packet["existing_integration_status"] == "covered-by-existing-installable-catalog":
+            assert packet["blockers"] == []
+            assert _existing_rows_are_trust_cleared(packet["existing_rows"])
+        else:
+            assert "target-specific validation" in packet["blockers"]
+
+
+def test_promotion_source_list_evidence_gate_statuses_are_unique() -> None:
+    promoter = _load_promoter_module()
+    evidence_statuses = [row[0] for row in promoter._SOURCE_LIST_EVIDENCE_GATE_STATUSES]
+    assert len(evidence_statuses) == len(set(evidence_statuses))
 
 
 def test_promotion_gate_matrix_and_install_preview_keep_live_installs_blocked() -> None:
     matrix = _load_json(MANIFEST_DIR / "promotion-gate-matrix.json")
     preview = _load_json(MANIFEST_DIR / "live-install-command-preview.json")
+    unique = _load_json(MANIFEST_DIR / "unique-target-research-packets.json")
     summary = (MANIFEST_DIR / "promotion-gate-summary.md").read_text(encoding="utf-8")
+    covered_count = sum(
+        1
+        for item in matrix["items"]
+        if item["final_status"] == "covered-by-existing-installable-catalog"
+    )
+    blocked_count = len(matrix["items"]) - covered_count
 
     assert matrix["summary"] == {
         "unique_targets": 289,
-        "covered_by_existing_installable_catalog": 14,
+        "covered_by_existing_installable_catalog": covered_count,
         "ready_for_repo_promotion": 0,
         "ready_for_live_install": 0,
-        "blocked_until_trust_gates": 275,
+        "blocked_until_trust_gates": blocked_count,
     }
     assert len(matrix["items"]) == 289
     auth_counts = matrix["gate_status_counts"]["auth review"]
     assert sum(auth_counts.values()) == 289
-    assert auth_counts["auth-required-review"] == sum(1 for item in matrix["items"] if item["auth_required"])
-    assert (
-        auth_counts["metadata-only-no-auth-detected"] + auth_counts["existing-catalog-row-owns-auth-boundaries"]
-        == sum(1 for item in matrix["items"] if not item["auth_required"])
+    assert auth_counts["auth-required-review"] == sum(
+        1
+        for item in matrix["items"]
+        if item["auth_required"] and item["final_status"] != "covered-by-existing-installable-catalog"
+    )
+    assert auth_counts["existing-catalog-row-owns-auth-boundaries"] == covered_count
+    assert auth_counts["metadata-only-no-auth-detected"] == sum(
+        1
+        for item in matrix["items"]
+        if not item["auth_required"] and item["final_status"] != "covered-by-existing-installable-catalog"
     )
     source_counts = matrix["gate_status_counts"]["source-list evidence"]
-    assert source_counts == {
-        "source-list-error-needs-manual-review": 21,
-        "source-list-found-existing-installable-catalog": 14,
-        "source-list-found-pending-promotion-review": 222,
-        "source-list-timeout-needs-retry": 32,
-    }
+    assert sum(source_counts.values()) == 289
+    assert (
+        source_counts.get("source-list-found-existing-installable-catalog", 0)
+        + source_counts.get("existing-installable-catalog-row-present", 0)
+        == covered_count
+    )
     assert matrix["gate_status_counts"]["live install"] == {
-        "blocked": 275,
-        "no-new-live-install-command-emitted": 14,
+        "blocked": blocked_count,
+        "no-new-live-install-command-emitted": covered_count,
     }
     final_counts = {
         status: sum(1 for item in matrix["items"] if item["final_status"] == status)
         for status in {item["final_status"] for item in matrix["items"]}
     }
-    assert final_counts == {"blocked-until-trust-gates": 275, "covered-by-existing-installable-catalog": 14}
+    assert final_counts == {
+        "blocked-until-trust-gates": blocked_count,
+        "covered-by-existing-installable-catalog": covered_count,
+    }
     assert not any(item["install_command"] for item in matrix["items"])
+
+    unique_by_url = {packet["normalized_url"]: packet for packet in unique["packets"]}
+    for item in matrix["items"]:
+        packet = unique_by_url[item["normalized_url"]]
+        if item["final_status"] == "covered-by-existing-installable-catalog":
+            assert _existing_rows_are_trust_cleared(packet["existing_rows"])
+        else:
+            assert item["gate_statuses"]["live install"] == "blocked"
+
+    terraform = next(
+        item
+        for item in matrix["items"]
+        if item["normalized_url"] == "https://github.com/antonbabenko/terraform-skill"
+    )
+    assert terraform["existing_integration_status"] == "covered-by-existing-inspection-required"
+    assert terraform["final_status"] == "blocked-until-trust-gates"
+    assert terraform["gate_statuses"]["live install"] == "blocked"
+    assert terraform["gate_statuses"]["license review"] != "existing-catalog-row-owns-license-and-attribution"
 
     assert preview["status"] == "no-live-install-commands-emitted"
     assert preview["command_count"] == 0
     assert preview["commands"] == []
-    assert preview["covered_existing_target_count"] == 14
-    assert len(preview["covered_existing_targets"]) == 14
-    assert preview["blocked_target_count"] == 275
-    assert len(preview["blocked_targets"]) == 275
+    assert preview["covered_existing_target_count"] == covered_count
+    assert len(preview["covered_existing_targets"]) == covered_count
+    assert preview["blocked_target_count"] == blocked_count
+    assert len(preview["blocked_targets"]) == blocked_count
+    assert "https://github.com/antonbabenko/terraform-skill" not in {
+        item["normalized_url"] for item in preview["covered_existing_targets"]
+    }
+    assert "https://github.com/antonbabenko/terraform-skill" in {
+        item["normalized_url"] for item in preview["blocked_targets"]
+    }
     assert "remaining packet files are promotion work queues" in summary
 
 
@@ -671,6 +983,368 @@ def test_promotion_packet_coverage_cli() -> None:
         "ok": True,
         "errors": [],
     }
+
+
+def test_deep_source_audit_covers_every_unique_target_without_execution() -> None:
+    audit = _load_json(MANIFEST_DIR / "deep-source-audit.json")
+
+    assert audit["candidate_code_executed"] is False
+    assert audit["unique_target_count"] == 289
+    assert len(audit["items"]) == 289
+    assert sum(audit["status_counts"].values()) == 289
+    assert audit["status_counts"]["audited"] == 288
+    assert audit["status_counts"]["terminal-blocker"] == 1
+    assert audit["auth_required_count"] >= 49
+    assert audit["security_indicator_target_count"] >= 1
+
+    by_url = {item["normalized_url"]: item for item in audit["items"]}
+    nvidia = by_url["https://github.com/NVIDIA/skills-"]
+    assert nvidia["status"] == "terminal-blocker"
+    assert "tree API unavailable" in nvidia["blockers"][0]
+    csvglow = by_url["https://github.com/Ratnaditya-J/csvglow"]
+    assert csvglow["status"] == "audited"
+    assert csvglow["readme"]["path"]
+    assert csvglow["license"]["status"] in {"ok", "error"}
+    assert csvglow["candidate_code_executed"] is False
+
+
+def test_promotion_final_check_cli_validates_completed_overlay() -> None:
+    result = subprocess.run(
+        ["uv", "run", "python", "scripts/promote_candidate_corpus.py", "--final-check"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    payload = json.loads(result.stdout)
+
+    assert payload["ok"] is True
+    assert payload["raw"] == 293
+    assert payload["unique"] == 289
+    assert payload["deep_audited"] == 288
+    assert payload["deep_terminal_blockers"] == 1
+    assert payload["promoted_overrides"] == len(PROMOTED_SKILL_NAMES)
+    assert payload["live_installed"] == len(PROMOTED_SKILL_NAMES)
+    assert payload["installed_path_refs"] == PROMOTED_INSTALLED_PATH_REFS
+    assert payload["verified_skill_md"] == PROMOTED_INSTALLED_PATH_REFS
+    assert payload["missing_skill_md"] == 0
+    assert payload["errors"] == []
+
+
+def test_promotion_combined_checks_run_both_phases() -> None:
+    result = subprocess.run(
+        [
+            "uv",
+            "run",
+            "python",
+            "scripts/promote_candidate_corpus.py",
+            "--check-coverage",
+            "--final-check",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    assert '"matrix_items": 289' in result.stdout
+    assert '"deep_audited": 288' in result.stdout
+
+
+def _valid_apply_override(**updates):
+    override = {
+        "normalized_url": "https://example.test/source",
+        "source_name": "example/source",
+        "candidate_authoring_name": "candidate-corpus-001-source",
+        "skill_name": "example-skill",
+        "description": "Example promoted skill.",
+        "install_source": "example/source",
+        "install_command": "npx skills add example/source --skill example-skill -y -g -a codex",
+        "target_agents": ["codex"],
+        "status": "install-now-after-trust-gate",
+        "trust_tier": "curated-trust-gated",
+        "provenance_status": "verified-install-command",
+        "selector_mode": "named",
+        "sync_kind": "skills-cli",
+        "audit_date": "2026-07-07",
+        "audited_head": "abc123",
+        "license": "MIT",
+        "pin_policy": "pin-before-install",
+        "source_list_evidence": "source-list-found",
+        "found_skill_count": 1,
+        "raw_indexes": [1],
+        "live_install_executed": True,
+        "executed_commands": ["npx skills add example/source --skill example-skill -y -g -a codex"],
+        "installed_paths": ["~/.agents/skills/example-skill"],
+        "risk_category": "standard-review",
+        "risk_tier": "standard-review",
+        "intake_decision": "reference_only",
+        "executable_surface": "prompt-only-skill",
+        "credential_behavior": "No credentials.",
+        "network_access": "No declared network access.",
+        "file_access": "No declared file access.",
+        "live_action_risk": "User invoked only.",
+        "promotion_policy": "Reviewed test promotion.",
+        "provenance_evidence": "Fixture evidence.",
+        "remaining_blockers": [],
+    }
+    override.update(updates)
+    return override
+
+
+def _prepare_apply_promotion_fixture(tmp_path, monkeypatch, overrides, rows=None, *, create_installed_paths=True):
+    apply_promotions = _load_apply_promotions_module()
+    authoring_dir = tmp_path / "authoring"
+    authoring_dir.mkdir()
+    monkeypatch.setenv("HOME", str(tmp_path))
+    monkeypatch.setattr(apply_promotions, "ROOT", tmp_path)
+    monkeypatch.setattr(apply_promotions, "MANIFEST_DIR", tmp_path)
+    monkeypatch.setattr(apply_promotions, "AUTHORING_DIR", authoring_dir)
+    monkeypatch.setattr(apply_promotions, "OVERRIDES", tmp_path / "promotion-overrides.json")
+    monkeypatch.setattr(apply_promotions, "SUMMARY", tmp_path / "catalog-authoring-summary.json")
+    monkeypatch.setattr(apply_promotions, "REPORT", tmp_path / "applied-promotion-overrides.json")
+    monkeypatch.setattr(apply_promotions, "PROGRESS", tmp_path / "full-integration-progress.json")
+    monkeypatch.setattr(apply_promotions, "STATE_REPORT", tmp_path / "full-integration-state.md")
+    if rows is None:
+        rows = [
+            {
+                "name": "candidate-corpus-001-source",
+                "path": "docs/src/authoring/skills/candidate-corpus-001-source.mdx",
+                "normalized_url": "https://example.test/source",
+                "source_name": "example/source",
+                "raw_indexes": [1],
+                "status": "global-only-or-avoid",
+                "sync_kind": "none",
+                "source_list_evidence": "source-list-found",
+                "remaining_blockers": ["promotion review"],
+            }
+        ]
+    (tmp_path / "promotion-overrides.json").write_text(
+        json.dumps({"overrides": overrides}, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    if create_installed_paths:
+        for override in overrides:
+            if not isinstance(override, dict) or not override.get("live_install_executed"):
+                continue
+            for raw_path in override.get("installed_paths", []):
+                if not isinstance(raw_path, str) or not raw_path.strip():
+                    continue
+                skill_md = Path(os.path.expanduser(raw_path))
+                if skill_md.name != "SKILL.md":
+                    skill_md = skill_md / "SKILL.md"
+                skill_md.parent.mkdir(parents=True, exist_ok=True)
+                skill_md.write_text("---\nname: fixture\n---\n", encoding="utf-8")
+    live_stats = apply_promotions.live_install_evidence_stats(overrides)
+    (tmp_path / "catalog-authoring-summary.json").write_text(
+        json.dumps({"version": 1, "rows_written": len(rows), "rows": rows}, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "full-integration-progress.json").write_text(
+        json.dumps(
+            {
+                "phase": "promotion-overlay-installed",
+                "complete": True,
+                "live_install": {
+                    "installed_skill_rows": live_stats["live_install_rows"],
+                    "recorded_install_evidence_rows": live_stats["live_install_rows"],
+                    "eligible_count": 0,
+                    "new_live_install_commands_emitted": 0,
+                    "installed_path_refs": live_stats["installed_path_refs"],
+                    "verified_skill_md_count": live_stats["verified_skill_md_count"],
+                    "missing_skill_md_count": len(live_stats["missing_installed_skill_md"]),
+                    "status": "no-live-install-commands-emitted",
+                },
+                "promotion_readiness": {
+                    "ready_for_repo_promotion": 0,
+                    "ready_for_live_install": 0,
+                    "promoted_installable_rows": sum(isinstance(override, dict) for override in overrides),
+                    "recorded_install_evidence_rows": live_stats["live_install_rows"],
+                },
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return apply_promotions
+
+
+def test_apply_promotions_rejects_path_traversal_before_writes(tmp_path, monkeypatch):
+    apply_promotions = _prepare_apply_promotion_fixture(
+        tmp_path,
+        monkeypatch,
+        [_valid_apply_override(skill_name="../escape")],
+    )
+
+    with pytest.raises(ValueError, match="invalid skill_name"):
+        apply_promotions.apply_overrides()
+
+    assert not (tmp_path / "escape.mdx").exists()
+    assert not (tmp_path / "authoring" / ".." / "escape.mdx").exists()
+
+
+def test_apply_promotions_validator_rejects_duplicate_skill_names(tmp_path, monkeypatch):
+    overrides = [
+        _valid_apply_override(),
+        _valid_apply_override(normalized_url="https://example.test/other"),
+    ]
+    rows = [
+        {"normalized_url": "https://example.test/source"},
+        {"normalized_url": "https://example.test/other"},
+    ]
+    apply_promotions = _prepare_apply_promotion_fixture(tmp_path, monkeypatch, overrides, rows=rows)
+
+    errors = apply_promotions.validate_override_records(overrides, rows)
+
+    assert "duplicate promoted skill_name example-skill" in errors
+
+
+def test_apply_promotions_validator_rejects_missing_source_summary_row(tmp_path, monkeypatch):
+    overrides = [_valid_apply_override(normalized_url="https://example.test/missing")]
+    rows = [{"normalized_url": "https://example.test/source"}]
+    apply_promotions = _prepare_apply_promotion_fixture(tmp_path, monkeypatch, overrides, rows=rows)
+
+    errors = apply_promotions.validate_override_records(overrides, rows)
+
+    assert any("normalized_url has no source summary row" in error for error in errors)
+
+
+def test_apply_promotions_validator_requires_live_install_evidence(tmp_path, monkeypatch):
+    overrides = [
+        _valid_apply_override(
+            executed_commands=["npx skills add example/source --skill example-skill --dry-run"],
+            installed_paths=[],
+        )
+    ]
+    apply_promotions = _prepare_apply_promotion_fixture(tmp_path, monkeypatch, overrides)
+
+    errors = apply_promotions.validate_override_records(
+        overrides,
+        apply_promotions.load_json(apply_promotions.SUMMARY)["rows"],
+    )
+
+    assert "live install for https://example.test/source lacks non-dry-run install command evidence" in errors
+    assert "live install for https://example.test/source lacks installed path evidence" in errors
+
+
+def test_apply_promotions_validator_rejects_missing_installed_skill_md(tmp_path, monkeypatch):
+    overrides = [_valid_apply_override()]
+    apply_promotions = _prepare_apply_promotion_fixture(
+        tmp_path,
+        monkeypatch,
+        overrides,
+        create_installed_paths=False,
+    )
+
+    errors = apply_promotions.validate_override_records(
+        overrides,
+        apply_promotions.load_json(apply_promotions.SUMMARY)["rows"],
+    )
+
+    assert any("has missing installed SKILL.md" in error for error in errors)
+
+
+def test_apply_promotions_validator_rejects_non_object_override(tmp_path, monkeypatch):
+    overrides = [_valid_apply_override(), "not-an-object"]
+    apply_promotions = _prepare_apply_promotion_fixture(tmp_path, monkeypatch, overrides)
+
+    result = apply_promotions.validate()
+
+    assert result["ok"] is False
+    assert "override 2 is not an object" in result["errors"]
+
+
+def test_apply_promotions_validator_checks_dynamic_summary_counters(tmp_path, monkeypatch):
+    overrides = [_valid_apply_override()]
+    rows = [
+        {
+            "name": "example-skill",
+            "normalized_url": "https://example.test/source",
+            "install_command": overrides[0]["install_command"],
+            "live_install_executed": True,
+        }
+    ]
+    apply_promotions = _prepare_apply_promotion_fixture(tmp_path, monkeypatch, overrides, rows=rows)
+    summary = apply_promotions.load_json(apply_promotions.SUMMARY)
+    summary.update(
+        {
+            "install_commands_published": 0,
+            "live_installs_recorded": 1,
+            "status_counts": {"install-now-after-trust-gate": 0},
+            "sync_kind_counts": {"skills-cli": 0},
+        }
+    )
+    apply_promotions.write_json(apply_promotions.SUMMARY, summary)
+    (apply_promotions.AUTHORING_DIR / "example-skill.mdx").write_text("---\nname: example-skill\n---\n")
+
+    result = apply_promotions.validate()
+
+    assert result["ok"] is False
+    assert "summary install_commands_published does not match installable rows" in result["errors"]
+    assert "summary install_commands_published does not match promotion override count" in result["errors"]
+    assert "summary installable status count does not match promotion override count" in result["errors"]
+    assert "summary skills-cli sync count does not match promotion override count" in result["errors"]
+
+
+def test_apply_promotions_validator_rejects_non_trust_cleared_retained_coverage(tmp_path, monkeypatch):
+    overrides = [_valid_apply_override()]
+    rows = [
+        {
+            "name": "example-skill",
+            "normalized_url": "https://example.test/source",
+            "install_command": overrides[0]["install_command"],
+            "live_install_executed": True,
+        }
+    ]
+    apply_promotions = _prepare_apply_promotion_fixture(tmp_path, monkeypatch, overrides, rows=rows)
+    summary = apply_promotions.load_json(apply_promotions.SUMMARY)
+    summary.update(
+        {
+            "install_commands_published": 1,
+            "live_installs_recorded": 1,
+            "status_counts": {"install-now-after-trust-gate": 1},
+            "sync_kind_counts": {"skills-cli": 1},
+        }
+    )
+    apply_promotions.write_json(apply_promotions.SUMMARY, summary)
+    (apply_promotions.AUTHORING_DIR / "example-skill.mdx").write_text("---\nname: example-skill\n---\n")
+    inspect_row = {
+        "name": "needs-inspection",
+        "status": "inspect-then-install",
+        "trust_tier": "needs-inspection",
+        "has_install_command": True,
+        "sync_kind": "skills-cli",
+    }
+    apply_promotions.write_json(
+        tmp_path / "existing-integration-coverage.json",
+        {
+            "items": [
+                {
+                    "normalized_url": "https://example.test/source",
+                    "coverage_status": "covered-by-existing-installable-catalog",
+                    "existing_rows": [inspect_row],
+                }
+            ]
+        },
+    )
+    apply_promotions.write_json(
+        tmp_path / "promotion-readiness-queue.json",
+        {
+            "covered_by_existing_installable_catalog": [
+                {
+                    "normalized_url": "https://example.test/source",
+                    "existing_rows": [inspect_row],
+                }
+            ]
+        },
+    )
+
+    result = apply_promotions.validate()
+
+    assert result["ok"] is False
+    assert "retained existing coverage lacks trust-cleared row for https://example.test/source" in result["errors"]
+    assert "covered readiness row lacks trust-cleared existing row for https://example.test/source" in result["errors"]
 
 
 def _write_promoter_json(tmp_path, name, payload):
@@ -702,7 +1376,15 @@ def _prepare_promoter_validation_fixture(tmp_path, monkeypatch):
             "normalized_url": "https://example.test/covered",
             "raw_indexes": [1],
             "existing_integration_status": "covered-by-existing-installable-catalog",
-            "existing_rows": [{"name": "existing-covered"}],
+            "existing_rows": [
+                {
+                    "name": "existing-covered",
+                    "status": "install-now-after-trust-gate",
+                    "trust_tier": "curated-trust-gated",
+                    "has_install_command": True,
+                    "sync_kind": "skills-cli",
+                }
+            ],
             "auth_required": False,
             "licenses": ["MIT"],
             "source_list_evidence": {"evidence_status": "source-list-found"},
@@ -747,6 +1429,71 @@ def _prepare_promoter_validation_fixture(tmp_path, monkeypatch):
         encoding="utf-8",
     )
     return promoter
+
+
+def test_promotion_gate_matrix_blocks_inspection_required_existing_rows() -> None:
+    promoter = _load_promoter_module()
+    unique_packets = [
+        {
+            "packet_id": "N001",
+            "normalized_url": "https://example.test/inspect",
+            "raw_indexes": [1],
+            "existing_integration_status": "covered-by-existing-inspection-required",
+            "existing_rows": [
+                {
+                    "status": "inspect-then-install",
+                    "trust_tier": "needs-inspection",
+                    "has_install_command": True,
+                    "sync_kind": "skills-cli",
+                }
+            ],
+            "auth_required": False,
+            "licenses": ["MIT"],
+            "source_list_evidence": {"evidence_status": "source-list-found"},
+            "blockers": ["license review", "security review", "target-specific validation"],
+        }
+    ]
+
+    matrix = promoter.build_gate_matrix(unique_packets)
+    preview = promoter.build_install_preview(unique_packets)
+
+    assert matrix["summary"]["covered_by_existing_installable_catalog"] == 0
+    assert matrix["summary"]["blocked_until_trust_gates"] == 1
+    assert matrix["items"][0]["final_status"] == "blocked-until-trust-gates"
+    assert matrix["items"][0]["gate_statuses"]["live install"] == "blocked"
+    assert preview["covered_existing_targets"] == []
+    assert preview["blocked_targets"][0]["normalized_url"] == "https://example.test/inspect"
+
+
+def test_promotion_validator_rejects_non_trust_cleared_covered_packet(tmp_path, monkeypatch):
+    promoter = _prepare_promoter_validation_fixture(tmp_path, monkeypatch)
+    unique = promoter.load_json(promoter.UNIQUE_PACKET_FILE)
+    unique["packets"][0]["existing_rows"] = [
+        {
+            "name": "needs-inspection",
+            "status": "inspect-then-install",
+            "trust_tier": "needs-inspection",
+            "has_install_command": True,
+            "sync_kind": "skills-cli",
+        }
+    ]
+    matrix = promoter.build_gate_matrix(unique["packets"])
+    preview = promoter.build_install_preview(unique["packets"])
+    _write_promoter_json(tmp_path, promoter.UNIQUE_PACKET_FILE, unique)
+    _write_promoter_json(tmp_path, promoter.GATE_MATRIX_FILE, matrix)
+    _write_promoter_json(tmp_path, promoter.INSTALL_PREVIEW_FILE, preview)
+    (tmp_path / promoter.SUMMARY_FILE).write_text(
+        promoter.promotion_gate_summary_text(matrix, preview),
+        encoding="utf-8",
+    )
+
+    result = promoter.validate_outputs()
+
+    assert result["ok"] is False
+    assert (
+        "covered packet https://example.test/covered lacks trust-cleared existing catalog row"
+        in result["errors"]
+    )
 
 
 def test_promotion_validator_detects_missing_matrix_row(tmp_path, monkeypatch):
@@ -970,7 +1717,7 @@ def test_source_list_audit_plan_is_read_only() -> None:
             "python",
             "scripts/audit_candidate_source_lists.py",
             "--wave",
-            "W01",
+            "W08",
             "--limit",
             "2",
             "--force",

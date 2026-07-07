@@ -436,8 +436,10 @@ def _normalize_docs_graph_snapshot_history_entry(entry: Any) -> dict[str, Any] |
     if not isinstance(entry_date, str):
         return None
     try:
-        date.fromisoformat(entry_date)
+        parsed_date = date.fromisoformat(entry_date)
     except ValueError:
+        return None
+    if parsed_date.isoformat() != entry_date:
         return None
     normalized = {"date": entry_date}
     for key in ("total_pages", "total_internal_links", "orphan_count"):

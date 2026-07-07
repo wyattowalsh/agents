@@ -10,8 +10,8 @@
     "agent",
     "skill"
   ],
-  "install_or_integration_decision": "reference_only",
-  "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+  "install_or_integration_decision": "merge_into_existing",
+  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
   "auth_required": false,
   "env_vars_or_credentials": [],
   "safety_notes": "No elevated keyword risk detected.",
@@ -136,7 +136,9 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [],
+    "catalog_matches": [
+      "docs/src/authoring/skills/swift-api-design-guidelines-skill.mdx"
+    ],
     "mcp_registry_match": false,
     "plugin_registry_match": false
   },
@@ -169,8 +171,8 @@
   ],
   "docs_steward_status": "packet-generated",
   "decision_packet": {
-    "decision": "reference_only",
-    "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates."
+    "decision": "merge_into_existing",
+    "reason": "Existing repo catalog or registry surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,

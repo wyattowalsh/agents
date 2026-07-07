@@ -155,7 +155,15 @@ def test_committed_catalog_browser_index_matches_schema() -> None:
     rows = data.get("externalSkillIndex", [])
     assert isinstance(rows, list)
     if rows:
-        assert set(rows[0]) == {"name", "description", "href", "lane", "sourceType"}
+        assert set(rows[0]) == {
+            "name",
+            "description",
+            "href",
+            "lane",
+            "sourceType",
+            "tagFacetIds",
+            "platformFacetIds",
+        }
     Validator = _try_jsonschema()
     if Validator:
         Validator(schema).validate(data)

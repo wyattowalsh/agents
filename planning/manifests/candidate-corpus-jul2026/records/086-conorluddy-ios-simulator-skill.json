@@ -146,7 +146,9 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [],
+    "catalog_matches": [
+      "docs/src/authoring/skills/ios-simulator-skill.mdx"
+    ],
     "mcp_registry_match": false,
     "plugin_registry_match": false
   },

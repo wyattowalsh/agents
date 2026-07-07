@@ -106,12 +106,17 @@ const serialized = skills.map(serializeSkill);
     // no-op when component is not mounted
   } else {
     let skills = serialized;
+    let tagFacetIndex = [];
+    let platformFacetIndex = [];
     const grid = root.querySelector('[data-catalog-grid]');
     const meta = root.querySelector('[data-catalog-meta]');
     const searchInput = root.querySelector('[data-catalog-search]');
     const moreBtn = root.querySelector('[data-catalog-more]');
     const filterButtons = root.querySelectorAll('[data-lane]');
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeTag = (urlParams.get('tag') || '').trim();
+    const activePlatform = (urlParams.get('platform') || '').trim();
     let activeLane = 'all';
     let query = '';
     let visibleCount = pageSize;
@@ -119,6 +124,11 @@ const serialized = skills.map(serializeSkill);
     let loadError = '';
 
     const normalize = (value) => String(value || '').toLowerCase();
+    const facetValues = (value) =>
+      String(value || '')
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean);
     const normalizeSkill = (skill) => {
       const name = String(skill?.name || '');
       const lane = ['install-now', 'inspect', 'avoid'].includes(String(skill?.lane || ''))
@@ -134,7 +144,16 @@ const serialized = skills.map(serializeSkill);
         href: String(skill?.href || `/skills/catalog/external/${encodeURIComponent(name)}/`),
         lane,
         sourceType: skill?.sourceType || 'curated-external',
+        tagFacetIds: String(skill?.tagFacetIds || ''),
+        platformFacetIds: String(skill?.platformFacetIds || ''),
       };
+    };
+
+    const facetIdMatches = (facetIds, facetIndex, activeFacet) => {
+      if (!activeFacet) return true;
+      const facetId = facetIndex.indexOf(activeFacet);
+      if (facetId < 0) return false;
+      return facetValues(facetIds).includes(String(facetId));
     };
 
     const applyFilters = () => {
@@ -142,6 +161,8 @@ const serialized = skills.map(serializeSkill);
       filtered = skills.filter((skill) => {
         const laneMatch = activeLane === 'all' || skill.lane === activeLane;
         if (!laneMatch) return false;
+        if (!facetIdMatches(skill.tagFacetIds, tagFacetIndex, activeTag)) return false;
+        if (!facetIdMatches(skill.platformFacetIds, platformFacetIndex, activePlatform)) return false;
         if (!needle) return true;
         return normalize(skill.name).includes(needle) || normalize(skill.description).includes(needle);
       });
@@ -178,12 +199,18 @@ const serialized = skills.map(serializeSkill);
       }
       const showing = slice.length;
       const total = filtered.length;
+      const facetParts = [];
+      if (activeTag) facetParts.push(`tag "${activeTag}"`);
+      if (activePlatform) facetParts.push(`platform "${activePlatform}"`);
+      const facetLabel = facetParts.length ? `Filtered by ${facetParts.join(' and ')}. ` : '';
       meta.textContent =
         total === 0 && loadError
           ? loadError
           : total === 0
-            ? 'No skills match the current filters.'
-            : `Showing ${showing} of ${total} external skill${total === 1 ? '' : 's'}.`;
+            ? facetLabel
+              ? `${facetLabel}No external skills match this facet. Custom-only skills are listed on the custom catalog.`
+              : 'No skills match the current filters.'
+            : `${facetLabel}Showing ${showing} of ${total} external skill${total === 1 ? '' : 's'}.`;
       if (moreBtn instanceof HTMLButtonElement) {
         const hasMore = showing < total;
         moreBtn.hidden = !hasMore;
@@ -239,6 +266,8 @@ const serialized = skills.map(serializeSkill);
         })
         .then((data) => {
           const rows = Array.isArray(data) ? data : Array.isArray(data?.[indexKey]) ? data[indexKey] : [];
+          tagFacetIndex = Array.isArray(data?.tagFacetIndex) ? data.tagFacetIndex : [];
+          platformFacetIndex = Array.isArray(data?.platformFacetIndex) ? data.platformFacetIndex : [];
           skills = rows.map(normalizeSkill).filter((skill) => skill.name);
           loadError = '';
           applyFilters();

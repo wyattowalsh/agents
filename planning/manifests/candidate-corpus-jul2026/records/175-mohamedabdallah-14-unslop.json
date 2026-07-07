@@ -142,7 +142,12 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [],
+    "catalog_matches": [
+      "docs/src/authoring/skills/unslop-commit.mdx",
+      "docs/src/authoring/skills/unslop-help.mdx",
+      "docs/src/authoring/skills/unslop-review.mdx",
+      "docs/src/authoring/skills/unslop.mdx"
+    ],
     "mcp_registry_match": false,
     "plugin_registry_match": false
   },

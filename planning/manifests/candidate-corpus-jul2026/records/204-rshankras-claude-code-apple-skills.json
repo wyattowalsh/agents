@@ -9,8 +9,8 @@
   "artifact_types_found": [
     "skill"
   ],
-  "install_or_integration_decision": "reference_only",
-  "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+  "install_or_integration_decision": "merge_into_existing",
+  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
   "auth_required": false,
   "env_vars_or_credentials": [],
   "safety_notes": "No elevated keyword risk detected.",
@@ -142,7 +142,28 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [],
+    "catalog_matches": [
+      "docs/src/authoring/skills/app-store.mdx",
+      "docs/src/authoring/skills/apple-intelligence.mdx",
+      "docs/src/authoring/skills/core-ml.mdx",
+      "docs/src/authoring/skills/foundation.mdx",
+      "docs/src/authoring/skills/generators.mdx",
+      "docs/src/authoring/skills/growth.mdx",
+      "docs/src/authoring/skills/ios-development.mdx",
+      "docs/src/authoring/skills/legal.mdx",
+      "docs/src/authoring/skills/macos-development.mdx",
+      "docs/src/authoring/skills/mapkit.mdx",
+      "docs/src/authoring/skills/monetization.mdx",
+      "docs/src/authoring/skills/product-development.mdx",
+      "docs/src/authoring/skills/release-review.mdx",
+      "docs/src/authoring/skills/security.mdx",
+      "docs/src/authoring/skills/shared.mdx",
+      "docs/src/authoring/skills/swift-development.mdx",
+      "docs/src/authoring/skills/swiftdata.mdx",
+      "docs/src/authoring/skills/swiftui.mdx",
+      "docs/src/authoring/skills/testing.mdx",
+      "docs/src/authoring/skills/visionos.mdx"
+    ],
     "mcp_registry_match": false,
     "plugin_registry_match": false
   },
@@ -175,8 +196,8 @@
   ],
   "docs_steward_status": "packet-generated",
   "decision_packet": {
-    "decision": "reference_only",
-    "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates."
+    "decision": "merge_into_existing",
+    "reason": "Existing repo catalog or registry surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,

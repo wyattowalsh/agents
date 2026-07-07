@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from collections import Counter, defaultdict
 from datetime import UTC, datetime
@@ -25,6 +26,16 @@ UNIQUE_PACKET_FILE = "unique-target-research-packets.json"
 GATE_MATRIX_FILE = "promotion-gate-matrix.json"
 INSTALL_PREVIEW_FILE = "live-install-command-preview.json"
 SUMMARY_FILE = "promotion-gate-summary.md"
+DEEP_AUDIT_FILE = "deep-source-audit.json"
+
+_SOURCE_LIST_EVIDENCE_GATE_STATUSES: tuple[tuple[str, str], ...] = (
+    ("source-list-found", "source-list-found-pending-promotion-review"),
+    ("source-list-no-skills-listed", "source-list-reviewed-no-installable-skills"),
+    ("source-list-timeout", "source-list-timeout-needs-retry"),
+    ("source-list-unavailable", "source-list-unavailable-needs-manual-review"),
+    ("source-list-empty-or-unparsed", "source-list-empty-or-unparsed-needs-parser-review"),
+    ("source-list-error", "source-list-error-needs-manual-review"),
+)
 
 TERMINAL_DECISION_MAP = {
     "merge_into_existing": "merged",
@@ -43,6 +54,9 @@ TRUST_GATES = [
     "docs-steward promotion",
     "target-specific validation",
 ]
+COVERAGE_TRUST_CLEARED = "covered-by-existing-installable-catalog"
+TRUST_CLEARED_STATUS = "install-now-after-trust-gate"
+TRUST_CLEARED_TIER = "curated-trust-gated"
 
 
 def now() -> str:
@@ -82,6 +96,35 @@ def dedupe(values: list[Any]) -> list[Any]:
 
 def by_normalized(items: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     return {item["normalized_url"].lower(): item for item in items}
+
+
+def existing_row_has_install_surface(row: dict[str, Any]) -> bool:
+    has_install_command = bool(row.get("has_install_command")) or bool(str(row.get("install_command", "")).strip())
+    sync_kind = str(row.get("sync_kind", "")).strip()
+    return has_install_command and sync_kind not in {"", "none"}
+
+
+def existing_row_trust_cleared(row: dict[str, Any]) -> bool:
+    return (
+        existing_row_has_install_surface(row)
+        and row.get("status") == TRUST_CLEARED_STATUS
+        and row.get("trust_tier") == TRUST_CLEARED_TIER
+    )
+
+
+def packet_has_trust_cleared_existing_row(packet: dict[str, Any]) -> bool:
+    rows = packet.get("existing_rows", [])
+    if not isinstance(rows, list):
+        return False
+    install_surface_rows = [row for row in rows if isinstance(row, dict) and existing_row_has_install_surface(row)]
+    return bool(install_surface_rows) and all(existing_row_trust_cleared(row) for row in install_surface_rows)
+
+
+def packet_has_trust_cleared_coverage(packet: dict[str, Any]) -> bool:
+    return (
+        packet.get("existing_integration_status") == COVERAGE_TRUST_CLEARED
+        and packet_has_trust_cleared_existing_row(packet)
+    )
 
 
 def readiness_by_url(readiness: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -267,6 +310,8 @@ def build_unique_packets(context: dict[str, Any], raw_packets: list[dict[str, An
         wave = context["wave_by_url"].get(key, {})
         source_list_item = context["source_list_by_url"].get(key)
         blockers = dedupe([blocker for packet in raw_group for blocker in packet["blockers"]])
+        if coverage_item.get("coverage_status") == COVERAGE_TRUST_CLEARED:
+            blockers = []
         env_values = dedupe([value for packet in raw_group for value in packet["env_vars_or_credentials"]])
         docs_surfaces = sorted({surface for packet in raw_group for surface in packet["docs_steward_surfaces"]})
         artifact_types = sorted({artifact for packet in raw_group for artifact in packet["artifact_types_found"]})
@@ -305,7 +350,7 @@ def build_unique_packets(context: dict[str, Any], raw_packets: list[dict[str, An
 
 
 def gate_statuses(packet: dict[str, Any]) -> dict[str, str]:
-    has_existing_installable = packet["existing_integration_status"] == "covered-by-existing-installable-catalog"
+    has_existing_installable = packet_has_trust_cleared_coverage(packet)
     source_list_evidence = packet.get("source_list_evidence") or {}
     source_list_evidence_status = source_list_evidence.get("evidence_status")
     has_source_list = bool(source_list_evidence)
@@ -327,32 +372,16 @@ def gate_statuses(packet: dict[str, Any]) -> dict[str, str]:
     license_status = "metadata-present-needs-file-review" if packet["licenses"] else "missing-license-review"
     if any(str(license_value).lower().startswith("not-fetched") for license_value in packet["licenses"]):
         license_status = "license-unavailable-needs-review"
-    if source_list_evidence_status == "source-list-found" and has_existing_installable:
-        source_list_status = "source-list-found-existing-installable-catalog"
-    elif source_list_evidence_status == "source-list-found":
-        source_list_status = "source-list-found-pending-promotion-review"
-    elif source_list_evidence_status == "source-list-no-skills-listed":
-        source_list_status = "source-list-reviewed-no-installable-skills"
-    elif source_list_evidence_status == "source-list-timeout":
-        source_list_status = "source-list-timeout-needs-retry"
-    elif source_list_evidence_status == "source-list-unavailable":
-        source_list_status = "source-list-unavailable-needs-manual-review"
-    elif source_list_evidence_status == "source-list-empty-or-unparsed":
-        source_list_status = "source-list-empty-or-unparsed-needs-parser-review"
-    elif source_list_evidence_status == "source-list-error":
-        source_list_status = "source-list-error-needs-manual-review"
-    elif source_list_evidence_status == "source-list-unavailable":
-        source_list_status = "source-list-unavailable-needs-manual-review"
-    elif source_list_evidence_status == "source-list-empty-or-unparsed":
-        source_list_status = "source-list-empty-or-unparsed-needs-manual-review"
-    elif has_existing_installable:
-        source_list_status = "existing-installable-catalog-row-present"
-    elif has_source_list and source_list_evidence_status:
-        source_list_status = f"{source_list_evidence_status}-needs-review"
-    elif has_source_list:
-        source_list_status = "source-list-evidence-unclassified"
+    source_list_status = "pending-source-list-output"
+    for evidence_status, gate_status in _SOURCE_LIST_EVIDENCE_GATE_STATUSES:
+        if source_list_evidence_status == evidence_status:
+            source_list_status = gate_status
+            break
     else:
-        source_list_status = "pending-source-list-output"
+        if has_source_list and source_list_evidence_status:
+            source_list_status = f"{source_list_evidence_status}-needs-review"
+        elif has_source_list:
+            source_list_status = "source-list-evidence-unclassified"
     return {
         "source-list evidence": source_list_status,
         "license review": license_status,
@@ -372,7 +401,7 @@ def build_gate_matrix(unique_packets: list[dict[str, Any]]) -> dict[str, Any]:
     blocked_count = 0
     for packet in unique_packets:
         statuses = gate_statuses(packet)
-        covered = packet["existing_integration_status"] == "covered-by-existing-installable-catalog"
+        covered = packet_has_trust_cleared_coverage(packet)
         covered_count += int(covered)
         blocked_count += int(not covered)
         for gate, status in statuses.items():
@@ -386,7 +415,7 @@ def build_gate_matrix(unique_packets: list[dict[str, Any]]) -> dict[str, Any]:
                 "auth_required": packet["auth_required"],
                 "gate_statuses": statuses,
                 "final_status": (
-                    "covered-by-existing-installable-catalog" if covered else "blocked-until-trust-gates"
+                    COVERAGE_TRUST_CLEARED if covered else "blocked-until-trust-gates"
                 ),
                 "install_command": "",
             }
@@ -416,7 +445,7 @@ def build_install_preview(unique_packets: list[dict[str, Any]]) -> dict[str, Any
             "existing_rows": packet["existing_rows"],
         }
         for packet in unique_packets
-        if packet["existing_integration_status"] == "covered-by-existing-installable-catalog"
+        if packet_has_trust_cleared_coverage(packet)
     ]
     blocked = [
         {
@@ -426,7 +455,7 @@ def build_install_preview(unique_packets: list[dict[str, Any]]) -> dict[str, Any
             "blocking_gates": packet["blockers"],
         }
         for packet in unique_packets
-        if packet["existing_integration_status"] != "covered-by-existing-installable-catalog"
+        if not packet_has_trust_cleared_coverage(packet)
     ]
     return {
         "version": 1,
@@ -450,15 +479,17 @@ def promotion_target_key(item: dict[str, Any]) -> tuple[Any, Any, tuple[Any, ...
 
 
 def promotion_final_status(item: dict[str, Any]) -> str:
-    if item.get("existing_integration_status") == "covered-by-existing-installable-catalog":
-        return "covered-by-existing-installable-catalog"
+    statuses = item.get("gate_statuses") or {}
+    if (
+        item.get("existing_integration_status") == COVERAGE_TRUST_CLEARED
+        and statuses.get("live install") == "no-new-live-install-command-emitted"
+    ):
+        return COVERAGE_TRUST_CLEARED
     return "blocked-until-trust-gates"
 
 
 def expected_matrix_summary(items: list[dict[str, Any]]) -> dict[str, int]:
-    covered = sum(
-        1 for item in items if item.get("existing_integration_status") == "covered-by-existing-installable-catalog"
-    )
+    covered = sum(1 for item in items if promotion_final_status(item) == COVERAGE_TRUST_CLEARED)
     return {
         "unique_targets": len(items),
         "covered_by_existing_installable_catalog": covered,
@@ -483,7 +514,7 @@ def expected_preview_partitions(
     covered = []
     blocked = []
     for packet in unique_packets:
-        if packet.get("existing_integration_status") == "covered-by-existing-installable-catalog":
+        if packet_has_trust_cleared_coverage(packet):
             covered.append(
                 {
                     "packet_id": packet.get("packet_id"),
@@ -518,6 +549,47 @@ def _safe_count(value: Any) -> int:
         return int(value)
     except (TypeError, ValueError):
         return 0
+
+
+def installed_skill_md_path(raw_path: Any) -> Path:
+    path = Path(os.path.expanduser(str(raw_path)))
+    return path if path.name == "SKILL.md" else path / "SKILL.md"
+
+
+def missing_installed_skill_md_paths(override: dict[str, Any]) -> list[str]:
+    missing = []
+    for raw_path in override.get("installed_paths", []):
+        if not isinstance(raw_path, str) or not raw_path.strip():
+            continue
+        skill_md = installed_skill_md_path(raw_path)
+        if not skill_md.exists():
+            missing.append(str(skill_md))
+    return missing
+
+
+def live_install_evidence_stats(overrides: list[Any]) -> dict[str, Any]:
+    live_rows = [
+        override
+        for override in overrides
+        if isinstance(override, dict) and override.get("live_install_executed")
+    ]
+    installed_paths = [
+        raw_path
+        for override in live_rows
+        for raw_path in override.get("installed_paths", [])
+        if isinstance(raw_path, str) and raw_path.strip()
+    ]
+    missing = [
+        path
+        for override in live_rows
+        for path in missing_installed_skill_md_paths(override)
+    ]
+    return {
+        "live_install_rows": len(live_rows),
+        "installed_path_refs": len(installed_paths),
+        "verified_skill_md_count": len(installed_paths) - len(missing),
+        "missing_installed_skill_md": missing,
+    }
 
 
 def expected_unique_packet_keys(
@@ -652,6 +724,16 @@ def validate_outputs() -> dict[str, Any]:
         errors.append("a packet is unexpectedly live-install eligible")
     if any(packet.get("install_command") for packet in raw_packets + unique_packets):
         errors.append("a packet unexpectedly emitted an install command")
+    for packet in unique_packets:
+        if packet.get("existing_integration_status") == COVERAGE_TRUST_CLEARED:
+            if not packet_has_trust_cleared_existing_row(packet):
+                errors.append(
+                    f"covered packet {packet.get('normalized_url')} lacks trust-cleared existing catalog row"
+                )
+        elif packet_has_trust_cleared_existing_row(packet):
+            errors.append(
+                f"packet {packet.get('normalized_url')} has trust-cleared existing catalog row but blocked status"
+            )
     preview_commands = preview_payload.get("commands", [])
     if not isinstance(preview_commands, list):
         preview_commands = []
@@ -745,21 +827,143 @@ def validate_outputs() -> dict[str, Any]:
     }
 
 
+def _load_promotions() -> list[dict[str, Any]]:
+    payload = load_optional_json("promotion-overrides.json", {"overrides": []})
+    overrides = payload.get("overrides", []) if isinstance(payload, dict) else []
+    return [override for override in overrides if isinstance(override, dict)]
+
+
+def validate_final_state() -> dict[str, Any]:
+    normalized = load_json("normalized-urls.json")
+    all_records = load_json("all-records.json")
+    summary = load_json("catalog-authoring-summary.json")
+    progress = load_json("full-integration-progress.json")
+    deep_audit = load_json(DEEP_AUDIT_FILE)
+    raw_packets = load_json(RAW_PACKET_FILE)
+    unique_packets = load_json(UNIQUE_PACKET_FILE)
+    final_report = (MANIFEST_DIR / "final-review-report.md").read_text(encoding="utf-8")
+    overrides = _load_promotions()
+
+    records = all_records.get("records", []) if isinstance(all_records, dict) else []
+    deep_items = deep_audit.get("items", []) if isinstance(deep_audit, dict) else []
+    raw_packet_rows = raw_packets.get("packets", []) if isinstance(raw_packets, dict) else []
+    unique_packet_rows = unique_packets.get("packets", []) if isinstance(unique_packets, dict) else []
+    errors: list[str] = []
+
+    if normalized.get("raw_count") != EXPECTED_RAW_COUNT:
+        errors.append("normalized raw_count drifted")
+    if normalized.get("unique_count") != EXPECTED_UNIQUE_COUNT:
+        errors.append("normalized unique_count drifted")
+    if len(records) != EXPECTED_RAW_COUNT:
+        errors.append("all-records does not cover every raw candidate")
+    if len(raw_packet_rows) != EXPECTED_RAW_COUNT:
+        errors.append("raw research packets do not cover every raw candidate")
+    if len(unique_packet_rows) != EXPECTED_UNIQUE_COUNT:
+        errors.append("unique research packets do not cover every normalized target")
+    if deep_audit.get("candidate_code_executed") is not False:
+        errors.append("deep source audit must not execute candidate code")
+    if deep_audit.get("unique_target_count") != EXPECTED_UNIQUE_COUNT:
+        errors.append("deep source audit does not cover every normalized target")
+    if len(deep_items) != EXPECTED_UNIQUE_COUNT:
+        errors.append("deep source audit item count drifted")
+    status_counts = deep_audit.get("status_counts", {})
+    audited_count = _safe_count(status_counts.get("audited"))
+    terminal_blocker_count = _safe_count(status_counts.get("terminal-blocker"))
+    if audited_count + terminal_blocker_count != EXPECTED_UNIQUE_COUNT:
+        errors.append("deep source audit status counts do not cover every normalized target")
+    nvidia_blockers = [
+        item
+        for item in deep_items
+        if isinstance(item, dict)
+        and item.get("normalized_url") == "https://github.com/NVIDIA/skills-"
+        and item.get("status") == "terminal-blocker"
+    ]
+    if len(nvidia_blockers) != 1:
+        errors.append("malformed NVIDIA/skills- target is not recorded as one terminal blocker")
+
+    live_stats = live_install_evidence_stats(overrides)
+    live_installed = live_stats["live_install_rows"]
+    installed_path_refs = live_stats["installed_path_refs"]
+    verified_skill_md = live_stats["verified_skill_md_count"]
+    missing_skill_md = live_stats["missing_installed_skill_md"]
+    if len(overrides) != summary.get("install_commands_published"):
+        errors.append("promotion override count does not match install command count")
+    if live_installed != summary.get("live_installs_recorded"):
+        errors.append("live install override count does not match summary")
+    if live_installed != progress.get("live_install", {}).get("installed_skill_rows"):
+        errors.append("live install count does not match progress")
+    if progress.get("live_install", {}).get("installed_path_refs") != installed_path_refs:
+        errors.append("installed path reference count does not match progress")
+    if progress.get("live_install", {}).get("verified_skill_md_count") != verified_skill_md:
+        errors.append("verified SKILL.md count does not match progress")
+    if progress.get("live_install", {}).get("missing_skill_md_count") != len(missing_skill_md):
+        errors.append("missing SKILL.md count does not match progress")
+    if missing_skill_md:
+        errors.append(
+            "recorded live install evidence has missing SKILL.md paths: "
+            + ", ".join(missing_skill_md[:5])
+        )
+    if any(override.get("source_list_evidence") != "source-list-found" for override in overrides):
+        errors.append("a promoted override lacks source-list-found evidence")
+    if any(not override.get("license") for override in overrides):
+        errors.append("a promoted override lacks license evidence")
+    if progress.get("complete") is not True:
+        errors.append("full integration progress does not mark completion")
+    if progress.get("unique_terminal_decisions") != EXPECTED_UNIQUE_COUNT:
+        errors.append("progress unique terminal decisions drifted")
+    terminal_decisions = progress.get("terminal_decisions", {})
+    if terminal_decisions.get("raw_candidates_processed") != EXPECTED_RAW_COUNT:
+        errors.append("terminal decision raw count drifted")
+    if terminal_decisions.get("unique_normalized_targets") != EXPECTED_UNIQUE_COUNT:
+        errors.append("terminal decision unique target count drifted")
+    if terminal_decisions.get("live_installs_recorded") != live_installed:
+        errors.append("terminal decision live install count drifted")
+    if "Final commit hash: recorded by the runner" in final_report:
+        errors.append("final review report still contains placeholder commit hash text")
+
+    return {
+        "raw": normalized.get("raw_count"),
+        "unique": normalized.get("unique_count"),
+        "deep_audited": audited_count,
+        "deep_terminal_blockers": terminal_blocker_count,
+        "promoted_overrides": len(overrides),
+        "live_installed": live_installed,
+        "installed_path_refs": installed_path_refs,
+        "verified_skill_md": verified_skill_md,
+        "missing_skill_md": len(missing_skill_md),
+        "ok": not errors,
+        "errors": errors,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--write", action="store_true", help="write promotion packet outputs")
     parser.add_argument("--check-coverage", action="store_true", help="validate generated packet coverage")
+    parser.add_argument("--final-check", action="store_true", help="validate completed promotion overlay evidence")
     args = parser.parse_args()
 
+    ran_action = False
+    exit_code = 0
     if args.write:
         write_outputs()
+        ran_action = True
     if args.check_coverage:
         result = validate_outputs()
         print(json.dumps(result, indent=2))
-        return 0 if result["ok"] else 1
-    if not args.write:
+        ran_action = True
+        if not result["ok"]:
+            exit_code = 1
+    if args.final_check:
+        result = validate_final_state()
+        print(json.dumps(result, indent=2))
+        ran_action = True
+        if not result["ok"]:
+            exit_code = 1
+    if not ran_action:
         parser.print_help()
-    return 0
+        return 1
+    return exit_code
 
 
 if __name__ == "__main__":

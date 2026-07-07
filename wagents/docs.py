@@ -1,9 +1,13 @@
 """Documentation site generation: indexes, sidebar, and docs subcommands."""
 
+import fcntl
 import json
+import os
 import re
 import shutil
 import subprocess
+import time
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Literal, TypeVar, cast
 
@@ -2706,6 +2710,50 @@ def _clean_content_subdir(d: Path) -> bool:
 
 docs_app = typer.Typer(help="Documentation site management")
 
+DOCS_GENERATE_LOCK_MAX_AGE_S = 2 * 60 * 60
+
+
+def _docs_generate_lock_path() -> Path:
+    return DOCS_DIR / ".wagents-docs-generate.lock"
+
+
+@contextmanager
+def _docs_generate_lock():
+    """Exclusive lock so only one docs generate mutates generated surfaces at a time."""
+    path = _docs_generate_lock_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    handle = path.open("a+", encoding="utf-8")
+    try:
+        try:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            handle.seek(0)
+            payload = handle.read().strip()
+            holder = "another process"
+            if payload:
+                try:
+                    holder = f"pid {json.loads(payload).get('pid', holder)}"
+                except json.JSONDecodeError:
+                    holder = payload
+            stale = time.time() - path.stat().st_mtime > DOCS_GENERATE_LOCK_MAX_AGE_S
+            if stale:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+            else:
+                typer.echo(
+                    f"Another docs generate is in progress ({holder}). "
+                    "Wait for it to finish or remove a stale lock after 2 hours.",
+                    err=True,
+                )
+                raise typer.Exit(code=1) from None
+        handle.seek(0)
+        handle.truncate()
+        handle.write(json.dumps({"pid": os.getpid(), "started_at": int(time.time())}))
+        handle.flush()
+        yield
+    finally:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+        handle.close()
+
 
 @docs_app.command("init")
 def docs_init():
@@ -2949,13 +2997,15 @@ def docs_generate(
             raise typer.Exit(code=1)
         typer.echo("Generated docs artifacts are up to date")
         return
-    _docs_generate_impl(include_drafts=include_drafts, include_installed=include_installed)
+    with _docs_generate_lock():
+        _docs_generate_impl(include_drafts=include_drafts, include_installed=include_installed)
 
 
 @docs_app.command("dev")
 def docs_dev():
     """Generate content and start dev server."""
-    _docs_generate_impl(include_drafts=False, include_installed=False)
+    with _docs_generate_lock():
+        _docs_generate_impl(include_drafts=False, include_installed=False)
     typer.echo("Starting dev server...")
     subprocess.run(["pnpm", "dev"], cwd=str(DOCS_DIR))
 
@@ -2968,7 +3018,8 @@ def _clean_docs_build_outputs() -> None:
 @docs_app.command("build")
 def docs_build():
     """Generate content and build static site."""
-    _docs_generate_impl(include_drafts=False, include_installed=False)
+    with _docs_generate_lock():
+        _docs_generate_impl(include_drafts=False, include_installed=False)
     typer.echo("Building...")
     _clean_docs_build_outputs()
     result = subprocess.run(["pnpm", "build"], cwd=str(DOCS_DIR))
@@ -2981,7 +3032,8 @@ def docs_build():
 @docs_app.command("preview")
 def docs_preview():
     """Generate, build, and preview the site."""
-    _docs_generate_impl(include_drafts=False, include_installed=False)
+    with _docs_generate_lock():
+        _docs_generate_impl(include_drafts=False, include_installed=False)
     typer.echo("Building...")
     _clean_docs_build_outputs()
     result = subprocess.run(["pnpm", "build"], cwd=str(DOCS_DIR))

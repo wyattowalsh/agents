@@ -2034,11 +2034,11 @@ def catalog_index(
     from wagents.skill_index import (
         CATALOG_BROWSER_INDEX_PATH,
         CATALOG_INDEX_PATH,
-        catalog_browser_index_stale_reason,
         catalog_index_stale_reason,
     )
 
-    reasons = [reason for reason in (catalog_index_stale_reason(), catalog_browser_index_stale_reason()) if reason]
+    reason = catalog_index_stale_reason()
+    reasons = [reason] if reason else []
     reason = "; ".join(reasons)
     if check:
         if reason:

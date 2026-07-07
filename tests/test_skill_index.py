@@ -235,6 +235,11 @@ def test_build_catalog_browser_index_projects_display_fields_only(tmp_authoring_
     browser = build_catalog_browser_index(build_catalog_index(load_authoring_entries(tmp_authoring_dir)))
 
     assert browser == {
+        "tagFacetIndex": [
+            "source:curated-external",
+            "trust:curated-trust-gated",
+            "status:install-now-after-trust-gate",
+        ],
         "externalSkillIndex": [
             {
                 "name": "ext-browser",
@@ -242,8 +247,10 @@ def test_build_catalog_browser_index_projects_display_fields_only(tmp_authoring_
                 "href": "/skills/catalog/external/ext-browser/",
                 "lane": "install-now",
                 "sourceType": "curated-external",
+                "tagFacetIds": "0,1,2",
+                "platformFacetIds": "",
             }
-        ]
+        ],
     }
     assert "installCommand" not in browser["externalSkillIndex"][0]
     assert "provenanceEvidence" not in browser["externalSkillIndex"][0]
@@ -335,6 +342,7 @@ def test_write_and_read_catalog_browser_index_roundtrip(tmp_path: Path):
     loaded = read_catalog_browser_index(path=out)
 
     assert loaded == {
+        "tagFacetIndex": ["status:global-only-or-avoid"],
         "externalSkillIndex": [
             {
                 "name": "ext one",
@@ -342,8 +350,10 @@ def test_write_and_read_catalog_browser_index_roundtrip(tmp_path: Path):
                 "href": "/skills/catalog/external/ext%20one/",
                 "lane": "avoid",
                 "sourceType": "curated-external",
+                "tagFacetIds": "0",
+                "platformFacetIds": "",
             }
-        ]
+        ],
     }
 
 
@@ -456,6 +466,54 @@ def test_catalog_index_stale_reason_none_when_index_matches_authoring(tmp_path, 
     write_catalog_index(build_catalog_index(entries), path=index_path)
     monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", index_path)
     assert catalog_index_stale_reason(index_path) is None
+
+
+def test_catalog_index_stale_reason_reports_browser_missing(tmp_path, monkeypatch):
+    from wagents.skill_index import (
+        build_catalog_index,
+        load_authoring_entries,
+        write_catalog_index,
+    )
+
+    entries = load_authoring_entries()
+    if not entries:
+        return
+
+    full_index = build_catalog_index(entries)
+    full_path = tmp_path / "skills-catalog-index.json"
+    write_catalog_index(full_index, path=full_path)
+    browser_path = tmp_path / "skills-catalog-browser-index.json"
+    monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", full_path)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_BROWSER_INDEX_PATH", browser_path)
+
+    reason = catalog_index_stale_reason(full_path)
+    assert reason is not None
+    assert "skills-catalog-browser-index.json" in reason
+
+
+def test_catalog_index_stale_reason_reports_browser_stale(tmp_path, monkeypatch):
+    from wagents.skill_index import (
+        build_catalog_index,
+        load_authoring_entries,
+        write_catalog_browser_index,
+        write_catalog_index,
+    )
+
+    entries = load_authoring_entries()
+    if not entries:
+        return
+
+    full_index = build_catalog_index(entries)
+    full_path = tmp_path / "skills-catalog-index.json"
+    browser_path = tmp_path / "skills-catalog-browser-index.json"
+    write_catalog_index(full_index, path=full_path)
+    write_catalog_browser_index({"externalSkillIndex": []}, path=browser_path)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", full_path)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_BROWSER_INDEX_PATH", browser_path)
+
+    reason = catalog_index_stale_reason(full_path)
+    assert reason is not None
+    assert "skills-catalog-browser-index.json is stale" in reason
 
 
 def test_catalog_browser_index_stale_reason_none_when_index_matches_authoring(tmp_path, monkeypatch):

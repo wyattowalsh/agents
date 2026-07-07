@@ -861,6 +861,15 @@ def test_docs_generate_check_does_not_rewrite_research_manifest(tmp_repo, monkey
     assert manifest.read_text(encoding="utf-8") == "research"
 
 
+def test_docs_generate_stale_reasons_includes_browser_index(monkeypatch):
+    browser_reason = "docs/public/generated-registries/skills-catalog-browser-index.json is stale"
+    monkeypatch.setattr("wagents.skill_index.catalog_index_stale_reason", lambda: browser_reason)
+
+    reasons = _docs_generate_stale_reasons(include_drafts=False, include_installed=False)
+
+    assert browser_reason in reasons
+
+
 def test_mcp_overview_badge_stale_reason_detects_drift(tmp_repo):
     content_dir = tmp_repo / "docs" / "src" / "content" / "docs" / "mcp"
     content_dir.mkdir(parents=True, exist_ok=True)

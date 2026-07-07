@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T11:21:20.515094+00:00",
+  "generated_at": "2026-07-07T16:14:57.473773+00:00",
   "summary": {
-    "generated_at": "2026-07-07T11:21:20.311600+00:00",
+    "generated_at": "2026-07-07T16:14:56.479734+00:00",
     "raw_count": 293,
     "unique_count": 289,
     "duplicates_deduped": 4,
     "decisions": {
-      "merge_into_existing": 15,
+      "merge_into_existing": 213,
       "quarantine": 4,
-      "reference_only": 269,
+      "reference_only": 71,
       "skip_duplicate": 4,
       "skip_inaccessible": 1
     },
@@ -23,7 +23,7 @@
     "catalog_authoring_added_count": 289,
     "live_install_added_count": 0,
     "adapted_count": 0,
-    "reference_only_count": 269,
+    "reference_only_count": 71,
     "skipped_count": 9,
     "auth_required_count": 49
   },
@@ -80,8 +80,8 @@
         79
       ],
       "source_name": "3paws-ai/mobile-ai-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -103,8 +103,8 @@
         57
       ],
       "source_name": "Affitor/affiliate-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "review-required",
       "docs_steward_surfaces": [
         "README",
@@ -197,8 +197,8 @@
         82
       ],
       "source_name": "AvdLee/Core-Data-Agent-Skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -243,8 +243,8 @@
         70
       ],
       "source_name": "AvdLee/Swift-Testing-Agent-Skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -266,8 +266,8 @@
         169
       ],
       "source_name": "BestLemoon/codex-seo",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "review-required",
       "docs_steward_surfaces": [
         "README",
@@ -290,8 +290,8 @@
         45
       ],
       "source_name": "Bhanunamikaze/Agentic-SEO-Skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "review-required",
       "docs_steward_surfaces": [
         "README",
@@ -314,8 +314,8 @@
         29
       ],
       "source_name": "CharlesWiltgen/Axiom",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -360,8 +360,8 @@
         149
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -383,8 +383,8 @@
         128
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -430,8 +430,8 @@
         130
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -453,8 +453,8 @@
         135
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -476,8 +476,8 @@
         136
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -499,8 +499,8 @@
         138
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -522,8 +522,8 @@
         127
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -545,8 +545,8 @@
         273
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -568,8 +568,8 @@
         122
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -591,8 +591,8 @@
         123
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -614,8 +614,8 @@
         150
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -637,8 +637,8 @@
         125
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -660,8 +660,8 @@
         148
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -683,8 +683,8 @@
         137
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -706,8 +706,8 @@
         272
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "MCP candidate requires registry design and smoke tests before enablement.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -731,8 +731,8 @@
         124
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -754,8 +754,8 @@
         126
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -777,8 +777,8 @@
         147
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -800,8 +800,8 @@
         151
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -823,8 +823,8 @@
         133
       ],
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -870,8 +870,8 @@
         4
       ],
       "source_name": "Dimillian/Skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -893,8 +893,8 @@
         71
       ],
       "source_name": "Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -940,8 +940,8 @@
         178
       ],
       "source_name": "ForceInjection/awesome-skills",
-      "decision": "reference_only",
-      "reason": "Collection source should not be vendored wholesale.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1009,8 +1009,8 @@
         34
       ],
       "source_name": "Haojae/scipilot-figure-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1101,8 +1101,8 @@
         54
       ],
       "source_name": "JeffLi1993/seo-audit-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "review-required",
       "docs_steward_surfaces": [
         "README",
@@ -1125,8 +1125,8 @@
         35
       ],
       "source_name": "Kappaemme-git/codex-complexity-optimizer",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1196,8 +1196,8 @@
         55
       ],
       "source_name": "LottieFiles/motion-design-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1267,8 +1267,8 @@
         172
       ],
       "source_name": "MohamedAbdallah-14/prompt-to-asset",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1291,8 +1291,8 @@
         175
       ],
       "source_name": "MohamedAbdallah-14/unslop",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1314,8 +1314,8 @@
         116
       ],
       "source_name": "NVIDIA/SkillSpector",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1360,8 +1360,8 @@
         107
       ],
       "source_name": "Nutlope/hallmark",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1408,8 +1408,8 @@
         11
       ],
       "source_name": "Owl-Listener/designer-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1431,8 +1431,8 @@
         157
       ],
       "source_name": "Panniantong/Agent-Reach",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "review-required",
       "docs_steward_surfaces": [
         "README",
@@ -1455,8 +1455,8 @@
         177
       ],
       "source_name": "PapiScholz/roadmapsmith",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1478,8 +1478,8 @@
         74
       ],
       "source_name": "PasqualeVittoriosi/swift-accessibility-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1501,8 +1501,8 @@
         111
       ],
       "source_name": "PleasePrompto/notebooklm-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1524,8 +1524,8 @@
         163
       ],
       "source_name": "Pythoughts-labs/designer-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1594,8 +1594,8 @@
         195
       ],
       "source_name": "Rycen7822/codex-rg-guard",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1617,8 +1617,8 @@
         102
       ],
       "source_name": "SharpAI/DeepCamera",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1640,8 +1640,8 @@
         17
       ],
       "source_name": "TanStack/cli",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -1734,8 +1734,8 @@
         63
       ],
       "source_name": "Varnan-Tech/opendirectory",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1780,8 +1780,8 @@
         14
       ],
       "source_name": "Weizhena/Deep-Research-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1803,8 +1803,8 @@
         9
       ],
       "source_name": "WordPress/agent-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1826,8 +1826,8 @@
         95
       ],
       "source_name": "aaron-he-zhu/aaron-marketing-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1965,8 +1965,8 @@
         88
       ],
       "source_name": "andrewgleave/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2012,8 +2012,8 @@
         161
       ],
       "source_name": "antvis/mcp-server-chart",
-      "decision": "reference_only",
-      "reason": "MCP candidate requires registry design and smoke tests before enablement.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -2060,8 +2060,8 @@
         3
       ],
       "source_name": "arjitj2/swiftui-design-principles",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2106,8 +2106,8 @@
         173
       ],
       "source_name": "avalonreset/seo-dungeon",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "review-required",
       "docs_steward_surfaces": [
         "README",
@@ -2130,8 +2130,8 @@
         167
       ],
       "source_name": "avansaber/tailtest-codex",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2178,8 +2178,8 @@
         162
       ],
       "source_name": "bcanfield/agentic-tech-debt",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2224,8 +2224,8 @@
         25
       ],
       "source_name": "better-auth/better-icons",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2247,8 +2247,8 @@
         69
       ],
       "source_name": "bocato/swift-testing-agent-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2270,8 +2270,8 @@
         59
       ],
       "source_name": "borski/travel-hacking-toolkit",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -2319,8 +2319,8 @@
         86
       ],
       "source_name": "conorluddy/ios-simulator-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2365,8 +2365,8 @@
         73
       ],
       "source_name": "dadederk/iOS-Accessibility-Agent-Skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2411,8 +2411,8 @@
         36
       ],
       "source_name": "data-goblin/power-bi-agentic-development",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2434,8 +2434,8 @@
         53
       ],
       "source_name": "dbt-labs/dbt-agent-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2503,8 +2503,8 @@
         13
       ],
       "source_name": "devenjarvis/lathe",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2549,8 +2549,8 @@
         42
       ],
       "source_name": "duckdb/duckdb-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2572,8 +2572,8 @@
         112
       ],
       "source_name": "earthtojake/text-to-cad",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2595,8 +2595,8 @@
         80
       ],
       "source_name": "efremidze/swift-architecture-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2618,8 +2618,8 @@
         64
       ],
       "source_name": "elastic/agent-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2641,8 +2641,8 @@
         58
       ],
       "source_name": "elvisun/newsjack",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2687,8 +2687,8 @@
         101
       ],
       "source_name": "ericosiu/ai-marketing-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2710,8 +2710,8 @@
         104
       ],
       "source_name": "eugeniughelbur/obsidian-second-brain",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2779,8 +2779,8 @@
         43
       ],
       "source_name": "gadicc/yahoo-finance2",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2848,8 +2848,8 @@
         142
       ],
       "source_name": "googleworkspace/cli",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -2873,8 +2873,8 @@
         190
       ],
       "source_name": "griffithkk3-del/openspec-reviewed-workflow",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2919,8 +2919,8 @@
         117
       ],
       "source_name": "hardikpandya/stop-slop",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2942,8 +2942,8 @@
         194
       ],
       "source_name": "hashgraph-online/awesome-codex-plugins",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -2967,8 +2967,8 @@
         164
       ],
       "source_name": "hashgraph-online/awesome-codex-plugins",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -2992,8 +2992,8 @@
         166
       ],
       "source_name": "hashgraph-online/awesome-codex-plugins",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -3017,8 +3017,8 @@
         165
       ],
       "source_name": "hashgraph-online/hol-guard-plugin",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -3065,8 +3065,8 @@
         156
       ],
       "source_name": "heygen-com/hyperframes",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3135,8 +3135,8 @@
         120
       ],
       "source_name": "hyhmrright/brooks-lint",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3181,8 +3181,8 @@
         30
       ],
       "source_name": "imxv/Pretty-mermaid-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3204,8 +3204,8 @@
         26
       ],
       "source_name": "itsmostafa/aws-agent-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3227,8 +3227,8 @@
         84
       ],
       "source_name": "ivan-magda/swift-security-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3273,8 +3273,8 @@
         85
       ],
       "source_name": "jazzychad/ios-code-audit",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3320,8 +3320,8 @@
         182
       ],
       "source_name": "jixoai/openspecui",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3508,8 +3508,8 @@
         197
       ],
       "source_name": "louisedesadeleer/clipify",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -3556,8 +3556,8 @@
         287
       ],
       "source_name": "marzukia/charted",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3625,8 +3625,8 @@
         49
       ],
       "source_name": "meodai/skill.color-expert",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3648,8 +3648,8 @@
         83
       ],
       "source_name": "mhaviv/Swift-FocusEngine-Agent-Skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3671,8 +3671,8 @@
         198
       ],
       "source_name": "michalparkola/tapestry-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3717,8 +3717,8 @@
         203
       ],
       "source_name": "minhnv0807/ai-business-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3859,8 +3859,8 @@
         76
       ],
       "source_name": "n0an/App-Intents-Agent-Skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3882,8 +3882,8 @@
         81
       ],
       "source_name": "n0an/Background-Execution-Agent-Skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3905,8 +3905,8 @@
         72
       ],
       "source_name": "n0an/Swift-FormatStyle-Agent-Skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3928,8 +3928,8 @@
         89
       ],
       "source_name": "n0an/Widgets-Agent-Skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3974,8 +3974,8 @@
         113
       ],
       "source_name": "nicobailon/visual-explainer",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3997,8 +3997,8 @@
         106
       ],
       "source_name": "ningzimu/codex-ppt-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4092,8 +4092,8 @@
         274
       ],
       "source_name": "openags/paper-search-mcp",
-      "decision": "reference_only",
-      "reason": "MCP candidate requires registry design and smoke tests before enablement.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -4117,8 +4117,8 @@
         279
       ],
       "source_name": "papersflow-ai/papersflow-codex-plugin",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -4142,8 +4142,8 @@
         240
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4165,8 +4165,8 @@
         241
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -4190,8 +4190,8 @@
         289
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4213,8 +4213,8 @@
         290
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4236,8 +4236,8 @@
         242
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4259,8 +4259,8 @@
         243
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4282,8 +4282,8 @@
         244
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4305,8 +4305,8 @@
         245
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4328,8 +4328,8 @@
         246
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4351,8 +4351,8 @@
         247
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4374,8 +4374,8 @@
         248
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4397,8 +4397,8 @@
         249
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4420,8 +4420,8 @@
         250
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4443,8 +4443,8 @@
         251
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4466,8 +4466,8 @@
         252
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -4491,8 +4491,8 @@
         253
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4514,8 +4514,8 @@
         292
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4537,8 +4537,8 @@
         293
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4560,8 +4560,8 @@
         254
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4583,8 +4583,8 @@
         255
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4606,8 +4606,8 @@
         256
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4629,8 +4629,8 @@
         257
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4652,8 +4652,8 @@
         258
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4675,8 +4675,8 @@
         259
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4698,8 +4698,8 @@
         260
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4721,8 +4721,8 @@
         261
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4744,8 +4744,8 @@
         262
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -4769,8 +4769,8 @@
         263
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4792,8 +4792,8 @@
         264
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4815,8 +4815,8 @@
         265
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4838,8 +4838,8 @@
         266
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4861,8 +4861,8 @@
         267
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4884,8 +4884,8 @@
         268
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4907,8 +4907,8 @@
         269
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4930,8 +4930,8 @@
         270
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4953,8 +4953,8 @@
         201
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4976,8 +4976,8 @@
         200
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -4999,8 +4999,8 @@
         202
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5022,8 +5022,8 @@
         207
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5045,8 +5045,8 @@
         208
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5068,8 +5068,8 @@
         209
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5091,8 +5091,8 @@
         210
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5114,8 +5114,8 @@
         211
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5137,8 +5137,8 @@
         212
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5160,8 +5160,8 @@
         213
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5183,8 +5183,8 @@
         214
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5206,8 +5206,8 @@
         215
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5229,8 +5229,8 @@
         216
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5252,8 +5252,8 @@
         217
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5275,8 +5275,8 @@
         218
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5298,8 +5298,8 @@
         219
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5321,8 +5321,8 @@
         220
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5344,8 +5344,8 @@
         221
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5367,8 +5367,8 @@
         222
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5390,8 +5390,8 @@
         223
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5413,8 +5413,8 @@
         224
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5436,8 +5436,8 @@
         225
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5459,8 +5459,8 @@
         226
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5482,8 +5482,8 @@
         227
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5505,8 +5505,8 @@
         228
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "review-required",
       "docs_steward_surfaces": [
         "README",
@@ -5529,8 +5529,8 @@
         229
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5552,8 +5552,8 @@
         230
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5575,8 +5575,8 @@
         231
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5598,8 +5598,8 @@
         232
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5621,8 +5621,8 @@
         233
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5644,8 +5644,8 @@
         234
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5667,8 +5667,8 @@
         235
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5690,8 +5690,8 @@
         236
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "review-required",
       "docs_steward_surfaces": [
         "README",
@@ -5714,8 +5714,8 @@
         237
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5737,8 +5737,8 @@
         238
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5760,8 +5760,8 @@
         239
       ],
       "source_name": "pedronauck/skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5783,8 +5783,8 @@
         145
       ],
       "source_name": "phuryn/pm-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5829,8 +5829,8 @@
         21
       ],
       "source_name": "plannotator/effective-html",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5875,8 +5875,8 @@
         158
       ],
       "source_name": "product-on-purpose/pm-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5945,8 +5945,8 @@
         75
       ],
       "source_name": "rgmez/apple-accessibility-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -5991,8 +5991,8 @@
         77
       ],
       "source_name": "rorkai/app-store-connect-cli-skills",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "review-required",
       "docs_steward_surfaces": [
         "README",
@@ -6016,8 +6016,8 @@
         204
       ],
       "source_name": "rshankras/claude-code-apple-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6085,8 +6085,8 @@
         159
       ],
       "source_name": "shaom/infocard-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6108,8 +6108,8 @@
         37
       ],
       "source_name": "solana-foundation/solana-dev-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6131,8 +6131,8 @@
         183
       ],
       "source_name": "sudokar/openspec-plus",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6154,8 +6154,8 @@
         176
       ],
       "source_name": "summer521521/Zotero_Research_plugin",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -6225,8 +6225,8 @@
         174
       ],
       "source_name": "tim-osterhus/codex-remotion-plugin",
-      "decision": "reference_only",
-      "reason": "Executable candidate requires deeper package/script review before promotion.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -6250,8 +6250,8 @@
         78
       ],
       "source_name": "timbroddin/app-store-aso-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "review-required",
       "docs_steward_surfaces": [
         "README",
@@ -6274,8 +6274,8 @@
         10
       ],
       "source_name": "timescale/pg-aiguide",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6297,8 +6297,8 @@
         47
       ],
       "source_name": "tjboudreaux/cc-thinking-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6320,8 +6320,8 @@
         19
       ],
       "source_name": "truongduy2611/app-store-preflight-skills",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6343,8 +6343,8 @@
         100
       ],
       "source_name": "tt-a1i/archify",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6366,8 +6366,8 @@
         66
       ],
       "source_name": "twostraws/Swift-Concurrency-Agent-Skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6389,8 +6389,8 @@
         68
       ],
       "source_name": "twostraws/Swift-Testing-Agent-Skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6435,8 +6435,8 @@
         2
       ],
       "source_name": "twostraws/SwiftData-Agent-Skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6458,8 +6458,8 @@
         65
       ],
       "source_name": "vanab/swiftdata-agent-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6550,8 +6550,8 @@
         131
       ],
       "source_name": "wgwtest/novel-writing",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6596,8 +6596,8 @@
         196
       ],
       "source_name": "wzyn20051216/solidworks-automation-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6619,8 +6619,8 @@
         6
       ],
       "source_name": "yctimlin/mcp_excalidraw",
-      "decision": "reference_only",
-      "reason": "MCP candidate requires registry design and smoke tests before enablement.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -6644,8 +6644,8 @@
         121
       ],
       "source_name": "yujiachen-y/codebase-recon-skill",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6667,8 +6667,8 @@
         188
       ],
       "source_name": "yuritoledo/openspec-tdd",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6690,8 +6690,8 @@
         144
       ],
       "source_name": "zarazhangrui/frontend-slides",
-      "decision": "reference_only",
-      "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+      "decision": "merge_into_existing",
+      "reason": "Existing repo catalog or registry surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",

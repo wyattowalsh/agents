@@ -38,9 +38,15 @@
   every unique target to exactly one trust-gated wave.
 - [x] Emit `full-integration-progress.json` and `full-integration-state.md`
   with `complete: false` and `research-graph-ready`.
-- [ ] Complete source-list, license, security, attribution, auth,
+- [x] Complete source-list, license, security, attribution, auth,
   docs-steward, dedupe, and target validation packets for promotion waves.
-- [ ] Promote or adapt only targets whose completed packets pass all gates.
+- [x] Promote or adapt only targets whose completed packets pass all gates.
+- [x] Record read-only deep source audit evidence for every normalized target
+  without executing candidate code.
+- [x] Record 1038 promoted installable curated-external rows and live local
+  install evidence across supported harness roots.
+- [x] Preserve 175 remaining rows as explicit terminal trust-gated
+  reference/skip decisions.
 
 ## Verification
 
@@ -56,6 +62,7 @@
 - [x] `uv run wagents docs lint` returned warnings only.
 - [x] `uv run wagents docs build`
 - [x] `OPENSPEC_TELEMETRY=0 npx -y @fission-ai/openspec@latest validate integrate-candidate-corpus-jul2026 --strict --json`
-- [ ] `uv run wagents openspec validate` remains blocked by unrelated existing
-  changes `add-open-websearch-mcp-skill` and
-  `replace-package-version-check-mcp`, both missing OpenSpec deltas.
+- [x] `uv run python scripts/audit_candidate_deep_sources.py --check`
+- [x] `uv run python scripts/promote_candidate_corpus.py --final-check`
+- [x] `uv run python scripts/apply_candidate_corpus_promotions.py --check`
+- [x] `uv run wagents openspec validate`

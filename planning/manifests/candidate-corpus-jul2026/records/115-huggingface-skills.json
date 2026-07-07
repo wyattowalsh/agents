@@ -123,7 +123,26 @@
   ],
   "overlap_packet": {
     "catalog_matches": [
-      "docs/src/authoring/skills/huggingface-skills-all.mdx"
+      "docs/src/authoring/skills/hf-cli.mdx",
+      "docs/src/authoring/skills/hf-mem.mdx",
+      "docs/src/authoring/skills/huggingface-best.mdx",
+      "docs/src/authoring/skills/huggingface-community-evals.mdx",
+      "docs/src/authoring/skills/huggingface-datasets.mdx",
+      "docs/src/authoring/skills/huggingface-gradio.mdx",
+      "docs/src/authoring/skills/huggingface-llm-trainer.mdx",
+      "docs/src/authoring/skills/huggingface-local-models.mdx",
+      "docs/src/authoring/skills/huggingface-lora-space-builder.mdx",
+      "docs/src/authoring/skills/huggingface-paper-publisher.mdx",
+      "docs/src/authoring/skills/huggingface-papers.mdx",
+      "docs/src/authoring/skills/huggingface-skills-all.mdx",
+      "docs/src/authoring/skills/huggingface-spaces.mdx",
+      "docs/src/authoring/skills/huggingface-tool-builder.mdx",
+      "docs/src/authoring/skills/huggingface-trackio.mdx",
+      "docs/src/authoring/skills/huggingface-vision-trainer.mdx",
+      "docs/src/authoring/skills/huggingface-zerogpu.mdx",
+      "docs/src/authoring/skills/train-sentence-transformers.mdx",
+      "docs/src/authoring/skills/transformers-js.mdx",
+      "docs/src/authoring/skills/trl-training.mdx"
     ],
     "mcp_registry_match": false,
     "plugin_registry_match": false

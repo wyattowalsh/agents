@@ -246,9 +246,12 @@ def build_tasks() -> list[SourceListTask]:
                     normalized_url=target["normalized_url"],
                     source_name=target["source_name"],
                     coverage_status=target["coverage_status"],
-                    intake_decision=target["intake_decision"],
-                    risk_tier=target["risk_tier"],
-                    auth_required=target["auth_required"],
+                    intake_decision=target.get(
+                        "intake_decision",
+                        target.get("install_or_integration_decision", ""),
+                    ),
+                    risk_tier=target.get("risk_tier", ""),
+                    auth_required=bool(target.get("auth_required", False)),
                 )
             )
     return tasks

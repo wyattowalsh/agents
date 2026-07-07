@@ -2,30 +2,34 @@
 
 - Total raw candidates processed: 293
 - Total unique normalized targets: 289
-- Added count: 1213
-- Catalog authoring rows added: 1213
-- Installable curated rows: 1038
-- Live install additions: 1038
-- Adapted count: 1038
-- Reference-only count: 175
-- Skipped count: 175 remaining gated rows plus selector collisions recorded separately
-- Duplicates deduped: 4 raw duplicate URLs plus 0 selector-name collisions
-- Auth requirements: 49 candidates require auth or credential-boundary review; promoted auth-bearing skills use placeholder-only credential guidance.
-- Research task graph: 293 raw lanes, 289 synthesis lanes, 7879 leaf checks.
-- Existing integration coverage: covered-by-existing-installable-catalog=14, covered-by-existing-reference=1, needs-promotion-review=274 before the live overlay.
-- Full integration phase: `promotion-overlay-installed`; live install status: `live-installs-recorded`.
-- Docs-steward surfaces updated: authoring catalog, generated external catalog pages, catalog indexes, install scripts, README, generated site data/sidebar, reports, and candidate-corpus manifests.
-- Review findings addressed: source-list gates stayed separate from installs, duplicate names were repaired to canonical owners, repo-owned `research` and `design` were restored after external collisions, Grok was mirrored from Claude-compatible skill roots, and no third-party source trees were vendored into `skills/`.
-- Unresolved risks: 175 reference-only rows are terminal skip/gate decisions for unclear license, inaccessible source, duplicate/canonical-source decisions, no safe install surface, or credential/destructive/abuse-risk gates. Credentialed MCP/plugin services remain disabled from default registry exposure.
-- Final commit hash: recorded by the runner after this report is committed.
+- Catalog authoring rows after overlay: 1213
+- Promoted installable curated-external rows: 1038
+- Recorded install evidence rows: 1038
+- Installed path references verified: 3115/3115
+- Missing installed `SKILL.md` files: 0
+- New live install commands emitted: 0
+- Remaining reference or terminal-gated rows: 175
+- Full integration phase: `promotion-overlay-installed`; live install status is `no-live-install-commands-emitted`.
+- Status note: no new installer commands were emitted during validation; 1038 install evidence rows and 3115 installed `SKILL.md` path references are recorded and verified by the promotion overlay.
+- Deep source audit: 288 audited targets, 1 terminal blocker, candidate code executed: false.
+- Generator-owned conservative intake artifacts remain available for traceability.
+- No commit made by this script.
 
 ## Suggested PR Title
 
-feat: install and catalog July 2026 candidate skills corpus
+chore: integrate candidate corpus July 2026 promotion overlay
 
 ## Suggested PR Body
 
-- Promotes reviewed July 2026 candidate corpus selectors into curated external catalog rows with license, provenance, install, and safety notes.
-- Live-installs promoted Skills CLI assets across local harness roots and mirrors Claude-compatible skills into Grok discovery.
-- Regenerates docs-steward catalog, install, generated registry, README, and report surfaces.
-- Keeps unclear-license, inaccessible, duplicate, credentialed-service, and abuse-risk sources gated or disabled from default MCP/plugin exposure.
+- Adds deterministic candidate corpus normalization, sharding, coverage, generated catalog authoring rows, and promotion overlay validation.
+- Records read-only source-list/deep-source evidence and reviewed install metadata for promoted curated external rows, including installed-root verification.
+- Keeps validation commands explicit and avoids re-running installers during checks.
+
+## Promotion Overlay Completion
+
+- Full integration phase: `promotion-overlay-installed`.
+- Promoted overrides: 1038.
+- Recorded install evidence rows: 1038.
+- Installed path references verified: 3115/3115.
+- Missing installed `SKILL.md` files: 0.
+- Final commit hash: no commit made by this script.

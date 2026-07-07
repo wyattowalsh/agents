@@ -36,6 +36,12 @@ MCP_REGISTRY = ROOT / "config" / "mcp-registry.json"
 PLUGIN_REGISTRY = ROOT / "config" / "plugin-extension-registry.json"
 CATALOG_ENTRY_PREFIX = "candidate-corpus"
 CATALOG_ENTRY_MARKER = "GENERATED-CANDIDATE-CORPUS-JUL2026"
+TRUST_CLEARED_STATUS = "install-now-after-trust-gate"
+TRUST_CLEARED_TIER = "curated-trust-gated"
+COVERAGE_TRUST_CLEARED = "covered-by-existing-installable-catalog"
+COVERAGE_INSPECTION_REQUIRED = "covered-by-existing-inspection-required"
+COVERAGE_REFERENCE = "covered-by-existing-reference"
+COVERAGE_NEEDS_PROMOTION = "needs-promotion-review"
 
 DOCS_SURFACES = [
     "README",
@@ -1066,6 +1072,20 @@ def row_match_values(row: dict[str, Any]) -> set[str]:
     return values
 
 
+def existing_row_has_install_surface(row: dict[str, Any]) -> bool:
+    has_install_command = bool(row.get("has_install_command")) or bool(str(row.get("install_command", "")).strip())
+    sync_kind = str(row.get("sync_kind", "")).strip()
+    return has_install_command and sync_kind not in {"", "none"}
+
+
+def existing_row_trust_cleared(row: dict[str, Any]) -> bool:
+    return (
+        existing_row_has_install_surface(row)
+        and row.get("status") == TRUST_CLEARED_STATUS
+        and row.get("trust_tier") == TRUST_CLEARED_TIER
+    )
+
+
 def build_existing_integration_coverage(records: list[dict[str, Any]]) -> dict[str, Any]:
     rows = catalog_authoring_rows()
     groups = unique_record_groups(records)
@@ -1091,15 +1111,34 @@ def build_existing_integration_coverage(records: list[dict[str, Any]]) -> dict[s
                 "sync_kind": sync_kind,
                 "has_install_command": bool(install_command),
             })
-        installable = [
-            match for match in matches if match["has_install_command"] and match["sync_kind"] not in {"", "none"}
+        trust_cleared = [match for match in matches if existing_row_trust_cleared(match)]
+        inspection_required = [
+            match
+            for match in matches
+            if existing_row_has_install_surface(match) and not existing_row_trust_cleared(match)
         ]
-        if installable:
-            coverage_status = "covered-by-existing-installable-catalog"
+        if trust_cleared and not inspection_required:
+            coverage_status = COVERAGE_TRUST_CLEARED
+            existing_rows = trust_cleared
+            recommended_next_action = (
+                "Treat as already integrated through trusted curated catalog row; do not duplicate."
+            )
+        elif inspection_required:
+            coverage_status = COVERAGE_INSPECTION_REQUIRED
+            existing_rows = inspection_required
+            recommended_next_action = (
+                "Existing catalog row has an install command but still requires inspection; keep trust gates blocked."
+            )
         elif matches:
-            coverage_status = "covered-by-existing-reference"
+            coverage_status = COVERAGE_REFERENCE
+            existing_rows = matches
+            recommended_next_action = "Existing catalog row is reference-only; keep promotion trust gates blocked."
         else:
-            coverage_status = "needs-promotion-review"
+            coverage_status = COVERAGE_NEEDS_PROMOTION
+            existing_rows = []
+            recommended_next_action = (
+                "Research and route through the promotion task graph before installing or adapting."
+            )
         counts[coverage_status] += 1
         items.append({
             "normalized_url": primary["normalized_url"],
@@ -1107,12 +1146,8 @@ def build_existing_integration_coverage(records: list[dict[str, Any]]) -> dict[s
             "raw_indexes": group["raw_indexes"],
             "intake_decision": primary["install_or_integration_decision"],
             "coverage_status": coverage_status,
-            "existing_rows": matches,
-            "recommended_next_action": (
-                "Treat as already integrated through existing curated catalog row; do not duplicate."
-                if installable
-                else "Research and route through the promotion task graph before installing or adapting."
-            ),
+            "existing_rows": existing_rows,
+            "recommended_next_action": recommended_next_action,
         })
     return {
         "version": 1,
@@ -1145,7 +1180,7 @@ COVERAGE_PROMOTION_WAVES = [
 
 
 def promotion_wave_for(record: dict[str, Any], coverage_status: str) -> tuple[str, str]:
-    if coverage_status == "covered-by-existing-installable-catalog":
+    if coverage_status == COVERAGE_TRUST_CLEARED:
         return "W00", "Existing installable catalog row owns integration; no duplicate install command."
     decision = record["install_or_integration_decision"]
     if decision in {"quarantine", "skip_inaccessible", "skip_risky"}:
@@ -1403,7 +1438,7 @@ def build_raw_leaf_checks(record: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def unique_leaf_status(suffix: str, primary: dict[str, Any], coverage_status: str) -> str:
-    if coverage_status == "covered-by-existing-installable-catalog" and suffix in {
+    if coverage_status == COVERAGE_TRUST_CLEARED and suffix in {
         "RAW-MAP",
         "SURFACE",
         "AUTH",
@@ -1429,7 +1464,7 @@ def unique_leaf_notes(
     raw_indexes: list[int],
     coverage_status: str,
 ) -> str:
-    if coverage_status == "covered-by-existing-installable-catalog":
+    if coverage_status == COVERAGE_TRUST_CLEARED:
         if suffix == "INSTALL":
             return "Existing curated catalog row already owns install command; no duplicate command is published."
         if suffix == "SURFACE":
@@ -1521,7 +1556,7 @@ def build_research_task_graph(
     unique_lanes = []
     for group in unique_groups:
         primary = group["primary"]
-        covered = group["coverage_status"] == "covered-by-existing-installable-catalog"
+        covered = group["coverage_status"] == COVERAGE_TRUST_CLEARED
         unique_lanes.append({
             "lane_id": group["lane_id"],
             "normalized_url": primary["normalized_url"],
@@ -1673,6 +1708,7 @@ def build_promotion_readiness_queue(decisions: list[dict[str, Any]], graph: dict
             "raw_indexes": decision_item["raw_indexes"],
             "current_intake_decision": decision_item["decision"],
             "existing_integration_status": lane["existing_integration_status"],
+            "existing_rows": lane["existing_rows"],
             "risk_tier": lane["risk_tier"],
             "auth_required": lane["auth_required"],
             "blocking_gates": [
@@ -1688,7 +1724,7 @@ def build_promotion_readiness_queue(decisions: list[dict[str, Any]], graph: dict
             "install_command": "",
             "repo_mutation_eligible": False,
         }
-        if lane["existing_integration_status"] == "covered-by-existing-installable-catalog":
+        if lane["existing_integration_status"] == COVERAGE_TRUST_CLEARED:
             item.update({
                 "terminal_status": "covered-by-existing-installable-catalog",
                 "blocking_gates": [],
@@ -2316,15 +2352,18 @@ def write_reports(
         "",
         "## Command Checklist",
         "",
-        "- `uv run python scripts/generate_candidate_corpus_shards.py --check-coverage`",
+        "- `uv run python scripts/generate_candidate_corpus_shards.py --emit-all --no-network`",
         "- `uv run python scripts/promote_candidate_corpus.py --write --check-coverage`",
+        "- `uv run python scripts/apply_candidate_corpus_promotions.py --apply --check`",
+        "- `uv run python scripts/promote_candidate_corpus.py --check-coverage --final-check`",
+        "- `uv run -- wagents docs generate --no-installed`",
         "- `uv run pytest tests/test_candidate_corpus.py -q`",
         (
             "- `uv run ruff check scripts/generate_candidate_corpus_shards.py "
-            "scripts/promote_candidate_corpus.py tests/test_candidate_corpus.py`"
+            "scripts/promote_candidate_corpus.py scripts/apply_candidate_corpus_promotions.py "
+            "tests/test_candidate_corpus.py`"
         ),
         "- `uv run wagents validate`",
-        "- `uv run wagents docs generate --no-installed`",
         "- `uv run wagents readme`",
         "- `uv run wagents readme --check`",
         "- `uv run wagents skills sync --dry-run`",

@@ -9,8 +9,8 @@
   "artifact_types_found": [
     "skill"
   ],
-  "install_or_integration_decision": "reference_only",
-  "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+  "install_or_integration_decision": "merge_into_existing",
+  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
   "auth_required": false,
   "env_vars_or_credentials": [],
   "safety_notes": "No elevated keyword risk detected.",
@@ -122,7 +122,30 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [],
+    "catalog_matches": [
+      "docs/src/authoring/skills/chef-assistant.mdx",
+      "docs/src/authoring/skills/code-formatter.mdx",
+      "docs/src/authoring/skills/code-reviewer.mdx",
+      "docs/src/authoring/skills/config-reader.mdx",
+      "docs/src/authoring/skills/creative-writing-coach.mdx",
+      "docs/src/authoring/skills/data-processor.mdx",
+      "docs/src/authoring/skills/deploy-service.mdx",
+      "docs/src/authoring/skills/file-indexer.mdx",
+      "docs/src/authoring/skills/file-organizer.mdx",
+      "docs/src/authoring/skills/friendly-greeter.mdx",
+      "docs/src/authoring/skills/general-assistant.mdx",
+      "docs/src/authoring/skills/helpful-formatter.mdx",
+      "docs/src/authoring/skills/jp-compliance-reporter.mdx",
+      "docs/src/authoring/skills/markdown-formatter.mdx",
+      "docs/src/authoring/skills/onboarding-guide.mdx",
+      "docs/src/authoring/skills/over-privileged-helper.mdx",
+      "docs/src/authoring/skills/personal-assistant.mdx",
+      "docs/src/authoring/skills/report-generator.mdx",
+      "docs/src/authoring/skills/safe-greeting.mdx",
+      "docs/src/authoring/skills/terraform-deployer.mdx",
+      "docs/src/authoring/skills/text-summarizer.mdx",
+      "docs/src/authoring/skills/underdeclared-agent.mdx"
+    ],
     "mcp_registry_match": false,
     "plugin_registry_match": false
   },
@@ -155,8 +178,8 @@
   ],
   "docs_steward_status": "packet-generated",
   "decision_packet": {
-    "decision": "reference_only",
-    "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates."
+    "decision": "merge_into_existing",
+    "reason": "Existing repo catalog or registry surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,

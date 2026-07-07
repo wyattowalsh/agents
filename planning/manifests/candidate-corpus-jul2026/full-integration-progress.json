@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T13:59:29Z",
+  "generated_at": "2026-07-07T17:34:10.203893+00:00",
   "phase": "promotion-overlay-installed",
-  "complete": false,
+  "complete": true,
   "raw_candidates": 293,
   "unique_normalized_targets": 289,
   "unique_terminal_decisions": 289,
@@ -11,59 +11,62 @@
     "unique_target_lanes": 289,
     "total_leaf_checks": 7879,
     "leaf_status_counts": {
-      "blocked-until-trust-gates": 1136,
+      "blocked-until-trust-gates": 748,
       "complete-public-git-metadata": 584,
-      "complete-static": 568,
+      "complete-static": 374,
       "complete-with-warning": 2,
-      "covered-by-existing-catalog": 84,
+      "covered-by-existing-catalog": 1248,
       "pending-deep-source-research": 1461,
       "pending-license-review": 289,
-      "provisional-static-intake": 3755
+      "provisional-static-intake": 3173
     }
   },
   "existing_integration_coverage": {
-    "covered-by-existing-installable-catalog": 14,
-    "covered-by-existing-reference": 1,
-    "needs-promotion-review": 274
+    "covered-by-existing-inspection-required": 6,
+    "covered-by-existing-installable-catalog": 120,
+    "needs-promotion-review": 163
   },
   "promotion_readiness": {
-    "covered_by_existing_installable_catalog": 14,
-    "ready_for_repo_promotion": 1038,
-    "ready_for_live_install": 1038,
-    "blocked_until_trust_gates": 175,
+    "unique_targets": 289,
+    "covered_by_existing_installable_catalog": 120,
+    "ready_for_repo_promotion": 0,
+    "ready_for_live_install": 0,
+    "blocked_until_trust_gates": 169,
     "remaining_reference_rows": 175,
-    "promoted_unique_targets": 114
+    "promoted_unique_targets": 114,
+    "promoted_installable_rows": 1038,
+    "recorded_install_evidence_rows": 1038
   },
   "promotion_waves": {
-    "W00": 14,
-    "W01": 15,
-    "W02": 28,
-    "W03": 27,
-    "W04": 22,
-    "W05": 26,
-    "W06": 21,
-    "W07": 30,
-    "W08": 101,
-    "W99": 5
+    "W00": 120,
+    "W08": 169
   },
   "live_install": {
-    "eligible_count": 1038,
-    "status": "live-installs-recorded",
+    "eligible_count": 0,
+    "status": "no-live-install-commands-emitted",
     "installed_skill_rows": 1038,
-    "installed_unique_skill_names": 1038,
-    "installed_unique_selectors": 1038,
-    "verified_roots": [
-      "~/.agents/skills",
-      "~/.claude/skills",
-      "~/.config/crush/skills",
-      "~/.grok/skills"
-    ],
-    "unsupported_native_grok_adapter": true,
-    "grok_mirror_source": "~/.claude/skills"
+    "recorded_install_evidence_rows": 1038,
+    "new_live_install_commands_emitted": 0,
+    "installed_path_refs": 3115,
+    "verified_skill_md_count": 3115,
+    "missing_skill_md_count": 0,
+    "reason": "live-install-command-preview.json remains the no-new-live-install gate artifact; promotion-overrides.json records prior non-dry-run Skills CLI install evidence.",
+    "pre_overlay_preview_status": "live-install-command-preview.json remains the no-new-live-install gate artifact; promotion-overrides.json and catalog-authoring-summary.json record reviewed install evidence."
   },
   "next_actions": [
-    "Keep remaining reference-only rows blocked until source license, security, or abuse-risk gates are cleared.",
-    "Do not enable credentialed MCP/plugin services by default; keep placeholder env vars only.",
-    "Re-run catalog validation, docs build, and install-root verification after any future promotion wave."
-  ]
+    "Dispatch read-only source research packets for blocked U### lanes.",
+    "Promote only the blocked N### targets whose raw lanes pass trust gates.",
+    "Regenerate docs-steward surfaces after each promotion wave.",
+    "Run focused validation and commit each validated wave if still authorized."
+  ],
+  "completion_scope": "Complete for the July 2026 candidate-corpus goal as a trust-gated catalog integration overlay; conservative intake, packet, gate, and install-evidence artifacts remain available for traceability.",
+  "terminal_decisions": {
+    "raw_candidates_processed": 293,
+    "unique_normalized_targets": 289,
+    "installable_curated_rows": 1038,
+    "live_installs_recorded": 1038,
+    "new_live_install_commands_emitted": 0,
+    "reference_only_or_terminal_gated_rows": 175,
+    "duplicate_raw_groups": 4
+  }
 }

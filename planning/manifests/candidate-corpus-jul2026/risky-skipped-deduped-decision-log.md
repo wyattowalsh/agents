@@ -10,24 +10,24 @@
 - `015` `zubair-trabzada/ai-legal-claude`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
 - `023` `onvoyage-ai/gtm-engineer-skills`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
 - `044` `zubair-trabzada/ai-sales-team-claude`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
-- `045` `Bhanunamikaze/Agentic-SEO-Skill`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
+- `045` `Bhanunamikaze/Agentic-SEO-Skill`: review-required - Existing repo catalog or registry surface already covers this source/domain.
 - `046` `agi-now/buffett-skills`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
 - `050` `lawve-ai/awesome-legal-skills`: review-required - Collection source should not be vendored wholesale.
-- `054` `JeffLi1993/seo-audit-skill`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
-- `057` `Affitor/affiliate-skills`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
-- `077` `rorkai/app-store-connect-cli-skills`: review-required - Executable candidate requires deeper package/script review before promotion.
-- `078` `timbroddin/app-store-aso-skill`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
+- `054` `JeffLi1993/seo-audit-skill`: review-required - Existing repo catalog or registry surface already covers this source/domain.
+- `057` `Affitor/affiliate-skills`: review-required - Existing repo catalog or registry surface already covers this source/domain.
+- `077` `rorkai/app-store-connect-cli-skills`: review-required - Existing repo catalog or registry surface already covers this source/domain.
+- `078` `timbroddin/app-store-aso-skill`: review-required - Existing repo catalog or registry surface already covers this source/domain.
 - `099` `RKiding/Awesome-finance-skills`: review-required - Collection source should not be vendored wholesale.
 - `103` `himself65/finance-skills`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
 - `114` `AgriciDaniel/claude-seo`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
 - `134` `ComposioHQ/awesome-codex-skills`: quarantine - Quarantine trigger detected; keep reference-only pending explicit approval.
 - `152` `ComposioHQ/awesome-codex-skills`: quarantine - Quarantine trigger detected; keep reference-only pending explicit approval.
-- `157` `Panniantong/Agent-Reach`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
-- `169` `BestLemoon/codex-seo`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
-- `173` `avalonreset/seo-dungeon`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
+- `157` `Panniantong/Agent-Reach`: review-required - Existing repo catalog or registry surface already covers this source/domain.
+- `169` `BestLemoon/codex-seo`: review-required - Existing repo catalog or registry surface already covers this source/domain.
+- `173` `avalonreset/seo-dungeon`: review-required - Existing repo catalog or registry surface already covers this source/domain.
 - `205` `jihe520/social-push`: quarantine - Quarantine trigger detected; keep reference-only pending explicit approval.
-- `228` `pedronauck/skills`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
-- `236` `pedronauck/skills`: review-required - Discovery-only pending source-list, license, security, and docs-steward promotion gates.
+- `228` `pedronauck/skills`: review-required - Existing repo catalog or registry surface already covers this source/domain.
+- `236` `pedronauck/skills`: review-required - Existing repo catalog or registry surface already covers this source/domain.
 - `280` `klajdikkolaj/upwork-autopilot`: quarantine - Quarantine trigger detected; keep reference-only pending explicit approval.
 
 ## Skipped

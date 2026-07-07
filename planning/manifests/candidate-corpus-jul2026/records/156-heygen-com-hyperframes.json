@@ -9,8 +9,8 @@
   "artifact_types_found": [
     "docs/reference"
   ],
-  "install_or_integration_decision": "reference_only",
-  "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+  "install_or_integration_decision": "merge_into_existing",
+  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
   "auth_required": false,
   "env_vars_or_credentials": [],
   "safety_notes": "No elevated keyword risk detected.",
@@ -134,7 +134,28 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [],
+    "catalog_matches": [
+      "docs/src/authoring/skills/embedded-captions.mdx",
+      "docs/src/authoring/skills/faceless-explainer.mdx",
+      "docs/src/authoring/skills/figma.mdx",
+      "docs/src/authoring/skills/general-video.mdx",
+      "docs/src/authoring/skills/hyperframes-animation.mdx",
+      "docs/src/authoring/skills/hyperframes-cli.mdx",
+      "docs/src/authoring/skills/hyperframes-core.mdx",
+      "docs/src/authoring/skills/hyperframes-creative.mdx",
+      "docs/src/authoring/skills/hyperframes-keyframes.mdx",
+      "docs/src/authoring/skills/hyperframes-registry.mdx",
+      "docs/src/authoring/skills/hyperframes.mdx",
+      "docs/src/authoring/skills/media-use.mdx",
+      "docs/src/authoring/skills/motion-graphics.mdx",
+      "docs/src/authoring/skills/music-to-video.mdx",
+      "docs/src/authoring/skills/pr-to-video.mdx",
+      "docs/src/authoring/skills/product-launch-video.mdx",
+      "docs/src/authoring/skills/remotion-to-hyperframes.mdx",
+      "docs/src/authoring/skills/slideshow.mdx",
+      "docs/src/authoring/skills/talking-head-recut.mdx",
+      "docs/src/authoring/skills/website-to-video.mdx"
+    ],
     "mcp_registry_match": false,
     "plugin_registry_match": false
   },
@@ -167,8 +188,8 @@
   ],
   "docs_steward_status": "packet-generated",
   "decision_packet": {
-    "decision": "reference_only",
-    "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates."
+    "decision": "merge_into_existing",
+    "reason": "Existing repo catalog or registry surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,

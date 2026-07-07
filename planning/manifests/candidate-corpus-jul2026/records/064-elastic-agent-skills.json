@@ -10,8 +10,8 @@
     "agent",
     "skill"
   ],
-  "install_or_integration_decision": "reference_only",
-  "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+  "install_or_integration_decision": "merge_into_existing",
+  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
   "auth_required": false,
   "env_vars_or_credentials": [],
   "safety_notes": "No elevated keyword risk detected.",
@@ -123,7 +123,43 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [],
+    "catalog_matches": [
+      "docs/src/authoring/skills/cloud-access-management.mdx",
+      "docs/src/authoring/skills/cloud-create-project.mdx",
+      "docs/src/authoring/skills/cloud-manage-project.mdx",
+      "docs/src/authoring/skills/cloud-network-security.mdx",
+      "docs/src/authoring/skills/cloud-setup.mdx",
+      "docs/src/authoring/skills/elasticsearch-audit.mdx",
+      "docs/src/authoring/skills/elasticsearch-authn.mdx",
+      "docs/src/authoring/skills/elasticsearch-authz.mdx",
+      "docs/src/authoring/skills/elasticsearch-esql.mdx",
+      "docs/src/authoring/skills/elasticsearch-file-ingest.mdx",
+      "docs/src/authoring/skills/elasticsearch-onboarding.mdx",
+      "docs/src/authoring/skills/elasticsearch-security-troubleshooting.mdx",
+      "docs/src/authoring/skills/kibana-agent-builder.mdx",
+      "docs/src/authoring/skills/kibana-alerting-rules.mdx",
+      "docs/src/authoring/skills/kibana-anomaly-detection.mdx",
+      "docs/src/authoring/skills/kibana-audit.mdx",
+      "docs/src/authoring/skills/kibana-connectors.mdx",
+      "docs/src/authoring/skills/kibana-dashboards.mdx",
+      "docs/src/authoring/skills/kibana-streams.mdx",
+      "docs/src/authoring/skills/kibana-vega.mdx",
+      "docs/src/authoring/skills/observability-edot-dotnet-instrument.mdx",
+      "docs/src/authoring/skills/observability-edot-dotnet-migrate.mdx",
+      "docs/src/authoring/skills/observability-edot-java-instrument.mdx",
+      "docs/src/authoring/skills/observability-edot-java-migrate.mdx",
+      "docs/src/authoring/skills/observability-edot-python-instrument.mdx",
+      "docs/src/authoring/skills/observability-edot-python-migrate.mdx",
+      "docs/src/authoring/skills/observability-k8s-investigation.mdx",
+      "docs/src/authoring/skills/observability-llm-obs.mdx",
+      "docs/src/authoring/skills/observability-logs-search.mdx",
+      "docs/src/authoring/skills/observability-manage-slos.mdx",
+      "docs/src/authoring/skills/observability-service-health.mdx",
+      "docs/src/authoring/skills/security-alert-triage.mdx",
+      "docs/src/authoring/skills/security-case-management.mdx",
+      "docs/src/authoring/skills/security-detection-rule-management.mdx",
+      "docs/src/authoring/skills/security-generate-security-sample-data.mdx"
+    ],
     "mcp_registry_match": false,
     "plugin_registry_match": false
   },
@@ -156,8 +192,8 @@
   ],
   "docs_steward_status": "packet-generated",
   "decision_packet": {
-    "decision": "reference_only",
-    "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates."
+    "decision": "merge_into_existing",
+    "reason": "Existing repo catalog or registry surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,

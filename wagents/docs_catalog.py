@@ -17,6 +17,7 @@ import json
 from collections import defaultdict
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
+from urllib.parse import quote
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -24,7 +25,7 @@ if TYPE_CHECKING:
 from wagents import CONTENT_DIR, ROOT
 from wagents.catalog import CatalogNode, collect_nodes
 from wagents.parsing import escape_attr, truncate_sentence
-from wagents.skill_index import read_catalog_index
+from wagents.skill_index import entry_catalog_tags, entry_platforms, read_catalog_index
 
 CATALOG_CONTENT_DIR = CONTENT_DIR / "catalog"
 ARCHITECTURE_CONTENT_DIR = CONTENT_DIR / "architecture"
@@ -91,25 +92,9 @@ def _skill_rows_for_topology() -> list[dict[str, str]]:
     return sorted(rows, key=lambda r: r["name"])
 
 
-def _entry_catalog_tags(entry: dict[str, Any]) -> list[str]:
-    """Explicit tags when present; otherwise derive facet tags from index fields."""
-    tags = entry.get("tags") or entry.get("metadata", {}).get("tags") or []
-    if isinstance(tags, str):
-        tags = [t.strip() for t in tags.split(",") if t.strip()]
-    if isinstance(tags, list) and tags:
-        return [str(tag).strip() for tag in tags if str(tag).strip()]
-
-    synthetic: list[str] = []
-    source_kind = str(entry.get("sourceKind") or entry.get("source_kind") or "").strip()
-    if source_kind:
-        synthetic.append(f"source:{source_kind}")
-    trust_tier = str(entry.get("trustTier") or entry.get("trust_tier") or "").strip()
-    if trust_tier:
-        synthetic.append(f"trust:{trust_tier}")
-    status = str(entry.get("status") or "").strip()
-    if status and status != "repo-owned":
-        synthetic.append(f"status:{status}")
-    return synthetic
+def _entry_source_type(entry: dict[str, Any]) -> str:
+    source_kind = str(entry.get("sourceKind") or entry.get("source_kind") or "custom")
+    return "curated-external" if source_kind == "curated-external" else "custom"
 
 
 def _collect_tag_index(skills_index: dict[str, Any]) -> dict[str, list[str]]:
@@ -118,9 +103,21 @@ def _collect_tag_index(skills_index: dict[str, Any]) -> dict[str, list[str]]:
         name = str(entry.get("name") or "")
         if not name:
             continue
-        for tag in _entry_catalog_tags(entry):
+        for tag in entry_catalog_tags(entry):
             by_tag[tag].append(name)
     return dict(sorted(by_tag.items()))
+
+
+def _collect_tag_index_counts(skills_index: dict[str, Any]) -> dict[str, dict[str, int]]:
+    counts: dict[str, dict[str, int]] = defaultdict(lambda: {"external": 0, "custom": 0})
+    for entry in _catalog_skill_entries(skills_index):
+        name = str(entry.get("name") or "")
+        if not name:
+            continue
+        bucket = "external" if _entry_source_type(entry) == "curated-external" else "custom"
+        for tag in entry_catalog_tags(entry):
+            counts[tag][bucket] += 1
+    return dict(sorted(counts.items()))
 
 
 def _collect_platform_index(skills_index: dict[str, Any]) -> dict[str, list[str]]:
@@ -129,20 +126,8 @@ def _collect_platform_index(skills_index: dict[str, Any]) -> dict[str, list[str]
         name = str(entry.get("name") or "")
         if not name:
             continue
-        targets = (
-            entry.get("targetAgents")
-            or entry.get("target_agents")
-            or entry.get("target_harnesses")
-            or []
-        )
-        if isinstance(targets, str):
-            targets = [t.strip() for t in targets.split(",") if t.strip()]
-        if not isinstance(targets, list):
-            continue
-        for platform in targets:
-            plat = str(platform).strip()
-            if plat:
-                by_platform[plat].append(name)
+        for platform in entry_platforms(entry):
+            by_platform[platform].append(name)
     return dict(sorted(by_platform.items()))
 
 
@@ -273,6 +258,7 @@ def write_catalog_mcp_index(mcps: list[CatalogNode], *, writer: MdxWriter = _wri
 
 def write_catalog_tags_index(skills_index: dict[str, Any], *, writer: MdxWriter = _write_mdx) -> None:
     by_tag = _collect_tag_index(skills_index)
+    tag_counts = _collect_tag_index_counts(skills_index)
     body = [
         "import { CardGrid, LinkCard } from '@astrojs/starlight/components';",
         "",
@@ -287,9 +273,15 @@ def write_catalog_tags_index(skills_index: dict[str, Any], *, writer: MdxWriter 
             sample = ", ".join(skill_ids[:4])
             if len(skill_ids) > 4:
                 sample += f", +{len(skill_ids) - 4} more"
+            counts = tag_counts.get(tag, {"external": 0, "custom": 0})
+            total = len(skill_ids)
+            description = (
+                f"{total} skills ({counts['external']} external, {counts['custom']} custom) — e.g. {sample}"
+            )
+            href = f"/skills/catalog/external/?tag={quote(tag, safe='')}"
             body.append(
-                f'  <LinkCard title="{escape_attr(tag)}" href="/skills/catalog/" '
-                f'description="{escape_attr(f"{len(skill_ids)} skills — e.g. {sample}")}" />'
+                f'  <LinkCard title="{escape_attr(tag)}" href="{href}" '
+                f'description="{escape_attr(description)}" />'
             )
         body.append("</CardGrid>")
     writer(
@@ -318,9 +310,21 @@ def write_catalog_platforms_index(skills_index: dict[str, Any], *, writer: MdxWr
     else:
         for platform, skill_ids in by_platform.items():
             label = harness_labels.get(platform, platform)
+            external_count = sum(
+                1
+                for entry in _catalog_skill_entries(skills_index)
+                if str(entry.get("name") or "") in skill_ids
+                and _entry_source_type(entry) == "curated-external"
+                and platform in entry_platforms(entry)
+            )
+            custom_count = len(skill_ids) - external_count
+            href = f"/skills/catalog/external/?platform={quote(platform, safe='')}"
+            description = (
+                f"{len(skill_ids)} skills ({external_count} external, {custom_count} custom) for {platform}"
+            )
             body.append(
-                f'  <LinkCard title="{escape_attr(label)}" href="/skills/catalog/" '
-                f'description="{escape_attr(f"{len(skill_ids)} skills for {platform}")}" />'
+                f'  <LinkCard title="{escape_attr(label)}" href="{href}" '
+                f'description="{escape_attr(description)}" />'
             )
     body.append("</CardGrid>")
     writer(

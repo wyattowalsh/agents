@@ -10,8 +10,8 @@
     "awesome list",
     "plugin"
   ],
-  "install_or_integration_decision": "reference_only",
-  "reason": "Executable candidate requires deeper package/script review before promotion.",
+  "install_or_integration_decision": "merge_into_existing",
+  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
   "auth_required": true,
   "env_vars_or_credentials": [
     "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -138,7 +138,11 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [],
+    "catalog_matches": [
+      "docs/src/authoring/skills/commit-narrator.mdx",
+      "docs/src/authoring/skills/env-lint.mdx",
+      "docs/src/authoring/skills/secret-guard.mdx"
+    ],
     "mcp_registry_match": false,
     "plugin_registry_match": false
   },
@@ -175,8 +179,8 @@
   ],
   "docs_steward_status": "packet-generated",
   "decision_packet": {
-    "decision": "reference_only",
-    "reason": "Executable candidate requires deeper package/script review before promotion."
+    "decision": "merge_into_existing",
+    "reason": "Existing repo catalog or registry surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,

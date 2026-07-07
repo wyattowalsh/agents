@@ -2,46 +2,40 @@
 
 - Raw candidates processed: 293
 - Unique normalized targets: 289
-- Added count: 1213
-- Catalog authoring rows added: 1213
-- Installable curated rows: 1038
-- Live install additions: 1038
-- Live install unique skill names: 1038
-- Adapted count: 1038
-- Reference-only count: 175
-- Skipped/deduped selector collisions: 0
-- Duplicates deduped: 4 raw duplicate URLs plus selector-name collisions in the promotion overlay
-- Raw research lanes: 293
-- Unique target synthesis lanes: 289
-- Research leaf checks tracked: 7879
-- Raw promotion research packets: 293
-- Unique promotion research packets: 289
-- Source-list evidence: 289 list-only source probes recorded; 1038 installable rows were promoted after additional live selector checks and local installs.
-- GitHub metadata status: ok=292, unavailable=1
-- Auth requirements: 49 source targets require auth or credential-boundary review; promoted auth-bearing skills use placeholder-only docs and remain user-invoked.
+- Catalog authoring rows: 1213
+- Installable promoted curated-external rows: 1038
+- Recorded install evidence rows: 1038
+- Installed path references verified: 3115/3115
+- Missing installed `SKILL.md` files: 0
+- New live install commands emitted: 0
+- Remaining reference or terminal-gated rows: 175
+- Source-list evidence: 289 list-only source probes recorded; 1038 installable rows were promoted from reviewed override evidence.
+- Deep source audit: 288 targets audited through GitHub API README/license/tree/package reads plus 1 terminal blocker; candidate code executed: false.
 - Full integration phase: `promotion-overlay-installed`
-- Live install status: `live-installs-recorded`
+- Live install status: `no-live-install-commands-emitted`
+- Status note: validation emitted no new installer commands; the promotion overlay verifies 1038 previously recorded install evidence rows and 3115 installed `SKILL.md` path references.
+- Gate summary: 120 covered, 0 ready for repo promotion, 0 ready for live install, 169 blocked.
 
 ## Observed Generated Evidence
 
 - Generator emitted manifest, matrix, packet, report, and catalog-authoring artifacts from local inputs.
-- Promotion overlay converted reviewed, installed Skills CLI selectors into curated external authoring rows.
-- No third-party source trees were vendored into `skills/`.
-- Credentialed/account-backed tools remain explicit user-invoked skills or disabled docs examples; no secrets were committed.
+- Read-only generator and deep-source audit scripts did not execute candidate code.
+- The promotion overlay records prior non-dry-run Skills CLI install commands; validation verifies installed `SKILL.md` roots without re-running installers.
 
 ## Command Checklist
 
+- `uv run python scripts/generate_candidate_corpus_shards.py --emit-all --no-network`
 - `uv run python scripts/apply_candidate_corpus_promotions.py --check` passed for 1038 promotion overrides.
-- `uv run wagents validate` passed.
-- `uv run wagents catalog index --check` passed.
-- `uv run wagents docs generate --no-installed --check` passed.
-- `uv run wagents readme --check` passed.
-- `uv run pytest tests/test_candidate_corpus.py tests/test_site_model.py tests/test_skill_index.py tests/test_catalog_rows.py tests/test_rendering.py -q` passed.
-- `uv run pytest tests/test_candidate_corpus.py tests/test_rendering.py tests/test_site_model.py tests/test_docs_reports.py -q` passed with 102 tests.
-- `uv run ruff check scripts/apply_candidate_corpus_promotions.py wagents/site_model.py wagents/catalog_rows.py wagents/rendering.py tests/test_candidate_corpus.py tests/test_site_model.py tests/test_rendering.py` passed.
-- `uv run ruff check scripts/apply_candidate_corpus_promotions.py scripts/promote_candidate_corpus.py tests/test_candidate_corpus.py tests/test_rendering.py tests/test_site_model.py tests/test_docs_reports.py wagents/catalog_rows.py wagents/rendering.py wagents/site_model.py` passed.
-- `uv run wagents docs build` passed; Astro generated `docs/dist/` and reported all internal links valid.
-- `scripts/mcphub/validate-settings.sh` passed.
-- `uv run python scripts/generate_mcphub_settings.py --check` passed.
-- `uv run wagents skills sync --dry-run --format json` passed in dry-run mode.
-- `git diff --check` passed.
+- `uv run python scripts/audit_candidate_deep_sources.py --check` passed for 289 normalized targets.
+- `uv run python scripts/promote_candidate_corpus.py --final-check` passed for 293 raw entries, 289 unique targets, 288 deep-audited targets, 1 deep terminal blocker, 1038 promoted overrides, and 1038 recorded install evidence rows.
+- `uv run -- wagents docs generate --no-installed --check`
+- `uv run -- wagents catalog index --check --format json`
+- `uv run wagents validate`
+- `OPENSPEC_TELEMETRY=0 npx -y @fission-ai/openspec@latest validate integrate-candidate-corpus-jul2026 --strict --json`
+- `uv run ruff check scripts/audit_candidate_deep_sources.py scripts/promote_candidate_corpus.py scripts/apply_candidate_corpus_promotions.py scripts/generate_candidate_corpus_shards.py scripts/audit_candidate_source_lists.py tests/test_candidate_corpus.py tests/test_docs.py tests/test_docs_catalog.py tests/test_skill_index.py tests/test_skills_catalog_schemas.py wagents/docs.py wagents/docs_catalog.py wagents/skill_index.py`
+- `PYTHONDONTWRITEBYTECODE=1 uv run pytest -q -p no:cacheprovider tests/test_candidate_corpus.py tests/test_docs.py tests/test_docs_catalog.py tests/test_skill_index.py tests/test_skills_catalog_schemas.py tests/test_harness_config_docs.py` passed with 126 tests.
+- Full pytest inventory collection found 1985 tests across 129 files. The monolithic command was signal-terminated with rc 143, so final coverage used sequential file-by-file pytest: files 1-16 passed, file 17 was skip-only, and files 17-129 passed or were explicitly skip-only.
+- `uv run wagents docs lint` completed with 0 errors and 19 soft warnings.
+- `uv run wagents docs build` completed, generated 2096 HTML files, and validated all internal links.
+- `scripts/mcphub/validate-settings.sh && uv run python scripts/generate_mcphub_settings.py --check`
+- `uv run wagents skills sync --dry-run --format json` completed with `inventory_count: 1535`.

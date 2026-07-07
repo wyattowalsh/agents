@@ -20,7 +20,7 @@ def test_harness_config_hub_links_plugin_skill_ownership_page() -> None:
     text = index.read_text(encoding="utf-8")
 
     assert "/harness-config/plugin-skill-ownership/" in text
-    assert "5 surfaces" in text
+    assert "7 surfaces" in text
 
 
 def test_cli_docs_include_skills_cleanup_command() -> None:

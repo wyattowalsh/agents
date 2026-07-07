@@ -11,6 +11,7 @@ apm_modules/
 .vscode/mcp.json
 .vscode/settings.json
 docs/dist/
+docs/.wagents-docs-generate.lock
 docs/.astro/
 docs/.starlight-icons/
 docs/node_modules/

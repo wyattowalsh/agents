@@ -28,7 +28,21 @@ CATALOG_BROWSER_LANE_BY_STATUS = {
     "global-only-or-avoid": "avoid",
 }
 CATALOG_BROWSER_LANES = frozenset({"install-now", "inspect", "avoid"})
-CATALOG_BROWSER_ALLOWED_ROW_FIELDS = frozenset({"name", "description", "href", "lane", "sourceType"})
+CATALOG_BROWSER_ALLOWED_ROW_FIELDS = frozenset({
+    "name",
+    "description",
+    "href",
+    "lane",
+    "sourceType",
+    "tagFacetIds",
+    "platformFacetIds",
+})
+CATALOG_BROWSER_ALLOWED_ROOT_FIELDS = frozenset({
+    "externalSkillIndex",
+    "tagFacetIndex",
+    "platformFacetIndex",
+})
+
 CATALOG_BROWSER_MAX_BYTES = 512 * 1024
 CATALOG_BROWSER_MAX_FULL_RATIO = 0.25
 
@@ -296,9 +310,72 @@ def _catalog_browser_lane(status: Any) -> str:
     return CATALOG_BROWSER_LANE_BY_STATUS.get(str(status or ""), "inspect")
 
 
-def build_catalog_browser_index(index: dict[str, Any]) -> dict[str, list[dict[str, str]]]:
+def entry_catalog_tags(entry: dict[str, Any]) -> list[str]:
+    """Explicit tags when present; otherwise derive facet tags from index fields."""
+    tags = entry.get("tags") or entry.get("metadata", {}).get("tags") or []
+    if isinstance(tags, str):
+        tags = [t.strip() for t in tags.split(",") if t.strip()]
+    if isinstance(tags, list) and tags:
+        return [str(tag).strip() for tag in tags if str(tag).strip()]
+
+    synthetic: list[str] = []
+    source_kind = str(entry.get("sourceKind") or entry.get("source_kind") or "").strip()
+    if source_kind:
+        synthetic.append(f"source:{source_kind}")
+    trust_tier = str(entry.get("trustTier") or entry.get("trust_tier") or "").strip()
+    if trust_tier:
+        synthetic.append(f"trust:{trust_tier}")
+    status = str(entry.get("status") or "").strip()
+    if status and status != "repo-owned":
+        synthetic.append(f"status:{status}")
+    return synthetic
+
+
+def entry_platforms(entry: dict[str, Any]) -> list[str]:
+    targets = (
+        entry.get("targetAgents")
+        or entry.get("target_agents")
+        or entry.get("target_harnesses")
+        or []
+    )
+    if isinstance(targets, str):
+        targets = [t.strip() for t in targets.split(",") if t.strip()]
+    if not isinstance(targets, list):
+        return []
+    return [str(platform).strip() for platform in targets if str(platform).strip()]
+
+
+def _catalog_browser_index_payload(index: dict[str, Any]) -> str:
+    return json.dumps(index, sort_keys=True, separators=(",", ":"))
+
+
+def _catalog_artifact_display_path(path: Path) -> str:
+    try:
+        return str(path.relative_to(wagents.ROOT))
+    except ValueError:
+        return str(path)
+
+
+def build_catalog_browser_index(index: dict[str, Any]) -> dict[str, Any]:
     """Project the full catalog index to the small browser payload used by docs UI."""
+    tag_facet_index: list[str] = []
+    platform_facet_index: list[str] = []
+    tag_ids: dict[str, int] = {}
+    platform_ids: dict[str, int] = {}
     rows: list[dict[str, str]] = []
+
+    def intern_tag(tag: str) -> int:
+        if tag not in tag_ids:
+            tag_ids[tag] = len(tag_facet_index)
+            tag_facet_index.append(tag)
+        return tag_ids[tag]
+
+    def intern_platform(platform: str) -> int:
+        if platform not in platform_ids:
+            platform_ids[platform] = len(platform_facet_index)
+            platform_facet_index.append(platform)
+        return platform_ids[platform]
+
     for entry in index.get("externalSkillIndex", []):
         if not isinstance(entry, dict):
             continue
@@ -306,21 +383,31 @@ def build_catalog_browser_index(index: dict[str, Any]) -> dict[str, list[dict[st
         if not name:
             continue
         source_type = str(entry.get("sourceType") or "curated-external").strip() or "curated-external"
+        tag_id_list = sorted({intern_tag(tag) for tag in entry_catalog_tags(entry)})
+        platform_id_list = sorted({intern_platform(platform) for platform in entry_platforms(entry)})
         rows.append({
             "name": name,
             "description": truncate_sentence(str(entry.get("description") or ""), 160),
             "href": f"/skills/catalog/external/{quote(name, safe='')}/",
             "lane": _catalog_browser_lane(entry.get("status")),
             "sourceType": source_type,
+            "tagFacetIds": ",".join(str(tag_id) for tag_id in tag_id_list),
+            "platformFacetIds": ",".join(str(platform_id) for platform_id in platform_id_list),
         })
-    return {"externalSkillIndex": rows}
+
+    payload: dict[str, Any] = {"externalSkillIndex": rows}
+    if tag_facet_index:
+        payload["tagFacetIndex"] = tag_facet_index
+    if platform_facet_index:
+        payload["platformFacetIndex"] = platform_facet_index
+    return payload
 
 
 def write_catalog_browser_index(index: dict[str, Any], path: Path | None = None) -> Path:
     """Write the slim browser catalog JSON next to the full generated registry."""
     out = path or CATALOG_BROWSER_INDEX_PATH
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(build_catalog_browser_index(index), indent=2, sort_keys=True), encoding="utf-8")
+    out.write_text(_catalog_browser_index_payload(build_catalog_browser_index(index)), encoding="utf-8")
     return out
 
 
@@ -362,6 +449,21 @@ def catalog_browser_index_contract_reason(
     index: dict[str, Any], *, full_index: dict[str, Any] | None = None
 ) -> str | None:
     """Return why the browser catalog index violates the small public UI contract."""
+    extra_root = set(index) - CATALOG_BROWSER_ALLOWED_ROOT_FIELDS
+    if extra_root:
+        return (
+            "docs/public/generated-registries/skills-catalog-browser-index.json exposes disallowed "
+            f"root fields: {', '.join(sorted(extra_root))}"
+        )
+    for key in ("tagFacetIndex", "platformFacetIndex"):
+        values = index.get(key)
+        if values is None:
+            continue
+        if not isinstance(values, list) or any(not isinstance(value, str) for value in values):
+            return (
+                "docs/public/generated-registries/skills-catalog-browser-index.json "
+                f"{key} must be a string array"
+            )
     rows = index.get("externalSkillIndex")
     if not isinstance(rows, list):
         return "docs/public/generated-registries/skills-catalog-browser-index.json must contain externalSkillIndex rows"
@@ -374,16 +476,16 @@ def catalog_browser_index_contract_reason(
                 "docs/public/generated-registries/skills-catalog-browser-index.json exposes disallowed fields: "
                 + ", ".join(sorted(extra))
             )
-        for field in CATALOG_BROWSER_ALLOWED_ROW_FIELDS:
-            if not isinstance(row.get(field), str):
+        for row_field in CATALOG_BROWSER_ALLOWED_ROW_FIELDS:
+            if not isinstance(row.get(row_field), str):
                 return (
                     "docs/public/generated-registries/skills-catalog-browser-index.json "
-                    f"row field {field} must be a string"
+                    f"row field {row_field} must be a string"
                 )
         if row["lane"] not in CATALOG_BROWSER_LANES:
             return "docs/public/generated-registries/skills-catalog-browser-index.json contains an invalid lane"
 
-    browser_size = len(json.dumps(index, indent=2, sort_keys=True).encode("utf-8"))
+    browser_size = len(_catalog_browser_index_payload(index).encode("utf-8"))
     if browser_size > CATALOG_BROWSER_MAX_BYTES:
         return "docs/public/generated-registries/skills-catalog-browser-index.json exceeds 512 KiB"
     if full_index is not None:
@@ -404,13 +506,17 @@ def catalog_index_stale_reason(path: Path | None = None) -> str | None:
     existing = read_catalog_index(path)
     out = path or CATALOG_INDEX_PATH
     if existing is None:
-        return f"{out.relative_to(wagents.ROOT)} missing; run `uv run wagents docs generate --no-installed`"
+        return f"{_catalog_artifact_display_path(out)} missing; run `uv run wagents docs generate --no-installed`"
     if json.dumps(expected, indent=2, sort_keys=True) != json.dumps(existing, indent=2, sort_keys=True):
-        return f"{out.relative_to(wagents.ROOT)} is stale; run `uv run wagents docs generate --no-installed`"
-    return None
+        return f"{_catalog_artifact_display_path(out)} is stale; run `uv run wagents docs generate --no-installed`"
+    return catalog_browser_index_stale_reason(full_index=expected)
 
 
-def catalog_browser_index_stale_reason(path: Path | None = None, *, full_index: dict[str, Any] | None = None) -> str | None:
+def catalog_browser_index_stale_reason(
+    path: Path | None = None,
+    *,
+    full_index: dict[str, Any] | None = None,
+) -> str | None:
     """Return a remediation message when the committed browser index drifts."""
     expected_source = full_index or build_catalog_index_from_authoring()
     if expected_source is None:
@@ -419,9 +525,9 @@ def catalog_browser_index_stale_reason(path: Path | None = None, *, full_index: 
     existing = read_catalog_browser_index(path)
     out = path or CATALOG_BROWSER_INDEX_PATH
     if existing is None:
-        return f"{out.relative_to(wagents.ROOT)} missing; run `uv run wagents docs generate --no-installed`"
-    if json.dumps(expected, indent=2, sort_keys=True) != json.dumps(existing, indent=2, sort_keys=True):
-        return f"{out.relative_to(wagents.ROOT)} is stale; run `uv run wagents docs generate --no-installed`"
+        return f"{_catalog_artifact_display_path(out)} missing; run `uv run wagents docs generate --no-installed`"
+    if _catalog_browser_index_payload(expected) != _catalog_browser_index_payload(existing):
+        return f"{_catalog_artifact_display_path(out)} is stale; run `uv run wagents docs generate --no-installed`"
     invalid_reason = catalog_browser_index_contract_reason(existing, full_index=expected_source)
     if invalid_reason:
         return invalid_reason

@@ -194,6 +194,34 @@ def test_collect_docs_graph_snapshot_replaces_today_history_row(tmp_path, monkey
     }
 
 
+def test_collect_docs_graph_snapshot_drops_noncanonical_today_history_alias(tmp_path, monkeypatch):
+    current_latest = {"total_pages": 3, "total_internal_links": 4, "orphan_count": 0}
+    reports_json_dir = tmp_path / "public" / "generated-reports"
+    reports_json_dir.mkdir(parents=True)
+    (reports_json_dir / "docs-graph-snapshot.json").write_text(
+        json.dumps(
+            {
+                "latest": current_latest,
+                "history": [
+                    {"date": "20260706", "total_pages": 1, "total_internal_links": 1, "orphan_count": 1},
+                    {"date": "2026-W28-1", "total_pages": 2, "total_internal_links": 2, "orphan_count": 2},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(docs_reports, "REPORTS_JSON_DIR", reports_json_dir)
+    monkeypatch.setattr(docs_reports, "collect_site_graph_insights", lambda: current_latest)
+    monkeypatch.setattr(docs_reports, "_docs_graph_snapshot_today", lambda: "2026-07-06")
+
+    payload = docs_reports.collect_docs_graph_snapshot()
+
+    assert payload == {
+        "latest": current_latest,
+        "history": [{"date": "2026-07-06", "total_pages": 3, "total_internal_links": 4, "orphan_count": 0}],
+    }
+
+
 def test_reports_stale_reasons_detects_stale_docs_graph_snapshot_latest(tmp_path, monkeypatch):
     current_latest = {"total_pages": 2, "total_internal_links": 1, "orphan_count": 0}
     reports_dir, reports_json_dir = _prepare_graph_snapshot_stale_test(tmp_path, monkeypatch, current_latest)

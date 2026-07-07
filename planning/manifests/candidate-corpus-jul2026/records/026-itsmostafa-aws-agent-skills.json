@@ -10,8 +10,8 @@
     "agent",
     "skill"
   ],
-  "install_or_integration_decision": "reference_only",
-  "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+  "install_or_integration_decision": "merge_into_existing",
+  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
   "auth_required": false,
   "env_vars_or_credentials": [],
   "safety_notes": "No elevated keyword risk detected.",
@@ -131,7 +131,26 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [],
+    "catalog_matches": [
+      "docs/src/authoring/skills/api-gateway.mdx",
+      "docs/src/authoring/skills/bedrock.mdx",
+      "docs/src/authoring/skills/cloudformation.mdx",
+      "docs/src/authoring/skills/cloudwatch.mdx",
+      "docs/src/authoring/skills/cognito.mdx",
+      "docs/src/authoring/skills/dynamodb.mdx",
+      "docs/src/authoring/skills/ec2.mdx",
+      "docs/src/authoring/skills/ecs.mdx",
+      "docs/src/authoring/skills/eks.mdx",
+      "docs/src/authoring/skills/eventbridge.mdx",
+      "docs/src/authoring/skills/iam.mdx",
+      "docs/src/authoring/skills/lambda.mdx",
+      "docs/src/authoring/skills/rds.mdx",
+      "docs/src/authoring/skills/s3.mdx",
+      "docs/src/authoring/skills/secrets-manager.mdx",
+      "docs/src/authoring/skills/sns.mdx",
+      "docs/src/authoring/skills/sqs.mdx",
+      "docs/src/authoring/skills/step-functions.mdx"
+    ],
     "mcp_registry_match": false,
     "plugin_registry_match": false
   },
@@ -164,8 +183,8 @@
   ],
   "docs_steward_status": "packet-generated",
   "decision_packet": {
-    "decision": "reference_only",
-    "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates."
+    "decision": "merge_into_existing",
+    "reason": "Existing repo catalog or registry surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,

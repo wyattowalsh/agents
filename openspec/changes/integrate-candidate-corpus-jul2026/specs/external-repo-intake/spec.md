@@ -6,7 +6,8 @@
 
 The external repo intake lane SHALL create source, license, security,
 provenance, docs-steward, and conformance-review tasks without installing or
-promoting external assets by default.
+promoting external assets by default. A separate reviewed promotion overlay MAY
+make candidates installable only after target-specific gates pass.
 
 #### Scenario: External repo is marked adopt-candidate
 
@@ -35,13 +36,24 @@ promoting external assets by default.
 - **AND** generated docs and catalog surfaces SHALL remain source-of-truth
   driven.
 
-#### Scenario: Candidate catalog coverage is non-installable
+#### Scenario: Candidate catalog coverage is non-installable while terminal-gated
 
-- **GIVEN** a normalized candidate target is represented in the catalog
+- **GIVEN** a normalized candidate target remains terminal-gated after review
 - **WHEN** docs generation and skills sync preview run
 - **THEN** the catalog row SHALL publish no install command
 - **AND** the catalog row SHALL use a non-syncing state
 - **AND** skills sync preview SHALL not produce install commands for that row.
+
+#### Scenario: Candidate catalog coverage is promoted after review
+
+- **GIVEN** a normalized candidate target has one or more reviewed Skills CLI
+  selectors with source-list, license, security, attribution, auth, dedupe,
+  docs-steward, and validation evidence
+- **WHEN** the promotion overlay is applied
+- **THEN** installable selectors SHALL be represented as curated-external
+  catalog rows
+- **AND** the install command SHALL use the reviewed selector
+- **AND** local install evidence SHALL be recorded without committing secrets.
 
 ### Requirement: Candidate corpus promotion research packets are trust-gated
 
@@ -73,6 +85,15 @@ installable, executable, vendored, promoted, or repo-mutation eligible.
 - **AND** every blocked target SHALL include source-list, license, security,
   attribution, auth, docs-steward, and target-specific validation blockers
 - **AND** no blocked target SHALL contain an install command.
+
+#### Scenario: Promotion overlay completes reviewed installable rows
+
+- **GIVEN** promotion gates have passed for reviewed selectors
+- **WHEN** the overlay is applied
+- **THEN** the progress manifest SHALL mark the July 2026 corpus goal complete
+- **AND** every raw entry SHALL remain accounted for
+- **AND** every unique normalized target SHALL have a terminal decision
+- **AND** remaining non-installable rows SHALL have explicit terminal blockers.
 
 #### Scenario: Promotion waves assign targets without mutation
 

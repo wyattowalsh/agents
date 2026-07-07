@@ -9,8 +9,8 @@
   "artifact_types_found": [
     "CLI/tool"
   ],
-  "install_or_integration_decision": "reference_only",
-  "reason": "Executable candidate requires deeper package/script review before promotion.",
+  "install_or_integration_decision": "merge_into_existing",
+  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
   "auth_required": true,
   "env_vars_or_credentials": [
     "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -135,7 +135,51 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [],
+    "catalog_matches": [
+      "docs/src/authoring/skills/alliances.mdx",
+      "docs/src/authoring/skills/american-airlines.mdx",
+      "docs/src/authoring/skills/amex-travel.mdx",
+      "docs/src/authoring/skills/atlas-obscura.mdx",
+      "docs/src/authoring/skills/award-calendar.mdx",
+      "docs/src/authoring/skills/award-holds.mdx",
+      "docs/src/authoring/skills/award-sweet-spots.mdx",
+      "docs/src/authoring/skills/awardwallet.mdx",
+      "docs/src/authoring/skills/bilt.mdx",
+      "docs/src/authoring/skills/booking-guidance.mdx",
+      "docs/src/authoring/skills/cabin-codes.mdx",
+      "docs/src/authoring/skills/chase-travel.mdx",
+      "docs/src/authoring/skills/compare-flights.mdx",
+      "docs/src/authoring/skills/compare-hotels.mdx",
+      "docs/src/authoring/skills/deutsche-bahn.mdx",
+      "docs/src/authoring/skills/duffel.mdx",
+      "docs/src/authoring/skills/fallback-and-resilience.mdx",
+      "docs/src/authoring/skills/flight-search-strategy.mdx",
+      "docs/src/authoring/skills/google-flights.mdx",
+      "docs/src/authoring/skills/hotel-chains.mdx",
+      "docs/src/authoring/skills/ignav.mdx",
+      "docs/src/authoring/skills/lessons-learned.mdx",
+      "docs/src/authoring/skills/partner-awards.mdx",
+      "docs/src/authoring/skills/plan-trip.mdx",
+      "docs/src/authoring/skills/points-valuations.mdx",
+      "docs/src/authoring/skills/premium-hotels.mdx",
+      "docs/src/authoring/skills/rapidapi.mdx",
+      "docs/src/authoring/skills/round-the-world.mdx",
+      "docs/src/authoring/skills/scandinavia-transit.mdx",
+      "docs/src/authoring/skills/seatmaps.mdx",
+      "docs/src/authoring/skills/seats-aero.mdx",
+      "docs/src/authoring/skills/serpapi.mdx",
+      "docs/src/authoring/skills/southwest.mdx",
+      "docs/src/authoring/skills/status-match.mdx",
+      "docs/src/authoring/skills/stopovers.mdx",
+      "docs/src/authoring/skills/ticketsatwork.mdx",
+      "docs/src/authoring/skills/transfer-bonuses.mdx",
+      "docs/src/authoring/skills/transfer-partners.mdx",
+      "docs/src/authoring/skills/trip-calculator.mdx",
+      "docs/src/authoring/skills/trip-planner.mdx",
+      "docs/src/authoring/skills/tripadvisor.mdx",
+      "docs/src/authoring/skills/wheretocredit.mdx",
+      "docs/src/authoring/skills/wikipedia-airports.mdx"
+    ],
     "mcp_registry_match": false,
     "plugin_registry_match": false
   },
@@ -172,8 +216,8 @@
   ],
   "docs_steward_status": "packet-generated",
   "decision_packet": {
-    "decision": "reference_only",
-    "reason": "Executable candidate requires deeper package/script review before promotion."
+    "decision": "merge_into_existing",
+    "reason": "Existing repo catalog or registry surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,

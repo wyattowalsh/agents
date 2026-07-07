@@ -21,6 +21,7 @@ minimumReleaseAgeExclude:
   - '@radix-ui/react-tooltip@1.2.12'
   - starlight-base-path@0.2.0
   - starlight-changelogs@0.5.1
+  - starlight-versions@0.9.1
 
 patchedDependencies:
   starlight-site-graph@0.5.0: patches/starlight-site-graph@0.5.0.patch

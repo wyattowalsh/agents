@@ -9,8 +9,8 @@
   "artifact_types_found": [
     "skill"
   ],
-  "install_or_integration_decision": "reference_only",
-  "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+  "install_or_integration_decision": "merge_into_existing",
+  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
   "auth_required": false,
   "env_vars_or_credentials": [],
   "safety_notes": "No elevated keyword risk detected.",
@@ -133,7 +133,47 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [],
+    "catalog_matches": [
+      "docs/src/authoring/skills/thinking-archetypes.mdx",
+      "docs/src/authoring/skills/thinking-bayesian.mdx",
+      "docs/src/authoring/skills/thinking-bounded-rationality.mdx",
+      "docs/src/authoring/skills/thinking-circle-of-competence.mdx",
+      "docs/src/authoring/skills/thinking-cynefin.mdx",
+      "docs/src/authoring/skills/thinking-debiasing.mdx",
+      "docs/src/authoring/skills/thinking-dual-process.mdx",
+      "docs/src/authoring/skills/thinking-effectuation.mdx",
+      "docs/src/authoring/skills/thinking-feedback-loops.mdx",
+      "docs/src/authoring/skills/thinking-fermi-estimation.mdx",
+      "docs/src/authoring/skills/thinking-first-principles.mdx",
+      "docs/src/authoring/skills/thinking-five-whys-plus.mdx",
+      "docs/src/authoring/skills/thinking-inversion.mdx",
+      "docs/src/authoring/skills/thinking-jobs-to-be-done.mdx",
+      "docs/src/authoring/skills/thinking-kepner-tregoe.mdx",
+      "docs/src/authoring/skills/thinking-leverage-points.mdx",
+      "docs/src/authoring/skills/thinking-lindy-effect.mdx",
+      "docs/src/authoring/skills/thinking-map-territory.mdx",
+      "docs/src/authoring/skills/thinking-margin-of-safety.mdx",
+      "docs/src/authoring/skills/thinking-model-combination.mdx",
+      "docs/src/authoring/skills/thinking-model-router.mdx",
+      "docs/src/authoring/skills/thinking-model-selection.mdx",
+      "docs/src/authoring/skills/thinking-occams-razor.mdx",
+      "docs/src/authoring/skills/thinking-ooda.mdx",
+      "docs/src/authoring/skills/thinking-opportunity-cost.mdx",
+      "docs/src/authoring/skills/thinking-pre-mortem.mdx",
+      "docs/src/authoring/skills/thinking-probabilistic.mdx",
+      "docs/src/authoring/skills/thinking-red-team.mdx",
+      "docs/src/authoring/skills/thinking-regret-minimization.mdx",
+      "docs/src/authoring/skills/thinking-reversibility.mdx",
+      "docs/src/authoring/skills/thinking-scientific-method.mdx",
+      "docs/src/authoring/skills/thinking-second-order.mdx",
+      "docs/src/authoring/skills/thinking-socratic.mdx",
+      "docs/src/authoring/skills/thinking-steel-manning.mdx",
+      "docs/src/authoring/skills/thinking-systems.mdx",
+      "docs/src/authoring/skills/thinking-theory-of-constraints.mdx",
+      "docs/src/authoring/skills/thinking-thought-experiment.mdx",
+      "docs/src/authoring/skills/thinking-triz.mdx",
+      "docs/src/authoring/skills/thinking-via-negativa.mdx"
+    ],
     "mcp_registry_match": false,
     "plugin_registry_match": false
   },
@@ -166,8 +206,8 @@
   ],
   "docs_steward_status": "packet-generated",
   "decision_packet": {
-    "decision": "reference_only",
-    "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates."
+    "decision": "merge_into_existing",
+    "reason": "Existing repo catalog or registry surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,

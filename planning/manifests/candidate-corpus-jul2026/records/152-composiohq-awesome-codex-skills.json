@@ -140,7 +140,10 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [],
+    "catalog_matches": [
+      "docs/src/authoring/skills/canvas-design.mdx",
+      "docs/src/authoring/skills/slack-gif-creator.mdx"
+    ],
     "mcp_registry_match": false,
     "plugin_registry_match": false
   },

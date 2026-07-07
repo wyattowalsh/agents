@@ -7,13 +7,29 @@
     "externalSkillIndex": {
       "type": "array",
       "items": { "$ref": "#/$defs/browserSkillRow" }
+    },
+    "tagFacetIndex": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "platformFacetIndex": {
+      "type": "array",
+      "items": { "type": "string" }
     }
   },
   "additionalProperties": false,
   "$defs": {
     "browserSkillRow": {
       "type": "object",
-      "required": ["name", "description", "href", "lane", "sourceType"],
+      "required": [
+        "name",
+        "description",
+        "href",
+        "lane",
+        "sourceType",
+        "tagFacetIds",
+        "platformFacetIds"
+      ],
       "properties": {
         "name": { "type": "string", "minLength": 1 },
         "description": { "type": "string" },
@@ -24,7 +40,9 @@
         "lane": {
           "enum": ["install-now", "inspect", "avoid"]
         },
-        "sourceType": { "type": "string" }
+        "sourceType": { "type": "string" },
+        "tagFacetIds": { "type": "string" },
+        "platformFacetIds": { "type": "string" }
       },
       "additionalProperties": false
     }

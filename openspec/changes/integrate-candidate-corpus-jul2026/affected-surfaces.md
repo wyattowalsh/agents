@@ -36,12 +36,20 @@
 - `docs/src/content/docs/skills/catalog/index.mdx`
 - `README.md`
 
-## Not Changed In This Intake Wave
+## Promotion Overlay Surfaces
 
-- `skills/`
-- `config/mcp-registry.json`
-- `config/plugin-extension-registry.json`
-- installable catalog promotion state
-- live harness install state
-- default MCPHub groups
-- vendored third-party candidate content
+- `docs/src/authoring/skills/*.mdx` includes promoted installable rows plus
+  terminal non-syncing reference rows.
+- `planning/manifests/candidate-corpus-jul2026/promotion-overrides.json`
+  records reviewed install commands, selectors, attribution, and local install
+  evidence.
+- `planning/manifests/candidate-corpus-jul2026/applied-promotion-overrides.json`
+  records the applied overlay rows.
+- `planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json`
+  records 1038 installable rows and 175 terminal reference rows.
+- `config/mcp-registry.json`, `mcp.json`, and
+  `mcp/mcphub/mcp_settings.json` include disabled-by-default MCP/tool entries
+  with placeholder-only auth.
+- No third-party source trees were vendored into `skills/`.
+- Default MCPHub groups remain credential-safe; credentialed services are not
+  auto-enabled.
