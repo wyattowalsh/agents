@@ -506,7 +506,7 @@ def _summarize_report_payload(slug: str, payload: Any) -> str:
     if slug == "site-graph-insights":
         return f"{payload.get('orphan_count', 0)} orphans"
     if slug == "docs-link-check":
-        return f"{payload.get('broken_link_count', 0)} broken links"
+        return f"{payload.get('broken_count', 0)} broken links"
     if slug == "docs-graph-snapshot":
         history = payload.get("history") or []
         return f"{len(history)} snapshots"
@@ -646,6 +646,59 @@ def write_reports_pages() -> None:
         write_reports_index_page()
 
 
+def _docs_graph_snapshot_stale_reasons(spec: ReportSpec, mdx_path: Path, json_path: Path) -> list[str]:
+    reasons: list[str] = []
+    if not mdx_path.exists() or not json_path.exists():
+        reasons.append(
+            "docs/src/content/docs/reports/docs-graph-snapshot.mdx or its JSON payload is missing; "
+            "run `uv run wagents docs generate --no-installed`"
+        )
+        return reasons
+
+    try:
+        payload = json.loads(json_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        reasons.append(
+            "docs/public/generated-reports/docs-graph-snapshot.json is stale; "
+            "run `uv run wagents docs generate --no-installed`"
+        )
+        return reasons
+
+    if not isinstance(payload, dict):
+        reasons.append(
+            "docs/public/generated-reports/docs-graph-snapshot.json is stale; "
+            "run `uv run wagents docs generate --no-installed`"
+        )
+        return reasons
+
+    expected_latest = collect_site_graph_insights()
+    if payload.get("latest") != expected_latest:
+        reasons.append(
+            "docs/public/generated-reports/docs-graph-snapshot.json is stale; "
+            "run `uv run wagents docs generate --no-installed`"
+        )
+
+    try:
+        expected_mdx = spec.render_mdx(payload)
+    except (KeyError, TypeError):
+        reasons.append(
+            "docs/public/generated-reports/docs-graph-snapshot.json is stale; "
+            "run `uv run wagents docs generate --no-installed`"
+        )
+        return reasons
+
+    try:
+        actual_mdx = mdx_path.read_text(encoding="utf-8")
+    except OSError:
+        actual_mdx = None
+    if actual_mdx != expected_mdx:
+        reasons.append(
+            "docs/src/content/docs/reports/docs-graph-snapshot.mdx is stale; "
+            "run `uv run wagents docs generate --no-installed`"
+        )
+    return reasons
+
+
 def reports_stale_reasons() -> list[str]:
     """Return remediation messages for any report whose on-disk output is stale."""
     reasons: list[str] = []
@@ -653,6 +706,9 @@ def reports_stale_reasons() -> list[str]:
         mdx_path = REPORTS_CONTENT_DIR / f"{spec.slug}.mdx"
         json_path = REPORTS_JSON_DIR / f"{spec.slug}.json"
         if spec.historical:
+            if spec.slug == "docs-graph-snapshot":
+                reasons.extend(_docs_graph_snapshot_stale_reasons(spec, mdx_path, json_path))
+                continue
             if not mdx_path.exists() or not json_path.exists():
                 reasons.append(
                     f"docs/src/content/docs/reports/{spec.slug}.mdx or its JSON payload is missing; "
