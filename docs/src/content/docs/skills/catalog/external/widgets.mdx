@@ -1,0 +1,173 @@
+---
+title: "widgets"
+description: "Writes and reviews SwiftUI WidgetKit code for Home Screen, Lock Screen, StandBy, and watch widgets - timeline providers and reload policies, StaticConfiguration / AppIntentConfiguration,…"
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="widgets"
+  description="Writes and reviews SwiftUI WidgetKit code for Home Screen, Lock Screen, StandBy, and watch widgets - timeline providers and reload policies, StaticConfiguration / AppIntentConfiguration,…"
+  installCommand={`npx skills add n0an/Widgets-Agent-Skill --skill widgets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/widgets"
+  badges={[{ text: "widgets", variant: "note" }, { text: "314 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/widgets.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add n0an/Widgets-Agent-Skill --skill widgets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Widget work must account for platform availability, signing, privacy, and App Store review constraints.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | 7ada6aeb6b5d |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row. |
+| Credential behavior | No credentials are required by the catalog row. |
+| Network access | No network behavior is required unless app code performs it. |
+| File access | Reads and edits local Apple platform projects when requested. |
+| Live-action risk | Widget work must account for platform availability, signing, privacy, and App Store review constraints. |
+| Risk category | apple-widget-review |
+| Dedupe notes | Raw indexes covered: 89 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/widgets.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `n0an/Widgets-Agent-Skill` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `n0an/Widgets-Agent-Skill` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `widgets` |
+| License | MIT |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "widgets"
+description: "Writes and reviews SwiftUI WidgetKit code for Home Screen, Lock Screen, StandBy, and watch widgets - timeline providers and reload policies, StaticConfiguration / AppIntentConfiguration, user-configurable widgets, widget families and sizing, accented/tinted rendering modes, interactive widgets and Controls (Control Center), Live Activities and the Dynamic Island, Smart Stack relevance, push-updated widgets, and visionOS / CarPlay / macOS surfaces. Use when building a widget extension, a timeline provider, a Lock Screen or accessory widget, a watch complication, an interactive button/toggle widget, a Control Center control, a Live Activity, or fixing a widget that won't update or render correctly in tinted mode."
+title: "Widgets"
+source_kind: "curated-external"
+source: "n0an/Widgets-Agent-Skill"
+install_source: "n0an/Widgets-Agent-Skill"
+install_command: "npx skills add n0an/Widgets-Agent-Skill --skill widgets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "widgets"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/n0an/Widgets-Agent-Skill"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "7ada6aeb6b5d"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "No credentials are required by the catalog row."
+network_access: "No network behavior is required unless app code performs it."
+file_access: "Reads and edits local Apple platform projects when requested."
+live_action_risk: "Widget work must account for platform availability, signing, privacy, and App Store review constraints."
+risk_category: "apple-widget-review"
+dedupe_notes: "Raw indexes covered: 89"
+notes: "Writes and reviews SwiftUI WidgetKit code for Home Screen, Lock Screen, StandBy, and watch widgets - timeline providers and reload policies, StaticConfiguration / AppIntentConfiguration, user-configurable widgets, widget families and sizing, accented/tinted rendering modes, interactive widgets and Controls (Control Center), Live Activities and the Dynamic Island, Smart Stack relevance, push-updated widgets, and visionOS / CarPlay / macOS surfaces. Use when building a widget extension, a timeline provider, a Lock Screen or accessory widget, a watch complication, an interactive button/toggle widget, a Control Center control, a Live Activity, or fixing a widget that won't update or render correctly in tinted mode."
+risk_notes: "Widget work must account for platform availability, signing, privacy, and App Store review constraints."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, upstream license, selector behavior, duplicate triggers, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found selector `widgets` in `n0an/Widgets-Agent-Skill`. Upstream license `MIT` and audited HEAD `7ada6aeb6b5d` were captured before promotion. Local Skills CLI installed `widgets` into supported harness roots. Skills CLI output reported Safe, Socket 0 alerts, Snyk Low Risk."
+---
+
+# Widgets
+
+This row promotes `n0an/Widgets-Agent-Skill` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 89
+- Normalized URL: [https://github.com/n0an/Widgets-Agent-Skill](https://github.com/n0an/Widgets-Agent-Skill)
+- Catalog skill id: `widgets`
+- Upstream install selector: `widgets`
+- Install command: `npx skills add n0an/Widgets-Agent-Skill --skill widgets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `7ada6aeb6b5d`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add n0an/Widgets-Agent-Skill --list`
+- Executed command: `npx --yes skills add n0an/Widgets-Agent-Skill --skill widgets --dry-run`
+- Executed command: `npx --yes skills add n0an/Widgets-Agent-Skill --skill widgets -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Installed path: `~/.agents/skills/widgets`
+- Installed path: `~/.claude/skills/widgets`
+- Installed path: `~/.config/crush/skills/widgets`
+- Install evidence note: Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required by the catalog row.
+- Network access: No network behavior is required unless app code performs it.
+- File access: Reads and edits local Apple platform projects when requested.
+- Live action risk: Widget work must account for platform availability, signing, privacy, and App Store review constraints.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

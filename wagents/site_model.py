@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+import shlex
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
@@ -30,11 +31,20 @@ def _as_str_list(value: object) -> list[str]:
 
 def use_command_for_catalog_row(install_command: str, name: str) -> str:
     """Slash skill vs CLI tool invocation label for catalog indexes."""
-    cmd = (install_command or "").strip().lower()
+    command = (install_command or "").strip()
+    cmd = command.lower()
     if not cmd:
         return ""
     if cmd.startswith("pip install ") or cmd.startswith("pipx install "):
         return "apm --help"
+    try:
+        parts = shlex.split(command)
+    except ValueError:
+        parts = []
+    if "--skill" in parts:
+        index = parts.index("--skill")
+        if index + 1 < len(parts) and parts[index + 1]:
+            return f"/{parts[index + 1]}"
     return f"/{name}"
 
 

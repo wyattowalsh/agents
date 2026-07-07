@@ -1,0 +1,74 @@
+---
+name: "stop-slop"
+description: "Remove AI writing patterns from prose. Use when drafting, editing, or reviewing text to eliminate predictable AI tells."
+title: "Stop Slop"
+source_kind: "curated-external"
+source: "hardikpandya/stop-slop"
+install_source: "hardikpandya/stop-slop"
+install_command: "npx skills add hardikpandya/stop-slop --skill stop-slop -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "stop-slop"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/hardikpandya/stop-slop"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "8da1f030185b"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "No credentials are required by the catalog row."
+network_access: "No network behavior is required by default."
+file_access: "Reads project or prose context and writes requested edits/reports."
+live_action_risk: "Preserve user intent, avoid overbroad rewrites, and keep private context out of generated artifacts."
+risk_category: "writing-codebase-review"
+dedupe_notes: "Raw indexes covered: 117"
+notes: "Remove AI writing patterns from prose. Use when drafting, editing, or reviewing text to eliminate predictable AI tells."
+risk_notes: "Preserve user intent, avoid overbroad rewrites, and keep private context out of generated artifacts."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, upstream license, selector behavior, duplicate triggers, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found selector `stop-slop` in `hardikpandya/stop-slop`. Upstream license `MIT` and audited HEAD `8da1f030185b` were captured before promotion. Local Skills CLI installed `stop-slop` into supported harness roots. Skills CLI output reported Safe, Socket 0 alerts, Snyk Low Risk unless otherwise noted."
+---
+
+# Stop Slop
+
+This row promotes `hardikpandya/stop-slop` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 117
+- Normalized URL: [https://github.com/hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop)
+- Catalog skill id: `stop-slop`
+- Upstream install selector: `stop-slop`
+- Install command: `npx skills add hardikpandya/stop-slop --skill stop-slop -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `8da1f030185b`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add hardikpandya/stop-slop --list`
+- Executed command: `npx --yes skills add hardikpandya/stop-slop --skill stop-slop --dry-run`
+- Executed command: `npx --yes skills add hardikpandya/stop-slop --skill stop-slop -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Installed path: `~/.agents/skills/stop-slop`
+- Installed path: `~/.claude/skills/stop-slop`
+- Installed path: `~/.config/crush/skills/stop-slop`
+- Install evidence note: Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required by the catalog row.
+- Network access: No network behavior is required by default.
+- File access: Reads project or prose context and writes requested edits/reports.
+- Live action risk: Preserve user intent, avoid overbroad rewrites, and keep private context out of generated artifacts.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.

@@ -1,0 +1,173 @@
+---
+title: "app-store-preflight-skills"
+description: "Scan an iOS/macOS Xcode project for common App Store rejection patterns before submission."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="app-store-preflight-skills"
+  description="Scan an iOS/macOS Xcode project for common App Store rejection patterns before submission."
+  installCommand={`npx skills add truongduy2611/app-store-preflight-skills --skill app-store-preflight-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/app-store-preflight-skills"
+  badges={[{ text: "app-store-preflight-skills", variant: "note" }, { text: "322 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/app-store-preflight-skills.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add truongduy2611/app-store-preflight-skills --skill app-store-preflight-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Never submit, sign, upload, or mutate App Store Connect state without explicit confirmation.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | e52e007036fb |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row. |
+| Credential behavior | No App Store Connect credentials are stored. Use placeholder env vars only for examples. |
+| Network access | Apple metadata/API inspection remains explicit and must respect Apple terms. |
+| File access | Reads Xcode projects and related metadata when explicitly invoked. |
+| Live-action risk | Never submit, sign, upload, or mutate App Store Connect state without explicit confirmation. |
+| Risk category | apple-app-store-compliance-review |
+| Dedupe notes | Raw indexes covered: 19 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/app-store-preflight-skills.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `truongduy2611/app-store-preflight-skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `truongduy2611/app-store-preflight-skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `app-store-preflight-skills` |
+| License | MIT |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "app-store-preflight-skills"
+description: "Scan an iOS/macOS Xcode project for common App Store rejection patterns before submission. Use when preparing an app for App Store review, after receiving a rejection from Apple, or when auditing metadata, subscriptions, privacy manifests, entitlements, or design compliance. Integrates with the asc CLI for metadata inspection."
+title: "App Store Preflight Skills"
+source_kind: "curated-external"
+source: "truongduy2611/app-store-preflight-skills"
+install_source: "truongduy2611/app-store-preflight-skills"
+install_command: "npx skills add truongduy2611/app-store-preflight-skills --skill app-store-preflight-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "app-store-preflight-skills"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/truongduy2611/app-store-preflight-skills"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "e52e007036fb"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "No App Store Connect credentials are stored. Use placeholder env vars only for examples."
+network_access: "Apple metadata/API inspection remains explicit and must respect Apple terms."
+file_access: "Reads Xcode projects and related metadata when explicitly invoked."
+live_action_risk: "Never submit, sign, upload, or mutate App Store Connect state without explicit confirmation."
+risk_category: "apple-app-store-compliance-review"
+dedupe_notes: "Raw indexes covered: 19"
+notes: "Scan an iOS/macOS Xcode project for common App Store rejection patterns before submission. Use when preparing an app for App Store review, after receiving a rejection from Apple, or when auditing metadata, subscriptions, privacy manifests, entitlements, or design compliance. Integrates with the asc CLI for metadata inspection."
+risk_notes: "Never submit, sign, upload, or mutate App Store Connect state without explicit confirmation."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, upstream license, selector behavior, duplicate triggers, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found selector `app-store-preflight-skills` in `truongduy2611/app-store-preflight-skills`. Upstream license `MIT` and audited HEAD `e52e007036fb` were captured before promotion. Local Skills CLI installed `app-store-preflight-skills` into supported harness roots. Skills CLI output reported Safe, Socket 1 alert, Snyk Med Risk."
+---
+
+# App Store Preflight Skills
+
+This row promotes `truongduy2611/app-store-preflight-skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 19
+- Normalized URL: [https://github.com/truongduy2611/app-store-preflight-skills](https://github.com/truongduy2611/app-store-preflight-skills)
+- Catalog skill id: `app-store-preflight-skills`
+- Upstream install selector: `app-store-preflight-skills`
+- Install command: `npx skills add truongduy2611/app-store-preflight-skills --skill app-store-preflight-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `e52e007036fb`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add truongduy2611/app-store-preflight-skills --list`
+- Executed command: `npx --yes skills add truongduy2611/app-store-preflight-skills --skill app-store-preflight-skills --dry-run`
+- Executed command: `npx --yes skills add truongduy2611/app-store-preflight-skills --skill app-store-preflight-skills -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Installed path: `~/.agents/skills/app-store-preflight-skills`
+- Installed path: `~/.claude/skills/app-store-preflight-skills`
+- Installed path: `~/.config/crush/skills/app-store-preflight-skills`
+- Install evidence note: Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No App Store Connect credentials are stored. Use placeholder env vars only for examples.
+- Network access: Apple metadata/API inspection remains explicit and must respect Apple terms.
+- File access: Reads Xcode projects and related metadata when explicitly invoked.
+- Live action risk: Never submit, sign, upload, or mutate App Store Connect state without explicit confirmation.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

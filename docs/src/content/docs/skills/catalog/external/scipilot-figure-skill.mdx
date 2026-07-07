@@ -1,0 +1,173 @@
+---
+title: "scipilot-figure-skill"
+description: "SciPilot Skills 家族成员，负责科研数据可视化——但定位不是&quot;画图工具&quot;， 而是&quot;可视化顾问&quot;。先做数据剖析（列类型/样本量/分布/异常值/分组结构/相关性）， 再结合用户的论证目标推荐图型，主动拦截科研画图的经典错误（小样本画均值柱掩盖 分布、双 Y 轴、饼图、Y 轴不当截断、rainbow 色图、把分类点连成折线等），最后 产出 Nature / Science / IEEE…"
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="scipilot-figure-skill"
+  description="SciPilot Skills 家族成员，负责科研数据可视化——但定位不是&quot;画图工具&quot;， 而是&quot;可视化顾问&quot;。先做数据剖析（列类型/样本量/分布/异常值/分组结构/相关性）， 再结合用户的论证目标推荐图型，主动拦截科研画图的经典错误（小样本画均值柱掩盖 分布、双 Y 轴、饼图、Y 轴不当截断、rainbow 色图、把分类点连成折线等），最后 产出 Nature / Science / IEEE…"
+  installCommand={`npx skills add Haojae/scipilot-figure-skill --skill scipilot-figure-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/scipilot-figure-skill"
+  badges={[{ text: "scipilot-figure-skill", variant: "note" }, { text: "310 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/scipilot-figure-skill.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add Haojae/scipilot-figure-skill --skill scipilot-figure-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Preserve source citations, confidence labels, and reproducibility notes.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | 43098ddb9e6a |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row. |
+| Credential behavior | No credentials are required unless the user separately provides research tools. |
+| Network access | Any web/API lookup remains explicit and citation-backed. |
+| File access | Reads project or research context and writes requested artifacts. |
+| Live-action risk | Preserve source citations, confidence labels, and reproducibility notes. |
+| Risk category | research-evidence-review |
+| Dedupe notes | Raw indexes covered: 34 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/scipilot-figure-skill.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `Haojae/scipilot-figure-skill` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `Haojae/scipilot-figure-skill` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `scipilot-figure-skill` |
+| License | MIT |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "scipilot-figure-skill"
+description: "SciPilot Skills 家族成员，负责科研数据可视化——但定位不是\"画图工具\"， 而是\"可视化顾问\"。先做数据剖析（列类型/样本量/分布/异常值/分组结构/相关性）， 再结合用户的论证目标推荐图型，主动拦截科研画图的经典错误（小样本画均值柱掩盖 分布、双 Y 轴、饼图、Y 轴不当截断、rainbow 色图、把分类点连成折线等），最后 产出 Nature / Science / IEEE / Elsevier / PNAS / 中文核心期刊级别的成图。 覆盖纯数据图：折线、柱状、散点、箱线 / 小提琴、热力图、误差棒、分布图（直方 图 / KDE）、相关性矩阵 / 散点矩阵、多面板组合。技术栈 matplotlib + seaborn + SciencePlots（静态）+ plotly（交互）。中英文双语，中文模式自动配置 Noto Sans CJK / Source Han Sans / SimHei 并修复负号方框，支持中文期刊\"宋体正文 + Times New Roman 数字\"混排。默认色盲安全配色 + 冗余编码 + 灰度预览。出图后做 \"视觉自检闭环\"：渲染 PNG 预览→程序自检缺字/文字裁切/刻度重叠→AI 读图复核遮盖 与子图对齐→回改重渲，直到通过。 当用户的任务涉及以下任何情况时主动触发：论文配图、科研画图、数据可视化、 不知道用什么图、怎么展示数据、用什么图好、期刊投稿图、figure、出版级图表、 matplotlib、seaborn、plotly、误差棒、显著性标注、色盲安全配色、矢量图导出、 中文论文图表、多面板。**即使用户只是给一批数据问\"这个怎么画\"或\"用什么图 好\"，也应使用本技能——本技能首要能力是\"判断该用什么图\"，其次才是绘制。** 不做示意图、流程图、架构图。"
+title: "Scipilot Figure Skill"
+source_kind: "curated-external"
+source: "Haojae/scipilot-figure-skill"
+install_source: "Haojae/scipilot-figure-skill"
+install_command: "npx skills add Haojae/scipilot-figure-skill --skill scipilot-figure-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "scipilot-figure-skill"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/Haojae/scipilot-figure-skill"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "43098ddb9e6a"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "No credentials are required unless the user separately provides research tools."
+network_access: "Any web/API lookup remains explicit and citation-backed."
+file_access: "Reads project or research context and writes requested artifacts."
+live_action_risk: "Preserve source citations, confidence labels, and reproducibility notes."
+risk_category: "research-evidence-review"
+dedupe_notes: "Raw indexes covered: 34"
+notes: "SciPilot Skills 家族成员，负责科研数据可视化——但定位不是\"画图工具\"， 而是\"可视化顾问\"。先做数据剖析（列类型/样本量/分布/异常值/分组结构/相关性）， 再结合用户的论证目标推荐图型，主动拦截科研画图的经典错误（小样本画均值柱掩盖 分布、双 Y 轴、饼图、Y 轴不当截断、rainbow 色图、把分类点连成折线等），最后 产出 Nature / Science / IEEE / Elsevier / PNAS / 中文核心期刊级别的成图。 覆盖纯数据图：折线、柱状、散点、箱线 / 小提琴、热力图、误差棒、分布图（直方 图 / KDE）、相关性矩阵 / 散点矩阵、多面板组合。技术栈 matplotlib + seaborn + SciencePlots（静态）+ plotly（交互）。中英文双语，中文模式自动配置 Noto Sans CJK / Source Han Sans / SimHei 并修复负号方框，支持中文期刊\"宋体正文 + Times New Roman 数字\"混排。默认色盲安全配色 + 冗余编码 + 灰度预览。出图后做 \"视觉自检闭环\"：渲染 PNG 预览→程序自检缺字/文字裁切/刻度重叠→AI 读图复核遮盖 与子图对齐→回改重渲，直到通过。 当用户的任务涉及以下任何情况时主动触发：论文配图、科研画图、数据可视化、 不知道用什么图、怎么展示数据、用什么图好、期刊投稿图、figure、出版级图表、 matplotlib、seaborn、plotly、误差棒、显著性标注、色盲安全配色、矢量图导出、 中文论文图表、多面板。**即使用户只是给一批数据问\"这个怎么画\"或\"用什么图 好\"，也应使用本技能——本技能首要能力是\"判断该用什么图\"，其次才是绘制。** 不做示意图、流程图、架构图。"
+risk_notes: "Preserve source citations, confidence labels, and reproducibility notes."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, upstream license, selector behavior, duplicate triggers, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found selector `scipilot-figure-skill` in `Haojae/scipilot-figure-skill`. Upstream license `MIT` and audited HEAD `43098ddb9e6a` were captured before promotion. Local Skills CLI installed `scipilot-figure-skill` into supported harness roots. Skills CLI output was reviewed for this selector."
+---
+
+# Scipilot Figure Skill
+
+This row promotes `Haojae/scipilot-figure-skill` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 34
+- Normalized URL: [https://github.com/Haojae/scipilot-figure-skill](https://github.com/Haojae/scipilot-figure-skill)
+- Catalog skill id: `scipilot-figure-skill`
+- Upstream install selector: `scipilot-figure-skill`
+- Install command: `npx skills add Haojae/scipilot-figure-skill --skill scipilot-figure-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `43098ddb9e6a`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add Haojae/scipilot-figure-skill --list`
+- Executed command: `npx --yes skills add Haojae/scipilot-figure-skill --skill scipilot-figure-skill --dry-run`
+- Executed command: `npx --yes skills add Haojae/scipilot-figure-skill --skill scipilot-figure-skill -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Installed path: `~/.agents/skills/scipilot-figure-skill`
+- Installed path: `~/.claude/skills/scipilot-figure-skill`
+- Installed path: `~/.config/crush/skills/scipilot-figure-skill`
+- Install evidence note: Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required unless the user separately provides research tools.
+- Network access: Any web/API lookup remains explicit and citation-backed.
+- File access: Reads project or research context and writes requested artifacts.
+- Live action risk: Preserve source citations, confidence labels, and reproducibility notes.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

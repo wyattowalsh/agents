@@ -64,13 +64,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for Affitor/affiliate-skills.",
-      "href": "/skills/catalog/external/candidate-corpus-057-affiliate-skills/",
-      "lane": "avoid",
-      "name": "candidate-corpus-057-affiliate-skills",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for AgriciDaniel/claude-seo.",
       "href": "/skills/catalog/external/candidate-corpus-114-claude-seo/",
       "lane": "avoid",
@@ -103,13 +96,6 @@
       "href": "/skills/catalog/external/candidate-corpus-169-codex-seo/",
       "lane": "avoid",
       "name": "candidate-corpus-169-codex-seo",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for Bhanunamikaze/Agentic-SEO-Skill.",
-      "href": "/skills/catalog/external/candidate-corpus-045-agentic-seo-skill/",
-      "lane": "avoid",
-      "name": "candidate-corpus-045-agentic-seo-skill",
       "sourceType": "curated-external"
     },
     {
@@ -288,13 +274,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for Haojae/scipilot-figure-skill.",
-      "href": "/skills/catalog/external/candidate-corpus-034-scipilot-figure-skill/",
-      "lane": "avoid",
-      "name": "candidate-corpus-034-scipilot-figure-skill",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for Imbad0202/academic-research-skills-codex.",
       "href": "/skills/catalog/external/candidate-corpus-109-academic-research-skills-codex/",
       "lane": "avoid",
@@ -313,13 +292,6 @@
       "href": "/skills/catalog/external/candidate-corpus-008-transitions-dev/",
       "lane": "avoid",
       "name": "candidate-corpus-008-transitions-dev",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for JeffLi1993/seo-audit-skill.",
-      "href": "/skills/catalog/external/candidate-corpus-054-seo-audit-skill/",
-      "lane": "avoid",
-      "name": "candidate-corpus-054-seo-audit-skill",
       "sourceType": "curated-external"
     },
     {
@@ -372,13 +344,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for Nutlope/hallmark.",
-      "href": "/skills/catalog/external/candidate-corpus-107-hallmark/",
-      "lane": "avoid",
-      "name": "candidate-corpus-107-hallmark",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for Octane0411/opencode-plugin-openspec.",
       "href": "/skills/catalog/external/candidate-corpus-181-opencode-plugin-openspec/",
       "lane": "avoid",
@@ -400,13 +365,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for PleasePrompto/notebooklm-skill.",
-      "href": "/skills/catalog/external/candidate-corpus-111-notebooklm-skill/",
-      "lane": "avoid",
-      "name": "candidate-corpus-111-notebooklm-skill",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for RKiding/Awesome-finance-skills.",
       "href": "/skills/catalog/external/candidate-corpus-099-awesome-finance-skills/",
       "lane": "avoid",
@@ -418,20 +376,6 @@
       "href": "/skills/catalog/external/candidate-corpus-195-codex-rg-guard/",
       "lane": "avoid",
       "name": "candidate-corpus-195-codex-rg-guard",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for SharpAI/DeepCamera.",
-      "href": "/skills/catalog/external/candidate-corpus-102-deepcamera/",
-      "lane": "avoid",
-      "name": "candidate-corpus-102-deepcamera",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for TanStack/cli.",
-      "href": "/skills/catalog/external/candidate-corpus-017-cli/",
-      "lane": "avoid",
-      "name": "candidate-corpus-017-cli",
       "sourceType": "curated-external"
     },
     {
@@ -467,13 +411,6 @@
       "href": "/skills/catalog/external/candidate-corpus-206-research-units-pipeline-skills/",
       "lane": "avoid",
       "name": "candidate-corpus-206-research-units-pipeline-skills",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for Weizhena/Deep-Research-skills.",
-      "href": "/skills/catalog/external/candidate-corpus-014-deep-research-skills/",
-      "lane": "avoid",
-      "name": "candidate-corpus-014-deep-research-skills",
       "sourceType": "curated-external"
     },
     {
@@ -516,13 +453,6 @@
       "href": "/skills/catalog/external/candidate-corpus-033-claude-skills-llm-council/",
       "lane": "avoid",
       "name": "candidate-corpus-033-claude-skills-llm-council",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for andrewgleave/skills/writing-for-interfaces.",
-      "href": "/skills/catalog/external/candidate-corpus-088-writing-for-interfaces/",
-      "lane": "avoid",
-      "name": "candidate-corpus-088-writing-for-interfaces",
       "sourceType": "curated-external"
     },
     {
@@ -589,13 +519,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for better-auth/better-icons.",
-      "href": "/skills/catalog/external/candidate-corpus-025-better-icons/",
-      "lane": "avoid",
-      "name": "candidate-corpus-025-better-icons",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for borski/travel-hacking-toolkit.",
       "href": "/skills/catalog/external/candidate-corpus-059-travel-hacking-toolkit/",
       "lane": "avoid",
@@ -614,13 +537,6 @@
       "href": "/skills/catalog/external/coleam00-excalidraw-diagram-skill-all/",
       "lane": "avoid",
       "name": "coleam00-excalidraw-diagram-skill-all",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for conorluddy/ios-simulator-skill.",
-      "href": "/skills/catalog/external/candidate-corpus-022-ios-simulator-skill/",
-      "lane": "avoid",
-      "name": "candidate-corpus-022-ios-simulator-skill",
       "sourceType": "curated-external"
     },
     {
@@ -715,13 +631,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for eugeniughelbur/obsidian-second-brain.",
-      "href": "/skills/catalog/external/candidate-corpus-104-obsidian-second-brain/",
-      "lane": "avoid",
-      "name": "candidate-corpus-104-obsidian-second-brain",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for fastknifes/openflow.",
       "href": "/skills/catalog/external/candidate-corpus-179-openflow/",
       "lane": "avoid",
@@ -740,13 +649,6 @@
       "href": "/skills/catalog/external/firecrawl-cli-all/",
       "lane": "avoid",
       "name": "firecrawl-cli-all",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for gadicc/yahoo-finance2.",
-      "href": "/skills/catalog/external/candidate-corpus-043-yahoo-finance2/",
-      "lane": "avoid",
-      "name": "candidate-corpus-043-yahoo-finance2",
       "sourceType": "curated-external"
     },
     {
@@ -782,13 +684,6 @@
       "href": "/skills/catalog/external/candidate-corpus-285-coldoutboundskills/",
       "lane": "avoid",
       "name": "candidate-corpus-285-coldoutboundskills",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for hardikpandya/stop-slop.",
-      "href": "/skills/catalog/external/candidate-corpus-117-stop-slop/",
-      "lane": "avoid",
-      "name": "candidate-corpus-117-stop-slop",
       "sourceType": "curated-external"
     },
     {
@@ -866,13 +761,6 @@
       "href": "/skills/catalog/external/candidate-corpus-275-dotagents/",
       "lane": "avoid",
       "name": "candidate-corpus-275-dotagents",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for imxv/Pretty-mermaid-skills.",
-      "href": "/skills/catalog/external/candidate-corpus-030-pretty-mermaid-skills/",
-      "lane": "avoid",
-      "name": "candidate-corpus-030-pretty-mermaid-skills",
       "sourceType": "curated-external"
     },
     {
@@ -1002,13 +890,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for meodai/skill.color-expert.",
-      "href": "/skills/catalog/external/candidate-corpus-049-skill-color-expert/",
-      "lane": "avoid",
-      "name": "candidate-corpus-049-skill-color-expert",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for michalparkola/tapestry-skills.",
       "href": "/skills/catalog/external/candidate-corpus-198-tapestry-skills/",
       "lane": "avoid",
@@ -1072,31 +953,10 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for n0an/Widgets-Agent-Skill.",
-      "href": "/skills/catalog/external/candidate-corpus-089-widgets-agent-skill/",
-      "lane": "avoid",
-      "name": "candidate-corpus-089-widgets-agent-skill",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for ndpvt-web/latex-document-skill.",
       "href": "/skills/catalog/external/candidate-corpus-192-latex-document-skill/",
       "lane": "avoid",
       "name": "candidate-corpus-192-latex-document-skill",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for nicobailon/visual-explainer.",
-      "href": "/skills/catalog/external/candidate-corpus-113-visual-explainer/",
-      "lane": "avoid",
-      "name": "candidate-corpus-113-visual-explainer",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for ningzimu/codex-ppt-skill.",
-      "href": "/skills/catalog/external/candidate-corpus-106-codex-ppt-skill/",
-      "lane": "avoid",
-      "name": "candidate-corpus-106-codex-ppt-skill",
       "sourceType": "curated-external"
     },
     {
@@ -1135,20 +995,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/architecture-diagram.",
-      "href": "/skills/catalog/external/candidate-corpus-200-architecture-diagram/",
-      "lane": "avoid",
-      "name": "candidate-corpus-200-architecture-diagram",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/agent-md-refactor.",
-      "href": "/skills/catalog/external/candidate-corpus-201-agent-md-refactor/",
-      "lane": "avoid",
-      "name": "candidate-corpus-201-agent-md-refactor",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/brainstorming.",
       "href": "/skills/catalog/external/candidate-corpus-202-brainstorming/",
       "lane": "avoid",
@@ -1181,13 +1027,6 @@
       "href": "/skills/catalog/external/candidate-corpus-210-game-changing-features/",
       "lane": "avoid",
       "name": "candidate-corpus-210-game-changing-features",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for pedronauck/skills/skills/curated/golang-pro.",
-      "href": "/skills/catalog/external/candidate-corpus-211-golang-pro/",
-      "lane": "avoid",
-      "name": "candidate-corpus-211-golang-pro",
       "sourceType": "curated-external"
     },
     {
@@ -1709,13 +1548,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for solana-foundation/solana-dev-skill.",
-      "href": "/skills/catalog/external/candidate-corpus-037-solana-dev-skill/",
-      "lane": "avoid",
-      "name": "candidate-corpus-037-solana-dev-skill",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for sudokar/openspec-plus.",
       "href": "/skills/catalog/external/candidate-corpus-183-openspec-plus/",
       "lane": "avoid",
@@ -1730,13 +1562,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for supabase/agent-skills.",
-      "href": "/skills/catalog/external/candidate-corpus-094-agent-skills/",
-      "lane": "avoid",
-      "name": "candidate-corpus-094-agent-skills",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for teng-lin/notebooklm-py.",
       "href": "/skills/catalog/external/candidate-corpus-146-notebooklm-py/",
       "lane": "avoid",
@@ -1748,20 +1573,6 @@
       "href": "/skills/catalog/external/candidate-corpus-047-cc-thinking-skills/",
       "lane": "avoid",
       "name": "candidate-corpus-047-cc-thinking-skills",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for truongduy2611/app-store-preflight-skills.",
-      "href": "/skills/catalog/external/candidate-corpus-019-app-store-preflight-skills/",
-      "lane": "avoid",
-      "name": "candidate-corpus-019-app-store-preflight-skills",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for tt-a1i/archify.",
-      "href": "/skills/catalog/external/candidate-corpus-100-archify/",
-      "lane": "avoid",
-      "name": "candidate-corpus-100-archify",
       "sourceType": "curated-external"
     },
     {
@@ -1825,20 +1636,6 @@
       "href": "/skills/catalog/external/github-actions-docs/",
       "lane": "avoid",
       "name": "github-actions-docs",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for yctimlin/mcp_excalidraw.",
-      "href": "/skills/catalog/external/candidate-corpus-006-mcp-excalidraw/",
-      "lane": "avoid",
-      "name": "candidate-corpus-006-mcp-excalidraw",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Trust-gated July 2026 candidate corpus entry for yujiachen-y/codebase-recon-skill.",
-      "href": "/skills/catalog/external/candidate-corpus-121-codebase-recon-skill/",
-      "lane": "avoid",
-      "name": "candidate-corpus-121-codebase-recon-skill",
       "sourceType": "curated-external"
     },
     {
@@ -3060,6 +2857,13 @@
       "sourceType": "curated-external"
     },
     {
+      "description": "Live affiliate program data from openaffiliate.dev. Search programs, compare commissions, check cookie days, find top performers.",
+      "href": "/skills/catalog/external/affiliate-check/",
+      "lane": "install-now",
+      "name": "affiliate-check",
+      "sourceType": "curated-external"
+    },
+    {
       "description": "Design, review, and migrate Core Data code with model versioning, contexts, concurrency, persistent history, performance, and SwiftData interoperability.",
       "href": "/skills/catalog/external/core-data-expert/",
       "lane": "install-now",
@@ -3071,6 +2875,13 @@
       "href": "/skills/catalog/external/swift-testing-expert/",
       "lane": "install-now",
       "name": "swift-testing-expert",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Deterministic LLM-first SEO audits for websites, blog posts, and GitHub repositories.",
+      "href": "/skills/catalog/external/seo/",
+      "lane": "install-now",
+      "name": "seo",
       "sourceType": "curated-external"
     },
     {
@@ -3256,6 +3067,27 @@
       "sourceType": "curated-external"
     },
     {
+      "description": "SciPilot Skills \u5bb6\u65cf\u6210\u5458\uff0c\u8d1f\u8d23\u79d1\u7814\u6570\u636e\u53ef\u89c6\u5316\u2014\u2014\u4f46\u5b9a\u4f4d\u4e0d\u662f\"\u753b\u56fe\u5de5\u5177\"\uff0c \u800c\u662f\"\u53ef\u89c6\u5316\u987e\u95ee\"\u3002\u5148\u505a\u6570\u636e\u5256\u6790\uff08\u5217\u7c7b\u578b/\u6837\u672c\u91cf/\u5206\u5e03/\u5f02\u5e38\u503c/\u5206\u7ec4\u7ed3\u6784/\u76f8\u5173\u6027\uff09\uff0c \u518d\u7ed3\u5408\u7528\u6237\u7684\u8bba\u8bc1\u76ee\u6807\u63a8\u8350\u56fe\u578b\uff0c\u4e3b\u52a8\u62e6\u622a\u79d1\u7814\u753b\u56fe\u7684\u7ecf\u5178\u9519\u8bef\uff08\u5c0f\u6837\u672c\u753b\u5747\u503c\u67f1\u63a9\u76d6 \u5206\u5e03\u3001\u53cc Y \u8f74\u3001\u997c\u56fe\u3001Y \u8f74\u4e0d\u5f53\u622a\u65ad\u3001rainbow\u2026",
+      "href": "/skills/catalog/external/scipilot-figure-skill/",
+      "lane": "install-now",
+      "name": "scipilot-figure-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "An SEO agent skill for quick, lightweight, default single-page SEO audits.",
+      "href": "/skills/catalog/external/seo-audit/",
+      "lane": "install-now",
+      "name": "seo-audit",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Advanced full SEO audit skill.",
+      "href": "/skills/catalog/external/seo-audit-full/",
+      "lane": "install-now",
+      "name": "seo-audit-full",
+      "sourceType": "curated-external"
+    },
+    {
       "description": "Analyze and reduce code complexity with scoped refactoring plans, maintainability review, and local complexity-scanner guidance.",
       "href": "/skills/catalog/external/complexity-optimizer/",
       "lane": "install-now",
@@ -3298,6 +3130,13 @@
       "sourceType": "curated-external"
     },
     {
+      "description": "Anti-AI-slop design skill for greenfield pages, audits, redesigns, and design extraction from URLs or screenshots.",
+      "href": "/skills/catalog/external/hallmark/",
+      "lane": "install-now",
+      "name": "hallmark",
+      "sourceType": "curated-external"
+    },
+    {
       "description": "Update roadmap artifacts from evidence-backed project context with explicit user intent before repository mutations.",
       "href": "/skills/catalog/external/roadmap-update/",
       "lane": "install-now",
@@ -3333,6 +3172,13 @@
       "sourceType": "curated-external"
     },
     {
+      "description": "Use this skill to query your Google NotebookLM notebooks directly from Claude Code for source-grounded, citation-backed answers from Gemini.",
+      "href": "/skills/catalog/external/notebooklm/",
+      "lane": "install-now",
+      "name": "notebooklm",
+      "sourceType": "curated-external"
+    },
+    {
       "description": "Convert or refine raster logo concepts into SVG assets with provenance, brand, and trademark-safety checks.",
       "href": "/skills/catalog/external/raster-logo-svg/",
       "lane": "install-now",
@@ -3344,6 +3190,83 @@
       "href": "/skills/catalog/external/csvglow/",
       "lane": "install-now",
       "name": "csvglow",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Real-time depth map privacy transforms using Depth Anything v2 (CoreML + PyTorch)",
+      "href": "/skills/catalog/external/depth-estimation/",
+      "lane": "install-now",
+      "name": "depth-estimation",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Apply integrations to existing projects with tanstack add, including add-on id resolution, dependency chains, option prompts, and .cta.",
+      "href": "/skills/catalog/external/add-addons-existing-app/",
+      "lane": "install-now",
+      "name": "add-addons-existing-app",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Map tanstack ecosystem partner metadata to installable add-on ids using tanstack ecosystem --json, tanstack create --list-add-ons --json, and tanstack create\u2026",
+      "href": "/skills/catalog/external/choose-ecosystem-integrations/",
+      "lane": "install-now",
+      "name": "choose-ecosystem-integrations",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Scaffold a TanStack app with tanstack create using --framework, --template, --toolchain, --deployment, --add-ons, and --router-only.",
+      "href": "/skills/catalog/external/create-app-scaffold/",
+      "lane": "install-now",
+      "name": "create-app-scaffold",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Build and iterate custom add-ons/templates with tanstack add-on init, add-on compile, add-on dev, and tanstack create --dev-watch, including sync loop\u2026",
+      "href": "/skills/catalog/external/maintain-custom-addons-dev-watch/",
+      "lane": "install-now",
+      "name": "maintain-custom-addons-dev-watch",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Retrieve machine-readable context with tanstack libraries, tanstack doc, tanstack search-docs, tanstack create --list-add-ons --json, and --addon-details for\u2026",
+      "href": "/skills/catalog/external/query-docs-library-metadata/",
+      "lane": "install-now",
+      "name": "query-docs-library-metadata",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Conduct preliminary research on a topic and generate research outline. For academic research, benchmark research, technology selection, etc.",
+      "href": "/skills/catalog/external/deep-research-workflow/",
+      "lane": "install-now",
+      "name": "deep-research-workflow",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Add field definitions to existing research outline.",
+      "href": "/skills/catalog/external/research-add-fields/",
+      "lane": "install-now",
+      "name": "research-add-fields",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Add items (research objects) to existing research outline.",
+      "href": "/skills/catalog/external/research-add-items/",
+      "lane": "install-now",
+      "name": "research-add-items",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Read research outline, launch independent agent for each item for deep research. Disable task output.",
+      "href": "/skills/catalog/external/research-deep/",
+      "lane": "install-now",
+      "name": "research-deep",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Summarize deep research results into markdown report, cover all fields, skip uncertain values.",
+      "href": "/skills/catalog/external/research-report/",
+      "lane": "install-now",
+      "name": "research-report",
       "sourceType": "curated-external"
     },
     {
@@ -3376,16 +3299,44 @@
     },
     {
       "description": "Curated third-party skill source. Run /review source before repo promotion.",
-      "href": "/skills/catalog/external/seo/",
-      "lane": "install-now",
-      "name": "seo",
-      "sourceType": "curated-external"
-    },
-    {
-      "description": "Curated third-party skill source. Run /review source before repo promotion.",
       "href": "/skills/catalog/external/web-quality-audit/",
       "lane": "install-now",
       "name": "web-quality-audit",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Challenges requirements, removes unnecessary work, and simplifies design before writing code.",
+      "href": "/skills/catalog/external/5-steps/",
+      "lane": "install-now",
+      "name": "5-steps",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Review code for readability, then simplify it to be easy to follow and understand.",
+      "href": "/skills/catalog/external/cleanse/",
+      "lane": "install-now",
+      "name": "cleanse",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Apply critical rationalist epistemology (Popper, Deutsch) to evaluate reasoning, identify errors, and refine understanding.",
+      "href": "/skills/catalog/external/critical-reasoning/",
+      "lane": "install-now",
+      "name": "critical-reasoning",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Diagnose a codebase through its git history before reading any code.",
+      "href": "/skills/catalog/external/navvy/",
+      "lane": "install-now",
+      "name": "navvy",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use when someone asks to write, rewrite, review, or improve text that appears inside a product or interface.",
+      "href": "/skills/catalog/external/writing-for-interfaces/",
+      "lane": "install-now",
+      "name": "writing-for-interfaces",
       "sourceType": "curated-external"
     },
     {
@@ -3536,6 +3487,13 @@
       "sourceType": "curated-external"
     },
     {
+      "description": "Use when working with icons in any project. Provides CLI for searching 200+ icon libraries (Iconify) and retrieving SVGs.",
+      "href": "/skills/catalog/external/better-icons/",
+      "lane": "install-now",
+      "name": "better-icons",
+      "sourceType": "curated-external"
+    },
+    {
       "description": "Official Better Auth server/client setup, adapters, sessions, plugins, and environment variables. Prefer this over community Better Auth copies.",
       "href": "/skills/catalog/external/better-auth-best-practices/",
       "lane": "install-now",
@@ -3596,6 +3554,13 @@
       "href": "/skills/catalog/external/wrangler/",
       "lane": "install-now",
       "name": "wrangler",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "29 production-ready scripts for iOS app testing, building, and automation.",
+      "href": "/skills/catalog/external/ios-simulator-skill/",
+      "lane": "install-now",
+      "name": "ios-simulator-skill",
       "sourceType": "curated-external"
     },
     {
@@ -3739,13 +3704,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "High-install marketing and growth skills from `coreyhaines31/marketingskills`.",
-      "href": "/skills/catalog/external/seo-audit/",
-      "lane": "install-now",
-      "name": "seo-audit",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Marketing residual tier from `coreyhaines31/marketingskills`.",
       "href": "/skills/catalog/external/signup/",
       "lane": "install-now",
@@ -3837,6 +3795,13 @@
       "sourceType": "curated-external"
     },
     {
+      "description": "Operate any Obsidian vault as a living, self-rewriting second brain\u2026",
+      "href": "/skills/catalog/external/obsidian-second-brain/",
+      "lane": "install-now",
+      "name": "obsidian-second-brain",
+      "sourceType": "curated-external"
+    },
+    {
       "description": "Curated third-party skill source. Run /review source before repo promotion.",
       "href": "/skills/catalog/external/flutter-add-integration-test/",
       "lane": "install-now",
@@ -3886,6 +3851,13 @@
       "sourceType": "curated-external"
     },
     {
+      "description": "Use when building with the yahoo-finance2 TypeScript/Deno/npm library, using its Yahoo Finance data modules, CLI, or MCP server, or contributing to the\u2026",
+      "href": "/skills/catalog/external/yahoo-finance2/",
+      "lane": "install-now",
+      "name": "yahoo-finance2",
+      "sourceType": "curated-external"
+    },
+    {
       "description": "Curated third-party skill source. Run /review source before repo promotion.",
       "href": "/skills/catalog/external/multi-stage-dockerfile/",
       "lane": "install-now",
@@ -3897,6 +3869,13 @@
       "href": "/skills/catalog/external/sql-optimization/",
       "lane": "install-now",
       "name": "sql-optimization",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Remove AI writing patterns from prose. Use when drafting, editing, or reviewing text to eliminate predictable AI tells.",
+      "href": "/skills/catalog/external/stop-slop/",
+      "lane": "install-now",
+      "name": "stop-slop",
       "sourceType": "curated-external"
     },
     {
@@ -3918,6 +3897,13 @@
       "href": "/skills/catalog/external/vue-best-practices/",
       "lane": "install-now",
       "name": "vue-best-practices",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Render beautiful Mermaid diagrams as SVG or ASCII art using the beautiful-mermaid library.",
+      "href": "/skills/catalog/external/pretty-mermaid/",
+      "lane": "install-now",
+      "name": "pretty-mermaid",
       "sourceType": "curated-external"
     },
     {
@@ -3984,6 +3970,13 @@
       "sourceType": "curated-external"
     },
     {
+      "description": "Use when working with color naming, color theory, color spaces, color definitions, or any task involving color knowledge - palettes, ramps, gradients,\u2026",
+      "href": "/skills/catalog/external/color-expert/",
+      "lane": "install-now",
+      "name": "color-expert",
+      "sourceType": "curated-external"
+    },
+    {
       "description": "Implement and audit tvOS and Apple Focus Engine interactions, focus guides, preferred focus, animations, accessibility, and remote navigation behavior.",
       "href": "/skills/catalog/external/swift-focusengine-pro/",
       "lane": "install-now",
@@ -4016,6 +4009,27 @@
       "href": "/skills/catalog/external/swift-format-style/",
       "lane": "install-now",
       "name": "swift-format-style",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Writes and reviews SwiftUI WidgetKit code for Home Screen, Lock Screen, StandBy, and watch widgets - timeline providers and reload policies,\u2026",
+      "href": "/skills/catalog/external/widgets/",
+      "lane": "install-now",
+      "name": "widgets",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Generate self-contained HTML visual explanations for systems, code changes, plans, data, and technical concepts.",
+      "href": "/skills/catalog/external/visual-explainer/",
+      "lane": "install-now",
+      "name": "visual-explainer",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Generate visually unified image-based PPT/PPTX decks from articles, reports, papers, notes, or outlines.",
+      "href": "/skills/catalog/external/codex-ppt/",
+      "lane": "install-now",
+      "name": "codex-ppt",
       "sourceType": "curated-external"
     },
     {
@@ -4058,6 +4072,27 @@
       "href": "/skills/catalog/external/writing-plans/",
       "lane": "install-now",
       "name": "writing-plans",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Refactor large AGENTS.md, CLAUDE.md, or similar instruction files into progressive disclosure surfaces while preserving policy intent.",
+      "href": "/skills/catalog/external/agent-md-refactor/",
+      "lane": "install-now",
+      "name": "agent-md-refactor",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Create professional standalone HTML/SVG architecture diagrams with explicit asset provenance and no automatic publishing.",
+      "href": "/skills/catalog/external/architecture-diagram/",
+      "lane": "install-now",
+      "name": "architecture-diagram",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Implement and review idiomatic Go services, concurrency, gRPC or REST APIs, benchmarks, and table-driven tests.",
+      "href": "/skills/catalog/external/golang-pro/",
+      "lane": "install-now",
+      "name": "golang-pro",
       "sourceType": "curated-external"
     },
     {
@@ -4159,6 +4194,13 @@
       "sourceType": "curated-external"
     },
     {
+      "description": "Use when user asks to \"build a Solana dapp\", \"write an Anchor program\", \"create a token\", \"debug Solana errors\", \"set up wallet connection\", \"test my Solana\u2026",
+      "href": "/skills/catalog/external/solana-dev/",
+      "lane": "install-now",
+      "name": "solana-dev",
+      "sourceType": "curated-external"
+    },
+    {
       "description": "Curated third-party skill source. Run /review source before repo promotion.",
       "href": "/skills/catalog/external/upgrade-stripe/",
       "lane": "install-now",
@@ -4166,14 +4208,14 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "description": "Use when doing ANY task involving Supabase.",
       "href": "/skills/catalog/external/supabase/",
       "lane": "install-now",
       "name": "supabase",
       "sourceType": "curated-external"
     },
     {
-      "description": "Curated third-party skill source. Run /review source before repo promotion.",
+      "description": "Postgres performance optimization and best practices from Supabase.",
       "href": "/skills/catalog/external/supabase-postgres-best-practices/",
       "lane": "install-now",
       "name": "supabase-postgres-best-practices",
@@ -4198,6 +4240,20 @@
       "href": "/skills/catalog/external/design-postgres-tables/",
       "lane": "install-now",
       "name": "design-postgres-tables",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Scan an iOS/macOS Xcode project for common App Store rejection patterns before submission.",
+      "href": "/skills/catalog/external/app-store-preflight-skills/",
+      "lane": "install-now",
+      "name": "app-store-preflight-skills",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Create professional architecture, workflow, sequence, data-flow, and lifecycle/state diagrams as standalone HTML files with SVG graphics, a built-in dark/light\u2026",
+      "href": "/skills/catalog/external/archify/",
+      "lane": "install-now",
+      "name": "archify",
       "sourceType": "curated-external"
     },
     {
@@ -4401,6 +4457,20 @@
       "href": "/skills/catalog/external/uv-package-manager/",
       "lane": "install-now",
       "name": "uv-package-manager",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Excalidraw canvas toolkit for creating, editing, and refining diagrams on a live canvas.",
+      "href": "/skills/catalog/external/excalidraw-skill/",
+      "lane": "install-now",
+      "name": "excalidraw-skill",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use when entering an unfamiliar codebase, onboarding to a new project, or wanting to assess codebase health before reading code \u2014 analyzes git history to\u2026",
+      "href": "/skills/catalog/external/codebase-recon/",
+      "lane": "install-now",
+      "name": "codebase-recon",
       "sourceType": "curated-external"
     },
     {

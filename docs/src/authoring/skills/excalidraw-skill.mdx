@@ -1,0 +1,74 @@
+---
+name: "excalidraw-skill"
+description: "Excalidraw canvas toolkit for creating, editing, and refining diagrams on a live canvas. Use when an agent needs to (1) draw or lay out diagrams, (2) iteratively refine them by describing the scene and screenshotting its own work, (3) export/import .excalidraw files or PNG/SVG images, (4) save/restore canvas snapshots, (5) convert Mermaid to Excalidraw, or (6) perform element-level CRUD, alignment, distribution, grouping, duplication, and locking. Primary interface is the bundled CLI (npx -y mcp-excalidraw-server <command>) which auto-starts the canvas server; MCP tools and a REST API are equivalent alternatives."
+title: "Excalidraw Skill"
+source_kind: "curated-external"
+source: "yctimlin/mcp_excalidraw"
+install_source: "yctimlin/mcp_excalidraw"
+install_command: "npx skills add yctimlin/mcp_excalidraw --skill excalidraw-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "excalidraw-skill"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/yctimlin/mcp_excalidraw"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "e7a48eb587c9"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "No credentials are required by the skill row."
+network_access: "No MCP server is auto-started; any Excalidraw or asset integration remains explicit."
+file_access: "Reads project context and writes user-requested diagram artifacts."
+live_action_risk: "Diagrams can expose confidential architecture or third-party assets; preserve provenance and redact sensitive topology."
+risk_category: "diagram-asset-review"
+dedupe_notes: "Raw indexes covered: 6"
+notes: "Excalidraw canvas toolkit for creating, editing, and refining diagrams on a live canvas. Use when an agent needs to (1) draw or lay out diagrams, (2) iteratively refine them by describing the scene and screenshotting its own work, (3) export/import .excalidraw files or PNG/SVG images, (4) save/restore canvas snapshots, (5) convert Mermaid to Excalidraw, or (6) perform element-level CRUD, alignment, distribution, grouping, duplication, and locking. Primary interface is the bundled CLI (npx -y mcp-excalidraw-server <command>) which auto-starts the canvas server; MCP tools and a REST API are equivalent alternatives."
+risk_notes: "Diagrams can expose confidential architecture or third-party assets; preserve provenance and redact sensitive topology."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, upstream license, selector behavior, duplicate triggers, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found selector `excalidraw-skill` in `yctimlin/mcp_excalidraw`. Upstream license `MIT` and audited HEAD `e7a48eb587c9` were captured before promotion. Local Skills CLI installed `excalidraw-skill` into supported harness roots. Skills CLI output reported Safe, Socket 0 alerts, Snyk Low Risk."
+---
+
+# Excalidraw Skill
+
+This row promotes `yctimlin/mcp_excalidraw` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 6
+- Normalized URL: [https://github.com/yctimlin/mcp_excalidraw](https://github.com/yctimlin/mcp_excalidraw)
+- Catalog skill id: `excalidraw-skill`
+- Upstream install selector: `excalidraw-skill`
+- Install command: `npx skills add yctimlin/mcp_excalidraw --skill excalidraw-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `e7a48eb587c9`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add yctimlin/mcp_excalidraw --list`
+- Executed command: `npx --yes skills add yctimlin/mcp_excalidraw --skill excalidraw-skill --dry-run`
+- Executed command: `npx --yes skills add yctimlin/mcp_excalidraw --skill excalidraw-skill -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Installed path: `~/.agents/skills/excalidraw-skill`
+- Installed path: `~/.claude/skills/excalidraw-skill`
+- Installed path: `~/.config/crush/skills/excalidraw-skill`
+- Install evidence note: Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required by the skill row.
+- Network access: No MCP server is auto-started; any Excalidraw or asset integration remains explicit.
+- File access: Reads project context and writes user-requested diagram artifacts.
+- Live action risk: Diagrams can expose confidential architecture or third-party assets; preserve provenance and redact sensitive topology.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.

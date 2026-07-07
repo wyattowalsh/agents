@@ -25,6 +25,7 @@ from wagents.site_model import (
     build_install_command,
     resolve_trust_tier_for_node,
     trust_badge_for_tier,
+    use_command_for_catalog_row,
 )
 from wagents.skill_docs import skill_detail_href
 from wagents.skill_research import load_skill_research
@@ -256,13 +257,11 @@ def _render_skill_page_header(node: CatalogNode, fm: dict) -> list[str]:
             install_command = (
                 "Catalog-only entry: no portable install command is published until promotion gates pass."
             )
-    if _is_pip_cli_catalog_row(node):
-        usage = "apm --help"
-    elif node.source != "custom" and not _installed_install_command(node):
+    if node.source != "custom" and not _installed_install_command(node):
         usage = ""
     else:
-        usage = f"/{node.id}"
-        if fm.get("argument-hint"):
+        usage = use_command_for_catalog_row(install_command, node.id)
+        if usage.startswith("/") and fm.get("argument-hint"):
             usage += f" {fm['argument-hint']}"
     badge_props = _skill_header_badge_props(node, fm)
     badge_jsx = ", ".join(f'{{ text: "{escape_attr(text)}", variant: "{variant}" }}' for text, variant in badge_props)

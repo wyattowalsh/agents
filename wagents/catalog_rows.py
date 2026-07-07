@@ -11,6 +11,7 @@ from wagents.site_model import (
     _public_source_path,
     _source_kind,
     trust_badge_for_tier,
+    use_command_for_catalog_row,
 )
 from wagents.skill_docs import collect_skill_doc_nodes
 
@@ -80,7 +81,7 @@ def entry_to_public_row(entry: ExternalSkillEntry) -> dict[str, Any]:
         "sourcePath": _public_source_path(entry.source_path),
         "sourceUrl": entry.source_url,
         "installCommand": entry.install_command,
-        "useCommand": f"/{entry.name}",
+        "useCommand": use_command_for_catalog_row(entry.install_command, entry.name),
         "provenanceStatus": entry.provenance_status,
         "reviewStatus": "curated" if entry.provenance_status == "verified-install-command" else "unresolved",
         "selectorMode": entry.selector_mode,

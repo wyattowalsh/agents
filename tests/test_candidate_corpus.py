@@ -53,6 +53,12 @@ PROMOTED_SKILL_NAMES = {
         (MANIFEST_DIR / "promotion-overrides.json").read_text(encoding="utf-8")
     )["overrides"]
 }
+PROMOTED_INSTALL_SELECTORS = {
+    override["skill_name"]: override.get("install_skill_name", override["skill_name"])
+    for override in json.loads(
+        (MANIFEST_DIR / "promotion-overrides.json").read_text(encoding="utf-8")
+    )["overrides"]
+}
 PROMOTED_CANDIDATE_NAMES = {
     override["candidate_authoring_name"]
     for override in json.loads(
@@ -319,7 +325,7 @@ def test_candidate_catalog_authoring_rows_track_promoted_installable_override() 
         assert promoted_row["syncKind"] == "skills-cli"
         assert promoted_row["status"] == "install-now-after-trust-gate"
         assert promoted_row["installCommand"].startswith("npx skills add ")
-        assert f"--skill {skill_name}" in promoted_row["installCommand"]
+        assert f"--skill {PROMOTED_INSTALL_SELECTORS[skill_name]}" in promoted_row["installCommand"]
     assert {row["source_list_evidence"] for row in summary["rows"]} <= {
         "source-list-error",
         "source-list-found",
@@ -335,7 +341,7 @@ def test_candidate_catalog_authoring_rows_track_promoted_installable_override() 
         assert "Harness Coverage" in text
         assert "Portable multi-harness install command" in text
         assert "Trust / Audit" in text
-        assert f"--skill {skill_name}" in text
+        assert f"--skill {PROMOTED_INSTALL_SELECTORS[skill_name]}" in text
 
 
 def test_github_metadata_audit_covers_unique_sources() -> None:

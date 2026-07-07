@@ -1,0 +1,173 @@
+---
+title: "obsidian-second-brain"
+description: "Operate any Obsidian vault as a living, self-rewriting second brain…"
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="obsidian-second-brain"
+  description="Operate any Obsidian vault as a living, self-rewriting second brain…"
+  installCommand={`npx skills add eugeniughelbur/obsidian-second-brain --skill obsidian-second-brain -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/obsidian-second-brain"
+  badges={[{ text: "obsidian-second-brain", variant: "note" }, { text: "317 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/obsidian-second-brain.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add eugeniughelbur/obsidian-second-brain --skill obsidian-second-brain -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Vault content can contain private data; preserve local-only defaults and avoid committing personal notes.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | 3b3e21d4c465 |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row. |
+| Credential behavior | No vault credentials or sync tokens are stored. |
+| Network access | No network behavior is required by the catalog row. |
+| File access | Reads and writes user-selected Obsidian vault files only when explicitly requested. |
+| Live-action risk | Vault content can contain private data; preserve local-only defaults and avoid committing personal notes. |
+| Risk category | local-knowledge-privacy-review |
+| Dedupe notes | Raw indexes covered: 104 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/obsidian-second-brain.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `eugeniughelbur/obsidian-second-brain` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `eugeniughelbur/obsidian-second-brain` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `obsidian-second-brain` |
+| License | MIT |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "obsidian-second-brain"
+description: "Operate any Obsidian vault as a living, self-rewriting second brain (an evolution of Karpathy's LLM Wiki pattern: sources rewrite existing pages, contradictions reconcile automatically, scheduled agents maintain the vault while you sleep). Use this skill whenever the user asks Claude to read, write, update, search, or manage their Obsidian vault - including saving notes from conversation, creating daily entries, updating kanban boards, logging dev work, managing people notes, capturing decisions, tracking deals, or maintaining any vault structure. Also triggers when the user wants to bootstrap a new vault from scratch, run a vault health check, or drop a _CLAUDE.md into their vault so all Claude surfaces share the same operating rules. Includes a research toolkit (7 commands: /x-read, /x-pulse, /research, /research-deep, /notebooklm, /youtube, /podcast) for AI-powered research via Grok, Perplexity, NotebookLM, YouTube, and podcast feeds - findings save to the vault automatically..."
+title: "Obsidian Second Brain"
+source_kind: "curated-external"
+source: "eugeniughelbur/obsidian-second-brain"
+install_source: "eugeniughelbur/obsidian-second-brain"
+install_command: "npx skills add eugeniughelbur/obsidian-second-brain --skill obsidian-second-brain -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "obsidian-second-brain"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/eugeniughelbur/obsidian-second-brain"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "3b3e21d4c465"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "No vault credentials or sync tokens are stored."
+network_access: "No network behavior is required by the catalog row."
+file_access: "Reads and writes user-selected Obsidian vault files only when explicitly requested."
+live_action_risk: "Vault content can contain private data; preserve local-only defaults and avoid committing personal notes."
+risk_category: "local-knowledge-privacy-review"
+dedupe_notes: "Raw indexes covered: 104"
+notes: "Operate any Obsidian vault as a living, self-rewriting second brain (an evolution of Karpathy's LLM Wiki pattern: sources rewrite existing pages, contradictions reconcile automatically, scheduled agents maintain the vault while you sleep). Use this skill whenever the user asks Claude to read, write, update, search, or manage their Obsidian vault - including saving notes from conversation, creating daily entries, updating kanban boards, logging dev work, managing people notes, capturing decisions, tracking deals, or maintaining any vault structure. Also triggers when the user wants to bootstrap a new vault from scratch, run a vault health check, or drop a _CLAUDE.md into their vault so all Claude surfaces share the same operating rules. Includes a research toolkit (7 commands: /x-read, /x-pulse, /research, /research-deep, /notebooklm, /youtube, /podcast) for AI-powered research via Grok, Perplexity, NotebookLM, YouTube, and podcast feeds - findings save to the vault automatically..."
+risk_notes: "Vault content can contain private data; preserve local-only defaults and avoid committing personal notes."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, upstream license, selector behavior, duplicate triggers, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found selector `obsidian-second-brain` in `eugeniughelbur/obsidian-second-brain`. Upstream license `MIT` and audited HEAD `3b3e21d4c465` were captured before promotion. Local Skills CLI installed `obsidian-second-brain` into supported harness roots. Skills CLI output reported Gen High Risk, Socket 4 alerts, Snyk Med Risk; keep local-data boundaries."
+---
+
+# Obsidian Second Brain
+
+This row promotes `eugeniughelbur/obsidian-second-brain` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 104
+- Normalized URL: [https://github.com/eugeniughelbur/obsidian-second-brain](https://github.com/eugeniughelbur/obsidian-second-brain)
+- Catalog skill id: `obsidian-second-brain`
+- Upstream install selector: `obsidian-second-brain`
+- Install command: `npx skills add eugeniughelbur/obsidian-second-brain --skill obsidian-second-brain -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `3b3e21d4c465`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add eugeniughelbur/obsidian-second-brain --list`
+- Executed command: `npx --yes skills add eugeniughelbur/obsidian-second-brain --skill obsidian-second-brain --dry-run`
+- Executed command: `npx --yes skills add eugeniughelbur/obsidian-second-brain --skill obsidian-second-brain -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Installed path: `~/.agents/skills/obsidian-second-brain`
+- Installed path: `~/.claude/skills/obsidian-second-brain`
+- Installed path: `~/.config/crush/skills/obsidian-second-brain`
+- Install evidence note: Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No vault credentials or sync tokens are stored.
+- Network access: No network behavior is required by the catalog row.
+- File access: Reads and writes user-selected Obsidian vault files only when explicitly requested.
+- Live action risk: Vault content can contain private data; preserve local-only defaults and avoid committing personal notes.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

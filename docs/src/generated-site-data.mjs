@@ -5,9 +5,9 @@ const baseSiteData = {
     "customMcp": 16,
     "customSkills": 69,
     "externalMcp": 49,
-    "externalSkills": 630,
+    "externalSkills": 640,
     "mcpTools": 65,
-    "skills": 699,
+    "skills": 709,
     "supportedHarnesses": 9
   },
   "distributionPaths": [
@@ -75,7 +75,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-057-affiliate-skills"
+          "affiliate-check"
         ],
         "source": "Affitor/affiliate-skills"
       },
@@ -131,7 +131,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-045-agentic-seo-skill"
+          "seo"
         ],
         "source": "Bhanunamikaze/Agentic-SEO-Skill"
       },
@@ -249,7 +249,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-034-scipilot-figure-skill"
+          "scipilot-figure-skill"
         ],
         "source": "Haojae/scipilot-figure-skill"
       },
@@ -275,9 +275,10 @@ const baseSiteData = {
         "source": "Jakubantalik/transitions.dev"
       },
       {
-        "count": 1,
+        "count": 2,
         "skills": [
-          "candidate-corpus-054-seo-audit-skill"
+          "seo-audit",
+          "seo-audit-full"
         ],
         "source": "JeffLi1993/seo-audit-skill"
       },
@@ -357,7 +358,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-107-hallmark"
+          "hallmark"
         ],
         "source": "Nutlope/hallmark"
       },
@@ -415,7 +416,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-111-notebooklm-skill"
+          "notebooklm"
         ],
         "source": "PleasePrompto/notebooklm-skill"
       },
@@ -450,14 +451,18 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-102-deepcamera"
+          "depth-estimation"
         ],
         "source": "SharpAI/DeepCamera"
       },
       {
-        "count": 1,
+        "count": 5,
         "skills": [
-          "candidate-corpus-017-cli"
+          "add-addons-existing-app",
+          "choose-ecosystem-integrations",
+          "create-app-scaffold",
+          "maintain-custom-addons-dev-watch",
+          "query-docs-library-metadata"
         ],
         "source": "TanStack/cli"
       },
@@ -497,9 +502,13 @@ const baseSiteData = {
         "source": "WILLOSCAR/research-units-pipeline-skills"
       },
       {
-        "count": 1,
+        "count": 5,
         "skills": [
-          "candidate-corpus-014-deep-research-skills"
+          "deep-research-workflow",
+          "research-add-fields",
+          "research-add-items",
+          "research-deep",
+          "research-report"
         ],
         "source": "Weizhena/Deep-Research-skills"
       },
@@ -525,13 +534,12 @@ const baseSiteData = {
         "source": "actionbook/rust-skills"
       },
       {
-        "count": 6,
+        "count": 5,
         "skills": [
           "best-practices",
           "candidate-corpus-097-web-quality-skills",
           "core-web-vitals",
           "performance",
-          "seo",
           "web-quality-audit"
         ],
         "source": "addyosmani/web-quality-skills"
@@ -558,9 +566,13 @@ const baseSiteData = {
         "source": "aiwithremy/claude-skills-llm-council"
       },
       {
-        "count": 1,
+        "count": 5,
         "skills": [
-          "candidate-corpus-088-writing-for-interfaces"
+          "5-steps",
+          "cleanse",
+          "critical-reasoning",
+          "navvy",
+          "writing-for-interfaces"
         ],
         "source": "andrewgleave/skills"
       },
@@ -712,7 +724,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-025-better-icons"
+          "better-icons"
         ],
         "source": "better-auth/better-icons"
       },
@@ -781,12 +793,12 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-022-ios-simulator-skill"
+          "ios-simulator-skill"
         ],
         "source": "conorluddy/ios-simulator-skill"
       },
       {
-        "count": 25,
+        "count": 24,
         "skills": [
           "ab-testing",
           "ads",
@@ -809,7 +821,6 @@ const baseSiteData = {
           "programmatic-seo",
           "revops",
           "schema",
-          "seo-audit",
           "signup",
           "site-architecture",
           "video"
@@ -984,7 +995,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-104-obsidian-second-brain"
+          "obsidian-second-brain"
         ],
         "source": "eugeniughelbur/obsidian-second-brain"
       },
@@ -1044,7 +1055,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-043-yahoo-finance2"
+          "yahoo-finance2"
         ],
         "source": "gadicc/yahoo-finance2"
       },
@@ -1139,7 +1150,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-117-stop-slop"
+          "stop-slop"
         ],
         "source": "hardikpandya/stop-slop"
       },
@@ -1223,7 +1234,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-030-pretty-mermaid-skills"
+          "pretty-mermaid"
         ],
         "source": "imxv/Pretty-mermaid-skills"
       },
@@ -1462,7 +1473,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-049-skill-color-expert"
+          "color-expert"
         ],
         "source": "meodai/skill.color-expert"
       },
@@ -1581,7 +1592,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-089-widgets-agent-skill"
+          "widgets"
         ],
         "source": "n0an/Widgets-Agent-Skill"
       },
@@ -1616,14 +1627,14 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-113-visual-explainer"
+          "visual-explainer"
         ],
         "source": "nicobailon/visual-explainer"
       },
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-106-codex-ppt-skill"
+          "codex-ppt"
         ],
         "source": "ningzimu/codex-ppt-skill"
       },
@@ -1696,14 +1707,13 @@ const baseSiteData = {
       {
         "count": 71,
         "skills": [
-          "candidate-corpus-200-architecture-diagram",
-          "candidate-corpus-201-agent-md-refactor",
+          "agent-md-refactor",
+          "architecture-diagram",
           "candidate-corpus-202-brainstorming",
           "candidate-corpus-207-documentation-writer",
           "candidate-corpus-208-exa-web-search-free",
           "candidate-corpus-209-extreme-software-optimization",
           "candidate-corpus-210-game-changing-features",
-          "candidate-corpus-211-golang-pro",
           "candidate-corpus-212-hono",
           "candidate-corpus-213-lesson-learned",
           "candidate-corpus-214-next-best-practices",
@@ -1766,7 +1776,8 @@ const baseSiteData = {
           "candidate-corpus-289-better-auth-best-practices",
           "candidate-corpus-290-better-auth-organization-best-practices",
           "candidate-corpus-292-find-rules",
-          "candidate-corpus-293-find-skills"
+          "candidate-corpus-293-find-skills",
+          "golang-pro"
         ],
         "source": "pedronauck/skills"
       },
@@ -1972,7 +1983,7 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-037-solana-dev-skill"
+          "solana-dev"
         ],
         "source": "solana-foundation/solana-dev-skill"
       },
@@ -1998,9 +2009,8 @@ const baseSiteData = {
         "source": "summer521521/Zotero_Research_plugin"
       },
       {
-        "count": 3,
+        "count": 2,
         "skills": [
-          "candidate-corpus-094-agent-skills",
           "supabase",
           "supabase-postgres-best-practices"
         ],
@@ -2066,14 +2076,14 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-019-app-store-preflight-skills"
+          "app-store-preflight-skills"
         ],
         "source": "truongduy2611/app-store-preflight-skills"
       },
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-100-archify"
+          "archify"
         ],
         "source": "tt-a1i/archify"
       },
@@ -2236,14 +2246,14 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-006-mcp-excalidraw"
+          "excalidraw-skill"
         ],
         "source": "yctimlin/mcp_excalidraw"
       },
       {
         "count": 1,
         "skills": [
-          "candidate-corpus-121-codebase-recon-skill"
+          "codebase-recon"
         ],
         "source": "yujiachen-y/codebase-recon-skill"
       },
@@ -2297,53 +2307,39 @@ const baseSiteData = {
         "status": "catalog-reference"
       },
       {
-        "count": 260,
+        "count": 231,
         "skills": [
           "anthropics-skills-all",
           "candidate-corpus-005-terraform-skill",
-          "candidate-corpus-006-mcp-excalidraw",
           "candidate-corpus-007-skills",
           "candidate-corpus-008-transitions-dev",
           "candidate-corpus-011-designer-skills",
           "candidate-corpus-012-aso-skills",
           "candidate-corpus-013-lathe",
-          "candidate-corpus-014-deep-research-skills",
           "candidate-corpus-015-ai-legal-claude",
           "candidate-corpus-016-logo-generator-skill",
-          "candidate-corpus-017-cli",
           "candidate-corpus-018-rust-skills",
-          "candidate-corpus-019-app-store-preflight-skills",
           "candidate-corpus-020-tot",
-          "candidate-corpus-022-ios-simulator-skill",
           "candidate-corpus-023-gtm-engineer-skills",
           "candidate-corpus-024-x-research-skill",
-          "candidate-corpus-025-better-icons",
           "candidate-corpus-026-aws-agent-skills",
           "candidate-corpus-027-figmirror",
           "candidate-corpus-028-webgpu-claude-skill",
-          "candidate-corpus-030-pretty-mermaid-skills",
           "candidate-corpus-031-tech-debt-skill",
           "candidate-corpus-032-academic-paper-skills",
           "candidate-corpus-033-claude-skills-llm-council",
-          "candidate-corpus-034-scipilot-figure-skill",
-          "candidate-corpus-037-solana-dev-skill",
           "candidate-corpus-038-academic-pptx-skill",
           "candidate-corpus-039-agent-skill",
           "candidate-corpus-040-langchain-skills",
           "candidate-corpus-041-claude-deep-research-skill",
           "candidate-corpus-042-duckdb-skills",
-          "candidate-corpus-043-yahoo-finance2",
           "candidate-corpus-044-ai-sales-team-claude",
-          "candidate-corpus-045-agentic-seo-skill",
           "candidate-corpus-046-buffett-skills",
           "candidate-corpus-047-cc-thinking-skills",
           "candidate-corpus-048-macos-app-skills",
-          "candidate-corpus-049-skill-color-expert",
           "candidate-corpus-050-awesome-legal-skills",
           "candidate-corpus-051-solid-skills",
           "candidate-corpus-052-paper-plot-skills",
-          "candidate-corpus-054-seo-audit-skill",
-          "candidate-corpus-057-affiliate-skills",
           "candidate-corpus-058-newsjack",
           "candidate-corpus-059-travel-hacking-toolkit",
           "candidate-corpus-060-agentkits-marketing",
@@ -2356,40 +2352,28 @@ const baseSiteData = {
           "candidate-corpus-079-appstore-review",
           "candidate-corpus-085-ios-code-audit",
           "candidate-corpus-087-figma-to-swiftui-skill",
-          "candidate-corpus-088-writing-for-interfaces",
-          "candidate-corpus-089-widgets-agent-skill",
           "candidate-corpus-090-swiftagents",
           "candidate-corpus-091-make-interfaces-feel-better",
           "candidate-corpus-092-agent-skills",
           "candidate-corpus-093-skills",
-          "candidate-corpus-094-agent-skills",
           "candidate-corpus-095-aaron-marketing-skills",
           "candidate-corpus-096-cc-skills-golang",
           "candidate-corpus-097-web-quality-skills",
           "candidate-corpus-098-threejs-skills",
           "candidate-corpus-099-awesome-finance-skills",
-          "candidate-corpus-100-archify",
           "candidate-corpus-101-ai-marketing-skills",
-          "candidate-corpus-102-deepcamera",
           "candidate-corpus-103-finance-skills",
-          "candidate-corpus-104-obsidian-second-brain",
           "candidate-corpus-105-skills",
-          "candidate-corpus-106-codex-ppt-skill",
-          "candidate-corpus-107-hallmark",
           "candidate-corpus-108-skills",
           "candidate-corpus-109-academic-research-skills-codex",
           "candidate-corpus-110-product-manager-skills",
-          "candidate-corpus-111-notebooklm-skill",
           "candidate-corpus-112-text-to-cad",
-          "candidate-corpus-113-visual-explainer",
           "candidate-corpus-114-claude-seo",
           "candidate-corpus-115-skills",
           "candidate-corpus-116-skillspector",
-          "candidate-corpus-117-stop-slop",
           "candidate-corpus-118-react-doctor",
           "candidate-corpus-119-skills",
           "candidate-corpus-120-brooks-lint",
-          "candidate-corpus-121-codebase-recon-skill",
           "candidate-corpus-122-gh-address-comments",
           "candidate-corpus-123-gh-fix-ci",
           "candidate-corpus-124-notion-knowledge-capture",
@@ -2457,8 +2441,6 @@ const baseSiteData = {
           "candidate-corpus-197-clipify",
           "candidate-corpus-198-tapestry-skills",
           "candidate-corpus-199-visualise",
-          "candidate-corpus-200-architecture-diagram",
-          "candidate-corpus-201-agent-md-refactor",
           "candidate-corpus-202-brainstorming",
           "candidate-corpus-203-ai-business-skills",
           "candidate-corpus-204-claude-code-apple-skills",
@@ -2468,7 +2450,6 @@ const baseSiteData = {
           "candidate-corpus-208-exa-web-search-free",
           "candidate-corpus-209-extreme-software-optimization",
           "candidate-corpus-210-game-changing-features",
-          "candidate-corpus-211-golang-pro",
           "candidate-corpus-212-hono",
           "candidate-corpus-213-lesson-learned",
           "candidate-corpus-214-next-best-practices",
@@ -2739,11 +2720,15 @@ const baseSiteData = {
         "status": "inspect-then-install"
       },
       {
-        "count": 194,
+        "count": 233,
         "skills": [
+          "5-steps",
           "a11y-debugging",
           "ab-testing",
+          "add-addons-existing-app",
           "ads",
+          "affiliate-check",
+          "agent-md-refactor",
           "agents-sdk",
           "ai-seo",
           "analytics",
@@ -2755,22 +2740,31 @@ const baseSiteData = {
           "app-intents",
           "app-store-aso",
           "app-store-changelog",
+          "app-store-preflight-skills",
           "appkit-accessibility-auditor",
+          "archify",
+          "architecture-diagram",
           "axiom-design",
           "background-execution",
           "best-practices",
           "better-auth-best-practices",
+          "better-icons",
           "biome-developer",
           "brainstorming",
           "bug-hunt-swarm",
           "canvas-design",
           "changelog-automation",
+          "choose-ecosystem-integrations",
           "chrome-devtools",
           "chrome-devtools-cli",
           "churn-prevention",
+          "cleanse",
           "cli-just",
           "cloudflare",
+          "codebase-recon",
+          "codex-ppt",
           "cold-email",
+          "color-expert",
           "commit",
           "competitor-profiling",
           "complexity-optimizer",
@@ -2778,17 +2772,22 @@ const baseSiteData = {
           "copywriting",
           "core-data-expert",
           "core-web-vitals",
+          "create-app-scaffold",
+          "critical-reasoning",
           "cro",
           "csvglow",
           "debt-ops-metrics",
           "debt-ops-review",
           "debug-optimize-lcp",
           "debugging-strategies",
+          "deep-research-workflow",
           "deno-expert",
+          "depth-estimation",
           "design-postgres-tables",
           "durable-objects",
           "editorial-card-screenshot",
           "emails",
+          "excalidraw-skill",
           "executing-plans",
           "fastapi-templates",
           "fetching-dbt-docs",
@@ -2802,14 +2801,17 @@ const baseSiteData = {
           "frontend-slides",
           "github",
           "gitops-workflow",
+          "golang-pro",
           "graphql-operations",
           "graphql-schema",
           "grill-me",
+          "hallmark",
           "helm-chart-scaffolding",
           "html",
           "improve-codebase-architecture",
           "ios-accessibility",
           "ios-debugger-agent",
+          "ios-simulator-skill",
           "k8s-manifest-generator",
           "k8s-security-policies",
           "langchain-architecture",
@@ -2819,19 +2821,23 @@ const baseSiteData = {
           "logging-best-practices",
           "macos-menubar-tuist-app",
           "macos-spm-app-packaging",
+          "maintain-custom-addons-dev-watch",
           "marketing-ideas",
           "marketing-psychology",
           "memory-leak-debugging",
           "motion-design",
           "multi-stage-dockerfile",
+          "navvy",
           "next-best-practices",
           "next-cache-components",
           "next-upgrade",
           "nodejs-backend-patterns",
+          "notebooklm",
           "novel-writing",
           "nx-workspace-patterns",
           "obsidian-cli",
           "obsidian-markdown",
+          "obsidian-second-brain",
           "obsidian-vault",
           "on-call-handoff-patterns",
           "onboarding",
@@ -2849,6 +2855,7 @@ const baseSiteData = {
           "plannotator-visual-explainer",
           "playwright-best-practices",
           "postmortem-writing",
+          "pretty-mermaid",
           "prisma-cli",
           "prisma-client-api",
           "prisma-upgrade-v7",
@@ -2859,11 +2866,16 @@ const baseSiteData = {
           "pulumi-best-practices",
           "pulumi-component",
           "pulumi-esc",
+          "query-docs-library-metadata",
           "raster-logo-svg",
           "react-component-performance",
           "redis-core",
           "remotion-best-practices",
           "remotion-video-builder",
+          "research-add-fields",
+          "research-add-items",
+          "research-deep",
+          "research-report",
           "review-and-simplify-changes",
           "review-swarm",
           "revops",
@@ -2871,14 +2883,18 @@ const baseSiteData = {
           "rover",
           "rust-best-practices",
           "schema",
+          "scipilot-figure-skill",
           "seo",
           "seo-audit",
+          "seo-audit-full",
           "signup",
           "site-architecture",
           "slack-gif-creator",
           "slidev",
+          "solana-dev",
           "sql-optimization",
           "sql-optimization-patterns",
+          "stop-slop",
           "supabase",
           "supabase-postgres-best-practices",
           "svelte5-best-practices",
@@ -2927,14 +2943,18 @@ const baseSiteData = {
           "vercel-react-view-transitions",
           "verification-before-completion",
           "video",
+          "visual-explainer",
           "vite",
           "vitest",
           "vue-best-practices",
           "web-quality-audit",
+          "widgets",
           "workers-best-practices",
           "wpds",
           "wrangler",
-          "writing-plans"
+          "writing-for-interfaces",
+          "writing-plans",
+          "yahoo-finance2"
         ],
         "status": "install-now-after-trust-gate"
       }
@@ -3287,6 +3307,16 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add Affitor/affiliate-skills --skill affiliate-check -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "affiliate-check"
+        ],
+        "source": "Affitor/affiliate-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add AvdLee/Core-Data-Agent-Skill --skill core-data-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "core-data-expert"
@@ -3302,6 +3332,16 @@ const baseSiteData = {
           "swift-testing-expert"
         ],
         "source": "AvdLee/Swift-Testing-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Bhanunamikaze/Agentic-SEO-Skill --skill seo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "seo"
+        ],
+        "source": "Bhanunamikaze/Agentic-SEO-Skill",
         "sourceType": "curated-external",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
@@ -3522,6 +3562,36 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add Haojae/scipilot-figure-skill --skill scipilot-figure-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "scipilot-figure-skill"
+        ],
+        "source": "Haojae/scipilot-figure-skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add JeffLi1993/seo-audit-skill --skill seo-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "seo-audit"
+        ],
+        "source": "JeffLi1993/seo-audit-skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add JeffLi1993/seo-audit-skill --skill seo-audit-full -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "seo-audit-full"
+        ],
+        "source": "JeffLi1993/seo-audit-skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "complexity-optimizer"
@@ -3582,6 +3652,16 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add Nutlope/hallmark --skill hallmark -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "hallmark"
+        ],
+        "source": "Nutlope/hallmark",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add P4nda0s/reverse-skills --skill rev-frida --list",
         "skills": [
           "reverse-skills"
@@ -3633,6 +3713,16 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add PleasePrompto/notebooklm-skill --skill notebooklm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "notebooklm"
+        ],
+        "source": "PleasePrompto/notebooklm-skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add Pythoughts-labs/designer-skill --skill raster-logo-svg -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "raster-logo-svg"
@@ -3653,6 +3743,116 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "depth-estimation"
+        ],
+        "source": "SharpAI/DeepCamera",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add TanStack/cli --skill add-addons-existing-app -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "add-addons-existing-app"
+        ],
+        "source": "TanStack/cli",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add TanStack/cli --skill choose-ecosystem-integrations -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "choose-ecosystem-integrations"
+        ],
+        "source": "TanStack/cli",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add TanStack/cli --skill create-app-scaffold -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "create-app-scaffold"
+        ],
+        "source": "TanStack/cli",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add TanStack/cli --skill maintain-custom-addons-dev-watch -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "maintain-custom-addons-dev-watch"
+        ],
+        "source": "TanStack/cli",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add TanStack/cli --skill query-docs-library-metadata -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "query-docs-library-metadata"
+        ],
+        "source": "TanStack/cli",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Weizhena/Deep-Research-skills --skill research -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "deep-research-workflow"
+        ],
+        "source": "Weizhena/Deep-Research-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Weizhena/Deep-Research-skills --skill research-add-fields -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "research-add-fields"
+        ],
+        "source": "Weizhena/Deep-Research-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Weizhena/Deep-Research-skills --skill research-add-items -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "research-add-items"
+        ],
+        "source": "Weizhena/Deep-Research-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Weizhena/Deep-Research-skills --skill research-deep -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "research-deep"
+        ],
+        "source": "Weizhena/Deep-Research-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Weizhena/Deep-Research-skills --skill research-report -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "research-report"
+        ],
+        "source": "Weizhena/Deep-Research-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add WordPress/agent-skills --skill wpds -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "wpds"
@@ -3668,10 +3868,59 @@ const baseSiteData = {
           "best-practices",
           "core-web-vitals",
           "performance",
-          "seo",
           "web-quality-audit"
         ],
         "source": "addyosmani/web-quality-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add andrewgleave/skills --skill 5-steps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "5-steps"
+        ],
+        "source": "andrewgleave/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add andrewgleave/skills --skill cleanse -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "cleanse"
+        ],
+        "source": "andrewgleave/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "critical-reasoning"
+        ],
+        "source": "andrewgleave/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add andrewgleave/skills --skill navvy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "navvy"
+        ],
+        "source": "andrewgleave/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add andrewgleave/skills --skill writing-for-interfaces -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "writing-for-interfaces"
+        ],
+        "source": "andrewgleave/skills",
         "sourceType": "curated-external",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
@@ -3831,6 +4080,16 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add better-auth/better-icons --skill better-icons -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "better-icons"
+        ],
+        "source": "better-auth/better-icons",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add better-auth/skills --skill better-auth-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "better-auth-best-practices"
@@ -3896,6 +4155,16 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add conorluddy/ios-simulator-skill --skill ios-simulator-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "ios-simulator-skill"
+        ],
+        "source": "conorluddy/ios-simulator-skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add coreyhaines31/marketingskills --skill ai-seo --skill schema --skill product-marketing --skill ab-testing --skill signup --skill onboarding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "ab-testing",
@@ -3921,8 +4190,7 @@ const baseSiteData = {
           "cro",
           "emails",
           "marketing-psychology",
-          "programmatic-seo",
-          "seo-audit"
+          "programmatic-seo"
         ],
         "source": "coreyhaines31/marketingskills",
         "sourceType": "curated-external",
@@ -4061,6 +4329,16 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add eugeniughelbur/obsidian-second-brain --skill obsidian-second-brain -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "obsidian-second-brain"
+        ],
+        "source": "eugeniughelbur/obsidian-second-brain",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add expo/skills --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "expo-cicd-workflows",
@@ -4097,6 +4375,16 @@ const baseSiteData = {
           "flutter-setup-localization"
         ],
         "source": "flutter/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add gadicc/yahoo-finance2 --skill yahoo-finance2 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "yahoo-finance2"
+        ],
+        "source": "gadicc/yahoo-finance2",
         "sourceType": "curated-external",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
@@ -4239,6 +4527,16 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
+        "command": "npx skills add hardikpandya/stop-slop --skill stop-slop -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "stop-slop"
+        ],
+        "source": "hardikpandya/stop-slop",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform-search-import --skill aws-ami-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "aws-ami-builder",
@@ -4267,6 +4565,16 @@ const baseSiteData = {
           "vue-best-practices"
         ],
         "source": "hyf0/vue-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add imxv/Pretty-mermaid-skills --skill pretty-mermaid -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "pretty-mermaid"
+        ],
+        "source": "imxv/Pretty-mermaid-skills",
         "sourceType": "curated-external",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
@@ -4444,6 +4752,16 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
+        "command": "npx skills add meodai/skill.color-expert --skill color-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "color-expert"
+        ],
+        "source": "meodai/skill.color-expert",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add mhaviv/Swift-FocusEngine-Agent-Skill --skill swift-focusengine-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "swift-focusengine-pro"
@@ -4514,6 +4832,16 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
+        "command": "npx skills add n0an/Widgets-Agent-Skill --skill widgets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "widgets"
+        ],
+        "source": "n0an/Widgets-Agent-Skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add neondatabase/agent-skills --skill neon-functions --skill neon-ai-gateway --skill claimable-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "claimable-postgres",
@@ -4548,6 +4876,26 @@ const baseSiteData = {
         "sourceType": "curated-external",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add nicobailon/visual-explainer --skill visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "visual-explainer"
+        ],
+        "source": "nicobailon/visual-explainer",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add ningzimu/codex-ppt-skill --skill codex-ppt -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "codex-ppt"
+        ],
+        "source": "ningzimu/codex-ppt-skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
       },
       {
         "command": "npx skills add nrwl/nx-ai-agents-config --skill nx-generate --skill link-workspace-packages -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -4588,6 +4936,36 @@ const baseSiteData = {
         "sourceType": "curated-external",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add pedronauck/skills --skill agent-md-refactor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "agent-md-refactor"
+        ],
+        "source": "pedronauck/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add pedronauck/skills --skill architecture-diagram -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "architecture-diagram"
+        ],
+        "source": "pedronauck/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add pedronauck/skills --skill golang-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "golang-pro"
+        ],
+        "source": "pedronauck/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
       },
       {
         "command": "npx skills add planetscale/database-skills --skill postgres --skill mysql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -4835,6 +5213,16 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
+        "command": "npx skills add solana-foundation/solana-dev-skill --skill solana-dev -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "solana-dev"
+        ],
+        "source": "solana-foundation/solana-dev-skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "upgrade-stripe"
@@ -4845,9 +5233,18 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --skill supabase -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add supabase/agent-skills --skill supabase -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
-          "supabase",
+          "supabase"
+        ],
+        "source": "supabase/agent-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
           "supabase-postgres-best-practices"
         ],
         "source": "supabase/agent-skills",
@@ -4921,6 +5318,26 @@ const baseSiteData = {
         "sourceType": "curated-external",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add truongduy2611/app-store-preflight-skills --skill app-store-preflight-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "app-store-preflight-skills"
+        ],
+        "source": "truongduy2611/app-store-preflight-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add tt-a1i/archify --skill archify -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "archify"
+        ],
+        "source": "tt-a1i/archify",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
       },
       {
         "command": "npx skills add twostraws/Swift-Concurrency-Agent-Skill --skill swift-concurrency-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -5082,6 +5499,26 @@ const baseSiteData = {
         "source": "yaklang/hack-skills",
         "sourceType": "curated-external",
         "status": "catalog-reference",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add yctimlin/mcp_excalidraw --skill excalidraw-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "excalidraw-skill"
+        ],
+        "source": "yctimlin/mcp_excalidraw",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add yujiachen-y/codebase-recon-skill --skill codebase-recon -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "codebase-recon"
+        ],
+        "source": "yujiachen-y/codebase-recon-skill",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
       },
       {

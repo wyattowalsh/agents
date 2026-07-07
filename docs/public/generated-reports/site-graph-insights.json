@@ -1,11 +1,11 @@
 {
   "most_linked_pages": [
     {
-      "backlinks": 777,
+      "backlinks": 787,
       "slug": "/cli"
     },
     {
-      "backlinks": 711,
+      "backlinks": 721,
       "slug": "/skills/catalog"
     },
     {
@@ -92,6 +92,6 @@
     "/skill-research/ui-ux-pro-max",
     "/skill-research/web-design-guidelines"
   ],
-  "total_internal_links": 2200,
-  "total_pages": 1186
+  "total_internal_links": 2220,
+  "total_pages": 1196
 }

@@ -1,0 +1,172 @@
+---
+title: "architecture-diagram"
+description: "Create professional standalone HTML/SVG architecture diagrams with explicit asset provenance and no automatic publishing."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="architecture-diagram"
+  description="Create professional standalone HTML/SVG architecture diagrams with explicit asset provenance and no automatic publishing."
+  installCommand={`npx skills add pedronauck/skills --skill architecture-diagram -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/architecture-diagram"
+  badges={[{ text: "architecture-diagram", variant: "note" }, { text: "319 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/architecture-diagram.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add pedronauck/skills --skill architecture-diagram -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Diagram output can expose confidential architecture or use third-party logos/assets; preserve provenance, redact sensitive topology, and do not publish without explicit approval.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | 671a38aa3a2cf6575d867bd5b1fe39c3d784a5c8 |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Prompt-only skill for creating local HTML/SVG architecture diagrams; no MCP server, background service, or account integration is enabled by the catalog row. |
+| Credential behavior | No credentials are required for the selected selector. |
+| Network access | No network behavior is required by the selected skill; any external font, icon, cloud, or asset lookup remains explicit and provenance-checked. |
+| File access | Reads project context and writes user-requested local diagram artifacts when explicitly invoked. |
+| Live-action risk | Diagram output can expose confidential architecture or use third-party logos/assets; preserve provenance, redact sensitive topology, and do not publish without explicit approval. |
+| Risk category | design-diagram-review |
+| Dedupe notes | Raw indexes covered: 200 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/architecture-diagram.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `pedronauck/skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `pedronauck/skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `architecture-diagram` |
+| License | MIT |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "architecture-diagram"
+description: "Create professional standalone HTML/SVG architecture diagrams with explicit asset provenance and no automatic publishing."
+title: "Architecture Diagram"
+source_kind: "curated-external"
+source: "pedronauck/skills"
+install_source: "pedronauck/skills"
+install_command: "npx skills add pedronauck/skills --skill architecture-diagram -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "architecture-diagram"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/pedronauck/skills/tree/main/skills/curated/architecture-diagram"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "671a38aa3a2cf6575d867bd5b1fe39c3d784a5c8"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt-only skill for creating local HTML/SVG architecture diagrams; no MCP server, background service, or account integration is enabled by the catalog row."
+credential_behavior: "No credentials are required for the selected selector."
+network_access: "No network behavior is required by the selected skill; any external font, icon, cloud, or asset lookup remains explicit and provenance-checked."
+file_access: "Reads project context and writes user-requested local diagram artifacts when explicitly invoked."
+live_action_risk: "Diagram output can expose confidential architecture or use third-party logos/assets; preserve provenance, redact sensitive topology, and do not publish without explicit approval."
+risk_category: "design-diagram-review"
+dedupe_notes: "Raw indexes covered: 200"
+notes: "Create professional standalone HTML/SVG architecture diagrams with explicit asset provenance and no automatic publishing."
+risk_notes: "Diagram output can expose confidential architecture or use third-party logos/assets; preserve provenance, redact sensitive topology, and do not publish without explicit approval."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, selector-level MIT license frontmatter, selected selector behavior, Skills CLI risk output, duplicate triggers, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found the architecture-diagram selector in pedronauck/skills. Selector SKILL.md declares license: MIT at audited HEAD 671a38aa3a2cf6575d867bd5b1fe39c3d784a5c8. Local Skills CLI installed the selector into supported harness roots and reported Gen Safe, Socket 0 alerts, and Snyk Low Risk."
+---
+
+# Architecture Diagram
+
+This row promotes `pedronauck/skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 200
+- Normalized URL: [https://github.com/pedronauck/skills/tree/main/skills/curated/architecture-diagram](https://github.com/pedronauck/skills/tree/main/skills/curated/architecture-diagram)
+- Catalog skill id: `architecture-diagram`
+- Upstream install selector: `architecture-diagram`
+- Install command: `npx skills add pedronauck/skills --skill architecture-diagram -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `671a38aa3a2cf6575d867bd5b1fe39c3d784a5c8`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add pedronauck/skills --list`
+- Executed command: `npx --yes skills add pedronauck/skills --skill architecture-diagram -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Installed path: `~/.agents/skills/architecture-diagram`
+- Installed path: `~/.claude/skills/architecture-diagram`
+- Installed path: `~/.config/crush/skills/architecture-diagram`
+- Install evidence note: Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required for the selected selector.
+- Network access: No network behavior is required by the selected skill; any external font, icon, cloud, or asset lookup remains explicit and provenance-checked.
+- File access: Reads project context and writes user-requested local diagram artifacts when explicitly invoked.
+- Live action risk: Diagram output can expose confidential architecture or use third-party logos/assets; preserve provenance, redact sensitive topology, and do not publish without explicit approval.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

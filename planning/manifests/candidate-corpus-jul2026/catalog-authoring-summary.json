@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T13:07:27.288163+00:00",
+  "generated_at": "2026-07-07T13:24:42.695220+00:00",
   "marker": "GENERATED-CANDIDATE-CORPUS-JUL2026",
-  "rows_written": 310,
+  "rows_written": 324,
   "unique_targets": 289,
   "stale_generated_rows_removed": 288,
   "status": "mixed",
   "sync_kind": "mixed",
-  "install_commands_published": 60,
+  "install_commands_published": 103,
   "source_list_status_counts": {
     "source-list-error": 21,
     "source-list-found": 236,
@@ -399,25 +399,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-006-mcp-excalidraw",
-      "path": "docs/src/authoring/skills/candidate-corpus-006-mcp-excalidraw.mdx",
+      "name": "excalidraw-skill",
+      "path": "docs/src/authoring/skills/excalidraw-skill.mdx",
       "normalized_url": "https://github.com/yctimlin/mcp_excalidraw",
       "source_name": "yctimlin/mcp_excalidraw",
       "raw_indexes": [
         6
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
-      "risk_tier": "executable-surface-review-required",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add yctimlin/mcp_excalidraw --skill excalidraw-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-007-skills",
@@ -563,25 +561,99 @@
       ]
     },
     {
-      "name": "candidate-corpus-014-deep-research-skills",
-      "path": "docs/src/authoring/skills/candidate-corpus-014-deep-research-skills.mdx",
+      "name": "research-add-items",
+      "path": "docs/src/authoring/skills/research-add-items.mdx",
       "normalized_url": "https://github.com/Weizhena/Deep-Research-skills",
       "source_name": "Weizhena/Deep-Research-skills",
       "raw_indexes": [
         14
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Weizhena/Deep-Research-skills --skill research-add-items -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
-      "source_list_evidence": "source-list-timeout",
-      "found_skill_count": 0,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "research-report",
+      "path": "docs/src/authoring/skills/research-report.mdx",
+      "normalized_url": "https://github.com/Weizhena/Deep-Research-skills",
+      "source_name": "Weizhena/Deep-Research-skills",
+      "raw_indexes": [
+        14
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Weizhena/Deep-Research-skills --skill research-report -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "research-add-fields",
+      "path": "docs/src/authoring/skills/research-add-fields.mdx",
+      "normalized_url": "https://github.com/Weizhena/Deep-Research-skills",
+      "source_name": "Weizhena/Deep-Research-skills",
+      "raw_indexes": [
+        14
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Weizhena/Deep-Research-skills --skill research-add-fields -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "deep-research-workflow",
+      "path": "docs/src/authoring/skills/deep-research-workflow.mdx",
+      "normalized_url": "https://github.com/Weizhena/Deep-Research-skills",
+      "source_name": "Weizhena/Deep-Research-skills",
+      "raw_indexes": [
+        14
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Weizhena/Deep-Research-skills --skill research -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "research-deep",
+      "path": "docs/src/authoring/skills/research-deep.mdx",
+      "normalized_url": "https://github.com/Weizhena/Deep-Research-skills",
+      "source_name": "Weizhena/Deep-Research-skills",
+      "raw_indexes": [
+        14
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Weizhena/Deep-Research-skills --skill research-deep -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-015-ai-legal-claude",
@@ -626,25 +698,99 @@
       ]
     },
     {
-      "name": "candidate-corpus-017-cli",
-      "path": "docs/src/authoring/skills/candidate-corpus-017-cli.mdx",
+      "name": "maintain-custom-addons-dev-watch",
+      "path": "docs/src/authoring/skills/maintain-custom-addons-dev-watch.mdx",
       "normalized_url": "https://github.com/TanStack/cli",
       "source_name": "TanStack/cli",
       "raw_indexes": [
         17
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
-      "risk_tier": "executable-surface-review-required",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add TanStack/cli --skill maintain-custom-addons-dev-watch -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 5,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "add-addons-existing-app",
+      "path": "docs/src/authoring/skills/add-addons-existing-app.mdx",
+      "normalized_url": "https://github.com/TanStack/cli",
+      "source_name": "TanStack/cli",
+      "raw_indexes": [
+        17
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add TanStack/cli --skill add-addons-existing-app -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "choose-ecosystem-integrations",
+      "path": "docs/src/authoring/skills/choose-ecosystem-integrations.mdx",
+      "normalized_url": "https://github.com/TanStack/cli",
+      "source_name": "TanStack/cli",
+      "raw_indexes": [
+        17
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add TanStack/cli --skill choose-ecosystem-integrations -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "query-docs-library-metadata",
+      "path": "docs/src/authoring/skills/query-docs-library-metadata.mdx",
+      "normalized_url": "https://github.com/TanStack/cli",
+      "source_name": "TanStack/cli",
+      "raw_indexes": [
+        17
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add TanStack/cli --skill query-docs-library-metadata -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "create-app-scaffold",
+      "path": "docs/src/authoring/skills/create-app-scaffold.mdx",
+      "normalized_url": "https://github.com/TanStack/cli",
+      "source_name": "TanStack/cli",
+      "raw_indexes": [
+        17
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add TanStack/cli --skill create-app-scaffold -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-018-rust-skills",
@@ -668,25 +814,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-019-app-store-preflight-skills",
-      "path": "docs/src/authoring/skills/candidate-corpus-019-app-store-preflight-skills.mdx",
+      "name": "app-store-preflight-skills",
+      "path": "docs/src/authoring/skills/app-store-preflight-skills.mdx",
       "normalized_url": "https://github.com/truongduy2611/app-store-preflight-skills",
       "source_name": "truongduy2611/app-store-preflight-skills",
       "raw_indexes": [
         19
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add truongduy2611/app-store-preflight-skills --skill app-store-preflight-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-020-tot",
@@ -729,26 +873,24 @@
       "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-022-ios-simulator-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-022-ios-simulator-skill.mdx",
+      "name": "ios-simulator-skill",
+      "path": "docs/src/authoring/skills/ios-simulator-skill.mdx",
       "normalized_url": "https://github.com/conorluddy/ios-simulator-skill",
       "source_name": "conorluddy/ios-simulator-skill",
       "raw_indexes": [
         22,
         86
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add conorluddy/ios-simulator-skill --skill ios-simulator-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-023-gtm-engineer-skills",
@@ -793,25 +935,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-025-better-icons",
-      "path": "docs/src/authoring/skills/candidate-corpus-025-better-icons.mdx",
+      "name": "better-icons",
+      "path": "docs/src/authoring/skills/better-icons.mdx",
       "normalized_url": "https://github.com/better-auth/better-icons",
       "source_name": "better-auth/better-icons",
       "raw_indexes": [
         25
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add better-auth/better-icons --skill better-icons -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-026-aws-agent-skills",
@@ -896,25 +1036,23 @@
       "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-030-pretty-mermaid-skills",
-      "path": "docs/src/authoring/skills/candidate-corpus-030-pretty-mermaid-skills.mdx",
+      "name": "pretty-mermaid",
+      "path": "docs/src/authoring/skills/pretty-mermaid.mdx",
       "normalized_url": "https://github.com/imxv/Pretty-mermaid-skills",
       "source_name": "imxv/Pretty-mermaid-skills",
       "raw_indexes": [
         30
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add imxv/Pretty-mermaid-skills --skill pretty-mermaid -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-031-tech-debt-skill",
@@ -980,25 +1118,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-034-scipilot-figure-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-034-scipilot-figure-skill.mdx",
+      "name": "scipilot-figure-skill",
+      "path": "docs/src/authoring/skills/scipilot-figure-skill.mdx",
       "normalized_url": "https://github.com/Haojae/scipilot-figure-skill",
       "source_name": "Haojae/scipilot-figure-skill",
       "raw_indexes": [
         34
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Haojae/scipilot-figure-skill --skill scipilot-figure-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "complexity-optimizer",
@@ -1039,25 +1175,23 @@
       "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-037-solana-dev-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-037-solana-dev-skill.mdx",
+      "name": "solana-dev",
+      "path": "docs/src/authoring/skills/solana-dev.mdx",
       "normalized_url": "https://github.com/solana-foundation/solana-dev-skill",
       "source_name": "solana-foundation/solana-dev-skill",
       "raw_indexes": [
         37
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add solana-foundation/solana-dev-skill --skill solana-dev -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-038-academic-pptx-skill",
@@ -1165,25 +1299,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-043-yahoo-finance2",
-      "path": "docs/src/authoring/skills/candidate-corpus-043-yahoo-finance2.mdx",
+      "name": "yahoo-finance2",
+      "path": "docs/src/authoring/skills/yahoo-finance2.mdx",
       "normalized_url": "https://github.com/gadicc/yahoo-finance2",
       "source_name": "gadicc/yahoo-finance2",
       "raw_indexes": [
         43
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add gadicc/yahoo-finance2 --skill yahoo-finance2 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
-      "source_list_evidence": "source-list-timeout",
-      "found_skill_count": 0,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-044-ai-sales-team-claude",
@@ -1207,25 +1339,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-045-agentic-seo-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-045-agentic-seo-skill.mdx",
+      "name": "seo",
+      "path": "docs/src/authoring/skills/seo.mdx",
       "normalized_url": "https://github.com/Bhanunamikaze/Agentic-SEO-Skill",
       "source_name": "Bhanunamikaze/Agentic-SEO-Skill",
       "raw_indexes": [
         45
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
-      "risk_tier": "review-required",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Bhanunamikaze/Agentic-SEO-Skill --skill seo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "guarded-review",
       "intake_decision": "reference_only",
-      "source_list_evidence": "source-list-timeout",
-      "found_skill_count": 0,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-046-buffett-skills",
@@ -1291,25 +1421,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-049-skill-color-expert",
-      "path": "docs/src/authoring/skills/candidate-corpus-049-skill-color-expert.mdx",
+      "name": "color-expert",
+      "path": "docs/src/authoring/skills/color-expert.mdx",
       "normalized_url": "https://github.com/meodai/skill.color-expert",
       "source_name": "meodai/skill.color-expert",
       "raw_indexes": [
         49
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add meodai/skill.color-expert --skill color-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-050-awesome-legal-skills",
@@ -1395,25 +1523,42 @@
       "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-054-seo-audit-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-054-seo-audit-skill.mdx",
+      "name": "seo-audit",
+      "path": "docs/src/authoring/skills/seo-audit.mdx",
       "normalized_url": "https://github.com/JeffLi1993/seo-audit-skill",
       "source_name": "JeffLi1993/seo-audit-skill",
       "raw_indexes": [
         54
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
-      "risk_tier": "review-required",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add JeffLi1993/seo-audit-skill --skill seo-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "guarded-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 2,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "seo-audit-full",
+      "path": "docs/src/authoring/skills/seo-audit-full.mdx",
+      "normalized_url": "https://github.com/JeffLi1993/seo-audit-skill",
+      "source_name": "JeffLi1993/seo-audit-skill",
+      "raw_indexes": [
+        54
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add JeffLi1993/seo-audit-skill --skill seo-audit-full -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "guarded-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 2,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "motion-design",
@@ -1435,25 +1580,23 @@
       "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-057-affiliate-skills",
-      "path": "docs/src/authoring/skills/candidate-corpus-057-affiliate-skills.mdx",
+      "name": "affiliate-check",
+      "path": "docs/src/authoring/skills/affiliate-check.mdx",
       "normalized_url": "https://github.com/Affitor/affiliate-skills",
       "source_name": "Affitor/affiliate-skills",
       "raw_indexes": [
         57
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
-      "risk_tier": "review-required",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Affitor/affiliate-skills --skill affiliate-check -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "guarded-review",
       "intake_decision": "reference_only",
-      "source_list_evidence": "source-list-timeout",
-      "found_skill_count": 0,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-058-newsjack",
@@ -2067,46 +2210,118 @@
       ]
     },
     {
-      "name": "candidate-corpus-088-writing-for-interfaces",
-      "path": "docs/src/authoring/skills/candidate-corpus-088-writing-for-interfaces.mdx",
+      "name": "5-steps",
+      "path": "docs/src/authoring/skills/5-steps.mdx",
       "normalized_url": "https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces",
       "source_name": "andrewgleave/skills",
       "raw_indexes": [
         88
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add andrewgleave/skills --skill 5-steps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
-      "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-089-widgets-agent-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-089-widgets-agent-skill.mdx",
+      "name": "cleanse",
+      "path": "docs/src/authoring/skills/cleanse.mdx",
+      "normalized_url": "https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces",
+      "source_name": "andrewgleave/skills",
+      "raw_indexes": [
+        88
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add andrewgleave/skills --skill cleanse -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "critical-reasoning",
+      "path": "docs/src/authoring/skills/critical-reasoning.mdx",
+      "normalized_url": "https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces",
+      "source_name": "andrewgleave/skills",
+      "raw_indexes": [
+        88
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "navvy",
+      "path": "docs/src/authoring/skills/navvy.mdx",
+      "normalized_url": "https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces",
+      "source_name": "andrewgleave/skills",
+      "raw_indexes": [
+        88
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add andrewgleave/skills --skill navvy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "writing-for-interfaces",
+      "path": "docs/src/authoring/skills/writing-for-interfaces.mdx",
+      "normalized_url": "https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces",
+      "source_name": "andrewgleave/skills",
+      "raw_indexes": [
+        88
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add andrewgleave/skills --skill writing-for-interfaces -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 5,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "widgets",
+      "path": "docs/src/authoring/skills/widgets.mdx",
       "normalized_url": "https://github.com/n0an/Widgets-Agent-Skill",
       "source_name": "n0an/Widgets-Agent-Skill",
       "raw_indexes": [
         89
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add n0an/Widgets-Agent-Skill --skill widgets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-090-swiftagents",
@@ -2193,25 +2408,42 @@
       ]
     },
     {
-      "name": "candidate-corpus-094-agent-skills",
-      "path": "docs/src/authoring/skills/candidate-corpus-094-agent-skills.mdx",
+      "name": "supabase-postgres-best-practices",
+      "path": "docs/src/authoring/skills/supabase-postgres-best-practices.mdx",
       "normalized_url": "https://github.com/supabase/agent-skills",
       "source_name": "supabase/agent-skills",
       "raw_indexes": [
         94
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
-      "intake_decision": "merge_into_existing",
+      "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 2,
-      "remaining_blockers": [
-        "do not duplicate existing installable catalog rows",
-        "auth and RLS boundary review",
-        "selector-level security review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "supabase",
+      "path": "docs/src/authoring/skills/supabase.mdx",
+      "normalized_url": "https://github.com/supabase/agent-skills",
+      "source_name": "supabase/agent-skills",
+      "raw_indexes": [
+        94
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add supabase/agent-skills --skill supabase -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 2,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-095-aaron-marketing-skills",
@@ -2317,25 +2549,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-100-archify",
-      "path": "docs/src/authoring/skills/candidate-corpus-100-archify.mdx",
+      "name": "archify",
+      "path": "docs/src/authoring/skills/archify.mdx",
       "normalized_url": "https://github.com/tt-a1i/archify",
       "source_name": "tt-a1i/archify",
       "raw_indexes": [
         100
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add tt-a1i/archify --skill archify -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-101-ai-marketing-skills",
@@ -2359,25 +2589,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-102-deepcamera",
-      "path": "docs/src/authoring/skills/candidate-corpus-102-deepcamera.mdx",
+      "name": "depth-estimation",
+      "path": "docs/src/authoring/skills/depth-estimation.mdx",
       "normalized_url": "https://github.com/SharpAI/DeepCamera",
       "source_name": "SharpAI/DeepCamera",
       "raw_indexes": [
         102
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
-      "source_list_evidence": "source-list-timeout",
-      "found_skill_count": 0,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-103-finance-skills",
@@ -2401,25 +2629,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-104-obsidian-second-brain",
-      "path": "docs/src/authoring/skills/candidate-corpus-104-obsidian-second-brain.mdx",
+      "name": "obsidian-second-brain",
+      "path": "docs/src/authoring/skills/obsidian-second-brain.mdx",
       "normalized_url": "https://github.com/eugeniughelbur/obsidian-second-brain",
       "source_name": "eugeniughelbur/obsidian-second-brain",
       "raw_indexes": [
         104
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
-      "risk_tier": "standard-review",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add eugeniughelbur/obsidian-second-brain --skill obsidian-second-brain -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "guarded-review",
       "intake_decision": "reference_only",
-      "source_list_evidence": "source-list-timeout",
-      "found_skill_count": 0,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-105-skills",
@@ -2443,46 +2669,42 @@
       ]
     },
     {
-      "name": "candidate-corpus-106-codex-ppt-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-106-codex-ppt-skill.mdx",
+      "name": "codex-ppt",
+      "path": "docs/src/authoring/skills/codex-ppt.mdx",
       "normalized_url": "https://github.com/ningzimu/codex-ppt-skill",
       "source_name": "ningzimu/codex-ppt-skill",
       "raw_indexes": [
         106
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add ningzimu/codex-ppt-skill --skill codex-ppt -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-107-hallmark",
-      "path": "docs/src/authoring/skills/candidate-corpus-107-hallmark.mdx",
+      "name": "hallmark",
+      "path": "docs/src/authoring/skills/hallmark.mdx",
       "normalized_url": "https://github.com/Nutlope/hallmark",
       "source_name": "Nutlope/hallmark",
       "raw_indexes": [
         107
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Nutlope/hallmark --skill hallmark -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-108-skills",
@@ -2549,25 +2771,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-111-notebooklm-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-111-notebooklm-skill.mdx",
+      "name": "notebooklm",
+      "path": "docs/src/authoring/skills/notebooklm.mdx",
       "normalized_url": "https://github.com/PleasePrompto/notebooklm-skill",
       "source_name": "PleasePrompto/notebooklm-skill",
       "raw_indexes": [
         111
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add PleasePrompto/notebooklm-skill --skill notebooklm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-112-text-to-cad",
@@ -2591,25 +2811,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-113-visual-explainer",
-      "path": "docs/src/authoring/skills/candidate-corpus-113-visual-explainer.mdx",
+      "name": "visual-explainer",
+      "path": "docs/src/authoring/skills/visual-explainer.mdx",
       "normalized_url": "https://github.com/nicobailon/visual-explainer",
       "source_name": "nicobailon/visual-explainer",
       "raw_indexes": [
         113
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add nicobailon/visual-explainer --skill visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-114-claude-seo",
@@ -2674,25 +2892,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-117-stop-slop",
-      "path": "docs/src/authoring/skills/candidate-corpus-117-stop-slop.mdx",
+      "name": "stop-slop",
+      "path": "docs/src/authoring/skills/stop-slop.mdx",
       "normalized_url": "https://github.com/hardikpandya/stop-slop",
       "source_name": "hardikpandya/stop-slop",
       "raw_indexes": [
         117
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add hardikpandya/stop-slop --skill stop-slop -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-118-react-doctor",
@@ -2758,25 +2974,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-121-codebase-recon-skill",
-      "path": "docs/src/authoring/skills/candidate-corpus-121-codebase-recon-skill.mdx",
+      "name": "codebase-recon",
+      "path": "docs/src/authoring/skills/codebase-recon.mdx",
       "normalized_url": "https://github.com/yujiachen-y/codebase-recon-skill",
       "source_name": "yujiachen-y/codebase-recon-skill",
       "raw_indexes": [
         121
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add yujiachen-y/codebase-recon-skill --skill codebase-recon -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
-      "source_list_evidence": "source-list-timeout",
-      "found_skill_count": 0,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 1,
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-122-gh-address-comments",
@@ -4457,46 +4671,42 @@
       ]
     },
     {
-      "name": "candidate-corpus-200-architecture-diagram",
-      "path": "docs/src/authoring/skills/candidate-corpus-200-architecture-diagram.mdx",
+      "name": "architecture-diagram",
+      "path": "docs/src/authoring/skills/architecture-diagram.mdx",
       "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/architecture-diagram",
       "source_name": "pedronauck/skills",
       "raw_indexes": [
         200
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add pedronauck/skills --skill architecture-diagram -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-201-agent-md-refactor",
-      "path": "docs/src/authoring/skills/candidate-corpus-201-agent-md-refactor.mdx",
+      "name": "agent-md-refactor",
+      "path": "docs/src/authoring/skills/agent-md-refactor.mdx",
       "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/agent-md-refactor",
       "source_name": "pedronauck/skills",
       "raw_indexes": [
         201
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add pedronauck/skills --skill agent-md-refactor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-202-brainstorming",
@@ -4688,25 +4898,23 @@
       ]
     },
     {
-      "name": "candidate-corpus-211-golang-pro",
-      "path": "docs/src/authoring/skills/candidate-corpus-211-golang-pro.mdx",
+      "name": "golang-pro",
+      "path": "docs/src/authoring/skills/golang-pro.mdx",
       "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/golang-pro",
       "source_name": "pedronauck/skills",
       "raw_indexes": [
         211
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add pedronauck/skills --skill golang-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 1,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-212-hono",
@@ -6410,12 +6618,12 @@
     }
   ],
   "status_counts": {
-    "global-only-or-avoid": 250,
-    "install-now-after-trust-gate": 60
+    "global-only-or-avoid": 221,
+    "install-now-after-trust-gate": 103
   },
   "sync_kind_counts": {
-    "none": 250,
-    "skills-cli": 60
+    "none": 221,
+    "skills-cli": 103
   },
-  "live_installs_recorded": 60
+  "live_installs_recorded": 103
 }

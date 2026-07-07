@@ -1,22 +1,74 @@
 ---
 name: "seo-audit"
-description: "High-install marketing and growth skills from `coreyhaines31/marketingskills`. Slugs use the upstream bundle names (`cro`, `analytics`, `emails`, `ads`) rather than older registry aliases."
+description: "An SEO agent skill for quick, lightweight, default single-page SEO audits. Performs basic on-page and site-level checks and outputs a structured basic SEO audit report. Use when the user asks for \"SEO audit\", \"SEO check\", \"check my page SEO\", \"page analysis\", or wants a first-pass review of a URL. If the user requests \"deep audit\", \"full report\", \"technical SEO audit\", or \"advanced SEO\", use seo-audit-full instead."
 title: "Seo Audit"
 source_kind: "curated-external"
-source: "coreyhaines31/marketingskills"
-install_source: "coreyhaines31/marketingskills"
+source: "JeffLi1993/seo-audit-skill"
+install_source: "JeffLi1993/seo-audit-skill"
+install_command: "npx skills add JeffLi1993/seo-audit-skill --skill seo-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_skill_name: "seo-audit"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-install_command: "npx skills add coreyhaines31/marketingskills --skill seo-audit --skill copywriting --skill cro --skill marketing-psychology --skill content-strategy --skill analytics --skill programmatic-seo --skill cold-email --skill emails --skill ads -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
-source_url: "https://github.com/coreyhaines31/marketingskills"
-notes: "High-install marketing and growth skills from `coreyhaines31/marketingskills`. Slugs use the upstream bundle names (`cro`, `analytics`, `emails`, `ads`) rather than older registry aliases."
-risk_notes: "High-install marketing and growth skills from `coreyhaines31/marketingskills`. Slugs use the upstream bundle names (`cro`, `analytics`, `emails`, `ads`) rather than older registry aliases."
-promotion_policy: "Install only after trust gate; audit again before repo promotion."
-provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in authoring catalog."
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/JeffLi1993/seo-audit-skill"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "523bdfb2c94f"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
+credential_behavior: "No search console, analytics, ads, or private crawl credentials are required by the catalog row."
+network_access: "External crawls or site fetches remain explicit and must respect robots.txt, ToS, and rate limits."
+file_access: "Reads site content, repo metadata, and local audit outputs when requested."
+live_action_risk: "SEO/GEO output must avoid deceptive, spam, scraping, or guaranteed-ranking claims."
+risk_category: "seo-anti-abuse-review"
+dedupe_notes: "Raw indexes covered: 54"
+notes: "An SEO agent skill for quick, lightweight, default single-page SEO audits. Performs basic on-page and site-level checks and outputs a structured basic SEO audit report. Use when the user asks for \"SEO audit\", \"SEO check\", \"check my page SEO\", \"page analysis\", or wants a first-pass review of a URL. If the user requests \"deep audit\", \"full report\", \"technical SEO audit\", or \"advanced SEO\", use seo-audit-full instead."
+risk_notes: "SEO/GEO output must avoid deceptive, spam, scraping, or guaranteed-ranking claims."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, upstream license, selector behavior, duplicate triggers, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found selector `seo-audit` in `JeffLi1993/seo-audit-skill`. Upstream license `MIT` and audited HEAD `523bdfb2c94f` were captured before promotion. Local Skills CLI installed `seo-audit` into supported harness roots. Skills CLI output reported Gen High Risk, Socket 0 alerts, Snyk Critical Risk; keep guarded boundaries."
 ---
 
+# Seo Audit
 
-High-install marketing and growth skills from `coreyhaines31/marketingskills`. Slugs use the upstream bundle names (`cro`, `analytics`, `emails`, `ads`) rather than older registry aliases.
+This row promotes `JeffLi1993/seo-audit-skill` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 54
+- Normalized URL: [https://github.com/JeffLi1993/seo-audit-skill](https://github.com/JeffLi1993/seo-audit-skill)
+- Catalog skill id: `seo-audit`
+- Upstream install selector: `seo-audit`
+- Install command: `npx skills add JeffLi1993/seo-audit-skill --skill seo-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `523bdfb2c94f`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add JeffLi1993/seo-audit-skill --list`
+- Executed command: `npx --yes skills add JeffLi1993/seo-audit-skill --skill seo-audit --dry-run`
+- Executed command: `npx --yes skills add JeffLi1993/seo-audit-skill --skill seo-audit -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Installed path: `~/.agents/skills/seo-audit`
+- Installed path: `~/.claude/skills/seo-audit`
+- Installed path: `~/.config/crush/skills/seo-audit`
+- Install evidence note: Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No search console, analytics, ads, or private crawl credentials are required by the catalog row.
+- Network access: External crawls or site fetches remain explicit and must respect robots.txt, ToS, and rate limits.
+- File access: Reads site content, repo metadata, and local audit outputs when requested.
+- Live action risk: SEO/GEO output must avoid deceptive, spam, scraping, or guaranteed-ranking claims.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.

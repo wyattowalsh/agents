@@ -290,6 +290,16 @@
       "trustTier": "curated-trust-gated"
     },
     {
+      "command": "npx skills add Affitor/affiliate-skills --skill affiliate-check -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "affiliate-check"
+      ],
+      "source": "Affitor/affiliate-skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add AvdLee/Core-Data-Agent-Skill --skill core-data-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "core-data-expert"
@@ -305,6 +315,16 @@
         "swift-testing-expert"
       ],
       "source": "AvdLee/Swift-Testing-Agent-Skill",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add Bhanunamikaze/Agentic-SEO-Skill --skill seo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "seo"
+      ],
+      "source": "Bhanunamikaze/Agentic-SEO-Skill",
       "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
@@ -525,6 +545,36 @@
       "trustTier": "curated-trust-gated"
     },
     {
+      "command": "npx skills add Haojae/scipilot-figure-skill --skill scipilot-figure-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "scipilot-figure-skill"
+      ],
+      "source": "Haojae/scipilot-figure-skill",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add JeffLi1993/seo-audit-skill --skill seo-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "seo-audit"
+      ],
+      "source": "JeffLi1993/seo-audit-skill",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add JeffLi1993/seo-audit-skill --skill seo-audit-full -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "seo-audit-full"
+      ],
+      "source": "JeffLi1993/seo-audit-skill",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "complexity-optimizer"
@@ -585,6 +635,16 @@
       "trustTier": "curated-trust-gated"
     },
     {
+      "command": "npx skills add Nutlope/hallmark --skill hallmark -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "hallmark"
+      ],
+      "source": "Nutlope/hallmark",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add P4nda0s/reverse-skills --skill rev-frida --list",
       "skills": [
         "reverse-skills"
@@ -636,6 +696,16 @@
       "trustTier": "curated-trust-gated"
     },
     {
+      "command": "npx skills add PleasePrompto/notebooklm-skill --skill notebooklm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "notebooklm"
+      ],
+      "source": "PleasePrompto/notebooklm-skill",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add Pythoughts-labs/designer-skill --skill raster-logo-svg -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "raster-logo-svg"
@@ -656,6 +726,116 @@
       "trustTier": "curated-trust-gated"
     },
     {
+      "command": "npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "depth-estimation"
+      ],
+      "source": "SharpAI/DeepCamera",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add TanStack/cli --skill add-addons-existing-app -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "add-addons-existing-app"
+      ],
+      "source": "TanStack/cli",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add TanStack/cli --skill choose-ecosystem-integrations -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "choose-ecosystem-integrations"
+      ],
+      "source": "TanStack/cli",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add TanStack/cli --skill create-app-scaffold -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "create-app-scaffold"
+      ],
+      "source": "TanStack/cli",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add TanStack/cli --skill maintain-custom-addons-dev-watch -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "maintain-custom-addons-dev-watch"
+      ],
+      "source": "TanStack/cli",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add TanStack/cli --skill query-docs-library-metadata -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "query-docs-library-metadata"
+      ],
+      "source": "TanStack/cli",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add Weizhena/Deep-Research-skills --skill research -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "deep-research-workflow"
+      ],
+      "source": "Weizhena/Deep-Research-skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add Weizhena/Deep-Research-skills --skill research-add-fields -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "research-add-fields"
+      ],
+      "source": "Weizhena/Deep-Research-skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add Weizhena/Deep-Research-skills --skill research-add-items -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "research-add-items"
+      ],
+      "source": "Weizhena/Deep-Research-skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add Weizhena/Deep-Research-skills --skill research-deep -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "research-deep"
+      ],
+      "source": "Weizhena/Deep-Research-skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add Weizhena/Deep-Research-skills --skill research-report -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "research-report"
+      ],
+      "source": "Weizhena/Deep-Research-skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add WordPress/agent-skills --skill wpds -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "wpds"
@@ -671,10 +851,59 @@
         "best-practices",
         "core-web-vitals",
         "performance",
-        "seo",
         "web-quality-audit"
       ],
       "source": "addyosmani/web-quality-skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add andrewgleave/skills --skill 5-steps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "5-steps"
+      ],
+      "source": "andrewgleave/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add andrewgleave/skills --skill cleanse -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "cleanse"
+      ],
+      "source": "andrewgleave/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "critical-reasoning"
+      ],
+      "source": "andrewgleave/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add andrewgleave/skills --skill navvy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "navvy"
+      ],
+      "source": "andrewgleave/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add andrewgleave/skills --skill writing-for-interfaces -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "writing-for-interfaces"
+      ],
+      "source": "andrewgleave/skills",
       "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
@@ -834,6 +1063,16 @@
       "trustTier": "curated-trust-gated"
     },
     {
+      "command": "npx skills add better-auth/better-icons --skill better-icons -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "better-icons"
+      ],
+      "source": "better-auth/better-icons",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add better-auth/skills --skill better-auth-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "better-auth-best-practices"
@@ -899,6 +1138,16 @@
       "trustTier": "curated-trust-gated"
     },
     {
+      "command": "npx skills add conorluddy/ios-simulator-skill --skill ios-simulator-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "ios-simulator-skill"
+      ],
+      "source": "conorluddy/ios-simulator-skill",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add coreyhaines31/marketingskills --skill ai-seo --skill schema --skill product-marketing --skill ab-testing --skill signup --skill onboarding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "ab-testing",
@@ -924,8 +1173,7 @@
         "cro",
         "emails",
         "marketing-psychology",
-        "programmatic-seo",
-        "seo-audit"
+        "programmatic-seo"
       ],
       "source": "coreyhaines31/marketingskills",
       "sourceType": "curated-external",
@@ -1064,6 +1312,16 @@
       "trustTier": "curated-trust-gated"
     },
     {
+      "command": "npx skills add eugeniughelbur/obsidian-second-brain --skill obsidian-second-brain -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "obsidian-second-brain"
+      ],
+      "source": "eugeniughelbur/obsidian-second-brain",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add expo/skills --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "expo-cicd-workflows",
@@ -1100,6 +1358,16 @@
         "flutter-setup-localization"
       ],
       "source": "flutter/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add gadicc/yahoo-finance2 --skill yahoo-finance2 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "yahoo-finance2"
+      ],
+      "source": "gadicc/yahoo-finance2",
       "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
@@ -1242,6 +1510,16 @@
       "trustTier": "needs-inspection"
     },
     {
+      "command": "npx skills add hardikpandya/stop-slop --skill stop-slop -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "stop-slop"
+      ],
+      "source": "hardikpandya/stop-slop",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform-search-import --skill aws-ami-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "aws-ami-builder",
@@ -1270,6 +1548,16 @@
         "vue-best-practices"
       ],
       "source": "hyf0/vue-skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add imxv/Pretty-mermaid-skills --skill pretty-mermaid -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "pretty-mermaid"
+      ],
+      "source": "imxv/Pretty-mermaid-skills",
       "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
@@ -1447,6 +1735,16 @@
       "trustTier": "needs-inspection"
     },
     {
+      "command": "npx skills add meodai/skill.color-expert --skill color-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "color-expert"
+      ],
+      "source": "meodai/skill.color-expert",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add mhaviv/Swift-FocusEngine-Agent-Skill --skill swift-focusengine-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "swift-focusengine-pro"
@@ -1517,6 +1815,16 @@
       "trustTier": "curated-trust-gated"
     },
     {
+      "command": "npx skills add n0an/Widgets-Agent-Skill --skill widgets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "widgets"
+      ],
+      "source": "n0an/Widgets-Agent-Skill",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add neondatabase/agent-skills --skill neon-functions --skill neon-ai-gateway --skill claimable-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "claimable-postgres",
@@ -1551,6 +1859,26 @@
       "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add nicobailon/visual-explainer --skill visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "visual-explainer"
+      ],
+      "source": "nicobailon/visual-explainer",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add ningzimu/codex-ppt-skill --skill codex-ppt -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "codex-ppt"
+      ],
+      "source": "ningzimu/codex-ppt-skill",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
     },
     {
       "command": "npx skills add nrwl/nx-ai-agents-config --skill nx-generate --skill link-workspace-packages -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -1591,6 +1919,36 @@
       "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add pedronauck/skills --skill agent-md-refactor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "agent-md-refactor"
+      ],
+      "source": "pedronauck/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add pedronauck/skills --skill architecture-diagram -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "architecture-diagram"
+      ],
+      "source": "pedronauck/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add pedronauck/skills --skill golang-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "golang-pro"
+      ],
+      "source": "pedronauck/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
     },
     {
       "command": "npx skills add planetscale/database-skills --skill postgres --skill mysql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -1838,6 +2196,16 @@
       "trustTier": "needs-inspection"
     },
     {
+      "command": "npx skills add solana-foundation/solana-dev-skill --skill solana-dev -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "solana-dev"
+      ],
+      "source": "solana-foundation/solana-dev-skill",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "upgrade-stripe"
@@ -1848,9 +2216,18 @@
       "trustTier": "curated-trust-gated"
     },
     {
-      "command": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --skill supabase -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "command": "npx skills add supabase/agent-skills --skill supabase -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
-        "supabase",
+        "supabase"
+      ],
+      "source": "supabase/agent-skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
         "supabase-postgres-best-practices"
       ],
       "source": "supabase/agent-skills",
@@ -1924,6 +2301,26 @@
       "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add truongduy2611/app-store-preflight-skills --skill app-store-preflight-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "app-store-preflight-skills"
+      ],
+      "source": "truongduy2611/app-store-preflight-skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add tt-a1i/archify --skill archify -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "archify"
+      ],
+      "source": "tt-a1i/archify",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
     },
     {
       "command": "npx skills add twostraws/Swift-Concurrency-Agent-Skill --skill swift-concurrency-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -2085,6 +2482,26 @@
       "source": "yaklang/hack-skills",
       "sourceType": "curated-external",
       "status": "catalog-reference",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add yctimlin/mcp_excalidraw --skill excalidraw-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "excalidraw-skill"
+      ],
+      "source": "yctimlin/mcp_excalidraw",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add yujiachen-y/codebase-recon-skill --skill codebase-recon -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "codebase-recon"
+      ],
+      "source": "yujiachen-y/codebase-recon-skill",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
     {

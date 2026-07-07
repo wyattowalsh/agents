@@ -66,6 +66,7 @@ def is_live_install_command(command: Any) -> bool:
 
 def render_promoted_row(override: dict[str, Any]) -> str:
     skill_name = str(override["skill_name"])
+    install_skill_name = str(override.get("install_skill_name") or skill_name)
     raw_indexes = ", ".join(str(index) for index in override.get("raw_indexes", []))
     executed_commands = [str(command) for command in override.get("executed_commands", [])]
     installed_paths = [str(path) for path in override.get("installed_paths", [])]
@@ -80,6 +81,7 @@ def render_promoted_row(override: dict[str, Any]) -> str:
         f"source: {yaml_string(override.get('source_name', ''))}",
         f"install_source: {yaml_string(override.get('install_source', ''))}",
         f"install_command: {yaml_string(override.get('install_command', ''))}",
+        f"install_skill_name: {yaml_string(install_skill_name)}",
         f"status: {yaml_string(override.get('status', 'install-now-after-trust-gate'))}",
         f"trust_tier: {yaml_string(override.get('trust_tier', 'curated-trust-gated'))}",
         f"provenance_status: {yaml_string(override.get('provenance_status', 'verified-install-command'))}",
@@ -119,7 +121,8 @@ def render_promoted_row(override: dict[str, Any]) -> str:
         "",
         f"- Raw indexes covered: {raw_indexes}",
         f"- Normalized URL: [{override.get('normalized_url', '')}]({override.get('normalized_url', '')})",
-        f"- Selected skill: `{skill_name}`",
+        f"- Catalog skill id: `{skill_name}`",
+        f"- Upstream install selector: `{install_skill_name}`",
         f"- Install command: `{override.get('install_command', '')}`",
         f"- Inspected commit SHA: `{override.get('audited_head', 'unresolved')}`",
         f"- License status: `{override.get('license', 'unresolved')}`",

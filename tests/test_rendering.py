@@ -174,6 +174,27 @@ class TestRenderSkillPage:
         assert "| Source Type | `curated-external` |" in result
         assert "Trust Tier" in result
 
+    def test_curated_external_header_uses_upstream_install_selector(self, tmp_repo):
+        node = _make_node(
+            "skill",
+            id="deep-research-workflow",
+            source="curated-external",
+            body="",
+            source_path="docs/src/authoring/skills/deep-research-workflow.mdx",
+            metadata={
+                "_is_stub": True,
+                "_curated_status": "install-now-after-trust-gate",
+                "_skills_install_command": (
+                    "npx skills add Weizhena/Deep-Research-skills --skill research -y -g"
+                ),
+            },
+        )
+
+        result = render_skill_page(node, [], [node])
+
+        assert 'usage="/research"' in result
+        assert 'usage="/deep-research-workflow"' not in result
+
     def test_curated_external_enriched_stub_uses_harness_trust_structured_research_h2s(self, tmp_repo, monkeypatch):
         """Curated-external stubs with research cache render harness/trust H2 + parsed research as H2s
         (never the single research Aside) and update provenance text for enriched stubs.

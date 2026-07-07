@@ -18,6 +18,7 @@ from wagents.site_model import (
     render_visual_assets_css,
     site_data,
     trust_badge_for_tier,
+    use_command_for_catalog_row,
 )
 
 
@@ -186,6 +187,12 @@ def test_external_skill_rows_preserve_structured_audit_fields():
     assert row["liveActionRisk"] == "No live actions."
     assert row["dedupeNotes"] == "No repo-owned overlap."
     assert row["unsupportedTargetAgents"] == ["grok"]
+
+
+def test_external_skill_use_command_prefers_install_selector():
+    command = "npx skills add owner/repo --skill upstream-research -y -g -a codex"
+
+    assert use_command_for_catalog_row(command, "curated-research") == "/upstream-research"
 
 
 def test_installed_local_inventory_rows_use_public_safe_source_labels():
