@@ -777,6 +777,64 @@ def test_promotion_validator_detects_unique_packet_install_drift(tmp_path, monke
     assert "a packet unexpectedly emitted an install command" in result["errors"]
 
 
+def test_promotion_validator_detects_synchronized_unique_packet_identity_drift(tmp_path, monkeypatch):
+    promoter = _prepare_promoter_validation_fixture(tmp_path, monkeypatch)
+    unique = promoter.load_json(promoter.UNIQUE_PACKET_FILE)
+    unique["packets"] = copy.deepcopy(unique["packets"])
+    unique["packets"][0]["packet_id"] = "N999"
+    matrix = promoter.build_gate_matrix(unique["packets"])
+    preview = promoter.build_install_preview(unique["packets"])
+    _write_promoter_json(tmp_path, promoter.UNIQUE_PACKET_FILE, unique)
+    _write_promoter_json(tmp_path, promoter.GATE_MATRIX_FILE, matrix)
+    _write_promoter_json(tmp_path, promoter.INSTALL_PREVIEW_FILE, preview)
+    (tmp_path / promoter.SUMMARY_FILE).write_text(
+        promoter.promotion_gate_summary_text(matrix, preview),
+        encoding="utf-8",
+    )
+
+    result = promoter.validate_outputs()
+
+    assert result["ok"] is False
+    assert "unique packet target rows do not match normalized target order" in result["errors"]
+
+
+def test_promotion_validator_detects_missing_raw_required_field_without_crashing(tmp_path, monkeypatch):
+    promoter = _prepare_promoter_validation_fixture(tmp_path, monkeypatch)
+    raw = promoter.load_json(promoter.RAW_PACKET_FILE)
+    raw["packets"][0].pop("normalized_url")
+    _write_promoter_json(tmp_path, promoter.RAW_PACKET_FILE, raw)
+
+    result = promoter.validate_outputs()
+
+    assert result["ok"] is False
+    assert any(error.startswith("raw packets missing required fields") for error in result["errors"])
+    assert "raw packets do not cover every normalized target" in result["errors"]
+
+
+def test_promotion_validator_detects_missing_unique_target_without_crashing(tmp_path, monkeypatch):
+    promoter = _prepare_promoter_validation_fixture(tmp_path, monkeypatch)
+    unique = promoter.load_json(promoter.UNIQUE_PACKET_FILE)
+    unique["packets"][0].pop("normalized_url")
+    _write_promoter_json(tmp_path, promoter.UNIQUE_PACKET_FILE, unique)
+
+    result = promoter.validate_outputs()
+
+    assert result["ok"] is False
+    assert "unique packets do not cover every normalized target" in result["errors"]
+    assert "gate matrix target rows do not match unique packet order" in result["errors"]
+
+
+def test_promotion_validator_detects_non_object_matrix_without_crashing(tmp_path, monkeypatch):
+    promoter = _prepare_promoter_validation_fixture(tmp_path, monkeypatch)
+    _write_promoter_json(tmp_path, promoter.GATE_MATRIX_FILE, [])
+
+    result = promoter.validate_outputs()
+
+    assert result["ok"] is False
+    assert "gate matrix payload is not an object" in result["errors"]
+    assert "gate matrix trust gates drifted" in result["errors"]
+
+
 def test_safe_wave_source_list_evidence_is_list_only() -> None:
     evidence = _load_json(MANIFEST_DIR / "safe-wave-source-list-evidence.json")
 

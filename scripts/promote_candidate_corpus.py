@@ -504,6 +504,37 @@ def expected_preview_partitions(
     return covered, blocked
 
 
+def _packet_rows(payload: Any) -> list[dict[str, Any]]:
+    packets = payload.get("packets", []) if isinstance(payload, dict) else []
+    if not isinstance(packets, list):
+        return []
+    return [packet for packet in packets if isinstance(packet, dict)]
+
+
+def _safe_count(value: Any) -> int:
+    if isinstance(value, bool):
+        return 0
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
+
+
+def expected_unique_packet_keys(
+    raw_packets: list[dict[str, Any]], normalized_targets: list[Any]
+) -> list[tuple[str, Any, tuple[Any, ...]]]:
+    raw_indexes_by_url: dict[str, list[Any]] = defaultdict(list)
+    for packet in raw_packets:
+        normalized_url = packet.get("normalized_url")
+        if isinstance(normalized_url, str):
+            raw_indexes_by_url[normalized_url.lower()].append(packet.get("raw_index"))
+    expected = []
+    for index, normalized_url in enumerate(normalized_targets, 1):
+        raw_indexes = raw_indexes_by_url.get(str(normalized_url).lower(), [])
+        expected.append((f"N{index:03d}", normalized_url, tuple(sorted(raw_indexes))))
+    return expected
+
+
 def promotion_gate_summary_text(matrix: dict[str, Any], preview: dict[str, Any]) -> str:
     covered_count = matrix["summary"].get("covered_by_existing_installable_catalog", 0)
     lines = [
@@ -570,10 +601,34 @@ def validate_outputs() -> dict[str, Any]:
     normalized = load_json("normalized-urls.json")
 
     errors: list[str] = []
-    required = set(schema["required_packet_fields"])
-    raw_packets = raw.get("packets", []) if isinstance(raw, dict) else []
-    unique_packets = unique.get("packets", []) if isinstance(unique, dict) else []
-    matrix_items = matrix.get("items", []) if isinstance(matrix, dict) else []
+    required = set(schema.get("required_packet_fields", [])) if isinstance(schema, dict) else set()
+    raw_packet_rows = raw.get("packets", []) if isinstance(raw, dict) else []
+    unique_packet_rows = unique.get("packets", []) if isinstance(unique, dict) else []
+    matrix_item_rows = matrix.get("items", []) if isinstance(matrix, dict) else []
+    raw_packets = _packet_rows(raw)
+    unique_packets = _packet_rows(unique)
+    if isinstance(matrix_item_rows, list):
+        matrix_items = [item for item in matrix_item_rows if isinstance(item, dict)]
+    else:
+        matrix_items = []
+    preview_payload = preview if isinstance(preview, dict) else {}
+    normalized_targets = normalized.get("unique_targets", []) if isinstance(normalized, dict) else []
+    if not isinstance(normalized_targets, list):
+        normalized_targets = []
+    if not isinstance(raw, dict):
+        errors.append("raw packets payload is not an object")
+    if not isinstance(unique, dict):
+        errors.append("unique packets payload is not an object")
+    if not isinstance(matrix, dict):
+        errors.append("gate matrix payload is not an object")
+    if not isinstance(preview, dict):
+        errors.append("live install preview payload is not an object")
+    if not isinstance(raw_packet_rows, list) or len(raw_packets) != len(raw_packet_rows):
+        errors.append("raw packets payload contains non-object rows")
+    if not isinstance(unique_packet_rows, list) or len(unique_packets) != len(unique_packet_rows):
+        errors.append("unique packets payload contains non-object rows")
+    if not isinstance(matrix_item_rows, list) or len(matrix_items) != len(matrix_item_rows):
+        errors.append("gate matrix contains non-object rows")
     if len(raw_packets) != EXPECTED_RAW_COUNT:
         errors.append(f"raw packet count {len(raw_packets)} != {EXPECTED_RAW_COUNT}")
     if len(unique_packets) != EXPECTED_UNIQUE_COUNT:
@@ -587,21 +642,27 @@ def validate_outputs() -> dict[str, Any]:
     ]
     if missing_fields:
         errors.append(f"raw packets missing required fields: {missing_fields[:10]}")
-    raw_unique_urls = {packet["normalized_url"] for packet in raw_packets}
-    if raw_unique_urls != set(normalized["unique_targets"]):
+    raw_unique_urls = {packet.get("normalized_url") for packet in raw_packets if packet.get("normalized_url")}
+    if raw_unique_urls != set(normalized_targets):
         errors.append("raw packets do not cover every normalized target")
-    if {packet["normalized_url"] for packet in unique_packets} != set(normalized["unique_targets"]):
+    unique_urls = {packet.get("normalized_url") for packet in unique_packets if packet.get("normalized_url")}
+    if unique_urls != set(normalized_targets):
         errors.append("unique packets do not cover every normalized target")
-    if any(packet["live_install_eligible"] for packet in raw_packets + unique_packets):
+    if any(packet.get("live_install_eligible") for packet in raw_packets + unique_packets):
         errors.append("a packet is unexpectedly live-install eligible")
     if any(packet.get("install_command") for packet in raw_packets + unique_packets):
         errors.append("a packet unexpectedly emitted an install command")
-    if preview.get("command_count") != 0 or preview.get("commands") != []:
+    preview_commands = preview_payload.get("commands", [])
+    if not isinstance(preview_commands, list):
+        preview_commands = []
+    if preview_payload.get("command_count") != 0 or preview_commands != []:
         errors.append("live install preview emitted commands before trust gates")
 
-    summary = matrix.get("summary", {})
-    covered = int(summary.get("covered_by_existing_installable_catalog", 0))
-    blocked = int(summary.get("blocked_until_trust_gates", 0))
+    summary = matrix.get("summary", {}) if isinstance(matrix, dict) else {}
+    if not isinstance(summary, dict):
+        summary = {}
+    covered = _safe_count(summary.get("covered_by_existing_installable_catalog", 0))
+    blocked = _safe_count(summary.get("blocked_until_trust_gates", 0))
     if covered + blocked != EXPECTED_UNIQUE_COUNT:
         errors.append("gate matrix does not account for every unique target")
     if len(matrix_items) != EXPECTED_UNIQUE_COUNT:
@@ -611,6 +672,8 @@ def validate_outputs() -> dict[str, Any]:
     matrix_keys = [promotion_target_key(item) for item in matrix_items]
     if len(set(matrix_keys)) != len(matrix_keys):
         errors.append("gate matrix contains duplicate target rows")
+    if unique_keys != expected_unique_packet_keys(raw_packets, normalized_targets):
+        errors.append("unique packet target rows do not match normalized target order")
     if matrix_keys != unique_keys:
         errors.append("gate matrix target rows do not match unique packet order")
 
@@ -638,35 +701,45 @@ def validate_outputs() -> dict[str, Any]:
     expected_summary = expected_matrix_summary(matrix_items)
     if summary != expected_summary:
         errors.append("gate matrix summary does not match matrix rows")
-    if matrix.get("trust_gates") != TRUST_GATES:
+    if not isinstance(matrix, dict) or matrix.get("trust_gates") != TRUST_GATES:
         errors.append("gate matrix trust gates drifted")
-    if matrix.get("gate_status_counts") != expected_gate_status_counts(matrix_items):
+    if not isinstance(matrix, dict) or matrix.get("gate_status_counts") != expected_gate_status_counts(matrix_items):
         errors.append("gate matrix gate status counts do not match rows")
 
-    if preview.get("command_count") != len(preview.get("commands", [])):
+    if preview_payload.get("command_count") != len(preview_commands):
         errors.append("live install preview command count does not match commands")
     expected_covered, expected_blocked = expected_preview_partitions(unique_packets)
-    if preview.get("covered_existing_target_count") != len(preview.get("covered_existing_targets", [])):
+    covered_existing_targets = preview_payload.get("covered_existing_targets", [])
+    blocked_targets = preview_payload.get("blocked_targets", [])
+    if not isinstance(covered_existing_targets, list):
+        covered_existing_targets = []
+    if not isinstance(blocked_targets, list):
+        blocked_targets = []
+    if preview_payload.get("covered_existing_target_count") != len(covered_existing_targets):
         errors.append("live install preview covered target count does not match rows")
-    if preview.get("blocked_target_count") != len(preview.get("blocked_targets", [])):
+    if preview_payload.get("blocked_target_count") != len(blocked_targets):
         errors.append("live install preview blocked target count does not match rows")
-    if preview.get("covered_existing_targets") != expected_covered:
+    if covered_existing_targets != expected_covered:
         errors.append("live install preview covered targets do not match unique packets")
-    if preview.get("blocked_targets") != expected_blocked:
+    if blocked_targets != expected_blocked:
         errors.append("live install preview blocked targets do not match unique packets")
 
     try:
         summary_text = (MANIFEST_DIR / SUMMARY_FILE).read_text(encoding="utf-8")
     except OSError:
         summary_text = None
-    if summary_text != promotion_gate_summary_text(matrix, preview):
+    try:
+        expected_summary_text = promotion_gate_summary_text(matrix, preview_payload)
+    except (KeyError, TypeError):
+        expected_summary_text = None
+    if summary_text != expected_summary_text:
         errors.append("promotion gate summary markdown is stale")
 
     return {
         "raw": len(raw_packets),
         "unique": len(unique_packets),
         "matrix_items": len(matrix_items),
-        "command_count": preview.get("command_count"),
+        "command_count": preview_payload.get("command_count"),
         "ok": not errors,
         "errors": errors,
     }
