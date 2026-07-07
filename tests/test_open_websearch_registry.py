@@ -25,7 +25,7 @@ def test_open_websearch_server_entry(registry: dict) -> None:
     server = registry["servers"]["open-websearch"]
     assert server["transport"] == "stdio"
     assert server["command"] == "bash"
-    assert server["args"] == ["${REPO_ROOT}/scripts/mcphub/open-websearch-stdio.sh"]
+    assert server["args"] == ["${REPO_ROOT}/scripts/mcphub/open-websearch-stdio.sh"]  # noqa: RUF027
     assert server["enabled"] is True
     assert server["tools_allow_all"] is True
 

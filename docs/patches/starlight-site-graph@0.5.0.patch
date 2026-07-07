@@ -14,3 +14,38 @@ index 1111111..2222222 100644
 +		)
 +		.default(() => new Map()),
  }).partial();
+diff --git a/integration.ts b/integration.ts
+index 3333333..4444444 100644
+--- a/integration.ts
++++ b/integration.ts
+@@ -76,10 +76,9 @@ export default defineIntegration({
+ 								settings.sitemapConfig.sitemap = builder.process().toSitemap();
+ 								logger.info('Finished retrieving links from Markdown content');
+ 							} catch (e) {
++								settings.sitemapConfig.sitemap = builder.process().toSitemap();
+ 								logger.error('Failed to retrieve links from Markdown content, reason: ' + e);
+-								// TODO: Should virtual config always be added regardless of correct MD content generation?
+-								//		Failsafe?
+-								return;
++								logger.warn('Continuing with a partial site graph sitemap so virtual modules remain available.');
+ 							}
+ 						}
+ 					} else {
+diff --git a/sitemap/build.ts b/sitemap/build.ts
+index 5555555..6666666 100644
+--- a/sitemap/build.ts
++++ b/sitemap/build.ts
+@@ -115,7 +115,12 @@ export class SiteMapBuilder {
+ 		for await (const p of walk(folder)) {
+ 			if (path.extname(p) === '.md' || path.extname(p) === '.mdx' || path.extname(p) === '.mdoc') {
+ 				if (firstMatchingPattern(p, patterns, false)) {
+-					await this.addMDContent(p);
++					try {
++						await this.addMDContent(p);
++					} catch (e) {
++						if ((e as NodeJS.ErrnoException).code === 'ENOENT') continue;
++						throw e;
++					}
+ 				}
+ 			}
+ 		}

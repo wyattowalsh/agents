@@ -11,6 +11,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   name="cross-agent-install-smoke"
   description="Phase 1 dry-run JSON smoke and phase 2 temp-HOME install smoke for skills sync. Use when validating cross-harness install parity. NOT for live --apply installs."
   installCommand={`npx skills add github:wyattowalsh/agents --skill cross-agent-install-smoke -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  installLabel="Install"
   usage="/cross-agent-install-smoke [phase]"
   badges={[{ text: "cross-agent-install-smoke", variant: "note" }, { text: "331 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
@@ -73,7 +74,7 @@ Validate additive skills sync without mutating live harness installs.
 <details class="source-disclosure">
 <summary>View Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml
 ---
 name: cross-agent-install-smoke
 description: >-

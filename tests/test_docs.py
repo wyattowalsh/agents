@@ -232,7 +232,9 @@ class TestWriteCatalogIndexes:
         ]
         write_catalog_external_index(nodes)
         text = (content_dir / "skills" / "catalog" / "external" / "index.mdx").read_text()
-        assert "<CatalogBrowser skills={externalSkillIndex} />" in text
+        assert "externalSkillIndex as externalSkillBrowserRows" in text
+        assert "<CatalogBrowser skills={externalSkillBrowserRows} />" in text
+        assert "generated-skill-indexes.mjs" in text
         assert "CatalogSkillFilter" not in text
         assert "<LinkCard" not in text
 
@@ -243,7 +245,11 @@ class TestWriteCatalogIndexes:
         text = (content_dir / "skills" / "install.mdx").read_text()
         assert "Skill Install Scripts" in text
         assert "canonical portable install path is `npx skills add`" in text
-        assert '<InstallScripts src="/generated-skill-indexes/install-scripts.json" />' in text
+        assert "import { skillInstallScripts } from '../../../generated-site-data.mjs';" in text
+        assert (
+            '<InstallScripts src="/generated-skill-indexes/install-scripts.json" scripts={skillInstallScripts} />'
+            in text
+        )
 
 
 class TestDocsGenerate:
@@ -768,6 +774,7 @@ def test_docs_generate_check_does_not_rewrite_research_manifest(tmp_repo, monkey
     public_indexes.mkdir(parents=True, exist_ok=True)
 
     (docs_src / "generated-site-data.mjs").write_text("site", encoding="utf-8")
+    (docs_src / "generated-skill-indexes.mjs").write_text("indexes", encoding="utf-8")
     (docs_src / "generated-sidebar.mjs").write_text("sidebar", encoding="utf-8")
     (docs_src / "generated-visual-assets.css").write_text("css", encoding="utf-8")
     (public_indexes / "install-scripts.json").write_text("[]\n", encoding="utf-8")
@@ -781,9 +788,11 @@ def test_docs_generate_check_does_not_rewrite_research_manifest(tmp_repo, monkey
     monkeypatch.setattr(docs_mod, "_has_mcp_overview_page", lambda: False)
     monkeypatch.setattr(docs_mod, "site_data", lambda *args, **kwargs: {"skillInstallScripts": []})
     monkeypatch.setattr(docs_mod, "render_site_data_module", lambda data: "site")
+    monkeypatch.setattr(docs_mod, "render_skill_indexes_module", lambda data: "indexes")
     monkeypatch.setattr(docs_mod, "render_sidebar_module", lambda nodes: "sidebar")
     monkeypatch.setattr(docs_mod, "render_visual_assets_css", lambda: "css")
     monkeypatch.setattr(docs_mod, "render_research_manifest", lambda: "research")
+    monkeypatch.setattr(docs_mod, "reports_stale_reasons", lambda: [])
     monkeypatch.setattr("wagents.skill_research.MANIFEST_PATH", manifest)
     monkeypatch.setattr(
         docs_mod,

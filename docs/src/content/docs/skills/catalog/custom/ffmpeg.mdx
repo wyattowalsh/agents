@@ -11,6 +11,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   name="ffmpeg"
   description="Probe, trim, transcode, concat, and extract local A/V with ffmpeg/ffprobe. Use when converting or inspecting media files. NOT for AI image generation (draw-thing) or UI design (design)."
   installCommand={`npx skills add github:wyattowalsh/agents --skill ffmpeg -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  installLabel="Install"
   usage="/ffmpeg &lt;doctor|probe|trim|transcode|concat|extract-audio|thumbnail|gif&gt; [paths]"
   badges={[{ text: "ffmpeg", variant: "note" }, { text: "1248 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
@@ -112,7 +113,7 @@ CLI skill for **local** audio/video inspection and transformation via `ffmpeg` a
 <details class="source-disclosure">
 <summary>View Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml
 ---
 name: ffmpeg
 description: >-

@@ -1,0 +1,64 @@
+---
+name: "candidate-corpus-017-cli"
+description: "Trust-gated July 2026 candidate corpus entry for TanStack/cli. Catalog metadata only; do not install, vendor, adapt, or promote until source-list, license, security, and docs-steward review pass."
+title: "Candidate Corpus 017 Cli"
+source_kind: "curated-external"
+source: "TanStack/cli"
+install_source: "https://github.com/TanStack/cli"
+status: "global-only-or-avoid"
+trust_tier: "global-only-or-avoid"
+provenance_status: "explicit-unresolved"
+sync_kind: "none"
+target_agents: []
+source_url: "https://github.com/TanStack/cli"
+selector_mode: "unresolved"
+unresolved_reason: "July 2026 candidate corpus intake only; source-list evidence, license review, security review, and docs-steward promotion gates are still required."
+audit_date: "2026-07-06"
+audited_head: "12c31dfb429ec057af9ddc5f85f492b0b0b22979"
+pin_policy: "pin-before-install"
+no_pin_rationale: "No install command is published until the candidate passes promotion review."
+source_list_evidence: "not-run"
+executable_surface: "review-required"
+credential_behavior: "placeholder-only; credentials must remain user-owned and uncommitted"
+network_access: "public Git metadata only during corpus intake"
+file_access: "no candidate files installed or executed during corpus intake"
+live_action_risk: "Executable/tool surface requires script and dependency review."
+risk_category: "executable-surface-review-required"
+dedupe_notes: "Raw indexes covered: 17"
+notes: "Trust-gated July 2026 candidate corpus entry for TanStack/cli. Catalog metadata only; do not install, vendor, adapt, or promote until source-list, license, security, and docs-steward review pass."
+risk_notes: "Executable/tool surface requires script and dependency review."
+promotion_policy: "Keep non-installable until source-list, license, security, attribution, auth, and docs-steward gates pass."
+provenance_evidence: "Generated from planning/manifests/candidate-corpus-jul2026 records; no npx skills add --list evidence captured yet."
+---
+
+{/* GENERATED-CANDIDATE-CORPUS-JUL2026: source=planning/manifests/candidate-corpus-jul2026 */}
+
+# Candidate Corpus 017 Cli
+
+This row adds `TanStack/cli` to the curated external catalog as a trust-gated July 2026 candidate.
+
+It is intentionally non-installable. Do not publish an install command, run candidate code, copy source content, or promote this candidate until the source-list, license, security, attribution, auth, and docs-steward gates pass.
+
+## Intake
+
+- Raw indexes covered: 17
+- Normalized URL: [https://github.com/TanStack/cli](https://github.com/TanStack/cli)
+- Artifact types found: `CLI/tool`
+- Intake decision: `reference_only`
+- Risk tier: `executable-surface-review-required`
+- Inspected commit SHA: `12c31dfb429ec057af9ddc5f85f492b0b0b22979`
+- License status: `MIT`
+
+## Promotion Gates
+
+- Run read-only source-list discovery, for example `npx skills add <source> --list`, when applicable.
+- Verify license compatibility and attribution before adapting any content.
+- Review hooks, scripts, commands, allowed tools, dependencies, network calls, and credential handling.
+- Route MCP servers, plugins, CLIs, libraries, and broad collections through their native repo surfaces.
+- Update docs-steward surfaces from source after any promotion decision.
+
+## Safety Notes
+
+- Executable/tool surface requires script and dependency review.
+- Auth required: `true`
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.

@@ -1,14 +1,111 @@
 ---
 interface Props {
   src: string;
+  scripts?: InstallScriptsData;
 }
 
-const { src } = Astro.props;
+interface InstallCommandItem {
+  command?: string;
+  source?: string;
+  status?: string;
+  trustTier?: string;
+  skills?: string[];
+}
+
+interface InstallScriptsData {
+  customAll?: string;
+  customIndividual?: InstallCommandItem[];
+  externalCommands?: InstallCommandItem[];
+  installedCommands?: InstallCommandItem[];
+  syncDryRun?: string;
+  syncApply?: string;
+}
+
+interface CommandBlock {
+  command: string;
+  title: string;
+  note?: string;
+}
+
+const { src, scripts } = Astro.props;
+
+const compact = (values: Array<string | undefined>) => values.filter(Boolean) as string[];
+const noteForCommand = (item: InstallCommandItem) =>
+  compact([
+    item.status,
+    item.trustTier,
+    Array.isArray(item.skills) && item.skills.length ? `Installs: ${item.skills.slice().sort().join(', ')}` : undefined,
+  ]).join(' | ');
+
+const customCommands = Array.isArray(scripts?.customIndividual)
+  ? scripts.customIndividual.map((item) => item.command).filter(Boolean).join('\n')
+  : '';
+const externalCommands = [...(scripts?.externalCommands ?? []), ...(scripts?.installedCommands ?? [])];
+const commandGroups: Array<{ heading: string; commands: CommandBlock[] }> = [
+  {
+    heading: 'Custom Skills',
+    commands: scripts?.customAll ? [{ command: scripts.customAll, title: 'Install all custom skills' }] : [],
+  },
+  {
+    heading: 'Reconcile Repo + External Skills',
+    commands:
+      scripts?.syncDryRun || scripts?.syncApply
+        ? [
+            {
+              command: compact([scripts?.syncDryRun, scripts?.syncApply]).join('\n'),
+              title: 'Preview or apply repo reconciliation',
+            },
+          ]
+        : [],
+  },
+  {
+    heading: 'External Skill Commands',
+    commands: externalCommands
+      .filter((item) => item.command)
+      .map((item) => ({
+        command: String(item.command),
+        title: String(item.source ?? 'External skill command'),
+        note: noteForCommand(item),
+      })),
+  },
+  {
+    heading: 'Individual Custom Skills',
+    commands: customCommands ? [{ command: customCommands, title: 'Install individual custom skills' }] : [],
+  },
+];
+const hasServerScripts = commandGroups.some((group) => group.commands.length > 0);
 ---
 
 <section class="install-scripts" data-install-scripts data-install-scripts-src={src}>
-  <p class="skill-catalog__count" data-install-scripts-status>Loading install scripts...</p>
-  <div data-install-scripts-root></div>
+  <p class="skill-catalog__count" data-install-scripts-status>
+    {hasServerScripts ? 'Install scripts ready.' : 'Loading install scripts...'}
+  </p>
+  <div data-install-scripts-root>
+    {commandGroups.map((group) => group.commands.length > 0 && (
+      <>
+        <h2>{group.heading}</h2>
+        {group.commands.map((item) => (
+          <section class="install-command">
+            <div class="install-command__header">
+              <div>
+                <p>{item.title}</p>
+                {item.note && <span>{item.note}</span>}
+              </div>
+              <button type="button" class="install-command__copy" aria-label={`Copy install command: ${item.title}`}>
+                Copy
+              </button>
+            </div>
+            <pre class="agents-scrollbar"><code>{item.command}</code></pre>
+          </section>
+        ))}
+      </>
+    ))}
+  </div>
+  <noscript>
+    <p class="skill-catalog__count">
+      The generated install command JSON is also available at <a href={src}>{src}</a>.
+    </p>
+  </noscript>
 </section>
 
 <script>
@@ -16,6 +113,7 @@ const { src } = Astro.props;
     const src = catalog.getAttribute('data-install-scripts-src');
     const status = catalog.querySelector('[data-install-scripts-status]');
     const root = catalog.querySelector<HTMLElement>('[data-install-scripts-root]');
+    const hasServerContent = root instanceof HTMLElement && root.children.length > 0;
 
     const escapeHtml = (value: unknown) =>
       String(value ?? '').replace(/[&<>"']/g, (char) => {
@@ -36,7 +134,7 @@ const { src } = Astro.props;
             <p>${escapeHtml(title)}</p>
             ${note ? `<span>${escapeHtml(note)}</span>` : ''}
           </div>
-          <button type="button" class="install-command__copy">Copy</button>
+          <button type="button" class="install-command__copy" aria-label="Copy install command: ${escapeHtml(title)}">Copy</button>
         </div>
         <pre class="agents-scrollbar"><code>${escapeHtml(command)}</code></pre>
       </section>`;
@@ -76,7 +174,11 @@ const { src } = Astro.props;
     };
 
     hydrate().catch(() => {
-      if (status) status.textContent = 'Unable to load install scripts.';
+      if (status) {
+        status.textContent = hasServerContent
+          ? 'Using embedded install scripts; unable to refresh generated JSON.'
+          : 'Unable to load install scripts.';
+      }
     });
   });
 </script>

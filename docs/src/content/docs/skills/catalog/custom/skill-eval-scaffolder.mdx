@@ -11,6 +11,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   name="skill-eval-scaffolder"
   description="Scaffold evals/evals.json manifests for repo skills with baseline cases. Use when adding behavioral eval coverage. NOT for live LLM eval execution."
   installCommand={`npx skills add github:wyattowalsh/agents --skill skill-eval-scaffolder -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  installLabel="Install"
   usage="/skill-eval-scaffolder &lt;skill-name&gt; [--apply]"
   badges={[{ text: "skill-eval-scaffolder", variant: "note" }, { text: "208 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
@@ -73,7 +74,7 @@ Create minimal, schema-valid eval manifests for repository skills.
 <details class="source-disclosure">
 <summary>View Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml
 ---
 name: skill-eval-scaffolder
 description: >-

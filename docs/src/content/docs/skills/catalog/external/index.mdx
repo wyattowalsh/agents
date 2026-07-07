@@ -5,7 +5,7 @@ description: Curated and installed external agent skills
 
 import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 import CatalogBrowser from '../../../../../components/CatalogBrowser.astro';
-import { externalSkillIndex } from '../../../../../generated-site-data.mjs';
+import { externalSkillIndex as externalSkillBrowserRows } from '../../../../../generated-skill-indexes.mjs';
 
 External skills are authored in `docs/src/authoring/skills/*.mdx` and emitted to `docs/public/generated-registries/skills-catalog-index.json`. With `--include-installed`, local harness inventory may add rows.
 
@@ -14,11 +14,11 @@ Audit third-party skills before install. Use [review source](/skills/catalog/cus
 </Aside>
 
 <div class="stats-bar">
-  <span class="stat stat-skill">314 External Skills</span>
+  <span class="stat stat-skill">609 External Skills</span>
   <span class="stat stat-installed">134 Install now</span>
-  <span class="stat stat-agent">170 Inspect</span>
+  <span class="stat stat-agent">176 Inspect</span>
 </div>
 
 Use search and lane filters to browse the external catalog without loading every card at once.
 
-<CatalogBrowser skills={externalSkillIndex} />
+<CatalogBrowser skills={externalSkillBrowserRows} />

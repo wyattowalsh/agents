@@ -11,6 +11,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   name="trafilatura"
   description="Extract clean article text and metadata from URLs or HTML with trafilatura CLI. Use for single-page extraction, piped/local HTML, bounded discovery."
   installCommand={`npx skills add github:wyattowalsh/agents --skill trafilatura -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  installLabel="Install"
   usage="/trafilatura &lt;extract|pipe|discover|batch|local|metadata|archived|doctor|help&gt; [target]"
   badges={[{ text: "trafilatura", variant: "note" }, { text: "1343 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
@@ -94,7 +95,7 @@ CLI skill for [trafilatura](https://github.com/adbar/trafilatura): extract main 
 <details class="source-disclosure">
 <summary>View Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml
 ---
 name: trafilatura
 description: >-

@@ -25,7 +25,7 @@ def test_llms_txt_explorer_server_entry(registry: dict) -> None:
     server = registry["servers"]["llms-txt-explorer"]
     assert server["transport"] == "stdio"
     assert server["command"] == "bash"
-    assert server["args"] == ["${REPO_ROOT}/scripts/mcphub/llms-txt-explorer-stdio.sh"]
+    assert server["args"] == ["${REPO_ROOT}/scripts/mcphub/llms-txt-explorer-stdio.sh"]  # noqa: RUF027
     assert server["enabled"] is True
     assert server["tools_allow_all"] is True
 

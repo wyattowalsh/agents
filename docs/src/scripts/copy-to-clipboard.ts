@@ -2,6 +2,29 @@
 
 const COPY_RESET_MS = 1600;
 
+function announceCopyStatus(message: string): void {
+  let status = document.getElementById('agents-copy-status');
+  if (!status) {
+    status = document.createElement('div');
+    status.id = 'agents-copy-status';
+    status.setAttribute('aria-live', 'polite');
+    status.setAttribute('aria-atomic', 'true');
+    Object.assign(status.style, {
+      border: '0',
+      clip: 'rect(0, 0, 0, 0)',
+      height: '1px',
+      margin: '-1px',
+      overflow: 'hidden',
+      padding: '0',
+      position: 'absolute',
+      whiteSpace: 'nowrap',
+      width: '1px',
+    });
+    document.body.append(status);
+  }
+  status.textContent = message;
+}
+
 function resolveCopyText(button: HTMLButtonElement): string {
   const copyId = button.getAttribute('data-copy-command');
   if (copyId) {
@@ -31,8 +54,10 @@ async function copyFromButton(button: HTMLButtonElement): Promise<void> {
   try {
     await navigator.clipboard.writeText(text);
     button.textContent = 'Copied';
+    announceCopyStatus('Copied command to clipboard.');
   } catch {
     button.textContent = 'Copy failed';
+    announceCopyStatus('Copy failed.');
   }
 
   window.setTimeout(() => {

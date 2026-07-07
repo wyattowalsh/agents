@@ -4,7 +4,8 @@ description: Copyable install commands for custom and external skills
 ---
 
 import InstallScripts from '../../../components/InstallScripts.astro';
+import { skillInstallScripts } from '../../../generated-site-data.mjs';
 
 The canonical portable install path is `npx skills add`. `uv run wagents ...` commands are repo-local control-plane commands for validation and reconciliation, not a replacement for Skills CLI installation.
 
-<InstallScripts src="/generated-skill-indexes/install-scripts.json" />
+<InstallScripts src="/generated-skill-indexes/install-scripts.json" scripts={skillInstallScripts} />

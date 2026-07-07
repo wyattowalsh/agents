@@ -1660,6 +1660,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "fastmcp" },
     { name = "jsonschema" },
     { name = "playwright" },
     { name = "pytest" },
@@ -1682,6 +1683,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "fastmcp", specifier = ">=2" },
     { name = "jsonschema", specifier = ">=4.25.1" },
     { name = "playwright", specifier = ">=1.58.0" },
     { name = "pytest", specifier = ">=8" },

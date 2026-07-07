@@ -1,0 +1,22 @@
+---
+name: "hack-skills"
+description: "Curated yaklang/hack-skills offensive-security skill bundle (102 skills). Pentest hybrid canonical web/API/binary source. Trust-gated catalog install only."
+title: "Hack Skills"
+source_kind: "curated-external"
+source: "yaklang/hack-skills"
+install_source: "yaklang/hack-skills"
+status: "catalog-reference"
+trust_tier: "curated-trust-gated"
+provenance_status: "pentest-hybrid-inventory"
+sync_kind: "skills-cli"
+install_command: "npx skills add yaklang/hack-skills --skill sqli-sql-injection --list"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/yaklang/hack-skills"
+notes: "Primary canonical repo for pentest hybrid signal dedup. Install per-skill on demand via pentest lookup_external_slug.py; do not bulk vendor."
+risk_notes: "Offensive-security workflows; operator must hold signed ROE. Some skills cover exploitation techniques — planning-only via repo pentest skill."
+promotion_policy: "Catalog reference only; indexed in planning/research-lock/pentest-external-skill-index.json."
+provenance_evidence: "pentest-hybrid-inventory/hack-skills.json; MIT license; 102 skills enumerated via npx skills add --list."
+selector_mode: "resolved"
+---
+
+Curated external bundle referenced by the repo-owned `pentest` skill hybrid index. Canonical slugs for SQLi, XSS, JWT, cloud, and related signals resolve to `hack-skills/*` entries first.

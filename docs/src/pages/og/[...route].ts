@@ -1,8 +1,8 @@
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import { OGImageRoute } from 'astro-og-canvas';
 import { visualAssets } from '../../generated-site-data.mjs';
 
-const docs = await getCollection('docs');
+const docs = (await getCollection('docs')) as CollectionEntry<'docs'>[];
 const visualAssetById = Object.fromEntries(visualAssets.map((asset) => [asset.id, asset]));
 const localAssetPath = (src: string) => (src.startsWith('/src/') ? `.${src}` : `./public${src}`);
 
@@ -10,8 +10,8 @@ const pages = Object.fromEntries(
   docs.map(({ id, data }) => [id, { title: data.title, description: data.description || '' }])
 );
 
-export const { GET } = await OGImageRoute({
-  param: 'route',
+export const prerender = true;
+export const { getStaticPaths, GET } = await OGImageRoute({
   pages,
   getImageOptions: (_path, page) => ({
     title: page.title,

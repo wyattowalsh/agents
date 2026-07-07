@@ -1,0 +1,22 @@
+---
+name: "ctf-skills-bundle"
+description: "Curated ljagiello/ctf-skills dispatcher bundle (11 skills). Pentest hybrid CTF tier routes; lab scope only — not production ROE pentest."
+title: "CTF Skills Bundle"
+source_kind: "curated-external"
+source: "ljagiello/ctf-skills"
+install_source: "ljagiello/ctf-skills"
+status: "catalog-reference"
+trust_tier: "curated-trust-gated"
+provenance_status: "pentest-hybrid-inventory"
+sync_kind: "skills-cli"
+install_command: "npx skills add ljagiello/ctf-skills --skill solve-challenge --list"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/ljagiello/ctf-skills"
+notes: "Repo-level bundle reference for pentest hybrid index; per-skill ctf-* catalog rows exist separately."
+risk_notes: "CTF/lab offensive workflows only; separate installer may invoke package managers — dry-run before apply."
+promotion_policy: "Catalog reference; pentest redirects production work to signed ROE planning."
+provenance_evidence: "pentest-hybrid-inventory/ctf-skills.json; individual ctf-* authoring rows audited separately."
+selector_mode: "resolved"
+---
+
+Curated external CTF bundle referenced by pentest hybrid signals `ctf-web-lab` and `ctf-dispatcher`.

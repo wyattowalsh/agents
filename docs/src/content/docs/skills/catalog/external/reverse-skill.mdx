@@ -1,0 +1,100 @@
+---
+title: "reverse-skill"
+description: "Curated zhaoxuya520/reverse-skill mobile/binary RE bundle (12 skills). Pentest hybrid canonical apk-reverse and reverse-engineering slugs."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="reverse-skill"
+  description="Curated zhaoxuya520/reverse-skill mobile/binary RE bundle (12 skills). Pentest hybrid canonical apk-reverse and reverse-engineering slugs."
+  installCommand={`npx skills add zhaoxuya520/reverse-skill --skill reverse-engineering --list`}
+  installLabel="Install"
+  usage="/reverse-skill"
+  badges={[{ text: "reverse-skill", variant: "note" }, { text: "15 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "catalog-reference", variant: "default" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/reverse-skill.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add zhaoxuya520/reverse-skill --skill reverse-engineering --list
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `catalog-reference`
+
+Risk notes: Includes EDR-bypass and exploit-chain topics — authorized engagements only.
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/reverse-skill.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `zhaoxuya520/reverse-skill` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `reverse-skill` |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "reverse-skill"
+description: "Curated zhaoxuya520/reverse-skill mobile/binary RE bundle (12 skills). Pentest hybrid canonical apk-reverse and reverse-engineering slugs."
+title: "Reverse Skill"
+source_kind: "curated-external"
+source: "zhaoxuya520/reverse-skill"
+install_source: "zhaoxuya520/reverse-skill"
+status: "catalog-reference"
+trust_tier: "curated-trust-gated"
+provenance_status: "pentest-hybrid-inventory"
+sync_kind: "skills-cli"
+install_command: "npx skills add zhaoxuya520/reverse-skill --skill reverse-engineering --list"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/zhaoxuya520/reverse-skill"
+notes: "License unknown at inventory time; inspect upstream before install."
+risk_notes: "Includes EDR-bypass and exploit-chain topics — authorized engagements only."
+promotion_policy: "Catalog reference only via pentest hybrid index."
+provenance_evidence: "pentest-hybrid-inventory/reverse-skill.json; 12 skills enumerated."
+selector_mode: "resolved"
+---
+
+Curated external reverse-engineering bundle for mobile APK and binary planning routes in the `pentest` skill.
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

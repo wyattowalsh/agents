@@ -1,0 +1,172 @@
+{
+  "raw_url": "https://github.com/jihe520/social-push",
+  "normalized_url": "https://github.com/jihe520/social-push",
+  "source_name": "jihe520/social-push",
+  "category": "docs/reference",
+  "inspected_commit_sha": "f7cd0d0e5c634a9d9a7cc28ce5e35c8cc30440d1",
+  "license": "NOASSERTION (license not detected by GitHub API)",
+  "latest_release_or_commit_date": "github-pushed-at:2026-06-28T09:08:50Z",
+  "artifact_types_found": [
+    "docs/reference"
+  ],
+  "install_or_integration_decision": "quarantine",
+  "reason": "Quarantine trigger detected; keep reference-only pending explicit approval.",
+  "auth_required": true,
+  "env_vars_or_credentials": [
+    "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+  ],
+  "safety_notes": "Quarantine trigger; requires explicit threat model and approval before promotion.",
+  "attribution_notes": "Preserve attribution to jihe520/social-push; verify license before adapting content.",
+  "files_added": [],
+  "files_modified": [],
+  "tests_or_checks_run": [
+    "git ls-remote --symref",
+    "gh api repos/{owner}/{repo}"
+  ],
+  "skipped_reason": "Quarantine trigger detected; keep reference-only pending explicit approval.",
+  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "raw_index": 205,
+  "normalized_index": "https://github.com/jihe520/social-push",
+  "duplicate_group": [],
+  "fragment": "",
+  "tree_subpath": "",
+  "canonical_source": "https://github.com/jihe520/social-push",
+  "risk_tier": "quarantine",
+  "risk_keywords": [
+    "social-push"
+  ],
+  "support_tier": "discovery-only",
+  "phase_status": {
+    "source_capture": "completed",
+    "deep_research": "completed-public-metadata",
+    "overlap": "completed",
+    "security": "completed-static",
+    "license": "completed-static",
+    "compliance": "completed-static",
+    "docs_impact": "completed",
+    "decision": "completed"
+  },
+  "source_capture_packet": {
+    "git_status": "ok",
+    "git_error": "",
+    "default_branch": "main",
+    "github_api_status": "ok",
+    "github_api_error": "",
+    "candidate_code_executed": false
+  },
+  "github_metadata_packet": {
+    "status": "ok",
+    "error": "",
+    "full_name": "jihe520/social-push",
+    "html_url": "https://github.com/jihe520/social-push",
+    "default_branch": "main",
+    "pushed_at": "2026-06-28T09:08:50Z",
+    "updated_at": "2026-07-06T13:31:17Z",
+    "license_spdx_id": "",
+    "license_name": "",
+    "language": "Shell",
+    "topics": [
+      "agent",
+      "claude-code",
+      "skill",
+      "social-media"
+    ],
+    "archived": false,
+    "fork": false,
+    "private": false,
+    "visibility": "public"
+  },
+  "deep_research_claims": [
+    {
+      "claim": "Candidate source was inspected without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "https://github.com/jihe520/social-push"
+      ]
+    },
+    {
+      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "support_status": "supports",
+      "confidence": 0.95,
+      "sources": [
+        "AGENTS.md \u00a72.7",
+        "config/skill-registry-policy.json"
+      ]
+    },
+    {
+      "claim": "GitHub repository metadata was queried without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "gh api repos/jihe520/social-push"
+      ]
+    }
+  ],
+  "source_support_matrix": [
+    {
+      "claim": "Candidate source was inspected without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "https://github.com/jihe520/social-push"
+      ]
+    },
+    {
+      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "support_status": "supports",
+      "confidence": 0.95,
+      "sources": [
+        "AGENTS.md \u00a72.7",
+        "config/skill-registry-policy.json"
+      ]
+    },
+    {
+      "claim": "GitHub repository metadata was queried without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "gh api repos/jihe520/social-push"
+      ]
+    }
+  ],
+  "overlap_packet": {
+    "catalog_matches": [],
+    "mcp_registry_match": false,
+    "plugin_registry_match": false
+  },
+  "security_packet": {
+    "candidate_code_executed": false,
+    "network_probe_scope": "public Git metadata only",
+    "executable_surface_review_required": false
+  },
+  "license_packet": {
+    "license_status": "verify-before-use",
+    "license_spdx_id": "",
+    "license_name": ""
+  },
+  "compliance_packet": {
+    "auth_required": true,
+    "env_vars_or_credentials": [
+      "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+    ]
+  },
+  "docs_steward_surfaces": [
+    "auth-matrix",
+    "changelog",
+    "decision-log",
+    "generated-drift",
+    "openspec",
+    "reports",
+    "runbooks"
+  ],
+  "docs_steward_status": "packet-generated",
+  "decision_packet": {
+    "decision": "quarantine",
+    "reason": "Quarantine trigger detected; keep reference-only pending explicit approval."
+  },
+  "integration_packet": {
+    "mutation_allowed": false,
+    "required_before_promotion": "human trust-gate review"
+  }
+}

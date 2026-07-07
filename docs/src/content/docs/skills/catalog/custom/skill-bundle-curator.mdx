@@ -11,6 +11,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   name="skill-bundle-curator"
   description="Summarize bundle components from agent-bundle.json and repo skill/agent counts. Use when packaging or auditing distributable bundles. NOT for live plugin installs."
   installCommand={`npx skills add github:wyattowalsh/agents --skill skill-bundle-curator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  installLabel="Install"
   usage="/skill-bundle-curator [--format json]"
   badges={[{ text: "skill-bundle-curator", variant: "note" }, { text: "157 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
@@ -72,7 +73,7 @@ Report bundle composition and adapter install surfaces for the repository root b
 <details class="source-disclosure">
 <summary>View Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml
 ---
 name: skill-bundle-curator
 description: >-

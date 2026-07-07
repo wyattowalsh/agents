@@ -11,6 +11,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   name="skill-compat-matrix"
   description="Report portable vs runtime-specific skill fields across supported harnesses. Use when auditing cross-agent compatibility. NOT for live installs or packaging."
   installCommand={`npx skills add github:wyattowalsh/agents --skill skill-compat-matrix -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  installLabel="Install"
   usage="/skill-compat-matrix &lt;skill-name|repo&gt; [--format json]"
   badges={[{ text: "skill-compat-matrix", variant: "note" }, { text: "186 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
@@ -73,7 +74,7 @@ Summarize how a skill's frontmatter and bundled assets map to supported harnesse
 <details class="source-disclosure">
 <summary>View Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml
 ---
 name: skill-compat-matrix
 description: >-

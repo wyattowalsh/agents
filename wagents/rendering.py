@@ -246,14 +246,20 @@ def _skill_header_badge_props(node: CatalogNode, fm: dict) -> list[tuple[str, st
 
 def _render_skill_page_header(node: CatalogNode, fm: dict) -> list[str]:
     prefix = _skill_catalog_import_prefix()
+    install_label = "Install"
     if node.source == "custom":
         install_command = build_install_command(skill=node.id)
     else:
-        install_command = _installed_install_command(node) or (
-            "Discovered from local installed inventory; no portable install command is recorded."
-        )
+        install_command = _installed_install_command(node)
+        if not install_command:
+            install_label = "Catalog status"
+            install_command = (
+                "Catalog-only entry: no portable install command is published until promotion gates pass."
+            )
     if _is_pip_cli_catalog_row(node):
         usage = "apm --help"
+    elif node.source != "custom" and not _installed_install_command(node):
+        usage = ""
     else:
         usage = f"/{node.id}"
         if fm.get("argument-hint"):
@@ -268,6 +274,7 @@ def _render_skill_page_header(node: CatalogNode, fm: dict) -> list[str]:
         f'  name="{escape_attr(node.id)}"',
         f'  description="{escape_attr(truncate_sentence(node.description, 200))}"',
         f"  installCommand={{`{safe_install}`}}",
+        f'  installLabel="{escape_attr(install_label)}"',
         f'  usage="{escape_attr(usage)}"',
         f"  badges={{[{badge_jsx}]}}",
         "/>",
@@ -290,6 +297,11 @@ def _is_pip_cli_catalog_row(node: CatalogNode) -> bool:
 
 def _catalog_compatibility_blurb(node: CatalogNode) -> str:
     """Harness compatibility line for generated catalog pages."""
+    if node.source != "custom" and not _installed_install_command(node):
+        return (
+            "Catalog-only curated external entry. Install, slash-command use, and harness sync stay disabled "
+            "until source-list, license, security, attribution, auth, and docs-steward promotion gates pass."
+        )
     if _is_pip_cli_catalog_row(node):
         return (
             "Standalone **CLI tool** for supported agent harnesses (see Harness Coverage). "
@@ -604,7 +616,12 @@ def _render_curated_harness_section(node: CatalogNode) -> list[str]:
     parts: list[str] = []
     parts.append("## Harness Coverage")
     parts.append("")
-    if target_agents:
+    if not install_cmd:
+        parts.append(
+            "No harness install is enabled for this catalog row; no portable install command is recorded. "
+            "Keep it catalog-only until promotion gates pass."
+        )
+    elif target_agents:
         listed = ", ".join(f"`{a}`" for a in target_agents)
         parts.append(f"Targets verified harnesses: {listed}.")
     else:
@@ -744,6 +761,8 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         if research_body:
             research_sections = _parse_research_sections(research_body)
             skip_headings = {"Harness Coverage", "Trust And Risks", "Trust / Audit"}
+            if _installed_install_command(node):
+                skip_headings.add("Install Prerequisites")
             for heading, content in research_sections.items():
                 if heading in skip_headings or not content or not content.strip():
                     continue
@@ -937,7 +956,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         parts.append('<details class="source-disclosure">')
         parts.append("<summary>View Full SKILL.md</summary>")
         parts.append("")
-        parts.append(f'{outer_fence}yaml title="SKILL.md"')
+        parts.append(f"{outer_fence}yaml")
         parts.append(raw_content)
         parts.append(outer_fence)
         parts.append("")
@@ -1118,7 +1137,7 @@ def render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     parts.append("<details>")
     parts.append("<summary>View Full Agent File</summary>")
     parts.append("")
-    parts.append(f'{outer_fence}yaml title="{node.id}.md"')
+    parts.append(f"{outer_fence}yaml")
     parts.append(raw_content)
     parts.append(outer_fence)
     parts.append("")

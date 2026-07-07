@@ -1,0 +1,397 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "raw_index": 6,
+      "source_name": "yctimlin/mcp_excalidraw",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 12,
+      "source_name": "Eronred/aso-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 15,
+      "source_name": "zubair-trabzada/ai-legal-claude",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 17,
+      "source_name": "TanStack/cli",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 23,
+      "source_name": "onvoyage-ai/gtm-engineer-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 44,
+      "source_name": "zubair-trabzada/ai-sales-team-claude",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 45,
+      "source_name": "Bhanunamikaze/Agentic-SEO-Skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 46,
+      "source_name": "agi-now/buffett-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 50,
+      "source_name": "lawve-ai/awesome-legal-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 54,
+      "source_name": "JeffLi1993/seo-audit-skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 57,
+      "source_name": "Affitor/affiliate-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 59,
+      "source_name": "borski/travel-hacking-toolkit",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 77,
+      "source_name": "rorkai/app-store-connect-cli-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 78,
+      "source_name": "timbroddin/app-store-aso-skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 99,
+      "source_name": "RKiding/Awesome-finance-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 103,
+      "source_name": "himself65/finance-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 114,
+      "source_name": "AgriciDaniel/claude-seo",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 134,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Quarantine trigger; requires explicit threat model and approval before promotion."
+    },
+    {
+      "raw_index": 142,
+      "source_name": "googleworkspace/cli",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 152,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Quarantine trigger; requires explicit threat model and approval before promotion."
+    },
+    {
+      "raw_index": 154,
+      "source_name": "mobile-next/mobile-mcp",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 155,
+      "source_name": "modelcontextprotocol/inspector",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 157,
+      "source_name": "Panniantong/Agent-Reach",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 161,
+      "source_name": "antvis/mcp-server-chart",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 164,
+      "source_name": "hashgraph-online/awesome-codex-plugins",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 165,
+      "source_name": "hashgraph-online/hol-guard-plugin",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 166,
+      "source_name": "hashgraph-online/awesome-codex-plugins",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 169,
+      "source_name": "BestLemoon/codex-seo",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 170,
+      "source_name": "avivsinai/langfuse-mcp",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 171,
+      "source_name": "johnvouros/nullcost-plugin",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 173,
+      "source_name": "avalonreset/seo-dungeon",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 174,
+      "source_name": "tim-osterhus/codex-remotion-plugin",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 176,
+      "source_name": "summer521521/Zotero_Research_plugin",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 181,
+      "source_name": "Octane0411/opencode-plugin-openspec",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 187,
+      "source_name": "Lumiaqian/openspec-mcp",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 194,
+      "source_name": "hashgraph-online/awesome-codex-plugins",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 197,
+      "source_name": "louisedesadeleer/clipify",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 205,
+      "source_name": "jihe520/social-push",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Quarantine trigger; requires explicit threat model and approval before promotion."
+    },
+    {
+      "raw_index": 228,
+      "source_name": "pedronauck/skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 236,
+      "source_name": "pedronauck/skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+    },
+    {
+      "raw_index": 241,
+      "source_name": "pedronauck/skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 252,
+      "source_name": "pedronauck/skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 262,
+      "source_name": "pedronauck/skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 272,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 274,
+      "source_name": "openags/paper-search-mcp",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 279,
+      "source_name": "papersflow-ai/papersflow-codex-plugin",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 280,
+      "source_name": "klajdikkolaj/upwork-autopilot",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Quarantine trigger; requires explicit threat model and approval before promotion."
+    },
+    {
+      "raw_index": 286,
+      "source_name": "KyuRish/mcp-dashboards",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    },
+    {
+      "raw_index": 288,
+      "source_name": "nteract/semiotic",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review."
+    }
+  ]
+}

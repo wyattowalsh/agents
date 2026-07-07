@@ -25,7 +25,7 @@ def test_package_version_check_mcp_server_entry() -> None:
     server = registry["servers"]["package-version-check-mcp"]
     assert server["transport"] == "stdio"
     assert server["command"] == "bash"
-    assert server["args"] == ["${REPO_ROOT}/scripts/mcphub/package-version-check-mcp.sh"]
+    assert server["args"] == ["${REPO_ROOT}/scripts/mcphub/package-version-check-mcp.sh"]  # noqa: RUF027
     assert server["enabled"] is True
     assert server["tools"] == [
         "get_latest_package_versions",

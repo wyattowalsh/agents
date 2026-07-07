@@ -1,5 +1,6 @@
 set shell := ["bash", "-euo", "pipefail", "-c"]
 set default-list := true
+set minimum-version := "1.55.0"
 
 # ---------------------------------------------------------------------------- #
 #                                 DEPENDENCIES                                 #
@@ -38,15 +39,17 @@ install:
 
 [group("install")]
 [doc("Install all skills to one agent")]
-[arg("agent", long, help="Harness id (e.g. claude-code, cursor)")]
+[arg("agent", long, pattern="^[a-z0-9][a-z0-9-]*$", help="Harness id (e.g. claude-code, cursor)")]
+[positional-arguments]
 install-agent agent:
-    npx -y skills add {{ repo }} --skill '*' -a {{ agent }} -g -y
+    npx -y skills add {{ repo }} --skill '*' -a "$1" -g -y
 
 [group("install")]
 [doc("Install specific skill(s) to all agents")]
-[arg("skill", long, help="Skill name or glob")]
+[arg("skill", long, pattern="^[A-Za-z0-9._*/-]+$", help="Skill name or glob")]
+[positional-arguments]
 install-skill skill:
-    npx -y skills add {{ repo }} --skill {{ skill }} --agent '*' -g -y
+    npx -y skills add {{ repo }} --skill "$1" --agent '*' -g -y
 
 [group("install")]
 [doc("Install all skills to Claude (Code + Desktop)")]
@@ -213,6 +216,7 @@ verify-docs:
     uv run wagents docs generate --no-installed --check
     uv run wagents catalog index --check
     uv run wagents docs lint
+    uv run wagents docs build
 
 [group("checks")]
 [doc("Full pre-PR check: verify-fast + verify-docs + ci-check")]
@@ -293,8 +297,9 @@ mcphub-openapi:
 
 [group("mcphub")]
 [doc("Sync runtime settings, warm package-version-check-mcp, restart LaunchAgent")]
+[positional-arguments]
 mcphub-reconcile-runtime *FLAGS:
-    scripts/mcphub/reconcile-runtime.sh {{FLAGS}}
+    scripts/mcphub/reconcile-runtime.sh "$@"
 
 [group("mcphub")]
 [doc("Run MCPHub health and tools/list smoke test")]
@@ -306,8 +311,10 @@ mcphub-smoke:
 mcphub-install-launch-agent:
     #!/usr/bin/env bash
     set -euo pipefail
+    repo_root="$(pwd)"
     mkdir -p "$HOME/Library/LaunchAgents"
-    cp config/launchd/com.wyattowalsh.mcphub.plist "$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist"
+    sed "s|/path/to/agents|${repo_root}|g" config/launchd/com.wyattowalsh.mcphub.plist \
+        > "$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist"
     launchctl bootout "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist" >/dev/null 2>&1 || true
     launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist"
     launchctl kickstart -k "gui/$(id -u)/com.wyattowalsh.mcphub"
@@ -327,22 +334,34 @@ mcphub-uninstall-launch-agent:
 [group("apm")]
 [doc("Materialize via apm (installs to apm_modules/ and harness dirs)")]
 apm-materialize:
-    -apm install --frozen || -apm install
+    #!/usr/bin/env bash
+    set -euo pipefail
+    command -v apm >/dev/null || { echo "apm CLI not found (pip install apm-cli)" >&2; exit 127; }
+    apm install --frozen || apm install
 
 [group("apm")]
 [doc("Install bundle via apm (primary path)")]
 apm-install:
-    -apm install wyattowalsh/agents
+    #!/usr/bin/env bash
+    set -euo pipefail
+    command -v apm >/dev/null || { echo "apm CLI not found (pip install apm-cli)" >&2; exit 127; }
+    apm install wyattowalsh/agents
 
 [group("apm")]
 [doc("Compile context with apm")]
 apm-compile:
-    -apm compile
+    #!/usr/bin/env bash
+    set -euo pipefail
+    command -v apm >/dev/null || { echo "apm CLI not found (pip install apm-cli)" >&2; exit 127; }
+    apm compile
 
 [group("apm")]
 [doc("Run apm audit in CI mode (no-drift for local tolerance)")]
 apm-audit:
-    -apm audit --ci --no-drift
+    #!/usr/bin/env bash
+    set -euo pipefail
+    command -v apm >/dev/null || { echo "apm CLI not found (pip install apm-cli)" >&2; exit 127; }
+    apm audit --ci --no-drift
 
 [group("apm")]
 [doc("Diagnose apm CLI presence and version")]

@@ -14,6 +14,7 @@ from wagents.site_model import (
     docs_src_asset_css_url,
     external_skill_groups,
     render_site_data_module,
+    render_skill_indexes_module,
     render_visual_assets_css,
     site_data,
     trust_badge_for_tier,
@@ -75,7 +76,15 @@ def test_render_site_data_module_exports_runtime_constants():
     assert "export const supportedAgents = baseSiteData.supportedAgents;" in rendered
     assert "export const installCommands = baseSiteData.installCommands;" in rendered
     assert "export const visualAssets = baseSiteData.visualAssets;" in rendered
+    assert "export const externalSkillIndex = skillIndexes.externalSkillIndex;" not in rendered
+
+
+def test_render_skill_indexes_module_exports_catalog_indexes():
+    rendered = render_skill_indexes_module(site_data([]))
+
     assert "export const externalSkillIndex = skillIndexes.externalSkillIndex;" in rendered
+    assert "export const customSkillIndex = skillIndexes.customSkillIndex;" in rendered
+    assert "export const allSkillIndex = skillIndexes.allSkillIndex;" in rendered
 
 
 def test_visual_assets_are_manifest_backed():

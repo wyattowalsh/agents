@@ -31,7 +31,8 @@ from wagents.parsing import parse_frontmatter
 REPORTS_CONTENT_DIR = CONTENT_DIR / "reports"
 REPORTS_JSON_DIR = DOCS_DIR / "public" / "generated-reports"
 
-_ABS_LINK_RE = re.compile(r"\]\((/[^)\s#]+)\)")
+_ABS_MARKDOWN_LINK_RE = re.compile(r"\]\((/[^)\s#]+)\)")
+_ABS_HREF_LINK_RE = re.compile(r"""\bhref=["'](/[^"'\s#]+)["']""")
 _IGNORED_LINK_PREFIXES = ("/generated-", "/favicon", "/pagefind", "/_astro")
 
 
@@ -250,8 +251,12 @@ def _build_link_graph() -> tuple[set[str], dict[str, set[str]], dict[str, set[st
     outgoing: dict[str, set[str]] = {slug: set() for slug in known_slugs}
     incoming: dict[str, set[str]] = {slug: set() for slug in known_slugs}
     for page, slug in slug_by_path.items():
-        text = page.read_text(encoding="utf-8", errors="replace")
-        for match in _ABS_LINK_RE.finditer(text):
+        try:
+            text = page.read_text(encoding="utf-8", errors="replace")
+        except FileNotFoundError:
+            continue
+        matches = [*_ABS_MARKDOWN_LINK_RE.finditer(text), *_ABS_HREF_LINK_RE.finditer(text)]
+        for match in matches:
             target = match.group(1).rstrip("/") or "/"
             if target.startswith(_IGNORED_LINK_PREFIXES) or target == slug:
                 continue
@@ -275,7 +280,10 @@ def collect_site_graph_insights() -> dict[str, Any]:
         "orphan_count": len(orphans),
         "orphan_pages": orphans,
         "most_linked_pages": [{"slug": s, "backlinks": c} for s, c in most_linked[:15] if c > 0],
-        "note": "Counts absolute-path markdown links only (paths like /foo/); relative links are not resolved.",
+        "note": (
+            "Counts static absolute-path markdown and MDX/HTML href links only "
+            "(paths like /foo/); relative links, generated sidebars, and client-created links are not resolved."
+        ),
     }
 
 
@@ -324,8 +332,14 @@ def collect_docs_link_check() -> dict[str, Any]:
     broken: list[dict[str, str]] = []
     for page in pages:
         rel = str(page.relative_to(CONTENT_DIR))
-        text = page.read_text(encoding="utf-8", errors="replace")
-        for match in _ABS_LINK_RE.finditer(text):
+        try:
+            text = page.read_text(encoding="utf-8", errors="replace")
+        except FileNotFoundError:
+            # docs generate rewrites generated content in phases; tolerate a
+            # stale rglob result from the same process and let the next pass
+            # observe the stable tree.
+            continue
+        for match in _ABS_MARKDOWN_LINK_RE.finditer(text):
             target = match.group(1).rstrip("/") or "/"
             if target.startswith(_IGNORED_LINK_PREFIXES):
                 continue

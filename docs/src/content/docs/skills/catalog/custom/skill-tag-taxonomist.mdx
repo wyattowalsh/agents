@@ -11,6 +11,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   name="skill-tag-taxonomist"
   description="Infer and audit skill tags from names, descriptions, and catalog authoring rows. Use when organizing catalog taxonomies. NOT for live catalog index edits."
   installCommand={`npx skills add github:wyattowalsh/agents --skill skill-tag-taxonomist -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  installLabel="Install"
   usage="/skill-tag-taxonomist &lt;skill-name|repo&gt; [--format json]"
   badges={[{ text: "skill-tag-taxonomist", variant: "note" }, { text: "224 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
@@ -73,7 +74,7 @@ Propose and audit tag assignments for repository skills and catalog entries.
 <details class="source-disclosure">
 <summary>View Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml
 ---
 name: skill-tag-taxonomist
 description: >-

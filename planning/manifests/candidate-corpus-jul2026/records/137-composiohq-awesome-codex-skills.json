@@ -1,0 +1,179 @@
+{
+  "raw_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/lead-research-assistant",
+  "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/lead-research-assistant",
+  "source_name": "ComposioHQ/awesome-codex-skills",
+  "category": "awesome list, skill",
+  "inspected_commit_sha": "9c9da64cf1bbea611d43dd14a10788d55369b353",
+  "license": "NOASSERTION (license not detected by GitHub API)",
+  "latest_release_or_commit_date": "github-pushed-at:2026-05-15T06:24:47Z",
+  "artifact_types_found": [
+    "awesome list",
+    "skill"
+  ],
+  "install_or_integration_decision": "reference_only",
+  "reason": "Collection source should not be vendored wholesale.",
+  "auth_required": false,
+  "env_vars_or_credentials": [],
+  "safety_notes": "No elevated keyword risk detected.",
+  "attribution_notes": "Preserve attribution to ComposioHQ/awesome-codex-skills; verify license before adapting content.",
+  "files_added": [],
+  "files_modified": [],
+  "tests_or_checks_run": [
+    "git ls-remote --symref",
+    "gh api repos/{owner}/{repo}"
+  ],
+  "skipped_reason": "",
+  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "raw_index": 137,
+  "normalized_index": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/lead-research-assistant",
+  "duplicate_group": [],
+  "fragment": "",
+  "tree_subpath": "lead-research-assistant",
+  "canonical_source": "https://github.com/ComposioHQ/awesome-codex-skills",
+  "risk_tier": "standard-review",
+  "risk_keywords": [],
+  "support_tier": "discovery-only",
+  "phase_status": {
+    "source_capture": "completed",
+    "deep_research": "completed-public-metadata",
+    "overlap": "completed",
+    "security": "completed-static",
+    "license": "completed-static",
+    "compliance": "completed-static",
+    "docs_impact": "completed",
+    "decision": "completed"
+  },
+  "source_capture_packet": {
+    "git_status": "ok",
+    "git_error": "",
+    "default_branch": "master",
+    "github_api_status": "ok",
+    "github_api_error": "",
+    "candidate_code_executed": false
+  },
+  "github_metadata_packet": {
+    "status": "ok",
+    "error": "",
+    "full_name": "ComposioHQ/awesome-codex-skills",
+    "html_url": "https://github.com/ComposioHQ/awesome-codex-skills",
+    "default_branch": "master",
+    "pushed_at": "2026-05-15T06:24:47Z",
+    "updated_at": "2026-07-07T00:03:58Z",
+    "license_spdx_id": "",
+    "license_name": "",
+    "language": "Python",
+    "topics": [
+      "awesome",
+      "awesome-lists",
+      "awesome-resources",
+      "codex",
+      "codex-cli",
+      "codex-skills",
+      "coding-agent-skills",
+      "coding-agents",
+      "gpt-5-1-codex",
+      "gpt-5-codex",
+      "llm",
+      "skills"
+    ],
+    "archived": false,
+    "fork": false,
+    "private": false,
+    "visibility": "public"
+  },
+  "deep_research_claims": [
+    {
+      "claim": "Candidate source was inspected without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/lead-research-assistant"
+      ]
+    },
+    {
+      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "support_status": "supports",
+      "confidence": 0.95,
+      "sources": [
+        "AGENTS.md \u00a72.7",
+        "config/skill-registry-policy.json"
+      ]
+    },
+    {
+      "claim": "GitHub repository metadata was queried without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "gh api repos/ComposioHQ/awesome-codex-skills"
+      ]
+    }
+  ],
+  "source_support_matrix": [
+    {
+      "claim": "Candidate source was inspected without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/lead-research-assistant"
+      ]
+    },
+    {
+      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "support_status": "supports",
+      "confidence": 0.95,
+      "sources": [
+        "AGENTS.md \u00a72.7",
+        "config/skill-registry-policy.json"
+      ]
+    },
+    {
+      "claim": "GitHub repository metadata was queried without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "gh api repos/ComposioHQ/awesome-codex-skills"
+      ]
+    }
+  ],
+  "overlap_packet": {
+    "catalog_matches": [],
+    "mcp_registry_match": false,
+    "plugin_registry_match": false
+  },
+  "security_packet": {
+    "candidate_code_executed": false,
+    "network_probe_scope": "public Git metadata only",
+    "executable_surface_review_required": false
+  },
+  "license_packet": {
+    "license_status": "verify-before-use",
+    "license_spdx_id": "",
+    "license_name": ""
+  },
+  "compliance_packet": {
+    "auth_required": false,
+    "env_vars_or_credentials": []
+  },
+  "docs_steward_surfaces": [
+    "README",
+    "auth-matrix",
+    "catalog-authoring",
+    "catalog-generated",
+    "changelog",
+    "decision-log",
+    "generated-drift",
+    "install-docs",
+    "openspec",
+    "reports",
+    "skill-research"
+  ],
+  "docs_steward_status": "packet-generated",
+  "decision_packet": {
+    "decision": "reference_only",
+    "reason": "Collection source should not be vendored wholesale."
+  },
+  "integration_packet": {
+    "mutation_allowed": false,
+    "required_before_promotion": "human trust-gate review"
+  }
+}

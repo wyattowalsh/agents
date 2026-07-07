@@ -11,6 +11,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   name="skill-token-budget-linter"
   description="Lint skill descriptions, body length, and reference bulk against token budgets. Use when tightening standing-context cost. NOT for DCP tuning or RTK hooks."
   installCommand={`npx skills add github:wyattowalsh/agents --skill skill-token-budget-linter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  installLabel="Install"
   usage="/skill-token-budget-linter &lt;skill-name|repo&gt; [--strict]"
   badges={[{ text: "skill-token-budget-linter", variant: "note" }, { text: "143 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
@@ -71,7 +72,7 @@ Measure standing-context pressure for skill assets before they ship.
 <details class="source-disclosure">
 <summary>View Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml
 ---
 name: skill-token-budget-linter
 description: >-

@@ -1,0 +1,100 @@
+---
+title: "claude-osint"
+description: "Curated elementalsouls/Claude-OSINT passive OSINT skills (osint-methodology, offensive-osint). Pentest hybrid canonical osint-passive source."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="claude-osint"
+  description="Curated elementalsouls/Claude-OSINT passive OSINT skills (osint-methodology, offensive-osint). Pentest hybrid canonical osint-passive source."
+  installCommand={`npx skills add elementalsouls/Claude-OSINT --skill osint-methodology --list`}
+  installLabel="Install"
+  usage="/claude-osint"
+  badges={[{ text: "claude-osint", variant: "note" }, { text: "15 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "catalog-reference", variant: "default" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/claude-osint.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add elementalsouls/Claude-OSINT --skill osint-methodology --list
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `catalog-reference`
+
+Risk notes: Passive OSINT only within signed ROE; respect prohibited_actions for social engineering and harassment.
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/claude-osint.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `elementalsouls/Claude-OSINT` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `claude-osint` |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "claude-osint"
+description: "Curated elementalsouls/Claude-OSINT passive OSINT skills (osint-methodology, offensive-osint). Pentest hybrid canonical osint-passive source."
+title: "Claude OSINT"
+source_kind: "curated-external"
+source: "elementalsouls/Claude-OSINT"
+install_source: "elementalsouls/Claude-OSINT"
+status: "catalog-reference"
+trust_tier: "curated-trust-gated"
+provenance_status: "pentest-hybrid-inventory"
+sync_kind: "skills-cli"
+install_command: "npx skills add elementalsouls/Claude-OSINT --skill osint-methodology --list"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/elementalsouls/Claude-OSINT"
+notes: "Canonical slug for osint-passive signal is claude-osint/osint-methodology (not osint-recon)."
+risk_notes: "Passive OSINT only within signed ROE; respect prohibited_actions for social engineering and harassment."
+promotion_policy: "Catalog reference only via pentest hybrid index."
+provenance_evidence: "pentest-hybrid-inventory/claude-osint.json; 2 skills enumerated."
+selector_mode: "resolved"
+---
+
+Curated external OSINT bundle used by the repo `pentest` skill for passive recon planning depth.
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

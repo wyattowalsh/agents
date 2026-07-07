@@ -27,7 +27,7 @@ const laneByStatus: Record<string, string> = {
 const serialized = skills.map((skill) => ({
   name: skill.name,
   description: (skill.description || '').slice(0, 160),
-  href: `/skills/catalog/external/${skill.name}/`,
+  href: `/skills/catalog/external/${encodeURIComponent(skill.name)}/`,
   lane: laneByStatus[String(skill.status || '')] || 'inspect',
   sourceType: skill.sourceType || 'curated-external',
 }));
@@ -57,6 +57,19 @@ const serialized = skills.map((skill) => ({
   <p class="catalog-browser__meta" data-catalog-meta aria-live="polite"></p>
 
   <div class="catalog-browser__grid" data-catalog-grid></div>
+  <noscript>
+    <p class="catalog-browser__meta">Showing the first {Math.min(serialized.length, pageSize)} external skills. Enable JavaScript to search and filter the full catalog.</p>
+    <div class="catalog-browser__grid">
+      {serialized.slice(0, pageSize).map((skill) => (
+        <article class="catalog-browser__card sl-link-card">
+          <a class="catalog-browser__card-link sl-link-card__link" href={skill.href}>
+            <span class="catalog-browser__card-title sl-link-card__title">{skill.name}</span>
+            <span class="catalog-browser__card-desc sl-link-card__description">{skill.description}</span>
+          </a>
+        </article>
+      ))}
+    </div>
+  </noscript>
 
   <div class="catalog-browser__footer">
     <button type="button" class="catalog-browser__more" data-catalog-more hidden>Load more</button>
@@ -96,12 +109,21 @@ const serialized = skills.map((skill) => ({
     const renderCard = (skill) => {
       const article = document.createElement('article');
       article.className = 'catalog-browser__card sl-link-card';
-      article.innerHTML = `
-        <a class="catalog-browser__card-link sl-link-card__link" href="${skill.href}">
-          <span class="catalog-browser__card-title sl-link-card__title">${skill.name}</span>
-          <span class="catalog-browser__card-desc sl-link-card__description">${skill.description || ''}</span>
-        </a>
-      `;
+
+      const link = document.createElement('a');
+      link.className = 'catalog-browser__card-link sl-link-card__link';
+      link.href = skill.href;
+
+      const title = document.createElement('span');
+      title.className = 'catalog-browser__card-title sl-link-card__title';
+      title.textContent = skill.name;
+
+      const description = document.createElement('span');
+      description.className = 'catalog-browser__card-desc sl-link-card__description';
+      description.textContent = skill.description || '';
+
+      link.append(title, description);
+      article.append(link);
       return article;
     };
 

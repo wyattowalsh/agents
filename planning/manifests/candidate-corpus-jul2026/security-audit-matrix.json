@@ -1,0 +1,2935 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "raw_index": 1,
+      "source_name": "Ratnaditya-J/csvglow",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 2,
+      "source_name": "twostraws/SwiftData-Agent-Skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 3,
+      "source_name": "arjitj2/swiftui-design-principles",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 4,
+      "source_name": "Dimillian/Skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 5,
+      "source_name": "antonbabenko/terraform-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 6,
+      "source_name": "yctimlin/mcp_excalidraw",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 7,
+      "source_name": "cloudflare/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 8,
+      "source_name": "Jakubantalik/transitions.dev",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 9,
+      "source_name": "WordPress/agent-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 10,
+      "source_name": "timescale/pg-aiguide",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 11,
+      "source_name": "Owl-Listener/designer-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 12,
+      "source_name": "Eronred/aso-skills",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 13,
+      "source_name": "devenjarvis/lathe",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 14,
+      "source_name": "Weizhena/Deep-Research-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 15,
+      "source_name": "zubair-trabzada/ai-legal-claude",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 16,
+      "source_name": "op7418/logo-generator-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 17,
+      "source_name": "TanStack/cli",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 18,
+      "source_name": "actionbook/rust-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 19,
+      "source_name": "truongduy2611/app-store-preflight-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 20,
+      "source_name": "plannotator/tot",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 21,
+      "source_name": "plannotator/effective-html",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 22,
+      "source_name": "conorluddy/ios-simulator-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 23,
+      "source_name": "onvoyage-ai/gtm-engineer-skills",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 24,
+      "source_name": "rohunvora/x-research-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 25,
+      "source_name": "better-auth/better-icons",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 26,
+      "source_name": "itsmostafa/aws-agent-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 27,
+      "source_name": "VILA-Lab/FigMirror",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 28,
+      "source_name": "dgreenheck/webgpu-claude-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 29,
+      "source_name": "CharlesWiltgen/Axiom",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 30,
+      "source_name": "imxv/Pretty-mermaid-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 31,
+      "source_name": "ksimback/tech-debt-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 32,
+      "source_name": "lishix520/academic-paper-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 33,
+      "source_name": "aiwithremy/claude-skills-llm-council",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 34,
+      "source_name": "Haojae/scipilot-figure-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 35,
+      "source_name": "Kappaemme-git/codex-complexity-optimizer",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 36,
+      "source_name": "data-goblin/power-bi-agentic-development",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 37,
+      "source_name": "solana-foundation/solana-dev-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 38,
+      "source_name": "Gabberflast/academic-pptx-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 39,
+      "source_name": "ast-grep/agent-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 40,
+      "source_name": "langchain-ai/langchain-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 41,
+      "source_name": "199-biotechnologies/claude-deep-research-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 42,
+      "source_name": "duckdb/duckdb-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 43,
+      "source_name": "gadicc/yahoo-finance2",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 44,
+      "source_name": "zubair-trabzada/ai-sales-team-claude",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 45,
+      "source_name": "Bhanunamikaze/Agentic-SEO-Skill",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 46,
+      "source_name": "agi-now/buffett-skills",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 47,
+      "source_name": "tjboudreaux/cc-thinking-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 48,
+      "source_name": "fayazara/macos-app-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 49,
+      "source_name": "meodai/skill.color-expert",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 50,
+      "source_name": "lawve-ai/awesome-legal-skills",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 51,
+      "source_name": "ramziddin/solid-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 52,
+      "source_name": "Trae1ounG/paper-plot-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 53,
+      "source_name": "dbt-labs/dbt-agent-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 54,
+      "source_name": "JeffLi1993/seo-audit-skill",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 55,
+      "source_name": "LottieFiles/motion-design-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 56,
+      "source_name": "antonbabenko/terraform-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 57,
+      "source_name": "Affitor/affiliate-skills",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 58,
+      "source_name": "elvisun/newsjack",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 59,
+      "source_name": "borski/travel-hacking-toolkit",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 60,
+      "source_name": "aitytech/agentkits-marketing",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 61,
+      "source_name": "Auriti-Labs/geo-optimizer-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 62,
+      "source_name": "meleantonio/awesome-econ-ai-stuff",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 63,
+      "source_name": "Varnan-Tech/opendirectory",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 64,
+      "source_name": "elastic/agent-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 65,
+      "source_name": "vanab/swiftdata-agent-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 66,
+      "source_name": "twostraws/Swift-Concurrency-Agent-Skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 67,
+      "source_name": "AvdLee/Swift-Concurrency-Agent-Skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 68,
+      "source_name": "twostraws/Swift-Testing-Agent-Skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 69,
+      "source_name": "bocato/swift-testing-agent-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 70,
+      "source_name": "AvdLee/Swift-Testing-Agent-Skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 71,
+      "source_name": "Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 72,
+      "source_name": "n0an/Swift-FormatStyle-Agent-Skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 73,
+      "source_name": "dadederk/iOS-Accessibility-Agent-Skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 74,
+      "source_name": "PasqualeVittoriosi/swift-accessibility-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 75,
+      "source_name": "rgmez/apple-accessibility-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 76,
+      "source_name": "n0an/App-Intents-Agent-Skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 77,
+      "source_name": "rorkai/app-store-connect-cli-skills",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 78,
+      "source_name": "timbroddin/app-store-aso-skill",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 79,
+      "source_name": "3paws-ai/mobile-ai-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 80,
+      "source_name": "efremidze/swift-architecture-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 81,
+      "source_name": "n0an/Background-Execution-Agent-Skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 82,
+      "source_name": "AvdLee/Core-Data-Agent-Skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 83,
+      "source_name": "mhaviv/Swift-FocusEngine-Agent-Skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 84,
+      "source_name": "ivan-magda/swift-security-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 85,
+      "source_name": "jazzychad/ios-code-audit",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 86,
+      "source_name": "conorluddy/ios-simulator-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 87,
+      "source_name": "daetojemax/figma-to-swiftui-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 88,
+      "source_name": "andrewgleave/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 89,
+      "source_name": "n0an/Widgets-Agent-Skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 90,
+      "source_name": "twostraws/SwiftAgents",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 91,
+      "source_name": "jakubkrehel/make-interfaces-feel-better",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 92,
+      "source_name": "apify/agent-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 93,
+      "source_name": "NVIDIA/skills-",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 94,
+      "source_name": "supabase/agent-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 95,
+      "source_name": "aaron-he-zhu/aaron-marketing-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 96,
+      "source_name": "samber/cc-skills-golang",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 97,
+      "source_name": "addyosmani/web-quality-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 98,
+      "source_name": "CloudAI-X/threejs-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 99,
+      "source_name": "RKiding/Awesome-finance-skills",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 100,
+      "source_name": "tt-a1i/archify",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 101,
+      "source_name": "ericosiu/ai-marketing-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 102,
+      "source_name": "SharpAI/DeepCamera",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 103,
+      "source_name": "himself65/finance-skills",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 104,
+      "source_name": "eugeniughelbur/obsidian-second-brain",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 105,
+      "source_name": "markdown-viewer/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 106,
+      "source_name": "ningzimu/codex-ppt-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 107,
+      "source_name": "Nutlope/hallmark",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 108,
+      "source_name": "remotion-dev/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 109,
+      "source_name": "Imbad0202/academic-research-skills-codex",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 110,
+      "source_name": "deanpeters/Product-Manager-Skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 111,
+      "source_name": "PleasePrompto/notebooklm-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 112,
+      "source_name": "earthtojake/text-to-cad",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 113,
+      "source_name": "nicobailon/visual-explainer",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 114,
+      "source_name": "AgriciDaniel/claude-seo",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 115,
+      "source_name": "huggingface/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 116,
+      "source_name": "NVIDIA/SkillSpector",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 117,
+      "source_name": "hardikpandya/stop-slop",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 118,
+      "source_name": "millionco/react-doctor",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 119,
+      "source_name": "google/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 120,
+      "source_name": "hyhmrright/brooks-lint",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 121,
+      "source_name": "yujiachen-y/codebase-recon-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 122,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 123,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 124,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 125,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 126,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 127,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 128,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 129,
+      "source_name": "MinistaJazz/diasporic-intelligence",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 130,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 131,
+      "source_name": "wgwtest/novel-writing",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 132,
+      "source_name": "MohamedAbdallah-14/unslop",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 133,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 134,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "quarantine",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 135,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 136,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 137,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 138,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 139,
+      "source_name": "kepano/obsidian-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 140,
+      "source_name": "coreyhaines31/marketingskills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 141,
+      "source_name": "AllThingsSmitty/css-protips",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 142,
+      "source_name": "googleworkspace/cli",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 143,
+      "source_name": "vercel-labs/agent-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 144,
+      "source_name": "zarazhangrui/frontend-slides",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 145,
+      "source_name": "phuryn/pm-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 146,
+      "source_name": "teng-lin/notebooklm-py",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 147,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 148,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 149,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 150,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 151,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 152,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "quarantine",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 153,
+      "source_name": "multica-ai/andrej-karpathy-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 154,
+      "source_name": "mobile-next/mobile-mcp",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 155,
+      "source_name": "modelcontextprotocol/inspector",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 156,
+      "source_name": "heygen-com/hyperframes",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 157,
+      "source_name": "Panniantong/Agent-Reach",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 158,
+      "source_name": "product-on-purpose/pm-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 159,
+      "source_name": "shaom/infocard-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 160,
+      "source_name": "geekjourneyx/claude-design-card",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 161,
+      "source_name": "antvis/mcp-server-chart",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 162,
+      "source_name": "bcanfield/agentic-tech-debt",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 163,
+      "source_name": "Pythoughts-labs/designer-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 164,
+      "source_name": "hashgraph-online/awesome-codex-plugins",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 165,
+      "source_name": "hashgraph-online/hol-guard-plugin",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 166,
+      "source_name": "hashgraph-online/awesome-codex-plugins",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 167,
+      "source_name": "avansaber/tailtest-codex",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 168,
+      "source_name": "HDeibler/universal-design-principles",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 169,
+      "source_name": "BestLemoon/codex-seo",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 170,
+      "source_name": "avivsinai/langfuse-mcp",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 171,
+      "source_name": "johnvouros/nullcost-plugin",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 172,
+      "source_name": "MohamedAbdallah-14/prompt-to-asset",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 173,
+      "source_name": "avalonreset/seo-dungeon",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 174,
+      "source_name": "tim-osterhus/codex-remotion-plugin",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 175,
+      "source_name": "MohamedAbdallah-14/unslop",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 176,
+      "source_name": "summer521521/Zotero_Research_plugin",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 177,
+      "source_name": "PapiScholz/roadmapsmith",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 178,
+      "source_name": "ForceInjection/awesome-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 179,
+      "source_name": "fastknifes/openflow",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 180,
+      "source_name": "wenqingyu/ralphy-openspec",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 181,
+      "source_name": "Octane0411/opencode-plugin-openspec",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 182,
+      "source_name": "jixoai/openspecui",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 183,
+      "source_name": "sudokar/openspec-plus",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 184,
+      "source_name": "ToruAI/openspec-ui",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 185,
+      "source_name": "sflueckiger/specboard",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 186,
+      "source_name": "wxhou/openspec-playwright",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 187,
+      "source_name": "Lumiaqian/openspec-mcp",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 188,
+      "source_name": "yuritoledo/openspec-tdd",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 189,
+      "source_name": "mbertani/opsx-feature-dev",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 190,
+      "source_name": "griffithkk3-del/openspec-reviewed-workflow",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 191,
+      "source_name": "mrtooher/fable-mode",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 192,
+      "source_name": "ndpvt-web/latex-document-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 193,
+      "source_name": "devcxl/opencode-spec",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 194,
+      "source_name": "hashgraph-online/awesome-codex-plugins",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 195,
+      "source_name": "Rycen7822/codex-rg-guard",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 196,
+      "source_name": "wzyn20051216/solidworks-automation-skill",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 197,
+      "source_name": "louisedesadeleer/clipify",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 198,
+      "source_name": "michalparkola/tapestry-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 199,
+      "source_name": "bentossell/visualise",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 200,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 201,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 202,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 203,
+      "source_name": "minhnv0807/ai-business-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 204,
+      "source_name": "rshankras/claude-code-apple-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 205,
+      "source_name": "jihe520/social-push",
+      "risk_tier": "quarantine",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 206,
+      "source_name": "WILLOSCAR/research-units-pipeline-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 207,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 208,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 209,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 210,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 211,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 212,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 213,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 214,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 215,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 216,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 217,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 218,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 219,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 220,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 221,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 222,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 223,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 224,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 225,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 226,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 227,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 228,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 229,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 230,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 231,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 232,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 233,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 234,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 235,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 236,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 237,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 238,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 239,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 240,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 241,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 242,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 243,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 244,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 245,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 246,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 247,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 248,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 249,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 250,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 251,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 252,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 253,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 254,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 255,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 256,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 257,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 258,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 259,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 260,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 261,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 262,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 263,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 264,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 265,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 266,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 267,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 268,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 269,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 270,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 271,
+      "source_name": "headroomlabs-ai/headroom",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 272,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 273,
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 274,
+      "source_name": "openags/paper-search-mcp",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 275,
+      "source_name": "iannuttall/dotagents",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 276,
+      "source_name": "mirkobozzetto/espresso",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 277,
+      "source_name": "epicsagas/llm-transpile",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 278,
+      "source_name": "2kDarki/codex-mem",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 279,
+      "source_name": "papersflow-ai/papersflow-codex-plugin",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 280,
+      "source_name": "klajdikkolaj/upwork-autopilot",
+      "risk_tier": "quarantine",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 281,
+      "source_name": "wearetechnative/openspec-badge-action",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 282,
+      "source_name": "Kulaxyz/token-diet",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 283,
+      "source_name": "planetscale/database-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 284,
+      "source_name": "ramziddin/solid-skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 285,
+      "source_name": "growthenginenowoslawski/coldoutboundskills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 286,
+      "source_name": "KyuRish/mcp-dashboards",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 287,
+      "source_name": "marzukia/charted",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 288,
+      "source_name": "nteract/semiotic",
+      "risk_tier": "executable-surface-review-required",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": true
+      }
+    },
+    {
+      "raw_index": 289,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 290,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 291,
+      "source_name": "InternScience/Awesome-Scientific-Skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 292,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    },
+    {
+      "raw_index": 293,
+      "source_name": "pedronauck/skills",
+      "risk_tier": "standard-review",
+      "security_packet": {
+        "candidate_code_executed": false,
+        "network_probe_scope": "public Git metadata only",
+        "executable_surface_review_required": false
+      }
+    }
+  ]
+}

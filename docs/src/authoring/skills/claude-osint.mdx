@@ -1,0 +1,22 @@
+---
+name: "claude-osint"
+description: "Curated elementalsouls/Claude-OSINT passive OSINT skills (osint-methodology, offensive-osint). Pentest hybrid canonical osint-passive source."
+title: "Claude OSINT"
+source_kind: "curated-external"
+source: "elementalsouls/Claude-OSINT"
+install_source: "elementalsouls/Claude-OSINT"
+status: "catalog-reference"
+trust_tier: "curated-trust-gated"
+provenance_status: "pentest-hybrid-inventory"
+sync_kind: "skills-cli"
+install_command: "npx skills add elementalsouls/Claude-OSINT --skill osint-methodology --list"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/elementalsouls/Claude-OSINT"
+notes: "Canonical slug for osint-passive signal is claude-osint/osint-methodology (not osint-recon)."
+risk_notes: "Passive OSINT only within signed ROE; respect prohibited_actions for social engineering and harassment."
+promotion_policy: "Catalog reference only via pentest hybrid index."
+provenance_evidence: "pentest-hybrid-inventory/claude-osint.json; 2 skills enumerated."
+selector_mode: "resolved"
+---
+
+Curated external OSINT bundle used by the repo `pentest` skill for passive recon planning depth.

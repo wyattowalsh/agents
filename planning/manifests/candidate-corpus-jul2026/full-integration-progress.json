@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "generated_at": "2026-07-07T01:50:58.020403+00:00",
+  "phase": "research-graph-ready",
+  "complete": false,
+  "raw_candidates": 293,
+  "unique_normalized_targets": 289,
+  "unique_terminal_decisions": 289,
+  "research_graph": {
+    "raw_lanes": 293,
+    "unique_target_lanes": 289,
+    "total_leaf_checks": 7879,
+    "leaf_status_counts": {
+      "blocked-until-trust-gates": 1138,
+      "complete-public-git-metadata": 584,
+      "complete-static": 569,
+      "complete-with-warning": 2,
+      "covered-by-existing-catalog": 78,
+      "pending-deep-source-research": 1461,
+      "pending-license-review": 289,
+      "provisional-static-intake": 3758
+    }
+  },
+  "existing_integration_coverage": {
+    "covered-by-existing-installable-catalog": 13,
+    "covered-by-existing-reference": 1,
+    "needs-promotion-review": 275
+  },
+  "promotion_readiness": {
+    "unique_targets": 289,
+    "ready_for_repo_promotion": 0,
+    "ready_for_live_install": 0,
+    "blocked_until_trust_gates": 289
+  },
+  "promotion_waves": {
+    "W00": 13,
+    "W01": 15,
+    "W02": 28,
+    "W03": 27,
+    "W04": 22,
+    "W05": 26,
+    "W06": 21,
+    "W07": 30,
+    "W08": 102,
+    "W99": 5
+  },
+  "live_install": {
+    "eligible_count": 0,
+    "status": "blocked-until-trust-gates",
+    "reason": "No candidate has complete source-list, license, security, attribution, auth, and docs review."
+  },
+  "next_actions": [
+    "Dispatch read-only source research packets for each U### lane.",
+    "Promote only the N### targets whose raw lanes pass trust gates.",
+    "Regenerate docs-steward surfaces after each promotion wave.",
+    "Run focused validation and commit each validated wave if still authorized."
+  ]
+}

@@ -1,0 +1,3774 @@
+{
+  "version": 1,
+  "generated_at": "2026-07-07T01:50:57.779874+00:00",
+  "marker": "GENERATED-CANDIDATE-CORPUS-JUL2026",
+  "rows_written": 289,
+  "unique_targets": 289,
+  "stale_generated_rows_removed": 289,
+  "status": "global-only-or-avoid",
+  "sync_kind": "none",
+  "install_commands_published": 0,
+  "rows": [
+    {
+      "name": "candidate-corpus-001-csvglow",
+      "path": "docs/src/authoring/skills/candidate-corpus-001-csvglow.mdx",
+      "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
+      "source_name": "Ratnaditya-J/csvglow",
+      "raw_indexes": [
+        1
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-002-swiftdata-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-002-swiftdata-agent-skill.mdx",
+      "normalized_url": "https://github.com/twostraws/SwiftData-Agent-Skill",
+      "source_name": "twostraws/SwiftData-Agent-Skill",
+      "raw_indexes": [
+        2
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-003-swiftui-design-principles",
+      "path": "docs/src/authoring/skills/candidate-corpus-003-swiftui-design-principles.mdx",
+      "normalized_url": "https://github.com/arjitj2/swiftui-design-principles",
+      "source_name": "arjitj2/swiftui-design-principles",
+      "raw_indexes": [
+        3
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-004-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-005-terraform-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-005-terraform-skill.mdx",
+      "normalized_url": "https://github.com/antonbabenko/terraform-skill",
+      "source_name": "antonbabenko/terraform-skill",
+      "raw_indexes": [
+        5,
+        56
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-006-mcp-excalidraw",
+      "path": "docs/src/authoring/skills/candidate-corpus-006-mcp-excalidraw.mdx",
+      "normalized_url": "https://github.com/yctimlin/mcp_excalidraw",
+      "source_name": "yctimlin/mcp_excalidraw",
+      "raw_indexes": [
+        6
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-007-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-007-skills.mdx",
+      "normalized_url": "https://github.com/cloudflare/skills",
+      "source_name": "cloudflare/skills",
+      "raw_indexes": [
+        7
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-008-transitions-dev",
+      "path": "docs/src/authoring/skills/candidate-corpus-008-transitions-dev.mdx",
+      "normalized_url": "https://github.com/Jakubantalik/transitions.dev",
+      "source_name": "Jakubantalik/transitions.dev",
+      "raw_indexes": [
+        8
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-009-agent-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-009-agent-skills.mdx",
+      "normalized_url": "https://github.com/WordPress/agent-skills",
+      "source_name": "WordPress/agent-skills",
+      "raw_indexes": [
+        9
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-010-pg-aiguide",
+      "path": "docs/src/authoring/skills/candidate-corpus-010-pg-aiguide.mdx",
+      "normalized_url": "https://github.com/timescale/pg-aiguide",
+      "source_name": "timescale/pg-aiguide",
+      "raw_indexes": [
+        10
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-011-designer-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-011-designer-skills.mdx",
+      "normalized_url": "https://github.com/Owl-Listener/designer-skills",
+      "source_name": "Owl-Listener/designer-skills",
+      "raw_indexes": [
+        11
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-012-aso-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-012-aso-skills.mdx",
+      "normalized_url": "https://github.com/Eronred/aso-skills",
+      "source_name": "Eronred/aso-skills",
+      "raw_indexes": [
+        12
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-013-lathe",
+      "path": "docs/src/authoring/skills/candidate-corpus-013-lathe.mdx",
+      "normalized_url": "https://github.com/devenjarvis/lathe",
+      "source_name": "devenjarvis/lathe",
+      "raw_indexes": [
+        13
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-014-deep-research-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-014-deep-research-skills.mdx",
+      "normalized_url": "https://github.com/Weizhena/Deep-Research-skills",
+      "source_name": "Weizhena/Deep-Research-skills",
+      "raw_indexes": [
+        14
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-015-ai-legal-claude",
+      "path": "docs/src/authoring/skills/candidate-corpus-015-ai-legal-claude.mdx",
+      "normalized_url": "https://github.com/zubair-trabzada/ai-legal-claude",
+      "source_name": "zubair-trabzada/ai-legal-claude",
+      "raw_indexes": [
+        15
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-016-logo-generator-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-016-logo-generator-skill.mdx",
+      "normalized_url": "https://github.com/op7418/logo-generator-skill",
+      "source_name": "op7418/logo-generator-skill",
+      "raw_indexes": [
+        16
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-017-cli",
+      "path": "docs/src/authoring/skills/candidate-corpus-017-cli.mdx",
+      "normalized_url": "https://github.com/TanStack/cli",
+      "source_name": "TanStack/cli",
+      "raw_indexes": [
+        17
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-018-rust-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-018-rust-skills.mdx",
+      "normalized_url": "https://github.com/actionbook/rust-skills",
+      "source_name": "actionbook/rust-skills",
+      "raw_indexes": [
+        18
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-019-app-store-preflight-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-019-app-store-preflight-skills.mdx",
+      "normalized_url": "https://github.com/truongduy2611/app-store-preflight-skills",
+      "source_name": "truongduy2611/app-store-preflight-skills",
+      "raw_indexes": [
+        19
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-020-tot",
+      "path": "docs/src/authoring/skills/candidate-corpus-020-tot.mdx",
+      "normalized_url": "https://github.com/plannotator/tot",
+      "source_name": "plannotator/tot",
+      "raw_indexes": [
+        20
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-021-effective-html",
+      "path": "docs/src/authoring/skills/candidate-corpus-021-effective-html.mdx",
+      "normalized_url": "https://github.com/plannotator/effective-html",
+      "source_name": "plannotator/effective-html",
+      "raw_indexes": [
+        21
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-022-ios-simulator-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-022-ios-simulator-skill.mdx",
+      "normalized_url": "https://github.com/conorluddy/ios-simulator-skill",
+      "source_name": "conorluddy/ios-simulator-skill",
+      "raw_indexes": [
+        22,
+        86
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-023-gtm-engineer-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-023-gtm-engineer-skills.mdx",
+      "normalized_url": "https://github.com/onvoyage-ai/gtm-engineer-skills",
+      "source_name": "onvoyage-ai/gtm-engineer-skills",
+      "raw_indexes": [
+        23
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-024-x-research-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-024-x-research-skill.mdx",
+      "normalized_url": "https://github.com/rohunvora/x-research-skill",
+      "source_name": "rohunvora/x-research-skill",
+      "raw_indexes": [
+        24
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-025-better-icons",
+      "path": "docs/src/authoring/skills/candidate-corpus-025-better-icons.mdx",
+      "normalized_url": "https://github.com/better-auth/better-icons",
+      "source_name": "better-auth/better-icons",
+      "raw_indexes": [
+        25
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-026-aws-agent-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-026-aws-agent-skills.mdx",
+      "normalized_url": "https://github.com/itsmostafa/aws-agent-skills",
+      "source_name": "itsmostafa/aws-agent-skills",
+      "raw_indexes": [
+        26
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-027-figmirror",
+      "path": "docs/src/authoring/skills/candidate-corpus-027-figmirror.mdx",
+      "normalized_url": "https://github.com/VILA-Lab/FigMirror",
+      "source_name": "VILA-Lab/FigMirror",
+      "raw_indexes": [
+        27
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-028-webgpu-claude-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-028-webgpu-claude-skill.mdx",
+      "normalized_url": "https://github.com/dgreenheck/webgpu-claude-skill",
+      "source_name": "dgreenheck/webgpu-claude-skill",
+      "raw_indexes": [
+        28
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-029-axiom",
+      "path": "docs/src/authoring/skills/candidate-corpus-029-axiom.mdx",
+      "normalized_url": "https://github.com/CharlesWiltgen/Axiom",
+      "source_name": "CharlesWiltgen/Axiom",
+      "raw_indexes": [
+        29
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-030-pretty-mermaid-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-030-pretty-mermaid-skills.mdx",
+      "normalized_url": "https://github.com/imxv/Pretty-mermaid-skills",
+      "source_name": "imxv/Pretty-mermaid-skills",
+      "raw_indexes": [
+        30
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-031-tech-debt-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-031-tech-debt-skill.mdx",
+      "normalized_url": "https://github.com/ksimback/tech-debt-skill",
+      "source_name": "ksimback/tech-debt-skill",
+      "raw_indexes": [
+        31
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-032-academic-paper-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-032-academic-paper-skills.mdx",
+      "normalized_url": "https://github.com/lishix520/academic-paper-skills",
+      "source_name": "lishix520/academic-paper-skills",
+      "raw_indexes": [
+        32
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-033-claude-skills-llm-council",
+      "path": "docs/src/authoring/skills/candidate-corpus-033-claude-skills-llm-council.mdx",
+      "normalized_url": "https://github.com/aiwithremy/claude-skills-llm-council",
+      "source_name": "aiwithremy/claude-skills-llm-council",
+      "raw_indexes": [
+        33
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-034-scipilot-figure-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-034-scipilot-figure-skill.mdx",
+      "normalized_url": "https://github.com/Haojae/scipilot-figure-skill",
+      "source_name": "Haojae/scipilot-figure-skill",
+      "raw_indexes": [
+        34
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-035-codex-complexity-optimizer",
+      "path": "docs/src/authoring/skills/candidate-corpus-035-codex-complexity-optimizer.mdx",
+      "normalized_url": "https://github.com/Kappaemme-git/codex-complexity-optimizer",
+      "source_name": "Kappaemme-git/codex-complexity-optimizer",
+      "raw_indexes": [
+        35
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-036-power-bi-agentic-development",
+      "path": "docs/src/authoring/skills/candidate-corpus-036-power-bi-agentic-development.mdx",
+      "normalized_url": "https://github.com/data-goblin/power-bi-agentic-development",
+      "source_name": "data-goblin/power-bi-agentic-development",
+      "raw_indexes": [
+        36
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-037-solana-dev-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-037-solana-dev-skill.mdx",
+      "normalized_url": "https://github.com/solana-foundation/solana-dev-skill",
+      "source_name": "solana-foundation/solana-dev-skill",
+      "raw_indexes": [
+        37
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-038-academic-pptx-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-038-academic-pptx-skill.mdx",
+      "normalized_url": "https://github.com/Gabberflast/academic-pptx-skill",
+      "source_name": "Gabberflast/academic-pptx-skill",
+      "raw_indexes": [
+        38
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-039-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-039-agent-skill.mdx",
+      "normalized_url": "https://github.com/ast-grep/agent-skill",
+      "source_name": "ast-grep/agent-skill",
+      "raw_indexes": [
+        39
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-040-langchain-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-040-langchain-skills.mdx",
+      "normalized_url": "https://github.com/langchain-ai/langchain-skills",
+      "source_name": "langchain-ai/langchain-skills",
+      "raw_indexes": [
+        40
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-041-claude-deep-research-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-041-claude-deep-research-skill.mdx",
+      "normalized_url": "https://github.com/199-biotechnologies/claude-deep-research-skill",
+      "source_name": "199-biotechnologies/claude-deep-research-skill",
+      "raw_indexes": [
+        41
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-042-duckdb-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-042-duckdb-skills.mdx",
+      "normalized_url": "https://github.com/duckdb/duckdb-skills",
+      "source_name": "duckdb/duckdb-skills",
+      "raw_indexes": [
+        42
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-043-yahoo-finance2",
+      "path": "docs/src/authoring/skills/candidate-corpus-043-yahoo-finance2.mdx",
+      "normalized_url": "https://github.com/gadicc/yahoo-finance2",
+      "source_name": "gadicc/yahoo-finance2",
+      "raw_indexes": [
+        43
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-044-ai-sales-team-claude",
+      "path": "docs/src/authoring/skills/candidate-corpus-044-ai-sales-team-claude.mdx",
+      "normalized_url": "https://github.com/zubair-trabzada/ai-sales-team-claude",
+      "source_name": "zubair-trabzada/ai-sales-team-claude",
+      "raw_indexes": [
+        44
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-045-agentic-seo-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-045-agentic-seo-skill.mdx",
+      "normalized_url": "https://github.com/Bhanunamikaze/Agentic-SEO-Skill",
+      "source_name": "Bhanunamikaze/Agentic-SEO-Skill",
+      "raw_indexes": [
+        45
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-046-buffett-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-046-buffett-skills.mdx",
+      "normalized_url": "https://github.com/agi-now/buffett-skills",
+      "source_name": "agi-now/buffett-skills",
+      "raw_indexes": [
+        46
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-047-cc-thinking-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-047-cc-thinking-skills.mdx",
+      "normalized_url": "https://github.com/tjboudreaux/cc-thinking-skills",
+      "source_name": "tjboudreaux/cc-thinking-skills",
+      "raw_indexes": [
+        47
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-048-macos-app-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-048-macos-app-skills.mdx",
+      "normalized_url": "https://github.com/fayazara/macos-app-skills",
+      "source_name": "fayazara/macos-app-skills",
+      "raw_indexes": [
+        48
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-049-skill-color-expert",
+      "path": "docs/src/authoring/skills/candidate-corpus-049-skill-color-expert.mdx",
+      "normalized_url": "https://github.com/meodai/skill.color-expert",
+      "source_name": "meodai/skill.color-expert",
+      "raw_indexes": [
+        49
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-050-awesome-legal-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-050-awesome-legal-skills.mdx",
+      "normalized_url": "https://github.com/lawve-ai/awesome-legal-skills",
+      "source_name": "lawve-ai/awesome-legal-skills",
+      "raw_indexes": [
+        50
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-051-solid-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-051-solid-skills.mdx",
+      "normalized_url": "https://github.com/ramziddin/solid-skills",
+      "source_name": "ramziddin/solid-skills",
+      "raw_indexes": [
+        51,
+        284
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-052-paper-plot-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-052-paper-plot-skills.mdx",
+      "normalized_url": "https://github.com/Trae1ounG/paper-plot-skills",
+      "source_name": "Trae1ounG/paper-plot-skills",
+      "raw_indexes": [
+        52
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-053-dbt-agent-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-053-dbt-agent-skills.mdx",
+      "normalized_url": "https://github.com/dbt-labs/dbt-agent-skills",
+      "source_name": "dbt-labs/dbt-agent-skills",
+      "raw_indexes": [
+        53
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-054-seo-audit-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-054-seo-audit-skill.mdx",
+      "normalized_url": "https://github.com/JeffLi1993/seo-audit-skill",
+      "source_name": "JeffLi1993/seo-audit-skill",
+      "raw_indexes": [
+        54
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-055-motion-design-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-055-motion-design-skill.mdx",
+      "normalized_url": "https://github.com/LottieFiles/motion-design-skill",
+      "source_name": "LottieFiles/motion-design-skill",
+      "raw_indexes": [
+        55
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-057-affiliate-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-057-affiliate-skills.mdx",
+      "normalized_url": "https://github.com/Affitor/affiliate-skills",
+      "source_name": "Affitor/affiliate-skills",
+      "raw_indexes": [
+        57
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-058-newsjack",
+      "path": "docs/src/authoring/skills/candidate-corpus-058-newsjack.mdx",
+      "normalized_url": "https://github.com/elvisun/newsjack",
+      "source_name": "elvisun/newsjack",
+      "raw_indexes": [
+        58
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-059-travel-hacking-toolkit",
+      "path": "docs/src/authoring/skills/candidate-corpus-059-travel-hacking-toolkit.mdx",
+      "normalized_url": "https://github.com/borski/travel-hacking-toolkit",
+      "source_name": "borski/travel-hacking-toolkit",
+      "raw_indexes": [
+        59
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-060-agentkits-marketing",
+      "path": "docs/src/authoring/skills/candidate-corpus-060-agentkits-marketing.mdx",
+      "normalized_url": "https://github.com/aitytech/agentkits-marketing",
+      "source_name": "aitytech/agentkits-marketing",
+      "raw_indexes": [
+        60
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-061-geo-optimizer-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-061-geo-optimizer-skill.mdx",
+      "normalized_url": "https://github.com/Auriti-Labs/geo-optimizer-skill",
+      "source_name": "Auriti-Labs/geo-optimizer-skill",
+      "raw_indexes": [
+        61
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-062-awesome-econ-ai-stuff",
+      "path": "docs/src/authoring/skills/candidate-corpus-062-awesome-econ-ai-stuff.mdx",
+      "normalized_url": "https://github.com/meleantonio/awesome-econ-ai-stuff",
+      "source_name": "meleantonio/awesome-econ-ai-stuff",
+      "raw_indexes": [
+        62
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-063-opendirectory",
+      "path": "docs/src/authoring/skills/candidate-corpus-063-opendirectory.mdx",
+      "normalized_url": "https://github.com/Varnan-Tech/opendirectory",
+      "source_name": "Varnan-Tech/opendirectory",
+      "raw_indexes": [
+        63
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-064-agent-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-064-agent-skills.mdx",
+      "normalized_url": "https://github.com/elastic/agent-skills",
+      "source_name": "elastic/agent-skills",
+      "raw_indexes": [
+        64
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-065-swiftdata-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-065-swiftdata-agent-skill.mdx",
+      "normalized_url": "https://github.com/vanab/swiftdata-agent-skill",
+      "source_name": "vanab/swiftdata-agent-skill",
+      "raw_indexes": [
+        65
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-066-swift-concurrency-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-066-swift-concurrency-agent-skill.mdx",
+      "normalized_url": "https://github.com/twostraws/Swift-Concurrency-Agent-Skill",
+      "source_name": "twostraws/Swift-Concurrency-Agent-Skill",
+      "raw_indexes": [
+        66
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-067-swift-concurrency-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-067-swift-concurrency-agent-skill.mdx",
+      "normalized_url": "https://github.com/AvdLee/Swift-Concurrency-Agent-Skill",
+      "source_name": "AvdLee/Swift-Concurrency-Agent-Skill",
+      "raw_indexes": [
+        67
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-068-swift-testing-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-068-swift-testing-agent-skill.mdx",
+      "normalized_url": "https://github.com/twostraws/Swift-Testing-Agent-Skill",
+      "source_name": "twostraws/Swift-Testing-Agent-Skill",
+      "raw_indexes": [
+        68
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-069-swift-testing-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-069-swift-testing-agent-skill.mdx",
+      "normalized_url": "https://github.com/bocato/swift-testing-agent-skill",
+      "source_name": "bocato/swift-testing-agent-skill",
+      "raw_indexes": [
+        69
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-070-swift-testing-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-070-swift-testing-agent-skill.mdx",
+      "normalized_url": "https://github.com/AvdLee/Swift-Testing-Agent-Skill",
+      "source_name": "AvdLee/Swift-Testing-Agent-Skill",
+      "raw_indexes": [
+        70
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-071-swift-api-design-guidelines-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-071-swift-api-design-guidelines-agent-skill.mdx",
+      "normalized_url": "https://github.com/Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
+      "source_name": "Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
+      "raw_indexes": [
+        71
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-072-swift-formatstyle-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-072-swift-formatstyle-agent-skill.mdx",
+      "normalized_url": "https://github.com/n0an/Swift-FormatStyle-Agent-Skill",
+      "source_name": "n0an/Swift-FormatStyle-Agent-Skill",
+      "raw_indexes": [
+        72
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-073-ios-accessibility-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-073-ios-accessibility-agent-skill.mdx",
+      "normalized_url": "https://github.com/dadederk/iOS-Accessibility-Agent-Skill",
+      "source_name": "dadederk/iOS-Accessibility-Agent-Skill",
+      "raw_indexes": [
+        73
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-074-swift-accessibility-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-074-swift-accessibility-skill.mdx",
+      "normalized_url": "https://github.com/PasqualeVittoriosi/swift-accessibility-skill",
+      "source_name": "PasqualeVittoriosi/swift-accessibility-skill",
+      "raw_indexes": [
+        74
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-075-apple-accessibility-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-075-apple-accessibility-skills.mdx",
+      "normalized_url": "https://github.com/rgmez/apple-accessibility-skills",
+      "source_name": "rgmez/apple-accessibility-skills",
+      "raw_indexes": [
+        75
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-076-app-intents-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-076-app-intents-agent-skill.mdx",
+      "normalized_url": "https://github.com/n0an/App-Intents-Agent-Skill",
+      "source_name": "n0an/App-Intents-Agent-Skill",
+      "raw_indexes": [
+        76
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-077-app-store-connect-cli-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-077-app-store-connect-cli-skills.mdx",
+      "normalized_url": "https://github.com/rorkai/app-store-connect-cli-skills",
+      "source_name": "rorkai/app-store-connect-cli-skills",
+      "raw_indexes": [
+        77
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-078-app-store-aso-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-078-app-store-aso-skill.mdx",
+      "normalized_url": "https://github.com/timbroddin/app-store-aso-skill",
+      "source_name": "timbroddin/app-store-aso-skill",
+      "raw_indexes": [
+        78
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-079-appstore-review",
+      "path": "docs/src/authoring/skills/candidate-corpus-079-appstore-review.mdx",
+      "normalized_url": "https://github.com/3paws-ai/mobile-ai-skills/tree/main/skills/appstore-review",
+      "source_name": "3paws-ai/mobile-ai-skills",
+      "raw_indexes": [
+        79
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-080-swift-architecture-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-080-swift-architecture-skill.mdx",
+      "normalized_url": "https://github.com/efremidze/swift-architecture-skill",
+      "source_name": "efremidze/swift-architecture-skill",
+      "raw_indexes": [
+        80
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-081-background-execution-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-081-background-execution-agent-skill.mdx",
+      "normalized_url": "https://github.com/n0an/Background-Execution-Agent-Skill",
+      "source_name": "n0an/Background-Execution-Agent-Skill",
+      "raw_indexes": [
+        81
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-082-core-data-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-082-core-data-agent-skill.mdx",
+      "normalized_url": "https://github.com/AvdLee/Core-Data-Agent-Skill",
+      "source_name": "AvdLee/Core-Data-Agent-Skill",
+      "raw_indexes": [
+        82
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-083-swift-focusengine-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-083-swift-focusengine-agent-skill.mdx",
+      "normalized_url": "https://github.com/mhaviv/Swift-FocusEngine-Agent-Skill",
+      "source_name": "mhaviv/Swift-FocusEngine-Agent-Skill",
+      "raw_indexes": [
+        83
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-084-swift-security-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-084-swift-security-skill.mdx",
+      "normalized_url": "https://github.com/ivan-magda/swift-security-skill",
+      "source_name": "ivan-magda/swift-security-skill",
+      "raw_indexes": [
+        84
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-085-ios-code-audit",
+      "path": "docs/src/authoring/skills/candidate-corpus-085-ios-code-audit.mdx",
+      "normalized_url": "https://github.com/jazzychad/ios-code-audit",
+      "source_name": "jazzychad/ios-code-audit",
+      "raw_indexes": [
+        85
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-087-figma-to-swiftui-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-087-figma-to-swiftui-skill.mdx",
+      "normalized_url": "https://github.com/daetojemax/figma-to-swiftui-skill",
+      "source_name": "daetojemax/figma-to-swiftui-skill",
+      "raw_indexes": [
+        87
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-088-writing-for-interfaces",
+      "path": "docs/src/authoring/skills/candidate-corpus-088-writing-for-interfaces.mdx",
+      "normalized_url": "https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces",
+      "source_name": "andrewgleave/skills",
+      "raw_indexes": [
+        88
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-089-widgets-agent-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-089-widgets-agent-skill.mdx",
+      "normalized_url": "https://github.com/n0an/Widgets-Agent-Skill",
+      "source_name": "n0an/Widgets-Agent-Skill",
+      "raw_indexes": [
+        89
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-090-swiftagents",
+      "path": "docs/src/authoring/skills/candidate-corpus-090-swiftagents.mdx",
+      "normalized_url": "https://github.com/twostraws/SwiftAgents",
+      "source_name": "twostraws/SwiftAgents",
+      "raw_indexes": [
+        90
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-091-make-interfaces-feel-better",
+      "path": "docs/src/authoring/skills/candidate-corpus-091-make-interfaces-feel-better.mdx",
+      "normalized_url": "https://github.com/jakubkrehel/make-interfaces-feel-better",
+      "source_name": "jakubkrehel/make-interfaces-feel-better",
+      "raw_indexes": [
+        91
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-092-agent-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-092-agent-skills.mdx",
+      "normalized_url": "https://github.com/apify/agent-skills",
+      "source_name": "apify/agent-skills",
+      "raw_indexes": [
+        92
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-093-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-093-skills.mdx",
+      "normalized_url": "https://github.com/NVIDIA/skills-",
+      "source_name": "NVIDIA/skills-",
+      "raw_indexes": [
+        93
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "skip_inaccessible"
+    },
+    {
+      "name": "candidate-corpus-094-agent-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-094-agent-skills.mdx",
+      "normalized_url": "https://github.com/supabase/agent-skills",
+      "source_name": "supabase/agent-skills",
+      "raw_indexes": [
+        94
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-095-aaron-marketing-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-095-aaron-marketing-skills.mdx",
+      "normalized_url": "https://github.com/aaron-he-zhu/aaron-marketing-skills",
+      "source_name": "aaron-he-zhu/aaron-marketing-skills",
+      "raw_indexes": [
+        95
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-096-cc-skills-golang",
+      "path": "docs/src/authoring/skills/candidate-corpus-096-cc-skills-golang.mdx",
+      "normalized_url": "https://github.com/samber/cc-skills-golang",
+      "source_name": "samber/cc-skills-golang",
+      "raw_indexes": [
+        96
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-097-web-quality-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-097-web-quality-skills.mdx",
+      "normalized_url": "https://github.com/addyosmani/web-quality-skills",
+      "source_name": "addyosmani/web-quality-skills",
+      "raw_indexes": [
+        97
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-098-threejs-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-098-threejs-skills.mdx",
+      "normalized_url": "https://github.com/CloudAI-X/threejs-skills",
+      "source_name": "CloudAI-X/threejs-skills",
+      "raw_indexes": [
+        98
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-099-awesome-finance-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-099-awesome-finance-skills.mdx",
+      "normalized_url": "https://github.com/RKiding/Awesome-finance-skills",
+      "source_name": "RKiding/Awesome-finance-skills",
+      "raw_indexes": [
+        99
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-100-archify",
+      "path": "docs/src/authoring/skills/candidate-corpus-100-archify.mdx",
+      "normalized_url": "https://github.com/tt-a1i/archify",
+      "source_name": "tt-a1i/archify",
+      "raw_indexes": [
+        100
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-101-ai-marketing-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-101-ai-marketing-skills.mdx",
+      "normalized_url": "https://github.com/ericosiu/ai-marketing-skills",
+      "source_name": "ericosiu/ai-marketing-skills",
+      "raw_indexes": [
+        101
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-102-deepcamera",
+      "path": "docs/src/authoring/skills/candidate-corpus-102-deepcamera.mdx",
+      "normalized_url": "https://github.com/SharpAI/DeepCamera",
+      "source_name": "SharpAI/DeepCamera",
+      "raw_indexes": [
+        102
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-103-finance-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-103-finance-skills.mdx",
+      "normalized_url": "https://github.com/himself65/finance-skills",
+      "source_name": "himself65/finance-skills",
+      "raw_indexes": [
+        103
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-104-obsidian-second-brain",
+      "path": "docs/src/authoring/skills/candidate-corpus-104-obsidian-second-brain.mdx",
+      "normalized_url": "https://github.com/eugeniughelbur/obsidian-second-brain",
+      "source_name": "eugeniughelbur/obsidian-second-brain",
+      "raw_indexes": [
+        104
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-105-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-105-skills.mdx",
+      "normalized_url": "https://github.com/markdown-viewer/skills",
+      "source_name": "markdown-viewer/skills",
+      "raw_indexes": [
+        105
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-106-codex-ppt-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-106-codex-ppt-skill.mdx",
+      "normalized_url": "https://github.com/ningzimu/codex-ppt-skill",
+      "source_name": "ningzimu/codex-ppt-skill",
+      "raw_indexes": [
+        106
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-107-hallmark",
+      "path": "docs/src/authoring/skills/candidate-corpus-107-hallmark.mdx",
+      "normalized_url": "https://github.com/Nutlope/hallmark",
+      "source_name": "Nutlope/hallmark",
+      "raw_indexes": [
+        107
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-108-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-108-skills.mdx",
+      "normalized_url": "https://github.com/remotion-dev/skills",
+      "source_name": "remotion-dev/skills",
+      "raw_indexes": [
+        108
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-109-academic-research-skills-codex",
+      "path": "docs/src/authoring/skills/candidate-corpus-109-academic-research-skills-codex.mdx",
+      "normalized_url": "https://github.com/Imbad0202/academic-research-skills-codex",
+      "source_name": "Imbad0202/academic-research-skills-codex",
+      "raw_indexes": [
+        109
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-110-product-manager-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-110-product-manager-skills.mdx",
+      "normalized_url": "https://github.com/deanpeters/Product-Manager-Skills",
+      "source_name": "deanpeters/Product-Manager-Skills",
+      "raw_indexes": [
+        110
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-111-notebooklm-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-111-notebooklm-skill.mdx",
+      "normalized_url": "https://github.com/PleasePrompto/notebooklm-skill",
+      "source_name": "PleasePrompto/notebooklm-skill",
+      "raw_indexes": [
+        111
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-112-text-to-cad",
+      "path": "docs/src/authoring/skills/candidate-corpus-112-text-to-cad.mdx",
+      "normalized_url": "https://github.com/earthtojake/text-to-cad",
+      "source_name": "earthtojake/text-to-cad",
+      "raw_indexes": [
+        112
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-113-visual-explainer",
+      "path": "docs/src/authoring/skills/candidate-corpus-113-visual-explainer.mdx",
+      "normalized_url": "https://github.com/nicobailon/visual-explainer",
+      "source_name": "nicobailon/visual-explainer",
+      "raw_indexes": [
+        113
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-114-claude-seo",
+      "path": "docs/src/authoring/skills/candidate-corpus-114-claude-seo.mdx",
+      "normalized_url": "https://github.com/AgriciDaniel/claude-seo",
+      "source_name": "AgriciDaniel/claude-seo",
+      "raw_indexes": [
+        114
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-115-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-115-skills.mdx",
+      "normalized_url": "https://github.com/huggingface/skills",
+      "source_name": "huggingface/skills",
+      "raw_indexes": [
+        115
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-116-skillspector",
+      "path": "docs/src/authoring/skills/candidate-corpus-116-skillspector.mdx",
+      "normalized_url": "https://github.com/NVIDIA/SkillSpector",
+      "source_name": "NVIDIA/SkillSpector",
+      "raw_indexes": [
+        116
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-117-stop-slop",
+      "path": "docs/src/authoring/skills/candidate-corpus-117-stop-slop.mdx",
+      "normalized_url": "https://github.com/hardikpandya/stop-slop",
+      "source_name": "hardikpandya/stop-slop",
+      "raw_indexes": [
+        117
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-118-react-doctor",
+      "path": "docs/src/authoring/skills/candidate-corpus-118-react-doctor.mdx",
+      "normalized_url": "https://github.com/millionco/react-doctor",
+      "source_name": "millionco/react-doctor",
+      "raw_indexes": [
+        118
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-119-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-119-skills.mdx",
+      "normalized_url": "https://github.com/google/skills",
+      "source_name": "google/skills",
+      "raw_indexes": [
+        119
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-120-brooks-lint",
+      "path": "docs/src/authoring/skills/candidate-corpus-120-brooks-lint.mdx",
+      "normalized_url": "https://github.com/hyhmrright/brooks-lint",
+      "source_name": "hyhmrright/brooks-lint",
+      "raw_indexes": [
+        120
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-121-codebase-recon-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-121-codebase-recon-skill.mdx",
+      "normalized_url": "https://github.com/yujiachen-y/codebase-recon-skill",
+      "source_name": "yujiachen-y/codebase-recon-skill",
+      "raw_indexes": [
+        121
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-122-gh-address-comments",
+      "path": "docs/src/authoring/skills/candidate-corpus-122-gh-address-comments.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/gh-address-comments",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        122
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-123-gh-fix-ci",
+      "path": "docs/src/authoring/skills/candidate-corpus-123-gh-fix-ci.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/gh-fix-ci",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        123
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-124-notion-knowledge-capture",
+      "path": "docs/src/authoring/skills/candidate-corpus-124-notion-knowledge-capture.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/notion-knowledge-capture",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        124
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-125-internal-comms",
+      "path": "docs/src/authoring/skills/candidate-corpus-125-internal-comms.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/internal-comms",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        125
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-126-paperjsx",
+      "path": "docs/src/authoring/skills/candidate-corpus-126-paperjsx.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/paperjsx",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        126
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-127-email-draft-polish",
+      "path": "docs/src/authoring/skills/candidate-corpus-127-email-draft-polish.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/email-draft-polish",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        127
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-128-changelog-generator",
+      "path": "docs/src/authoring/skills/candidate-corpus-128-changelog-generator.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/changelog-generator",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        128
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-129-diasporic-intelligence",
+      "path": "docs/src/authoring/skills/candidate-corpus-129-diasporic-intelligence.mdx",
+      "normalized_url": "https://github.com/MinistaJazz/diasporic-intelligence",
+      "source_name": "MinistaJazz/diasporic-intelligence",
+      "raw_indexes": [
+        129
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-130-content-research-writer",
+      "path": "docs/src/authoring/skills/candidate-corpus-130-content-research-writer.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/content-research-writer",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        130
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-131-novel-writing",
+      "path": "docs/src/authoring/skills/candidate-corpus-131-novel-writing.mdx",
+      "normalized_url": "https://github.com/wgwtest/novel-writing",
+      "source_name": "wgwtest/novel-writing",
+      "raw_indexes": [
+        131
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-132-unslop",
+      "path": "docs/src/authoring/skills/candidate-corpus-132-unslop.mdx",
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
+      "source_name": "MohamedAbdallah-14/unslop",
+      "raw_indexes": [
+        132,
+        175
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-133-spreadsheet-formula-helper",
+      "path": "docs/src/authoring/skills/candidate-corpus-133-spreadsheet-formula-helper.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/spreadsheet-formula-helper",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        133
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-134-competitive-ads-extractor",
+      "path": "docs/src/authoring/skills/candidate-corpus-134-competitive-ads-extractor.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/competitive-ads-extractor",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        134
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "quarantine",
+      "intake_decision": "quarantine"
+    },
+    {
+      "name": "candidate-corpus-135-datadog-logs",
+      "path": "docs/src/authoring/skills/candidate-corpus-135-datadog-logs.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/datadog-logs",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        135
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-136-developer-growth-analysis",
+      "path": "docs/src/authoring/skills/candidate-corpus-136-developer-growth-analysis.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/developer-growth-analysis",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        136
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-137-lead-research-assistant",
+      "path": "docs/src/authoring/skills/candidate-corpus-137-lead-research-assistant.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/lead-research-assistant",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        137
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-138-domain-name-brainstormer",
+      "path": "docs/src/authoring/skills/candidate-corpus-138-domain-name-brainstormer.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/domain-name-brainstormer",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        138
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-139-obsidian-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-139-obsidian-skills.mdx",
+      "normalized_url": "https://github.com/kepano/obsidian-skills",
+      "source_name": "kepano/obsidian-skills",
+      "raw_indexes": [
+        139
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-140-marketingskills",
+      "path": "docs/src/authoring/skills/candidate-corpus-140-marketingskills.mdx",
+      "normalized_url": "https://github.com/coreyhaines31/marketingskills",
+      "source_name": "coreyhaines31/marketingskills",
+      "raw_indexes": [
+        140
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-141-css-protips",
+      "path": "docs/src/authoring/skills/candidate-corpus-141-css-protips.mdx",
+      "normalized_url": "https://github.com/AllThingsSmitty/css-protips",
+      "source_name": "AllThingsSmitty/css-protips",
+      "raw_indexes": [
+        141
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-142-cli",
+      "path": "docs/src/authoring/skills/candidate-corpus-142-cli.mdx",
+      "normalized_url": "https://github.com/googleworkspace/cli",
+      "source_name": "googleworkspace/cli",
+      "raw_indexes": [
+        142
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-143-agent-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-143-agent-skills.mdx",
+      "normalized_url": "https://github.com/vercel-labs/agent-skills",
+      "source_name": "vercel-labs/agent-skills",
+      "raw_indexes": [
+        143
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-144-frontend-slides",
+      "path": "docs/src/authoring/skills/candidate-corpus-144-frontend-slides.mdx",
+      "normalized_url": "https://github.com/zarazhangrui/frontend-slides",
+      "source_name": "zarazhangrui/frontend-slides",
+      "raw_indexes": [
+        144
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-145-pm-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-145-pm-skills.mdx",
+      "normalized_url": "https://github.com/phuryn/pm-skills",
+      "source_name": "phuryn/pm-skills",
+      "raw_indexes": [
+        145
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-146-notebooklm-py",
+      "path": "docs/src/authoring/skills/candidate-corpus-146-notebooklm-py.mdx",
+      "normalized_url": "https://github.com/teng-lin/notebooklm-py",
+      "source_name": "teng-lin/notebooklm-py",
+      "raw_indexes": [
+        146
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-147-raffle-winner-picker",
+      "path": "docs/src/authoring/skills/candidate-corpus-147-raffle-winner-picker.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/raffle-winner-picker",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        147
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-148-langsmith-fetch",
+      "path": "docs/src/authoring/skills/candidate-corpus-148-langsmith-fetch.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/langsmith-fetch",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        148
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-149-canvas-design",
+      "path": "docs/src/authoring/skills/candidate-corpus-149-canvas-design.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/canvas-design",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        149
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-150-image-enhancer",
+      "path": "docs/src/authoring/skills/candidate-corpus-150-image-enhancer.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/image-enhancer",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        150
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-151-slack-gif-creator",
+      "path": "docs/src/authoring/skills/candidate-corpus-151-slack-gif-creator.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/slack-gif-creator",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        151
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-152-video-downloader",
+      "path": "docs/src/authoring/skills/candidate-corpus-152-video-downloader.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/video-downloader",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        152
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "quarantine",
+      "intake_decision": "quarantine"
+    },
+    {
+      "name": "candidate-corpus-153-andrej-karpathy-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-153-andrej-karpathy-skills.mdx",
+      "normalized_url": "https://github.com/multica-ai/andrej-karpathy-skills",
+      "source_name": "multica-ai/andrej-karpathy-skills",
+      "raw_indexes": [
+        153
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-154-mobile-mcp",
+      "path": "docs/src/authoring/skills/candidate-corpus-154-mobile-mcp.mdx",
+      "normalized_url": "https://github.com/mobile-next/mobile-mcp",
+      "source_name": "mobile-next/mobile-mcp",
+      "raw_indexes": [
+        154
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-155-inspector",
+      "path": "docs/src/authoring/skills/candidate-corpus-155-inspector.mdx",
+      "normalized_url": "https://github.com/modelcontextprotocol/inspector",
+      "source_name": "modelcontextprotocol/inspector",
+      "raw_indexes": [
+        155
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-156-hyperframes",
+      "path": "docs/src/authoring/skills/candidate-corpus-156-hyperframes.mdx",
+      "normalized_url": "https://github.com/heygen-com/hyperframes",
+      "source_name": "heygen-com/hyperframes",
+      "raw_indexes": [
+        156
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-157-agent-reach",
+      "path": "docs/src/authoring/skills/candidate-corpus-157-agent-reach.mdx",
+      "normalized_url": "https://github.com/Panniantong/Agent-Reach",
+      "source_name": "Panniantong/Agent-Reach",
+      "raw_indexes": [
+        157
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-158-pm-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-158-pm-skills.mdx",
+      "normalized_url": "https://github.com/product-on-purpose/pm-skills",
+      "source_name": "product-on-purpose/pm-skills",
+      "raw_indexes": [
+        158
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-159-infocard-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-159-infocard-skills.mdx",
+      "normalized_url": "https://github.com/shaom/infocard-skills",
+      "source_name": "shaom/infocard-skills",
+      "raw_indexes": [
+        159
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-160-claude-design-card",
+      "path": "docs/src/authoring/skills/candidate-corpus-160-claude-design-card.mdx",
+      "normalized_url": "https://github.com/geekjourneyx/claude-design-card",
+      "source_name": "geekjourneyx/claude-design-card",
+      "raw_indexes": [
+        160
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-161-mcp-server-chart",
+      "path": "docs/src/authoring/skills/candidate-corpus-161-mcp-server-chart.mdx",
+      "normalized_url": "https://github.com/antvis/mcp-server-chart",
+      "source_name": "antvis/mcp-server-chart",
+      "raw_indexes": [
+        161
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-162-agentic-tech-debt",
+      "path": "docs/src/authoring/skills/candidate-corpus-162-agentic-tech-debt.mdx",
+      "normalized_url": "https://github.com/bcanfield/agentic-tech-debt",
+      "source_name": "bcanfield/agentic-tech-debt",
+      "raw_indexes": [
+        162
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-163-designer-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-163-designer-skill.mdx",
+      "normalized_url": "https://github.com/Pythoughts-labs/designer-skill",
+      "source_name": "Pythoughts-labs/designer-skill",
+      "raw_indexes": [
+        163
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-164-env-lint",
+      "path": "docs/src/authoring/skills/candidate-corpus-164-env-lint.mdx",
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/env-lint",
+      "source_name": "hashgraph-online/awesome-codex-plugins",
+      "raw_indexes": [
+        164
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-165-hol-guard-plugin",
+      "path": "docs/src/authoring/skills/candidate-corpus-165-hol-guard-plugin.mdx",
+      "normalized_url": "https://github.com/hashgraph-online/hol-guard-plugin",
+      "source_name": "hashgraph-online/hol-guard-plugin",
+      "raw_indexes": [
+        165
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-166-secret-guard",
+      "path": "docs/src/authoring/skills/candidate-corpus-166-secret-guard.mdx",
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/secret-guard",
+      "source_name": "hashgraph-online/awesome-codex-plugins",
+      "raw_indexes": [
+        166
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-167-tailtest-codex",
+      "path": "docs/src/authoring/skills/candidate-corpus-167-tailtest-codex.mdx",
+      "normalized_url": "https://github.com/avansaber/tailtest-codex",
+      "source_name": "avansaber/tailtest-codex",
+      "raw_indexes": [
+        167
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-168-universal-design-principles",
+      "path": "docs/src/authoring/skills/candidate-corpus-168-universal-design-principles.mdx",
+      "normalized_url": "https://github.com/HDeibler/universal-design-principles",
+      "source_name": "HDeibler/universal-design-principles",
+      "raw_indexes": [
+        168
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-169-codex-seo",
+      "path": "docs/src/authoring/skills/candidate-corpus-169-codex-seo.mdx",
+      "normalized_url": "https://github.com/BestLemoon/codex-seo",
+      "source_name": "BestLemoon/codex-seo",
+      "raw_indexes": [
+        169
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-170-langfuse-mcp",
+      "path": "docs/src/authoring/skills/candidate-corpus-170-langfuse-mcp.mdx",
+      "normalized_url": "https://github.com/avivsinai/langfuse-mcp",
+      "source_name": "avivsinai/langfuse-mcp",
+      "raw_indexes": [
+        170
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-171-nullcost-plugin",
+      "path": "docs/src/authoring/skills/candidate-corpus-171-nullcost-plugin.mdx",
+      "normalized_url": "https://github.com/johnvouros/nullcost-plugin",
+      "source_name": "johnvouros/nullcost-plugin",
+      "raw_indexes": [
+        171
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-172-prompt-to-asset",
+      "path": "docs/src/authoring/skills/candidate-corpus-172-prompt-to-asset.mdx",
+      "normalized_url": "https://github.com/MohamedAbdallah-14/prompt-to-asset",
+      "source_name": "MohamedAbdallah-14/prompt-to-asset",
+      "raw_indexes": [
+        172
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-173-seo-dungeon",
+      "path": "docs/src/authoring/skills/candidate-corpus-173-seo-dungeon.mdx",
+      "normalized_url": "https://github.com/avalonreset/seo-dungeon",
+      "source_name": "avalonreset/seo-dungeon",
+      "raw_indexes": [
+        173
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-174-codex-remotion-plugin",
+      "path": "docs/src/authoring/skills/candidate-corpus-174-codex-remotion-plugin.mdx",
+      "normalized_url": "https://github.com/tim-osterhus/codex-remotion-plugin",
+      "source_name": "tim-osterhus/codex-remotion-plugin",
+      "raw_indexes": [
+        174
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-176-zotero-research-plugin",
+      "path": "docs/src/authoring/skills/candidate-corpus-176-zotero-research-plugin.mdx",
+      "normalized_url": "https://github.com/summer521521/Zotero_Research_plugin",
+      "source_name": "summer521521/Zotero_Research_plugin",
+      "raw_indexes": [
+        176
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-177-roadmapsmith",
+      "path": "docs/src/authoring/skills/candidate-corpus-177-roadmapsmith.mdx",
+      "normalized_url": "https://github.com/PapiScholz/roadmapsmith",
+      "source_name": "PapiScholz/roadmapsmith",
+      "raw_indexes": [
+        177
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-178-openspec-assistant",
+      "path": "docs/src/authoring/skills/candidate-corpus-178-openspec-assistant.mdx",
+      "normalized_url": "https://github.com/ForceInjection/awesome-skills/tree/main/skills/openspec-assistant",
+      "source_name": "ForceInjection/awesome-skills",
+      "raw_indexes": [
+        178
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-179-openflow",
+      "path": "docs/src/authoring/skills/candidate-corpus-179-openflow.mdx",
+      "normalized_url": "https://github.com/fastknifes/openflow",
+      "source_name": "fastknifes/openflow",
+      "raw_indexes": [
+        179
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-180-ralphy-openspec",
+      "path": "docs/src/authoring/skills/candidate-corpus-180-ralphy-openspec.mdx",
+      "normalized_url": "https://github.com/wenqingyu/ralphy-openspec",
+      "source_name": "wenqingyu/ralphy-openspec",
+      "raw_indexes": [
+        180
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-181-opencode-plugin-openspec",
+      "path": "docs/src/authoring/skills/candidate-corpus-181-opencode-plugin-openspec.mdx",
+      "normalized_url": "https://github.com/Octane0411/opencode-plugin-openspec",
+      "source_name": "Octane0411/opencode-plugin-openspec",
+      "raw_indexes": [
+        181
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-182-openspecui",
+      "path": "docs/src/authoring/skills/candidate-corpus-182-openspecui.mdx",
+      "normalized_url": "https://github.com/jixoai/openspecui",
+      "source_name": "jixoai/openspecui",
+      "raw_indexes": [
+        182
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-183-openspec-plus",
+      "path": "docs/src/authoring/skills/candidate-corpus-183-openspec-plus.mdx",
+      "normalized_url": "https://github.com/sudokar/openspec-plus",
+      "source_name": "sudokar/openspec-plus",
+      "raw_indexes": [
+        183
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-184-openspec-ui",
+      "path": "docs/src/authoring/skills/candidate-corpus-184-openspec-ui.mdx",
+      "normalized_url": "https://github.com/ToruAI/openspec-ui",
+      "source_name": "ToruAI/openspec-ui",
+      "raw_indexes": [
+        184
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-185-specboard",
+      "path": "docs/src/authoring/skills/candidate-corpus-185-specboard.mdx",
+      "normalized_url": "https://github.com/sflueckiger/specboard",
+      "source_name": "sflueckiger/specboard",
+      "raw_indexes": [
+        185
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-186-openspec-playwright",
+      "path": "docs/src/authoring/skills/candidate-corpus-186-openspec-playwright.mdx",
+      "normalized_url": "https://github.com/wxhou/openspec-playwright",
+      "source_name": "wxhou/openspec-playwright",
+      "raw_indexes": [
+        186
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-187-openspec-mcp",
+      "path": "docs/src/authoring/skills/candidate-corpus-187-openspec-mcp.mdx",
+      "normalized_url": "https://github.com/Lumiaqian/openspec-mcp",
+      "source_name": "Lumiaqian/openspec-mcp",
+      "raw_indexes": [
+        187
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-188-openspec-tdd",
+      "path": "docs/src/authoring/skills/candidate-corpus-188-openspec-tdd.mdx",
+      "normalized_url": "https://github.com/yuritoledo/openspec-tdd",
+      "source_name": "yuritoledo/openspec-tdd",
+      "raw_indexes": [
+        188
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-189-opsx-feature-dev",
+      "path": "docs/src/authoring/skills/candidate-corpus-189-opsx-feature-dev.mdx",
+      "normalized_url": "https://github.com/mbertani/opsx-feature-dev",
+      "source_name": "mbertani/opsx-feature-dev",
+      "raw_indexes": [
+        189
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-190-openspec-reviewed-workflow",
+      "path": "docs/src/authoring/skills/candidate-corpus-190-openspec-reviewed-workflow.mdx",
+      "normalized_url": "https://github.com/griffithkk3-del/openspec-reviewed-workflow",
+      "source_name": "griffithkk3-del/openspec-reviewed-workflow",
+      "raw_indexes": [
+        190
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-191-fable-mode",
+      "path": "docs/src/authoring/skills/candidate-corpus-191-fable-mode.mdx",
+      "normalized_url": "https://github.com/mrtooher/fable-mode",
+      "source_name": "mrtooher/fable-mode",
+      "raw_indexes": [
+        191
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-192-latex-document-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-192-latex-document-skill.mdx",
+      "normalized_url": "https://github.com/ndpvt-web/latex-document-skill",
+      "source_name": "ndpvt-web/latex-document-skill",
+      "raw_indexes": [
+        192
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-193-opencode-spec",
+      "path": "docs/src/authoring/skills/candidate-corpus-193-opencode-spec.mdx",
+      "normalized_url": "https://github.com/devcxl/opencode-spec",
+      "source_name": "devcxl/opencode-spec",
+      "raw_indexes": [
+        193
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-194-commit-narrator",
+      "path": "docs/src/authoring/skills/candidate-corpus-194-commit-narrator.mdx",
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/commit-narrator",
+      "source_name": "hashgraph-online/awesome-codex-plugins",
+      "raw_indexes": [
+        194
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-195-codex-rg-guard",
+      "path": "docs/src/authoring/skills/candidate-corpus-195-codex-rg-guard.mdx",
+      "normalized_url": "https://github.com/Rycen7822/codex-rg-guard",
+      "source_name": "Rycen7822/codex-rg-guard",
+      "raw_indexes": [
+        195
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-196-solidworks-automation-skill",
+      "path": "docs/src/authoring/skills/candidate-corpus-196-solidworks-automation-skill.mdx",
+      "normalized_url": "https://github.com/wzyn20051216/solidworks-automation-skill",
+      "source_name": "wzyn20051216/solidworks-automation-skill",
+      "raw_indexes": [
+        196
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-197-clipify",
+      "path": "docs/src/authoring/skills/candidate-corpus-197-clipify.mdx",
+      "normalized_url": "https://github.com/louisedesadeleer/clipify",
+      "source_name": "louisedesadeleer/clipify",
+      "raw_indexes": [
+        197
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-198-tapestry-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-198-tapestry-skills.mdx",
+      "normalized_url": "https://github.com/michalparkola/tapestry-skills",
+      "source_name": "michalparkola/tapestry-skills",
+      "raw_indexes": [
+        198
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-199-visualise",
+      "path": "docs/src/authoring/skills/candidate-corpus-199-visualise.mdx",
+      "normalized_url": "https://github.com/bentossell/visualise",
+      "source_name": "bentossell/visualise",
+      "raw_indexes": [
+        199
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-200-architecture-diagram",
+      "path": "docs/src/authoring/skills/candidate-corpus-200-architecture-diagram.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/architecture-diagram",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        200
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-201-agent-md-refactor",
+      "path": "docs/src/authoring/skills/candidate-corpus-201-agent-md-refactor.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/agent-md-refactor",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        201
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-202-brainstorming",
+      "path": "docs/src/authoring/skills/candidate-corpus-202-brainstorming.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/brainstorming",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        202
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-203-ai-business-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-203-ai-business-skills.mdx",
+      "normalized_url": "https://github.com/minhnv0807/ai-business-skills",
+      "source_name": "minhnv0807/ai-business-skills",
+      "raw_indexes": [
+        203
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-204-claude-code-apple-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-204-claude-code-apple-skills.mdx",
+      "normalized_url": "https://github.com/rshankras/claude-code-apple-skills",
+      "source_name": "rshankras/claude-code-apple-skills",
+      "raw_indexes": [
+        204
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-205-social-push",
+      "path": "docs/src/authoring/skills/candidate-corpus-205-social-push.mdx",
+      "normalized_url": "https://github.com/jihe520/social-push",
+      "source_name": "jihe520/social-push",
+      "raw_indexes": [
+        205
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "quarantine",
+      "intake_decision": "quarantine"
+    },
+    {
+      "name": "candidate-corpus-206-research-units-pipeline-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-206-research-units-pipeline-skills.mdx",
+      "normalized_url": "https://github.com/WILLOSCAR/research-units-pipeline-skills",
+      "source_name": "WILLOSCAR/research-units-pipeline-skills",
+      "raw_indexes": [
+        206
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-207-documentation-writer",
+      "path": "docs/src/authoring/skills/candidate-corpus-207-documentation-writer.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/documentation-writer",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        207
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-208-exa-web-search-free",
+      "path": "docs/src/authoring/skills/candidate-corpus-208-exa-web-search-free.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/exa-web-search-free",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        208
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-209-extreme-software-optimization",
+      "path": "docs/src/authoring/skills/candidate-corpus-209-extreme-software-optimization.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/extreme-software-optimization",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        209
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-210-game-changing-features",
+      "path": "docs/src/authoring/skills/candidate-corpus-210-game-changing-features.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/game-changing-features",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        210
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-211-golang-pro",
+      "path": "docs/src/authoring/skills/candidate-corpus-211-golang-pro.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/golang-pro",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        211
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-212-hono",
+      "path": "docs/src/authoring/skills/candidate-corpus-212-hono.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/hono",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        212
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-213-lesson-learned",
+      "path": "docs/src/authoring/skills/candidate-corpus-213-lesson-learned.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/lesson-learned",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        213
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-214-next-best-practices",
+      "path": "docs/src/authoring/skills/candidate-corpus-214-next-best-practices.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/next-best-practices",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        214
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-215-shadcn",
+      "path": "docs/src/authoring/skills/candidate-corpus-215-shadcn.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/shadcn",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        215
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-216-systematic-debugging",
+      "path": "docs/src/authoring/skills/candidate-corpus-216-systematic-debugging.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/systematic-debugging",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        216
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-217-tui-design",
+      "path": "docs/src/authoring/skills/candidate-corpus-217-tui-design.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/tui-design",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        217
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-218-vercel-composition-patterns",
+      "path": "docs/src/authoring/skills/candidate-corpus-218-vercel-composition-patterns.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/vercel-composition-patterns",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        218
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-219-vercel-react-best-practices",
+      "path": "docs/src/authoring/skills/candidate-corpus-219-vercel-react-best-practices.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/vercel-react-best-practices",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        219
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-220-vitest",
+      "path": "docs/src/authoring/skills/candidate-corpus-220-vitest.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/vitest",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        220
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-221-zod",
+      "path": "docs/src/authoring/skills/candidate-corpus-221-zod.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/zod",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        221
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-222-zustand",
+      "path": "docs/src/authoring/skills/candidate-corpus-222-zustand.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/zustand",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        222
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-223-alex-hormozi-pitch",
+      "path": "docs/src/authoring/skills/candidate-corpus-223-alex-hormozi-pitch.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/alex-hormozi-pitch",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        223
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-224-brand-storytelling",
+      "path": "docs/src/authoring/skills/candidate-corpus-224-brand-storytelling.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/brand-storytelling",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        224
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-225-content-research-writer",
+      "path": "docs/src/authoring/skills/candidate-corpus-225-content-research-writer.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/content-research-writer",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        225
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-226-copywriting",
+      "path": "docs/src/authoring/skills/candidate-corpus-226-copywriting.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/copywriting",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        226
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-227-fundraising",
+      "path": "docs/src/authoring/skills/candidate-corpus-227-fundraising.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/fundraising",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        227
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-228-google-ads",
+      "path": "docs/src/authoring/skills/candidate-corpus-228-google-ads.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/google-ads",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        228
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-229-hormozi-ad-factory",
+      "path": "docs/src/authoring/skills/candidate-corpus-229-hormozi-ad-factory.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/hormozi-ad-factory",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        229
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-230-humanizer",
+      "path": "docs/src/authoring/skills/candidate-corpus-230-humanizer.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/humanizer",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        230
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-231-pitch-deck",
+      "path": "docs/src/authoring/skills/candidate-corpus-231-pitch-deck.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/pitch-deck",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        231
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-232-pitch-deck-visuals",
+      "path": "docs/src/authoring/skills/candidate-corpus-232-pitch-deck-visuals.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/pitch-deck-visuals",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        232
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-233-pitch-gen",
+      "path": "docs/src/authoring/skills/candidate-corpus-233-pitch-gen.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/pitch-gen",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        233
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-234-pptx-creator",
+      "path": "docs/src/authoring/skills/candidate-corpus-234-pptx-creator.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/pptx-creator",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        234
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-235-professional-communication",
+      "path": "docs/src/authoring/skills/candidate-corpus-235-professional-communication.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/professional-communication",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        235
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-236-sales-methodology-implementer",
+      "path": "docs/src/authoring/skills/candidate-corpus-236-sales-methodology-implementer.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/sales-methodology-implementer",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        236
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-237-startup-validator",
+      "path": "docs/src/authoring/skills/candidate-corpus-237-startup-validator.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/startup-validator",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        237
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-238-viz",
+      "path": "docs/src/authoring/skills/candidate-corpus-238-viz.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/viz",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        238
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-239-writing-clearly-and-concisely",
+      "path": "docs/src/authoring/skills/candidate-corpus-239-writing-clearly-and-concisely.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/writing-clearly-and-concisely",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        239
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-240-adversarial-review",
+      "path": "docs/src/authoring/skills/candidate-corpus-240-adversarial-review.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/adversarial-review",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        240
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-241-ai-sdk",
+      "path": "docs/src/authoring/skills/candidate-corpus-241-ai-sdk.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/ai-sdk",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        241
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-242-building-components",
+      "path": "docs/src/authoring/skills/candidate-corpus-242-building-components.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/building-components",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        242
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-243-crafting-effective-readmes",
+      "path": "docs/src/authoring/skills/candidate-corpus-243-crafting-effective-readmes.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/crafting-effective-readmes",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        243
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-244-creating-spec",
+      "path": "docs/src/authoring/skills/candidate-corpus-244-creating-spec.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/creating-spec",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        244
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-245-design-spec-extraction",
+      "path": "docs/src/authoring/skills/candidate-corpus-245-design-spec-extraction.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/design-spec-extraction",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        245
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-246-devops-engineer",
+      "path": "docs/src/authoring/skills/candidate-corpus-246-devops-engineer.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/devops-engineer",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        246
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-247-drizzle-orm",
+      "path": "docs/src/authoring/skills/candidate-corpus-247-drizzle-orm.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/drizzle-orm",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        247
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-248-drizzle-postgres",
+      "path": "docs/src/authoring/skills/candidate-corpus-248-drizzle-postgres.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/drizzle-postgres",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        248
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-249-electron-builder",
+      "path": "docs/src/authoring/skills/candidate-corpus-249-electron-builder.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/electron-builder",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        249
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-250-electron-dev",
+      "path": "docs/src/authoring/skills/candidate-corpus-250-electron-dev.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/electron-dev",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        250
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-251-electron-release",
+      "path": "docs/src/authoring/skills/candidate-corpus-251-electron-release.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/electron-release",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        251
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-252-es-toolkit",
+      "path": "docs/src/authoring/skills/candidate-corpus-252-es-toolkit.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/es-toolkit",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        252
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-253-executing-plans",
+      "path": "docs/src/authoring/skills/candidate-corpus-253-executing-plans.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/executing-plans",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        253
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-254-fixing-motion-performance",
+      "path": "docs/src/authoring/skills/candidate-corpus-254-fixing-motion-performance.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/fixing-motion-performance",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        254
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-255-helm-chart-scaffolding",
+      "path": "docs/src/authoring/skills/candidate-corpus-255-helm-chart-scaffolding.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/helm-chart-scaffolding",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        255
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-256-hetzner-server",
+      "path": "docs/src/authoring/skills/candidate-corpus-256-hetzner-server.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/hetzner-server",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        256
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-257-kubernetes-specialist",
+      "path": "docs/src/authoring/skills/candidate-corpus-257-kubernetes-specialist.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/kubernetes-specialist",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        257
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-258-mermaid-diagrams",
+      "path": "docs/src/authoring/skills/candidate-corpus-258-mermaid-diagrams.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/mermaid-diagrams",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        258
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-259-motion",
+      "path": "docs/src/authoring/skills/candidate-corpus-259-motion.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/motion",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        259
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-260-motion-react",
+      "path": "docs/src/authoring/skills/candidate-corpus-260-motion-react.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/motion-react",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        260
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-261-obsidian-bases",
+      "path": "docs/src/authoring/skills/candidate-corpus-261-obsidian-bases.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/obsidian-bases",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        261
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-262-obsidian-cli",
+      "path": "docs/src/authoring/skills/candidate-corpus-262-obsidian-cli.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/obsidian-cli",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        262
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-263-obsidian-markdown",
+      "path": "docs/src/authoring/skills/candidate-corpus-263-obsidian-markdown.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/obsidian-markdown",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        263
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-264-remotion-best-practices",
+      "path": "docs/src/authoring/skills/candidate-corpus-264-remotion-best-practices.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/remotion-best-practices",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        264
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-265-requirements-clarity",
+      "path": "docs/src/authoring/skills/candidate-corpus-265-requirements-clarity.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/requirements-clarity",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        265
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-266-ship-learn-next",
+      "path": "docs/src/authoring/skills/candidate-corpus-266-ship-learn-next.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/ship-learn-next",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        266
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-267-tauri-v2",
+      "path": "docs/src/authoring/skills/candidate-corpus-267-tauri-v2.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/tauri-v2",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        267
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-268-terraform-style-guide",
+      "path": "docs/src/authoring/skills/candidate-corpus-268-terraform-style-guide.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/terraform-style-guide",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        268
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-269-workflow",
+      "path": "docs/src/authoring/skills/candidate-corpus-269-workflow.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/workflow",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        269
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-270-wrangler",
+      "path": "docs/src/authoring/skills/candidate-corpus-270-wrangler.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/wrangler",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        270
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-271-headroom",
+      "path": "docs/src/authoring/skills/candidate-corpus-271-headroom.mdx",
+      "normalized_url": "https://github.com/headroomlabs-ai/headroom",
+      "source_name": "headroomlabs-ai/headroom",
+      "raw_indexes": [
+        271
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-272-mcp-builder",
+      "path": "docs/src/authoring/skills/candidate-corpus-272-mcp-builder.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/mcp-builder",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        272
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-273-file-organizer",
+      "path": "docs/src/authoring/skills/candidate-corpus-273-file-organizer.mdx",
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/file-organizer",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        273
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-274-paper-search-mcp",
+      "path": "docs/src/authoring/skills/candidate-corpus-274-paper-search-mcp.mdx",
+      "normalized_url": "https://github.com/openags/paper-search-mcp",
+      "source_name": "openags/paper-search-mcp",
+      "raw_indexes": [
+        274
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-275-dotagents",
+      "path": "docs/src/authoring/skills/candidate-corpus-275-dotagents.mdx",
+      "normalized_url": "https://github.com/iannuttall/dotagents",
+      "source_name": "iannuttall/dotagents",
+      "raw_indexes": [
+        275
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-276-espresso",
+      "path": "docs/src/authoring/skills/candidate-corpus-276-espresso.mdx",
+      "normalized_url": "https://github.com/mirkobozzetto/espresso",
+      "source_name": "mirkobozzetto/espresso",
+      "raw_indexes": [
+        276
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-277-llm-transpile",
+      "path": "docs/src/authoring/skills/candidate-corpus-277-llm-transpile.mdx",
+      "normalized_url": "https://github.com/epicsagas/llm-transpile",
+      "source_name": "epicsagas/llm-transpile",
+      "raw_indexes": [
+        277
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-278-codex-mem",
+      "path": "docs/src/authoring/skills/candidate-corpus-278-codex-mem.mdx",
+      "normalized_url": "https://github.com/2kDarki/codex-mem",
+      "source_name": "2kDarki/codex-mem",
+      "raw_indexes": [
+        278
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-279-papersflow-codex-plugin",
+      "path": "docs/src/authoring/skills/candidate-corpus-279-papersflow-codex-plugin.mdx",
+      "normalized_url": "https://github.com/papersflow-ai/papersflow-codex-plugin",
+      "source_name": "papersflow-ai/papersflow-codex-plugin",
+      "raw_indexes": [
+        279
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-280-upwork-autopilot",
+      "path": "docs/src/authoring/skills/candidate-corpus-280-upwork-autopilot.mdx",
+      "normalized_url": "https://github.com/klajdikkolaj/upwork-autopilot",
+      "source_name": "klajdikkolaj/upwork-autopilot",
+      "raw_indexes": [
+        280
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "quarantine",
+      "intake_decision": "quarantine"
+    },
+    {
+      "name": "candidate-corpus-281-openspec-badge-action",
+      "path": "docs/src/authoring/skills/candidate-corpus-281-openspec-badge-action.mdx",
+      "normalized_url": "https://github.com/wearetechnative/openspec-badge-action",
+      "source_name": "wearetechnative/openspec-badge-action",
+      "raw_indexes": [
+        281
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-282-token-diet",
+      "path": "docs/src/authoring/skills/candidate-corpus-282-token-diet.mdx",
+      "normalized_url": "https://github.com/Kulaxyz/token-diet",
+      "source_name": "Kulaxyz/token-diet",
+      "raw_indexes": [
+        282
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-283-database-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-283-database-skills.mdx",
+      "normalized_url": "https://github.com/planetscale/database-skills",
+      "source_name": "planetscale/database-skills",
+      "raw_indexes": [
+        283
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "merge_into_existing"
+    },
+    {
+      "name": "candidate-corpus-285-coldoutboundskills",
+      "path": "docs/src/authoring/skills/candidate-corpus-285-coldoutboundskills.mdx",
+      "normalized_url": "https://github.com/growthenginenowoslawski/coldoutboundskills",
+      "source_name": "growthenginenowoslawski/coldoutboundskills",
+      "raw_indexes": [
+        285
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-286-mcp-dashboards",
+      "path": "docs/src/authoring/skills/candidate-corpus-286-mcp-dashboards.mdx",
+      "normalized_url": "https://github.com/KyuRish/mcp-dashboards",
+      "source_name": "KyuRish/mcp-dashboards",
+      "raw_indexes": [
+        286
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-287-charted",
+      "path": "docs/src/authoring/skills/candidate-corpus-287-charted.mdx",
+      "normalized_url": "https://github.com/marzukia/charted",
+      "source_name": "marzukia/charted",
+      "raw_indexes": [
+        287
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-288-semiotic",
+      "path": "docs/src/authoring/skills/candidate-corpus-288-semiotic.mdx",
+      "normalized_url": "https://github.com/nteract/semiotic",
+      "source_name": "nteract/semiotic",
+      "raw_indexes": [
+        288
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "executable-surface-review-required",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-289-better-auth-best-practices",
+      "path": "docs/src/authoring/skills/candidate-corpus-289-better-auth-best-practices.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/better-auth-best-practices",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        289
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-290-better-auth-organization-best-practices",
+      "path": "docs/src/authoring/skills/candidate-corpus-290-better-auth-organization-best-practices.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/better-auth-organization-best-practices",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        290
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-291-awesome-scientific-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-291-awesome-scientific-skills.mdx",
+      "normalized_url": "https://github.com/InternScience/Awesome-Scientific-Skills",
+      "source_name": "InternScience/Awesome-Scientific-Skills",
+      "raw_indexes": [
+        291
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-292-find-rules",
+      "path": "docs/src/authoring/skills/candidate-corpus-292-find-rules.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/find-rules",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        292
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    },
+    {
+      "name": "candidate-corpus-293-find-skills",
+      "path": "docs/src/authoring/skills/candidate-corpus-293-find-skills.mdx",
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/find-skills",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        293
+      ],
+      "status": "global-only-or-avoid",
+      "sync_kind": "none",
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only"
+    }
+  ]
+}

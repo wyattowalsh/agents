@@ -1,0 +1,190 @@
+{
+  "raw_url": "https://github.com/Panniantong/Agent-Reach",
+  "normalized_url": "https://github.com/Panniantong/Agent-Reach",
+  "source_name": "Panniantong/Agent-Reach",
+  "category": "agent",
+  "inspected_commit_sha": "e825f6740d24c6c315c3b0dc41907e6c87ff39a5",
+  "license": "MIT",
+  "latest_release_or_commit_date": "github-pushed-at:2026-07-03T06:57:59Z",
+  "artifact_types_found": [
+    "agent"
+  ],
+  "install_or_integration_decision": "reference_only",
+  "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
+  "auth_required": true,
+  "env_vars_or_credentials": [
+    "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+  ],
+  "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+  "attribution_notes": "Preserve attribution to Panniantong/Agent-Reach; verify license before adapting content.",
+  "files_added": [],
+  "files_modified": [],
+  "tests_or_checks_run": [
+    "git ls-remote --symref",
+    "gh api repos/{owner}/{repo}"
+  ],
+  "skipped_reason": "",
+  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "raw_index": 157,
+  "normalized_index": "https://github.com/Panniantong/Agent-Reach",
+  "duplicate_group": [],
+  "fragment": "",
+  "tree_subpath": "",
+  "canonical_source": "https://github.com/Panniantong/Agent-Reach",
+  "risk_tier": "review-required",
+  "risk_keywords": [
+    "agent-reach"
+  ],
+  "support_tier": "discovery-only",
+  "phase_status": {
+    "source_capture": "completed",
+    "deep_research": "completed-public-metadata",
+    "overlap": "completed",
+    "security": "completed-static",
+    "license": "completed-static",
+    "compliance": "completed-static",
+    "docs_impact": "completed",
+    "decision": "completed"
+  },
+  "source_capture_packet": {
+    "git_status": "ok",
+    "git_error": "",
+    "default_branch": "main",
+    "github_api_status": "ok",
+    "github_api_error": "",
+    "candidate_code_executed": false
+  },
+  "github_metadata_packet": {
+    "status": "ok",
+    "error": "",
+    "full_name": "Panniantong/Agent-Reach",
+    "html_url": "https://github.com/Panniantong/Agent-Reach",
+    "default_branch": "main",
+    "pushed_at": "2026-07-03T06:57:59Z",
+    "updated_at": "2026-07-07T00:08:03Z",
+    "license_spdx_id": "MIT",
+    "license_name": "MIT License",
+    "language": "Python",
+    "topics": [
+      "agent-infrastructure",
+      "ai-agent",
+      "ai-search",
+      "automation",
+      "bilibili",
+      "claude-code",
+      "cli",
+      "cursor",
+      "free-api",
+      "llm-tools",
+      "mcp",
+      "python",
+      "reddit-scraper",
+      "twitter-scraper",
+      "web-scraper",
+      "xiaohongshu",
+      "youtube-transcript"
+    ],
+    "archived": false,
+    "fork": false,
+    "private": false,
+    "visibility": "public"
+  },
+  "deep_research_claims": [
+    {
+      "claim": "Candidate source was inspected without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "https://github.com/Panniantong/Agent-Reach"
+      ]
+    },
+    {
+      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "support_status": "supports",
+      "confidence": 0.95,
+      "sources": [
+        "AGENTS.md \u00a72.7",
+        "config/skill-registry-policy.json"
+      ]
+    },
+    {
+      "claim": "GitHub repository metadata was queried without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "gh api repos/Panniantong/Agent-Reach"
+      ]
+    }
+  ],
+  "source_support_matrix": [
+    {
+      "claim": "Candidate source was inspected without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "https://github.com/Panniantong/Agent-Reach"
+      ]
+    },
+    {
+      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "support_status": "supports",
+      "confidence": 0.95,
+      "sources": [
+        "AGENTS.md \u00a72.7",
+        "config/skill-registry-policy.json"
+      ]
+    },
+    {
+      "claim": "GitHub repository metadata was queried without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "gh api repos/Panniantong/Agent-Reach"
+      ]
+    }
+  ],
+  "overlap_packet": {
+    "catalog_matches": [],
+    "mcp_registry_match": false,
+    "plugin_registry_match": false
+  },
+  "security_packet": {
+    "candidate_code_executed": false,
+    "network_probe_scope": "public Git metadata only",
+    "executable_surface_review_required": false
+  },
+  "license_packet": {
+    "license_status": "spdx-from-github-api",
+    "license_spdx_id": "MIT",
+    "license_name": "MIT License"
+  },
+  "compliance_packet": {
+    "auth_required": true,
+    "env_vars_or_credentials": [
+      "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+    ]
+  },
+  "docs_steward_surfaces": [
+    "README",
+    "auth-matrix",
+    "catalog-authoring",
+    "catalog-generated",
+    "changelog",
+    "decision-log",
+    "generated-drift",
+    "install-docs",
+    "openspec",
+    "reports",
+    "runbooks",
+    "skill-research"
+  ],
+  "docs_steward_status": "packet-generated",
+  "decision_packet": {
+    "decision": "reference_only",
+    "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates."
+  },
+  "integration_packet": {
+    "mutation_allowed": false,
+    "required_before_promotion": "human trust-gate review"
+  }
+}

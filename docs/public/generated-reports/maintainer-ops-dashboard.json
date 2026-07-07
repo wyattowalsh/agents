@@ -13,7 +13,7 @@
         "unregistered_plugin_dependencies"
       ],
       "path": "docs/public/generated-reports/docs-dependency-drift.json",
-      "summary": "no drift"
+      "summary": "drift detected"
     },
     "docs-graph-snapshot": {
       "keys": [
@@ -74,7 +74,7 @@
         "total_pages"
       ],
       "path": "docs/public/generated-reports/site-graph-insights.json",
-      "summary": "136 orphans"
+      "summary": "27 orphans"
     }
   }
 }

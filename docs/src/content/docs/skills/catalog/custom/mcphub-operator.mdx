@@ -11,6 +11,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   name="mcphub-operator"
   description="Operate MCPHub groups, endpoints, compression, and CLI from repo registry. Use for hub preflight, group picking, tunnel vs local exposure. NOT harness sync."
   installCommand={`npx skills add github:wyattowalsh/agents --skill mcphub-operator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  installLabel="Install"
   usage="/mcphub-operator [preflight|groups|compression|tunnel|cli|doctor]"
   badges={[{ text: "mcphub-operator", variant: "note" }, { text: "463 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
@@ -67,7 +68,7 @@ Repo-managed MCPHub control plane: workflow groups, bearer endpoints, optional c
 <details class="source-disclosure">
 <summary>View Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml
 ---
 name: mcphub-operator
 description: >-

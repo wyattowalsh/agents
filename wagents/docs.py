@@ -2,6 +2,7 @@
 
 import json
 import re
+import shutil
 import subprocess
 from pathlib import Path
 from typing import Literal, TypeVar, cast
@@ -26,6 +27,7 @@ from wagents.site_model import (
     agent_flags,
     build_install_command,
     render_site_data_module,
+    render_skill_indexes_module,
     render_visual_assets_css,
     site_data,
     skill_source_counts,
@@ -102,7 +104,7 @@ def _mcp_overview_badge_stale_reason() -> str | None:
     if not match:
         return (
             "docs/src/content/docs/mcp/index.mdx MCP badge is missing or malformed; "
-            f'update hand-maintained badge to `{expected_badge} ...`'
+            f"update hand-maintained badge to `{expected_badge} ...`"
         )
     badge_count = int(match.group(1))
     if badge_count != count:
@@ -116,6 +118,23 @@ def _mcp_overview_badge_stale_reason() -> str | None:
 def _has_repo_agents() -> bool:
     """Whether the repository currently contains any bundled agent definitions."""
     return any((ROOT / "agents").glob("*.md"))
+
+
+def _link_card(title: str, href: str, description: str) -> str:
+    """Return an indented Starlight LinkCard component line."""
+    return (
+        f'  <LinkCard title="{escape_attr(title)}" '
+        f'href="{escape_attr(href)}" '
+        f'description="{escape_attr(description)}" />'
+    )
+
+
+def _table_header(*headers: str) -> str:
+    return "<thead><tr>" + "".join(f"<th>{header}</th>" for header in headers) + "</tr></thead>"
+
+
+def _table_row(*cells: str) -> str:
+    return "<tr>" + "".join(f"<td>{cell}</td>" for cell in cells) + "</tr>"
 
 
 def write_site_data(nodes: list, external_entries: list[ExternalSkillEntry] | None = None) -> None:
@@ -138,9 +157,9 @@ def write_site_data(nodes: list, external_entries: list[ExternalSkillEntry] | No
     (public_index_dir / "install-scripts.json").write_text(
         json.dumps(data["skillInstallScripts"], indent=2, sort_keys=True), encoding="utf-8"
     )
-    indexes_mjs = DOCS_DIR / "src" / "generated-skill-indexes.mjs"
-    if indexes_mjs.exists():
-        indexes_mjs.unlink()
+    (DOCS_DIR / "src" / "generated-skill-indexes.mjs").write_text(
+        render_skill_indexes_module(data), encoding="utf-8"
+    )
     update_research_manifest()
     (DOCS_DIR / "src" / "generated-visual-assets.css").write_text(render_visual_assets_css(), encoding="utf-8")
 
@@ -202,18 +221,18 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     )
     parts.append("  image:")
     parts.append("    html: |")
-    parts.append('      <div class="projection-pipeline" aria-label="Repository projection pipeline">')
-    parts.append('        <div class="pipeline-stage">')
+    parts.append('      <div class="projection-pipeline" role="list" aria-label="Repository projection pipeline">')
+    parts.append('        <div class="pipeline-stage" role="listitem">')
     parts.append('          <span class="pipeline-label">repo sources</span>')
     parts.append('          <span class="pipeline-detail">instructions / skills / tools / hooks / agents</span>')
     parts.append("        </div>")
     parts.append('        <div class="pipeline-connector" aria-hidden="true"></div>')
-    parts.append('        <div class="pipeline-stage">')
+    parts.append('        <div class="pipeline-stage" role="listitem">')
     parts.append('          <span class="pipeline-label">generated state</span>')
     parts.append('          <span class="pipeline-detail">registries / docs / install scripts / sync plans</span>')
     parts.append("        </div>")
     parts.append('        <div class="pipeline-connector" aria-hidden="true"></div>')
-    parts.append('        <div class="pipeline-stage">')
+    parts.append('        <div class="pipeline-stage" role="listitem">')
     parts.append('          <span class="pipeline-label">runtime projections</span>')
     parts.append('          <span class="pipeline-detail">Codex / Claude Code / OpenCode / Cursor / Grok</span>')
     parts.append("        </div>")
@@ -278,19 +297,23 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     parts.append('<div class="surface-map">')
     parts.append('  <a class="surface-node surface-node--instructions" href="/surfaces/instructions/">')
     parts.append('    <span class="surface-kicker">01</span>')
-    parts.append('    <strong>Instructions</strong>')
-    parts.append('    <span>Shared operating rules and platform overlays.</span>')
+    parts.append("    <strong>Instructions</strong>")
+    parts.append("    <span>Shared operating rules and platform overlays.</span>")
     parts.append("  </a>")
     parts.append('  <a class="surface-node surface-node--skills" href="/skills/catalog/">')
     parts.append('    <span class="surface-kicker">02</span>')
-    parts.append('    <strong>Skills</strong>')
+    parts.append("    <strong>Skills</strong>")
     parts.append(
-        f'    <span>{total_skills} catalog entries: {custom_skills} repo-owned, {external_skills} curated external.</span>'
+        f"    <span>{total_skills} catalog entries: {custom_skills} repo-owned, "
+        f"{external_skills} curated external.</span>"
     )
     parts.append("  </a>")
     parts.append('  <a class="surface-node surface-node--tools" href="/surfaces/tools/">')
     parts.append('    <span class="surface-kicker">03</span>')
-    tools_label = f"{tool_count} MCP tools plus CLI and plugin surfaces" if tool_count else "MCP, CLI, and plugin surfaces"
+    if tool_count:
+        tools_label = f"{tool_count} MCP tools plus CLI and plugin surfaces"
+    else:
+        tools_label = "MCP, CLI, and plugin surfaces"
     parts.append("    <strong>Tools</strong>")
     parts.append(f"    <span>{escape_mdx(tools_label)}.</span>")
     parts.append("  </a>")
@@ -317,13 +340,33 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     parts.append("")
     parts.append('<div class="runtime-table-wrapper">')
     parts.append("<table>")
-    parts.append("<thead><tr><th>Runtime</th><th>Instructions</th><th>Skills</th><th>Tools</th><th>Hooks</th><th>Agents</th></tr></thead>")
+    parts.append(_table_header("Runtime", "Instructions", "Skills", "Tools", "Hooks", "Agents"))
     parts.append("<tbody>")
-    parts.append("<tr><td>Codex</td><td>generated</td><td>plugin/Skills CLI</td><td>MCPHub</td><td>generated</td><td>dynamic</td></tr>")
-    parts.append("<tr><td>Claude Code</td><td>native import</td><td>plugin/Skills CLI</td><td>MCP</td><td>generated</td><td>native subagents</td></tr>")
-    parts.append("<tr><td>OpenCode</td><td>native AGENTS.md</td><td>Skills CLI</td><td>MCPHub + plugins</td><td>generated</td><td>native agents</td></tr>")
-    parts.append("<tr><td>Cursor</td><td>rules + AGENTS.md</td><td>Skills CLI</td><td>MCPHub</td><td>native hooks</td><td><code>.cursor/agents</code></td></tr>")
-    parts.append("<tr><td>Grok Build</td><td>generated</td><td>mirrored skills</td><td>MCPHub</td><td>generated</td><td>delegation</td></tr>")
+    parts.append(_table_row("Codex", "generated", "plugin/Skills CLI", "MCPHub", "generated", "dynamic"))
+    parts.append(
+        _table_row("Claude Code", "native import", "plugin/Skills CLI", "MCP", "generated", "native subagents")
+    )
+    parts.append(
+        _table_row(
+            "OpenCode",
+            "native AGENTS.md",
+            "Skills CLI",
+            "MCPHub + plugins",
+            "generated",
+            "native agents",
+        )
+    )
+    parts.append(
+        _table_row(
+            "Cursor",
+            "rules + AGENTS.md",
+            "Skills CLI",
+            "MCPHub",
+            "native hooks",
+            "<code>.cursor/agents</code>",
+        )
+    )
+    parts.append(_table_row("Grok Build", "generated", "mirrored skills", "MCPHub", "generated", "delegation"))
     parts.append("</tbody>")
     parts.append("</table>")
     parts.append("</div>")
@@ -370,24 +413,62 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
         'note="Global Skills CLI install across supported agent runtimes." />'
     )
     parts.append("")
-    parts.append('<CardGrid>')
-    parts.append('  <LinkCard title="Install Guide" href="/install/" description="Intent-based install paths and preview commands." />')
-    parts.append('  <LinkCard title="Skill Install Scripts" href="/skills/install/" description="Copyable per-skill install commands." />')
-    parts.append('  <LinkCard title="CLI Reference" href="/cli/" description="Full wagents command reference." />')
-    parts.append('</CardGrid>')
+    parts.append("<CardGrid>")
+    parts.append(_link_card("Install Guide", "/install/", "Intent-based install paths and preview commands."))
+    parts.append(_link_card("Skill Install Scripts", "/skills/install/", "Copyable per-skill install commands."))
+    parts.append(_link_card("CLI Reference", "/cli/", "Full wagents command reference."))
+    parts.append("</CardGrid>")
     parts.append("")
 
     parts.append("## Featured Workflows")
     parts.append("")
-    parts.append("Workflow cards are grouped by the surface they exercise so the catalog stays connected to the system model.")
+    parts.append(
+        "Workflow cards are grouped by the surface they exercise so the catalog stays connected to the system model."
+    )
     parts.append("")
     parts.append("<CardGrid>")
-    parts.append('  <LinkCard title="Instructions: set shared rules" href="/surfaces/instructions/" description="Read how global instructions, platform overlays, and generated mirrors compose." />')
-    parts.append('  <LinkCard title="Skills: review code" href="/skills/catalog/custom/review/" description="Run evidence-first review with severity, risk, and validation expectations." />')
-    parts.append('  <LinkCard title="Skills: create MCP servers" href="/skills/catalog/custom/mcp-creator/" description="Build a FastMCP server with design, testing, and deployment guidance." />')
-    parts.append('  <LinkCard title="Tools: inspect MCP control plane" href="/mcp/" description="Review MCPHub groups, registry sources, and client sync coverage." />')
-    parts.append('  <LinkCard title="Hooks: enforce stop gates" href="/hooks/task-completed-gate/" description="Use lifecycle hooks for validation evidence and completion checks." />')
-    parts.append('  <LinkCard title="Agents: delegate reviews" href="/agents/code-reviewer/" description="Use specialist agent definitions for focused review and coordination roles." />')
+    parts.append(
+        _link_card(
+            "Instructions: set shared rules",
+            "/surfaces/instructions/",
+            "Read how global instructions, platform overlays, and generated mirrors compose.",
+        )
+    )
+    parts.append(
+        _link_card(
+            "Skills: review code",
+            "/skills/catalog/custom/review/",
+            "Run evidence-first review with severity, risk, and validation expectations.",
+        )
+    )
+    parts.append(
+        _link_card(
+            "Skills: create MCP servers",
+            "/skills/catalog/custom/mcp-creator/",
+            "Build a FastMCP server with design, testing, and deployment guidance.",
+        )
+    )
+    parts.append(
+        _link_card(
+            "Tools: inspect MCP control plane",
+            "/mcp/",
+            "Review MCPHub groups, registry sources, and client sync coverage.",
+        )
+    )
+    parts.append(
+        _link_card(
+            "Hooks: enforce stop gates",
+            "/hooks/task-completed-gate/",
+            "Use lifecycle hooks for validation evidence and completion checks.",
+        )
+    )
+    parts.append(
+        _link_card(
+            "Agents: delegate reviews",
+            "/agents/code-reviewer/",
+            "Use specialist agent definitions for focused review and coordination roles.",
+        )
+    )
     parts.append("</CardGrid>")
     parts.append("")
 
@@ -424,20 +505,23 @@ def write_install_page() -> None:
         "import InstallCommand from '../../components/InstallCommand.astro';",
         "import { installCommands } from '../../generated-site-data.mjs';",
         "",
-        "Use this page to choose the shortest safe path. Live install/apply commands are explicit; preview commands are safe first passes.",
+        "Use this page to choose the shortest safe path. Live install/apply commands are explicit; "
+        "preview commands are safe first passes.",
         "",
         "## Use Everything",
         "",
-        '<InstallCommand command={installCommands.all} title="Install the full catalog" note="Global Skills CLI install across supported agent runtimes." />',
+        '<InstallCommand command={installCommands.all} title="Install the full catalog" '
+        'note="Global Skills CLI install across supported agent runtimes." />',
         "",
         "## Install One Surface",
         "",
-        '<InstallCommand command={installCommands.starter} title="Install one starter skill" note="Start with review before installing the full catalog." />',
+        '<InstallCommand command={installCommands.starter} title="Install one starter skill" '
+        'note="Start with review before installing the full catalog." />',
         "",
         "<CardGrid>",
-        '  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse repo-owned and curated external skills." />',
-        '  <LinkCard title="Skill Install Scripts" href="/skills/install/" description="Copyable per-skill install commands." />',
-        '  <LinkCard title="Tools Surface" href="/surfaces/tools/" description="MCP, CLI, and plugin surfaces that support runtime work." />',
+        _link_card("Skill Catalog", "/skills/catalog/", "Browse repo-owned and curated external skills."),
+        _link_card("Skill Install Scripts", "/skills/install/", "Copyable per-skill install commands."),
+        _link_card("Tools Surface", "/surfaces/tools/", "MCP, CLI, and plugin surfaces that support runtime work."),
         "</CardGrid>",
         "",
         "## Sync A Runtime",
@@ -448,8 +532,9 @@ def write_install_page() -> None:
         "uv run wagents skills sync --dry-run",
         "```",
         "",
-        "<Aside type=\"caution\" title=\"Apply requires intent\">",
-        "Do not run `uv run wagents skills sync --apply` or live Skills CLI installs unless you intend to mutate local runtime installations.",
+        '<Aside type="caution" title="Apply requires intent">',
+        "Do not run `uv run wagents skills sync --apply` or live Skills CLI installs unless you intend "
+        "to mutate local runtime installations.",
         "</Aside>",
         "",
         "## Preview Changes",
@@ -476,9 +561,13 @@ def write_install_page() -> None:
         "</Steps>",
         "",
         "<CardGrid>",
-        '  <LinkCard title="Runtimes" href="/runtimes/" description="Compatibility matrix for generated and native runtime projections." />',
-        '  <LinkCard title="Contributing" href="/contributing/" description="CI/CD, docs generation, validation gates, release flow, and source ownership." />',
-        '  <LinkCard title="CLI Reference" href="/cli/" description="Full wagents command reference." />',
+        _link_card("Runtimes", "/runtimes/", "Compatibility matrix for generated and native runtime projections."),
+        _link_card(
+            "Contributing",
+            "/contributing/",
+            "CI/CD, docs generation, validation gates, release flow, and source ownership.",
+        ),
+        _link_card("CLI Reference", "/cli/", "Full wagents command reference."),
         "</CardGrid>",
         "",
     ]
@@ -509,15 +598,20 @@ def write_surfaces_pages(nodes: list) -> None:
         "Surfaces are the portable units in this repo. Runtimes are the places those surfaces are projected.",
         "",
         "<CardGrid>",
-        '  <LinkCard title="Instructions" href="/surfaces/instructions/" description="Shared operating rules, platform overlays, and generated mirrors." />',
-        '  <LinkCard title="Skills" href="/skills/catalog/" description="Portable prompt-and-workflow bundles with generated catalog pages." />',
-        '  <LinkCard title="Tools" href="/surfaces/tools/" description="MCP, CLI, and plugin surfaces exposed to supported runtimes." />',
-        '  <LinkCard title="Hooks" href="/hooks/" description="Lifecycle guards, context injection, formatting, lint, and stop gates." />',
-        '  <LinkCard title="Agents" href="/agents/" description="Specialist agent definitions and runtime-specific projections." />',
+        _link_card(
+            "Instructions",
+            "/surfaces/instructions/",
+            "Shared operating rules, platform overlays, and generated mirrors.",
+        ),
+        _link_card("Skills", "/skills/catalog/", "Portable prompt-and-workflow bundles with generated catalog pages."),
+        _link_card("Tools", "/surfaces/tools/", "MCP, CLI, and plugin surfaces exposed to supported runtimes."),
+        _link_card("Hooks", "/hooks/", "Lifecycle guards, context injection, formatting, lint, and stop gates."),
+        _link_card("Agents", "/agents/", "Specialist agent definitions and runtime-specific projections."),
         "</CardGrid>",
         "",
-        "<Aside type=\"note\" title=\"Order matters\">",
-        "The docs present surfaces as instructions -> skills -> tools -> hooks -> agents: policy, reusable workflows, connected capabilities, automation, then specialist roles.",
+        '<Aside type="note" title="Order matters">',
+        "The docs present surfaces as instructions -> skills -> tools -> hooks -> agents: policy, "
+        "reusable workflows, connected capabilities, automation, then specialist roles.",
         "</Aside>",
         "",
     ]
@@ -535,19 +629,37 @@ def write_surfaces_pages(nodes: list) -> None:
         "",
         "| Layer | Source | Role |",
         "| --- | --- | --- |",
-        "| Shared policy | `instructions/global.md`, `AGENTS.md` | Cross-runtime rules, trust boundaries, clarification gates, git policy, docs lookup |",
-        "| Platform overlays | `instructions/*-global.md` | Runtime-specific narrowing without weakening shared policy |",
-        "| Scoped rules | `.claude/rules/`, `.cursor/rules/`, generated Copilot instructions | Path-conditional or platform-native instruction loading |",
-        "| Generated mirrors | `.github/instructions/`, `.apm/instructions/`, runtime config files | Projection for runtimes that need concrete files |",
+        "| Shared policy | `instructions/global.md`, `AGENTS.md` | Cross-runtime rules, trust boundaries, "
+        "clarification gates, git policy, docs lookup |",
+        "| Platform overlays | `instructions/*-global.md` | Runtime-specific narrowing without weakening "
+        "shared policy |",
+        "| Scoped rules | `.claude/rules/`, `.cursor/rules/`, generated Copilot instructions | "
+        "Path-conditional or platform-native instruction loading |",
+        "| Generated mirrors | `.github/instructions/`, `.apm/instructions/`, runtime config files | "
+        "Projection for runtimes that need concrete files |",
         "",
         "<CardGrid>",
-        '  <LinkCard title="Instruction Loading" href="/architecture/instruction-loading/" description="How instructions enter supported runtimes." />',
-        '  <LinkCard title="Progressive Disclosure" href="/architecture/progressive-disclosure/" description="Always-loaded policy, scoped rules, and on-demand skills." />',
-        '  <LinkCard title="Contributing" href="/contributing/" description="Source ownership and regeneration rules for instruction surfaces." />',
+        _link_card(
+            "Instruction Loading",
+            "/architecture/instruction-loading/",
+            "How instructions enter supported runtimes.",
+        ),
+        _link_card(
+            "Progressive Disclosure",
+            "/architecture/progressive-disclosure/",
+            "Always-loaded policy, scoped rules, and on-demand skills.",
+        ),
+        _link_card(
+            "Contributing",
+            "/contributing/",
+            "Source ownership and regeneration rules for instruction surfaces.",
+        ),
         "</CardGrid>",
         "",
-        "<Aside type=\"caution\" title=\"Precedence\">",
-        "Platform overlays may add or narrow runtime-specific behavior. They must not weaken safety, secret-handling, approval, or destructive-action rules unless the active user explicitly requests that outcome.",
+        '<Aside type="caution" title="Precedence">',
+        "Platform overlays may add or narrow runtime-specific behavior. They must not weaken safety, "
+        "secret-handling, approval, or destructive-action rules unless the active user explicitly requests "
+        "that outcome.",
         "</Aside>",
         "",
     ]
@@ -561,19 +673,34 @@ def write_surfaces_pages(nodes: list) -> None:
         "",
         "import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';",
         "",
-        "Tools are the executable and connected capabilities that support agent work. In this repo, that means MCP servers, the `wagents` CLI, Skills CLI install paths, and runtime plugin manifests.",
+        "Tools are the executable and connected capabilities that support agent work. In this repo, that means "
+        "MCP servers, the `wagents` CLI, Skills CLI install paths, and runtime plugin manifests.",
         "",
-        f"<p><strong>Current scope:</strong> {custom_mcp} repo MCP package(s), {external_mcp} external MCP tool entries, plus CLI and plugin distribution surfaces.</p>",
+        f"<p><strong>Current scope:</strong> {custom_mcp} repo MCP package(s), "
+        f"{external_mcp} external MCP tool entries, plus CLI and plugin distribution surfaces.</p>",
         "",
         "<CardGrid>",
-        '  <LinkCard title="MCP Overview" href="/mcp/" description="Configured MCP servers, MCPHub groups, and client sync coverage." />',
-        '  <LinkCard title="CLI Reference" href="/cli/" description="Scaffold, validate, package, sync, and generate docs with wagents." />',
-        '  <LinkCard title="MCP Registry" href="/harness-config/mcp-registry/" description="Registry source for MCPHub and client projections." />',
-        '  <LinkCard title="Plugin Skill Ownership" href="/harness-config/plugin-skill-ownership/" description="How plugin and Skills CLI surfaces share ownership." />',
+        _link_card("MCP Overview", "/mcp/", "Configured MCP servers, MCPHub groups, and client sync coverage."),
+        _link_card(
+            "CLI Reference",
+            "/cli/",
+            "Scaffold, validate, package, sync, and generate docs with wagents.",
+        ),
+        _link_card(
+            "MCP Registry",
+            "/harness-config/mcp-registry/",
+            "Registry source for MCPHub and client projections.",
+        ),
+        _link_card(
+            "Plugin Skill Ownership",
+            "/harness-config/plugin-skill-ownership/",
+            "How plugin and Skills CLI surfaces share ownership.",
+        ),
         "</CardGrid>",
         "",
-        "<Aside type=\"note\" title=\"Runtime boundary\">",
-        "Tools are exposed differently per runtime: native MCP config, MCPHub group/server endpoints, CLI wrappers, and plugin manifests. Use the runtime matrix before assuming one shape works everywhere.",
+        '<Aside type="note" title="Runtime boundary">',
+        "Tools are exposed differently per runtime: native MCP config, MCPHub group/server endpoints, "
+        "CLI wrappers, and plugin manifests. Use the runtime matrix before assuming one shape works everywhere.",
         "</Aside>",
         "",
     ]
@@ -590,41 +717,62 @@ def write_runtimes_page() -> None:
         "",
         "import { CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';",
         "",
-        "Runtimes are host environments that consume repo-managed surfaces through native support, generated projections, plugin manifests, MCPHub endpoints, or Skills CLI installs.",
+        "Runtimes are host environments that consume repo-managed surfaces through native support, "
+        "generated projections, plugin manifests, MCPHub endpoints, or Skills CLI installs.",
         "",
-        "<Badge text=\"compatibility truth\" variant=\"note\" size=\"large\" />",
+        '<Badge text="compatibility truth" variant="note" size="large" />',
         "",
         '<div class="runtime-table-wrapper">',
         "<table>",
-        "<thead><tr><th>Runtime</th><th>Instructions</th><th>Skills</th><th>Tools</th><th>Hooks</th><th>Agents</th></tr></thead>",
+        _table_header("Runtime", "Instructions", "Skills", "Tools", "Hooks", "Agents"),
         "<tbody>",
-        "<tr><td>Antigravity</td><td>generated</td><td>Skills CLI</td><td>MCP projection</td><td>limited</td><td>not primary</td></tr>",
-        "<tr><td>Claude Code</td><td>native import</td><td>plugin/Skills CLI</td><td>MCP</td><td>generated</td><td>native subagents</td></tr>",
-        "<tr><td>Codex</td><td>AGENTS.md + config</td><td>plugin/Skills CLI</td><td>MCPHub</td><td>generated</td><td>dynamic delegation</td></tr>",
-        "<tr><td>Crush</td><td>AGENTS.md</td><td>Skills CLI</td><td>MCP projection</td><td>limited</td><td>not primary</td></tr>",
-        "<tr><td>Cursor</td><td>rules + AGENTS.md</td><td>Skills CLI</td><td>MCPHub</td><td>native hooks</td><td><code>.cursor/agents</code></td></tr>",
-        "<tr><td>Gemini CLI</td><td>GEMINI.md</td><td>Skills CLI</td><td>MCP projection</td><td>generated</td><td>not primary</td></tr>",
-        "<tr><td>GitHub Copilot</td><td>generated instructions</td><td>Skills CLI</td><td>MCP projection</td><td>baseline hooks</td><td>Copilot-only agents</td></tr>",
-        "<tr><td>Grok Build</td><td>generated config</td><td>mirrored skills</td><td>MCPHub</td><td>generated</td><td>delegation</td></tr>",
-        "<tr><td>OpenCode</td><td>AGENTS.md</td><td>Skills CLI</td><td>MCPHub + plugins</td><td>generated</td><td>native agents</td></tr>",
+        _table_row("Antigravity", "generated", "Skills CLI", "MCP projection", "limited", "not primary"),
+        _table_row("Claude Code", "native import", "plugin/Skills CLI", "MCP", "generated", "native subagents"),
+        _table_row("Codex", "AGENTS.md + config", "plugin/Skills CLI", "MCPHub", "generated", "dynamic delegation"),
+        _table_row("Crush", "AGENTS.md", "Skills CLI", "MCP projection", "limited", "not primary"),
+        _table_row(
+            "Cursor",
+            "rules + AGENTS.md",
+            "Skills CLI",
+            "MCPHub",
+            "native hooks",
+            "<code>.cursor/agents</code>",
+        ),
+        _table_row("Gemini CLI", "GEMINI.md", "Skills CLI", "MCP projection", "generated", "not primary"),
+        _table_row(
+            "GitHub Copilot",
+            "generated instructions",
+            "Skills CLI",
+            "MCP projection",
+            "baseline hooks",
+            "Copilot-only agents",
+        ),
+        _table_row("Grok Build", "generated config", "mirrored skills", "MCPHub", "generated", "delegation"),
+        _table_row("OpenCode", "AGENTS.md", "Skills CLI", "MCPHub + plugins", "generated", "native agents"),
         "</tbody>",
         "</table>",
         "</div>",
         "",
-        "<Aside type=\"note\" title=\"Fixture-backed detail\">",
-        "Use Harness Support for support tiers, fixture status, sync commands, rollback coverage, and validation commands.",
+        '<Aside type="note" title="Fixture-backed detail">',
+        "Use Harness Support for support tiers, fixture status, sync commands, rollback coverage, "
+        "and validation commands.",
         "</Aside>",
         "",
         "<CardGrid>",
     ]
     for agent in SUPPORTED_AGENTS:
-        parts.append(
-            f'  <LinkCard title="{escape_attr(agent.label)}" href="{escape_attr(agent.href)}" '
-            f'description="{escape_attr(agent.description)}" />'
-        )
+        parts.append(_link_card(agent.label, agent.href, agent.description))
     parts.extend([
-        '  <LinkCard title="Harness Support" href="/harness-support/" description="Fixture-backed support tiers and validation commands." />',
-        '  <LinkCard title="Sync Manifest" href="/harness-config/sync-manifest/" description="Generated surface projection and sync behavior." />',
+        _link_card(
+            "Harness Support",
+            "/harness-support/",
+            "Fixture-backed support tiers and validation commands.",
+        ),
+        _link_card(
+            "Sync Manifest",
+            "/harness-config/sync-manifest/",
+            "Generated surface projection and sync behavior.",
+        ),
         "</CardGrid>",
         "",
     ])
@@ -644,18 +792,27 @@ def write_reference_page() -> None:
         "Reference pages are lookup surfaces. Operational process lives under [Contributing](/contributing/).",
         "",
         "<CardGrid>",
-        '  <LinkCard title="CLI Reference" href="/cli/" description="Commands for scaffolding, validation, packaging, installation, docs generation, and sync workflows." />',
-        '  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Generated custom and curated external skill indexes." />',
-        '  <LinkCard title="MCP Registry" href="/harness-config/mcp-registry/" description="MCP registry and MCPHub projection policy." />',
-        '  <LinkCard title="Hook Registry" href="/hooks/" description="Generated hook pages and lifecycle policy." />',
-        '  <LinkCard title="Runtime Compatibility" href="/runtimes/" description="Surface support across agent runtimes." />',
-        '  <LinkCard title="Harness Support" href="/harness-support/" description="Fixture-backed support tiers and validation commands." />',
-        '  <LinkCard title="Reports" href="/reports/" description="Generated docs graph, link check, dependency drift, and maintainer dashboards." />',
-        '  <LinkCard title="Catalog Indexes" href="/catalog/" description="Generated catalog pages for assets, tags, platforms, and tooling." />',
+        _link_card(
+            "CLI Reference",
+            "/cli/",
+            "Commands for scaffolding, validation, packaging, installation, docs generation, and sync workflows.",
+        ),
+        _link_card("Skill Catalog", "/skills/catalog/", "Generated custom and curated external skill indexes."),
+        _link_card("MCP Registry", "/harness-config/mcp-registry/", "MCP registry and MCPHub projection policy."),
+        _link_card("Hook Registry", "/hooks/", "Generated hook pages and lifecycle policy."),
+        _link_card("Runtime Compatibility", "/runtimes/", "Surface support across agent runtimes."),
+        _link_card("Harness Support", "/harness-support/", "Fixture-backed support tiers and validation commands."),
+        _link_card(
+            "Reports",
+            "/reports/",
+            "Generated docs graph, link check, dependency drift, and maintainer dashboards.",
+        ),
+        _link_card("Catalog Indexes", "/catalog/", "Generated catalog pages for assets, tags, platforms, and tooling."),
         "</CardGrid>",
         "",
-        "<Aside type=\"note\" title=\"Generated data\">",
-        "Machine-readable public artifacts live under `docs/public/generated-*` and generated ESM modules under `docs/src/generated-*`. Regenerate them with `uv run wagents docs generate --no-installed`.",
+        '<Aside type="note" title="Generated data">',
+        "Machine-readable public artifacts live under `docs/public/generated-*` and generated ESM modules under "
+        "`docs/src/generated-*`. Regenerate them with `uv run wagents docs generate --no-installed`.",
         "</Aside>",
         "",
     ]
@@ -1971,7 +2128,10 @@ def write_catalog_external_index(nodes: list) -> None:
     ]
     if use_catalog_browser:
         imports.append(f"import CatalogBrowser from '{external_import_prefix}components/CatalogBrowser.astro';")
-        imports.append(f"import {{ externalSkillIndex }} from '{external_import_prefix}generated-site-data.mjs';")
+        imports.append(
+            "import { externalSkillIndex as externalSkillBrowserRows } "
+            f"from '{external_import_prefix}generated-skill-indexes.mjs';"
+        )
     else:
         imports.append(f"import CatalogSkillFilter from '{external_import_prefix}components/CatalogSkillFilter.astro';")
 
@@ -2004,7 +2164,7 @@ def write_catalog_external_index(nodes: list) -> None:
         parts.extend([
             "Use search and lane filters to browse the external catalog without loading every card at once.",
             "",
-            "<CatalogBrowser skills={externalSkillIndex} />",
+            "<CatalogBrowser skills={externalSkillBrowserRows} />",
             "",
         ])
     else:
@@ -2044,11 +2204,12 @@ def write_skill_install_scripts_page() -> None:
         "---",
         "",
         "import InstallScripts from '../../../components/InstallScripts.astro';",
+        "import { skillInstallScripts } from '../../../generated-site-data.mjs';",
         "",
         "The canonical portable install path is `npx skills add`. `uv run wagents ...` commands are repo-local "
         "control-plane commands for validation and reconciliation, not a replacement for Skills CLI installation.",
         "",
-        '<InstallScripts src="/generated-skill-indexes/install-scripts.json" />',
+        '<InstallScripts src="/generated-skill-indexes/install-scripts.json" scripts={skillInstallScripts} />',
     ]
 
     out_dir = CONTENT_DIR / "skills"
@@ -2099,9 +2260,7 @@ _COPILOT_ONLY_AGENT_NAMES = (
     "spec-writer",
     "test-writer",
 )
-_COPILOT_AGENT_REPO_BASE = (
-    "https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents"
-)
+_COPILOT_AGENT_REPO_BASE = "https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents"
 
 
 def _load_copilot_agent_description(agent_name: str) -> str:
@@ -2130,9 +2289,7 @@ def _agents_index_copilot_only_lines() -> list[str]:
     for name in _COPILOT_ONLY_AGENT_NAMES:
         desc = escape_attr(truncate_sentence(_load_copilot_agent_description(name), 160))
         href = f"{_COPILOT_AGENT_REPO_BASE}/{name}.agent.md"
-        lines.append(
-            f'  <LinkCard title="{escape_attr(name)}" href="{href}" description="{desc}" />'
-        )
+        lines.append(f'  <LinkCard title="{escape_attr(name)}" href="{href}" description="{desc}" />')
     lines.append("</CardGrid>")
     return lines
 
@@ -2508,13 +2665,17 @@ def _clean_content_subdir(d: Path) -> bool:
             if _is_hand_maintained_mdx(item):
                 typer.echo(f"  Preserved {item.relative_to(CONTENT_DIR)} (hand-maintained)")
                 continue
-            item.unlink()
+            item.unlink(missing_ok=True)
             cleaned = True
         elif item.is_dir() and item != d and not any(item.iterdir()):
             item.rmdir()
             cleaned = True
 
-    if not any(d.iterdir()):
+    try:
+        is_empty = not any(d.iterdir())
+    except FileNotFoundError:
+        return cleaned
+    if is_empty:
         d.rmdir()
         cleaned = True
 
@@ -2557,19 +2718,29 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
 
     nodes = collect_all_doc_nodes(include_installed=include_installed, include_drafts=include_drafts)
     external_entries = read_external_skill_entries()
-    expected_site = render_site_data_module(
-        site_data(
-            nodes,
-            mcp_config_count=_count_mcp_servers_from_config(),
-            has_mcp_overview=_has_mcp_overview_page(),
-            external_skills=external_entries,
-        )
+    expected_data = site_data(
+        nodes,
+        mcp_config_count=_count_mcp_servers_from_config(),
+        has_mcp_overview=_has_mcp_overview_page(),
+        external_skills=external_entries,
     )
+    expected_site = render_site_data_module(expected_data)
     site_path = DOCS_DIR / "src" / "generated-site-data.mjs"
     if not site_path.exists():
         reasons.append("docs/src/generated-site-data.mjs missing; run `uv run wagents docs generate --no-installed`")
     elif site_path.read_text(encoding="utf-8") != expected_site:
         reasons.append("docs/src/generated-site-data.mjs is stale; run `uv run wagents docs generate --no-installed`")
+
+    expected_skill_indexes = render_skill_indexes_module(expected_data)
+    skill_indexes_path = DOCS_DIR / "src" / "generated-skill-indexes.mjs"
+    if not skill_indexes_path.exists():
+        reasons.append(
+            "docs/src/generated-skill-indexes.mjs missing; run `uv run wagents docs generate --no-installed`"
+        )
+    elif skill_indexes_path.read_text(encoding="utf-8") != expected_skill_indexes:
+        reasons.append(
+            "docs/src/generated-skill-indexes.mjs is stale; run `uv run wagents docs generate --no-installed`"
+        )
 
     expected_sidebar = render_sidebar_module(nodes)
     sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
@@ -2578,16 +2749,7 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
     elif sidebar_path.read_text(encoding="utf-8") != expected_sidebar:
         reasons.append("docs/src/generated-sidebar.mjs is stale; run `uv run wagents docs generate --no-installed`")
 
-    expected_install_scripts = json.dumps(
-        site_data(
-            nodes,
-            mcp_config_count=_count_mcp_servers_from_config(),
-            has_mcp_overview=_has_mcp_overview_page(),
-            external_skills=external_entries,
-        )["skillInstallScripts"],
-        indent=2,
-        sort_keys=True,
-    )
+    expected_install_scripts = json.dumps(expected_data["skillInstallScripts"], indent=2, sort_keys=True)
     install_scripts_path = DOCS_DIR / "public" / "generated-skill-indexes" / "install-scripts.json"
     if not install_scripts_path.exists():
         reasons.append(
@@ -2618,8 +2780,7 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
     expected_manifest = render_research_manifest()
     if not research_manifest_path.exists():
         reasons.append(
-            "docs/src/generated-skill-research-index.mjs missing; "
-            "run `uv run wagents docs generate --no-installed`"
+            "docs/src/generated-skill-research-index.mjs missing; run `uv run wagents docs generate --no-installed`"
         )
     else:
         actual_manifest = research_manifest_path.read_text(encoding="utf-8")
@@ -2721,11 +2882,11 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
 
     write_skill_research_pages(nodes)
 
-    write_reports_pages()
-    typer.echo("  Generated reports/* (MDX + generated-reports/*.json)")
-
     write_catalog_pages(nodes=nodes)
     typer.echo("  Generated catalog/* + architecture/* discovery pages")
+
+    write_reports_pages()
+    typer.echo("  Generated reports/* (MDX + generated-reports/*.json)")
 
     write_sidebar(nodes)
     typer.echo("  Generated generated-sidebar.mjs")
@@ -2774,6 +2935,7 @@ def docs_build():
     """Generate content and build static site."""
     _docs_generate_impl(include_drafts=False, include_installed=False)
     typer.echo("Building...")
+    shutil.rmtree(DOCS_DIR / "dist", ignore_errors=True)
     result = subprocess.run(["pnpm", "build"], cwd=str(DOCS_DIR))
     if result.returncode != 0:
         typer.echo("Error: build failed", err=True)
@@ -2786,6 +2948,7 @@ def docs_preview():
     """Generate, build, and preview the site."""
     _docs_generate_impl(include_drafts=False, include_installed=False)
     typer.echo("Building...")
+    shutil.rmtree(DOCS_DIR / "dist", ignore_errors=True)
     result = subprocess.run(["pnpm", "build"], cwd=str(DOCS_DIR))
     if result.returncode != 0:
         typer.echo("Error: build failed", err=True)

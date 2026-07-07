@@ -577,7 +577,7 @@ Before starting research, check if another skill is a better fit:
 
 If the user confirms they want general research, proceed.
 
-For repo-owned CLI skill-first routing (`/ffmpeg`, `/yt-dlp`, `/pentest`), see the **Repo CLI skills** table in `references/source-selection.md`.
+For repo-owned CLI skill-first routing (`/ffmpeg`, `/yt-dlp`, `/trafilatura`, `/pentest`), see the **Repo CLI skills** table in `references/source-selection.md`.
 
 ## Complexity Classification
 
@@ -647,7 +647,7 @@ Subagent D → wikipedia / wikidata for factual grounding
 **Deep (agent team):** Create a research team with the platform's available team primitive:
 ```
 Lead: triage (Wave 0), orchestrate, judge reconcile (Wave 3), synthesize (Wave 4)
-  |-- web-researcher:       brave-search, duckduckgo-search, exa, g-search
+  |-- web-researcher:       brave-search, duckduckgo-search, ddgs, exa, g-search
   |-- tech-researcher:      context7, deepwiki, arxiv, semantic-scholar, package-version-check-mcp
   |-- content-extractor:    fetcher, trafilatura, docling, wikipedia, wayback
   |-- [academic-researcher: arxiv, semantic-scholar, openalex, crossref, PubMed]
@@ -691,7 +691,7 @@ Each perspective agent reviews Wave 1 findings and generates 2-3 additional sub-
 ### Wave 2: Deep Dive (parallel, targeted)
 
 1. Rank leads from Wave 1 by potential value (citation frequency, source authority, relevance)
-2. Dispatch deep-read subagents — use fetcher/trafilatura/docling to extract full content from top leads
+2. Dispatch deep-read subagents — prefer `/trafilatura` on shell harnesses, else fetcher/trafilatura MCP/docling to extract full content from top leads
 3. Follow citation chains — if a source cites another, fetch the original
 4. Fill gaps — for each gap identified in Wave 1, dispatch targeted searches
 5. Build preliminary claim-to-source support rows for each source-backed finding
@@ -791,7 +791,7 @@ Read `references/source-selection.md` during Wave 0 for the full tool-to-domain 
 |--------------|---------------|-----------------|
 | Library/API docs | `llms.txt`/`llms-full.txt`, context7, deepwiki, package-version-check-mcp | brave-search |
 | Academic/scientific | arxiv, semantic-scholar, PubMed, openalex | crossref, brave-search |
-| Current events/trends | brave-search, exa, duckduckgo-search, g-search | fetcher, trafilatura |
+| Current events/trends | brave-search, exa, duckduckgo-search, ddgs, g-search | fetcher, trafilatura |
 | GitHub repos/OSS | deepwiki, repomix | brave-search |
 | General knowledge | wikipedia, wikidata, brave-search | fetcher |
 | Historical content | wayback, brave-search | fetcher |

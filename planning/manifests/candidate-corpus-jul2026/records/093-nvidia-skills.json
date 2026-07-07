@@ -1,0 +1,159 @@
+{
+  "raw_url": "https://github.com/NVIDIA/skills-",
+  "normalized_url": "https://github.com/NVIDIA/skills-",
+  "source_name": "NVIDIA/skills-",
+  "category": "skill",
+  "inspected_commit_sha": "",
+  "license": "github-api-unavailable",
+  "latest_release_or_commit_date": "github-api-unavailable",
+  "artifact_types_found": [
+    "skill"
+  ],
+  "install_or_integration_decision": "skip_inaccessible",
+  "reason": "Source could not be resolved through public Git metadata.",
+  "auth_required": false,
+  "env_vars_or_credentials": [],
+  "safety_notes": "No elevated keyword risk detected.",
+  "attribution_notes": "Preserve attribution to NVIDIA/skills-; verify license before adapting content.",
+  "files_added": [],
+  "files_modified": [],
+  "tests_or_checks_run": [
+    "git ls-remote --symref",
+    "gh api repos/{owner}/{repo}"
+  ],
+  "skipped_reason": "Source could not be resolved through public Git metadata.",
+  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "raw_index": 93,
+  "normalized_index": "https://github.com/NVIDIA/skills-",
+  "duplicate_group": [],
+  "fragment": "",
+  "tree_subpath": "",
+  "canonical_source": "https://github.com/NVIDIA/skills-",
+  "risk_tier": "standard-review",
+  "risk_keywords": [],
+  "support_tier": "discovery-only",
+  "phase_status": {
+    "source_capture": "completed-with-warning",
+    "deep_research": "completed-public-metadata",
+    "overlap": "completed",
+    "security": "completed-static",
+    "license": "completed-static",
+    "compliance": "completed-static",
+    "docs_impact": "completed",
+    "decision": "completed"
+  },
+  "source_capture_packet": {
+    "git_status": "unreachable",
+    "git_error": "fatal: could not read Username for 'https://github.com': terminal prompts disabled",
+    "default_branch": "",
+    "github_api_status": "unavailable",
+    "github_api_error": "gh: Not Found (HTTP 404)",
+    "candidate_code_executed": false
+  },
+  "github_metadata_packet": {
+    "status": "unavailable",
+    "error": "gh: Not Found (HTTP 404)",
+    "full_name": "NVIDIA/skills-",
+    "default_branch": "",
+    "pushed_at": "",
+    "updated_at": "",
+    "license_spdx_id": "",
+    "license_name": "",
+    "language": "",
+    "topics": [],
+    "archived": false,
+    "fork": false,
+    "private": false,
+    "visibility": ""
+  },
+  "deep_research_claims": [
+    {
+      "claim": "Candidate source was inspected without executing candidate code.",
+      "support_status": "partial",
+      "confidence": 0.45,
+      "sources": [
+        "https://github.com/NVIDIA/skills-"
+      ]
+    },
+    {
+      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "support_status": "supports",
+      "confidence": 0.95,
+      "sources": [
+        "AGENTS.md \u00a72.7",
+        "config/skill-registry-policy.json"
+      ]
+    },
+    {
+      "claim": "GitHub repository metadata was queried without executing candidate code.",
+      "support_status": "partial",
+      "confidence": 0.45,
+      "sources": [
+        "gh api repos/NVIDIA/skills-"
+      ]
+    }
+  ],
+  "source_support_matrix": [
+    {
+      "claim": "Candidate source was inspected without executing candidate code.",
+      "support_status": "partial",
+      "confidence": 0.45,
+      "sources": [
+        "https://github.com/NVIDIA/skills-"
+      ]
+    },
+    {
+      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "support_status": "supports",
+      "confidence": 0.95,
+      "sources": [
+        "AGENTS.md \u00a72.7",
+        "config/skill-registry-policy.json"
+      ]
+    },
+    {
+      "claim": "GitHub repository metadata was queried without executing candidate code.",
+      "support_status": "partial",
+      "confidence": 0.45,
+      "sources": [
+        "gh api repos/NVIDIA/skills-"
+      ]
+    }
+  ],
+  "overlap_packet": {
+    "catalog_matches": [],
+    "mcp_registry_match": false,
+    "plugin_registry_match": false
+  },
+  "security_packet": {
+    "candidate_code_executed": false,
+    "network_probe_scope": "public Git metadata only",
+    "executable_surface_review_required": false
+  },
+  "license_packet": {
+    "license_status": "verify-before-use",
+    "license_spdx_id": "",
+    "license_name": ""
+  },
+  "compliance_packet": {
+    "auth_required": false,
+    "env_vars_or_credentials": []
+  },
+  "docs_steward_surfaces": [
+    "auth-matrix",
+    "changelog",
+    "decision-log",
+    "generated-drift",
+    "openspec",
+    "reports"
+  ],
+  "docs_steward_status": "packet-generated",
+  "decision_packet": {
+    "decision": "skip_inaccessible",
+    "reason": "Source could not be resolved through public Git metadata."
+  },
+  "integration_packet": {
+    "mutation_allowed": false,
+    "required_before_promotion": "human trust-gate review"
+  }
+}

@@ -20,10 +20,14 @@ if command -v git &>/dev/null && git rev-parse --git-dir &>/dev/null 2>&1; then
     done <<< "$PY"
     if [ -f "pyproject.toml" ] && command -v uv &>/dev/null; then
       CRITICAL=$(echo "$PY" | xargs uv run ruff check --select E9,F63,F7,F82 2>/dev/null)
-      [ -n "$CRITICAL" ] && { printf "Critical lint errors. Fix before going idle:\n%s\n" "$CRITICAL" >&2; exit 2; }
+      RUFF_EXIT=$?
+      CRITICAL=$(echo "$CRITICAL" | grep -v '^All checks passed!$' | head -10)
+      [ $RUFF_EXIT -ne 0 ] && [ -n "$CRITICAL" ] && { printf "Critical lint errors. Fix before going idle:\n%s\n" "$CRITICAL" >&2; exit 2; }
     elif command -v ruff &>/dev/null; then
       CRITICAL=$(echo "$PY" | xargs ruff check --select E9,F63,F7,F82 2>/dev/null)
-      [ -n "$CRITICAL" ] && { printf "Critical lint errors. Fix before going idle:\n%s\n" "$CRITICAL" >&2; exit 2; }
+      RUFF_EXIT=$?
+      CRITICAL=$(echo "$CRITICAL" | grep -v '^All checks passed!$' | head -10)
+      [ $RUFF_EXIT -ne 0 ] && [ -n "$CRITICAL" ] && { printf "Critical lint errors. Fix before going idle:\n%s\n" "$CRITICAL" >&2; exit 2; }
     fi
     TYPED_PY=$(echo "$PY" | grep -E '^(wagents|tests|skills/nerdbot/(src|scripts))/|^scripts/' | grep -v '^scripts/validate/')
     if [ -n "$TYPED_PY" ] && [ -f "pyproject.toml" ] && command -v uv &>/dev/null; then

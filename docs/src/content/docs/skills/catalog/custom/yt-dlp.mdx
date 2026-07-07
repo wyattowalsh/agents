@@ -11,6 +11,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   name="yt-dlp"
   description="Probe, transcript, and download video/audio with yt-dlp CLI on supported hosts. Use when you need metadata, captions, or local media. Transcript-first (probe, transcript, download)."
   installCommand={`npx skills add github:wyattowalsh/agents --skill yt-dlp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  installLabel="Install"
   usage="/yt-dlp &lt;probe|transcript|download|playlist|cookies|doctor|help&gt; [url or path]"
   badges={[{ text: "yt-dlp", variant: "note" }, { text: "1376 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
@@ -115,7 +116,7 @@ CLI skill for [yt-dlp](https://github.com/yt-dlp/yt-dlp): read-only URL probes, 
 <details class="source-disclosure">
 <summary>View Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml
 ---
 name: yt-dlp
 description: >-

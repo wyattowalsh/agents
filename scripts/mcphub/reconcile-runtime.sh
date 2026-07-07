@@ -108,6 +108,16 @@ if [[ "${WARM}" -eq 1 && -x "${launcher}" ]]; then
 fi
 
 if [[ "${RESTART}" -eq 1 ]]; then
-  launchctl kickstart -k "gui/$(id -u)/com.wyattowalsh.mcphub"
-  printf 'restarted com.wyattowalsh.mcphub\n'
+  service="gui/$(id -u)/com.wyattowalsh.mcphub"
+  if launchctl print "${service}" >/dev/null 2>&1; then
+    launchctl kickstart -k "${service}"
+    printf 'restarted com.wyattowalsh.mcphub\n'
+  elif mcphub_is_healthy; then
+    printf 'warning: LaunchAgent %s is not installed; MCPHub is already healthy on %s\n' \
+      "${service}" "${MCPHUB_BASE_URL}" >&2
+    printf 'install with: just mcphub-install-launch-agent\n' >&2
+  else
+    printf 'LaunchAgent %s is not installed; starting MCPHub via up.sh\n' "${service}" >&2
+    "${SCRIPT_DIR}/up.sh"
+  fi
 fi

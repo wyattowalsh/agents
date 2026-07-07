@@ -1,0 +1,176 @@
+{
+  "raw_url": "https://github.com/cloudflare/skills",
+  "normalized_url": "https://github.com/cloudflare/skills",
+  "source_name": "cloudflare/skills",
+  "category": "skill",
+  "inspected_commit_sha": "27ce0c0e159225caa7ed30ebefd4107aa6c52497",
+  "license": "Apache-2.0",
+  "latest_release_or_commit_date": "github-pushed-at:2026-06-22T19:15:52Z",
+  "artifact_types_found": [
+    "skill"
+  ],
+  "install_or_integration_decision": "merge_into_existing",
+  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
+  "auth_required": false,
+  "env_vars_or_credentials": [],
+  "safety_notes": "No elevated keyword risk detected.",
+  "attribution_notes": "Preserve attribution to cloudflare/skills; verify license before adapting content.",
+  "files_added": [],
+  "files_modified": [],
+  "tests_or_checks_run": [
+    "git ls-remote --symref",
+    "gh api repos/{owner}/{repo}"
+  ],
+  "skipped_reason": "",
+  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "raw_index": 7,
+  "normalized_index": "https://github.com/cloudflare/skills",
+  "duplicate_group": [],
+  "fragment": "",
+  "tree_subpath": "",
+  "canonical_source": "https://github.com/cloudflare/skills",
+  "risk_tier": "standard-review",
+  "risk_keywords": [],
+  "support_tier": "discovery-only",
+  "phase_status": {
+    "source_capture": "completed",
+    "deep_research": "completed-public-metadata",
+    "overlap": "completed",
+    "security": "completed-static",
+    "license": "completed-static",
+    "compliance": "completed-static",
+    "docs_impact": "completed",
+    "decision": "completed"
+  },
+  "source_capture_packet": {
+    "git_status": "ok",
+    "git_error": "",
+    "default_branch": "main",
+    "github_api_status": "ok",
+    "github_api_error": "",
+    "candidate_code_executed": false
+  },
+  "github_metadata_packet": {
+    "status": "ok",
+    "error": "",
+    "full_name": "cloudflare/skills",
+    "html_url": "https://github.com/cloudflare/skills",
+    "default_branch": "main",
+    "pushed_at": "2026-06-22T19:15:52Z",
+    "updated_at": "2026-07-06T20:18:14Z",
+    "license_spdx_id": "Apache-2.0",
+    "license_name": "Apache License 2.0",
+    "language": "TypeScript",
+    "topics": [
+      "agents",
+      "cloudflare",
+      "skills",
+      "workers"
+    ],
+    "archived": false,
+    "fork": false,
+    "private": false,
+    "visibility": "public"
+  },
+  "deep_research_claims": [
+    {
+      "claim": "Candidate source was inspected without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "https://github.com/cloudflare/skills"
+      ]
+    },
+    {
+      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "support_status": "supports",
+      "confidence": 0.95,
+      "sources": [
+        "AGENTS.md \u00a72.7",
+        "config/skill-registry-policy.json"
+      ]
+    },
+    {
+      "claim": "GitHub repository metadata was queried without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "gh api repos/cloudflare/skills"
+      ]
+    }
+  ],
+  "source_support_matrix": [
+    {
+      "claim": "Candidate source was inspected without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "https://github.com/cloudflare/skills"
+      ]
+    },
+    {
+      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "support_status": "supports",
+      "confidence": 0.95,
+      "sources": [
+        "AGENTS.md \u00a72.7",
+        "config/skill-registry-policy.json"
+      ]
+    },
+    {
+      "claim": "GitHub repository metadata was queried without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "gh api repos/cloudflare/skills"
+      ]
+    }
+  ],
+  "overlap_packet": {
+    "catalog_matches": [
+      "docs/src/authoring/skills/agents-sdk.mdx",
+      "docs/src/authoring/skills/cloudflare.mdx",
+      "docs/src/authoring/skills/durable-objects.mdx",
+      "docs/src/authoring/skills/workers-best-practices.mdx",
+      "docs/src/authoring/skills/wrangler.mdx"
+    ],
+    "mcp_registry_match": false,
+    "plugin_registry_match": false
+  },
+  "security_packet": {
+    "candidate_code_executed": false,
+    "network_probe_scope": "public Git metadata only",
+    "executable_surface_review_required": false
+  },
+  "license_packet": {
+    "license_status": "spdx-from-github-api",
+    "license_spdx_id": "Apache-2.0",
+    "license_name": "Apache License 2.0"
+  },
+  "compliance_packet": {
+    "auth_required": false,
+    "env_vars_or_credentials": []
+  },
+  "docs_steward_surfaces": [
+    "README",
+    "auth-matrix",
+    "catalog-authoring",
+    "catalog-generated",
+    "changelog",
+    "decision-log",
+    "generated-drift",
+    "install-docs",
+    "openspec",
+    "reports",
+    "skill-research"
+  ],
+  "docs_steward_status": "packet-generated",
+  "decision_packet": {
+    "decision": "merge_into_existing",
+    "reason": "Existing repo catalog or registry surface already covers this source/domain."
+  },
+  "integration_packet": {
+    "mutation_allowed": false,
+    "required_before_promotion": "human trust-gate review"
+  }
+}

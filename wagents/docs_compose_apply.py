@@ -94,7 +94,7 @@ def _external_details_block(skill_id: str) -> str | None:
     return (
         '<details class="source-disclosure">\n'
         "<summary>Curated catalog entry</summary>\n\n"
-        f'{fence}mdx title="docs/src/authoring/skills/{skill_id}.mdx (full SSOT excerpt)"\n'
+        f"{fence}mdx\n"
         f"{content}\n"
         f"{fence}\n"
         "</details>"

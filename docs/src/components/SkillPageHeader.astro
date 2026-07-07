@@ -5,11 +5,12 @@ interface Props {
   name: string;
   description: string;
   installCommand: string;
+  installLabel?: string;
   usage?: string;
   badges?: Array<{ text: string; variant?: 'note' | 'success' | 'caution' | 'tip' | 'default' }>;
 }
 
-const { name, description, installCommand, usage, badges = [] } = Astro.props;
+const { name, description, installCommand, installLabel = 'Install', usage, badges = [] } = Astro.props;
 ---
 
 <div class="skill-page-header">
@@ -22,7 +23,7 @@ const { name, description, installCommand, usage, badges = [] } = Astro.props;
 
   <div class="quick-start">
     <h2>Quick Start</h2>
-    <p><strong>Install:</strong></p>
+    <p><strong>{installLabel}:</strong></p>
     <pre class="agents-scrollbar"><code>{installCommand}</code></pre>
     {usage && (
       <>

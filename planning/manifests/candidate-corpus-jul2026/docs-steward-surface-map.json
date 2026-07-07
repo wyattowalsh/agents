@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "surfaces": [
+    {
+      "surface": "README",
+      "candidate_count": 284,
+      "status": "packet-generated"
+    },
+    {
+      "surface": "catalog-authoring",
+      "candidate_count": 284,
+      "status": "packet-generated"
+    },
+    {
+      "surface": "catalog-generated",
+      "candidate_count": 284,
+      "status": "packet-generated"
+    },
+    {
+      "surface": "skill-research",
+      "candidate_count": 284,
+      "status": "packet-generated"
+    },
+    {
+      "surface": "mcp-tools",
+      "candidate_count": 27,
+      "status": "packet-generated"
+    },
+    {
+      "surface": "auth-matrix",
+      "candidate_count": 293,
+      "status": "packet-generated"
+    },
+    {
+      "surface": "install-docs",
+      "candidate_count": 284,
+      "status": "packet-generated"
+    },
+    {
+      "surface": "openspec",
+      "candidate_count": 293,
+      "status": "packet-generated"
+    },
+    {
+      "surface": "runbooks",
+      "candidate_count": 49,
+      "status": "packet-generated"
+    },
+    {
+      "surface": "decision-log",
+      "candidate_count": 293,
+      "status": "packet-generated"
+    },
+    {
+      "surface": "changelog",
+      "candidate_count": 293,
+      "status": "packet-generated"
+    },
+    {
+      "surface": "reports",
+      "candidate_count": 293,
+      "status": "packet-generated"
+    },
+    {
+      "surface": "generated-drift",
+      "candidate_count": 293,
+      "status": "packet-generated"
+    }
+  ],
+  "omitted_zero_count_surfaces": [
+    "agents-instructions"
+  ]
+}

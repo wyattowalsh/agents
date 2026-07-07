@@ -1,7 +1,6 @@
 ---
 import StarlightHead from '@astrojs/starlight/components/Head.astro';
 import VtbotStarlight from 'astro-vtbot/components/starlight/Base.astro';
-import SkipLink from '../SkipLink.astro';
 import { visualAssets } from '../../generated-site-data.mjs';
 
 const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url;
@@ -10,7 +9,6 @@ const ogImageUrl = Astro.site ? new URL(socialCard, Astro.site).href : '';
 const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
 const posthogHost = import.meta.env.PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com';
 ---
-<SkipLink />
 <script>
   import '../../scripts/copy-to-clipboard.ts';
 </script>
@@ -49,12 +47,16 @@ const posthogHost = import.meta.env.PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog
 
       function getDistinctId() {
         const storageKey = 'agents-docs-anon-id';
-        const existing = window.localStorage.getItem(storageKey);
-        if (existing) return existing;
+        try {
+          const existing = window.localStorage.getItem(storageKey);
+          if (existing) return existing;
 
-        const generated = `anon_${crypto.randomUUID()}`;
-        window.localStorage.setItem(storageKey, generated);
-        return generated;
+          const generated = `anon_${crypto.randomUUID?.() ?? `${Date.now()}_${Math.random().toString(36).slice(2)}`}`;
+          window.localStorage.setItem(storageKey, generated);
+          return generated;
+        } catch {
+          return `anon_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        }
       }
 
       function sendEvent(event, properties) {

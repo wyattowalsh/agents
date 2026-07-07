@@ -1,0 +1,207 @@
+{
+  "raw_url": "https://github.com/samber/cc-skills-golang",
+  "normalized_url": "https://github.com/samber/cc-skills-golang",
+  "source_name": "samber/cc-skills-golang",
+  "category": "skill",
+  "inspected_commit_sha": "4881c01da71a890c9907257c0636d8cde75d12ca",
+  "license": "MIT",
+  "latest_release_or_commit_date": "github-pushed-at:2026-07-06T16:31:09Z",
+  "artifact_types_found": [
+    "skill"
+  ],
+  "install_or_integration_decision": "merge_into_existing",
+  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
+  "auth_required": false,
+  "env_vars_or_credentials": [],
+  "safety_notes": "No elevated keyword risk detected.",
+  "attribution_notes": "Preserve attribution to samber/cc-skills-golang; verify license before adapting content.",
+  "files_added": [],
+  "files_modified": [],
+  "tests_or_checks_run": [
+    "git ls-remote --symref",
+    "gh api repos/{owner}/{repo}"
+  ],
+  "skipped_reason": "",
+  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "raw_index": 96,
+  "normalized_index": "https://github.com/samber/cc-skills-golang",
+  "duplicate_group": [],
+  "fragment": "",
+  "tree_subpath": "",
+  "canonical_source": "https://github.com/samber/cc-skills-golang",
+  "risk_tier": "standard-review",
+  "risk_keywords": [],
+  "support_tier": "discovery-only",
+  "phase_status": {
+    "source_capture": "completed",
+    "deep_research": "completed-public-metadata",
+    "overlap": "completed",
+    "security": "completed-static",
+    "license": "completed-static",
+    "compliance": "completed-static",
+    "docs_impact": "completed",
+    "decision": "completed"
+  },
+  "source_capture_packet": {
+    "git_status": "ok",
+    "git_error": "",
+    "default_branch": "main",
+    "github_api_status": "ok",
+    "github_api_error": "",
+    "candidate_code_executed": false
+  },
+  "github_metadata_packet": {
+    "status": "ok",
+    "error": "",
+    "full_name": "samber/cc-skills-golang",
+    "html_url": "https://github.com/samber/cc-skills-golang",
+    "default_branch": "main",
+    "pushed_at": "2026-07-06T16:31:09Z",
+    "updated_at": "2026-07-06T21:17:25Z",
+    "license_spdx_id": "MIT",
+    "license_name": "MIT License",
+    "language": "Go",
+    "topics": [
+      "agent",
+      "agent-skills",
+      "ai",
+      "antigravity",
+      "claude",
+      "claude-code",
+      "code",
+      "codex",
+      "coding",
+      "copilot",
+      "cursor",
+      "gemini",
+      "gemini-cli-extension",
+      "openclaw",
+      "opencode",
+      "plugin",
+      "skills",
+      "skillsmp",
+      "vibe-coding"
+    ],
+    "archived": false,
+    "fork": false,
+    "private": false,
+    "visibility": "public"
+  },
+  "deep_research_claims": [
+    {
+      "claim": "Candidate source was inspected without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "https://github.com/samber/cc-skills-golang"
+      ]
+    },
+    {
+      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "support_status": "supports",
+      "confidence": 0.95,
+      "sources": [
+        "AGENTS.md \u00a72.7",
+        "config/skill-registry-policy.json"
+      ]
+    },
+    {
+      "claim": "GitHub repository metadata was queried without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "gh api repos/samber/cc-skills-golang"
+      ]
+    }
+  ],
+  "source_support_matrix": [
+    {
+      "claim": "Candidate source was inspected without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "https://github.com/samber/cc-skills-golang"
+      ]
+    },
+    {
+      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "support_status": "supports",
+      "confidence": 0.95,
+      "sources": [
+        "AGENTS.md \u00a72.7",
+        "config/skill-registry-policy.json"
+      ]
+    },
+    {
+      "claim": "GitHub repository metadata was queried without executing candidate code.",
+      "support_status": "supports",
+      "confidence": 0.9,
+      "sources": [
+        "gh api repos/samber/cc-skills-golang"
+      ]
+    }
+  ],
+  "overlap_packet": {
+    "catalog_matches": [
+      "docs/src/authoring/skills/golang-benchmark.mdx",
+      "docs/src/authoring/skills/golang-cli.mdx",
+      "docs/src/authoring/skills/golang-concurrency.mdx",
+      "docs/src/authoring/skills/golang-database.mdx",
+      "docs/src/authoring/skills/golang-error-handling.mdx",
+      "docs/src/authoring/skills/golang-graphql.mdx",
+      "docs/src/authoring/skills/golang-grpc.mdx",
+      "docs/src/authoring/skills/golang-how-to.mdx",
+      "docs/src/authoring/skills/golang-lint.mdx",
+      "docs/src/authoring/skills/golang-modernize.mdx",
+      "docs/src/authoring/skills/golang-observability.mdx",
+      "docs/src/authoring/skills/golang-performance.mdx",
+      "docs/src/authoring/skills/golang-popular-libraries.mdx",
+      "docs/src/authoring/skills/golang-project-layout.mdx",
+      "docs/src/authoring/skills/golang-safety.mdx",
+      "docs/src/authoring/skills/golang-security.mdx",
+      "docs/src/authoring/skills/golang-spf13-cobra.mdx",
+      "docs/src/authoring/skills/golang-spf13-viper.mdx",
+      "docs/src/authoring/skills/golang-stretchr-testify.mdx",
+      "docs/src/authoring/skills/golang-testing.mdx",
+      "docs/src/authoring/skills/golang-troubleshooting.mdx"
+    ],
+    "mcp_registry_match": false,
+    "plugin_registry_match": false
+  },
+  "security_packet": {
+    "candidate_code_executed": false,
+    "network_probe_scope": "public Git metadata only",
+    "executable_surface_review_required": false
+  },
+  "license_packet": {
+    "license_status": "spdx-from-github-api",
+    "license_spdx_id": "MIT",
+    "license_name": "MIT License"
+  },
+  "compliance_packet": {
+    "auth_required": false,
+    "env_vars_or_credentials": []
+  },
+  "docs_steward_surfaces": [
+    "README",
+    "auth-matrix",
+    "catalog-authoring",
+    "catalog-generated",
+    "changelog",
+    "decision-log",
+    "generated-drift",
+    "install-docs",
+    "openspec",
+    "reports",
+    "skill-research"
+  ],
+  "docs_steward_status": "packet-generated",
+  "decision_packet": {
+    "decision": "merge_into_existing",
+    "reason": "Existing repo catalog or registry surface already covers this source/domain."
+  },
+  "integration_packet": {
+    "mutation_allowed": false,
+    "required_before_promotion": "human trust-gate review"
+  }
+}

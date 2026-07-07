@@ -1,0 +1,557 @@
+"""Coverage checks for the July 2026 candidate corpus intake."""
+
+from __future__ import annotations
+
+import importlib.util
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+MANIFEST_DIR = ROOT / "planning" / "manifests" / "candidate-corpus-jul2026"
+RECORDS_DIR = MANIFEST_DIR / "records"
+AUTHORING_DIR = ROOT / "docs" / "src" / "authoring" / "skills"
+CATALOG_INDEX = ROOT / "docs" / "public" / "generated-registries" / "skills-catalog-index.json"
+CATALOG_DIR = ROOT / "docs" / "src" / "authoring" / "skills"
+GENERATED_EXTERNAL_DIR = ROOT / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "external"
+CATALOG_PREFIX = "candidate-corpus-"
+RAW_RESEARCH_SUFFIXES = {
+    "URL",
+    "LIVE",
+    "HEAD",
+    "README",
+    "LICENSE",
+    "PKG",
+    "SKILL",
+    "MCP",
+    "PLUGIN",
+    "AGENT",
+    "CLI",
+    "AUTH",
+    "SEC",
+    "TOS",
+    "IDIO",
+    "DEDUPE",
+    "ROUTE",
+    "PROMOTE",
+    "VAL",
+}
+UNIQUE_SYNTHESIS_SUFFIXES = {"RAW-MAP", "CANON", "SURFACE", "ATTRIB", "AUTH", "INSTALL", "DOCS", "VAL"}
+
+EXPECTED_DUPLICATES = {
+    "https://github.com/antonbabenko/terraform-skill",
+    "https://github.com/conorluddy/ios-simulator-skill",
+    "https://github.com/ramziddin/solid-skills",
+    "https://github.com/MohamedAbdallah-14/unslop",
+}
+
+REQUIRED_RECORD_FIELDS = {
+    "raw_url",
+    "normalized_url",
+    "source_name",
+    "category",
+    "inspected_commit_sha",
+    "license",
+    "latest_release_or_commit_date",
+    "artifact_types_found",
+    "install_or_integration_decision",
+    "reason",
+    "auth_required",
+    "env_vars_or_credentials",
+    "safety_notes",
+    "attribution_notes",
+    "files_added",
+    "files_modified",
+    "tests_or_checks_run",
+    "skipped_reason",
+    "reviewer_notes",
+    "deep_research_claims",
+    "source_support_matrix",
+    "docs_steward_surfaces",
+    "docs_steward_status",
+}
+
+
+def _load_json(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _load_generator_module():
+    module_name = "_candidate_corpus_generator"
+    spec = importlib.util.spec_from_file_location(
+        module_name,
+        ROOT / "scripts" / "generate_candidate_corpus_shards.py",
+    )
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_candidate_corpus_counts_and_duplicates() -> None:
+    raw_urls = [
+        line.strip()
+        for line in (MANIFEST_DIR / "raw-urls.txt").read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    normalized = _load_json(MANIFEST_DIR / "normalized-urls.json")
+    decisions = _load_json(MANIFEST_DIR / "integration-decisions.json")
+
+    assert len(raw_urls) == 293
+    assert normalized["raw_count"] == 293
+    assert normalized["unique_count"] == 289
+    assert len(decisions["decisions"]) == 289
+
+    duplicate_urls = {url for url in raw_urls if raw_urls.count(url) > 1}
+    assert duplicate_urls == EXPECTED_DUPLICATES
+    assert len(normalized["duplicate_groups"]) == 4
+
+
+def test_candidate_records_cover_every_raw_entry() -> None:
+    record_paths = sorted(RECORDS_DIR.glob("*.json"))
+    assert len(record_paths) == 293
+    raw_indexes = []
+    for path in record_paths:
+        record = _load_json(path)
+        assert set(record) >= REQUIRED_RECORD_FIELDS
+        assert record["docs_steward_surfaces"]
+        assert record["source_support_matrix"]
+        assert record["tests_or_checks_run"]
+        raw_indexes.append(record["raw_index"])
+    assert raw_indexes == list(range(1, 294))
+
+
+def test_auth_matrix_uses_placeholders_only() -> None:
+    auth_matrix = _load_json(MANIFEST_DIR / "auth-matrix.json")
+    assert auth_matrix["items"]
+    for item in auth_matrix["items"]:
+        for value in item["env_vars_or_credentials"]:
+            assert value == "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+
+
+def test_every_unique_target_has_non_installable_catalog_authoring_row() -> None:
+    summary = _load_json(MANIFEST_DIR / "catalog-authoring-summary.json")
+    catalog_paths = sorted(CATALOG_DIR.glob(f"{CATALOG_PREFIX}*.mdx"))
+
+    assert summary["rows_written"] == 289
+    assert summary["unique_targets"] == 289
+    assert summary["install_commands_published"] == 0
+    assert len(catalog_paths) == 289
+
+    row_urls = {row["normalized_url"] for row in summary["rows"]}
+    normalized = _load_json(MANIFEST_DIR / "normalized-urls.json")
+    assert row_urls == set(normalized["unique_targets"])
+
+    for path in catalog_paths[:20]:
+        text = path.read_text(encoding="utf-8")
+        assert "GENERATED-CANDIDATE-CORPUS-JUL2026" in text
+        assert 'status: "global-only-or-avoid"' in text
+        assert 'sync_kind: "none"' in text
+        assert "install_command:" not in text
+
+
+def test_docs_steward_surfaces_are_all_accounted_for() -> None:
+    surface_map = _load_json(MANIFEST_DIR / "docs-steward-surface-map.json")
+    docs_impact = _load_json(MANIFEST_DIR / "docs-impact-matrix.json")
+    surfaces = {entry["surface"]: entry for entry in surface_map["surfaces"]}
+    for required in [
+        "README",
+        "catalog-authoring",
+        "catalog-generated",
+        "skill-research",
+        "mcp-tools",
+        "auth-matrix",
+        "install-docs",
+        "openspec",
+        "runbooks",
+        "decision-log",
+        "changelog",
+        "reports",
+        "generated-drift",
+    ]:
+        assert required in surfaces
+        assert surfaces[required]["candidate_count"] > 0
+    assert "agents-instructions" not in surfaces
+    assert "agents-instructions" not in docs_impact["surfaces"]
+    assert "agents-instructions" in surface_map["omitted_zero_count_surfaces"]
+    assert "agents-instructions" in docs_impact["omitted_zero_count_surfaces"]
+    assert all(entry["candidate_count"] > 0 for entry in surface_map["surfaces"])
+
+
+def test_reference_only_count_uses_unique_terminal_decisions() -> None:
+    decisions_payload = _load_json(MANIFEST_DIR / "integration-decisions.json")
+    summary = decisions_payload["summary"]
+    unique_reference_only = sum(
+        1 for item in decisions_payload["decisions"] if item["decision"] == "reference_only"
+    )
+
+    assert summary["reference_only_count"] == unique_reference_only
+    assert summary["reference_only_count"] < summary["unique_count"]
+
+
+def test_risk_keyword_matching_is_token_boundary_aware() -> None:
+    generator = _load_generator_module()
+    spreadsheet_entry = {
+        "raw_url": "https://github.com/example/tools/tree/main/spreadsheet-formula-helper",
+        "source_name": "example/tools",
+        "tree_subpath": "spreadsheet-formula-helper",
+    }
+    ads_entry = {
+        "raw_url": "https://github.com/example/tools/tree/main/competitive-ads-extractor",
+        "source_name": "example/tools",
+        "tree_subpath": "competitive-ads-extractor",
+    }
+
+    spreadsheet_tier, spreadsheet_hits, _ = generator.risk(spreadsheet_entry, ["skill"])
+    ads_tier, ads_hits, _ = generator.risk(ads_entry, ["skill"])
+
+    assert spreadsheet_tier == "standard-review"
+    assert spreadsheet_hits == []
+    assert ads_tier == "quarantine"
+    assert "ads" in ads_hits
+    assert "competitive-ads" in ads_hits
+
+
+def test_generated_reports_do_not_claim_unobserved_validation_results() -> None:
+    validation_report = (MANIFEST_DIR / "validation-report.md").read_text(encoding="utf-8")
+    final_report = (MANIFEST_DIR / "final-review-report.md").read_text(encoding="utf-8")
+    docs_summary = (MANIFEST_DIR / "docs-steward-surface-summary.md").read_text(encoding="utf-8")
+
+    assert "## Observed Generated Evidence" in validation_report
+    assert "## Command Checklist" in validation_report
+    assert "returned warnings only" not in validation_report
+    assert "currently exits 1" not in validation_report
+    assert "docs build passes" not in final_report
+    assert "execution results must be recorded by the runner" in final_report
+    assert "- `agents-instructions`: 0 candidates" in docs_summary
+
+
+def test_candidate_catalog_authoring_rows_are_non_installable() -> None:
+    summary = _load_json(MANIFEST_DIR / "catalog-authoring-summary.json")
+    generated_rows = sorted(AUTHORING_DIR.glob("candidate-corpus-*.mdx"))
+    catalog_index = _load_json(CATALOG_INDEX)
+    indexed_rows = [
+        row for row in catalog_index["externalSkillIndex"] if str(row.get("name", "")).startswith("candidate-corpus-")
+    ]
+
+    assert summary["rows_written"] == 289
+    assert summary["unique_targets"] == 289
+    assert summary["install_commands_published"] == 0
+    assert len(generated_rows) == 289
+    assert len(indexed_rows) == 289
+    assert {row["syncKind"] for row in indexed_rows} == {"none"}
+    assert {row["status"] for row in indexed_rows} == {"global-only-or-avoid"}
+    assert not any(row.get("installCommand") for row in indexed_rows)
+    assert not any(row.get("useCommand") for row in indexed_rows)
+
+    generated_page = GENERATED_EXTERNAL_DIR / "candidate-corpus-001-csvglow.mdx"
+    text = generated_page.read_text(encoding="utf-8")
+    assert "Catalog status" in text
+    assert "Catalog-only curated external entry." in text
+    assert "No harness install is enabled for this catalog row" in text
+    assert "Targets all supported agent harnesses via the install command below." not in text
+
+
+def test_github_metadata_audit_covers_unique_sources() -> None:
+    audit = _load_json(MANIFEST_DIR / "github-metadata-audit.json")
+    records = _load_json(MANIFEST_DIR / "all-records.json")["records"]
+
+    unique_sources = {record["canonical_source"] or record["source_name"] for record in records}
+    assert audit["source_count"] == len(unique_sources)
+    assert sum(audit["status_counts"].values()) == audit["source_count"]
+
+    by_source = {item["source"].lower(): item for item in audit["items"]}
+    cloudflare = by_source["https://github.com/cloudflare/skills"]
+    assert cloudflare["status"] == "ok"
+    assert cloudflare["default_branch"]
+    assert cloudflare["pushed_at"]
+    assert not cloudflare["license"].startswith("not-fetched")
+
+    record_7 = next(record for record in records if record["raw_index"] == 7)
+    assert record_7["github_metadata_packet"]["status"] == "ok"
+    assert record_7["license"] == cloudflare["license"]
+    assert "gh api repos/{owner}/{repo}" in record_7["tests_or_checks_run"]
+
+
+def test_candidate_corpus_coverage_cli() -> None:
+    result = subprocess.run(
+        ["uv", "run", "python", "scripts/generate_candidate_corpus_shards.py", "--check-coverage"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    payload = json.loads(result.stdout)
+    assert payload == {"raw": 293, "unique": 289, "records": 293, "decisions": 289, "ok": True}
+
+
+def test_full_integration_research_task_graph_covers_every_lane() -> None:
+    graph = _load_json(MANIFEST_DIR / "research-task-graph.json")
+    normalized = _load_json(MANIFEST_DIR / "normalized-urls.json")
+
+    assert graph["raw_lane_count"] == 293
+    assert graph["unique_target_lane_count"] == 289
+    assert graph["raw_leaf_check_count"] == 293 * 19
+    assert graph["unique_leaf_check_count"] == 289 * 8
+    assert graph["total_leaf_check_count"] == (293 * 19) + (289 * 8)
+    assert graph["live_install_eligible_count"] == 0
+
+    raw_lanes = graph["raw_lanes"]
+    assert [lane["raw_index"] for lane in raw_lanes] == list(range(1, 294))
+    assert {lane["raw_url"] for lane in raw_lanes} == {entry["raw_url"] for entry in normalized["entries"]}
+    assert {lane["normalized_url"] for lane in raw_lanes} == set(normalized["unique_targets"])
+
+    for lane in raw_lanes:
+        assert lane["live_install_eligible"] is False
+        assert {leaf["suffix"] for leaf in lane["leaf_checks"]} == RAW_RESEARCH_SUFFIXES
+        assert len(lane["leaf_checks"]) == len(RAW_RESEARCH_SUFFIXES)
+        assert any(leaf["status"] == "blocked-until-trust-gates" for leaf in lane["leaf_checks"])
+
+    unique_lanes = graph["unique_target_lanes"]
+    assert {lane["normalized_url"] for lane in unique_lanes} == set(normalized["unique_targets"])
+    for lane in unique_lanes:
+        assert lane["live_install_eligible"] is False
+        expected_status = (
+            "covered-by-existing-catalog"
+            if lane["existing_integration_status"] == "covered-by-existing-installable-catalog"
+            else "provisional-intake-only"
+        )
+        assert lane["terminal_decision_status"] == expected_status
+        assert {leaf["suffix"] for leaf in lane["leaf_checks"]} == UNIQUE_SYNTHESIS_SUFFIXES
+        assert len(lane["leaf_checks"]) == len(UNIQUE_SYNTHESIS_SUFFIXES)
+
+
+def test_full_integration_progress_and_packet_schema_are_trust_gated() -> None:
+    progress = _load_json(MANIFEST_DIR / "full-integration-progress.json")
+    schema = _load_json(MANIFEST_DIR / "research-packet-schema.json")
+    state_report = (MANIFEST_DIR / "full-integration-state.md").read_text(encoding="utf-8")
+
+    assert progress["phase"] == "research-graph-ready"
+    assert progress["complete"] is False
+    assert progress["raw_candidates"] == 293
+    assert progress["unique_normalized_targets"] == 289
+    assert progress["live_install"]["eligible_count"] == 0
+    assert progress["live_install"]["status"] == "blocked-until-trust-gates"
+    assert progress["promotion_readiness"]["ready_for_repo_promotion"] == 0
+    assert progress["promotion_readiness"]["ready_for_live_install"] == 0
+    assert progress["promotion_readiness"]["blocked_until_trust_gates"] == 289
+
+    required_fields = {
+        "raw_index",
+        "raw_url",
+        "normalized_url",
+        "source_name",
+        "inspected_commit_sha",
+        "license",
+        "artifact_types_found",
+        "auth_required",
+        "env_vars_or_credentials",
+        "security_notes",
+        "attribution_notes",
+        "surface_decision",
+        "live_install_eligible",
+        "docs_steward_surfaces",
+        "tests_or_checks_run",
+        "reviewer_notes",
+    }
+    assert set(schema["required_packet_fields"]) >= required_fields
+    assert set(schema["raw_leaf_check_suffixes"]) == RAW_RESEARCH_SUFFIXES
+    assert set(schema["unique_synthesis_leaf_check_suffixes"]) == UNIQUE_SYNTHESIS_SUFFIXES
+    assert "live install and repo-native promotion remain blocked" in state_report
+
+
+def test_subagent_wave_queue_covers_every_raw_entry_read_only() -> None:
+    wave_queue = _load_json(MANIFEST_DIR / "subagent-wave-queue.json")
+
+    assert wave_queue["status"] == "ready-for-read-only-subagent-dispatch"
+    assert wave_queue["covered_raw_count"] == 293
+    assert wave_queue["covered_raw_indexes"] == list(range(1, 294))
+    assert wave_queue["micro_wave_count"] == 6
+    assert wave_queue["domain_wave_count"] >= 20
+
+    micro_indexes = [index for wave in wave_queue["micro_waves"] for index in wave["raw_indexes"]]
+    domain_indexes = [index for wave in wave_queue["domain_waves"] for index in wave["raw_indexes"]]
+    assert sorted(micro_indexes) == list(range(1, 294))
+    assert sorted(domain_indexes) == list(range(1, 294))
+    assert all(wave["mode"] == "parallel-read-only" for wave in wave_queue["domain_waves"])
+    assert all("root integrator" in wave["mutation_policy"] for wave in wave_queue["domain_waves"])
+
+
+def test_promotion_readiness_queue_blocks_live_install_until_trust_gates() -> None:
+    readiness = _load_json(MANIFEST_DIR / "promotion-readiness-queue.json")
+    progress = _load_json(MANIFEST_DIR / "full-integration-progress.json")
+
+    assert readiness["status"] == "all-targets-blocked-until-trust-gates"
+    assert readiness["summary"] == {
+        "unique_targets": 289,
+        "ready_for_repo_promotion": 0,
+        "ready_for_live_install": 0,
+        "blocked_until_trust_gates": 289,
+    }
+    assert readiness["ready_for_repo_promotion"] == []
+    assert readiness["ready_for_live_install"] == []
+    assert len(readiness["blocked_until_trust_gates"]) == 289
+    assert progress["promotion_readiness"] == readiness["summary"]
+
+    for item in readiness["blocked_until_trust_gates"]:
+        assert item["live_install_eligible"] is False
+        assert item["repo_mutation_eligible"] is False
+        assert item["install_command"] == ""
+        assert "source-list evidence" in item["blocking_gates"]
+        assert "target-specific validation" in item["blocking_gates"]
+
+
+def test_existing_integration_coverage_maps_exact_curated_rows() -> None:
+    coverage = _load_json(MANIFEST_DIR / "existing-integration-coverage.json")
+    graph = _load_json(MANIFEST_DIR / "research-task-graph.json")
+    decisions = _load_json(MANIFEST_DIR / "integration-decisions.json")
+
+    assert coverage["summary"]["covered-by-existing-installable-catalog"] > 0
+    assert coverage["summary"]["needs-promotion-review"] > 0
+    assert sum(coverage["summary"].values()) == 289
+    assert graph["existing_integration_summary"] == coverage["summary"]
+
+    by_source = {item["source_name"].lower(): item for item in coverage["items"]}
+    for source in [
+        "cloudflare/skills",
+        "supabase/agent-skills",
+        "antonbabenko/terraform-skill",
+        "avdlee/swift-concurrency-agent-skill",
+    ]:
+        item = by_source[source]
+        assert item["coverage_status"] == "covered-by-existing-installable-catalog"
+        assert item["existing_rows"]
+        assert any(row["has_install_command"] for row in item["existing_rows"])
+
+    by_decision_url = {item["normalized_url"].lower(): item for item in decisions["decisions"]}
+    for source in ["wordpress/agent-skills", "tanstack/cli", "dimillian/skills"]:
+        item = by_source[source]
+        assert item["coverage_status"] == "needs-promotion-review"
+        assert item["existing_rows"] == []
+        assert by_decision_url[item["normalized_url"].lower()]["decision"] == "reference_only"
+
+    by_url = {lane["normalized_url"].lower(): lane for lane in graph["unique_target_lanes"]}
+    cloudflare = by_url["https://github.com/cloudflare/skills"]
+    assert cloudflare["existing_integration_status"] == "covered-by-existing-installable-catalog"
+    assert cloudflare["terminal_decision_status"] == "covered-by-existing-catalog"
+
+
+def test_promotion_wave_plan_assigns_every_unique_target_once() -> None:
+    coverage = _load_json(MANIFEST_DIR / "existing-integration-coverage.json")
+    wave_plan = _load_json(MANIFEST_DIR / "promotion-wave-plan.json")
+    progress = _load_json(MANIFEST_DIR / "full-integration-progress.json")
+
+    assert wave_plan["total_targets"] == 289
+    assert sum(wave["target_count"] for wave in wave_plan["waves"]) == 289
+    assert progress["promotion_waves"] == {
+        wave["wave_id"]: wave["target_count"] for wave in wave_plan["waves"] if wave["target_count"]
+    }
+
+    assigned_urls = [target["normalized_url"] for wave in wave_plan["waves"] for target in wave["targets"]]
+    assert len(assigned_urls) == len(set(assigned_urls)) == 289
+
+    by_wave = {wave["wave_id"]: wave for wave in wave_plan["waves"]}
+    assert by_wave["W00"]["target_count"] == coverage["summary"]["covered-by-existing-installable-catalog"]
+    assert by_wave["W00"]["mutation_policy"] == "no mutation; use existing catalog rows"
+    assert by_wave["W99"]["target_count"] >= 1
+
+
+def test_promotion_research_packets_cover_every_raw_and_unique_target() -> None:
+    raw_packets = _load_json(MANIFEST_DIR / "raw-research-packets.json")
+    unique_packets = _load_json(MANIFEST_DIR / "unique-target-research-packets.json")
+    normalized = _load_json(MANIFEST_DIR / "normalized-urls.json")
+    schema = _load_json(MANIFEST_DIR / "research-packet-schema.json")
+
+    required = set(schema["required_packet_fields"])
+    raw_items = raw_packets["packets"]
+    unique_items = unique_packets["packets"]
+
+    assert raw_packets["packet_count"] == 293
+    assert unique_packets["packet_count"] == 289
+    assert raw_packets["required_packet_fields"] == schema["required_packet_fields"]
+    assert [packet["raw_index"] for packet in raw_items] == list(range(1, 294))
+    assert {packet["normalized_url"] for packet in raw_items} == set(normalized["unique_targets"])
+    assert {packet["normalized_url"] for packet in unique_items} == set(normalized["unique_targets"])
+
+    for packet in raw_items:
+        assert required.issubset(packet)
+        assert packet["packet_id"] == f"U{packet['raw_index']:03d}"
+        assert packet["install_command"] == ""
+        assert packet["live_install_eligible"] is False
+        assert "source-list evidence" in packet["blockers"]
+        assert {leaf["suffix"] for leaf in packet["leaf_checks"]} == RAW_RESEARCH_SUFFIXES
+
+    for packet in unique_items:
+        assert packet["install_command"] == ""
+        assert packet["live_install_eligible"] is False
+        assert packet["repo_mutation_eligible"] is False
+        assert packet["raw_packet_ids"] == [f"U{raw_index:03d}" for raw_index in packet["raw_indexes"]]
+        assert {leaf["suffix"] for leaf in packet["leaf_checks"]} == UNIQUE_SYNTHESIS_SUFFIXES
+
+
+def test_promotion_gate_matrix_and_install_preview_keep_live_installs_blocked() -> None:
+    matrix = _load_json(MANIFEST_DIR / "promotion-gate-matrix.json")
+    preview = _load_json(MANIFEST_DIR / "live-install-command-preview.json")
+    summary = (MANIFEST_DIR / "promotion-gate-summary.md").read_text(encoding="utf-8")
+
+    assert matrix["summary"] == {
+        "unique_targets": 289,
+        "ready_for_repo_promotion": 0,
+        "ready_for_live_install": 0,
+        "blocked_until_trust_gates": 289,
+    }
+    assert len(matrix["items"]) == 289
+    assert matrix["gate_status_counts"]["auth review"]["auth-required-review"] == 52
+    assert matrix["gate_status_counts"]["auth review"]["metadata-only-no-auth-detected"] == 237
+    assert matrix["gate_status_counts"]["source-list evidence"] == {
+        "existing-installable-catalog-row-present": 5,
+        "pending-source-list-output": 271,
+        "source-list-found-existing-installable-catalog": 8,
+        "source-list-found-pending-promotion-review": 5,
+    }
+    assert matrix["gate_status_counts"]["live install"] == {"blocked": 289}
+    assert all(item["final_status"] == "blocked-until-trust-gates" for item in matrix["items"])
+    assert not any(item["install_command"] for item in matrix["items"])
+
+    assert preview["status"] == "no-live-install-commands-emitted"
+    assert preview["command_count"] == 0
+    assert preview["commands"] == []
+    assert preview["blocked_target_count"] == 289
+    assert len(preview["blocked_targets"]) == 289
+    assert "not proof of completed adaptation or installation" in summary
+
+
+def test_promotion_packet_coverage_cli() -> None:
+    result = subprocess.run(
+        ["uv", "run", "python", "scripts/promote_candidate_corpus.py", "--check-coverage"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    payload = json.loads(result.stdout)
+    assert payload == {
+        "raw": 293,
+        "unique": 289,
+        "matrix_items": 289,
+        "command_count": 0,
+        "ok": True,
+        "errors": [],
+    }
+
+
+def test_safe_wave_source_list_evidence_is_list_only() -> None:
+    evidence = _load_json(MANIFEST_DIR / "safe-wave-source-list-evidence.json")
+
+    assert evidence["status"] == "starter-wave-source-list-evidence-recorded"
+    assert evidence["live_install_executed"] is False
+    assert evidence["install_command_count"] == 0
+    assert len(evidence["items"]) == 13
+    assert {item["wave_id"] for item in evidence["items"]} <= {"W00", "W01"}
+    assert all(item["exit_code"] == 0 for item in evidence["items"])
+    assert all(item["found_skill_count"] > 0 for item in evidence["items"])
+    assert all("--list" in item["command"] and "--skill" not in item["command"] for item in evidence["items"])
+    assert all(item["remaining_blockers"] for item in evidence["items"])

@@ -305,6 +305,16 @@
       "trustTier": "curated-trust-gated"
     },
     {
+      "command": "npx skills add P4nda0s/reverse-skills --skill rev-frida --list",
+      "skills": [
+        "reverse-skills"
+      ],
+      "source": "P4nda0s/reverse-skills",
+      "sourceType": "curated-external",
+      "status": "catalog-reference",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "cli-just"
@@ -634,6 +644,16 @@
       "trustTier": "curated-trust-gated"
     },
     {
+      "command": "npx skills add elementalsouls/Claude-OSINT --skill osint-methodology --list",
+      "skills": [
+        "claude-osint"
+      ],
+      "source": "elementalsouls/Claude-OSINT",
+      "sourceType": "curated-external",
+      "status": "catalog-reference",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add expo/skills --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "expo-cicd-workflows",
@@ -953,6 +973,16 @@
       "trustTier": "needs-inspection"
     },
     {
+      "command": "npx skills add ljagiello/ctf-skills --skill solve-challenge --list",
+      "skills": [
+        "ctf-skills-bundle"
+      ],
+      "source": "ljagiello/ctf-skills",
+      "sourceType": "curated-external",
+      "status": "catalog-reference",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add makenotion/skills --skill notion-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "notion-cli"
@@ -1015,6 +1045,16 @@
       "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add mukul975/Anthropic-Cybersecurity-Skills --skill scanning-network-with-nmap-advanced --list",
+      "skills": [
+        "acs-pentest-skills"
+      ],
+      "source": "mukul975/Anthropic-Cybersecurity-Skills",
+      "sourceType": "curated-external",
+      "status": "catalog-reference",
+      "trustTier": "curated-trust-gated"
     },
     {
       "command": "npx skills add neondatabase/agent-skills --skill neon-functions --skill neon-ai-gateway --skill claimable-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -1446,6 +1486,26 @@
       "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add yaklang/hack-skills --skill sqli-sql-injection --list",
+      "skills": [
+        "hack-skills"
+      ],
+      "source": "yaklang/hack-skills",
+      "sourceType": "curated-external",
+      "status": "catalog-reference",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add zhaoxuya520/reverse-skill --skill reverse-engineering --list",
+      "skills": [
+        "reverse-skill"
+      ],
+      "source": "zhaoxuya520/reverse-skill",
+      "sourceType": "curated-external",
+      "status": "catalog-reference",
+      "trustTier": "curated-trust-gated"
     }
   ],
   "syncApply": "uv run wagents skills sync --apply",

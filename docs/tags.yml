@@ -1,0 +1,11 @@
+tags:
+  docs-platform:
+    label: Docs platform
+    description: Starlight, Astro, and docs runtime infrastructure.
+    color: "#38bdf8"
+    priority: 20
+  plugin-stack:
+    label: Plugin stack
+    description: Enabled or deferred Starlight and Astro documentation plugins.
+    color: "#22c55e"
+    priority: 10

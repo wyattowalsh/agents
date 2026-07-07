@@ -224,6 +224,39 @@ class TestRenderSkillPage:
         assert "Enriched from research cache (stub)" in result
         assert "SKILL.md is not available locally" not in result
 
+    def test_curated_external_research_install_prerequisites_do_not_override_canonical_command(
+        self, tmp_repo, monkeypatch
+    ):
+        node = _make_node(
+            "skill",
+            id="curated-install",
+            source="curated-external",
+            body="",
+            source_path="docs/src/authoring/skills/curated-install.mdx",
+            metadata={
+                "_is_stub": True,
+                "_skills_install_command": (
+                    "npx skills add example/curated --skill curated-install -y -g -a codex"
+                ),
+            },
+        )
+        fake_research = (
+            "## Install Prerequisites\n\n"
+            "```bash\nnpx skills add stale/source --skill stale -a codex,opencode\n```\n\n"
+            "## Operational Notes\n\nKeep the research note."
+        )
+        monkeypatch.setattr(
+            "wagents.rendering.load_skill_research", lambda sid: fake_research if sid == node.id else None
+        )
+
+        result = render_skill_page(node, [], [node])
+
+        assert "npx skills add example/curated --skill curated-install -y -g -a codex" in result
+        assert "## Install Prerequisites" not in result
+        assert "stale/source" not in result
+        assert "## Operational Notes" in result
+        assert "Keep the research note." in result
+
     def test_curated_global_only_does_not_synthesize_install_command(self, tmp_repo, monkeypatch):
         node = _make_node(
             "skill",

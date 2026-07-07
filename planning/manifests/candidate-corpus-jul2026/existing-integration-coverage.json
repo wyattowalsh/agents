@@ -1,0 +1,4132 @@
+{
+  "version": 1,
+  "generated_at": "2026-07-07T01:50:58.002007+00:00",
+  "summary": {
+    "covered-by-existing-installable-catalog": 13,
+    "covered-by-existing-reference": 1,
+    "needs-promotion-review": 275
+  },
+  "items": [
+    {
+      "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
+      "source_name": "Ratnaditya-J/csvglow",
+      "raw_indexes": [
+        1
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/twostraws/SwiftData-Agent-Skill",
+      "source_name": "twostraws/SwiftData-Agent-Skill",
+      "raw_indexes": [
+        2
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/arjitj2/swiftui-design-principles",
+      "source_name": "arjitj2/swiftui-design-principles",
+      "raw_indexes": [
+        3
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/antonbabenko/terraform-skill",
+      "source_name": "antonbabenko/terraform-skill",
+      "raw_indexes": [
+        5,
+        56
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "terraform-skill",
+          "path": "docs/src/authoring/skills/terraform-skill.mdx",
+          "source": "antonbabenko/terraform-skill",
+          "install_source": "antonbabenko/terraform-skill",
+          "source_url": "https://github.com/antonbabenko/terraform-skill",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
+    },
+    {
+      "normalized_url": "https://github.com/yctimlin/mcp_excalidraw",
+      "source_name": "yctimlin/mcp_excalidraw",
+      "raw_indexes": [
+        6
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/cloudflare/skills",
+      "source_name": "cloudflare/skills",
+      "raw_indexes": [
+        7
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "agents-sdk",
+          "path": "docs/src/authoring/skills/agents-sdk.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "cloudflare",
+          "path": "docs/src/authoring/skills/cloudflare.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "durable-objects",
+          "path": "docs/src/authoring/skills/durable-objects.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "workers-best-practices",
+          "path": "docs/src/authoring/skills/workers-best-practices.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "wrangler",
+          "path": "docs/src/authoring/skills/wrangler.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
+    },
+    {
+      "normalized_url": "https://github.com/Jakubantalik/transitions.dev",
+      "source_name": "Jakubantalik/transitions.dev",
+      "raw_indexes": [
+        8
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/WordPress/agent-skills",
+      "source_name": "WordPress/agent-skills",
+      "raw_indexes": [
+        9
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/timescale/pg-aiguide",
+      "source_name": "timescale/pg-aiguide",
+      "raw_indexes": [
+        10
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Owl-Listener/designer-skills",
+      "source_name": "Owl-Listener/designer-skills",
+      "raw_indexes": [
+        11
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Eronred/aso-skills",
+      "source_name": "Eronred/aso-skills",
+      "raw_indexes": [
+        12
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/devenjarvis/lathe",
+      "source_name": "devenjarvis/lathe",
+      "raw_indexes": [
+        13
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Weizhena/Deep-Research-skills",
+      "source_name": "Weizhena/Deep-Research-skills",
+      "raw_indexes": [
+        14
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/zubair-trabzada/ai-legal-claude",
+      "source_name": "zubair-trabzada/ai-legal-claude",
+      "raw_indexes": [
+        15
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/op7418/logo-generator-skill",
+      "source_name": "op7418/logo-generator-skill",
+      "raw_indexes": [
+        16
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/TanStack/cli",
+      "source_name": "TanStack/cli",
+      "raw_indexes": [
+        17
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/actionbook/rust-skills",
+      "source_name": "actionbook/rust-skills",
+      "raw_indexes": [
+        18
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/truongduy2611/app-store-preflight-skills",
+      "source_name": "truongduy2611/app-store-preflight-skills",
+      "raw_indexes": [
+        19
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/plannotator/tot",
+      "source_name": "plannotator/tot",
+      "raw_indexes": [
+        20
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/plannotator/effective-html",
+      "source_name": "plannotator/effective-html",
+      "raw_indexes": [
+        21
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/conorluddy/ios-simulator-skill",
+      "source_name": "conorluddy/ios-simulator-skill",
+      "raw_indexes": [
+        22,
+        86
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/onvoyage-ai/gtm-engineer-skills",
+      "source_name": "onvoyage-ai/gtm-engineer-skills",
+      "raw_indexes": [
+        23
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/rohunvora/x-research-skill",
+      "source_name": "rohunvora/x-research-skill",
+      "raw_indexes": [
+        24
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/better-auth/better-icons",
+      "source_name": "better-auth/better-icons",
+      "raw_indexes": [
+        25
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/itsmostafa/aws-agent-skills",
+      "source_name": "itsmostafa/aws-agent-skills",
+      "raw_indexes": [
+        26
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/VILA-Lab/FigMirror",
+      "source_name": "VILA-Lab/FigMirror",
+      "raw_indexes": [
+        27
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/dgreenheck/webgpu-claude-skill",
+      "source_name": "dgreenheck/webgpu-claude-skill",
+      "raw_indexes": [
+        28
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/CharlesWiltgen/Axiom",
+      "source_name": "CharlesWiltgen/Axiom",
+      "raw_indexes": [
+        29
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/imxv/Pretty-mermaid-skills",
+      "source_name": "imxv/Pretty-mermaid-skills",
+      "raw_indexes": [
+        30
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ksimback/tech-debt-skill",
+      "source_name": "ksimback/tech-debt-skill",
+      "raw_indexes": [
+        31
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/lishix520/academic-paper-skills",
+      "source_name": "lishix520/academic-paper-skills",
+      "raw_indexes": [
+        32
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/aiwithremy/claude-skills-llm-council",
+      "source_name": "aiwithremy/claude-skills-llm-council",
+      "raw_indexes": [
+        33
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Haojae/scipilot-figure-skill",
+      "source_name": "Haojae/scipilot-figure-skill",
+      "raw_indexes": [
+        34
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Kappaemme-git/codex-complexity-optimizer",
+      "source_name": "Kappaemme-git/codex-complexity-optimizer",
+      "raw_indexes": [
+        35
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/data-goblin/power-bi-agentic-development",
+      "source_name": "data-goblin/power-bi-agentic-development",
+      "raw_indexes": [
+        36
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/solana-foundation/solana-dev-skill",
+      "source_name": "solana-foundation/solana-dev-skill",
+      "raw_indexes": [
+        37
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Gabberflast/academic-pptx-skill",
+      "source_name": "Gabberflast/academic-pptx-skill",
+      "raw_indexes": [
+        38
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ast-grep/agent-skill",
+      "source_name": "ast-grep/agent-skill",
+      "raw_indexes": [
+        39
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/langchain-ai/langchain-skills",
+      "source_name": "langchain-ai/langchain-skills",
+      "raw_indexes": [
+        40
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "deep-agents-core",
+          "path": "docs/src/authoring/skills/deep-agents-core.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "deep-agents-memory",
+          "path": "docs/src/authoring/skills/deep-agents-memory.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "deep-agents-orchestration",
+          "path": "docs/src/authoring/skills/deep-agents-orchestration.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "ecosystem-primer",
+          "path": "docs/src/authoring/skills/ecosystem-primer.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langchain-dependencies",
+          "path": "docs/src/authoring/skills/langchain-dependencies.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langchain-fundamentals",
+          "path": "docs/src/authoring/skills/langchain-fundamentals.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langchain-middleware",
+          "path": "docs/src/authoring/skills/langchain-middleware.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langchain-rag",
+          "path": "docs/src/authoring/skills/langchain-rag.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langgraph-fundamentals",
+          "path": "docs/src/authoring/skills/langgraph-fundamentals.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langgraph-human-in-the-loop",
+          "path": "docs/src/authoring/skills/langgraph-human-in-the-loop.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langgraph-persistence",
+          "path": "docs/src/authoring/skills/langgraph-persistence.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "managed-deep-agents",
+          "path": "docs/src/authoring/skills/managed-deep-agents.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
+    },
+    {
+      "normalized_url": "https://github.com/199-biotechnologies/claude-deep-research-skill",
+      "source_name": "199-biotechnologies/claude-deep-research-skill",
+      "raw_indexes": [
+        41
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/duckdb/duckdb-skills",
+      "source_name": "duckdb/duckdb-skills",
+      "raw_indexes": [
+        42
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/gadicc/yahoo-finance2",
+      "source_name": "gadicc/yahoo-finance2",
+      "raw_indexes": [
+        43
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/zubair-trabzada/ai-sales-team-claude",
+      "source_name": "zubair-trabzada/ai-sales-team-claude",
+      "raw_indexes": [
+        44
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Bhanunamikaze/Agentic-SEO-Skill",
+      "source_name": "Bhanunamikaze/Agentic-SEO-Skill",
+      "raw_indexes": [
+        45
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/agi-now/buffett-skills",
+      "source_name": "agi-now/buffett-skills",
+      "raw_indexes": [
+        46
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/tjboudreaux/cc-thinking-skills",
+      "source_name": "tjboudreaux/cc-thinking-skills",
+      "raw_indexes": [
+        47
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/fayazara/macos-app-skills",
+      "source_name": "fayazara/macos-app-skills",
+      "raw_indexes": [
+        48
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/meodai/skill.color-expert",
+      "source_name": "meodai/skill.color-expert",
+      "raw_indexes": [
+        49
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/lawve-ai/awesome-legal-skills",
+      "source_name": "lawve-ai/awesome-legal-skills",
+      "raw_indexes": [
+        50
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ramziddin/solid-skills",
+      "source_name": "ramziddin/solid-skills",
+      "raw_indexes": [
+        51,
+        284
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Trae1ounG/paper-plot-skills",
+      "source_name": "Trae1ounG/paper-plot-skills",
+      "raw_indexes": [
+        52
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/dbt-labs/dbt-agent-skills",
+      "source_name": "dbt-labs/dbt-agent-skills",
+      "raw_indexes": [
+        53
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/JeffLi1993/seo-audit-skill",
+      "source_name": "JeffLi1993/seo-audit-skill",
+      "raw_indexes": [
+        54
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/LottieFiles/motion-design-skill",
+      "source_name": "LottieFiles/motion-design-skill",
+      "raw_indexes": [
+        55
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Affitor/affiliate-skills",
+      "source_name": "Affitor/affiliate-skills",
+      "raw_indexes": [
+        57
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/elvisun/newsjack",
+      "source_name": "elvisun/newsjack",
+      "raw_indexes": [
+        58
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/borski/travel-hacking-toolkit",
+      "source_name": "borski/travel-hacking-toolkit",
+      "raw_indexes": [
+        59
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/aitytech/agentkits-marketing",
+      "source_name": "aitytech/agentkits-marketing",
+      "raw_indexes": [
+        60
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Auriti-Labs/geo-optimizer-skill",
+      "source_name": "Auriti-Labs/geo-optimizer-skill",
+      "raw_indexes": [
+        61
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/meleantonio/awesome-econ-ai-stuff",
+      "source_name": "meleantonio/awesome-econ-ai-stuff",
+      "raw_indexes": [
+        62
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Varnan-Tech/opendirectory",
+      "source_name": "Varnan-Tech/opendirectory",
+      "raw_indexes": [
+        63
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/elastic/agent-skills",
+      "source_name": "elastic/agent-skills",
+      "raw_indexes": [
+        64
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/vanab/swiftdata-agent-skill",
+      "source_name": "vanab/swiftdata-agent-skill",
+      "raw_indexes": [
+        65
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/twostraws/Swift-Concurrency-Agent-Skill",
+      "source_name": "twostraws/Swift-Concurrency-Agent-Skill",
+      "raw_indexes": [
+        66
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/AvdLee/Swift-Concurrency-Agent-Skill",
+      "source_name": "AvdLee/Swift-Concurrency-Agent-Skill",
+      "raw_indexes": [
+        67
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "swift-concurrency",
+          "path": "docs/src/authoring/skills/swift-concurrency.mdx",
+          "source": "avdlee/swift-concurrency-agent-skill",
+          "install_source": "avdlee/swift-concurrency-agent-skill",
+          "source_url": "https://github.com/avdlee/swift-concurrency-agent-skill",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
+    },
+    {
+      "normalized_url": "https://github.com/twostraws/Swift-Testing-Agent-Skill",
+      "source_name": "twostraws/Swift-Testing-Agent-Skill",
+      "raw_indexes": [
+        68
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/bocato/swift-testing-agent-skill",
+      "source_name": "bocato/swift-testing-agent-skill",
+      "raw_indexes": [
+        69
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/AvdLee/Swift-Testing-Agent-Skill",
+      "source_name": "AvdLee/Swift-Testing-Agent-Skill",
+      "raw_indexes": [
+        70
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
+      "source_name": "Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
+      "raw_indexes": [
+        71
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/n0an/Swift-FormatStyle-Agent-Skill",
+      "source_name": "n0an/Swift-FormatStyle-Agent-Skill",
+      "raw_indexes": [
+        72
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/dadederk/iOS-Accessibility-Agent-Skill",
+      "source_name": "dadederk/iOS-Accessibility-Agent-Skill",
+      "raw_indexes": [
+        73
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/PasqualeVittoriosi/swift-accessibility-skill",
+      "source_name": "PasqualeVittoriosi/swift-accessibility-skill",
+      "raw_indexes": [
+        74
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/rgmez/apple-accessibility-skills",
+      "source_name": "rgmez/apple-accessibility-skills",
+      "raw_indexes": [
+        75
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/n0an/App-Intents-Agent-Skill",
+      "source_name": "n0an/App-Intents-Agent-Skill",
+      "raw_indexes": [
+        76
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/rorkai/app-store-connect-cli-skills",
+      "source_name": "rorkai/app-store-connect-cli-skills",
+      "raw_indexes": [
+        77
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/timbroddin/app-store-aso-skill",
+      "source_name": "timbroddin/app-store-aso-skill",
+      "raw_indexes": [
+        78
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/3paws-ai/mobile-ai-skills/tree/main/skills/appstore-review",
+      "source_name": "3paws-ai/mobile-ai-skills",
+      "raw_indexes": [
+        79
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/efremidze/swift-architecture-skill",
+      "source_name": "efremidze/swift-architecture-skill",
+      "raw_indexes": [
+        80
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/n0an/Background-Execution-Agent-Skill",
+      "source_name": "n0an/Background-Execution-Agent-Skill",
+      "raw_indexes": [
+        81
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/AvdLee/Core-Data-Agent-Skill",
+      "source_name": "AvdLee/Core-Data-Agent-Skill",
+      "raw_indexes": [
+        82
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/mhaviv/Swift-FocusEngine-Agent-Skill",
+      "source_name": "mhaviv/Swift-FocusEngine-Agent-Skill",
+      "raw_indexes": [
+        83
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ivan-magda/swift-security-skill",
+      "source_name": "ivan-magda/swift-security-skill",
+      "raw_indexes": [
+        84
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/jazzychad/ios-code-audit",
+      "source_name": "jazzychad/ios-code-audit",
+      "raw_indexes": [
+        85
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/daetojemax/figma-to-swiftui-skill",
+      "source_name": "daetojemax/figma-to-swiftui-skill",
+      "raw_indexes": [
+        87
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces",
+      "source_name": "andrewgleave/skills",
+      "raw_indexes": [
+        88
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/n0an/Widgets-Agent-Skill",
+      "source_name": "n0an/Widgets-Agent-Skill",
+      "raw_indexes": [
+        89
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/twostraws/SwiftAgents",
+      "source_name": "twostraws/SwiftAgents",
+      "raw_indexes": [
+        90
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/jakubkrehel/make-interfaces-feel-better",
+      "source_name": "jakubkrehel/make-interfaces-feel-better",
+      "raw_indexes": [
+        91
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/apify/agent-skills",
+      "source_name": "apify/agent-skills",
+      "raw_indexes": [
+        92
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/NVIDIA/skills-",
+      "source_name": "NVIDIA/skills-",
+      "raw_indexes": [
+        93
+      ],
+      "intake_decision": "skip_inaccessible",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/supabase/agent-skills",
+      "source_name": "supabase/agent-skills",
+      "raw_indexes": [
+        94
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "supabase-postgres-best-practices",
+          "path": "docs/src/authoring/skills/supabase-postgres-best-practices.mdx",
+          "source": "supabase/agent-skills",
+          "install_source": "supabase/agent-skills",
+          "source_url": "https://github.com/supabase/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "supabase",
+          "path": "docs/src/authoring/skills/supabase.mdx",
+          "source": "supabase/agent-skills",
+          "install_source": "supabase/agent-skills",
+          "source_url": "https://github.com/supabase/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
+    },
+    {
+      "normalized_url": "https://github.com/aaron-he-zhu/aaron-marketing-skills",
+      "source_name": "aaron-he-zhu/aaron-marketing-skills",
+      "raw_indexes": [
+        95
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/samber/cc-skills-golang",
+      "source_name": "samber/cc-skills-golang",
+      "raw_indexes": [
+        96
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "golang-benchmark",
+          "path": "docs/src/authoring/skills/golang-benchmark.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-cli",
+          "path": "docs/src/authoring/skills/golang-cli.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-concurrency",
+          "path": "docs/src/authoring/skills/golang-concurrency.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-database",
+          "path": "docs/src/authoring/skills/golang-database.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-error-handling",
+          "path": "docs/src/authoring/skills/golang-error-handling.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-graphql",
+          "path": "docs/src/authoring/skills/golang-graphql.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-grpc",
+          "path": "docs/src/authoring/skills/golang-grpc.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-how-to",
+          "path": "docs/src/authoring/skills/golang-how-to.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-lint",
+          "path": "docs/src/authoring/skills/golang-lint.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-modernize",
+          "path": "docs/src/authoring/skills/golang-modernize.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-observability",
+          "path": "docs/src/authoring/skills/golang-observability.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-performance",
+          "path": "docs/src/authoring/skills/golang-performance.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-popular-libraries",
+          "path": "docs/src/authoring/skills/golang-popular-libraries.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-project-layout",
+          "path": "docs/src/authoring/skills/golang-project-layout.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-safety",
+          "path": "docs/src/authoring/skills/golang-safety.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-security",
+          "path": "docs/src/authoring/skills/golang-security.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-spf13-cobra",
+          "path": "docs/src/authoring/skills/golang-spf13-cobra.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-spf13-viper",
+          "path": "docs/src/authoring/skills/golang-spf13-viper.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-stretchr-testify",
+          "path": "docs/src/authoring/skills/golang-stretchr-testify.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-testing",
+          "path": "docs/src/authoring/skills/golang-testing.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-troubleshooting",
+          "path": "docs/src/authoring/skills/golang-troubleshooting.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
+    },
+    {
+      "normalized_url": "https://github.com/addyosmani/web-quality-skills",
+      "source_name": "addyosmani/web-quality-skills",
+      "raw_indexes": [
+        97
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "best-practices",
+          "path": "docs/src/authoring/skills/best-practices.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "core-web-vitals",
+          "path": "docs/src/authoring/skills/core-web-vitals.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "performance",
+          "path": "docs/src/authoring/skills/performance.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "seo",
+          "path": "docs/src/authoring/skills/seo.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "web-quality-audit",
+          "path": "docs/src/authoring/skills/web-quality-audit.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
+    },
+    {
+      "normalized_url": "https://github.com/CloudAI-X/threejs-skills",
+      "source_name": "CloudAI-X/threejs-skills",
+      "raw_indexes": [
+        98
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/RKiding/Awesome-finance-skills",
+      "source_name": "RKiding/Awesome-finance-skills",
+      "raw_indexes": [
+        99
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/tt-a1i/archify",
+      "source_name": "tt-a1i/archify",
+      "raw_indexes": [
+        100
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ericosiu/ai-marketing-skills",
+      "source_name": "ericosiu/ai-marketing-skills",
+      "raw_indexes": [
+        101
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/SharpAI/DeepCamera",
+      "source_name": "SharpAI/DeepCamera",
+      "raw_indexes": [
+        102
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/himself65/finance-skills",
+      "source_name": "himself65/finance-skills",
+      "raw_indexes": [
+        103
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/eugeniughelbur/obsidian-second-brain",
+      "source_name": "eugeniughelbur/obsidian-second-brain",
+      "raw_indexes": [
+        104
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/markdown-viewer/skills",
+      "source_name": "markdown-viewer/skills",
+      "raw_indexes": [
+        105
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ningzimu/codex-ppt-skill",
+      "source_name": "ningzimu/codex-ppt-skill",
+      "raw_indexes": [
+        106
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Nutlope/hallmark",
+      "source_name": "Nutlope/hallmark",
+      "raw_indexes": [
+        107
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/remotion-dev/skills",
+      "source_name": "remotion-dev/skills",
+      "raw_indexes": [
+        108
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "remotion-best-practices",
+          "path": "docs/src/authoring/skills/remotion-best-practices.mdx",
+          "source": "remotion-dev/skills",
+          "install_source": "remotion-dev/skills",
+          "source_url": "https://github.com/remotion-dev/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
+    },
+    {
+      "normalized_url": "https://github.com/Imbad0202/academic-research-skills-codex",
+      "source_name": "Imbad0202/academic-research-skills-codex",
+      "raw_indexes": [
+        109
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/deanpeters/Product-Manager-Skills",
+      "source_name": "deanpeters/Product-Manager-Skills",
+      "raw_indexes": [
+        110
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/PleasePrompto/notebooklm-skill",
+      "source_name": "PleasePrompto/notebooklm-skill",
+      "raw_indexes": [
+        111
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/earthtojake/text-to-cad",
+      "source_name": "earthtojake/text-to-cad",
+      "raw_indexes": [
+        112
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/nicobailon/visual-explainer",
+      "source_name": "nicobailon/visual-explainer",
+      "raw_indexes": [
+        113
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/AgriciDaniel/claude-seo",
+      "source_name": "AgriciDaniel/claude-seo",
+      "raw_indexes": [
+        114
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/huggingface/skills",
+      "source_name": "huggingface/skills",
+      "raw_indexes": [
+        115
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-reference",
+      "existing_rows": [
+        {
+          "name": "huggingface-skills-all",
+          "path": "docs/src/authoring/skills/huggingface-skills-all.mdx",
+          "source": "huggingface/skills",
+          "install_source": "huggingface/skills",
+          "source_url": "https://github.com/huggingface/skills",
+          "status": "global-only-or-avoid",
+          "trust_tier": "global-only-or-avoid",
+          "sync_kind": "none",
+          "has_install_command": false
+        }
+      ],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/NVIDIA/SkillSpector",
+      "source_name": "NVIDIA/SkillSpector",
+      "raw_indexes": [
+        116
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/hardikpandya/stop-slop",
+      "source_name": "hardikpandya/stop-slop",
+      "raw_indexes": [
+        117
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/millionco/react-doctor",
+      "source_name": "millionco/react-doctor",
+      "raw_indexes": [
+        118
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/google/skills",
+      "source_name": "google/skills",
+      "raw_indexes": [
+        119
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "gemini-api",
+          "path": "docs/src/authoring/skills/gemini-api.mdx",
+          "source": "google/skills",
+          "install_source": "google/skills",
+          "source_url": "https://github.com/google/skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
+    },
+    {
+      "normalized_url": "https://github.com/hyhmrright/brooks-lint",
+      "source_name": "hyhmrright/brooks-lint",
+      "raw_indexes": [
+        120
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/yujiachen-y/codebase-recon-skill",
+      "source_name": "yujiachen-y/codebase-recon-skill",
+      "raw_indexes": [
+        121
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/gh-address-comments",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        122
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/gh-fix-ci",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        123
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/notion-knowledge-capture",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        124
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/internal-comms",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        125
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/paperjsx",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        126
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/email-draft-polish",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        127
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/changelog-generator",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        128
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/MinistaJazz/diasporic-intelligence",
+      "source_name": "MinistaJazz/diasporic-intelligence",
+      "raw_indexes": [
+        129
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/content-research-writer",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        130
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/wgwtest/novel-writing",
+      "source_name": "wgwtest/novel-writing",
+      "raw_indexes": [
+        131
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
+      "source_name": "MohamedAbdallah-14/unslop",
+      "raw_indexes": [
+        132,
+        175
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/spreadsheet-formula-helper",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        133
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/competitive-ads-extractor",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        134
+      ],
+      "intake_decision": "quarantine",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/datadog-logs",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        135
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/developer-growth-analysis",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        136
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/lead-research-assistant",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        137
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/domain-name-brainstormer",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        138
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/kepano/obsidian-skills",
+      "source_name": "kepano/obsidian-skills",
+      "raw_indexes": [
+        139
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "obsidian-cli",
+          "path": "docs/src/authoring/skills/obsidian-cli.mdx",
+          "source": "kepano/obsidian-skills",
+          "install_source": "kepano/obsidian-skills",
+          "source_url": "https://github.com/kepano/obsidian-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "obsidian-markdown",
+          "path": "docs/src/authoring/skills/obsidian-markdown.mdx",
+          "source": "kepano/obsidian-skills",
+          "install_source": "kepano/obsidian-skills",
+          "source_url": "https://github.com/kepano/obsidian-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
+    },
+    {
+      "normalized_url": "https://github.com/coreyhaines31/marketingskills",
+      "source_name": "coreyhaines31/marketingskills",
+      "raw_indexes": [
+        140
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "ab-testing",
+          "path": "docs/src/authoring/skills/ab-testing.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "ads",
+          "path": "docs/src/authoring/skills/ads.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "ai-seo",
+          "path": "docs/src/authoring/skills/ai-seo.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "analytics",
+          "path": "docs/src/authoring/skills/analytics.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "churn-prevention",
+          "path": "docs/src/authoring/skills/churn-prevention.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "cold-email",
+          "path": "docs/src/authoring/skills/cold-email.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "competitor-profiling",
+          "path": "docs/src/authoring/skills/competitor-profiling.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "content-strategy",
+          "path": "docs/src/authoring/skills/content-strategy.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "copywriting",
+          "path": "docs/src/authoring/skills/copywriting.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "cro",
+          "path": "docs/src/authoring/skills/cro.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "emails",
+          "path": "docs/src/authoring/skills/emails.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "launch",
+          "path": "docs/src/authoring/skills/launch.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "marketing-ideas",
+          "path": "docs/src/authoring/skills/marketing-ideas.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "marketing-psychology",
+          "path": "docs/src/authoring/skills/marketing-psychology.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "onboarding",
+          "path": "docs/src/authoring/skills/onboarding.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "paywalls",
+          "path": "docs/src/authoring/skills/paywalls.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "product-marketing",
+          "path": "docs/src/authoring/skills/product-marketing.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "programmatic-seo",
+          "path": "docs/src/authoring/skills/programmatic-seo.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "revops",
+          "path": "docs/src/authoring/skills/revops.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "schema",
+          "path": "docs/src/authoring/skills/schema.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "seo-audit",
+          "path": "docs/src/authoring/skills/seo-audit.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "signup",
+          "path": "docs/src/authoring/skills/signup.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "site-architecture",
+          "path": "docs/src/authoring/skills/site-architecture.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "video",
+          "path": "docs/src/authoring/skills/video.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
+    },
+    {
+      "normalized_url": "https://github.com/AllThingsSmitty/css-protips",
+      "source_name": "AllThingsSmitty/css-protips",
+      "raw_indexes": [
+        141
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/googleworkspace/cli",
+      "source_name": "googleworkspace/cli",
+      "raw_indexes": [
+        142
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/vercel-labs/agent-skills",
+      "source_name": "vercel-labs/agent-skills",
+      "raw_indexes": [
+        143
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "deploy-to-vercel",
+          "path": "docs/src/authoring/skills/deploy-to-vercel.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-composition-patterns",
+          "path": "docs/src/authoring/skills/vercel-composition-patterns.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-optimize",
+          "path": "docs/src/authoring/skills/vercel-optimize.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-react-best-practices",
+          "path": "docs/src/authoring/skills/vercel-react-best-practices.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-react-native-skills",
+          "path": "docs/src/authoring/skills/vercel-react-native-skills.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-react-view-transitions",
+          "path": "docs/src/authoring/skills/vercel-react-view-transitions.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
+    },
+    {
+      "normalized_url": "https://github.com/zarazhangrui/frontend-slides",
+      "source_name": "zarazhangrui/frontend-slides",
+      "raw_indexes": [
+        144
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/phuryn/pm-skills",
+      "source_name": "phuryn/pm-skills",
+      "raw_indexes": [
+        145
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/teng-lin/notebooklm-py",
+      "source_name": "teng-lin/notebooklm-py",
+      "raw_indexes": [
+        146
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/raffle-winner-picker",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        147
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/langsmith-fetch",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        148
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/canvas-design",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        149
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/image-enhancer",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        150
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/slack-gif-creator",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        151
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/video-downloader",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        152
+      ],
+      "intake_decision": "quarantine",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/multica-ai/andrej-karpathy-skills",
+      "source_name": "multica-ai/andrej-karpathy-skills",
+      "raw_indexes": [
+        153
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/mobile-next/mobile-mcp",
+      "source_name": "mobile-next/mobile-mcp",
+      "raw_indexes": [
+        154
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/modelcontextprotocol/inspector",
+      "source_name": "modelcontextprotocol/inspector",
+      "raw_indexes": [
+        155
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/heygen-com/hyperframes",
+      "source_name": "heygen-com/hyperframes",
+      "raw_indexes": [
+        156
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Panniantong/Agent-Reach",
+      "source_name": "Panniantong/Agent-Reach",
+      "raw_indexes": [
+        157
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/product-on-purpose/pm-skills",
+      "source_name": "product-on-purpose/pm-skills",
+      "raw_indexes": [
+        158
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/shaom/infocard-skills",
+      "source_name": "shaom/infocard-skills",
+      "raw_indexes": [
+        159
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/geekjourneyx/claude-design-card",
+      "source_name": "geekjourneyx/claude-design-card",
+      "raw_indexes": [
+        160
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/antvis/mcp-server-chart",
+      "source_name": "antvis/mcp-server-chart",
+      "raw_indexes": [
+        161
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/bcanfield/agentic-tech-debt",
+      "source_name": "bcanfield/agentic-tech-debt",
+      "raw_indexes": [
+        162
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Pythoughts-labs/designer-skill",
+      "source_name": "Pythoughts-labs/designer-skill",
+      "raw_indexes": [
+        163
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/env-lint",
+      "source_name": "hashgraph-online/awesome-codex-plugins",
+      "raw_indexes": [
+        164
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/hashgraph-online/hol-guard-plugin",
+      "source_name": "hashgraph-online/hol-guard-plugin",
+      "raw_indexes": [
+        165
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/secret-guard",
+      "source_name": "hashgraph-online/awesome-codex-plugins",
+      "raw_indexes": [
+        166
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/avansaber/tailtest-codex",
+      "source_name": "avansaber/tailtest-codex",
+      "raw_indexes": [
+        167
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/HDeibler/universal-design-principles",
+      "source_name": "HDeibler/universal-design-principles",
+      "raw_indexes": [
+        168
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/BestLemoon/codex-seo",
+      "source_name": "BestLemoon/codex-seo",
+      "raw_indexes": [
+        169
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/avivsinai/langfuse-mcp",
+      "source_name": "avivsinai/langfuse-mcp",
+      "raw_indexes": [
+        170
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/johnvouros/nullcost-plugin",
+      "source_name": "johnvouros/nullcost-plugin",
+      "raw_indexes": [
+        171
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/MohamedAbdallah-14/prompt-to-asset",
+      "source_name": "MohamedAbdallah-14/prompt-to-asset",
+      "raw_indexes": [
+        172
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/avalonreset/seo-dungeon",
+      "source_name": "avalonreset/seo-dungeon",
+      "raw_indexes": [
+        173
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/tim-osterhus/codex-remotion-plugin",
+      "source_name": "tim-osterhus/codex-remotion-plugin",
+      "raw_indexes": [
+        174
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/summer521521/Zotero_Research_plugin",
+      "source_name": "summer521521/Zotero_Research_plugin",
+      "raw_indexes": [
+        176
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/PapiScholz/roadmapsmith",
+      "source_name": "PapiScholz/roadmapsmith",
+      "raw_indexes": [
+        177
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ForceInjection/awesome-skills/tree/main/skills/openspec-assistant",
+      "source_name": "ForceInjection/awesome-skills",
+      "raw_indexes": [
+        178
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/fastknifes/openflow",
+      "source_name": "fastknifes/openflow",
+      "raw_indexes": [
+        179
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/wenqingyu/ralphy-openspec",
+      "source_name": "wenqingyu/ralphy-openspec",
+      "raw_indexes": [
+        180
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Octane0411/opencode-plugin-openspec",
+      "source_name": "Octane0411/opencode-plugin-openspec",
+      "raw_indexes": [
+        181
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/jixoai/openspecui",
+      "source_name": "jixoai/openspecui",
+      "raw_indexes": [
+        182
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/sudokar/openspec-plus",
+      "source_name": "sudokar/openspec-plus",
+      "raw_indexes": [
+        183
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ToruAI/openspec-ui",
+      "source_name": "ToruAI/openspec-ui",
+      "raw_indexes": [
+        184
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/sflueckiger/specboard",
+      "source_name": "sflueckiger/specboard",
+      "raw_indexes": [
+        185
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/wxhou/openspec-playwright",
+      "source_name": "wxhou/openspec-playwright",
+      "raw_indexes": [
+        186
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Lumiaqian/openspec-mcp",
+      "source_name": "Lumiaqian/openspec-mcp",
+      "raw_indexes": [
+        187
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/yuritoledo/openspec-tdd",
+      "source_name": "yuritoledo/openspec-tdd",
+      "raw_indexes": [
+        188
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/mbertani/opsx-feature-dev",
+      "source_name": "mbertani/opsx-feature-dev",
+      "raw_indexes": [
+        189
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/griffithkk3-del/openspec-reviewed-workflow",
+      "source_name": "griffithkk3-del/openspec-reviewed-workflow",
+      "raw_indexes": [
+        190
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/mrtooher/fable-mode",
+      "source_name": "mrtooher/fable-mode",
+      "raw_indexes": [
+        191
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ndpvt-web/latex-document-skill",
+      "source_name": "ndpvt-web/latex-document-skill",
+      "raw_indexes": [
+        192
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/devcxl/opencode-spec",
+      "source_name": "devcxl/opencode-spec",
+      "raw_indexes": [
+        193
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/commit-narrator",
+      "source_name": "hashgraph-online/awesome-codex-plugins",
+      "raw_indexes": [
+        194
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Rycen7822/codex-rg-guard",
+      "source_name": "Rycen7822/codex-rg-guard",
+      "raw_indexes": [
+        195
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/wzyn20051216/solidworks-automation-skill",
+      "source_name": "wzyn20051216/solidworks-automation-skill",
+      "raw_indexes": [
+        196
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/louisedesadeleer/clipify",
+      "source_name": "louisedesadeleer/clipify",
+      "raw_indexes": [
+        197
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/michalparkola/tapestry-skills",
+      "source_name": "michalparkola/tapestry-skills",
+      "raw_indexes": [
+        198
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/bentossell/visualise",
+      "source_name": "bentossell/visualise",
+      "raw_indexes": [
+        199
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/architecture-diagram",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        200
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/agent-md-refactor",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        201
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/brainstorming",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        202
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/minhnv0807/ai-business-skills",
+      "source_name": "minhnv0807/ai-business-skills",
+      "raw_indexes": [
+        203
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/rshankras/claude-code-apple-skills",
+      "source_name": "rshankras/claude-code-apple-skills",
+      "raw_indexes": [
+        204
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/jihe520/social-push",
+      "source_name": "jihe520/social-push",
+      "raw_indexes": [
+        205
+      ],
+      "intake_decision": "quarantine",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/WILLOSCAR/research-units-pipeline-skills",
+      "source_name": "WILLOSCAR/research-units-pipeline-skills",
+      "raw_indexes": [
+        206
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/documentation-writer",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        207
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/exa-web-search-free",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        208
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/extreme-software-optimization",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        209
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/game-changing-features",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        210
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/golang-pro",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        211
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/hono",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        212
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/lesson-learned",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        213
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/next-best-practices",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        214
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/shadcn",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        215
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/systematic-debugging",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        216
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/tui-design",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        217
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/vercel-composition-patterns",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        218
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/vercel-react-best-practices",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        219
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/vitest",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        220
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/zod",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        221
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/zustand",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        222
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/alex-hormozi-pitch",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        223
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/brand-storytelling",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        224
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/content-research-writer",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        225
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/copywriting",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        226
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/fundraising",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        227
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/google-ads",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        228
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/hormozi-ad-factory",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        229
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/humanizer",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        230
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/pitch-deck",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        231
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/pitch-deck-visuals",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        232
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/pitch-gen",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        233
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/pptx-creator",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        234
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/professional-communication",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        235
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/sales-methodology-implementer",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        236
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/startup-validator",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        237
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/viz",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        238
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/writing-clearly-and-concisely",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        239
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/adversarial-review",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        240
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/ai-sdk",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        241
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/building-components",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        242
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/crafting-effective-readmes",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        243
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/creating-spec",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        244
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/design-spec-extraction",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        245
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/devops-engineer",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        246
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/drizzle-orm",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        247
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/drizzle-postgres",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        248
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/electron-builder",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        249
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/electron-dev",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        250
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/electron-release",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        251
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/es-toolkit",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        252
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/executing-plans",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        253
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/fixing-motion-performance",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        254
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/helm-chart-scaffolding",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        255
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/hetzner-server",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        256
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/kubernetes-specialist",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        257
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/mermaid-diagrams",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        258
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/motion",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        259
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/motion-react",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        260
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/obsidian-bases",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        261
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/obsidian-cli",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        262
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/obsidian-markdown",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        263
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/remotion-best-practices",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        264
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/requirements-clarity",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        265
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/ship-learn-next",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        266
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/tauri-v2",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        267
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/terraform-style-guide",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        268
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/workflow",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        269
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/wrangler",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        270
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/headroomlabs-ai/headroom",
+      "source_name": "headroomlabs-ai/headroom",
+      "raw_indexes": [
+        271
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/mcp-builder",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        272
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/file-organizer",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "raw_indexes": [
+        273
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/openags/paper-search-mcp",
+      "source_name": "openags/paper-search-mcp",
+      "raw_indexes": [
+        274
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/iannuttall/dotagents",
+      "source_name": "iannuttall/dotagents",
+      "raw_indexes": [
+        275
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/mirkobozzetto/espresso",
+      "source_name": "mirkobozzetto/espresso",
+      "raw_indexes": [
+        276
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/epicsagas/llm-transpile",
+      "source_name": "epicsagas/llm-transpile",
+      "raw_indexes": [
+        277
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/2kDarki/codex-mem",
+      "source_name": "2kDarki/codex-mem",
+      "raw_indexes": [
+        278
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/papersflow-ai/papersflow-codex-plugin",
+      "source_name": "papersflow-ai/papersflow-codex-plugin",
+      "raw_indexes": [
+        279
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/klajdikkolaj/upwork-autopilot",
+      "source_name": "klajdikkolaj/upwork-autopilot",
+      "raw_indexes": [
+        280
+      ],
+      "intake_decision": "quarantine",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/wearetechnative/openspec-badge-action",
+      "source_name": "wearetechnative/openspec-badge-action",
+      "raw_indexes": [
+        281
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/Kulaxyz/token-diet",
+      "source_name": "Kulaxyz/token-diet",
+      "raw_indexes": [
+        282
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/planetscale/database-skills",
+      "source_name": "planetscale/database-skills",
+      "raw_indexes": [
+        283
+      ],
+      "intake_decision": "merge_into_existing",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "mysql",
+          "path": "docs/src/authoring/skills/mysql.mdx",
+          "source": "planetscale/database-skills",
+          "install_source": "planetscale/database-skills",
+          "source_url": "https://github.com/planetscale/database-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "postgres",
+          "path": "docs/src/authoring/skills/postgres.mdx",
+          "source": "planetscale/database-skills",
+          "install_source": "planetscale/database-skills",
+          "source_url": "https://github.com/planetscale/database-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through existing curated catalog row; do not duplicate."
+    },
+    {
+      "normalized_url": "https://github.com/growthenginenowoslawski/coldoutboundskills",
+      "source_name": "growthenginenowoslawski/coldoutboundskills",
+      "raw_indexes": [
+        285
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/KyuRish/mcp-dashboards",
+      "source_name": "KyuRish/mcp-dashboards",
+      "raw_indexes": [
+        286
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/marzukia/charted",
+      "source_name": "marzukia/charted",
+      "raw_indexes": [
+        287
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/nteract/semiotic",
+      "source_name": "nteract/semiotic",
+      "raw_indexes": [
+        288
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/better-auth-best-practices",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        289
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/better-auth-organization-best-practices",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        290
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/InternScience/Awesome-Scientific-Skills",
+      "source_name": "InternScience/Awesome-Scientific-Skills",
+      "raw_indexes": [
+        291
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/find-rules",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        292
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    },
+    {
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/find-skills",
+      "source_name": "pedronauck/skills",
+      "raw_indexes": [
+        293
+      ],
+      "intake_decision": "reference_only",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Research and route through the promotion task graph before installing or adapting."
+    }
+  ]
+}

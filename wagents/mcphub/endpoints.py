@@ -29,11 +29,7 @@ def enabled_registry_servers(registry: dict[str, Any], harness: str | None = Non
 
 
 def registry_server_ids(registry: dict[str, Any]) -> set[str]:
-    return {
-        name
-        for name, entry in registry.get("servers", {}).items()
-        if isinstance(entry, dict)
-    }
+    return {name for name, entry in registry.get("servers", {}).items() if isinstance(entry, dict)}
 
 
 def mcphub_remote_stdio() -> Path:
@@ -148,9 +144,7 @@ def mcphub_workflow_group_ids(registry: dict[str, Any]) -> list[str]:
     if not isinstance(groups, dict):
         return []
     return sorted(
-        name
-        for name, group in groups.items()
-        if isinstance(group, dict) and group.get("enabled") is not False
+        name for name, group in groups.items() if isinstance(group, dict) and group.get("enabled") is not False
     )
 
 
@@ -176,7 +170,12 @@ def mcphub_groups(registry: dict[str, Any], harness: str | None = None) -> dict[
             continue
         servers = []
         for server in group.get("servers", []):
-            server_name = server if isinstance(server, str) else server.get("name") if isinstance(server, dict) else None
+            if isinstance(server, str):
+                server_name = server
+            elif isinstance(server, dict):
+                server_name = server.get("name")
+            else:
+                server_name = None
             if server_name in server_ids:
                 servers.append(server)
         rendered[str(name)] = {**group, "servers": servers}

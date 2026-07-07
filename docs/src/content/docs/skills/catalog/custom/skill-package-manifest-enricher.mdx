@@ -11,6 +11,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   name="skill-package-manifest-enricher"
   description="Enrich portable skill ZIP manifests with compatibility and eval metadata. Use before packaging or catalog promotion. NOT for live installs."
   installCommand={`npx skills add github:wyattowalsh/agents --skill skill-package-manifest-enricher -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  installLabel="Install"
   usage="/skill-package-manifest-enricher &lt;skill-name&gt; [--dry-run|--apply]"
   badges={[{ text: "skill-package-manifest-enricher", variant: "note" }, { text: "179 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
@@ -73,7 +74,7 @@ Augment package manifests produced by skill-creator packaging with repo metadata
 <details class="source-disclosure">
 <summary>View Full SKILL.md</summary>
 
-````yaml title="SKILL.md"
+````yaml
 ---
 name: skill-package-manifest-enricher
 description: >-

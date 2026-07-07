@@ -1,6 +1,6 @@
 ---
 title: "Harness Config"
-description: "Canonical registry-driven harness configuration surfaces: sync manifest, MCP registry, token efficacy, plugin/skill ownership, and tooling policy."
+description: "Canonical registry-driven harness configuration surfaces: sync manifest, MCP registry, token efficacy, plugin/skill ownership, docs runtime plugins, and tooling policy."
 page_kind: "harness-config-hub"
 source_kind: "registry"
 composed: true
@@ -15,7 +15,7 @@ import { CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components'
 
 > Registry-driven configuration that projects repo sources into per-harness home and project surfaces. Edit canonical files under `config/`, then sync with `scripts/sync_agent_stack.py`.
 
-<Badge text="5 surfaces" variant="note" size="large" />
+<Badge text="7 surfaces" variant="note" size="large" />
 
 <Aside type="tip" title="Source of truth">
 These pages document the machine-first registries in `config/`. Generated client configs are derived at sync time — do not hand-edit live `~/.config` mirrors unless you are debugging a one-off override.
@@ -29,6 +29,7 @@ These pages document the machine-first registries in `config/`. Generated client
   <LinkCard title="sync-manifest" href="/harness-config/sync-manifest/" description="Ownership ledger for canonical, generated, merged, symlink, and symlinked-entry surfaces." />
   <LinkCard title="mcp-registry" href="/harness-config/mcp-registry/" description="MCP server definitions, MCPHub endpoints, and client projection rules." />
   <LinkCard title="plugin-skill-ownership" href="/harness-config/plugin-skill-ownership/" description="One-owner rules for repo skills, native plugins, duplicate cleanup, and docs coverage." />
+  <LinkCard title="starlight-plugin-stack" href="/harness-config/starlight-plugin-stack/" description="Astro/Starlight plugin owners, compatibility ledger, enabled proof page, and defer rules." />
   <LinkCard title="tooling-policy" href="/harness-config/tooling-policy/" description="Instruction sources, tool allow/deny policy, and harness-specific runtime defaults." />
 </CardGrid>
 
