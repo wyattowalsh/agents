@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 from collections import defaultdict
+from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -27,6 +28,7 @@ from wagents.skill_index import read_catalog_index
 
 CATALOG_CONTENT_DIR = CONTENT_DIR / "catalog"
 ARCHITECTURE_CONTENT_DIR = CONTENT_DIR / "architecture"
+MdxWriter = Callable[["Path", dict[str, str], list[str]], None]
 
 # Harness ids surfaced on platform index pages (from harness-surface-registry when present).
 _DEFAULT_PLATFORMS = (
@@ -56,59 +58,83 @@ def _load_harness_labels() -> dict[str, str]:
     return labels or {h: h.replace("-", " ").title() for h in _DEFAULT_PLATFORMS}
 
 
+def _catalog_skill_entries(skills_index: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return skill rows from the generated catalog index bundle."""
+    if not isinstance(skills_index, dict):
+        return []
+    for key in ("allSkillIndex", "skillIndex", "skills"):
+        rows = skills_index.get(key)
+        if isinstance(rows, list) and rows:
+            return [entry for entry in rows if isinstance(entry, dict)]
+    return []
+
+
 def _skills_catalog_index() -> dict[str, Any]:
     index = read_catalog_index()
-    return index if isinstance(index, dict) else {"skills": []}
+    return index if isinstance(index, dict) else {}
 
 
 def _skill_rows_for_topology() -> list[dict[str, str]]:
     index = _skills_catalog_index()
     rows: list[dict[str, str]] = []
-    for entry in index.get("skills", []):
-        if not isinstance(entry, dict):
-            continue
+    for entry in _catalog_skill_entries(index):
         name = str(entry.get("name") or entry.get("id") or "")
         if not name:
             continue
-        source_kind = str(entry.get("source_kind") or "custom")
+        source_kind = str(entry.get("sourceKind") or entry.get("source_kind") or "custom")
         source_type = "curated-external" if source_kind == "curated-external" else "custom"
         rows.append({
             "name": name,
             "sourceType": source_type,
-            "trustTier": str(entry.get("trust_tier") or "unknown"),
+            "trustTier": str(entry.get("trustTier") or entry.get("trust_tier") or "unknown"),
         })
     return sorted(rows, key=lambda r: r["name"])
 
 
+def _entry_catalog_tags(entry: dict[str, Any]) -> list[str]:
+    """Explicit tags when present; otherwise derive facet tags from index fields."""
+    tags = entry.get("tags") or entry.get("metadata", {}).get("tags") or []
+    if isinstance(tags, str):
+        tags = [t.strip() for t in tags.split(",") if t.strip()]
+    if isinstance(tags, list) and tags:
+        return [str(tag).strip() for tag in tags if str(tag).strip()]
+
+    synthetic: list[str] = []
+    source_kind = str(entry.get("sourceKind") or entry.get("source_kind") or "").strip()
+    if source_kind:
+        synthetic.append(f"source:{source_kind}")
+    trust_tier = str(entry.get("trustTier") or entry.get("trust_tier") or "").strip()
+    if trust_tier:
+        synthetic.append(f"trust:{trust_tier}")
+    status = str(entry.get("status") or "").strip()
+    if status and status != "repo-owned":
+        synthetic.append(f"status:{status}")
+    return synthetic
+
+
 def _collect_tag_index(skills_index: dict[str, Any]) -> dict[str, list[str]]:
     by_tag: dict[str, list[str]] = defaultdict(list)
-    for entry in skills_index.get("skills", []):
-        if not isinstance(entry, dict):
-            continue
+    for entry in _catalog_skill_entries(skills_index):
         name = str(entry.get("name") or "")
         if not name:
             continue
-        tags = entry.get("tags") or entry.get("metadata", {}).get("tags") or []
-        if isinstance(tags, str):
-            tags = [t.strip() for t in tags.split(",") if t.strip()]
-        if not isinstance(tags, list):
-            continue
-        for tag in tags:
-            tag_s = str(tag).strip()
-            if tag_s:
-                by_tag[tag_s].append(name)
+        for tag in _entry_catalog_tags(entry):
+            by_tag[tag].append(name)
     return dict(sorted(by_tag.items()))
 
 
 def _collect_platform_index(skills_index: dict[str, Any]) -> dict[str, list[str]]:
     by_platform: dict[str, list[str]] = defaultdict(list)
-    for entry in skills_index.get("skills", []):
-        if not isinstance(entry, dict):
-            continue
+    for entry in _catalog_skill_entries(skills_index):
         name = str(entry.get("name") or "")
         if not name:
             continue
-        targets = entry.get("target_agents") or entry.get("target_harnesses") or []
+        targets = (
+            entry.get("targetAgents")
+            or entry.get("target_agents")
+            or entry.get("target_harnesses")
+            or []
+        )
         if isinstance(targets, str):
             targets = [t.strip() for t in targets.split(",") if t.strip()]
         if not isinstance(targets, list):
@@ -133,8 +159,7 @@ def _collect_tooling_index(nodes: list[CatalogNode]) -> dict[str, list[str]]:
     return {k: sorted(v) for k, v in lanes.items() if v}
 
 
-def _write_mdx(path: Path, frontmatter: dict[str, str], body_lines: list[str]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def _render_mdx(frontmatter: dict[str, str], body_lines: list[str]) -> str:
     parts = ["---"]
     for key, value in frontmatter.items():
         parts.append(f"{key}: {value}")
@@ -142,10 +167,15 @@ def _write_mdx(path: Path, frontmatter: dict[str, str], body_lines: list[str]) -
     parts.extend(body_lines)
     if parts[-1] != "":
         parts.append("")
-    path.write_text("\n".join(parts), encoding="utf-8")
+    return "\n".join(parts)
 
 
-def write_catalog_landing() -> None:
+def _write_mdx(path: Path, frontmatter: dict[str, str], body_lines: list[str]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(_render_mdx(frontmatter, body_lines), encoding="utf-8")
+
+
+def write_catalog_landing(*, writer: MdxWriter = _write_mdx) -> None:
     """Write /catalog/ discovery hub."""
     body = [
         "import { CardGrid, LinkCard } from '@astrojs/starlight/components';",
@@ -163,7 +193,7 @@ def write_catalog_landing() -> None:
         'description="Progressive disclosure and instruction loading." />',
         "</CardGrid>",
     ]
-    _write_mdx(
+    writer(
         CATALOG_CONTENT_DIR / "index.mdx",
         {
             "title": "Catalog",
@@ -173,7 +203,7 @@ def write_catalog_landing() -> None:
     )
 
 
-def write_catalog_agents_index(agents: list[CatalogNode]) -> None:
+def write_catalog_agents_index(agents: list[CatalogNode], *, writer: MdxWriter = _write_mdx) -> None:
     """Write /catalog/agents/ with links to detail pages under /agents/."""
     body = [
         "import { CardGrid, LinkCard } from '@astrojs/starlight/components';",
@@ -192,7 +222,7 @@ def write_catalog_agents_index(agents: list[CatalogNode]) -> None:
             f'  <LinkCard title="{escape_attr(node.id)}" href="/agents/{node.id}/" description="{desc}" />'
         )
     body.extend(["</CardGrid>"])
-    _write_mdx(
+    writer(
         CATALOG_CONTENT_DIR / "agents" / "index.mdx",
         {
             "title": "Agent Catalog",
@@ -202,7 +232,7 @@ def write_catalog_agents_index(agents: list[CatalogNode]) -> None:
     )
 
 
-def write_catalog_mcp_index(mcps: list[CatalogNode]) -> None:
+def write_catalog_mcp_index(mcps: list[CatalogNode], *, writer: MdxWriter = _write_mdx) -> None:
     """Write /catalog/mcp/ with empty-state when no MCP packages exist."""
     body = [
         "import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';",
@@ -231,7 +261,7 @@ def write_catalog_mcp_index(mcps: list[CatalogNode]) -> None:
                 f'  <LinkCard title="{escape_attr(node.id)}" href="/mcp/{node.id}/" description="{desc}" />'
             )
         body.append("</CardGrid>")
-    _write_mdx(
+    writer(
         CATALOG_CONTENT_DIR / "mcp" / "index.mdx",
         {
             "title": "MCP Catalog",
@@ -241,7 +271,7 @@ def write_catalog_mcp_index(mcps: list[CatalogNode]) -> None:
     )
 
 
-def write_catalog_tags_index(skills_index: dict[str, Any]) -> None:
+def write_catalog_tags_index(skills_index: dict[str, Any], *, writer: MdxWriter = _write_mdx) -> None:
     by_tag = _collect_tag_index(skills_index)
     body = [
         "import { CardGrid, LinkCard } from '@astrojs/starlight/components';",
@@ -262,14 +292,14 @@ def write_catalog_tags_index(skills_index: dict[str, Any]) -> None:
                 f'description="{escape_attr(f"{len(skill_ids)} skills — e.g. {sample}")}" />'
             )
         body.append("</CardGrid>")
-    _write_mdx(
+    writer(
         CATALOG_CONTENT_DIR / "tags" / "index.mdx",
         {"title": "Catalog Tags", "description": "Skill catalog grouped by tag"},
         body,
     )
 
 
-def write_catalog_platforms_index(skills_index: dict[str, Any]) -> None:
+def write_catalog_platforms_index(skills_index: dict[str, Any], *, writer: MdxWriter = _write_mdx) -> None:
     by_platform = _collect_platform_index(skills_index)
     harness_labels = _load_harness_labels()
     body = [
@@ -293,7 +323,7 @@ def write_catalog_platforms_index(skills_index: dict[str, Any]) -> None:
                 f'description="{escape_attr(f"{len(skill_ids)} skills for {platform}")}" />'
             )
     body.append("</CardGrid>")
-    _write_mdx(
+    writer(
         CATALOG_CONTENT_DIR / "platforms" / "index.mdx",
         {
             "title": "Catalog Platforms",
@@ -303,7 +333,7 @@ def write_catalog_platforms_index(skills_index: dict[str, Any]) -> None:
     )
 
 
-def write_catalog_tooling_index(nodes: list[CatalogNode]) -> None:
+def write_catalog_tooling_index(nodes: list[CatalogNode], *, writer: MdxWriter = _write_mdx) -> None:
     lanes = _collect_tooling_index(nodes)
     body = [
         "import { CardGrid, LinkCard } from '@astrojs/starlight/components';",
@@ -321,14 +351,18 @@ def write_catalog_tooling_index(nodes: list[CatalogNode]) -> None:
         '  <LinkCard title="CLI" href="/cli/" description="wagents command reference." />',
         "</CardGrid>",
     ]
-    _write_mdx(
+    writer(
         CATALOG_CONTENT_DIR / "tooling" / "index.mdx",
         {"title": "Tooling Index", "description": "Skills, agents, MCP, reports, and CLI lanes"},
         body,
     )
 
 
-def write_architecture_pages(*, skill_topology_rows: list[dict[str, str]]) -> None:
+def write_architecture_pages(
+    *,
+    skill_topology_rows: list[dict[str, str]],
+    writer: MdxWriter = _write_mdx,
+) -> None:
     """Write progressive-disclosure and instruction-loading architecture pages."""
     topology_import = ""
     topology_block = ""
@@ -365,7 +399,7 @@ def write_architecture_pages(*, skill_topology_rows: list[dict[str, str]]) -> No
     if topology_block:
         pd_body.extend(["## Skill topology", "", topology_block, ""])
 
-    _write_mdx(
+    writer(
         ARCHITECTURE_CONTENT_DIR / "progressive-disclosure.mdx",
         {
             "title": "Progressive Disclosure",
@@ -399,7 +433,7 @@ def write_architecture_pages(*, skill_topology_rows: list[dict[str, str]]) -> No
         "2. Run stack sync for harness mirrors.",
         "3. Run `uv run wagents validate` and `uv run wagents docs generate --check`.",
     ]
-    _write_mdx(
+    writer(
         ARCHITECTURE_CONTENT_DIR / "instruction-loading.mdx",
         {
             "title": "Instruction Loading",
@@ -409,7 +443,7 @@ def write_architecture_pages(*, skill_topology_rows: list[dict[str, str]]) -> No
     )
 
 
-def write_catalog_pages(*, nodes: list[CatalogNode] | None = None) -> None:
+def write_catalog_pages(*, nodes: list[CatalogNode] | None = None, writer: MdxWriter = _write_mdx) -> None:
     """Generate all W5 catalog and architecture pages."""
     nodes = nodes if nodes is not None else collect_nodes()
     agents = [n for n in nodes if n.kind == "agent"]
@@ -417,13 +451,24 @@ def write_catalog_pages(*, nodes: list[CatalogNode] | None = None) -> None:
     skills_index = _skills_catalog_index()
     topology_rows = _skill_rows_for_topology()
 
-    write_catalog_landing()
-    write_catalog_agents_index(agents)
-    write_catalog_mcp_index(mcps)
-    write_catalog_tags_index(skills_index)
-    write_catalog_platforms_index(skills_index)
-    write_catalog_tooling_index(nodes)
-    write_architecture_pages(skill_topology_rows=topology_rows)
+    write_catalog_landing(writer=writer)
+    write_catalog_agents_index(agents, writer=writer)
+    write_catalog_mcp_index(mcps, writer=writer)
+    write_catalog_tags_index(skills_index, writer=writer)
+    write_catalog_platforms_index(skills_index, writer=writer)
+    write_catalog_tooling_index(nodes, writer=writer)
+    write_architecture_pages(skill_topology_rows=topology_rows, writer=writer)
+
+
+def render_catalog_page_artifacts(*, nodes: list[CatalogNode] | None = None) -> dict[Path, str]:
+    """Return generated catalog/architecture page contents without writing files."""
+    artifacts: dict[Path, str] = {}
+
+    def capture(path: Path, frontmatter: dict[str, str], body_lines: list[str]) -> None:
+        artifacts[path] = _render_mdx(frontmatter, body_lines)
+
+    write_catalog_pages(nodes=nodes, writer=capture)
+    return artifacts
 
 
 def catalog_sidebar_entries() -> list[str]:
