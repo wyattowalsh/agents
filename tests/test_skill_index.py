@@ -11,10 +11,15 @@ from wagents.external_skills import ExternalSkillEntry
 from wagents.skill_index import (
     CatalogAuthoringEntry,
     authoring_entry_to_catalog_node,
+    build_catalog_browser_index,
     build_catalog_index,
+    catalog_browser_index_stale_reason,
+    catalog_index_stale_reason,
     entry_to_external_skill_entry,
     load_authoring_entries,
+    read_catalog_browser_index,
     read_catalog_index,
+    write_catalog_browser_index,
     write_catalog_index,
 )
 
@@ -211,6 +216,39 @@ def test_build_catalog_index_preserves_curated_audit_fields(tmp_authoring_dir: P
     assert row["unsupportedTargetAgents"] == ["grok"]
 
 
+def test_build_catalog_browser_index_projects_display_fields_only(tmp_authoring_dir: Path):
+    _write_mdx(
+        tmp_authoring_dir,
+        "ext-browser",
+        {
+            "name": "ext-browser",
+            "description": "External browser row with internal audit metadata.",
+            "source_kind": "curated-external",
+            "source": "owner/repo",
+            "install_command": "npx skills add owner/repo --skill ext-browser",
+            "status": "install-now-after-trust-gate",
+            "trust_tier": "curated-trust-gated",
+            "provenance_evidence": "verified by source list",
+        },
+    )
+
+    browser = build_catalog_browser_index(build_catalog_index(load_authoring_entries(tmp_authoring_dir)))
+
+    assert browser == {
+        "externalSkillIndex": [
+            {
+                "name": "ext-browser",
+                "description": "External browser row with internal audit metadata.",
+                "href": "/skills/catalog/external/ext-browser/",
+                "lane": "install-now",
+                "sourceType": "curated-external",
+            }
+        ]
+    }
+    assert "installCommand" not in browser["externalSkillIndex"][0]
+    assert "provenanceEvidence" not in browser["externalSkillIndex"][0]
+
+
 def test_external_source_kind_receives_curated_catalog_metadata(tmp_authoring_dir: Path):
     _write_mdx(
         tmp_authoring_dir,
@@ -275,6 +313,38 @@ def test_write_and_read_catalog_index_roundtrip(tmp_index_path: Path):
     loaded = read_catalog_index(path=tmp_index_path)
     assert loaded is not None
     assert loaded["customSkillIndex"][0]["name"] == "x"
+
+
+def test_write_and_read_catalog_browser_index_roundtrip(tmp_path: Path):
+    full_index = {
+        "customSkillIndex": [],
+        "externalSkillIndex": [
+            {
+                "name": "ext one",
+                "description": "External one.",
+                "sourceType": "curated-external",
+                "status": "global-only-or-avoid",
+                "installCommand": "npx skills add owner/repo --skill ext-one",
+            }
+        ],
+        "allSkillIndex": [],
+    }
+    index_path = tmp_path / "skills-catalog-browser-index.json"
+
+    out = write_catalog_browser_index(full_index, path=index_path)
+    loaded = read_catalog_browser_index(path=out)
+
+    assert loaded == {
+        "externalSkillIndex": [
+            {
+                "name": "ext one",
+                "description": "External one.",
+                "href": "/skills/catalog/external/ext%20one/",
+                "lane": "avoid",
+                "sourceType": "curated-external",
+            }
+        ]
+    }
 
 
 def test_read_catalog_index_returns_none_for_missing(tmp_path: Path):
@@ -386,3 +456,17 @@ def test_catalog_index_stale_reason_none_when_index_matches_authoring(tmp_path, 
     write_catalog_index(build_catalog_index(entries), path=index_path)
     monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", index_path)
     assert catalog_index_stale_reason(index_path) is None
+
+
+def test_catalog_browser_index_stale_reason_none_when_index_matches_authoring(tmp_path, monkeypatch):
+    from wagents.skill_index import AUTHORING_SKILLS_DIR
+
+    if not AUTHORING_SKILLS_DIR.exists() or not any(AUTHORING_SKILLS_DIR.glob("*.mdx")):
+        return
+
+    entries = load_authoring_entries()
+    full_index = build_catalog_index(entries)
+    browser_path = tmp_path / "skills-catalog-browser-index.json"
+    write_catalog_browser_index(full_index, path=browser_path)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_BROWSER_INDEX_PATH", browser_path)
+    assert catalog_browser_index_stale_reason(browser_path) is None

@@ -1,6 +1,8 @@
 """Tests for wagents.docs — index pages, sidebar, and docs subcommands."""
 
 import json
+import os
+import subprocess
 from pathlib import Path
 
 from wagents.catalog import CatalogNode
@@ -232,8 +234,10 @@ class TestWriteCatalogIndexes:
         ]
         write_catalog_external_index(nodes)
         text = (content_dir / "skills" / "catalog" / "external" / "index.mdx").read_text()
-        assert 'src="/generated-registries/skills-catalog-index.json"' in text
+        assert 'src="/generated-registries/skills-catalog-browser-index.json"' in text
         assert 'indexKey="externalSkillIndex"' in text
+        assert '"href": "/skills/catalog/external/ext-0-skill/"' in text
+        assert '"lane": "inspect"' in text
         assert "<CatalogBrowser" in text
         assert "generated-skill-indexes.mjs" not in text
         assert "CatalogSkillFilter" not in text
@@ -254,6 +258,26 @@ class TestWriteCatalogIndexes:
 
 
 class TestDocsGenerate:
+    def test_clean_build_script_removes_docs_output_dirs(self, tmp_path):
+        root = tmp_path / "docs"
+        for rel in ("dist/sentinel.txt", ".astro/sentinel.txt", ".vercel/output/sentinel.txt"):
+            path = root / rel
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("stale", encoding="utf-8")
+
+        result = subprocess.run(
+            ["node", str(REPO_ROOT / "docs" / "scripts" / "clean-build.mjs")],
+            env={**os.environ, "DOCS_CLEAN_BUILD_ROOT": str(root)},
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+
+        assert result.returncode == 0, result.stderr
+        assert not (root / "dist").exists()
+        assert not (root / ".astro").exists()
+        assert not (root / ".vercel" / "output").exists()
+
     def test_check_detects_catalog_discovery_page_drift(self, tmp_repo, monkeypatch):
         nodes = [
             _make_node("skill"),

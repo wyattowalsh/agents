@@ -28,6 +28,9 @@ CATALOG_BROWSER_LANE_BY_STATUS = {
     "global-only-or-avoid": "avoid",
 }
 CATALOG_BROWSER_LANES = frozenset({"install-now", "inspect", "avoid"})
+CATALOG_BROWSER_ALLOWED_ROW_FIELDS = frozenset({"name", "description", "href", "lane", "sourceType"})
+CATALOG_BROWSER_MAX_BYTES = 512 * 1024
+CATALOG_BROWSER_MAX_FULL_RATIO = 0.25
 
 
 def _is_external_authoring_source_kind(source_kind: str) -> bool:
@@ -355,7 +358,45 @@ def build_catalog_index_from_authoring(dir_path: Path | None = None) -> dict[str
     return build_catalog_index(entries)
 
 
-def catalog_index_stale_reason(path: Path | None = None) -> str | None:
+def catalog_browser_index_contract_reason(
+    index: dict[str, Any], *, full_index: dict[str, Any] | None = None
+) -> str | None:
+    """Return why the browser catalog index violates the small public UI contract."""
+    rows = index.get("externalSkillIndex")
+    if not isinstance(rows, list):
+        return "docs/public/generated-registries/skills-catalog-browser-index.json must contain externalSkillIndex rows"
+    for row in rows:
+        if not isinstance(row, dict):
+            return "docs/public/generated-registries/skills-catalog-browser-index.json contains a non-object row"
+        extra = set(row) - CATALOG_BROWSER_ALLOWED_ROW_FIELDS
+        if extra:
+            return (
+                "docs/public/generated-registries/skills-catalog-browser-index.json exposes disallowed fields: "
+                + ", ".join(sorted(extra))
+            )
+        for field in CATALOG_BROWSER_ALLOWED_ROW_FIELDS:
+            if not isinstance(row.get(field), str):
+                return (
+                    "docs/public/generated-registries/skills-catalog-browser-index.json "
+                    f"row field {field} must be a string"
+                )
+        if row["lane"] not in CATALOG_BROWSER_LANES:
+            return "docs/public/generated-registries/skills-catalog-browser-index.json contains an invalid lane"
+
+    browser_size = len(json.dumps(index, indent=2, sort_keys=True).encode("utf-8"))
+    if browser_size > CATALOG_BROWSER_MAX_BYTES:
+        return "docs/public/generated-registries/skills-catalog-browser-index.json exceeds 512 KiB"
+    if full_index is not None:
+        full_size = len(json.dumps(full_index, indent=2, sort_keys=True).encode("utf-8"))
+        if full_size and browser_size > full_size * CATALOG_BROWSER_MAX_FULL_RATIO:
+            return (
+                "docs/public/generated-registries/skills-catalog-browser-index.json "
+                "exceeds 25% of the full catalog index"
+            )
+    return None
+
+
+def catalog_index_stale_reason(path: Path | None = None, *, browser_path: Path | None = None) -> str | None:
     """Return a remediation message when the committed index drifts from authoring SSOT."""
     expected = build_catalog_index_from_authoring()
     if expected is None:
@@ -366,12 +407,17 @@ def catalog_index_stale_reason(path: Path | None = None) -> str | None:
         return f"{out.relative_to(wagents.ROOT)} missing; run `uv run wagents docs generate --no-installed`"
     if json.dumps(expected, indent=2, sort_keys=True) != json.dumps(existing, indent=2, sort_keys=True):
         return f"{out.relative_to(wagents.ROOT)} is stale; run `uv run wagents docs generate --no-installed`"
+    if path is not None and browser_path is None:
+        return None
+    browser_reason = catalog_browser_index_stale_reason(browser_path, full_index=expected)
+    if browser_reason:
+        return browser_reason
     return None
 
 
-def catalog_browser_index_stale_reason(path: Path | None = None) -> str | None:
+def catalog_browser_index_stale_reason(path: Path | None = None, *, full_index: dict[str, Any] | None = None) -> str | None:
     """Return a remediation message when the committed browser index drifts."""
-    expected_source = build_catalog_index_from_authoring()
+    expected_source = full_index or build_catalog_index_from_authoring()
     if expected_source is None:
         return None
     expected = build_catalog_browser_index(expected_source)
@@ -381,6 +427,9 @@ def catalog_browser_index_stale_reason(path: Path | None = None) -> str | None:
         return f"{out.relative_to(wagents.ROOT)} missing; run `uv run wagents docs generate --no-installed`"
     if json.dumps(expected, indent=2, sort_keys=True) != json.dumps(existing, indent=2, sort_keys=True):
         return f"{out.relative_to(wagents.ROOT)} is stale; run `uv run wagents docs generate --no-installed`"
+    invalid_reason = catalog_browser_index_contract_reason(existing, full_index=expected_source)
+    if invalid_reason:
+        return invalid_reason
     return None
 
 

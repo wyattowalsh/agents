@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SkillsCatalogBrowserIndex",
+  "type": "object",
+  "required": ["externalSkillIndex"],
+  "properties": {
+    "externalSkillIndex": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/browserSkillRow" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "browserSkillRow": {
+      "type": "object",
+      "required": ["name", "description", "href", "lane", "sourceType"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "href": {
+          "type": "string",
+          "pattern": "^/skills/catalog/external/[^/]+/$"
+        },
+        "lane": {
+          "enum": ["install-now", "inspect", "avoid"]
+        },
+        "sourceType": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

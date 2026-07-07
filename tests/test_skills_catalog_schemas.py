@@ -10,6 +10,7 @@ SCHEMAS_DIR = ROOT / "config" / "schemas"
 
 AUTHORING_SCHEMA = SCHEMAS_DIR / "skills-catalog-authoring.schema.json"
 INDEX_SCHEMA = SCHEMAS_DIR / "skills-catalog-index.schema.json"
+BROWSER_INDEX_SCHEMA = SCHEMAS_DIR / "skills-catalog-browser-index.schema.json"
 
 
 def _load_json(p: Path) -> dict:
@@ -43,6 +44,18 @@ def test_index_schema_file_exists_and_loads() -> None:
     assert "customSkillIndex" in schema["properties"]
     assert "externalSkillIndex" in schema["properties"]
     assert "syncKind" in schema["$defs"]["skillRow"]["properties"]
+
+
+def test_browser_index_schema_file_exists_and_loads() -> None:
+    assert BROWSER_INDEX_SCHEMA.exists()
+    schema = _load_json(BROWSER_INDEX_SCHEMA)
+    assert schema["title"] == "SkillsCatalogBrowserIndex"
+    assert "externalSkillIndex" in schema["properties"]
+    assert schema["$defs"]["browserSkillRow"]["properties"]["lane"]["enum"] == [
+        "install-now",
+        "inspect",
+        "avoid",
+    ]
 
 
 def test_authoring_minimal_valid_structural() -> None:
@@ -131,3 +144,31 @@ def test_committed_catalog_index_matches_schema() -> None:
     Validator = _try_jsonschema()
     if Validator:
         Validator(schema).validate(data)
+
+
+def test_committed_catalog_browser_index_matches_schema() -> None:
+    index_path = ROOT / "docs" / "public" / "generated-registries" / "skills-catalog-browser-index.json"
+    if not index_path.exists():
+        return
+    data = _load_json(index_path)
+    schema = _load_json(BROWSER_INDEX_SCHEMA)
+    rows = data.get("externalSkillIndex", [])
+    assert isinstance(rows, list)
+    if rows:
+        assert set(rows[0]) == {"name", "description", "href", "lane", "sourceType"}
+    Validator = _try_jsonschema()
+    if Validator:
+        Validator(schema).validate(data)
+
+
+def test_committed_catalog_browser_index_stays_bounded() -> None:
+    full_path = ROOT / "docs" / "public" / "generated-registries" / "skills-catalog-index.json"
+    browser_path = ROOT / "docs" / "public" / "generated-registries" / "skills-catalog-browser-index.json"
+    if not full_path.exists() or not browser_path.exists():
+        return
+
+    full_size = full_path.stat().st_size
+    browser_size = browser_path.stat().st_size
+
+    assert browser_size <= 512 * 1024
+    assert browser_size <= full_size * 0.25
