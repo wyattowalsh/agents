@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T12:56:43.202653+00:00",
+  "generated_at": "2026-07-07T13:07:27.288163+00:00",
   "marker": "GENERATED-CANDIDATE-CORPUS-JUL2026",
-  "rows_written": 295,
+  "rows_written": 310,
   "unique_targets": 289,
   "stale_generated_rows_removed": 288,
   "status": "mixed",
   "sync_kind": "mixed",
-  "install_commands_published": 44,
+  "install_commands_published": 60,
   "source_list_status_counts": {
     "source-list-error": 21,
     "source-list-found": 236,
@@ -72,25 +72,308 @@
       "remaining_blockers": []
     },
     {
-      "name": "candidate-corpus-004-skills",
-      "path": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx",
+      "name": "app-store-changelog",
+      "path": "docs/src/authoring/skills/app-store-changelog.mdx",
       "normalized_url": "https://github.com/Dimillian/Skills",
       "source_name": "Dimillian/Skills",
       "raw_indexes": [
         4
       ],
-      "status": "global-only-or-avoid",
-      "sync_kind": "none",
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill app-store-changelog -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "elevated-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "bug-hunt-swarm",
+      "path": "docs/src/authoring/skills/bug-hunt-swarm.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill bug-hunt-swarm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
       "risk_tier": "standard-review",
       "intake_decision": "reference_only",
       "source_list_evidence": "source-list-found",
       "found_skill_count": 16,
-      "remaining_blockers": [
-        "selector-level security review",
-        "license and attribution file review",
-        "docs-steward promotion review",
-        "target-specific validation"
-      ]
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "project-skill-audit",
+      "path": "docs/src/authoring/skills/project-skill-audit.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill project-skill-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "elevated-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "react-component-performance",
+      "path": "docs/src/authoring/skills/react-component-performance.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill react-component-performance -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "review-swarm",
+      "path": "docs/src/authoring/skills/review-swarm.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill review-swarm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "swiftui-performance-audit",
+      "path": "docs/src/authoring/skills/swiftui-performance-audit.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill swiftui-performance-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "swiftui-ui-patterns",
+      "path": "docs/src/authoring/skills/swiftui-ui-patterns.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill swiftui-ui-patterns -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "elevated-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "swiftui-view-refactor",
+      "path": "docs/src/authoring/skills/swiftui-view-refactor.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill swiftui-view-refactor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "github",
+      "path": "docs/src/authoring/skills/github.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill github -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "elevated-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "ios-debugger-agent",
+      "path": "docs/src/authoring/skills/ios-debugger-agent.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill ios-debugger-agent -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "macos-menubar-tuist-app",
+      "path": "docs/src/authoring/skills/macos-menubar-tuist-app.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill macos-menubar-tuist-app -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "elevated-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "macos-spm-app-packaging",
+      "path": "docs/src/authoring/skills/macos-spm-app-packaging.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill macos-spm-app-packaging -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "orchestrate-batch-refactor",
+      "path": "docs/src/authoring/skills/orchestrate-batch-refactor.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill orchestrate-batch-refactor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "review-and-simplify-changes",
+      "path": "docs/src/authoring/skills/review-and-simplify-changes.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill review-and-simplify-changes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "swift-concurrency-expert",
+      "path": "docs/src/authoring/skills/swift-concurrency-expert.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill swift-concurrency-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
+    },
+    {
+      "name": "swiftui-liquid-glass",
+      "path": "docs/src/authoring/skills/swiftui-liquid-glass.mdx",
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "raw_indexes": [
+        4
+      ],
+      "status": "install-now-after-trust-gate",
+      "sync_kind": "skills-cli",
+      "install_command": "npx skills add Dimillian/Skills --skill swiftui-liquid-glass -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "live_install_executed": true,
+      "risk_tier": "standard-review",
+      "intake_decision": "reference_only",
+      "source_list_evidence": "source-list-found",
+      "found_skill_count": 16,
+      "install_evidence_note": "Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.",
+      "remaining_blockers": []
     },
     {
       "name": "candidate-corpus-005-terraform-skill",
@@ -6127,12 +6410,12 @@
     }
   ],
   "status_counts": {
-    "global-only-or-avoid": 251,
-    "install-now-after-trust-gate": 44
+    "global-only-or-avoid": 250,
+    "install-now-after-trust-gate": 60
   },
   "sync_kind_counts": {
-    "none": 251,
-    "skills-cli": 44
+    "none": 250,
+    "skills-cli": 60
   },
-  "live_installs_recorded": 44
+  "live_installs_recorded": 60
 }

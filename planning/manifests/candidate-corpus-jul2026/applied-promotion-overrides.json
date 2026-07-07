@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T12:56:43.204211+00:00",
-  "applied_count": 44,
+  "generated_at": "2026-07-07T13:07:27.289562+00:00",
+  "applied_count": 60,
   "items": [
     {
       "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
@@ -266,6 +266,102 @@
       "skill_name": "slack-gif-creator",
       "path": "docs/src/authoring/skills/slack-gif-creator.mdx",
       "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-151-slack-gif-creator.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "app-store-changelog",
+      "path": "docs/src/authoring/skills/app-store-changelog.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "bug-hunt-swarm",
+      "path": "docs/src/authoring/skills/bug-hunt-swarm.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "project-skill-audit",
+      "path": "docs/src/authoring/skills/project-skill-audit.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "react-component-performance",
+      "path": "docs/src/authoring/skills/react-component-performance.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "review-swarm",
+      "path": "docs/src/authoring/skills/review-swarm.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "swiftui-performance-audit",
+      "path": "docs/src/authoring/skills/swiftui-performance-audit.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "swiftui-ui-patterns",
+      "path": "docs/src/authoring/skills/swiftui-ui-patterns.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "swiftui-view-refactor",
+      "path": "docs/src/authoring/skills/swiftui-view-refactor.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "github",
+      "path": "docs/src/authoring/skills/github.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "ios-debugger-agent",
+      "path": "docs/src/authoring/skills/ios-debugger-agent.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "macos-menubar-tuist-app",
+      "path": "docs/src/authoring/skills/macos-menubar-tuist-app.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "macos-spm-app-packaging",
+      "path": "docs/src/authoring/skills/macos-spm-app-packaging.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "orchestrate-batch-refactor",
+      "path": "docs/src/authoring/skills/orchestrate-batch-refactor.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "review-and-simplify-changes",
+      "path": "docs/src/authoring/skills/review-and-simplify-changes.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "swift-concurrency-expert",
+      "path": "docs/src/authoring/skills/swift-concurrency-expert.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
+    },
+    {
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "skill_name": "swiftui-liquid-glass",
+      "path": "docs/src/authoring/skills/swiftui-liquid-glass.mdx",
+      "removed_candidate_row": "docs/src/authoring/skills/candidate-corpus-004-skills.mdx"
     }
   ]
 }

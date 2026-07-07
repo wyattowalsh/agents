@@ -1,0 +1,71 @@
+---
+name: "swift-concurrency-expert"
+description: "Review and improve Swift concurrency code for actor isolation, Sendable, async/await, and Swift 6.2+ checks."
+title: "Swift Concurrency Expert"
+source_kind: "curated-external"
+source: "Dimillian/Skills"
+install_source: "Dimillian/Skills"
+install_command: "npx skills add Dimillian/Skills --skill swift-concurrency-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/Dimillian/Skills"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "05ba982bfeb0d77d3c97d4542b0ee15034d05f84"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Guidance for Swift concurrency code review and edits; build commands remain explicit."
+credential_behavior: "No credentials are required."
+network_access: "No network access is required by default."
+file_access: "Reads and edits Swift files only when implementation is requested."
+live_action_risk: "Concurrency changes can alter execution order and isolation; validate with compiler diagnostics and focused tests."
+risk_category: "apple-concurrency-review"
+dedupe_notes: "Raw indexes covered: 4"
+notes: "Review and improve Swift concurrency code for actor isolation, Sendable, async/await, and Swift 6.2+ checks."
+risk_notes: "Concurrency changes can alter execution order and isolation; validate with compiler diagnostics and focused tests."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, MIT license text, selected selector behavior, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found 16 selectors. Local Skills CLI installed swift-concurrency-expert into supported harness roots. Skills CLI risk output reported Gen Safe, Socket 0 alerts, and Snyk Low Risk. Upstream MIT license text was inspected at audited HEAD 05ba982bfeb0d77d3c97d4542b0ee15034d05f84."
+---
+
+# Swift Concurrency Expert
+
+This row promotes `Dimillian/Skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 4
+- Normalized URL: [https://github.com/Dimillian/Skills](https://github.com/Dimillian/Skills)
+- Selected skill: `swift-concurrency-expert`
+- Install command: `npx skills add Dimillian/Skills --skill swift-concurrency-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `05ba982bfeb0d77d3c97d4542b0ee15034d05f84`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add Dimillian/Skills --skill swift-concurrency-expert --dry-run -a codex`
+- Executed command: `npx --yes skills add Dimillian/Skills --skill github --skill ios-debugger-agent --skill macos-menubar-tuist-app --skill macos-spm-app-packaging --skill orchestrate-batch-refactor --skill review-and-simplify-changes --skill swift-concurrency-expert --skill swiftui-liquid-glass -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Installed path: `~/.agents/skills/swift-concurrency-expert`
+- Installed path: `~/.claude/skills/swift-concurrency-expert`
+- Installed path: `~/.config/crush/skills/swift-concurrency-expert`
+- Install evidence note: Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No credentials are required.
+- Network access: No network access is required by default.
+- File access: Reads and edits Swift files only when implementation is requested.
+- Live action risk: Concurrency changes can alter execution order and isolation; validate with compiler diagnostics and focused tests.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.

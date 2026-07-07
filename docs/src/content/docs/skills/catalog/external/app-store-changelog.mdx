@@ -1,0 +1,170 @@
+---
+title: "app-store-changelog"
+description: "Generate user-facing App Store release notes from git history while keeping App Store submission and release actions explicit."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="app-store-changelog"
+  description="Generate user-facing App Store release notes from git history while keeping App Store submission and release actions explicit."
+  installCommand={`npx skills add Dimillian/Skills --skill app-store-changelog -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installLabel="Install"
+  usage="/app-store-changelog"
+  badges={[{ text: "app-store-changelog", variant: "note" }, { text: "337 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/app-store-changelog.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add Dimillian/Skills --skill app-store-changelog -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: High Gen risk from shell-script guidance; run only in a trusted repo, review script contents first, and never submit App Store metadata automatically.
+
+| Field | Evidence |
+| --- | --- |
+| Audit date | 2026-07-07 |
+| Audited HEAD | 05ba982bfeb0d77d3c97d4542b0ee15034d05f84 |
+| Pin policy | pin-before-install |
+| No-pin rationale | The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates. |
+| Source-list evidence | source-list-found |
+| Executable surface | Reads git history and may call a repo-local release collection script only when explicitly invoked. |
+| Credential behavior | No App Store Connect credentials are required; do not submit releases or use private store credentials from this skill. |
+| Network access | No network access is required for the selected release-notes workflow. |
+| File access | Reads git history and repository files; output is prose release notes only unless the user asks to write a file. |
+| Live-action risk | High Gen risk from shell-script guidance; run only in a trusted repo, review script contents first, and never submit App Store metadata automatically. |
+| Risk category | app-store-release-notes-review |
+| Dedupe notes | Raw indexes covered: 4 |
+
+Entry maintained in authoring SSOT `docs/src/authoring/skills/app-store-changelog.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
+
+## What It Does
+
+This row promotes `Dimillian/Skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `Dimillian/Skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `app-store-changelog` |
+| License | MIT |
+  </TabItem>
+</Tabs>
+
+<details class="source-disclosure">
+<summary>View Full SKILL.md</summary>
+
+````yaml
+---
+name: "app-store-changelog"
+description: "Generate user-facing App Store release notes from git history while keeping App Store submission and release actions explicit."
+title: "App Store Changelog"
+source_kind: "curated-external"
+source: "Dimillian/Skills"
+install_source: "Dimillian/Skills"
+install_command: "npx skills add Dimillian/Skills --skill app-store-changelog -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+source_url: "https://github.com/Dimillian/Skills"
+selector_mode: "named"
+audit_date: "2026-07-07"
+audited_head: "05ba982bfeb0d77d3c97d4542b0ee15034d05f84"
+license: "MIT"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Reads git history and may call a repo-local release collection script only when explicitly invoked."
+credential_behavior: "No App Store Connect credentials are required; do not submit releases or use private store credentials from this skill."
+network_access: "No network access is required for the selected release-notes workflow."
+file_access: "Reads git history and repository files; output is prose release notes only unless the user asks to write a file."
+live_action_risk: "High Gen risk from shell-script guidance; run only in a trusted repo, review script contents first, and never submit App Store metadata automatically."
+risk_category: "app-store-release-notes-review"
+dedupe_notes: "Raw indexes covered: 4"
+notes: "Generate user-facing App Store release notes from git history while keeping App Store submission and release actions explicit."
+risk_notes: "High Gen risk from shell-script guidance; run only in a trusted repo, review script contents first, and never submit App Store metadata automatically."
+promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, MIT license text, selected selector behavior, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
+provenance_evidence: "Read-only source-list evidence found 16 selectors. Local Skills CLI installed app-store-changelog into supported harness roots. Skills CLI risk output reported Gen High Risk, Socket 0 alerts, and Snyk Low Risk. Upstream MIT license text was inspected at audited HEAD 05ba982bfeb0d77d3c97d4542b0ee15034d05f84."
+---
+
+# App Store Changelog
+
+This row promotes `Dimillian/Skills` from the July 2026 candidate corpus into an installable curated external skill.
+
+## Reviewed Integration
+
+- Raw indexes covered: 4
+- Normalized URL: [https://github.com/Dimillian/Skills](https://github.com/Dimillian/Skills)
+- Selected skill: `app-store-changelog`
+- Install command: `npx skills add Dimillian/Skills --skill app-store-changelog -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Inspected commit SHA: `05ba982bfeb0d77d3c97d4542b0ee15034d05f84`
+- License status: `MIT`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add Dimillian/Skills --skill app-store-changelog --dry-run -a codex`
+- Executed command: `npx --yes skills add Dimillian/Skills --skill app-store-changelog --skill swiftui-ui-patterns --skill swiftui-performance-audit --skill swiftui-view-refactor --skill react-component-performance --skill bug-hunt-swarm --skill review-swarm --skill project-skill-audit -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Installed path: `~/.agents/skills/app-store-changelog`
+- Installed path: `~/.claude/skills/app-store-changelog`
+- Installed path: `~/.config/crush/skills/app-store-changelog`
+- Install evidence note: Live commands installed the selected skill into supported Skills CLI harness roots; Grok uses the repo convention of consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+
+## Safety Notes
+
+- Credential behavior: No App Store Connect credentials are required; do not submit releases or use private store credentials from this skill.
+- Network access: No network access is required for the selected release-notes workflow.
+- File access: Reads git history and repository files; output is prose release notes only unless the user asks to write a file.
+- Live action risk: High Gen risk from shell-script guidance; run only in a trusted repo, review script contents first, and never submit App Store metadata automatically.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog promotion for the matching candidate-corpus intake row.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

@@ -5,9 +5,9 @@ const baseSiteData = {
     "customMcp": 16,
     "customSkills": 69,
     "externalMcp": 49,
-    "externalSkills": 615,
+    "externalSkills": 630,
     "mcpTools": 65,
-    "skills": 684,
+    "skills": 699,
     "supportedHarnesses": 9
   },
   "distributionPaths": [
@@ -190,9 +190,24 @@ const baseSiteData = {
         "source": "ComposioHQ/awesome-codex-skills"
       },
       {
-        "count": 1,
+        "count": 16,
         "skills": [
-          "candidate-corpus-004-skills"
+          "app-store-changelog",
+          "bug-hunt-swarm",
+          "github",
+          "ios-debugger-agent",
+          "macos-menubar-tuist-app",
+          "macos-spm-app-packaging",
+          "orchestrate-batch-refactor",
+          "project-skill-audit",
+          "react-component-performance",
+          "review-and-simplify-changes",
+          "review-swarm",
+          "swift-concurrency-expert",
+          "swiftui-liquid-glass",
+          "swiftui-performance-audit",
+          "swiftui-ui-patterns",
+          "swiftui-view-refactor"
         ],
         "source": "Dimillian/Skills"
       },
@@ -2282,10 +2297,9 @@ const baseSiteData = {
         "status": "catalog-reference"
       },
       {
-        "count": 261,
+        "count": 260,
         "skills": [
           "anthropics-skills-all",
-          "candidate-corpus-004-skills",
           "candidate-corpus-005-terraform-skill",
           "candidate-corpus-006-mcp-excalidraw",
           "candidate-corpus-007-skills",
@@ -2725,7 +2739,7 @@ const baseSiteData = {
         "status": "inspect-then-install"
       },
       {
-        "count": 178,
+        "count": 194,
         "skills": [
           "a11y-debugging",
           "ab-testing",
@@ -2740,6 +2754,7 @@ const baseSiteData = {
           "apollo-server",
           "app-intents",
           "app-store-aso",
+          "app-store-changelog",
           "appkit-accessibility-auditor",
           "axiom-design",
           "background-execution",
@@ -2747,6 +2762,7 @@ const baseSiteData = {
           "better-auth-best-practices",
           "biome-developer",
           "brainstorming",
+          "bug-hunt-swarm",
           "canvas-design",
           "changelog-automation",
           "chrome-devtools",
@@ -2784,6 +2800,7 @@ const baseSiteData = {
           "flutter-setup-declarative-routing",
           "flutter-setup-localization",
           "frontend-slides",
+          "github",
           "gitops-workflow",
           "graphql-operations",
           "graphql-schema",
@@ -2792,6 +2809,7 @@ const baseSiteData = {
           "html",
           "improve-codebase-architecture",
           "ios-accessibility",
+          "ios-debugger-agent",
           "k8s-manifest-generator",
           "k8s-security-policies",
           "langchain-architecture",
@@ -2799,6 +2817,8 @@ const baseSiteData = {
           "launch",
           "llm-evaluation",
           "logging-best-practices",
+          "macos-menubar-tuist-app",
+          "macos-spm-app-packaging",
           "marketing-ideas",
           "marketing-psychology",
           "memory-leak-debugging",
@@ -2817,6 +2837,7 @@ const baseSiteData = {
           "onboarding",
           "open-websearch",
           "openapi-spec-generation",
+          "orchestrate-batch-refactor",
           "paywalls",
           "pbi-report-design",
           "performance",
@@ -2833,14 +2854,18 @@ const baseSiteData = {
           "prisma-upgrade-v7",
           "product-marketing",
           "programmatic-seo",
+          "project-skill-audit",
           "pulumi-automation-api",
           "pulumi-best-practices",
           "pulumi-component",
           "pulumi-esc",
           "raster-logo-svg",
+          "react-component-performance",
           "redis-core",
           "remotion-best-practices",
           "remotion-video-builder",
+          "review-and-simplify-changes",
+          "review-swarm",
           "revops",
           "roadmap-update",
           "rover",
@@ -2861,6 +2886,7 @@ const baseSiteData = {
           "swift-api-design-guidelines-skill",
           "swift-architecture-skill",
           "swift-concurrency",
+          "swift-concurrency-expert",
           "swift-concurrency-pro",
           "swift-focusengine-pro",
           "swift-format-style",
@@ -2873,6 +2899,10 @@ const baseSiteData = {
           "swiftui-accessibility-auditor",
           "swiftui-design-principles",
           "swiftui-expert-skill",
+          "swiftui-liquid-glass",
+          "swiftui-performance-audit",
+          "swiftui-ui-patterns",
+          "swiftui-view-refactor",
           "systematic-debugging",
           "tanstack-query-best-practices",
           "tanstack-router-best-practices",
@@ -3317,6 +3347,166 @@ const baseSiteData = {
           "slack-gif-creator"
         ],
         "source": "ComposioHQ/awesome-codex-skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill app-store-changelog -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "app-store-changelog"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill bug-hunt-swarm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "bug-hunt-swarm"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill github -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "github"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill ios-debugger-agent -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "ios-debugger-agent"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill macos-menubar-tuist-app -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "macos-menubar-tuist-app"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill macos-spm-app-packaging -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "macos-spm-app-packaging"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill orchestrate-batch-refactor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "orchestrate-batch-refactor"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill project-skill-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "project-skill-audit"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill react-component-performance -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "react-component-performance"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill review-and-simplify-changes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "review-and-simplify-changes"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill review-swarm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "review-swarm"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill swift-concurrency-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swift-concurrency-expert"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill swiftui-liquid-glass -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swiftui-liquid-glass"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill swiftui-performance-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swiftui-performance-audit"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill swiftui-ui-patterns -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swiftui-ui-patterns"
+        ],
+        "source": "Dimillian/Skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add Dimillian/Skills --skill swiftui-view-refactor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swiftui-view-refactor"
+        ],
+        "source": "Dimillian/Skills",
         "sourceType": "curated-external",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"

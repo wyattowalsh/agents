@@ -260,13 +260,6 @@
       "sourceType": "curated-external"
     },
     {
-      "description": "Trust-gated July 2026 candidate corpus entry for Dimillian/Skills.",
-      "href": "/skills/catalog/external/candidate-corpus-004-skills/",
-      "lane": "avoid",
-      "name": "candidate-corpus-004-skills",
-      "sourceType": "curated-external"
-    },
-    {
       "description": "Trust-gated July 2026 candidate corpus entry for Eronred/aso-skills.",
       "href": "/skills/catalog/external/candidate-corpus-012-aso-skills/",
       "lane": "avoid",
@@ -3141,6 +3134,118 @@
       "href": "/skills/catalog/external/slack-gif-creator/",
       "lane": "install-now",
       "name": "slack-gif-creator",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Generate user-facing App Store release notes from git history while keeping App Store submission and release actions explicit.",
+      "href": "/skills/catalog/external/app-store-changelog/",
+      "lane": "install-now",
+      "name": "app-store-changelog",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Coordinate read-only parallel root-cause investigation for bugs and regressions before any code edits.",
+      "href": "/skills/catalog/external/bug-hunt-swarm/",
+      "lane": "install-now",
+      "name": "bug-hunt-swarm",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use the GitHub CLI for issues, pull requests, workflow runs, and GitHub API queries with explicit credential boundaries.",
+      "href": "/skills/catalog/external/github/",
+      "lane": "install-now",
+      "name": "github",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Use XcodeBuildMCP to build, launch, inspect, and debug iOS apps on simulators with platform assumptions explicit.",
+      "href": "/skills/catalog/external/ios-debugger-agent/",
+      "lane": "install-now",
+      "name": "ios-debugger-agent",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Build and review SwiftUI macOS menu bar apps using Tuist while keeping signing, launch, and packaging explicit.",
+      "href": "/skills/catalog/external/macos-menubar-tuist-app/",
+      "lane": "install-now",
+      "name": "macos-menubar-tuist-app",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Scaffold, build, and package SwiftPM-based macOS apps with signing and notarization kept user-controlled.",
+      "href": "/skills/catalog/external/macos-spm-app-packaging/",
+      "lane": "install-now",
+      "name": "macos-spm-app-packaging",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Plan and coordinate large refactors with dependency-aware parallel agents and serialized mutation ownership.",
+      "href": "/skills/catalog/external/orchestrate-batch-refactor/",
+      "lane": "install-now",
+      "name": "orchestrate-batch-refactor",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Audit project history, memory, and local skills to recommend high-value skill updates without creating duplicates.",
+      "href": "/skills/catalog/external/project-skill-audit/",
+      "lane": "install-now",
+      "name": "project-skill-audit",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Diagnose and optimize React component render performance with profiler-backed validation.",
+      "href": "/skills/catalog/external/react-component-performance/",
+      "lane": "install-now",
+      "name": "react-component-performance",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Review changed code for reuse, clarity, quality, and safe simplification before applying focused fixes.",
+      "href": "/skills/catalog/external/review-and-simplify-changes/",
+      "lane": "install-now",
+      "name": "review-and-simplify-changes",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Run read-only parallel review of a diff or explicit scope for regressions, security, privacy, and test gaps.",
+      "href": "/skills/catalog/external/review-swarm/",
+      "lane": "install-now",
+      "name": "review-swarm",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Review and improve Swift concurrency code for actor isolation, Sendable, async/await, and Swift 6.2+ checks.",
+      "href": "/skills/catalog/external/swift-concurrency-expert/",
+      "lane": "install-now",
+      "name": "swift-concurrency-expert",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Implement or review SwiftUI Liquid Glass UI adoption with iOS 26+ availability and fallback assumptions explicit.",
+      "href": "/skills/catalog/external/swiftui-liquid-glass/",
+      "lane": "install-now",
+      "name": "swiftui-liquid-glass",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Audit SwiftUI performance problems from code and profiling evidence with iOS/macOS platform assumptions documented.",
+      "href": "/skills/catalog/external/swiftui-performance-audit/",
+      "lane": "install-now",
+      "name": "swiftui-performance-audit",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Apply modern SwiftUI UI, navigation, state, preview, and accessibility patterns for iOS/macOS apps.",
+      "href": "/skills/catalog/external/swiftui-ui-patterns/",
+      "lane": "install-now",
+      "name": "swiftui-ui-patterns",
+      "sourceType": "curated-external"
+    },
+    {
+      "description": "Refactor SwiftUI views into small, stable, testable components with clear state ownership.",
+      "href": "/skills/catalog/external/swiftui-view-refactor/",
+      "lane": "install-now",
+      "name": "swiftui-view-refactor",
       "sourceType": "curated-external"
     },
     {
