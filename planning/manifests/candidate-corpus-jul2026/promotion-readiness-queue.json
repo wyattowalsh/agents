@@ -1,13 +1,1190 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T07:08:01.695879+00:00",
-  "status": "all-targets-blocked-until-trust-gates",
+  "generated_at": "2026-07-07T08:10:47.954072+00:00",
+  "status": "existing-coverage-reconciled-with-trust-gated-backlog",
   "summary": {
     "unique_targets": 289,
+    "covered_by_existing_installable_catalog": 13,
     "ready_for_repo_promotion": 0,
     "ready_for_live_install": 0,
-    "blocked_until_trust_gates": 289
+    "blocked_until_trust_gates": 276
   },
+  "covered_by_existing_installable_catalog": [
+    {
+      "lane_id": "N066",
+      "normalized_url": "https://github.com/AvdLee/Swift-Concurrency-Agent-Skill",
+      "source_name": "AvdLee/Swift-Concurrency-Agent-Skill",
+      "raw_indexes": [
+        67
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "swift-concurrency",
+          "path": "docs/src/authoring/skills/swift-concurrency.mdx",
+          "source": "avdlee/swift-concurrency-agent-skill",
+          "install_source": "avdlee/swift-concurrency-agent-skill",
+          "source_url": "https://github.com/avdlee/swift-concurrency-agent-skill",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    },
+    {
+      "lane_id": "N095",
+      "normalized_url": "https://github.com/addyosmani/web-quality-skills",
+      "source_name": "addyosmani/web-quality-skills",
+      "raw_indexes": [
+        97
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "best-practices",
+          "path": "docs/src/authoring/skills/best-practices.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "core-web-vitals",
+          "path": "docs/src/authoring/skills/core-web-vitals.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "performance",
+          "path": "docs/src/authoring/skills/performance.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "seo",
+          "path": "docs/src/authoring/skills/seo.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "web-quality-audit",
+          "path": "docs/src/authoring/skills/web-quality-audit.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    },
+    {
+      "lane_id": "N005",
+      "normalized_url": "https://github.com/antonbabenko/terraform-skill",
+      "source_name": "antonbabenko/terraform-skill",
+      "raw_indexes": [
+        5,
+        56
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "terraform-skill",
+          "path": "docs/src/authoring/skills/terraform-skill.mdx",
+          "source": "antonbabenko/terraform-skill",
+          "install_source": "antonbabenko/terraform-skill",
+          "source_url": "https://github.com/antonbabenko/terraform-skill",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    },
+    {
+      "lane_id": "N007",
+      "normalized_url": "https://github.com/cloudflare/skills",
+      "source_name": "cloudflare/skills",
+      "raw_indexes": [
+        7
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "agents-sdk",
+          "path": "docs/src/authoring/skills/agents-sdk.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "cloudflare",
+          "path": "docs/src/authoring/skills/cloudflare.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "durable-objects",
+          "path": "docs/src/authoring/skills/durable-objects.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "workers-best-practices",
+          "path": "docs/src/authoring/skills/workers-best-practices.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "wrangler",
+          "path": "docs/src/authoring/skills/wrangler.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    },
+    {
+      "lane_id": "N138",
+      "normalized_url": "https://github.com/coreyhaines31/marketingskills",
+      "source_name": "coreyhaines31/marketingskills",
+      "raw_indexes": [
+        140
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "ab-testing",
+          "path": "docs/src/authoring/skills/ab-testing.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "ads",
+          "path": "docs/src/authoring/skills/ads.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "ai-seo",
+          "path": "docs/src/authoring/skills/ai-seo.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "analytics",
+          "path": "docs/src/authoring/skills/analytics.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "churn-prevention",
+          "path": "docs/src/authoring/skills/churn-prevention.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "cold-email",
+          "path": "docs/src/authoring/skills/cold-email.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "competitor-profiling",
+          "path": "docs/src/authoring/skills/competitor-profiling.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "content-strategy",
+          "path": "docs/src/authoring/skills/content-strategy.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "copywriting",
+          "path": "docs/src/authoring/skills/copywriting.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "cro",
+          "path": "docs/src/authoring/skills/cro.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "emails",
+          "path": "docs/src/authoring/skills/emails.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "launch",
+          "path": "docs/src/authoring/skills/launch.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "marketing-ideas",
+          "path": "docs/src/authoring/skills/marketing-ideas.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "marketing-psychology",
+          "path": "docs/src/authoring/skills/marketing-psychology.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "onboarding",
+          "path": "docs/src/authoring/skills/onboarding.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "paywalls",
+          "path": "docs/src/authoring/skills/paywalls.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "product-marketing",
+          "path": "docs/src/authoring/skills/product-marketing.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "programmatic-seo",
+          "path": "docs/src/authoring/skills/programmatic-seo.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "revops",
+          "path": "docs/src/authoring/skills/revops.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "schema",
+          "path": "docs/src/authoring/skills/schema.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "seo-audit",
+          "path": "docs/src/authoring/skills/seo-audit.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "signup",
+          "path": "docs/src/authoring/skills/signup.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "site-architecture",
+          "path": "docs/src/authoring/skills/site-architecture.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "video",
+          "path": "docs/src/authoring/skills/video.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    },
+    {
+      "lane_id": "N117",
+      "normalized_url": "https://github.com/google/skills",
+      "source_name": "google/skills",
+      "raw_indexes": [
+        119
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "gemini-api",
+          "path": "docs/src/authoring/skills/gemini-api.mdx",
+          "source": "google/skills",
+          "install_source": "google/skills",
+          "source_url": "https://github.com/google/skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    },
+    {
+      "lane_id": "N137",
+      "normalized_url": "https://github.com/kepano/obsidian-skills",
+      "source_name": "kepano/obsidian-skills",
+      "raw_indexes": [
+        139
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "obsidian-cli",
+          "path": "docs/src/authoring/skills/obsidian-cli.mdx",
+          "source": "kepano/obsidian-skills",
+          "install_source": "kepano/obsidian-skills",
+          "source_url": "https://github.com/kepano/obsidian-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "obsidian-markdown",
+          "path": "docs/src/authoring/skills/obsidian-markdown.mdx",
+          "source": "kepano/obsidian-skills",
+          "install_source": "kepano/obsidian-skills",
+          "source_url": "https://github.com/kepano/obsidian-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    },
+    {
+      "lane_id": "N040",
+      "normalized_url": "https://github.com/langchain-ai/langchain-skills",
+      "source_name": "langchain-ai/langchain-skills",
+      "raw_indexes": [
+        40
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "deep-agents-core",
+          "path": "docs/src/authoring/skills/deep-agents-core.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "deep-agents-memory",
+          "path": "docs/src/authoring/skills/deep-agents-memory.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "deep-agents-orchestration",
+          "path": "docs/src/authoring/skills/deep-agents-orchestration.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "ecosystem-primer",
+          "path": "docs/src/authoring/skills/ecosystem-primer.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langchain-dependencies",
+          "path": "docs/src/authoring/skills/langchain-dependencies.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langchain-fundamentals",
+          "path": "docs/src/authoring/skills/langchain-fundamentals.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langchain-middleware",
+          "path": "docs/src/authoring/skills/langchain-middleware.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langchain-rag",
+          "path": "docs/src/authoring/skills/langchain-rag.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langgraph-fundamentals",
+          "path": "docs/src/authoring/skills/langgraph-fundamentals.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langgraph-human-in-the-loop",
+          "path": "docs/src/authoring/skills/langgraph-human-in-the-loop.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langgraph-persistence",
+          "path": "docs/src/authoring/skills/langgraph-persistence.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "managed-deep-agents",
+          "path": "docs/src/authoring/skills/managed-deep-agents.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    },
+    {
+      "lane_id": "N280",
+      "normalized_url": "https://github.com/planetscale/database-skills",
+      "source_name": "planetscale/database-skills",
+      "raw_indexes": [
+        283
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "mysql",
+          "path": "docs/src/authoring/skills/mysql.mdx",
+          "source": "planetscale/database-skills",
+          "install_source": "planetscale/database-skills",
+          "source_url": "https://github.com/planetscale/database-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "postgres",
+          "path": "docs/src/authoring/skills/postgres.mdx",
+          "source": "planetscale/database-skills",
+          "install_source": "planetscale/database-skills",
+          "source_url": "https://github.com/planetscale/database-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    },
+    {
+      "lane_id": "N106",
+      "normalized_url": "https://github.com/remotion-dev/skills",
+      "source_name": "remotion-dev/skills",
+      "raw_indexes": [
+        108
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "remotion-best-practices",
+          "path": "docs/src/authoring/skills/remotion-best-practices.mdx",
+          "source": "remotion-dev/skills",
+          "install_source": "remotion-dev/skills",
+          "source_url": "https://github.com/remotion-dev/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    },
+    {
+      "lane_id": "N094",
+      "normalized_url": "https://github.com/samber/cc-skills-golang",
+      "source_name": "samber/cc-skills-golang",
+      "raw_indexes": [
+        96
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "golang-benchmark",
+          "path": "docs/src/authoring/skills/golang-benchmark.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-cli",
+          "path": "docs/src/authoring/skills/golang-cli.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-concurrency",
+          "path": "docs/src/authoring/skills/golang-concurrency.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-database",
+          "path": "docs/src/authoring/skills/golang-database.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-error-handling",
+          "path": "docs/src/authoring/skills/golang-error-handling.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-graphql",
+          "path": "docs/src/authoring/skills/golang-graphql.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-grpc",
+          "path": "docs/src/authoring/skills/golang-grpc.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-how-to",
+          "path": "docs/src/authoring/skills/golang-how-to.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-lint",
+          "path": "docs/src/authoring/skills/golang-lint.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-modernize",
+          "path": "docs/src/authoring/skills/golang-modernize.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-observability",
+          "path": "docs/src/authoring/skills/golang-observability.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-performance",
+          "path": "docs/src/authoring/skills/golang-performance.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-popular-libraries",
+          "path": "docs/src/authoring/skills/golang-popular-libraries.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-project-layout",
+          "path": "docs/src/authoring/skills/golang-project-layout.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-safety",
+          "path": "docs/src/authoring/skills/golang-safety.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-security",
+          "path": "docs/src/authoring/skills/golang-security.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-spf13-cobra",
+          "path": "docs/src/authoring/skills/golang-spf13-cobra.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-spf13-viper",
+          "path": "docs/src/authoring/skills/golang-spf13-viper.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-stretchr-testify",
+          "path": "docs/src/authoring/skills/golang-stretchr-testify.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-testing",
+          "path": "docs/src/authoring/skills/golang-testing.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-troubleshooting",
+          "path": "docs/src/authoring/skills/golang-troubleshooting.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    },
+    {
+      "lane_id": "N092",
+      "normalized_url": "https://github.com/supabase/agent-skills",
+      "source_name": "supabase/agent-skills",
+      "raw_indexes": [
+        94
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "supabase-postgres-best-practices",
+          "path": "docs/src/authoring/skills/supabase-postgres-best-practices.mdx",
+          "source": "supabase/agent-skills",
+          "install_source": "supabase/agent-skills",
+          "source_url": "https://github.com/supabase/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "supabase",
+          "path": "docs/src/authoring/skills/supabase.mdx",
+          "source": "supabase/agent-skills",
+          "install_source": "supabase/agent-skills",
+          "source_url": "https://github.com/supabase/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    },
+    {
+      "lane_id": "N141",
+      "normalized_url": "https://github.com/vercel-labs/agent-skills",
+      "source_name": "vercel-labs/agent-skills",
+      "raw_indexes": [
+        143
+      ],
+      "current_intake_decision": "merge_into_existing",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "risk_tier": "standard-review",
+      "auth_required": false,
+      "blocking_gates": [],
+      "live_install_eligible": false,
+      "install_command": "",
+      "repo_mutation_eligible": false,
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "deploy-to-vercel",
+          "path": "docs/src/authoring/skills/deploy-to-vercel.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-composition-patterns",
+          "path": "docs/src/authoring/skills/vercel-composition-patterns.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-optimize",
+          "path": "docs/src/authoring/skills/vercel-optimize.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-react-best-practices",
+          "path": "docs/src/authoring/skills/vercel-react-best-practices.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-react-native-skills",
+          "path": "docs/src/authoring/skills/vercel-react-native-skills.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-react-view-transitions",
+          "path": "docs/src/authoring/skills/vercel-react-view-transitions.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "reason": "Candidate source is already represented by existing installable curated catalog rows."
+    }
+  ],
   "ready_for_repo_promotion": [],
   "ready_for_live_install": [],
   "blocked_until_trust_gates": [
@@ -33,7 +1210,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N275",
@@ -57,7 +1235,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N078",
@@ -81,7 +1260,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N056",
@@ -105,7 +1285,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N112",
@@ -129,7 +1310,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N139",
@@ -153,7 +1335,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N060",
@@ -177,7 +1360,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N081",
@@ -201,31 +1385,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
-    },
-    {
-      "lane_id": "N066",
-      "normalized_url": "https://github.com/AvdLee/Swift-Concurrency-Agent-Skill",
-      "source_name": "AvdLee/Swift-Concurrency-Agent-Skill",
-      "raw_indexes": [
-        67
-      ],
-      "current_intake_decision": "merge_into_existing",
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "risk_tier": "standard-review",
-      "auth_required": false,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N069",
@@ -249,7 +1410,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N167",
@@ -273,7 +1435,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N045",
@@ -297,7 +1460,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N029",
@@ -321,7 +1485,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N096",
@@ -345,7 +1510,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N147",
@@ -369,7 +1535,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N126",
@@ -393,7 +1560,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N132",
@@ -417,7 +1585,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N128",
@@ -441,7 +1610,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N133",
@@ -465,7 +1635,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N134",
@@ -489,7 +1660,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N136",
@@ -513,7 +1685,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N125",
@@ -537,7 +1710,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N270",
@@ -561,7 +1735,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N120",
@@ -585,7 +1760,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N121",
@@ -609,7 +1785,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N148",
@@ -633,7 +1810,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N123",
@@ -657,7 +1835,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N146",
@@ -681,7 +1860,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N135",
@@ -705,7 +1885,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N269",
@@ -729,7 +1910,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N122",
@@ -753,7 +1935,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N124",
@@ -777,7 +1960,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N145",
@@ -801,7 +1985,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N149",
@@ -825,7 +2010,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N131",
@@ -849,7 +2035,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N150",
@@ -873,7 +2060,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N004",
@@ -897,7 +2085,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N070",
@@ -921,7 +2110,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N012",
@@ -945,7 +2135,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N175",
@@ -969,7 +2160,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N038",
@@ -993,7 +2185,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N166",
@@ -1017,7 +2210,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N034",
@@ -1041,7 +2235,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N107",
@@ -1065,7 +2260,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N287",
@@ -1089,7 +2285,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N008",
@@ -1113,7 +2310,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N054",
@@ -1137,7 +2335,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N035",
@@ -1161,7 +2360,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N279",
@@ -1185,7 +2385,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N282",
@@ -1209,7 +2410,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N055",
@@ -1233,7 +2435,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N184",
@@ -1257,7 +2460,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N127",
@@ -1281,7 +2485,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N170",
@@ -1305,7 +2510,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N130",
@@ -1330,7 +2536,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N114",
@@ -1354,7 +2561,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N091",
@@ -1378,7 +2586,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N105",
@@ -1402,7 +2611,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N178",
@@ -1426,7 +2636,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N011",
@@ -1450,7 +2661,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N155",
@@ -1474,7 +2686,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N174",
@@ -1498,7 +2711,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N073",
@@ -1522,7 +2736,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N109",
@@ -1546,7 +2761,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N161",
@@ -1570,7 +2786,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N097",
@@ -1594,7 +2811,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N001",
@@ -1618,7 +2836,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N192",
@@ -1642,7 +2861,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N100",
@@ -1666,7 +2886,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N017",
@@ -1690,7 +2911,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N181",
@@ -1714,7 +2936,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N052",
@@ -1738,7 +2961,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N027",
@@ -1762,7 +2986,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N062",
@@ -1786,7 +3011,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N203",
@@ -1810,7 +3036,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N014",
@@ -1834,7 +3061,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N009",
@@ -1858,7 +3086,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N093",
@@ -1882,7 +3111,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N018",
@@ -1906,31 +3136,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
-    },
-    {
-      "lane_id": "N095",
-      "normalized_url": "https://github.com/addyosmani/web-quality-skills",
-      "source_name": "addyosmani/web-quality-skills",
-      "raw_indexes": [
-        97
-      ],
-      "current_intake_decision": "merge_into_existing",
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "risk_tier": "standard-review",
-      "auth_required": false,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N046",
@@ -1954,7 +3161,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N059",
@@ -1978,7 +3186,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N033",
@@ -2002,7 +3211,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N086",
@@ -2026,32 +3236,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
-    },
-    {
-      "lane_id": "N005",
-      "normalized_url": "https://github.com/antonbabenko/terraform-skill",
-      "source_name": "antonbabenko/terraform-skill",
-      "raw_indexes": [
-        5,
-        56
-      ],
-      "current_intake_decision": "merge_into_existing",
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "risk_tier": "standard-review",
-      "auth_required": false,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N159",
@@ -2075,7 +3261,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N090",
@@ -2099,7 +3286,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N003",
@@ -2123,7 +3311,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N039",
@@ -2147,7 +3336,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N171",
@@ -2171,7 +3361,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N165",
@@ -2195,7 +3386,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N168",
@@ -2219,7 +3411,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N160",
@@ -2243,7 +3436,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N196",
@@ -2267,7 +3461,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N025",
@@ -2291,7 +3486,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N068",
@@ -2315,7 +3511,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N058",
@@ -2339,31 +3536,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
-    },
-    {
-      "lane_id": "N007",
-      "normalized_url": "https://github.com/cloudflare/skills",
-      "source_name": "cloudflare/skills",
-      "raw_indexes": [
-        7
-      ],
-      "current_intake_decision": "merge_into_existing",
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "risk_tier": "standard-review",
-      "auth_required": false,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N022",
@@ -2388,31 +3562,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
-    },
-    {
-      "lane_id": "N138",
-      "normalized_url": "https://github.com/coreyhaines31/marketingskills",
-      "source_name": "coreyhaines31/marketingskills",
-      "raw_indexes": [
-        140
-      ],
-      "current_intake_decision": "merge_into_existing",
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "risk_tier": "standard-review",
-      "auth_required": false,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N072",
@@ -2436,7 +3587,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N085",
@@ -2460,7 +3612,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N036",
@@ -2484,7 +3637,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N053",
@@ -2508,7 +3662,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N108",
@@ -2532,7 +3687,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N190",
@@ -2556,7 +3712,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N013",
@@ -2580,7 +3737,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N028",
@@ -2604,7 +3762,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N042",
@@ -2628,7 +3787,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N110",
@@ -2652,7 +3812,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N079",
@@ -2676,7 +3837,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N063",
@@ -2700,7 +3862,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N057",
@@ -2724,7 +3887,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N274",
@@ -2748,7 +3912,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N099",
@@ -2772,7 +3937,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N102",
@@ -2796,7 +3962,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N176",
@@ -2820,7 +3987,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N048",
@@ -2844,7 +4012,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N043",
@@ -2868,7 +4037,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N158",
@@ -2892,31 +4062,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
-    },
-    {
-      "lane_id": "N117",
-      "normalized_url": "https://github.com/google/skills",
-      "source_name": "google/skills",
-      "raw_indexes": [
-        119
-      ],
-      "current_intake_decision": "merge_into_existing",
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "risk_tier": "standard-review",
-      "auth_required": false,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N140",
@@ -2940,7 +4087,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N187",
@@ -2964,7 +4112,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N281",
@@ -2988,7 +4137,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N115",
@@ -3012,7 +4162,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N191",
@@ -3036,7 +4187,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N162",
@@ -3060,7 +4212,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N164",
@@ -3084,7 +4237,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N163",
@@ -3108,7 +4262,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N268",
@@ -3132,7 +4287,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N154",
@@ -3156,7 +4312,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N101",
@@ -3180,7 +4337,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N113",
@@ -3204,7 +4362,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N118",
@@ -3228,7 +4387,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N272",
@@ -3252,7 +4412,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N030",
@@ -3276,7 +4437,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N026",
@@ -3300,7 +4462,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N083",
@@ -3324,7 +4487,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N089",
@@ -3348,7 +4512,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N084",
@@ -3372,7 +4537,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N202",
@@ -3396,7 +4562,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N179",
@@ -3420,7 +4587,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N169",
@@ -3444,31 +4612,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
-    },
-    {
-      "lane_id": "N137",
-      "normalized_url": "https://github.com/kepano/obsidian-skills",
-      "source_name": "kepano/obsidian-skills",
-      "raw_indexes": [
-        139
-      ],
-      "current_intake_decision": "merge_into_existing",
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "risk_tier": "standard-review",
-      "auth_required": false,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N277",
@@ -3492,7 +4637,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N031",
@@ -3516,31 +4662,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
-    },
-    {
-      "lane_id": "N040",
-      "normalized_url": "https://github.com/langchain-ai/langchain-skills",
-      "source_name": "langchain-ai/langchain-skills",
-      "raw_indexes": [
-        40
-      ],
-      "current_intake_decision": "merge_into_existing",
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "risk_tier": "standard-review",
-      "auth_required": false,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N050",
@@ -3564,7 +4687,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N032",
@@ -3588,7 +4712,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N194",
@@ -3612,7 +4737,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N103",
@@ -3636,7 +4762,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N283",
@@ -3660,7 +4787,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N186",
@@ -3684,7 +4812,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N061",
@@ -3708,7 +4837,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N049",
@@ -3732,7 +4862,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N082",
@@ -3756,7 +4887,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N195",
@@ -3780,7 +4912,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N116",
@@ -3804,7 +4937,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N200",
@@ -3828,7 +4962,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N273",
@@ -3852,7 +4987,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N152",
@@ -3876,7 +5012,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N153",
@@ -3900,7 +5037,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N188",
@@ -3924,7 +5062,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N151",
@@ -3948,7 +5087,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N075",
@@ -3972,7 +5112,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N080",
@@ -3996,7 +5137,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N071",
@@ -4020,7 +5162,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N087",
@@ -4044,7 +5187,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N189",
@@ -4068,7 +5212,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N111",
@@ -4092,7 +5237,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N104",
@@ -4116,7 +5262,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N284",
@@ -4140,7 +5287,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N023",
@@ -4164,7 +5312,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N016",
@@ -4188,7 +5337,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N271",
@@ -4212,7 +5362,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N276",
@@ -4236,7 +5387,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N237",
@@ -4260,7 +5412,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N238",
@@ -4284,7 +5437,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N285",
@@ -4308,7 +5462,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N286",
@@ -4332,7 +5487,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N239",
@@ -4356,7 +5512,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N240",
@@ -4380,7 +5537,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N241",
@@ -4404,7 +5562,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N242",
@@ -4428,7 +5587,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N243",
@@ -4452,7 +5612,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N244",
@@ -4476,7 +5637,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N245",
@@ -4500,7 +5662,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N246",
@@ -4524,7 +5687,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N247",
@@ -4548,7 +5712,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N248",
@@ -4572,7 +5737,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N249",
@@ -4596,7 +5762,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N250",
@@ -4620,7 +5787,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N288",
@@ -4644,7 +5812,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N289",
@@ -4668,7 +5837,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N251",
@@ -4692,7 +5862,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N252",
@@ -4716,7 +5887,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N253",
@@ -4740,7 +5912,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N254",
@@ -4764,7 +5937,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N255",
@@ -4788,7 +5962,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N256",
@@ -4812,7 +5987,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N257",
@@ -4836,7 +6012,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N258",
@@ -4860,7 +6037,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N259",
@@ -4884,7 +6062,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N260",
@@ -4908,7 +6087,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N261",
@@ -4932,7 +6112,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N262",
@@ -4956,7 +6137,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N263",
@@ -4980,7 +6162,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N264",
@@ -5004,7 +6187,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N265",
@@ -5028,7 +6212,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N266",
@@ -5052,7 +6237,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N267",
@@ -5076,7 +6262,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N198",
@@ -5100,7 +6287,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N197",
@@ -5124,7 +6312,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N199",
@@ -5148,7 +6337,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N204",
@@ -5172,7 +6362,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N205",
@@ -5196,7 +6387,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N206",
@@ -5220,7 +6412,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N207",
@@ -5244,7 +6437,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N208",
@@ -5268,7 +6462,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N209",
@@ -5292,7 +6487,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N210",
@@ -5316,7 +6512,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N211",
@@ -5340,7 +6537,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N212",
@@ -5364,7 +6562,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N213",
@@ -5388,7 +6587,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N214",
@@ -5412,7 +6612,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N215",
@@ -5436,7 +6637,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N216",
@@ -5460,7 +6662,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N217",
@@ -5484,7 +6687,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N218",
@@ -5508,7 +6712,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N219",
@@ -5532,7 +6737,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N220",
@@ -5556,7 +6762,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N221",
@@ -5580,7 +6787,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N222",
@@ -5604,7 +6812,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N223",
@@ -5628,7 +6837,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N224",
@@ -5652,7 +6862,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N225",
@@ -5676,7 +6887,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N226",
@@ -5700,7 +6912,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N227",
@@ -5724,7 +6937,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N228",
@@ -5748,7 +6962,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N229",
@@ -5772,7 +6987,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N230",
@@ -5796,7 +7012,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N231",
@@ -5820,7 +7037,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N232",
@@ -5844,7 +7062,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N233",
@@ -5868,7 +7087,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N234",
@@ -5892,7 +7112,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N235",
@@ -5916,7 +7137,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N236",
@@ -5940,7 +7162,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N143",
@@ -5964,31 +7187,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
-    },
-    {
-      "lane_id": "N280",
-      "normalized_url": "https://github.com/planetscale/database-skills",
-      "source_name": "planetscale/database-skills",
-      "raw_indexes": [
-        283
-      ],
-      "current_intake_decision": "merge_into_existing",
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "risk_tier": "standard-review",
-      "auth_required": false,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N021",
@@ -6012,7 +7212,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N020",
@@ -6036,7 +7237,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N156",
@@ -6060,7 +7262,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N051",
@@ -6085,31 +7288,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
-    },
-    {
-      "lane_id": "N106",
-      "normalized_url": "https://github.com/remotion-dev/skills",
-      "source_name": "remotion-dev/skills",
-      "raw_indexes": [
-        108
-      ],
-      "current_intake_decision": "merge_into_existing",
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "risk_tier": "standard-review",
-      "auth_required": false,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N074",
@@ -6133,7 +7313,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N024",
@@ -6157,7 +7338,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N076",
@@ -6181,7 +7363,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N201",
@@ -6205,31 +7388,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
-    },
-    {
-      "lane_id": "N094",
-      "normalized_url": "https://github.com/samber/cc-skills-golang",
-      "source_name": "samber/cc-skills-golang",
-      "raw_indexes": [
-        96
-      ],
-      "current_intake_decision": "merge_into_existing",
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "risk_tier": "standard-review",
-      "auth_required": false,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N182",
@@ -6253,7 +7413,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N157",
@@ -6277,7 +7438,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N037",
@@ -6301,7 +7463,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N180",
@@ -6325,7 +7488,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N173",
@@ -6349,31 +7513,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
-    },
-    {
-      "lane_id": "N092",
-      "normalized_url": "https://github.com/supabase/agent-skills",
-      "source_name": "supabase/agent-skills",
-      "raw_indexes": [
-        94
-      ],
-      "current_intake_decision": "merge_into_existing",
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "risk_tier": "standard-review",
-      "auth_required": false,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N144",
@@ -6397,7 +7538,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N172",
@@ -6421,7 +7563,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N077",
@@ -6445,7 +7588,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N010",
@@ -6469,7 +7613,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N047",
@@ -6493,7 +7638,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N019",
@@ -6517,7 +7663,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N098",
@@ -6541,7 +7688,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N065",
@@ -6565,7 +7713,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N067",
@@ -6589,7 +7738,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N088",
@@ -6613,7 +7763,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N002",
@@ -6637,7 +7788,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N064",
@@ -6661,31 +7813,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
-    },
-    {
-      "lane_id": "N141",
-      "normalized_url": "https://github.com/vercel-labs/agent-skills",
-      "source_name": "vercel-labs/agent-skills",
-      "raw_indexes": [
-        143
-      ],
-      "current_intake_decision": "merge_into_existing",
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "risk_tier": "standard-review",
-      "auth_required": false,
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
-      "live_install_eligible": false,
-      "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N278",
@@ -6709,7 +7838,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N177",
@@ -6733,7 +7863,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N129",
@@ -6757,7 +7888,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N183",
@@ -6781,7 +7913,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N193",
@@ -6805,7 +7938,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N006",
@@ -6829,7 +7963,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N119",
@@ -6853,7 +7988,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N185",
@@ -6877,7 +8013,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N142",
@@ -6901,7 +8038,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N015",
@@ -6925,7 +8063,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     },
     {
       "lane_id": "N044",
@@ -6949,7 +8088,8 @@
       ],
       "live_install_eligible": false,
       "install_command": "",
-      "repo_mutation_eligible": false
+      "repo_mutation_eligible": false,
+      "terminal_status": "blocked-until-trust-gates"
     }
   ]
 }

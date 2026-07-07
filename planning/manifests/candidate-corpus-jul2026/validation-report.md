@@ -19,16 +19,17 @@
 - GitHub metadata status: ok=292, unavailable=1
 - GitHub license labels detected: 9
 - Existing integration coverage: covered-by-existing-installable-catalog=13, covered-by-existing-reference=1, needs-promotion-review=275
+- Covered by existing installable catalog rows: 13
 - Promotion waves: W00=13, W01=15, W02=28, W03=27, W04=22, W05=26, W06=21, W07=30, W08=102, W99=5
 - Full integration phase: `research-graph-ready`
-- Live install status: `blocked-until-trust-gates`
+- Live install status: `no-new-live-installs-eligible`
 
 ## Observed Generated Evidence
 
 - Generator emitted manifest, matrix, packet, report, and catalog-authoring artifacts from local inputs.
 - Candidate code was not installed, executed, vendored, adapted, or enabled.
 - Live install command preview emitted 0 commands.
-- Trust gates remain open for source-list evidence, license, security, attribution, auth, docs-steward, and target-specific validation.
+- Trust gates remain open for blocked targets; existing installable catalog rows are credited without new live install commands.
 
 ## Command Checklist
 

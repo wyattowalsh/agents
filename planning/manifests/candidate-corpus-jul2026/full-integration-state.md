@@ -9,8 +9,9 @@
 - Total leaf checks: 7879
 - Live install eligible: 0
 - Existing integration coverage: covered-by-existing-installable-catalog=13, covered-by-existing-reference=1, needs-promotion-review=275
+- Covered by existing installable catalog rows: 13
 - Ready for repo promotion: 0
-- Blocked until trust gates: 289
+- Blocked until trust gates: 276
 
 ## Promotion Waves
 
@@ -27,11 +28,11 @@
 
 ## Current Gate
 
-Every candidate is represented, but live install and repo-native promotion remain blocked until source-list, license, security, attribution, auth, and docs-steward gates pass.
+Every candidate is represented. Existing installable catalog rows cover the W00 targets; remaining live install and repo-native promotion work stays blocked until source-list, license, security, attribution, auth, and docs-steward gates pass.
 
 ## Next Actions
 
-- Dispatch read-only source research packets for each U### lane.
-- Promote only the N### targets whose raw lanes pass trust gates.
+- Dispatch read-only source research packets for blocked U### lanes.
+- Promote only the blocked N### targets whose raw lanes pass trust gates.
 - Regenerate docs-steward surfaces after each promotion wave.
 - Run focused validation and commit each validated wave if still authorized.

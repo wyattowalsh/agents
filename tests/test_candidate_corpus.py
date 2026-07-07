@@ -363,10 +363,11 @@ def test_full_integration_progress_and_packet_schema_are_trust_gated() -> None:
     assert progress["raw_candidates"] == 293
     assert progress["unique_normalized_targets"] == 289
     assert progress["live_install"]["eligible_count"] == 0
-    assert progress["live_install"]["status"] == "blocked-until-trust-gates"
+    assert progress["live_install"]["status"] == "no-new-live-installs-eligible"
+    assert progress["promotion_readiness"]["covered_by_existing_installable_catalog"] == 13
     assert progress["promotion_readiness"]["ready_for_repo_promotion"] == 0
     assert progress["promotion_readiness"]["ready_for_live_install"] == 0
-    assert progress["promotion_readiness"]["blocked_until_trust_gates"] == 289
+    assert progress["promotion_readiness"]["blocked_until_trust_gates"] == 276
 
     required_fields = {
         "raw_index",
@@ -389,7 +390,7 @@ def test_full_integration_progress_and_packet_schema_are_trust_gated() -> None:
     assert set(schema["required_packet_fields"]) >= required_fields
     assert set(schema["raw_leaf_check_suffixes"]) == RAW_RESEARCH_SUFFIXES
     assert set(schema["unique_synthesis_leaf_check_suffixes"]) == UNIQUE_SYNTHESIS_SUFFIXES
-    assert "live install and repo-native promotion remain blocked" in state_report
+    assert "Existing installable catalog rows cover the W00 targets" in state_report
 
 
 def test_subagent_wave_queue_covers_every_raw_entry_read_only() -> None:
@@ -413,19 +414,30 @@ def test_promotion_readiness_queue_blocks_live_install_until_trust_gates() -> No
     readiness = _load_json(MANIFEST_DIR / "promotion-readiness-queue.json")
     progress = _load_json(MANIFEST_DIR / "full-integration-progress.json")
 
-    assert readiness["status"] == "all-targets-blocked-until-trust-gates"
+    assert readiness["status"] == "existing-coverage-reconciled-with-trust-gated-backlog"
     assert readiness["summary"] == {
         "unique_targets": 289,
+        "covered_by_existing_installable_catalog": 13,
         "ready_for_repo_promotion": 0,
         "ready_for_live_install": 0,
-        "blocked_until_trust_gates": 289,
+        "blocked_until_trust_gates": 276,
     }
+    assert len(readiness["covered_by_existing_installable_catalog"]) == 13
     assert readiness["ready_for_repo_promotion"] == []
     assert readiness["ready_for_live_install"] == []
-    assert len(readiness["blocked_until_trust_gates"]) == 289
+    assert len(readiness["blocked_until_trust_gates"]) == 276
     assert progress["promotion_readiness"] == readiness["summary"]
 
+    for item in readiness["covered_by_existing_installable_catalog"]:
+        assert item["terminal_status"] == "covered-by-existing-installable-catalog"
+        assert item["live_install_eligible"] is False
+        assert item["repo_mutation_eligible"] is False
+        assert item["install_command"] == ""
+        assert item["existing_rows"]
+        assert item["blocking_gates"] == []
+
     for item in readiness["blocked_until_trust_gates"]:
+        assert item["terminal_status"] == "blocked-until-trust-gates"
         assert item["live_install_eligible"] is False
         assert item["repo_mutation_eligible"] is False
         assert item["install_command"] == ""
@@ -510,7 +522,10 @@ def test_promotion_research_packets_cover_every_raw_and_unique_target() -> None:
         assert packet["packet_id"] == f"U{packet['raw_index']:03d}"
         assert packet["install_command"] == ""
         assert packet["live_install_eligible"] is False
-        assert "source-list evidence" in packet["blockers"]
+        if packet["existing_integration_status"] == "covered-by-existing-installable-catalog":
+            assert "source-list evidence" not in packet["blockers"]
+        else:
+            assert "source-list evidence" in packet["blockers"]
         assert {leaf["suffix"] for leaf in packet["leaf_checks"]} == RAW_RESEARCH_SUFFIXES
 
     for packet in unique_items:
@@ -528,16 +543,18 @@ def test_promotion_gate_matrix_and_install_preview_keep_live_installs_blocked() 
 
     assert matrix["summary"] == {
         "unique_targets": 289,
+        "covered_by_existing_installable_catalog": 13,
         "ready_for_repo_promotion": 0,
         "ready_for_live_install": 0,
-        "blocked_until_trust_gates": 289,
+        "blocked_until_trust_gates": 276,
     }
     assert len(matrix["items"]) == 289
     auth_counts = matrix["gate_status_counts"]["auth review"]
     assert sum(auth_counts.values()) == 289
     assert auth_counts["auth-required-review"] == sum(1 for item in matrix["items"] if item["auth_required"])
-    assert auth_counts["metadata-only-no-auth-detected"] == sum(
-        1 for item in matrix["items"] if not item["auth_required"]
+    assert (
+        auth_counts["metadata-only-no-auth-detected"] + auth_counts["existing-catalog-row-owns-auth-boundaries"]
+        == sum(1 for item in matrix["items"] if not item["auth_required"])
     )
     source_counts = matrix["gate_status_counts"]["source-list evidence"]
     assert source_counts == {
@@ -546,16 +563,25 @@ def test_promotion_gate_matrix_and_install_preview_keep_live_installs_blocked() 
         "source-list-found-pending-promotion-review": 223,
         "source-list-timeout-needs-retry": 32,
     }
-    assert matrix["gate_status_counts"]["live install"] == {"blocked": 289}
-    assert all(item["final_status"] == "blocked-until-trust-gates" for item in matrix["items"])
+    assert matrix["gate_status_counts"]["live install"] == {
+        "blocked": 276,
+        "no-new-live-install-command-emitted": 13,
+    }
+    final_counts = {
+        status: sum(1 for item in matrix["items"] if item["final_status"] == status)
+        for status in {item["final_status"] for item in matrix["items"]}
+    }
+    assert final_counts == {"blocked-until-trust-gates": 276, "covered-by-existing-installable-catalog": 13}
     assert not any(item["install_command"] for item in matrix["items"])
 
     assert preview["status"] == "no-live-install-commands-emitted"
     assert preview["command_count"] == 0
     assert preview["commands"] == []
-    assert preview["blocked_target_count"] == 289
-    assert len(preview["blocked_targets"]) == 289
-    assert "not proof of completed adaptation or installation" in summary
+    assert preview["covered_existing_target_count"] == 13
+    assert len(preview["covered_existing_targets"]) == 13
+    assert preview["blocked_target_count"] == 276
+    assert len(preview["blocked_targets"]) == 276
+    assert "remaining packet files are promotion work queues" in summary
 
 
 def test_promotion_packet_coverage_cli() -> None:

@@ -1,11 +1,12 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T06:50:01.576518+00:00",
+  "generated_at": "2026-07-07T08:11:00.806889+00:00",
   "summary": {
     "unique_targets": 289,
+    "covered_by_existing_installable_catalog": 13,
     "ready_for_repo_promotion": 0,
     "ready_for_live_install": 0,
-    "blocked_until_trust_gates": 289
+    "blocked_until_trust_gates": 276
   },
   "trust_gates": [
     "source-list evidence",
@@ -18,23 +19,29 @@
   ],
   "gate_status_counts": {
     "attribution review": {
-      "pending-source-specific-attribution-note": 289
+      "pending-source-specific-attribution-note": 276,
+      "existing-catalog-row-owns-attribution": 13
     },
     "auth review": {
-      "metadata-only-no-auth-detected": 240,
-      "auth-required-review": 49
+      "metadata-only-no-auth-detected": 227,
+      "auth-required-review": 49,
+      "existing-catalog-row-owns-auth-boundaries": 13
     },
     "docs-steward promotion": {
-      "catalog-intake-present-final-docs-pending": 289
+      "catalog-intake-present-final-docs-pending": 276,
+      "existing-catalog-row-generated-and-indexed": 13
     },
     "license review": {
-      "metadata-present-needs-file-review": 289
+      "metadata-present-needs-file-review": 276,
+      "existing-catalog-row-owns-license-and-attribution": 13
     },
     "live install": {
-      "blocked": 289
+      "blocked": 276,
+      "no-new-live-install-command-emitted": 13
     },
     "security review": {
-      "pending-executable-surface-review": 289
+      "pending-executable-surface-review": 276,
+      "existing-catalog-row-owns-executable-surface-review": 13
     },
     "source-list evidence": {
       "source-list-timeout-needs-retry": 32,
@@ -43,7 +50,8 @@
       "source-list-found-existing-installable-catalog": 13
     },
     "target-specific validation": {
-      "pending-target-validation": 289
+      "pending-target-validation": 276,
+      "existing-catalog-row-covered-by-repo-validation": 13
     }
   },
   "items": [
@@ -225,15 +233,15 @@
       "auth_required": false,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {
@@ -1717,15 +1725,15 @@
       "auth_required": false,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {
@@ -1823,15 +1831,15 @@
       "auth_required": false,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {
@@ -2096,15 +2104,15 @@
       "auth_required": false,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {
@@ -2139,15 +2147,15 @@
       "auth_required": false,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {
@@ -2580,15 +2588,15 @@
       "auth_required": false,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {
@@ -3063,15 +3071,15 @@
       "auth_required": false,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {
@@ -3126,15 +3134,15 @@
       "auth_required": false,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {
@@ -5268,15 +5276,15 @@
       "auth_required": false,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {
@@ -5374,15 +5382,15 @@
       "auth_required": false,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {
@@ -5479,15 +5487,15 @@
       "auth_required": false,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {
@@ -5605,15 +5613,15 @@
       "auth_required": false,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {
@@ -5878,15 +5886,15 @@
       "auth_required": false,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "metadata-present-needs-file-review",
-        "security review": "pending-executable-surface-review",
-        "attribution review": "pending-source-specific-attribution-note",
-        "auth review": "metadata-only-no-auth-detected",
-        "docs-steward promotion": "catalog-intake-present-final-docs-pending",
-        "target-specific validation": "pending-target-validation",
-        "live install": "blocked"
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "blocked-until-trust-gates",
+      "final_status": "covered-by-existing-installable-catalog",
       "install_command": ""
     },
     {

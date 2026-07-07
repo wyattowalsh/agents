@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T07:08:01.703322+00:00",
+  "generated_at": "2026-07-07T08:10:47.957340+00:00",
   "phase": "research-graph-ready",
   "complete": false,
   "raw_candidates": 293,
@@ -28,9 +28,10 @@
   },
   "promotion_readiness": {
     "unique_targets": 289,
+    "covered_by_existing_installable_catalog": 13,
     "ready_for_repo_promotion": 0,
     "ready_for_live_install": 0,
-    "blocked_until_trust_gates": 289
+    "blocked_until_trust_gates": 276
   },
   "promotion_waves": {
     "W00": 13,
@@ -46,12 +47,12 @@
   },
   "live_install": {
     "eligible_count": 0,
-    "status": "blocked-until-trust-gates",
-    "reason": "No candidate has complete source-list, license, security, attribution, auth, and docs review."
+    "status": "no-new-live-installs-eligible",
+    "reason": "Existing installable catalog coverage is credited without emitting new commands; all new candidate promotions still need source-list, license, security, attribution, auth, and docs review."
   },
   "next_actions": [
-    "Dispatch read-only source research packets for each U### lane.",
-    "Promote only the N### targets whose raw lanes pass trust gates.",
+    "Dispatch read-only source research packets for blocked U### lanes.",
+    "Promote only the blocked N### targets whose raw lanes pass trust gates.",
     "Regenerate docs-steward surfaces after each promotion wave.",
     "Run focused validation and commit each validated wave if still authorized."
   ]

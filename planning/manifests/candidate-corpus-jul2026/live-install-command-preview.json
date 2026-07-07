@@ -1,10 +1,1044 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T06:50:01.577033+00:00",
+  "generated_at": "2026-07-07T08:11:00.808067+00:00",
   "status": "no-live-install-commands-emitted",
   "command_count": 0,
   "commands": [],
-  "blocked_target_count": 289,
+  "covered_existing_target_count": 13,
+  "covered_existing_targets": [
+    {
+      "packet_id": "N009",
+      "normalized_url": "https://github.com/AvdLee/Swift-Concurrency-Agent-Skill",
+      "raw_indexes": [
+        67
+      ],
+      "existing_rows": [
+        {
+          "name": "swift-concurrency",
+          "path": "docs/src/authoring/skills/swift-concurrency.mdx",
+          "source": "avdlee/swift-concurrency-agent-skill",
+          "install_source": "avdlee/swift-concurrency-agent-skill",
+          "source_url": "https://github.com/avdlee/swift-concurrency-agent-skill",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
+      "packet_id": "N080",
+      "normalized_url": "https://github.com/addyosmani/web-quality-skills",
+      "raw_indexes": [
+        97
+      ],
+      "existing_rows": [
+        {
+          "name": "best-practices",
+          "path": "docs/src/authoring/skills/best-practices.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "core-web-vitals",
+          "path": "docs/src/authoring/skills/core-web-vitals.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "performance",
+          "path": "docs/src/authoring/skills/performance.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "seo",
+          "path": "docs/src/authoring/skills/seo.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "web-quality-audit",
+          "path": "docs/src/authoring/skills/web-quality-audit.mdx",
+          "source": "addyosmani/web-quality-skills",
+          "install_source": "addyosmani/web-quality-skills",
+          "source_url": "https://github.com/addyosmani/web-quality-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
+      "packet_id": "N085",
+      "normalized_url": "https://github.com/antonbabenko/terraform-skill",
+      "raw_indexes": [
+        5,
+        56
+      ],
+      "existing_rows": [
+        {
+          "name": "terraform-skill",
+          "path": "docs/src/authoring/skills/terraform-skill.mdx",
+          "source": "antonbabenko/terraform-skill",
+          "install_source": "antonbabenko/terraform-skill",
+          "source_url": "https://github.com/antonbabenko/terraform-skill",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
+      "packet_id": "N098",
+      "normalized_url": "https://github.com/cloudflare/skills",
+      "raw_indexes": [
+        7
+      ],
+      "existing_rows": [
+        {
+          "name": "agents-sdk",
+          "path": "docs/src/authoring/skills/agents-sdk.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "cloudflare",
+          "path": "docs/src/authoring/skills/cloudflare.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "durable-objects",
+          "path": "docs/src/authoring/skills/durable-objects.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "workers-best-practices",
+          "path": "docs/src/authoring/skills/workers-best-practices.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "wrangler",
+          "path": "docs/src/authoring/skills/wrangler.mdx",
+          "source": "cloudflare/skills",
+          "install_source": "cloudflare/skills",
+          "source_url": "https://github.com/cloudflare/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
+      "packet_id": "N100",
+      "normalized_url": "https://github.com/coreyhaines31/marketingskills",
+      "raw_indexes": [
+        140
+      ],
+      "existing_rows": [
+        {
+          "name": "ab-testing",
+          "path": "docs/src/authoring/skills/ab-testing.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "ads",
+          "path": "docs/src/authoring/skills/ads.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "ai-seo",
+          "path": "docs/src/authoring/skills/ai-seo.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "analytics",
+          "path": "docs/src/authoring/skills/analytics.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "churn-prevention",
+          "path": "docs/src/authoring/skills/churn-prevention.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "cold-email",
+          "path": "docs/src/authoring/skills/cold-email.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "competitor-profiling",
+          "path": "docs/src/authoring/skills/competitor-profiling.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "content-strategy",
+          "path": "docs/src/authoring/skills/content-strategy.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "copywriting",
+          "path": "docs/src/authoring/skills/copywriting.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "cro",
+          "path": "docs/src/authoring/skills/cro.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "emails",
+          "path": "docs/src/authoring/skills/emails.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "launch",
+          "path": "docs/src/authoring/skills/launch.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "marketing-ideas",
+          "path": "docs/src/authoring/skills/marketing-ideas.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "marketing-psychology",
+          "path": "docs/src/authoring/skills/marketing-psychology.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "onboarding",
+          "path": "docs/src/authoring/skills/onboarding.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "paywalls",
+          "path": "docs/src/authoring/skills/paywalls.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "product-marketing",
+          "path": "docs/src/authoring/skills/product-marketing.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "programmatic-seo",
+          "path": "docs/src/authoring/skills/programmatic-seo.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "revops",
+          "path": "docs/src/authoring/skills/revops.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "schema",
+          "path": "docs/src/authoring/skills/schema.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "seo-audit",
+          "path": "docs/src/authoring/skills/seo-audit.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "signup",
+          "path": "docs/src/authoring/skills/signup.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "site-architecture",
+          "path": "docs/src/authoring/skills/site-architecture.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "video",
+          "path": "docs/src/authoring/skills/video.mdx",
+          "source": "coreyhaines31/marketingskills",
+          "install_source": "coreyhaines31/marketingskills",
+          "source_url": "https://github.com/coreyhaines31/marketingskills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
+      "packet_id": "N121",
+      "normalized_url": "https://github.com/google/skills",
+      "raw_indexes": [
+        119
+      ],
+      "existing_rows": [
+        {
+          "name": "gemini-api",
+          "path": "docs/src/authoring/skills/gemini-api.mdx",
+          "source": "google/skills",
+          "install_source": "google/skills",
+          "source_url": "https://github.com/google/skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
+      "packet_id": "N144",
+      "normalized_url": "https://github.com/kepano/obsidian-skills",
+      "raw_indexes": [
+        139
+      ],
+      "existing_rows": [
+        {
+          "name": "obsidian-cli",
+          "path": "docs/src/authoring/skills/obsidian-cli.mdx",
+          "source": "kepano/obsidian-skills",
+          "install_source": "kepano/obsidian-skills",
+          "source_url": "https://github.com/kepano/obsidian-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "obsidian-markdown",
+          "path": "docs/src/authoring/skills/obsidian-markdown.mdx",
+          "source": "kepano/obsidian-skills",
+          "install_source": "kepano/obsidian-skills",
+          "source_url": "https://github.com/kepano/obsidian-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
+      "packet_id": "N147",
+      "normalized_url": "https://github.com/langchain-ai/langchain-skills",
+      "raw_indexes": [
+        40
+      ],
+      "existing_rows": [
+        {
+          "name": "deep-agents-core",
+          "path": "docs/src/authoring/skills/deep-agents-core.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "deep-agents-memory",
+          "path": "docs/src/authoring/skills/deep-agents-memory.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "deep-agents-orchestration",
+          "path": "docs/src/authoring/skills/deep-agents-orchestration.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "ecosystem-primer",
+          "path": "docs/src/authoring/skills/ecosystem-primer.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langchain-dependencies",
+          "path": "docs/src/authoring/skills/langchain-dependencies.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langchain-fundamentals",
+          "path": "docs/src/authoring/skills/langchain-fundamentals.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langchain-middleware",
+          "path": "docs/src/authoring/skills/langchain-middleware.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langchain-rag",
+          "path": "docs/src/authoring/skills/langchain-rag.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langgraph-fundamentals",
+          "path": "docs/src/authoring/skills/langgraph-fundamentals.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langgraph-human-in-the-loop",
+          "path": "docs/src/authoring/skills/langgraph-human-in-the-loop.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "langgraph-persistence",
+          "path": "docs/src/authoring/skills/langgraph-persistence.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "managed-deep-agents",
+          "path": "docs/src/authoring/skills/managed-deep-agents.mdx",
+          "source": "langchain-ai/langchain-skills",
+          "install_source": "langchain-ai/langchain-skills",
+          "source_url": "https://github.com/langchain-ai/langchain-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
+      "packet_id": "N249",
+      "normalized_url": "https://github.com/planetscale/database-skills",
+      "raw_indexes": [
+        283
+      ],
+      "existing_rows": [
+        {
+          "name": "mysql",
+          "path": "docs/src/authoring/skills/mysql.mdx",
+          "source": "planetscale/database-skills",
+          "install_source": "planetscale/database-skills",
+          "source_url": "https://github.com/planetscale/database-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "postgres",
+          "path": "docs/src/authoring/skills/postgres.mdx",
+          "source": "planetscale/database-skills",
+          "install_source": "planetscale/database-skills",
+          "source_url": "https://github.com/planetscale/database-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
+      "packet_id": "N254",
+      "normalized_url": "https://github.com/remotion-dev/skills",
+      "raw_indexes": [
+        108
+      ],
+      "existing_rows": [
+        {
+          "name": "remotion-best-practices",
+          "path": "docs/src/authoring/skills/remotion-best-practices.mdx",
+          "source": "remotion-dev/skills",
+          "install_source": "remotion-dev/skills",
+          "source_url": "https://github.com/remotion-dev/skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
+      "packet_id": "N259",
+      "normalized_url": "https://github.com/samber/cc-skills-golang",
+      "raw_indexes": [
+        96
+      ],
+      "existing_rows": [
+        {
+          "name": "golang-benchmark",
+          "path": "docs/src/authoring/skills/golang-benchmark.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-cli",
+          "path": "docs/src/authoring/skills/golang-cli.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-concurrency",
+          "path": "docs/src/authoring/skills/golang-concurrency.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-database",
+          "path": "docs/src/authoring/skills/golang-database.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-error-handling",
+          "path": "docs/src/authoring/skills/golang-error-handling.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-graphql",
+          "path": "docs/src/authoring/skills/golang-graphql.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-grpc",
+          "path": "docs/src/authoring/skills/golang-grpc.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-how-to",
+          "path": "docs/src/authoring/skills/golang-how-to.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-lint",
+          "path": "docs/src/authoring/skills/golang-lint.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-modernize",
+          "path": "docs/src/authoring/skills/golang-modernize.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-observability",
+          "path": "docs/src/authoring/skills/golang-observability.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-performance",
+          "path": "docs/src/authoring/skills/golang-performance.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-popular-libraries",
+          "path": "docs/src/authoring/skills/golang-popular-libraries.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-project-layout",
+          "path": "docs/src/authoring/skills/golang-project-layout.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-safety",
+          "path": "docs/src/authoring/skills/golang-safety.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-security",
+          "path": "docs/src/authoring/skills/golang-security.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-spf13-cobra",
+          "path": "docs/src/authoring/skills/golang-spf13-cobra.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-spf13-viper",
+          "path": "docs/src/authoring/skills/golang-spf13-viper.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-stretchr-testify",
+          "path": "docs/src/authoring/skills/golang-stretchr-testify.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-testing",
+          "path": "docs/src/authoring/skills/golang-testing.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "golang-troubleshooting",
+          "path": "docs/src/authoring/skills/golang-troubleshooting.mdx",
+          "source": "samber/cc-skills-golang",
+          "install_source": "samber/cc-skills-golang",
+          "source_url": "https://github.com/samber/cc-skills-golang",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
+      "packet_id": "N265",
+      "normalized_url": "https://github.com/supabase/agent-skills",
+      "raw_indexes": [
+        94
+      ],
+      "existing_rows": [
+        {
+          "name": "supabase-postgres-best-practices",
+          "path": "docs/src/authoring/skills/supabase-postgres-best-practices.mdx",
+          "source": "supabase/agent-skills",
+          "install_source": "supabase/agent-skills",
+          "source_url": "https://github.com/supabase/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "supabase",
+          "path": "docs/src/authoring/skills/supabase.mdx",
+          "source": "supabase/agent-skills",
+          "install_source": "supabase/agent-skills",
+          "source_url": "https://github.com/supabase/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
+      "packet_id": "N278",
+      "normalized_url": "https://github.com/vercel-labs/agent-skills",
+      "raw_indexes": [
+        143
+      ],
+      "existing_rows": [
+        {
+          "name": "deploy-to-vercel",
+          "path": "docs/src/authoring/skills/deploy-to-vercel.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-composition-patterns",
+          "path": "docs/src/authoring/skills/vercel-composition-patterns.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-optimize",
+          "path": "docs/src/authoring/skills/vercel-optimize.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "inspect-then-install",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-react-best-practices",
+          "path": "docs/src/authoring/skills/vercel-react-best-practices.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-react-native-skills",
+          "path": "docs/src/authoring/skills/vercel-react-native-skills.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        },
+        {
+          "name": "vercel-react-view-transitions",
+          "path": "docs/src/authoring/skills/vercel-react-view-transitions.mdx",
+          "source": "vercel-labs/agent-skills",
+          "install_source": "vercel-labs/agent-skills",
+          "source_url": "https://github.com/vercel-labs/agent-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    }
+  ],
+  "blocked_target_count": 276,
   "blocked_targets": [
     {
       "packet_id": "N001",
@@ -123,22 +1157,6 @@
       "normalized_url": "https://github.com/AvdLee/Core-Data-Agent-Skill",
       "raw_indexes": [
         82
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ]
-    },
-    {
-      "packet_id": "N009",
-      "normalized_url": "https://github.com/AvdLee/Swift-Concurrency-Agent-Skill",
-      "raw_indexes": [
-        67
       ],
       "blocking_gates": [
         "source-list evidence",
@@ -1278,22 +2296,6 @@
       ]
     },
     {
-      "packet_id": "N080",
-      "normalized_url": "https://github.com/addyosmani/web-quality-skills",
-      "raw_indexes": [
-        97
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ]
-    },
-    {
       "packet_id": "N081",
       "normalized_url": "https://github.com/agi-now/buffett-skills",
       "raw_indexes": [
@@ -1355,25 +2357,6 @@
         "auth review",
         "docs-steward promotion",
         "target-specific validation"
-      ]
-    },
-    {
-      "packet_id": "N085",
-      "normalized_url": "https://github.com/antonbabenko/terraform-skill",
-      "raw_indexes": [
-        5,
-        56
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation",
-        "Exact duplicate raw entry; covered by first normalized target decision.",
-        "duplicate raw entry covered by canonical normalized target"
       ]
     },
     {
@@ -1569,22 +2552,6 @@
       ]
     },
     {
-      "packet_id": "N098",
-      "normalized_url": "https://github.com/cloudflare/skills",
-      "raw_indexes": [
-        7
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ]
-    },
-    {
       "packet_id": "N099",
       "normalized_url": "https://github.com/conorluddy/ios-simulator-skill",
       "raw_indexes": [
@@ -1601,22 +2568,6 @@
         "target-specific validation",
         "Exact duplicate raw entry; covered by first normalized target decision.",
         "duplicate raw entry covered by canonical normalized target"
-      ]
-    },
-    {
-      "packet_id": "N100",
-      "normalized_url": "https://github.com/coreyhaines31/marketingskills",
-      "raw_indexes": [
-        140
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
       ]
     },
     {
@@ -1928,22 +2879,6 @@
       "normalized_url": "https://github.com/geekjourneyx/claude-design-card",
       "raw_indexes": [
         160
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ]
-    },
-    {
-      "packet_id": "N121",
-      "normalized_url": "https://github.com/google/skills",
-      "raw_indexes": [
-        119
       ],
       "blocking_gates": [
         "source-list evidence",
@@ -2309,22 +3244,6 @@
       ]
     },
     {
-      "packet_id": "N144",
-      "normalized_url": "https://github.com/kepano/obsidian-skills",
-      "raw_indexes": [
-        139
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ]
-    },
-    {
       "packet_id": "N145",
       "normalized_url": "https://github.com/klajdikkolaj/upwork-autopilot",
       "raw_indexes": [
@@ -2346,22 +3265,6 @@
       "normalized_url": "https://github.com/ksimback/tech-debt-skill",
       "raw_indexes": [
         31
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ]
-    },
-    {
-      "packet_id": "N147",
-      "normalized_url": "https://github.com/langchain-ai/langchain-skills",
-      "raw_indexes": [
-        40
       ],
       "blocking_gates": [
         "source-list evidence",
@@ -3990,22 +4893,6 @@
       ]
     },
     {
-      "packet_id": "N249",
-      "normalized_url": "https://github.com/planetscale/database-skills",
-      "raw_indexes": [
-        283
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ]
-    },
-    {
       "packet_id": "N250",
       "normalized_url": "https://github.com/plannotator/effective-html",
       "raw_indexes": [
@@ -4073,22 +4960,6 @@
       ]
     },
     {
-      "packet_id": "N254",
-      "normalized_url": "https://github.com/remotion-dev/skills",
-      "raw_indexes": [
-        108
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ]
-    },
-    {
       "packet_id": "N255",
       "normalized_url": "https://github.com/rgmez/apple-accessibility-skills",
       "raw_indexes": [
@@ -4141,22 +5012,6 @@
       "normalized_url": "https://github.com/rshankras/claude-code-apple-skills",
       "raw_indexes": [
         204
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ]
-    },
-    {
-      "packet_id": "N259",
-      "normalized_url": "https://github.com/samber/cc-skills-golang",
-      "raw_indexes": [
-        96
       ],
       "blocking_gates": [
         "source-list evidence",
@@ -4237,22 +5092,6 @@
       "normalized_url": "https://github.com/summer521521/Zotero_Research_plugin",
       "raw_indexes": [
         176
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ]
-    },
-    {
-      "packet_id": "N265",
-      "normalized_url": "https://github.com/supabase/agent-skills",
-      "raw_indexes": [
-        94
       ],
       "blocking_gates": [
         "source-list evidence",
@@ -4445,22 +5284,6 @@
       "normalized_url": "https://github.com/vanab/swiftdata-agent-skill",
       "raw_indexes": [
         65
-      ],
-      "blocking_gates": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ]
-    },
-    {
-      "packet_id": "N278",
-      "normalized_url": "https://github.com/vercel-labs/agent-skills",
-      "raw_indexes": [
-        143
       ],
       "blocking_gates": [
         "source-list evidence",

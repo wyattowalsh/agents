@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T06:50:01.577040+00:00",
+  "generated_at": "2026-07-07T08:11:00.808083+00:00",
   "packet_count": 289,
   "packets": [
     {
@@ -1493,15 +1493,7 @@
         "reports",
         "skill-research"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "leaf_checks": [
         {
           "leaf_id": "N066.RAW-MAP",
@@ -14012,15 +14004,7 @@
         "reports",
         "skill-research"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "leaf_checks": [
         {
           "leaf_id": "N095.RAW-MAP",
@@ -14893,13 +14877,6 @@
         "skill-research"
       ],
       "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation",
         "Exact duplicate raw entry; covered by first normalized target decision.",
         "duplicate raw entry covered by canonical normalized target"
       ],
@@ -17245,15 +17222,7 @@
         "reports",
         "skill-research"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "leaf_checks": [
         {
           "leaf_id": "N007.RAW-MAP",
@@ -17871,15 +17840,7 @@
         "reports",
         "skill-research"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "leaf_checks": [
         {
           "leaf_id": "N138.RAW-MAP",
@@ -21582,15 +21543,7 @@
         "reports",
         "skill-research"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "leaf_checks": [
         {
           "leaf_id": "N117.RAW-MAP",
@@ -25676,15 +25629,7 @@
         "reports",
         "skill-research"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "leaf_checks": [
         {
           "leaf_id": "N137.RAW-MAP",
@@ -26342,15 +26287,7 @@
         "reports",
         "skill-research"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "leaf_checks": [
         {
           "leaf_id": "N040.RAW-MAP",
@@ -44096,15 +44033,7 @@
         "reports",
         "skill-research"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "leaf_checks": [
         {
           "leaf_id": "N280.RAW-MAP",
@@ -44988,15 +44917,7 @@
         "reports",
         "skill-research"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "leaf_checks": [
         {
           "leaf_id": "N106.RAW-MAP",
@@ -46111,15 +46032,7 @@
         "reports",
         "skill-research"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "leaf_checks": [
         {
           "leaf_id": "N094.RAW-MAP",
@@ -47181,15 +47094,7 @@
         "reports",
         "skill-research"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "leaf_checks": [
         {
           "leaf_id": "N092.RAW-MAP",
@@ -49526,15 +49431,7 @@
         "reports",
         "skill-research"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "leaf_checks": [
         {
           "leaf_id": "N141.RAW-MAP",

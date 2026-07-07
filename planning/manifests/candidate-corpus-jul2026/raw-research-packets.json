@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T06:50:01.577038+00:00",
+  "generated_at": "2026-07-07T08:11:00.808080+00:00",
   "packet_count": 293,
   "required_packet_fields": [
     "raw_index",
@@ -1361,15 +1361,7 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
       "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
@@ -2028,15 +2020,7 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
       "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
@@ -12832,15 +12816,7 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
       "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
@@ -18180,13 +18156,6 @@
         "gh api repos/{owner}/{repo}"
       ],
       "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation",
         "Exact duplicate raw entry; covered by first normalized target decision.",
         "duplicate raw entry covered by canonical normalized target"
       ],
@@ -21812,15 +21781,7 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
       "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
@@ -30610,15 +30571,7 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
       "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
@@ -31305,15 +31258,7 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
       "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
@@ -31878,15 +31823,7 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
       "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
@@ -35558,15 +35495,7 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
       "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
@@ -39187,15 +39116,7 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
       "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
@@ -45868,15 +45789,7 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
       "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
@@ -46229,15 +46142,7 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
       "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
@@ -47507,15 +47412,7 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
       "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",
@@ -93129,15 +93026,7 @@
         "git ls-remote --symref",
         "gh api repos/{owner}/{repo}"
       ],
-      "blockers": [
-        "source-list evidence",
-        "license review",
-        "security review",
-        "attribution review",
-        "auth review",
-        "docs-steward promotion",
-        "target-specific validation"
-      ],
+      "blockers": [],
       "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
       "current_intake_decision": "merge_into_existing",
       "risk_tier": "standard-review",

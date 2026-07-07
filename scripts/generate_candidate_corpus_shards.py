@@ -1662,10 +1662,11 @@ def build_subagent_wave_queue(records: list[dict[str, Any]]) -> dict[str, Any]:
 
 def build_promotion_readiness_queue(decisions: list[dict[str, Any]], graph: dict[str, Any]) -> dict[str, Any]:
     lanes_by_target = {lane["normalized_url"]: lane for lane in graph["unique_target_lanes"]}
+    covered_existing = []
     blocked = []
     for decision_item in decisions:
         lane = lanes_by_target[decision_item["normalized_url"]]
-        blocked.append({
+        item = {
             "lane_id": lane["lane_id"],
             "normalized_url": decision_item["normalized_url"],
             "source_name": decision_item["source_name"],
@@ -1686,18 +1687,31 @@ def build_promotion_readiness_queue(decisions: list[dict[str, Any]], graph: dict
             "live_install_eligible": False,
             "install_command": "",
             "repo_mutation_eligible": False,
-        })
+        }
+        if lane["existing_integration_status"] == "covered-by-existing-installable-catalog":
+            item.update({
+                "terminal_status": "covered-by-existing-installable-catalog",
+                "blocking_gates": [],
+                "existing_rows": lane["existing_rows"],
+                "reason": "Candidate source is already represented by existing installable curated catalog rows.",
+            })
+            covered_existing.append(item)
+        else:
+            item["terminal_status"] = "blocked-until-trust-gates"
+            blocked.append(item)
 
     return {
         "version": 1,
         "generated_at": now(),
-        "status": "all-targets-blocked-until-trust-gates",
+        "status": "existing-coverage-reconciled-with-trust-gated-backlog",
         "summary": {
             "unique_targets": len(decisions),
+            "covered_by_existing_installable_catalog": len(covered_existing),
             "ready_for_repo_promotion": 0,
             "ready_for_live_install": 0,
             "blocked_until_trust_gates": len(blocked),
         },
+        "covered_by_existing_installable_catalog": covered_existing,
         "ready_for_repo_promotion": [],
         "ready_for_live_install": [],
         "blocked_until_trust_gates": blocked,
@@ -1736,12 +1750,15 @@ def build_full_integration_progress(
         },
         "live_install": {
             "eligible_count": 0,
-            "status": "blocked-until-trust-gates",
-            "reason": "No candidate has complete source-list, license, security, attribution, auth, and docs review.",
+            "status": "no-new-live-installs-eligible",
+            "reason": (
+                "Existing installable catalog coverage is credited without emitting new commands; all new "
+                "candidate promotions still need source-list, license, security, attribution, auth, and docs review."
+            ),
         },
         "next_actions": [
-            "Dispatch read-only source research packets for each U### lane.",
-            "Promote only the N### targets whose raw lanes pass trust gates.",
+            "Dispatch read-only source research packets for blocked U### lanes.",
+            "Promote only the blocked N### targets whose raw lanes pass trust gates.",
             "Regenerate docs-steward surfaces after each promotion wave.",
             "Run focused validation and commit each validated wave if still authorized.",
         ],
@@ -1925,6 +1942,10 @@ def write_research_state_report(progress: dict[str, Any], graph: dict[str, Any])
         f"- Live install eligible: {graph['live_install_eligible_count']}",
         "- Existing integration coverage: "
         + ", ".join(f"{key}={value}" for key, value in progress["existing_integration_coverage"].items()),
+        (
+            "- Covered by existing installable catalog rows: "
+            f"{progress['promotion_readiness'].get('covered_by_existing_installable_catalog', 0)}"
+        ),
         f"- Ready for repo promotion: {progress['promotion_readiness']['ready_for_repo_promotion']}",
         f"- Blocked until trust gates: {progress['promotion_readiness']['blocked_until_trust_gates']}",
         "",
@@ -1935,8 +1956,9 @@ def write_research_state_report(progress: dict[str, Any], graph: dict[str, Any])
         "## Current Gate",
         "",
         (
-            "Every candidate is represented, but live install and repo-native promotion remain blocked until "
-            "source-list, license, security, attribution, auth, and docs-steward gates pass."
+            "Every candidate is represented. Existing installable catalog rows cover the W00 targets; "
+            "remaining live install and repo-native promotion work stays blocked until source-list, license, "
+            "security, attribution, auth, and docs-steward gates pass."
         ),
         "",
         "## Next Actions",
@@ -2274,6 +2296,10 @@ def write_reports(
         f"- GitHub license labels detected: {len(github_license_counts)}",
         "- Existing integration coverage: "
         + ", ".join(f"{key}={value}" for key, value in progress["existing_integration_coverage"].items()),
+        (
+            "- Covered by existing installable catalog rows: "
+            f"{progress['promotion_readiness'].get('covered_by_existing_installable_catalog', 0)}"
+        ),
         "- Promotion waves: " + ", ".join(f"{key}={value}" for key, value in progress["promotion_waves"].items()),
         f"- Full integration phase: `{progress['phase']}`",
         f"- Live install status: `{progress['live_install']['status']}`",
@@ -2284,8 +2310,8 @@ def write_reports(
         "- Candidate code was not installed, executed, vendored, adapted, or enabled.",
         "- Live install command preview emitted 0 commands.",
         (
-            "- Trust gates remain open for source-list evidence, license, security, attribution, auth, "
-            "docs-steward, and target-specific validation."
+            "- Trust gates remain open for blocked targets; existing installable catalog rows are credited "
+            "without new live install commands."
         ),
         "",
         "## Command Checklist",
@@ -2332,6 +2358,10 @@ def write_reports(
         + f"; license labels={len(github_license_counts)}.",
         "- Existing integration coverage: "
         + ", ".join(f"{key}={value}" for key, value in progress["existing_integration_coverage"].items()),
+        (
+            "- Covered by existing installable catalog rows: "
+            f"{progress['promotion_readiness'].get('covered_by_existing_installable_catalog', 0)}."
+        ),
         "- Promotion waves: " + ", ".join(f"{key}={value}" for key, value in progress["promotion_waves"].items()),
         f"- Full integration phase: `{progress['phase']}`; live install remains "
         f"`{progress['live_install']['status']}`.",
@@ -2362,7 +2392,7 @@ def write_reports(
         ),
         (
             "- Unresolved risks: source-list, license, security, attribution, auth, and docs-steward "
-            "trust gates remain required before live install, adaptation, or repo promotion."
+            "trust gates remain required before live install, adaptation, or repo promotion for blocked targets."
         ),
         "- Final commit hash: no commit made by this script.",
         "",
@@ -2381,8 +2411,8 @@ def write_reports(
             "docs impact, dedupe, and decision outputs."
         ),
         (
-            "- Keeps third-party sources discovery-only pending source-list evidence, "
-            "license review, security review, and docs-steward gates."
+            "- Keeps newly reviewed third-party sources discovery-only pending source-list evidence, "
+            "license review, security review, and docs-steward gates; credits existing installable catalog coverage."
         ),
     ]
     (MANIFEST_DIR / "final-review-report.md").write_text("\n".join(final_report) + "\n", encoding="utf-8")

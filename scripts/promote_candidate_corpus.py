@@ -86,7 +86,12 @@ def by_normalized(items: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
 
 def readiness_by_url(readiness: dict[str, Any]) -> dict[str, dict[str, Any]]:
     result = {}
-    for bucket in ("ready_for_repo_promotion", "ready_for_live_install", "blocked_until_trust_gates"):
+    for bucket in (
+        "covered_by_existing_installable_catalog",
+        "ready_for_repo_promotion",
+        "ready_for_live_install",
+        "blocked_until_trust_gates",
+    ):
         for item in readiness.get(bucket, []):
             result[item["normalized_url"].lower()] = item
     return result
@@ -304,6 +309,21 @@ def gate_statuses(packet: dict[str, Any]) -> dict[str, str]:
     source_list_evidence = packet.get("source_list_evidence") or {}
     source_list_evidence_status = source_list_evidence.get("evidence_status")
     has_source_list = bool(source_list_evidence)
+    if has_existing_installable:
+        return {
+            "source-list evidence": (
+                "source-list-found-existing-installable-catalog"
+                if source_list_evidence_status == "source-list-found"
+                else "existing-installable-catalog-row-present"
+            ),
+            "license review": "existing-catalog-row-owns-license-and-attribution",
+            "security review": "existing-catalog-row-owns-executable-surface-review",
+            "attribution review": "existing-catalog-row-owns-attribution",
+            "auth review": "existing-catalog-row-owns-auth-boundaries",
+            "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+            "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+            "live install": "no-new-live-install-command-emitted",
+        }
     license_status = "metadata-present-needs-file-review" if packet["licenses"] else "missing-license-review"
     if any(str(license_value).lower().startswith("not-fetched") for license_value in packet["licenses"]):
         license_status = "license-unavailable-needs-review"
@@ -348,8 +368,13 @@ def gate_statuses(packet: dict[str, Any]) -> dict[str, str]:
 def build_gate_matrix(unique_packets: list[dict[str, Any]]) -> dict[str, Any]:
     items = []
     gate_counts: dict[str, Counter[str]] = defaultdict(Counter)
+    covered_count = 0
+    blocked_count = 0
     for packet in unique_packets:
         statuses = gate_statuses(packet)
+        covered = packet["existing_integration_status"] == "covered-by-existing-installable-catalog"
+        covered_count += int(covered)
+        blocked_count += int(not covered)
         for gate, status in statuses.items():
             gate_counts[gate][status] += 1
         items.append(
@@ -360,7 +385,9 @@ def build_gate_matrix(unique_packets: list[dict[str, Any]]) -> dict[str, Any]:
                 "existing_integration_status": packet["existing_integration_status"],
                 "auth_required": packet["auth_required"],
                 "gate_statuses": statuses,
-                "final_status": "blocked-until-trust-gates",
+                "final_status": (
+                    "covered-by-existing-installable-catalog" if covered else "blocked-until-trust-gates"
+                ),
                 "install_command": "",
             }
         )
@@ -369,9 +396,10 @@ def build_gate_matrix(unique_packets: list[dict[str, Any]]) -> dict[str, Any]:
         "generated_at": now(),
         "summary": {
             "unique_targets": len(unique_packets),
+            "covered_by_existing_installable_catalog": covered_count,
             "ready_for_repo_promotion": 0,
             "ready_for_live_install": 0,
-            "blocked_until_trust_gates": len(unique_packets),
+            "blocked_until_trust_gates": blocked_count,
         },
         "trust_gates": TRUST_GATES,
         "gate_status_counts": {gate: dict(counts) for gate, counts in sorted(gate_counts.items())},
@@ -380,6 +408,16 @@ def build_gate_matrix(unique_packets: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def build_install_preview(unique_packets: list[dict[str, Any]]) -> dict[str, Any]:
+    covered_targets = [
+        {
+            "packet_id": packet["packet_id"],
+            "normalized_url": packet["normalized_url"],
+            "raw_indexes": packet["raw_indexes"],
+            "existing_rows": packet["existing_rows"],
+        }
+        for packet in unique_packets
+        if packet["existing_integration_status"] == "covered-by-existing-installable-catalog"
+    ]
     blocked = [
         {
             "packet_id": packet["packet_id"],
@@ -388,6 +426,7 @@ def build_install_preview(unique_packets: list[dict[str, Any]]) -> dict[str, Any
             "blocking_gates": packet["blockers"],
         }
         for packet in unique_packets
+        if packet["existing_integration_status"] != "covered-by-existing-installable-catalog"
     ]
     return {
         "version": 1,
@@ -395,6 +434,8 @@ def build_install_preview(unique_packets: list[dict[str, Any]]) -> dict[str, Any
         "status": "no-live-install-commands-emitted",
         "command_count": 0,
         "commands": [],
+        "covered_existing_target_count": len(covered_targets),
+        "covered_existing_targets": covered_targets,
         "blocked_target_count": len(blocked),
         "blocked_targets": blocked,
         "rule": (
@@ -405,17 +446,19 @@ def build_install_preview(unique_packets: list[dict[str, Any]]) -> dict[str, Any
 
 
 def write_summary(matrix: dict[str, Any], preview: dict[str, Any]) -> None:
+    covered_count = matrix["summary"].get("covered_by_existing_installable_catalog", 0)
     lines = [
         "# Candidate Corpus Promotion Gate Summary",
         "",
         f"- Unique targets evaluated: {matrix['summary']['unique_targets']}",
+        f"- Covered by existing installable catalog rows: {covered_count}",
         f"- Ready for repo promotion: {matrix['summary']['ready_for_repo_promotion']}",
         f"- Ready for live install: {matrix['summary']['ready_for_live_install']}",
         f"- Blocked until trust gates: {matrix['summary']['blocked_until_trust_gates']}",
         f"- Live install commands emitted: {preview['command_count']}",
         "",
-        "All candidate sources remain blocked from live installation until the per-target trust gates pass.",
-        "The packet files are promotion work queues, not proof of completed adaptation or installation.",
+        "Existing installable catalog coverage is credited without emitting new live install commands.",
+        "The remaining packet files are promotion work queues, not proof of completed adaptation or installation.",
     ]
     (MANIFEST_DIR / SUMMARY_FILE).write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -491,8 +534,11 @@ def validate_outputs() -> dict[str, Any]:
         errors.append("a packet unexpectedly emitted an install command")
     if preview.get("command_count") != 0 or preview.get("commands") != []:
         errors.append("live install preview emitted commands before trust gates")
-    if matrix.get("summary", {}).get("blocked_until_trust_gates") != EXPECTED_UNIQUE_COUNT:
-        errors.append("gate matrix does not block every unique target")
+    summary = matrix.get("summary", {})
+    covered = int(summary.get("covered_by_existing_installable_catalog", 0))
+    blocked = int(summary.get("blocked_until_trust_gates", 0))
+    if covered + blocked != EXPECTED_UNIQUE_COUNT:
+        errors.append("gate matrix does not account for every unique target")
 
     return {
         "raw": len(raw_packets),
