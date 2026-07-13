@@ -153,6 +153,7 @@ jobs:
       - run: uv run wagents docs compose --check-composed --min-pct 100 --write-manifest
       - run: uv run wagents docs lint
       - run: cd docs && pnpm install --frozen-lockfile
+      - run: cd docs && pnpm run check:admin-redirect
       - run: cd docs && pnpm exec astro check
       - run: cd docs && pnpm build
 
