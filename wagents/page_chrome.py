@@ -5,24 +5,15 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from wagents.site_model import LOCAL_INSTALLED_SOURCE_LABEL
+from wagents.site_model import LOCAL_INSTALLED_SOURCE_LABEL, is_local_path_like
 
 if TYPE_CHECKING:
     from wagents.catalog import CatalogNode
 
 
-def _is_local_path_like(value: str) -> bool:
-    path = str(value or "").strip()
-    if path.startswith(("http://", "https://", "github:")):
-        return False
-    if path.startswith(("~/", "$HOME/", "/Users/", "/home/", "/private/", "/tmp/")):
-        return True
-    return Path(path).is_absolute()
-
-
 def display_source_path(node: CatalogNode) -> str:
     path = str(node.source_path)
-    if node.source != "custom" and _is_local_path_like(path):
+    if node.source != "custom" and is_local_path_like(path):
         return LOCAL_INSTALLED_SOURCE_LABEL
     home = str(Path.home())
     if path.startswith(home):

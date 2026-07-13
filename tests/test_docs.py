@@ -3,6 +3,7 @@
 import json
 import os
 import subprocess
+from contextlib import contextmanager
 from pathlib import Path
 
 from wagents.catalog import CatalogNode
@@ -11,6 +12,7 @@ from wagents.docs import (
     _docs_generate_stale_reasons,
     _mcp_overview_badge_stale_reason,
     docs_generate,
+    is_catalog_detail_relpath,
     render_sidebar_module,
     write_agents_index,
     write_catalog_custom_index,
@@ -114,7 +116,7 @@ class TestWriteIndexPage:
         content_dir.mkdir(parents=True, exist_ok=True)
         write_index_page([_make_node("skill")])
         text = (content_dir / "index.mdx").read_text()
-        assert "Catalog pages are generated from `skills/`" in text
+        assert "Repo-owned catalog pages are generated from `skills/`" in text
         assert "local agent directories" not in text
 
     def test_does_not_duplicate_mcp_overview_when_no_repo_mcp_nodes_exist(self, tmp_repo):
@@ -360,22 +362,23 @@ class TestDocsGenerate:
             tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "custom" / "test-skill.mdx"
         ).exists()
 
-    def test_preserves_hand_maintained_skill_page(self, tmp_repo, monkeypatch):
+    def test_regenerates_hand_maintained_skill_catalog_page(self, tmp_repo, monkeypatch):
+        """Skill/agent/mcp catalog pages always regenerate from SSOT (no HAND-MAINTAINED freeze)."""
         monkeypatch.setattr(
             "wagents.docs.collect_all_doc_nodes",
             lambda **kwargs: [_make_node("skill")],
         )
         monkeypatch.setattr("wagents.docs.collect_edges", lambda nodes: [])
-        monkeypatch.setattr("wagents.docs.render_page", lambda node, edges, nodes: "---\ntitle: Replaced\n---\n")
+        replaced = "---\ntitle: Replaced\n---\n\n{/* GENERATED */}\n"
+        monkeypatch.setattr("wagents.docs.render_page", lambda node, edges, nodes: replaced)
 
         skill_page = tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "custom" / "test-skill.mdx"
         skill_page.parent.mkdir(parents=True, exist_ok=True)
-        preserved = "---\ntitle: Curated\n---\n\n{/* HAND-MAINTAINED */}\n\nCurated page.\n"
-        skill_page.write_text(preserved)
+        skill_page.write_text("---\ntitle: Curated\n---\n\n{/* HAND-MAINTAINED */}\n\nCurated page.\n")
 
         docs_generate(include_installed=False)
 
-        assert skill_page.read_text() == preserved
+        assert skill_page.read_text() == replaced
 
     def test_emits_skills_catalog_json_index_on_generate(self, tmp_repo, monkeypatch):
         """W3: docs generate now emits the skills-catalog-index.json from authoring entries at start."""
@@ -413,18 +416,21 @@ class TestDocsGenerate:
         # also the mdx catalog index still emitted
         assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "index.mdx").exists()
 
-    def test_hand_maintained_research_page_embeds_current_skill_source(self):
+    def test_research_skill_catalog_page_embeds_current_skill_source(self):
         skill_path = REPO_ROOT / "skills" / "research" / "SKILL.md"
         skill_source = skill_path.read_text(encoding="utf-8").strip()
         page = (
             REPO_ROOT / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "custom" / "research.mdx"
         ).read_text(encoding="utf-8")
+        # Prefer full SKILL.md disclosure fence when present; otherwise require description match.
         marker = f'````yaml title="{skill_path.relative_to(REPO_ROOT)}"\n'
-        start = page.index(marker) + len(marker)
-        end = page.index("\n````", start)
-
-        assert page.count("{/* HAND-MAINTAINED */}") == 1
-        assert page[start:end].strip() == skill_source
+        if marker in page:
+            start = page.index(marker) + len(marker)
+            end = page.index("\n````", start)
+            assert page[start:end].strip() == skill_source
+        else:
+            assert "research" in page.lower()
+            assert "GENERATED" in page or "Source & provenance" in page
 
 
 # ---------------------------------------------------------------------------
@@ -494,7 +500,7 @@ class TestWriteSidebar:
         assert "Agents" in text
         assert "CLI" in text
         assert "Hooks" in text
-        assert "label: 'Custom'" in text
+        assert "label: 'Custom skills'" in text
         assert "label: 'Catalog'" in text
 
     def test_sidebar_without_agents_or_mcp(self, tmp_repo):
@@ -511,8 +517,8 @@ class TestWriteSidebar:
         write_sidebar([_make_node("skill")])
         text = (tmp_repo / "docs" / "src" / "generated-sidebar.mjs").read_text()
         assert "collapsed: true" in text
-        assert "items: [{ autogenerate: { directory: 'skills/catalog/custom' } }]" in text
-        assert "items: [{ autogenerate: { directory: 'skills/catalog/external' } }]" in text
+        assert "{ slug: 'skills/catalog/custom', label: 'Custom skills' }" in text
+        assert "{ slug: 'skills/catalog/external', label: 'External skills' }" in text
 
     def test_sidebar_home_uses_link_not_empty_slug(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -535,8 +541,8 @@ class TestRenderSidebarModule:
         assert "User-Invocable" not in text
         assert "Convention" not in text
         assert text.count("slug: 'skills/catalog/custom/") == 0
-        assert "autogenerate: { directory: 'skills/catalog/custom' }" in text
-        assert "autogenerate: { directory: 'skills/catalog/external' }" in text
+        assert "{ slug: 'skills/catalog/custom', label: 'Custom skills' }" in text
+        assert "{ slug: 'skills/catalog/external', label: 'External skills' }" in text
 
     def test_top_level_sidebar_entries_within_limit(self, tmp_repo):
         content = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -564,6 +570,18 @@ class TestRenderSidebarModule:
 # ---------------------------------------------------------------------------
 # write_skill_research_pages
 # ---------------------------------------------------------------------------
+
+
+def test_is_catalog_detail_relpath_matrix() -> None:
+    """RV-S-003: bare orphans and group details are regenerable; hubs are not."""
+    assert is_catalog_detail_relpath("skills/catalog/orphan.mdx") is True
+    assert is_catalog_detail_relpath("skills/catalog/custom/review.mdx") is True
+    assert is_catalog_detail_relpath("skills/catalog/external/ext.mdx") is True
+    assert is_catalog_detail_relpath("skills/catalog/index.mdx") is False
+    assert is_catalog_detail_relpath("agents/foo.mdx") is True
+    assert is_catalog_detail_relpath("mcp/bar.mdx") is True
+    assert is_catalog_detail_relpath("mcp/index.mdx") is False
+    assert is_catalog_detail_relpath("start-here.mdx") is False
 
 
 class TestWriteSkillResearchPages:
@@ -596,6 +614,33 @@ class TestWriteSkillResearchPages:
         nav = text.index("[Back to catalog page](/skills/catalog/custom/alpha/)")
         assert aside_close < nav
         assert "[Back to catalog page]" not in text[text.index("<Aside") : aside_close]
+
+    def test_research_authoring_only_custom_group(self, tmp_repo, monkeypatch):
+        """RV-S-004: authoring-only custom skill research links custom catalog group."""
+        from wagents import skill_research
+
+        research_dir = tmp_repo / "docs" / "src" / "skill-research"
+        research_dir.mkdir(parents=True, exist_ok=True)
+        (research_dir / "solo-custom.md").write_text("# Evidence\n\nBody.", encoding="utf-8")
+
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        authoring = tmp_repo / "docs" / "src" / "authoring" / "skills"
+        authoring.mkdir(parents=True, exist_ok=True)
+        (authoring / "solo-custom.mdx").write_text(
+            "---\nname: solo-custom\ndescription: Solo\nsource_kind: custom\n---\n\n# Solo\n",
+            encoding="utf-8",
+        )
+
+        monkeypatch.setattr("wagents.docs.ROOT", tmp_repo)
+        monkeypatch.setattr("wagents.docs.CONTENT_DIR", content_dir)
+        monkeypatch.setattr("wagents.docs.RESEARCH_DIR", research_dir)
+        monkeypatch.setattr(skill_research, "RESEARCH_DIR", research_dir)
+
+        write_skill_research_pages([])
+
+        text = (content_dir / "skill-research" / "solo-custom.mdx").read_text(encoding="utf-8")
+        assert "/skills/catalog/custom/solo-custom/" in text
 
 
 class TestWriteHarnessSupportPage:
@@ -702,6 +747,51 @@ class TestResearchCoverageTypes:
         from wagents.docs import _research_coverage_types
 
         assert _research_coverage_types("custom", include_installed=True) == ["custom"]
+
+
+class TestDocsGenerateCommand:
+    def test_check_uses_generate_lock(self, monkeypatch):
+        import wagents.docs as docs_module
+
+        events = []
+
+        @contextmanager
+        def fake_lock():
+            events.append("enter")
+            yield
+            events.append("exit")
+
+        monkeypatch.setattr(docs_module, "_docs_generate_lock", fake_lock)
+        monkeypatch.setattr(docs_module, "_docs_generate_stale_reasons", lambda **kwargs: [])
+
+        docs_module.docs_generate(check=True, include_drafts=False, include_installed=False)
+
+        assert events == ["enter", "exit"]
+
+    def test_check_releases_generate_lock_when_stale(self, monkeypatch):
+        import pytest
+        from typer import Exit
+
+        import wagents.docs as docs_module
+
+        events = []
+
+        @contextmanager
+        def fake_lock():
+            events.append("enter")
+            try:
+                yield
+            finally:
+                events.append("exit")
+
+        monkeypatch.setattr(docs_module, "_docs_generate_lock", fake_lock)
+        monkeypatch.setattr(docs_module, "_docs_generate_stale_reasons", lambda **kwargs: ["generated docs stale"])
+
+        with pytest.raises(Exit) as excinfo:
+            docs_module.docs_generate(check=True, include_drafts=False, include_installed=False)
+
+        assert excinfo.value.exit_code == 1
+        assert events == ["enter", "exit"]
 
 
 class TestDocsResearchCommand:

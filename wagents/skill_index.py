@@ -26,8 +26,17 @@ CATALOG_BROWSER_LANE_BY_STATUS = {
     "install-now-after-trust-gate": "install-now",
     "inspect-then-install": "inspect",
     "global-only-or-avoid": "avoid",
+    "integrated-collection-surface": "integrated",
+    "integrated-existing-surface": "integrated",
+    "integrated-mcp-surface": "integrated",
+    "integrated-native-surface": "integrated",
+    "integrated-plugin-surface": "integrated",
+    "integrated-skill-catalog-surface": "integrated",
+    "integrated-tool-surface": "integrated",
+    "hard-blocked-inaccessible": "hard-blocked",
+    "hard-blocked-quarantine": "hard-blocked",
 }
-CATALOG_BROWSER_LANES = frozenset({"install-now", "inspect", "avoid"})
+CATALOG_BROWSER_LANES = frozenset({"install-now", "inspect", "avoid", "integrated", "hard-blocked"})
 CATALOG_BROWSER_ALLOWED_ROW_FIELDS = frozenset({
     "name",
     "description",
@@ -45,6 +54,7 @@ CATALOG_BROWSER_ALLOWED_ROOT_FIELDS = frozenset({
 
 CATALOG_BROWSER_MAX_BYTES = 512 * 1024
 CATALOG_BROWSER_MAX_FULL_RATIO = 0.25
+CATALOG_BROWSER_DESCRIPTION_MAX_CHARS = 80
 
 
 def _is_external_authoring_source_kind(source_kind: str) -> bool:
@@ -197,6 +207,14 @@ def build_catalog_index(entries: list[CatalogAuthoringEntry]) -> dict[str, Any]:
 
     Shape is intentionally aligned with site_model skill indexes for downstream consumers.
     """
+    from wagents.site_model import (
+        REPO_SOURCE,
+        SKILLS_CLI_NATIVE_AGENT_IDS,
+        build_install_command,
+        normalize_public_install_command,
+        trust_badge_for_tier,
+    )
+
     custom_rows: list[dict[str, Any]] = []
     external_rows: list[dict[str, Any]] = []
     for e in entries:
@@ -204,28 +222,38 @@ def build_catalog_index(entries: list[CatalogAuthoringEntry]) -> dict[str, Any]:
             sync_kind = SYNC_KIND_SKILLS_CLI
         else:
             sync_kind = infer_sync_kind(e.sync_kind, e.install_command)
+        is_custom = e.source_kind == "custom"
+        install_command = e.install_command
+        if is_custom and not install_command:
+            install_command = build_install_command(skill=e.name)
+        install_command = normalize_public_install_command(install_command)
+        install_source = e.install_source or (REPO_SOURCE if is_custom else "")
+        source_root = e.source or (REPO_SOURCE if is_custom else "")
+        trust_tier = e.trust_tier or ("repo-owned" if is_custom else "curated-trust-gated")
+        if trust_tier == "repo":
+            trust_tier = "repo-owned"
+        trust_badge, trust_badge_variant = trust_badge_for_tier(trust_tier)
+        targets = list(e.target_agents)
+        if is_custom and not targets:
+            targets = list(SKILLS_CLI_NATIVE_AGENT_IDS)
         row: dict[str, Any] = {
             "name": e.name,
             "title": e.title or to_title(e.name),
             "description": e.description,
             "sourceType": _catalog_source_type(e.source_kind),
-            "sourceRoot": e.source or (wagents.ROOT.name if e.source_kind == "custom" else ""),
-            "displaySource": e.source or ("repo" if e.source_kind == "custom" else e.source),
+            "sourceRoot": source_root,
+            "displaySource": source_root or ("repo" if is_custom else e.source),
             "sourceKind": e.source_kind,
-            "installSource": e.install_source,
-            "installable": bool(e.install_command) or e.source_kind == "custom",
+            "installSource": install_source,
+            "installable": bool(install_command) or is_custom,
             "localInventoryOnly": False,
-            "trustTier": e.trust_tier or ("repo" if e.source_kind == "custom" else ""),
-            "trustBadge": (
-                "Repo-owned"
-                if e.source_kind == "custom"
-                else ("Curated" if e.trust_tier in ("curated-trust-gated", "") else "External")
-            ),
-            "trustBadgeVariant": "tip" if e.source_kind == "custom" else "note",
+            "trustTier": trust_tier,
+            "trustBadge": trust_badge,
+            "trustBadgeVariant": trust_badge_variant,
             "sourcePath": e.path,
             "sourceUrl": e.source_url,
-            "installCommand": e.install_command,
-            "useCommand": use_command_for_catalog_row(e.install_command, e.name),
+            "installCommand": install_command,
+            "useCommand": use_command_for_catalog_row(install_command, e.name),
             "provenanceStatus": e.provenance_status or ("repo-owned" if e.source_kind == "custom" else ""),
             "status": e.status or ("repo-owned" if e.source_kind == "custom" else e.status),
             "reviewStatus": (
@@ -233,7 +261,7 @@ def build_catalog_index(entries: list[CatalogAuthoringEntry]) -> dict[str, Any]:
                 if e.source_kind == "custom"
                 else ("curated" if e.provenance_status == "verified-install-command" else "unresolved")
             ),
-            "targetAgents": list(e.target_agents),
+            "targetAgents": targets,
             "installedAgents": [],
             "riskNotes": e.risk_notes or e.notes,
             "promotionPolicy": e.promotion_policy,
@@ -332,12 +360,7 @@ def entry_catalog_tags(entry: dict[str, Any]) -> list[str]:
 
 
 def entry_platforms(entry: dict[str, Any]) -> list[str]:
-    targets = (
-        entry.get("targetAgents")
-        or entry.get("target_agents")
-        or entry.get("target_harnesses")
-        or []
-    )
+    targets = entry.get("targetAgents") or entry.get("target_agents") or entry.get("target_harnesses") or []
     if isinstance(targets, str):
         targets = [t.strip() for t in targets.split(",") if t.strip()]
     if not isinstance(targets, list):
@@ -387,7 +410,10 @@ def build_catalog_browser_index(index: dict[str, Any]) -> dict[str, Any]:
         platform_id_list = sorted({intern_platform(platform) for platform in entry_platforms(entry)})
         rows.append({
             "name": name,
-            "description": truncate_sentence(str(entry.get("description") or ""), 160),
+            "description": truncate_sentence(
+                str(entry.get("description") or ""),
+                CATALOG_BROWSER_DESCRIPTION_MAX_CHARS,
+            ),
             "href": f"/skills/catalog/external/{quote(name, safe='')}/",
             "lane": _catalog_browser_lane(entry.get("status")),
             "sourceType": source_type,
@@ -460,10 +486,7 @@ def catalog_browser_index_contract_reason(
         if values is None:
             continue
         if not isinstance(values, list) or any(not isinstance(value, str) for value in values):
-            return (
-                "docs/public/generated-registries/skills-catalog-browser-index.json "
-                f"{key} must be a string array"
-            )
+            return f"docs/public/generated-registries/skills-catalog-browser-index.json {key} must be a string array"
     rows = index.get("externalSkillIndex")
     if not isinstance(rows, list):
         return "docs/public/generated-registries/skills-catalog-browser-index.json must contain externalSkillIndex rows"

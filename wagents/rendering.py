@@ -9,6 +9,22 @@ import yaml
 
 from wagents import CONTENT_DIR, GITHUB_BASE, ROOT
 from wagents.catalog import RELATED_SKILLS, CatalogEdge, CatalogNode
+from wagents.page_chrome import provenance_one_liner, render_metadata_details
+from wagents.page_density import (
+    DEFAULT_SKILL_DENSITY,
+    PageDensity,
+    collapse_metadata_tabs,
+    resolve_density,
+    should_emit_resources_grid,
+    should_emit_skill_source_disclosure,
+    should_emit_source_aside,
+    should_emit_word_count_badge,
+    should_emit_works_with_prose,
+    should_render_body_sections,
+    should_render_what_it_does,
+    truncate_research_prose,
+)
+from wagents.page_frontmatter import render_catalog_frontmatter_lines
 from wagents.parsing import (
     FenceTracker,
     escape_attr,
@@ -21,13 +37,15 @@ from wagents.parsing import (
 from wagents.site_model import (
     LOCAL_INSTALLED_SOURCE_LABEL,
     REPO_SOURCE,
-    SUPPORTED_AGENT_IDS,
+    SKILLS_CLI_NATIVE_AGENT_IDS,
     build_install_command,
+    contains_local_path,
+    is_local_path_like,
     resolve_trust_tier_for_node,
     trust_badge_for_tier,
     use_command_for_catalog_row,
 )
-from wagents.skill_docs import skill_detail_href
+from wagents.skill_docs import skill_detail_href, skill_detail_slug
 from wagents.skill_research import load_skill_research
 
 # ---------------------------------------------------------------------------
@@ -112,10 +130,14 @@ def escape_mdx_line(line: str) -> str:
 # ---------------------------------------------------------------------------
 
 
-def render_tabs(tab_items: list[tuple[str, str]]) -> list[str]:
+def render_tabs(tab_items: list[tuple[str, str]], *, density: PageDensity = "standard") -> list[str]:
     """Render a list of (label, content) pairs as MDX Tabs or a single heading."""
     parts: list[str] = []
     if not tab_items:
+        return parts
+    if collapse_metadata_tabs(density):
+        for label, content in tab_items:
+            parts.extend(render_metadata_details(label, content))
         return parts
     if len(tab_items) == 1:
         label, content = tab_items[0]
@@ -150,12 +172,15 @@ def scaffold_doc_page(node: CatalogNode) -> None:
     if not CONTENT_DIR.exists():
         return
     if node.kind == "skill":
-        page_dir = CONTENT_DIR / "skills" / "catalog"
-    else:
-        page_dir = CONTENT_DIR / (node.kind + "s" if node.kind != "mcp" else "mcp")
+        out = CONTENT_DIR / f"{skill_detail_slug(node.id, node=node)}.mdx"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(render_page(node, [], [node]), encoding="utf-8")
+        typer.echo(f"Created {out.relative_to(ROOT)}")
+        return
+    page_dir = CONTENT_DIR / (node.kind + "s" if node.kind != "mcp" else "mcp")
     page_dir.mkdir(parents=True, exist_ok=True)
     content = render_page(node, [], [node])
-    (page_dir / f"{node.id}.mdx").write_text(content)
+    (page_dir / f"{node.id}.mdx").write_text(content, encoding="utf-8")
     rel = page_dir.relative_to(ROOT) / f"{node.id}.mdx"
     typer.echo(f"Created {rel}")
 
@@ -199,7 +224,7 @@ def read_raw_content(node: CatalogNode) -> str:
 def _display_source_path(node: CatalogNode) -> str:
     """Format a source path for display in docs pages."""
     path = str(node.source_path)
-    if node.source != "custom" and _is_local_path_like(path):
+    if node.source != "custom" and is_local_path_like(path):
         return LOCAL_INSTALLED_SOURCE_LABEL
     home = str(Path.home())
     if path.startswith(home):
@@ -207,29 +232,22 @@ def _display_source_path(node: CatalogNode) -> str:
     return path
 
 
-def _is_local_path_like(value: str) -> bool:
-    path = str(value or "").strip()
-    if path.startswith(("http://", "https://", "github:")):
-        return False
-    if path.startswith(("~/", "$HOME/", "/Users/", "/home/", "/private/", "/tmp/")):
-        return True
-    return Path(path).is_absolute()
-
-
-def _contains_local_path(value: str) -> bool:
-    return any(marker in str(value or "") for marker in ("/Users/", "/home/", "/private/", "/tmp/", "~/"))
-
-
 def _skill_catalog_import_prefix() -> str:
     """Relative import prefix from skills/catalog/{custom|external}/ to docs/src/."""
     return "../../../../../"
 
 
-def _skill_header_badge_props(node: CatalogNode, fm: dict) -> list[tuple[str, str]]:
+def _skill_header_badge_props(
+    node: CatalogNode,
+    fm: dict,
+    *,
+    density: PageDensity = "standard",
+) -> list[tuple[str, str]]:
     """Build SkillPageHeader badge props."""
     badges: list[tuple[str, str]] = [(node.id, "note")]
-    word_count = len(node.body.split()) if node.body else 0
-    badges.append((f"{word_count} words", "default"))
+    if should_emit_word_count_badge(density):
+        word_count = len(node.body.split()) if node.body else 0
+        badges.append((f"{word_count} words", "default"))
     if fm.get("license"):
         badges.append((str(fm["license"]), "success"))
     meta = fm.get("metadata", {})
@@ -245,7 +263,7 @@ def _skill_header_badge_props(node: CatalogNode, fm: dict) -> list[tuple[str, st
     return badges[:5]
 
 
-def _render_skill_page_header(node: CatalogNode, fm: dict) -> list[str]:
+def _render_skill_page_header(node: CatalogNode, fm: dict, *, density: PageDensity = "standard") -> list[str]:
     prefix = _skill_catalog_import_prefix()
     install_label = "Install"
     if node.source == "custom":
@@ -254,16 +272,14 @@ def _render_skill_page_header(node: CatalogNode, fm: dict) -> list[str]:
         install_command = _installed_install_command(node)
         if not install_command:
             install_label = "Catalog status"
-            install_command = (
-                "Catalog-only entry: no portable install command is published until promotion gates pass."
-            )
+            install_command = _catalog_status_message(node)
     if node.source != "custom" and not _installed_install_command(node):
         usage = ""
     else:
         usage = use_command_for_catalog_row(install_command, node.id)
         if usage.startswith("/") and fm.get("argument-hint"):
             usage += f" {fm['argument-hint']}"
-    badge_props = _skill_header_badge_props(node, fm)
+    badge_props = _skill_header_badge_props(node, fm, density=density)
     badge_jsx = ", ".join(f'{{ text: "{escape_attr(text)}", variant: "{variant}" }}' for text, variant in badge_props)
     safe_install = install_command.replace("`", "\\`")
     return [
@@ -297,9 +313,20 @@ def _is_pip_cli_catalog_row(node: CatalogNode) -> bool:
 def _catalog_compatibility_blurb(node: CatalogNode) -> str:
     """Harness compatibility line for generated catalog pages."""
     if node.source != "custom" and not _installed_install_command(node):
+        status = _catalog_status(node)
+        if status.startswith("integrated-"):
+            return (
+                "Terminal curated external entry. Runtime use is represented through the repo-native "
+                "catalog, MCP, plugin, tool, or docs surface recorded for this source."
+            )
+        if status.startswith("hard-blocked"):
+            return (
+                "Hard-blocked curated external entry. No install command is emitted; do not run, vendor, "
+                "or auto-start this source from the catalog."
+            )
         return (
-            "Catalog-only curated external entry. Install, slash-command use, and harness sync stay disabled "
-            "until source-list, license, security, attribution, auth, and docs-steward promotion gates pass."
+            "Catalog-only curated external entry. Install, slash-command use, and harness sync are disabled "
+            "for this catalog row."
         )
     if _is_pip_cli_catalog_row(node):
         return (
@@ -324,12 +351,28 @@ def _installed_install_command(node: CatalogNode) -> str:
     if sync_kind == "none" or selector_mode == "unresolved" or curated_status == "global-only-or-avoid":
         return ""
     command = str(metadata.get("_skills_install_command") or "").strip()
-    if command and not _contains_local_path(command):
+    if command and not contains_local_path(command):
         return command
     source = str(metadata.get("_skills_install_source") or metadata.get("_skills_source") or "").strip()
-    if not source or _is_local_path_like(source):
+    if not source or is_local_path_like(source):
         return ""
     return f"npx skills add {source} --skill {node.id} -y -g"
+
+
+def _catalog_status(node: CatalogNode) -> str:
+    metadata = node.metadata if isinstance(node.metadata, dict) else {}
+    return str(metadata.get("_curated_status") or metadata.get("status") or "").strip()
+
+
+def _catalog_status_message(node: CatalogNode) -> str:
+    status = _catalog_status(node)
+    if status.startswith("integrated-"):
+        return (
+            "Terminal integrated source: represented through repo-native catalog, MCP, plugin, tool, or docs surfaces."
+        )
+    if status.startswith("hard-blocked"):
+        return "Hard-blocked source: no install command is emitted."
+    return "Catalog-only entry: no portable install command is published for this row."
 
 
 def _skill_display_source(node: CatalogNode) -> str:
@@ -337,7 +380,7 @@ def _skill_display_source(node: CatalogNode) -> str:
         return REPO_SOURCE
     metadata = node.metadata if isinstance(node.metadata, dict) else {}
     source = str(metadata.get("_skills_source") or metadata.get("_skills_install_source") or node.source_path).strip()
-    if not source or _is_local_path_like(source):
+    if not source or is_local_path_like(source):
         return LOCAL_INSTALLED_SOURCE_LABEL
     return source
 
@@ -398,7 +441,9 @@ def _skill_public_metadata_rows(node: CatalogNode) -> list[str]:
     )
     install_state = "portable command" if install_command else "local inventory only"
     review_state = "reviewed" if node.source == "custom" else "local inventory"
-    targets = ", ".join(f"`{agent}`" for agent in SUPPORTED_AGENT_IDS) if node.source == "custom" else ""
+    targets = (
+        ", ".join(f"`{agent}`" for agent in SKILLS_CLI_NATIVE_AGENT_IDS) if node.source == "custom" else ""
+    )
     rows = [
         f"| Source Type | `{source_type}` |",
         f"| Display Source | `{escape_mdx_line(display_source)}` |",
@@ -616,10 +661,18 @@ def _render_curated_harness_section(node: CatalogNode) -> list[str]:
     parts.append("## Harness Coverage")
     parts.append("")
     if not install_cmd:
-        parts.append(
-            "No harness install is enabled for this catalog row; no portable install command is recorded. "
-            "Keep it catalog-only until promotion gates pass."
-        )
+        status = _catalog_status(node)
+        if status.startswith("integrated-"):
+            parts.append(
+                "No harness install is emitted from this traceability row; runtime use is represented by the "
+                "recorded repo-native surface for this source."
+            )
+        elif status.startswith("hard-blocked"):
+            parts.append(
+                "No harness install is emitted for this hard-blocked source; no portable install command is recorded."
+            )
+        else:
+            parts.append("No harness install is enabled for this catalog row; no portable install command is recorded.")
     elif target_agents:
         listed = ", ".join(f"`{a}`" for a in target_agents)
         parts.append(f"Targets verified harnesses: {listed}.")
@@ -695,15 +748,18 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     fm = node.metadata
     meta = fm.get("metadata", {})
     parts = []
+    density = resolve_density(node, default=DEFAULT_SKILL_DENSITY)
+    has_source_disclosure = should_emit_skill_source_disclosure(node, is_stub=bool(node.metadata.get("_is_stub")))
 
     is_stub = bool(node.metadata.get("_is_stub"))
     raw_content = read_raw_content(node) if not is_stub else ""
 
-    # Frontmatter
+    # Frontmatter (catalog contract — page_kind/source_kind/asset_id/...)
     parts.append("---")
-    parts.append(f'title: "{node.id}"')
-    parts.append(f'description: "{escape_attr(truncate_sentence(node.description, 200))}"')
+    parts.extend(render_catalog_frontmatter_lines(node, composed=False))
     parts.append("---")
+    parts.append("")
+    parts.append("{/* GENERATED by wagents docs generate — do not edit */}")
     parts.append("")
 
     # Imports
@@ -713,44 +769,49 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     parts.append("")
 
     # === TIER 1: Human summary ===
-    parts.extend(_render_skill_page_header(node, fm))
+    parts.extend(_render_skill_page_header(node, fm, density=density))
     parts.append("{/* Quick Start is rendered by SkillPageHeader. */}")
     parts.append("")
-    parts.append(_catalog_compatibility_blurb(node))
-    parts.append("")
+    if should_emit_works_with_prose(density):
+        parts.append(_catalog_compatibility_blurb(node))
+        parts.append("")
 
     research_body = load_skill_research(node.id)
     is_enriched_stub = bool(node.source == "curated-external" and node.metadata.get("_is_stub") and research_body)
 
-    parts.append('<Aside type="note" title="Source & provenance">')
-    if node.source == "custom":
-        parts.append(
-            "This page is generated from the repository file "
-            f"`{escape_mdx_line(_display_source_path(node))}` by `wagents docs generate`."
-        )
-    elif node.source == "curated-external":
-        parts.append(
-            "This page is generated from authoring SSOT "
-            f"`docs/src/authoring/skills/{node.id}.mdx` and "
-            "`docs/public/generated-registries/skills-catalog-index.json` by "
-            "`wagents docs generate`."
-        )
-        if node.metadata.get("_is_stub"):
-            if is_enriched_stub:
-                parts.append(
-                    " Enriched from research cache (stub); the upstream SKILL.md body is not present locally."
-                    " Re-run `uv run wagents docs research --skill "
-                    f"{node.id}` to refresh."
-                )
-            else:
-                parts.append(
-                    " SKILL.md is not available locally; install the skill or run "
-                    f"`uv run wagents docs research --skill {node.id}` to refresh research context."
-                )
+    if should_emit_source_aside(density):
+        parts.append('<Aside type="note" title="Source & provenance">')
+        if node.source == "custom":
+            parts.append(
+                "This page is generated from the repository file "
+                f"`{escape_mdx_line(_display_source_path(node))}` by `wagents docs generate`."
+            )
+        elif node.source == "curated-external":
+            parts.append(
+                "This page is generated from authoring SSOT "
+                f"`docs/src/authoring/skills/{node.id}.mdx` and "
+                "`docs/public/generated-registries/skills-catalog-index.json` by "
+                "`wagents docs generate`."
+            )
+            if node.metadata.get("_is_stub"):
+                if is_enriched_stub:
+                    parts.append(
+                        " Enriched from research cache (stub); the upstream SKILL.md body is not present locally."
+                        " Re-run `uv run wagents docs research --skill "
+                        f"{node.id}` to refresh."
+                    )
+                else:
+                    parts.append(
+                        " SKILL.md is not available locally; install the skill or run "
+                        f"`uv run wagents docs research --skill {node.id}` to refresh research context."
+                    )
+        else:
+            parts.append(f"This page is generated from `{escape_mdx_line(_display_source_path(node))}`.")
+        parts.append("</Aside>")
+        parts.append("")
     else:
-        parts.append(f"This page is generated from `{escape_mdx_line(_display_source_path(node))}`.")
-    parts.append("</Aside>")
-    parts.append("")
+        parts.append(provenance_one_liner(node))
+        parts.append("")
 
     if node.source == "curated-external":
         # For curated-external show dedicated harness + trust/audit sections plus
@@ -765,15 +826,27 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
             for heading, content in research_sections.items():
                 if heading in skip_headings or not content or not content.strip():
                     continue
+                prose = content
+                if density == "summary":
+                    prose, _ = truncate_research_prose(content)
                 parts.append(f"## {heading}")
                 parts.append("")
-                parts.append(_catalog_prose(content))
+                parts.append(_catalog_prose(prose))
                 parts.append("")
     elif research_body:
-        parts.append('<Aside type="note" title="Research context (evidence, not authority)">')
-        parts.append(_catalog_prose(research_body))
-        parts.append("</Aside>")
-        parts.append("")
+        aside_body = research_body
+        if density == "summary":
+            aside_body, _ = truncate_research_prose(research_body)
+        if should_emit_source_aside(density):
+            parts.append('<Aside type="note" title="Research context (evidence, not authority)">')
+            parts.append(_catalog_prose(aside_body))
+            parts.append("</Aside>")
+            parts.append("")
+        elif aside_body.strip():
+            parts.append("## Research context")
+            parts.append("")
+            parts.append(_catalog_prose(aside_body))
+            parts.append("")
 
     # Guide cross-link — check if a hand-maintained guide page exists
     guide_path = CONTENT_DIR / "guides" / f"{node.id}.mdx"
@@ -783,7 +856,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         parts.append("")
 
     what_it_does = _extract_what_it_does(node.body) if node.body else ""
-    if what_it_does:
+    if should_render_what_it_does(density, description=node.description, what_it_does=what_it_does):
         parts.append("## What It Does")
         parts.append("")
         parts.append(_catalog_prose(what_it_does))
@@ -840,7 +913,11 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         parts.append("")
 
     # Extract and render additional body sections for richer docs pages
-    body_sections = _extract_body_sections(node.body) if node.body else {}
+    render_body_sections = should_render_body_sections(
+        density,
+        has_full_source_disclosure=has_source_disclosure and not is_stub,
+    )
+    body_sections = _extract_body_sections(node.body) if node.body and render_body_sections else {}
     for section_key, section_content in body_sections.items():
         if section_key in _SKIP_SECTIONS or section_key not in _RENDERABLE_SECTIONS or not section_content.strip():
             continue
@@ -912,7 +989,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
             "| Field | Value |\n| ----- | ----- |\n" + "\n".join(compat_rows),
         ))
 
-    parts.extend(render_tabs(tab_items))
+    parts.extend(render_tabs(tab_items, density=density))
 
     # Cross-links (Used By)
     related_edges = [e for e in edges if e.to_id == f"skill:{node.id}"]
@@ -968,22 +1045,24 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         parts.append("")
 
     # Resources
-    parts.append("## Resources")
-    parts.append("")
-    parts.append("<CardGrid>")
-    parts.append(
-        '  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />'
-    )
-    parts.append('  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />')
-    if node.source == "custom":
+    if should_emit_resources_grid(density):
+        parts.append("## Resources")
+        parts.append("")
+        parts.append("<CardGrid>")
         parts.append(
-            '  <LinkCard title="agentskills.io"'
-            ' href="https://agentskills.io"'
-            ' description="The open ecosystem for'
-            ' cross-agent skills." />'
+            '  <LinkCard title="Skill Catalog" href="/skills/catalog/"'
+            ' description="Browse custom and external skills." />'
         )
-    parts.append("</CardGrid>")
-    parts.append("")
+        parts.append('  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />')
+        if node.source == "custom":
+            parts.append(
+                '  <LinkCard title="agentskills.io"'
+                ' href="https://agentskills.io"'
+                ' description="The open ecosystem for'
+                ' cross-agent skills." />'
+            )
+        parts.append("</CardGrid>")
+        parts.append("")
 
     # Source link (only for custom skills)
     if node.source == "custom":
@@ -999,11 +1078,12 @@ def render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     parts = []
     raw_content = read_raw_content(node)
 
-    # Frontmatter
+    # Frontmatter (catalog contract)
     parts.append("---")
-    parts.append(f'title: "{node.id}"')
-    parts.append(f'description: "{escape_attr(truncate_sentence(node.description, 200))}"')
+    parts.extend(render_catalog_frontmatter_lines(node, composed=False))
     parts.append("---")
+    parts.append("")
+    parts.append("{/* GENERATED by wagents docs generate — do not edit */}")
     parts.append("")
 
     # Imports
@@ -1166,12 +1246,12 @@ def render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list
     proj = fm.get("project", {})
     parts = []
 
-    # Frontmatter
+    # Frontmatter (catalog contract)
     parts.append("---")
-    parts.append(f'title: "{node.id}"')
-    desc = node.description or f"MCP server: {node.id}"
-    parts.append(f'description: "{escape_attr(truncate_sentence(desc, 200))}"')
+    parts.extend(render_catalog_frontmatter_lines(node, composed=False))
     parts.append("---")
+    parts.append("")
+    parts.append("{/* GENERATED by wagents docs generate — do not edit */}")
     parts.append("")
 
     # Imports

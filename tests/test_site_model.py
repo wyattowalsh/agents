@@ -7,12 +7,15 @@ import pytest
 from wagents.catalog import CatalogNode
 from wagents.external_skills import ExternalSkillEntry, parse_external_skill_entries
 from wagents.site_model import (
+    SKILLS_CLI_NATIVE_AGENT_IDS,
     SUPPORTED_AGENT_IDS,
     VISUAL_ASSET_BY_ID,
     build_install_command,
     docs_asset_repo_path,
     docs_src_asset_css_url,
     external_skill_groups,
+    is_local_path_like,
+    normalize_public_install_command,
     render_site_data_module,
     render_skill_indexes_module,
     render_visual_assets_css,
@@ -22,13 +25,49 @@ from wagents.site_model import (
 )
 
 
-def test_install_commands_use_shared_supported_agents():
+def test_install_commands_use_skills_cli_native_agents():
     command = build_install_command(skill="review")
 
     assert command.startswith("npx skills add github:wyattowalsh/agents --skill review -y -g")
-    for agent_id in SUPPORTED_AGENT_IDS:
+    for agent_id in SKILLS_CLI_NATIVE_AGENT_IDS:
         assert f"--agent {agent_id}" in command
+    # Skills CLI has no native grok adapter; Grok uses wagents install -a grok.
+    assert "--agent grok" not in command
     assert "claude-code --agent codex --agent gemini-cli" not in command
+    assert set(SKILLS_CLI_NATIVE_AGENT_IDS) == set(SUPPORTED_AGENT_IDS) - {"grok"}
+
+
+def test_normalize_public_install_command_strips_grok_agent_tokens():
+    cases = [
+        (
+            "npx skills add owner/repo --skill demo -y -g -a antigravity claude-code grok opencode",
+            "npx skills add owner/repo --skill demo -y -g -a antigravity claude-code opencode",
+        ),
+        (
+            "npx skills add owner/repo --skill demo -y -g --agent claude-code --agent grok --agent opencode",
+            "npx skills add owner/repo --skill demo -y -g --agent claude-code --agent opencode",
+        ),
+        (
+            "npx skills add owner/repo --skill demo -y -g -a grok",
+            "npx skills add owner/repo --skill demo -y -g",
+        ),
+        (
+            "npx skills add owner/repo --skill grok -y -g -a codex grok",
+            "npx skills add owner/repo --skill grok -y -g -a codex",
+        ),
+        ("pip install some-tool", "pip install some-tool"),
+    ]
+    for raw, expected in cases:
+        assert normalize_public_install_command(raw) == expected
+        # Idempotent
+        assert normalize_public_install_command(normalize_public_install_command(raw)) == expected
+
+
+def test_is_local_path_like_windows_and_unix():
+    assert is_local_path_like(r"C:\Users\me\project")
+    assert is_local_path_like("/Users/me/project")
+    assert not is_local_path_like("https://github.com/owner/repo")
+    assert not is_local_path_like("github:owner/repo")
 
 
 def test_site_data_derives_counts_from_catalog_nodes():

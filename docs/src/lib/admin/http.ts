@@ -22,6 +22,11 @@ export function isTrustedSameOriginRequest(request: Request): boolean {
   return false;
 }
 
+/** Exact /admin or /admin/... only — reject /administrator, /admin-evil, etc. */
+export function isAllowedAdminRedirectPath(pathname: string): boolean {
+  return pathname === '/admin' || pathname.startsWith('/admin/');
+}
+
 export function sanitizeAdminRedirect(
   rawValue: FormDataEntryValue | null | undefined,
   baseUrl = 'http://localhost'
@@ -34,7 +39,7 @@ export function sanitizeAdminRedirect(
   } catch {
     return '/admin';
   }
-  if (!normalized.startsWith('/admin')) return '/admin';
+  if (!isAllowedAdminRedirectPath(normalized)) return '/admin';
   return normalized;
 }
 

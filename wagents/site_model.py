@@ -115,6 +115,11 @@ SUPPORTED_AGENTS: tuple[SupportedAgent, ...] = (
 
 SUPPORTED_AGENT_IDS = tuple(agent.id for agent in SUPPORTED_AGENTS)
 
+# Skills CLI has no native `grok` adapter. Install docs and `npx skills add`
+# flags use native CLI agent IDs only; Grok is installed via `wagents install -a grok`
+# (claude-code adapter + mirror into ~/.grok/skills).
+SKILLS_CLI_NATIVE_AGENT_IDS = tuple(agent_id for agent_id in SUPPORTED_AGENT_IDS if agent_id != "grok")
+
 
 def _strip(v: str) -> str:
     """Normalize value to stripped string (centralized to reduce duplication in source/path/trust logic)."""
@@ -125,11 +130,13 @@ def trust_badge_for_tier(trust_tier: str) -> tuple[str, str]:
     """Map trust tier to public docs badge text and Starlight variant."""
     mapping = {
         "repo": ("Repo-owned", "tip"),
+        "repo-owned": ("Repo-owned", "tip"),
         "curated-trust-gated": ("Curated", "note"),
         "needs-inspection": ("Inspect first", "caution"),
         "read-only-discovered": ("Inspect first", "caution"),
         "external-installed": ("Local install", "default"),
         "global-only-or-avoid": ("Avoid default", "danger"),
+        "hard-blocked": ("Hard-blocked", "danger"),
         "github": ("GitHub", "note"),
         "git": ("Git source", "note"),
     }
@@ -332,9 +339,111 @@ FEATURED_SKILLS: tuple[FeaturedSkill, ...] = (
 )
 
 
-def agent_flags(agent_ids: tuple[str, ...] = SUPPORTED_AGENT_IDS) -> str:
-    """Render supported agent flags for the skills CLI."""
-    return " ".join(f"--agent {agent_id}" for agent_id in agent_ids)
+def agent_flags(agent_ids: tuple[str, ...] = SKILLS_CLI_NATIVE_AGENT_IDS) -> str:
+    """Render Skills CLI-native agent flags (excludes Grok; no native adapter)."""
+    seen: set[str] = set()
+    ordered: list[str] = []
+    for agent_id in agent_ids:
+        if agent_id == "grok":
+            continue
+        if agent_id in seen:
+            continue
+        seen.add(agent_id)
+        ordered.append(agent_id)
+    return " ".join(f"--agent {agent_id}" for agent_id in ordered)
+
+
+def normalize_public_install_command(
+    command: str,
+    *,
+    drop_agents: frozenset[str] = frozenset({"grok"}),
+) -> str:
+    """Strip Skills-CLI-invalid agent tokens (default: grok) from published install commands.
+
+    Operates only on agent-flag value positions (``-a`` / ``--agent``). Never rewrites
+    ``--skill``, source URLs, or non-CLI install strings. Idempotent.
+    """
+    from wagents.external_skills import is_skills_cli_install_command
+
+    raw = (command or "").strip()
+    if not raw:
+        return ""
+    if not is_skills_cli_install_command(raw):
+        return raw
+    try:
+        tokens = shlex.split(raw)
+    except ValueError:
+        # Conservative: remove only explicit long-form pairs when parse fails.
+        cleaned = re.sub(r"(?:--agent(?:=|\s+)|-a\s+)grok\b", "", raw)
+        return re.sub(r"\s+", " ", cleaned).strip()
+
+    drop = set(drop_agents)
+    short_flags = {"-a"}
+    long_flags = {"--agent", "--agents"}
+
+    def _is_flag(tok: str) -> bool:
+        return tok.startswith("-")
+
+    def _split_agent_values(value: str) -> list[str]:
+        return [part for part in value.split(",") if part]
+
+    def _keep(agents: list[str]) -> list[str]:
+        out: list[str] = []
+        seen: set[str] = set()
+        for agent in agents:
+            if agent in drop or agent in seen:
+                continue
+            seen.add(agent)
+            out.append(agent)
+        return out
+
+    out: list[str] = []
+    i = 0
+    n = len(tokens)
+    while i < n:
+        token = tokens[i]
+        if token.startswith("--agent=") or token.startswith("--agents="):
+            flag_name, rhs = token.split("=", 1)
+            kept = _keep(_split_agent_values(rhs))
+            if len(kept) == 1 and "," not in rhs and len(_split_agent_values(rhs)) == 1:
+                out.append(f"{flag_name}={kept[0]}")
+            else:
+                for agent in kept:
+                    out.append("--agent")
+                    out.append(agent)
+            i += 1
+            continue
+        if token.startswith("-a=") and token != "-a=":
+            kept = _keep(_split_agent_values(token[3:]))
+            if kept:
+                out.append("-a")
+                out.extend(kept)
+            i += 1
+            continue
+        if token in short_flags:
+            i += 1
+            values: list[str] = []
+            while i < n and not _is_flag(tokens[i]):
+                values.extend(_split_agent_values(tokens[i]))
+                i += 1
+            kept = _keep(values)
+            if kept:
+                out.append("-a")
+                out.extend(kept)
+            continue
+        if token in long_flags:
+            i += 1
+            if i >= n or _is_flag(tokens[i]):
+                continue
+            values = _split_agent_values(tokens[i])
+            i += 1
+            for agent in _keep(values):
+                out.append("--agent")
+                out.append(agent)
+            continue
+        out.append(token)
+        i += 1
+    return shlex.join(out)
 
 
 def build_install_command(
@@ -342,9 +451,13 @@ def build_install_command(
     skill: str | None = None,
     skills: tuple[str, ...] | None = None,
     all_skills: bool = False,
-    agent_ids: tuple[str, ...] = SUPPORTED_AGENT_IDS,
+    agent_ids: tuple[str, ...] = SKILLS_CLI_NATIVE_AGENT_IDS,
 ) -> str:
-    """Return the canonical install command for generated docs."""
+    """Return the canonical install command for generated docs.
+
+    Uses Skills CLI-native agent IDs only. Grok installs go through
+    ``wagents install -a grok`` / ``wagents skills sync -a grok``.
+    """
     if all_skills:
         selector = "--all"
     else:
@@ -648,13 +761,16 @@ def _external_row_key(row: dict[str, Any]) -> tuple[str, str]:
 
 
 def resolve_trust_tier_for_node(node: CatalogNode) -> str:
-    """Derive trust tier for node rows (read from inventory metadata when present; custom always repo)."""
+    """Derive trust tier for node rows (custom always repo-owned)."""
     if getattr(node, "source", None) == "custom":
-        return "repo"
+        return "repo-owned"
     fm = node.metadata if isinstance(node.metadata, dict) else {}
-    tier = fm.get("_skills_trust_tier")
+    tier = fm.get("_skills_trust_tier") or fm.get("trust_tier")
     if tier:
-        return _strip(tier)
+        normalized = _strip(tier)
+        if normalized == "repo":
+            return "repo-owned"
+        return normalized
     if getattr(node, "source", None) == "curated-external":
         return "curated-trust-gated"
     return "external-installed"
@@ -667,7 +783,8 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
     if source_type == "custom":
         raw_source_root = REPO_SOURCE
         source_root = REPO_SOURCE
-        source_kind = _source_kind(raw_source_root, source_type=source_type)
+        # Catalog-index schema sourceKind uses custom|curated-external|external (not "repo").
+        source_kind = "custom"
         local_inventory_only = False
         install_source = REPO_SOURCE
         install_command = build_install_command(skill=node.id)
@@ -677,7 +794,7 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
     elif source_type == "curated-external":
         raw_source_root = str(fm.get("_skills_source") or node.source_path or REPO_SOURCE)
         source_root = _public_source_label(raw_source_root)
-        source_kind = _source_kind(raw_source_root, source_type=source_type)
+        source_kind = "curated-external"
         local_inventory_only = False
         raw_install_source = str(fm.get("_skills_install_source") or raw_source_root)
         install_source = raw_install_source
@@ -704,7 +821,9 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         fm.get("_skills_installed_agents") if isinstance(fm.get("_skills_installed_agents"), list) else []
     )
     target_agents = (
-        list(SUPPORTED_AGENT_IDS) if source_type == "custom" else _as_str_list(fm.get("_skills_target_agents"))
+        list(SKILLS_CLI_NATIVE_AGENT_IDS)
+        if source_type == "custom"
+        else _as_str_list(fm.get("_skills_target_agents"))
     )
     trust_tier = resolve_trust_tier_for_node(node)
     trust_badge, trust_badge_variant = trust_badge_for_tier(trust_tier)
@@ -717,7 +836,7 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         "displaySource": source_root,
         "sourceKind": source_kind,
         "installSource": install_source,
-        "installable": bool(install_command),
+        "installable": bool(install_command) or source_type == "custom",
         "localInventoryOnly": local_inventory_only,
         "trustTier": trust_tier,
         "trustBadge": trust_badge,
@@ -771,11 +890,11 @@ def _external_skill_row(entry: ExternalSkillEntry) -> dict[str, Any]:
         "sourceType": "curated-external",
         "sourceRoot": entry.source,
         "displaySource": entry.source or "curated external source",
-        "sourceKind": _source_kind(entry.source, source_type="curated-external"),
+        "sourceKind": "curated-external",
         "installSource": entry.install_source,
         "installable": bool(entry.install_command and entry.selector_mode != "unresolved"),
         "localInventoryOnly": False,
-        "trustTier": entry.trust_tier,
+        "trustTier": entry.trust_tier or "curated-trust-gated",
         "trustBadge": trust_badge,
         "trustBadgeVariant": trust_badge_variant,
         "sourcePath": _public_source_path(entry.source_path),
@@ -839,7 +958,7 @@ def _installed_install_command(
         return ""
     command = str(metadata.get("_skills_install_command") or "").strip()
     if command and not _contains_local_path(command):
-        return command
+        return normalize_public_install_command(command)
     if local_inventory_only or not install_source or _is_local_path_like(install_source):
         return ""
     return f"npx skills add {install_source} --skill {skill_id} -y -g"
@@ -903,12 +1022,33 @@ def _is_local_path_like(value: str) -> bool:
     return Path(source).is_absolute()
 
 
+def contains_local_path(value: str) -> bool:
+    """Public SSOT: true when *value* embeds a machine-local path marker."""
+    return _contains_local_path(value)
+
+
+def is_local_path_like(value: str) -> bool:
+    """Public SSOT: true when *value* looks like a local filesystem path."""
+    return _is_local_path_like(value)
+
+
 def _promotion_policy_for_external_status(status: str) -> str:
     return {
         "install-now-after-trust-gate": "Install only after trust gate; audit again before repo promotion.",
         "inspect-then-install": "Inspect source, hooks, scripts, credentials, and dedupe before install.",
         "global-only-or-avoid": "Keep global-only or avoid unless explicitly approved.",
         "installed-external": "Treat as local installed inventory until curated and audited.",
+        "integrated-collection-surface": "Terminal collection integration; do not vendor wholesale.",
+        "integrated-existing-surface": "Terminal existing-surface integration; do not duplicate.",
+        "integrated-mcp-surface": "Terminal MCP integration; use repo-native MCP surfaces only.",
+        "integrated-native-surface": "Terminal native-surface integration; no portable skill install emitted.",
+        "integrated-plugin-surface": "Terminal plugin integration; use plugin registry/manual activation only.",
+        "integrated-skill-catalog-surface": (
+            "Terminal skill-catalog integration; install metadata is recorded separately."
+        ),
+        "integrated-tool-surface": "Terminal tool integration; use tool docs/manual smoke tests only.",
+        "hard-blocked-inaccessible": "Hard-blocked because the upstream source is inaccessible or malformed.",
+        "hard-blocked-quarantine": "Hard-blocked by quarantine policy; do not install or execute.",
     }.get(status, "")
 
 

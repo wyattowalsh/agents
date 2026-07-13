@@ -141,6 +141,37 @@ class TestRenderSkillPage:
         assert "v1.0" in result
         assert "tester" in result
 
+    def test_summary_density_collapses_chrome(self, tmp_repo):
+        node = _make_node(
+            "skill",
+            metadata={
+                "name": "test-skill",
+                "description": "A test description",
+                "density": "summary",
+            },
+            body=(
+                "## What It Does\n\n"
+                "This section explains the skill in enough words to exceed the summary threshold for rendering.\n\n"
+                "## Workflow\n\nRun the tool.\n"
+            ),
+        )
+        skill_dir = tmp_repo / "skills" / "test-skill"
+        skill_dir.mkdir(parents=True, exist_ok=True)
+        (skill_dir / "SKILL.md").write_text(
+            "---\nname: test-skill\ndescription: A test description\n---\n\n"
+            + node.body
+        )
+        result = render_skill_page(node, [], [node])
+        assert "Source & provenance" not in result
+        assert "Generated from" in result
+        assert "metadata-disclosure" in result
+        assert "## Resources" not in result
+        assert "View Full SKILL.md" in result
+        # Inline body sections are suppressed; raw SKILL may still appear only in
+        # the collapsed full-source disclosure after the human summary.
+        before_disclosure = result.split("View Full SKILL.md", 1)[0]
+        assert "## Workflow" not in before_disclosure
+
     def test_used_by_edges(self, tmp_repo):
         skill_node = _make_node("skill")
         agent_node = _make_node("agent", id="my-agent", description="Agent desc")
@@ -478,7 +509,14 @@ class TestScaffoldDocPage:
         (skill_dir / "SKILL.md").write_text("---\nname: test-skill\ndescription: Test\n---\n\n# X\n\nBody.\n")
         node = _make_node("skill")
         scaffold_doc_page(node)
-        assert (content_dir / "skills" / "catalog" / "test-skill.mdx").exists()
+        assert (content_dir / "skills" / "catalog" / "custom" / "test-skill.mdx").exists()
+
+    def test_external_skill_scaffolds_under_external_group(self, tmp_repo):
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        node = _make_node("skill", source="curated-external")
+        scaffold_doc_page(node)
+        assert (content_dir / "skills" / "catalog" / "external" / "test-skill.mdx").exists()
 
     def test_noop_when_content_dir_missing(self, tmp_repo):
         node = _make_node("skill")

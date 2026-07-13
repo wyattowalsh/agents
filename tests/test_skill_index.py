@@ -170,6 +170,40 @@ def test_build_catalog_index_separates_custom_and_external(tmp_authoring_dir: Pa
     assert all_names == {"custom-a", "ext-b"}
 
 
+def test_build_catalog_index_defaults_empty_custom_target_agents(tmp_authoring_dir: Path):
+    from wagents.site_model import SKILLS_CLI_NATIVE_AGENT_IDS
+
+    _write_mdx(tmp_authoring_dir, "custom-empty", {"name": "custom-empty", "source_kind": "custom"})
+    idx = build_catalog_index(load_authoring_entries(tmp_authoring_dir))
+    row = next(r for r in idx["customSkillIndex"] if r["name"] == "custom-empty")
+    assert row["targetAgents"] == list(SKILLS_CLI_NATIVE_AGENT_IDS)
+    assert "grok" not in row["targetAgents"]
+    assert row["installCommand"]
+    assert "--agent grok" not in row["installCommand"]
+    assert "grok" not in row["installCommand"].split()
+
+
+def test_build_catalog_index_strips_grok_from_published_install_command(tmp_authoring_dir: Path):
+    _write_mdx(
+        tmp_authoring_dir,
+        "ext-grok",
+        {
+            "name": "ext-grok",
+            "source_kind": "curated-external",
+            "status": "inspect-then-install",
+            "install_command": (
+                "npx skills add owner/repo --skill ext-grok -y -g "
+                "-a claude-code codex grok opencode"
+            ),
+        },
+    )
+    idx = build_catalog_index(load_authoring_entries(tmp_authoring_dir))
+    row = next(r for r in idx["externalSkillIndex"] if r["name"] == "ext-grok")
+    assert "grok" not in row["installCommand"].split()
+    assert "claude-code" in row["installCommand"]
+    assert "opencode" in row["installCommand"]
+
+
 def test_build_catalog_index_preserves_curated_audit_fields(tmp_authoring_dir: Path):
     _write_mdx(
         tmp_authoring_dir,

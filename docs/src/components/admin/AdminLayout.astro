@@ -52,6 +52,7 @@ const navItems: NavItem[] = [
   </head>
   <body class="admin-app">
     <div class="admin-bg admin-bg--grid" aria-hidden="true"></div>
+    <a class="skip-link" href="#admin-main">Skip to main content</a>
     <div class="admin-bg admin-bg--orb" aria-hidden="true"></div>
     <div class="admin-shell">
       <header class="admin-topbar">
@@ -102,7 +103,7 @@ const navItems: NavItem[] = [
           </aside>
         )}
 
-        <main class="admin-main">
+        <main class="admin-main" id="admin-main">
           <slot />
         </main>
       </div>

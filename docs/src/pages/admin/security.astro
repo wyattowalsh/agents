@@ -10,6 +10,9 @@ import { captureServerEvent } from '../../lib/admin/telemetry';
 export const prerender = false;
 
 const admin = Astro.locals.admin;
+if (!admin?.isAuthenticated) {
+  return Astro.redirect('/admin/login?redirect=%2Fadmin%2Fsecurity');
+}
 const config = getAdminConfigSnapshot();
 const securityEnabled = isFeatureEnabled('admin_security_audit', admin.featureOverrides);
 const auditData = securityEnabled
@@ -79,9 +82,24 @@ await captureServerEvent(
           </strong>
         </li>
         <li>
-          <span>Explicit session secret</span>
-          <strong class:list={['admin-status', config.hasExplicitSessionSecret ? 'admin-status--ok' : 'admin-status--warn']}>
-            {config.hasExplicitSessionSecret ? 'configured' : 'derived'}
+          <span>Session secret</span>
+          <strong
+            class:list={[
+              'admin-status',
+              config.hasSessionSecret
+                ? config.hasExplicitSessionSecret
+                  ? 'admin-status--ok'
+                  : 'admin-status--warn'
+                : 'admin-status--danger',
+            ]}
+          >
+            {config.hasExplicitSessionSecret
+              ? 'explicit'
+              : config.usingDerivedSessionSecret
+                ? 'derived-dev'
+                : config.hasSessionSecret
+                  ? 'ready'
+                  : 'missing'}
           </strong>
         </li>
         <li>
@@ -94,6 +112,14 @@ await captureServerEvent(
           <span>Query API access</span>
           <strong class:list={['admin-status', config.posthogQueryConfigured ? 'admin-status--ok' : 'admin-status--warn']}>
             {config.posthogQueryConfigured ? 'configured' : 'missing'}
+          </strong>
+        </li>
+        <li>
+          <span>Login rate limit (edge)</span>
+          <strong class="admin-status admin-status--warn">
+            set DOCS_ADMIN_CLIENT_IP_HEADER to the platform trusted client-IP header; enable edge WAF rate
+            limits on POST /api/admin/login (in-process Map is isolate-local; XFF first hop is untrusted
+            without a trusted header)
           </strong>
         </li>
       </ul>

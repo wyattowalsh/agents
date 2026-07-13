@@ -1,6 +1,7 @@
 ---
 import AdminLayout from '../../components/admin/AdminLayout.astro';
 import { getAdminConfigSnapshot } from '../../lib/admin/config';
+import { sanitizeAdminRedirect } from '../../lib/admin/http';
 
 export const prerender = false;
 
@@ -10,9 +11,7 @@ if (Astro.locals.admin.isAuthenticated) {
 
 const config = getAdminConfigSnapshot();
 const errorCode = Astro.url.searchParams.get('error');
-const redirectPath = Astro.url.searchParams.get('redirect')?.startsWith('/admin')
-  ? Astro.url.searchParams.get('redirect')!
-  : '/admin';
+const redirectPath = sanitizeAdminRedirect(Astro.url.searchParams.get('redirect'));
 
 const errorMessage =
   errorCode === 'invalid_credentials'
@@ -22,8 +21,12 @@ const errorMessage =
       : errorCode === 'origin'
         ? 'Origin validation failed for this request.'
         : errorCode === 'missing_password'
-          ? 'DOCS_ADMIN_PASSWORD is not configured for this environment.'
-          : '';
+          ? 'Enter the admin password to continue.'
+          : errorCode === 'rate_limited'
+            ? 'Too many failed attempts. Wait about 15 minutes and try again.'
+            : errorCode === 'misconfigured'
+              ? 'Admin session crypto is not configured. Set DOCS_ADMIN_SESSION_SECRET (and password) for this environment.'
+              : '';
 
 const wasLoggedOut = Astro.url.searchParams.get('logged_out') === '1';
 ---
@@ -80,9 +83,24 @@ const wasLoggedOut = Astro.url.searchParams.get('logged_out') === '1';
           </strong>
         </li>
         <li>
-          <span>Explicit session secret</span>
-          <strong class:list={['admin-status', config.hasExplicitSessionSecret ? 'admin-status--ok' : 'admin-status--warn']}>
-            {config.hasExplicitSessionSecret ? 'configured' : 'derived'}
+          <span>Session secret</span>
+          <strong
+            class:list={[
+              'admin-status',
+              config.hasSessionSecret
+                ? config.hasExplicitSessionSecret
+                  ? 'admin-status--ok'
+                  : 'admin-status--warn'
+                : 'admin-status--danger',
+            ]}
+          >
+            {config.hasExplicitSessionSecret
+              ? 'explicit'
+              : config.usingDerivedSessionSecret
+                ? 'derived-dev'
+                : config.hasSessionSecret
+                  ? 'ready'
+                  : 'missing'}
           </strong>
         </li>
         <li>

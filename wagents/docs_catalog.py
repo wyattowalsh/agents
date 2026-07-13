@@ -75,21 +75,56 @@ def _skills_catalog_index() -> dict[str, Any]:
     return index if isinstance(index, dict) else {}
 
 
+_TEACHING_TOPOLOGY_NAMES = (
+    "orchestrator",
+    "review",
+    "python-conventions",
+    "javascript-conventions",
+    "agent-conventions",
+    "shell-conventions",
+    "learn",
+    "research",
+    "mcp-creator",
+    "design",
+    "docs-steward",
+    "harness-master",
+    "skill-creator",
+    "security-scanner",
+    "devops-engineer",
+    "openspec-workflow",
+)
+
+
 def _skill_rows_for_topology() -> list[dict[str, str]]:
+    """Prefer first-party teaching skills for architecture progressive-disclosure visuals."""
     index = _skills_catalog_index()
-    rows: list[dict[str, str]] = []
+    by_name: dict[str, dict[str, str]] = {}
+    custom_rows: list[dict[str, str]] = []
     for entry in _catalog_skill_entries(index):
         name = str(entry.get("name") or entry.get("id") or "")
         if not name:
             continue
         source_kind = str(entry.get("sourceKind") or entry.get("source_kind") or "custom")
         source_type = "curated-external" if source_kind == "curated-external" else "custom"
-        rows.append({
+        row = {
             "name": name,
             "sourceType": source_type,
             "trustTier": str(entry.get("trustTier") or entry.get("trust_tier") or "unknown"),
-        })
-    return sorted(rows, key=lambda r: r["name"])
+        }
+        by_name[name] = row
+        if source_type == "custom":
+            custom_rows.append(row)
+
+    teaching: list[dict[str, str]] = []
+    for name in _TEACHING_TOPOLOGY_NAMES:
+        if name in by_name:
+            teaching.append(by_name[name])
+    if len(teaching) >= 8:
+        return teaching
+
+    # Fall back to sorted custom skills when teaching set is sparse.
+    custom_rows.sort(key=lambda r: r["name"])
+    return custom_rows[:48]
 
 
 def _entry_source_type(entry: dict[str, Any]) -> str:
@@ -259,6 +294,11 @@ def write_catalog_mcp_index(mcps: list[CatalogNode], *, writer: MdxWriter = _wri
 def write_catalog_tags_index(skills_index: dict[str, Any], *, writer: MdxWriter = _write_mdx) -> None:
     by_tag = _collect_tag_index(skills_index)
     tag_counts = _collect_tag_index_counts(skills_index)
+    custom_names = {
+        str(e.get("name") or "")
+        for e in _catalog_skill_entries(skills_index)
+        if _entry_source_type(e) == "custom" and e.get("name")
+    }
     body = [
         "import { CardGrid, LinkCard } from '@astrojs/starlight/components';",
         "",
@@ -283,6 +323,12 @@ def write_catalog_tags_index(skills_index: dict[str, Any], *, writer: MdxWriter 
                 f'  <LinkCard title="{escape_attr(tag)}" href="{href}" '
                 f'description="{escape_attr(description)}" />'
             )
+        if custom_names:
+            desc = f"{len(custom_names)} custom skills in the catalog (browse custom hub)"
+            body.append(
+                f'  <LinkCard title="Custom skills" href="/skills/catalog/custom/" '
+                f'description="{escape_attr(desc)}" />'
+            )
         body.append("</CardGrid>")
     writer(
         CATALOG_CONTENT_DIR / "tags" / "index.mdx",
@@ -294,6 +340,11 @@ def write_catalog_tags_index(skills_index: dict[str, Any], *, writer: MdxWriter 
 def write_catalog_platforms_index(skills_index: dict[str, Any], *, writer: MdxWriter = _write_mdx) -> None:
     by_platform = _collect_platform_index(skills_index)
     harness_labels = _load_harness_labels()
+    custom_names = {
+        str(e.get("name") or "")
+        for e in _catalog_skill_entries(skills_index)
+        if _entry_source_type(e) == "custom" and e.get("name")
+    }
     body = [
         "import { CardGrid, LinkCard } from '@astrojs/starlight/components';",
         "",
@@ -326,6 +377,13 @@ def write_catalog_platforms_index(skills_index: dict[str, Any], *, writer: MdxWr
                 f'  <LinkCard title="{escape_attr(label)}" href="{href}" '
                 f'description="{escape_attr(description)}" />'
             )
+    # Hub companion even when by_platform is empty (customs with no targetAgents).
+    if custom_names:
+        desc = f"{len(custom_names)} custom skills in the catalog (browse custom hub)"
+        body.append(
+            f'  <LinkCard title="Custom skills" href="/skills/catalog/custom/" '
+            f'description="{escape_attr(desc)}" />'
+        )
     body.append("</CardGrid>")
     writer(
         CATALOG_CONTENT_DIR / "platforms" / "index.mdx",
@@ -389,11 +447,17 @@ def write_architecture_pages(
         "",
         "| Layer | Owner | Loads when |",
         "| ----- | ----- | ---------- |",
+        "| Bundle entry | `AGENTS.md` | Always (points at global + formats) |",
         "| Global instructions | `instructions/global.md` | Always (cross-harness) |",
+        "| Platform overlays | `instructions/*-global.md` | Harness-specific bridge |",
         "| Skill descriptions | `skills/*/SKILL.md` frontmatter | Always (descriptions only) |",
-        "| Scoped rules | `.claude/rules/`, `.cursor/rules/` | Path match |",
+        "| Scoped rules | `.claude/rules/`, `.cursor/rules/*.mdc` (independent sets) | Path match |",
+        "| Generated mirrors | `.github/instructions/`, `.apm/instructions/`, Copilot home file | Sync / install |",
         "| Skill bodies | `skills/*/SKILL.md` body | Skill invoked |",
         "| Generated docs | `wagents docs generate` | Human browse / MCP docs-index |",
+        "",
+        "Cursor `.mdc` rules are **not** assumed parity with Claude `.claude/rules/`.",
+        "Edit each surface when policy must match.",
         "",
         '<Aside type="tip" title="Token efficacy">',
         "See [Harness config — token efficacy](/harness-config/token-efficacy/) for one-tool-per-layer policy.",
@@ -401,7 +465,17 @@ def write_architecture_pages(
         "",
     ]
     if topology_block:
-        pd_body.extend(["## Skill topology", "", topology_block, ""])
+        pd_body.extend(
+            [
+                "## Skill topology (teaching sample)",
+                "",
+                "First-party progressive-disclosure examples (not the full catalog alphabet). "
+                "Browse the full inventory in the [Skill Catalog](/skills/catalog/).",
+                "",
+                topology_block,
+                "",
+            ]
+        )
 
     writer(
         ARCHITECTURE_CONTENT_DIR / "progressive-disclosure.mdx",
@@ -415,14 +489,22 @@ def write_architecture_pages(
     il_body = [
         "import { Aside } from '@astrojs/starlight/components';",
         "",
-        "**Instruction loading** is harness-specific projection of the same canonical sources:",
+        "**Instruction loading** is harness-specific projection of the same canonical sources "
+        "(see `AGENTS.md` section 5-6 for the full support matrix):",
         "",
-        "| Harness | Entry | Bridge |",
-        "| ------- | ----- | ------ |",
+        "| Harness | Entry | Bridge / generated source |",
+        "| ------- | ----- | ------------------------ |",
         "| Claude Code | `CLAUDE.md` | `@AGENTS.md` → `@instructions/global.md` |",
-        "| Cursor / Codex / OpenCode | `AGENTS.md` | `@instructions/global.md` |",
+        "| Gemini CLI / Antigravity | `GEMINI.md` | `@./AGENTS.md` → `@instructions/global.md` |",
+        "| Codex | `AGENTS.md` | `@instructions/global.md`; overlay `instructions/codex-global.md` |",
+        "| Crush | `AGENTS.md` | `@instructions/global.md` |",
+        "| OpenCode | `AGENTS.md` | `@instructions/global.md`; overlay `instructions/opencode-global.md` |",
+        "| Cursor | `AGENTS.md` | `@instructions/global.md` + `.cursor/rules/*.mdc` |",
+        "| Grok Build | `AGENTS.md` | `@instructions/global.md`; bridge `instructions/grok-global.md` "
+        "(config tomls are policy/MCP, not the instruction entry) |",
         "| GitHub Copilot | `.github/copilot-instructions.md` | Generated from `instructions/copilot-global.md` |",
-        "| Grok | `.grok/config.toml` + skills dirs | `instructions/grok-global.md` |",
+        "| Cherry Studio | MCP-only | MCPHub registry; no dedicated instruction bridge |",
+        "| LM Studio | presets + optional skills | `instructions/lm-studio-global.md` + home MCP/presets |",
         "",
         "Platform overlays may add runtime guidance but must not weaken safety or secret-handling rules.",
         "",

@@ -164,9 +164,7 @@ def write_site_data(nodes: list, external_entries: list[ExternalSkillEntry] | No
     (public_index_dir / "install-scripts.json").write_text(
         json.dumps(data["skillInstallScripts"], indent=2, sort_keys=True), encoding="utf-8"
     )
-    (DOCS_DIR / "src" / "generated-skill-indexes.mjs").write_text(
-        render_skill_indexes_module(data), encoding="utf-8"
-    )
+    (DOCS_DIR / "src" / "generated-skill-indexes.mjs").write_text(render_skill_indexes_module(data), encoding="utf-8")
     update_research_manifest()
     (DOCS_DIR / "src" / "generated-visual-assets.css").write_text(render_visual_assets_css(), encoding="utf-8")
 
@@ -247,6 +245,10 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     parts.append("  actions:")
     parts.append("    - text: Install")
     parts.append("      link: /install/")
+    parts.append("      icon: right-arrow")
+    parts.append("    - text: Start Here")
+    parts.append("      link: /start-here/")
+    parts.append("      variant: minimal")
     parts.append("      icon: right-arrow")
     parts.append("    - text: System Overview")
     parts.append("      link: /surfaces/")
@@ -482,14 +484,20 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     parts.append('<Aside type="note" title="How these docs work">')
     if has_mcp_overview and not mcps and external_mcp:
         parts.append(
-            "Catalog pages are generated from `skills/` via `wagents docs generate`. "
-            f"The MCP overview summarizes {external_mcp} external tools from `mcp.json`. "
+            "Repo-owned catalog pages are generated from `skills/`, `agents/`, and `mcp/` via "
+            "`wagents docs generate`. Curated external catalog rows use authoring SSOT under "
+            "`docs/src/authoring/skills/*.mdx` (machine index: "
+            "`docs/public/generated-registries/skills-catalog-index.json`). "
+            f"The MCP overview summarizes {external_mcp} configured tools from "
+            "`config/mcp-registry.json` (MCPHub projections may also appear in root `mcp.json`). "
             "Repo policy lives in `AGENTS.md`."
         )
     else:
         parts.append(
-            "Catalog pages are generated from `skills/`, `agents/`, and `mcp/` via "
-            "`wagents docs generate`. Onboarding pages stay hand-maintained. "
+            "Repo-owned catalog pages are generated from `skills/`, `agents/`, and `mcp/` via "
+            "`wagents docs generate`. Curated external rows are authored in "
+            "`docs/src/authoring/skills/*.mdx` and emitted into the skills catalog index. "
+            "Onboarding pages stay hand-maintained. "
             "See [Contributing](/contributing/) for CI/CD, generated artifact, and validation detail."
         )
     parts.append("</Aside>")
@@ -961,6 +969,12 @@ def write_cli_page() -> None:
     parts.append("| `wagents docs <subcommand>` | Generate, serve, build, preview, or clean the docs site |")
     parts.append("| `wagents hooks <subcommand>` | List and validate lifecycle hooks |")
     parts.append("| `wagents eval <subcommand>` | List, validate, and check eval coverage |")
+    parts.append("| `wagents media <subcommand>` | Image optimize and related media helpers |")
+    parts.append("| `wagents rtk <subcommand>` | RTK shell-token doctor, sync preview, and gain reports |")
+    parts.append("| `wagents apm <subcommand>` | APM materialize/compile helpers for portable projections |")
+    parts.append("| `wagents opencode <subcommand>` | OpenCode session/config operator helpers |")
+    parts.append("| `wagents catalog <subcommand>` | Catalog index and inventory checks |")
+    parts.append("| `wagents grok <subcommand>` | Grok doctor, Plannotator install/sync, harness helpers |")
     parts.append("")
     parts.append("## Command Reference")
     parts.append("")
@@ -1649,7 +1663,12 @@ def write_cli_page() -> None:
     parts.append("wagents docs clean")
     parts.append("```")
     parts.append("")
-    parts.append("Files containing `HAND-MAINTAINED` in their content are preserved during clean operations.")
+    parts.append(
+        "Intentional hand hubs (`start-here`, `hooks/index`, `mcp/index`, harness-config prose) "
+        "with `HAND-MAINTAINED` are preserved. Catalog *detail* pages under "
+        "`skills/catalog/{custom,external}/`, `agents/`, and `mcp/` always regenerate from SSOT "
+        "and are cleaned even if marked composed."
+    )
     parts.append("")
     parts.append("  </TabItem>")
     parts.append("</Tabs>")
@@ -1692,13 +1711,18 @@ def write_cli_page() -> None:
     parts.append("Validate hook definitions for correct structure and known event names:")
     parts.append("")
     parts.append("```bash")
-    parts.append("wagents hooks validate")
+    parts.append("# Fleet gate (default harness filter is all)")
+    parts.append("wagents hooks validate --harness all")
+    parts.append("")
+    parts.append("# Single harness projection check")
+    parts.append("wagents hooks validate --harness cursor")
     parts.append("```")
     parts.append("")
     parts.append(
         "Checks that every hook event is a known lifecycle event (`PreToolUse`, `PostToolUse`, etc.), "
         "handler types are valid (`command`, `prompt`, `agent`), registry harnesses are supported, "
-        "and required fields are present."
+        "and required fields are present. Prefer `--harness all` in maintainer checklists so "
+        "per-harness projection failures are not missed."
     )
     parts.append("")
     parts.append("  </TabItem>")
@@ -2110,6 +2134,15 @@ _EXTERNAL_LANE_BY_STATUS = {
     "install-now-after-trust-gate": "install-now",
     "inspect-then-install": "inspect",
     "global-only-or-avoid": "avoid",
+    "integrated-collection-surface": "integrated",
+    "integrated-existing-surface": "integrated",
+    "integrated-mcp-surface": "integrated",
+    "integrated-native-surface": "integrated",
+    "integrated-plugin-surface": "integrated",
+    "integrated-skill-catalog-surface": "integrated",
+    "integrated-tool-surface": "integrated",
+    "hard-blocked-inaccessible": "hard-blocked",
+    "hard-blocked-quarantine": "hard-blocked",
 }
 
 # Above this count, external catalog index uses client-side CatalogBrowser instead of LinkCard grids.
@@ -2428,9 +2461,21 @@ def write_skill_research_pages(nodes: list) -> None:
         return
 
     skill_nodes = {n.id: n for n in nodes if n.kind == "skill"}
+    # Authoring SSOT ids also count as catalog membership for research publish.
+    authoring_dir = ROOT / "docs" / "src" / "authoring" / "skills"
+    authoring_ids = {p.stem for p in authoring_dir.glob("*.mdx")} if authoring_dir.exists() else set()
     written = 0
+    skipped_orphans = 0
     for path in sorted(RESEARCH_DIR.glob("*.md")):
         skill_id = path.stem
+        # Do not publish research for ids absent from catalog/authoring (orphan residual).
+        if skill_id not in skill_nodes and skill_id not in authoring_ids:
+            skipped_orphans += 1
+            continue
+        if re.search(r"[:*]", skill_id):
+            skipped_orphans += 1
+            continue
+
         body = load_skill_research(skill_id)
         if body is None:
             text = path.read_text(encoding="utf-8")
@@ -2443,17 +2488,27 @@ def write_skill_research_pages(nodes: list) -> None:
             continue
 
         node = skill_nodes.get(skill_id)
-        group = skill_catalog_group(node=node) if node else "external"
+        if node is not None:
+            group = skill_catalog_group(node=node)
+        else:
+            # Authoring-only research: resolve group from authoring source_kind (not default external).
+            authoring_kind = ""
+            authoring_mdx = authoring_dir / f"{skill_id}.mdx"
+            if authoring_mdx.is_file():
+                try:
+                    from wagents.parsing import parse_frontmatter
+
+                    fm, _ = parse_frontmatter(authoring_mdx.read_text(encoding="utf-8"))
+                    authoring_kind = str(fm.get("source_kind") or fm.get("sourceKind") or "")
+                except Exception:
+                    authoring_kind = ""
+            group = "custom" if authoring_kind == "custom" else "external"
         catalog_slug = f"{SKILL_CATALOG_PREFIX}/{group}/{skill_id}"
         catalog_page = CONTENT_DIR / f"{catalog_slug}.mdx"
-        if re.search(r"[:*]", skill_id) or not catalog_page.is_file():
-            if re.search(r"[:*]", skill_id):
-                catalog_note = " (special characters — open from Skill Catalog search)"
-            else:
-                catalog_note = " (no catalog page yet)"
-            catalog_nav = f"Catalog entry: `{catalog_slug}`{catalog_note}"
-        else:
+        if catalog_page.is_file() or skill_id in authoring_ids:
             catalog_nav = f"[Back to catalog page](/{catalog_slug}/)"
+        else:
+            catalog_nav = f"Catalog entry: `{catalog_slug}`"
 
         parts = [
             "---",
@@ -2481,6 +2536,8 @@ def write_skill_research_pages(nodes: list) -> None:
 
     if written:
         typer.echo(f"  Generated {written} skill-research/*.mdx pages")
+    if skipped_orphans:
+        typer.echo(f"  Skipped {skipped_orphans} orphan research artifacts (no catalog/authoring row)")
 
 
 def render_sidebar_module(nodes: list) -> str:
@@ -2493,6 +2550,7 @@ def render_sidebar_module(nodes: list) -> str:
     lines.append("export const navLinks = [")
     nav_items = [
         "  { label: 'Overview', link: '/' }",
+        "  { label: 'Start Here', link: '/start-here/' }",
         "  { label: 'Install', link: '/install/' }",
         "  { label: 'Surfaces', link: '/surfaces/' }",
         "  { label: 'Runtimes', link: '/runtimes/' }",
@@ -2505,6 +2563,8 @@ def render_sidebar_module(nodes: list) -> str:
     lines.append("export default [")
     if (CONTENT_DIR / "index.mdx").exists():
         lines.append("  { label: 'Overview', link: '/' },")
+    if (CONTENT_DIR / "start-here.mdx").exists():
+        lines.append("  { slug: 'start-here', label: 'Start Here' },")
     lines.append("  { slug: 'install', label: 'Install' },")
     lines.append("  {")
     lines.append("    label: 'Surfaces',")
@@ -2516,17 +2576,9 @@ def render_sidebar_module(nodes: list) -> str:
     lines.append("        collapsed: true,")
     lines.append("        items: [")
     lines.append("          { slug: 'skills/catalog', label: 'Catalog' },")
+    lines.append("          { slug: 'skills/catalog/custom', label: 'Custom skills' },")
+    lines.append("          { slug: 'skills/catalog/external', label: 'External skills' },")
     lines.append("          { slug: 'skills/install', label: 'Install scripts' },")
-    lines.append("          {")
-    lines.append("            label: 'Custom',")
-    lines.append("            collapsed: true,")
-    lines.append("            items: [{ autogenerate: { directory: 'skills/catalog/custom' } }],")
-    lines.append("          },")
-    lines.append("          {")
-    lines.append("            label: 'External',")
-    lines.append("            collapsed: true,")
-    lines.append("            items: [{ autogenerate: { directory: 'skills/catalog/external' } }],")
-    lines.append("          },")
     lines.append("        ],")
     lines.append("      },")
     lines.append("      { slug: 'surfaces/tools', label: 'Tools' },")
@@ -2673,10 +2725,45 @@ def _resolve_typer_option[T](value: T | OptionInfo | None, *, default: T) -> T:
     return cast("T", resolved)
 
 
-def _clean_content_subdir(d: Path) -> bool:
-    """Remove generated files from *d*, preserving hand-maintained ones recursively.
+def is_catalog_detail_relpath(rel: str) -> bool:
+    """True for regenerable catalog/agent/mcp detail pages (CONTENT_DIR-relative posix path)."""
+    if not rel.endswith(".mdx"):
+        return False
+    name = rel.rsplit("/", 1)[-1]
+    if name == "index.mdx":
+        return False
+    # Legacy bare orphans: skills/catalog/<id>.mdx (no custom/external segment).
+    parts = rel.split("/")
+    if (
+        len(parts) == 3
+        and parts[0] == "skills"
+        and parts[1] == "catalog"
+        and parts[2].endswith(".mdx")
+        and parts[2] != "index.mdx"
+    ):
+        return True
+    return (
+        rel.startswith(f"{SKILL_CATALOG_PREFIX}/custom/")
+        or rel.startswith(f"{SKILL_CATALOG_PREFIX}/external/")
+        or rel.startswith("agents/")
+        or rel.startswith("mcp/")
+    )
 
-    Returns True if any items were removed.
+
+def _is_catalog_detail_mdx(path: Path) -> bool:
+    """True for regenerable catalog detail pages (not hub indexes)."""
+    try:
+        rel = path.relative_to(CONTENT_DIR).as_posix()
+    except ValueError:
+        return False
+    return is_catalog_detail_relpath(rel)
+
+
+def _clean_content_subdir(d: Path) -> bool:
+    """Remove generated files from *d*, preserving intentional hand hubs.
+
+    Catalog skill/agent/mcp *detail* pages always clean even if marked composed
+    or HAND-MAINTAINED so removed assets do not leave orphan MDX.
     """
     if not d.exists():
         return False
@@ -2684,7 +2771,7 @@ def _clean_content_subdir(d: Path) -> bool:
     cleaned = False
     for item in sorted(d.rglob("*"), key=lambda path: len(path.parts), reverse=True):
         if item.is_file():
-            if _is_hand_maintained_mdx(item):
+            if _is_hand_maintained_mdx(item) and not _is_catalog_detail_mdx(item):
                 typer.echo(f"  Preserved {item.relative_to(CONTENT_DIR)} (hand-maintained)")
                 continue
             item.unlink(missing_ok=True)
@@ -2912,7 +2999,13 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
             page_dir.mkdir(parents=True, exist_ok=True)
             out_file = page_dir / f"{node.id}.mdx"
             rel = f"{kind_dir}/{node.id}.mdx"
-        if out_file.exists() and _is_hand_maintained_mdx(out_file):
+        # Catalog surfaces (skills/agents/mcp detail pages) always regenerate from SSOT.
+        # HAND-MAINTAINED only freezes non-catalog hand hubs (start-here, hooks hub, etc.).
+        if (
+            out_file.exists()
+            and _is_hand_maintained_mdx(out_file)
+            and node.kind not in {"skill", "agent", "mcp"}
+        ):
             typer.echo(f"  Preserved {rel} (hand-maintained)")
             continue
         out_file.write_text(render_page(node, edges, nodes))
@@ -2987,15 +3080,16 @@ def docs_generate(
     include_drafts = _resolve_typer_option(include_drafts, default=False)
     include_installed = _resolve_typer_option(include_installed, default=False)
     if check:
-        reasons = _docs_generate_stale_reasons(
-            include_drafts=include_drafts,
-            include_installed=include_installed,
-        )
-        if reasons:
-            for reason in reasons:
-                typer.echo(reason, err=True)
-            raise typer.Exit(code=1)
-        typer.echo("Generated docs artifacts are up to date")
+        with _docs_generate_lock():
+            reasons = _docs_generate_stale_reasons(
+                include_drafts=include_drafts,
+                include_installed=include_installed,
+            )
+            if reasons:
+                for reason in reasons:
+                    typer.echo(reason, err=True)
+                raise typer.Exit(code=1)
+            typer.echo("Generated docs artifacts are up to date")
         return
     with _docs_generate_lock():
         _docs_generate_impl(include_drafts=include_drafts, include_installed=include_installed)
