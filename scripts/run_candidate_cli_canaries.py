@@ -18,8 +18,8 @@ import socket
 import struct
 import subprocess
 import sys
-import termios
 import tempfile
+import termios
 import threading
 import time
 import urllib.error
@@ -464,7 +464,10 @@ def probe_asc(fixture: Path, env: dict[str, str]) -> ProcessResult:
     env["ASC_BYPASS_KEYCHAIN"] = "1"
     env["ASC_STRICT_AUTH"] = "1"
     result = run(["asc", "docs", "list"], cwd=fixture, env=env)
-    require(result.returncode == 0 and result.stdout.strip(), "asc embedded docs canary failed")
+    require(
+        result.returncode == 0 and bool(result.stdout.strip()),
+        "asc embedded docs canary failed",
+    )
     denied = run(["asc", "apps", "list", "--limit", "1", "--output", "json"], cwd=fixture, env=env)
     require(denied.returncode != 0, "asc unexpectedly authorized a live account call")
     return result
@@ -532,7 +535,8 @@ def probe_hyperframes(fixture: Path, env: dict[str, str]) -> ProcessResult:
         {"package_manager": "npm", "package_name": "hyperframes"},
         executable,
     )
-    require(root is not None, "hyperframes package root was not found")
+    if root is None:
+        raise RuntimeError("hyperframes package root was not found")
     invalid = root / "dist" / "templates" / "blank"
     valid = fixture / "valid"
     shutil.copytree(invalid, valid)
@@ -706,7 +710,7 @@ class _TotFixtureHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(encoded)
 
-    def log_message(self, _format: str, *_args: object) -> None:
+    def log_message(self, format: str, *args: Any) -> None:
         return
 
 
@@ -738,12 +742,14 @@ def probe_tot(fixture: Path, env: dict[str, str]) -> ProcessResult:
 def probe_refine(fixture: Path, env: dict[str, str]) -> ProcessResult:
     executable = Path(shutil.which("refine") or "")
     node = shutil.which("node")
-    require(node is not None, "Node.js was not found for the Refine relay")
+    if node is None:
+        raise RuntimeError("Node.js was not found for the Refine relay")
     root = package_root(
         {"package_manager": "npm", "package_name": "transitions-refine"},
         executable,
     )
-    require(root is not None, "Refine package root was not found")
+    if root is None:
+        raise RuntimeError("Refine package root was not found")
     port = free_loopback_port()
     env.update(
         {
@@ -844,13 +850,31 @@ def probe_openspec_ui(fixture: Path, env: dict[str, str]) -> ProcessResult:
     project = fixture / "project"
     _write_openspec_fixture(project)
     port = free_loopback_port()
+    config = fixture / "openspec-ui.json"
+    config.write_text(
+        json.dumps(
+            {
+                "sources": [{"name": "probe", "path": str(project / "openspec")}],
+                "port": port,
+            }
+        ),
+        encoding="utf-8",
+    )
     env.update({"PORT": str(port), "CORS_ALLOWED_ORIGINS": f"http://127.0.0.1:{port}"})
 
     def assert_ui(status: int, body: str) -> None:
         require(status == 200 and "OpenSpec" in body, "OpenSpec UI did not render")
+        sources_status, sources_body = http_get(f"http://127.0.0.1:{port}/api/sources")
+        sources = json.loads(sources_body)
+        require(
+            sources_status == 200
+            and sources.get("sources", [{}])[0].get("name") == "probe"
+            and sources.get("sources", [{}])[0].get("valid") is True,
+            "OpenSpec UI did not load the configured source",
+        )
 
     result = run_server(
-        ["openspec-ui"],
+        ["openspec-ui", "--config", str(config)],
         cwd=project,
         env=env,
         ready_url=f"http://127.0.0.1:{port}/",
@@ -919,8 +943,17 @@ def probe_inspector(fixture: Path, env: dict[str, str]) -> ProcessResult:
     server = fixture / "fixture_mcp.py"
     _write_fixture_mcp_server(server)
     target = [sys.executable, str(server)]
-    listed = run(["mcp-inspector", "--cli", *target, "--method", "tools/list"], cwd=fixture, env=env)
-    require(listed.returncode == 0 and '"name": "echo"' in listed.stdout, "MCP Inspector tools/list failed")
+    executable = Path(shutil.which("mcp-inspector") or "").resolve()
+    require(executable.is_file(), "MCP Inspector managed executable was not found")
+    listed = run(
+        ["mcp-inspector", "--cli", *target, "--method", "tools/list"],
+        cwd=fixture,
+        env=env,
+    )
+    require(
+        listed.returncode == 0 and '"name": "echo"' in listed.stdout,
+        f"MCP Inspector tools/list failed: {listed.stdout}\n{listed.stderr}",
+    )
     result = run(
         [
             "mcp-inspector",
@@ -936,8 +969,15 @@ def probe_inspector(fixture: Path, env: dict[str, str]) -> ProcessResult:
         cwd=fixture,
         env=env,
     )
-    require(result.returncode == 0 and "echo:probe" in result.stdout, "MCP Inspector tools/call failed")
-    denied = run(["mcp-inspector", "--cli", *target, "--method", "not-a-method"], cwd=fixture, env=env)
+    require(
+        result.returncode == 0 and "echo:probe" in result.stdout,
+        f"MCP Inspector tools/call failed: {result.stdout}\n{result.stderr}",
+    )
+    denied = run(
+        ["mcp-inspector", "--cli", *target, "--method", "not-a-method"],
+        cwd=fixture,
+        env=env,
+    )
     require(denied.returncode != 0, "MCP Inspector accepted an invalid method")
     return result
 

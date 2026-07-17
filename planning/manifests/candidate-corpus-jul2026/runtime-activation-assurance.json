@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-17T15:14:15.943680+00:00",
+  "generated_at": "2026-07-17T22:41:48.515256+00:00",
   "assurance_kind": "candidate-runtime-activation",
   "requested_full_usability": false,
   "source_target_count": 289,
@@ -1324,48 +1324,32 @@
       "phase_results": {
         "identity": {
           "predicate": "package-identity",
-          "status": "incomplete",
-          "errors": [
-            "missing identity receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "install": {
           "predicate": "install-receipt",
-          "status": "incomplete",
-          "errors": [
-            "missing install receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "behavior": {
           "predicate": "behavior-probe",
-          "status": "incomplete",
-          "errors": [
-            "missing behavior receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "fresh_process": {
           "predicate": "fresh-process",
-          "status": "incomplete",
-          "errors": [
-            "missing fresh_process receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "rollback": {
           "predicate": "rollback",
-          "status": "incomplete",
-          "errors": [
-            "missing rollback receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         }
       },
-      "status": "incomplete",
-      "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
-        "rollback: missing rollback receipt"
-      ]
+      "status": "accepted",
+      "errors": []
     },
     {
       "artifact_id": "candidate-artifact-e1db2e4e9316b3df",
@@ -1386,48 +1370,32 @@
       "phase_results": {
         "identity": {
           "predicate": "package-identity",
-          "status": "incomplete",
-          "errors": [
-            "missing identity receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "install": {
           "predicate": "install-receipt",
-          "status": "incomplete",
-          "errors": [
-            "missing install receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "behavior": {
           "predicate": "behavior-probe",
-          "status": "incomplete",
-          "errors": [
-            "missing behavior receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "fresh_process": {
           "predicate": "fresh-process",
-          "status": "incomplete",
-          "errors": [
-            "missing fresh_process receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "rollback": {
           "predicate": "rollback",
-          "status": "incomplete",
-          "errors": [
-            "missing rollback receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         }
       },
-      "status": "incomplete",
-      "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
-        "rollback: missing rollback receipt"
-      ]
+      "status": "accepted",
+      "errors": []
     },
     {
       "artifact_id": "candidate-artifact-88f70ffde34fa3e3",
@@ -1448,48 +1416,32 @@
       "phase_results": {
         "identity": {
           "predicate": "package-identity",
-          "status": "incomplete",
-          "errors": [
-            "missing identity receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "install": {
           "predicate": "install-receipt",
-          "status": "incomplete",
-          "errors": [
-            "missing install receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "behavior": {
           "predicate": "behavior-probe",
-          "status": "incomplete",
-          "errors": [
-            "missing behavior receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "fresh_process": {
           "predicate": "fresh-process",
-          "status": "incomplete",
-          "errors": [
-            "missing fresh_process receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "rollback": {
           "predicate": "rollback",
-          "status": "incomplete",
-          "errors": [
-            "missing rollback receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         }
       },
-      "status": "incomplete",
-      "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
-        "rollback: missing rollback receipt"
-      ]
+      "status": "accepted",
+      "errors": []
     },
     {
       "artifact_id": "candidate-artifact-3e26018dc86a0941",
@@ -1920,48 +1872,32 @@
       "phase_results": {
         "identity": {
           "predicate": "package-identity",
-          "status": "incomplete",
-          "errors": [
-            "missing identity receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "install": {
           "predicate": "install-receipt",
-          "status": "incomplete",
-          "errors": [
-            "missing install receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "behavior": {
           "predicate": "behavior-probe",
-          "status": "incomplete",
-          "errors": [
-            "missing behavior receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "fresh_process": {
           "predicate": "fresh-process",
-          "status": "incomplete",
-          "errors": [
-            "missing fresh_process receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "rollback": {
           "predicate": "rollback",
-          "status": "incomplete",
-          "errors": [
-            "missing rollback receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         }
       },
-      "status": "incomplete",
-      "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
-        "rollback: missing rollback receipt"
-      ]
+      "status": "accepted",
+      "errors": []
     },
     {
       "artifact_id": "candidate-artifact-db11de09098bc7de",
@@ -2781,48 +2717,32 @@
       "phase_results": {
         "identity": {
           "predicate": "package-identity",
-          "status": "incomplete",
-          "errors": [
-            "missing identity receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "install": {
           "predicate": "install-receipt",
-          "status": "incomplete",
-          "errors": [
-            "missing install receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "behavior": {
           "predicate": "behavior-probe",
-          "status": "incomplete",
-          "errors": [
-            "missing behavior receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "fresh_process": {
           "predicate": "fresh-process",
-          "status": "incomplete",
-          "errors": [
-            "missing fresh_process receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "rollback": {
           "predicate": "rollback",
-          "status": "incomplete",
-          "errors": [
-            "missing rollback receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         }
       },
-      "status": "incomplete",
-      "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
-        "rollback: missing rollback receipt"
-      ]
+      "status": "accepted",
+      "errors": []
     },
     {
       "artifact_id": "candidate-artifact-4816103ef7122647",
@@ -3129,48 +3049,32 @@
       "phase_results": {
         "identity": {
           "predicate": "package-identity",
-          "status": "incomplete",
-          "errors": [
-            "missing identity receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "install": {
           "predicate": "install-receipt",
-          "status": "incomplete",
-          "errors": [
-            "missing install receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "behavior": {
           "predicate": "behavior-probe",
-          "status": "incomplete",
-          "errors": [
-            "missing behavior receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "fresh_process": {
           "predicate": "fresh-process",
-          "status": "incomplete",
-          "errors": [
-            "missing fresh_process receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "rollback": {
           "predicate": "rollback",
-          "status": "incomplete",
-          "errors": [
-            "missing rollback receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         }
       },
-      "status": "incomplete",
-      "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
-        "rollback: missing rollback receipt"
-      ]
+      "status": "accepted",
+      "errors": []
     },
     {
       "artifact_id": "candidate-artifact-15b57616743fc15e",
@@ -3411,31 +3315,23 @@
       "phase_results": {
         "identity": {
           "predicate": "package-identity",
-          "status": "incomplete",
-          "errors": [
-            "missing identity receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "install": {
           "predicate": "install-receipt",
-          "status": "incomplete",
-          "errors": [
-            "missing install receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "behavior": {
           "predicate": "behavior-probe",
-          "status": "incomplete",
-          "errors": [
-            "missing behavior receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "fresh_process": {
           "predicate": "fresh-process",
-          "status": "incomplete",
-          "errors": [
-            "missing fresh_process receipt"
-          ]
+          "status": "accepted",
+          "errors": []
         },
         "rollback": {
           "predicate": "rollback",
@@ -3447,10 +3343,6 @@
       },
       "status": "incomplete",
       "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
         "rollback: missing rollback receipt"
       ]
     },
@@ -3771,8 +3663,8 @@
   ],
   "totals": {
     "status_counts": {
-      "accepted": 13,
-      "incomplete": 52
+      "accepted": 19,
+      "incomplete": 46
     },
     "kind_counts": {
       "cli": 30,
@@ -3780,7 +3672,7 @@
       "mcp": 17,
       "plugin": 17
     },
-    "active_blocker_count": 52
+    "active_blocker_count": 46
   },
   "active_blockers": [
     {
@@ -3949,39 +3841,6 @@
       ]
     },
     {
-      "artifact_id": "candidate-artifact-979ba7601c60bafa",
-      "normalized_url": "https://github.com/iannuttall/dotagents",
-      "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
-        "rollback: missing rollback receipt"
-      ]
-    },
-    {
-      "artifact_id": "candidate-artifact-e1db2e4e9316b3df",
-      "normalized_url": "https://github.com/Jakubantalik/transitions.dev",
-      "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
-        "rollback: missing rollback receipt"
-      ]
-    },
-    {
-      "artifact_id": "candidate-artifact-88f70ffde34fa3e3",
-      "normalized_url": "https://github.com/jixoai/openspecui",
-      "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
-        "rollback: missing rollback receipt"
-      ]
-    },
-    {
       "artifact_id": "candidate-artifact-3e26018dc86a0941",
       "normalized_url": "https://github.com/johnvouros/nullcost-plugin",
       "errors": [
@@ -4035,17 +3894,6 @@
     {
       "artifact_id": "candidate-artifact-c096d134f6d61839",
       "normalized_url": "https://github.com/mobile-next/mobile-mcp",
-      "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
-        "rollback: missing rollback receipt"
-      ]
-    },
-    {
-      "artifact_id": "candidate-artifact-45a8c8ad94cd8268",
-      "normalized_url": "https://github.com/modelcontextprotocol/inspector",
       "errors": [
         "identity: missing identity receipt",
         "install: missing install receipt",
@@ -4176,17 +4024,6 @@
       ]
     },
     {
-      "artifact_id": "candidate-artifact-02697ca671fbe971",
-      "normalized_url": "https://github.com/plannotator/tot",
-      "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
-        "rollback: missing rollback receipt"
-      ]
-    },
-    {
       "artifact_id": "candidate-artifact-4816103ef7122647",
       "normalized_url": "https://github.com/Pythoughts-labs/designer-skill",
       "errors": [
@@ -4234,17 +4071,6 @@
       ]
     },
     {
-      "artifact_id": "candidate-artifact-8980f4baae35c08d",
-      "normalized_url": "https://github.com/sflueckiger/specboard",
-      "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
-        "rollback: missing rollback receipt"
-      ]
-    },
-    {
       "artifact_id": "candidate-artifact-15b57616743fc15e",
       "normalized_url": "https://github.com/summer521521/Zotero_Research_plugin",
       "errors": [
@@ -4277,10 +4103,6 @@
       "artifact_id": "candidate-artifact-80c307102f02970a",
       "normalized_url": "https://github.com/ToruAI/openspec-ui",
       "errors": [
-        "identity: missing identity receipt",
-        "install: missing install receipt",
-        "behavior: missing behavior receipt",
-        "fresh_process: missing fresh_process receipt",
         "rollback: missing rollback receipt"
       ]
     },

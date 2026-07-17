@@ -2,6 +2,63 @@
   "version": 1,
   "receipts": [
     {
+      "artifact_id": "candidate-artifact-02697ca671fbe971",
+      "phase": "behavior",
+      "fixture_id": "candidate-cli-tot-v1",
+      "semantic_assertions": [
+        "tot semantic happy path passed",
+        "tot bounded failure or denial path passed"
+      ],
+      "happy_path_status": "passed",
+      "failure_path_status": "passed",
+      "denial_path_status": "passed",
+      "probe_kind": "semantic-cli-fixture",
+      "mock_only": false,
+      "installed_digest": "d594007fd4574609027cbc64a1ef5a11da83a8ec1e67aa16ac55b3d5263570aa",
+      "output_sha256": "e09876fcf4206caba2412363ec7bd2ef9ac68b4d7c1f522de8eb04d33529d8a0"
+    },
+    {
+      "artifact_id": "candidate-artifact-02697ca671fbe971",
+      "phase": "fresh_process",
+      "initial_process_id": 64190,
+      "fresh_process_id": 64206,
+      "installed_digest": "d594007fd4574609027cbc64a1ef5a11da83a8ec1e67aa16ac55b3d5263570aa",
+      "fresh_discovery_status": "passed",
+      "fresh_use_status": "passed"
+    },
+    {
+      "artifact_id": "candidate-artifact-02697ca671fbe971",
+      "phase": "identity",
+      "package_id": "npm:@plannotator/tot",
+      "source_commit_sha": "17cedbe2fea3373081d58355e90cdd4bafef779e",
+      "resolved_version": "0.1.2",
+      "integrity": "installed-sha256:d594007fd4574609027cbc64a1ef5a11da83a8ec1e67aa16ac55b3d5263570aa",
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@plannotator/tot"
+    },
+    {
+      "artifact_id": "candidate-artifact-02697ca671fbe971",
+      "phase": "install",
+      "package_id": "npm:@plannotator/tot",
+      "installed_digest": "d594007fd4574609027cbc64a1ef5a11da83a8ec1e67aa16ac55b3d5263570aa",
+      "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@plannotator/tot",
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@plannotator/tot",
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@plannotator/tot/dist/cli.js"
+      ],
+      "install_status": "passed",
+      "evidence_kind": "package-manager-live-install"
+    },
+    {
+      "artifact_id": "candidate-artifact-02697ca671fbe971",
+      "phase": "rollback",
+      "preimage_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
+      "rollback_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
+      "promoted_final_digest": "d594007fd4574609027cbc64a1ef5a11da83a8ec1e67aa16ac55b3d5263570aa",
+      "fresh_absence_status": "passed",
+      "promoted_final_status": "passed",
+      "promotion_surface_digest": "3f0c139c37e4df73fefc1323a72fdc9dcd28583dc840dd381ae3c5fafa072f05"
+    },
+    {
       "artifact_id": "candidate-artifact-13a1976cbb27637e",
       "phase": "behavior",
       "fixture_id": "candidate-cli-skillspector-v1",
@@ -15,13 +72,13 @@
       "probe_kind": "semantic-cli-fixture",
       "mock_only": false,
       "installed_digest": "a9afe0219f47aaa0209768efbdad72dd18e550766d239b3702b97630db26da3d",
-      "output_sha256": "3766c9b1d272f37d914227c7945cf9b627b0170803c8a93909a4eb7cd93fbb58"
+      "output_sha256": "dcef7a19330ace1916f6562d57a12507085c98ebf9437aa869bd995fbf3c2b0e"
     },
     {
       "artifact_id": "candidate-artifact-13a1976cbb27637e",
       "phase": "fresh_process",
-      "initial_process_id": 46897,
-      "fresh_process_id": 49315,
+      "initial_process_id": 63959,
+      "fresh_process_id": 64068,
       "installed_digest": "a9afe0219f47aaa0209768efbdad72dd18e550766d239b3702b97630db26da3d",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -65,8 +122,8 @@
     {
       "artifact_id": "candidate-artifact-20fe15a3c63da1e1",
       "phase": "fresh_process",
-      "initial_process_id": 44343,
-      "fresh_process_id": 44372,
+      "initial_process_id": 63081,
+      "fresh_process_id": 63088,
       "installed_digest": "9997189aff78d6fb6336fb3d6d9a5a3de09c7628e812c1713ac474c7e318842a",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -78,7 +135,7 @@
       "source_commit_sha": "8dcf8bf64a683db7e6763e99076b3f62252c2bce",
       "resolved_version": "1.7.2",
       "integrity": "installed-sha256:9997189aff78d6fb6336fb3d6d9a5a3de09c7628e812c1713ac474c7e318842a",
-      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@aitytech/agentkits-marketing/bin/agentkits.js"
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@aitytech/agentkits-marketing"
     },
     {
       "artifact_id": "candidate-artifact-20fe15a3c63da1e1",
@@ -86,6 +143,7 @@
       "package_id": "npm:@aitytech/agentkits-marketing",
       "installed_digest": "9997189aff78d6fb6336fb3d6d9a5a3de09c7628e812c1713ac474c7e318842a",
       "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@aitytech/agentkits-marketing",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@aitytech/agentkits-marketing",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@aitytech/agentkits-marketing",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@aitytech/agentkits-marketing/bin/agentkits.js",
@@ -123,8 +181,8 @@
     {
       "artifact_id": "candidate-artifact-24574aaff85665c7",
       "phase": "fresh_process",
-      "initial_process_id": 57833,
-      "fresh_process_id": 58120,
+      "initial_process_id": 64431,
+      "fresh_process_id": 64434,
       "installed_digest": "323cb14e17dfd73a3c4de3133998fd922a9b18c261ac15e5ab93018b0b182ef4",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -136,7 +194,7 @@
       "source_commit_sha": "0c1cf7aa3beb42b4ba0b94500ce9c8b94735d959",
       "resolved_version": "0.3.6",
       "integrity": "installed-sha256:323cb14e17dfd73a3c4de3133998fd922a9b18c261ac15e5ab93018b0b182ef4",
-      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/ralphy-spec/bin/ralphy-spec.js"
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/ralphy-spec"
     },
     {
       "artifact_id": "candidate-artifact-24574aaff85665c7",
@@ -144,6 +202,7 @@
       "package_id": "npm:ralphy-spec",
       "installed_digest": "323cb14e17dfd73a3c4de3133998fd922a9b18c261ac15e5ab93018b0b182ef4",
       "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/ralphy-spec",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/ralphy-spec",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/ralphy-spec/bin/ralphy-spec.js"
       ],
@@ -179,8 +238,8 @@
     {
       "artifact_id": "candidate-artifact-3adf85a4d77f036a",
       "phase": "fresh_process",
-      "initial_process_id": 45189,
-      "fresh_process_id": 45320,
+      "initial_process_id": 63242,
+      "fresh_process_id": 63248,
       "installed_digest": "62c730f17f71e905f52c51e92a11cf490eb29fe815b71f793e3bc1bd9bb72a07",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -192,7 +251,7 @@
       "source_commit_sha": "c268f5ba85f2c9af751db1f33819fcb60c7848b0",
       "resolved_version": "0.7.61",
       "integrity": "sha512-0k/FDNZ3mAGKoXDeOtrevpifmozqyXOvXAs2pApnAwyYU5M+aBJqW9wklGF2XNQfU77Dl53loaF8xkBBmkQLPg==",
-      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/hyperframes/bin/hyperframes.mjs"
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/hyperframes"
     },
     {
       "artifact_id": "candidate-artifact-3adf85a4d77f036a",
@@ -200,6 +259,7 @@
       "package_id": "npm:hyperframes",
       "installed_digest": "62c730f17f71e905f52c51e92a11cf490eb29fe815b71f793e3bc1bd9bb72a07",
       "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/hyperframes",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/hyperframes",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/hyperframes/bin/hyperframes.mjs"
       ],
@@ -212,6 +272,63 @@
       "preimage_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
       "rollback_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
       "promoted_final_digest": "62c730f17f71e905f52c51e92a11cf490eb29fe815b71f793e3bc1bd9bb72a07",
+      "fresh_absence_status": "passed",
+      "promoted_final_status": "passed",
+      "promotion_surface_digest": "3f0c139c37e4df73fefc1323a72fdc9dcd28583dc840dd381ae3c5fafa072f05"
+    },
+    {
+      "artifact_id": "candidate-artifact-45a8c8ad94cd8268",
+      "phase": "behavior",
+      "fixture_id": "candidate-cli-mcp-inspector-v1",
+      "semantic_assertions": [
+        "mcp-inspector semantic happy path passed",
+        "mcp-inspector bounded failure or denial path passed"
+      ],
+      "happy_path_status": "passed",
+      "failure_path_status": "passed",
+      "denial_path_status": "passed",
+      "probe_kind": "semantic-cli-fixture",
+      "mock_only": false,
+      "installed_digest": "acef8e3639de5bfb6a01bc3dff9f6dd23251f9d67765dd1651d905eb0bb05594",
+      "output_sha256": "18e79ef36339eb6cf96190db8f8232750e2fcafb3ce3c893f8093efc0abceb0f"
+    },
+    {
+      "artifact_id": "candidate-artifact-45a8c8ad94cd8268",
+      "phase": "fresh_process",
+      "initial_process_id": 63679,
+      "fresh_process_id": 63717,
+      "installed_digest": "acef8e3639de5bfb6a01bc3dff9f6dd23251f9d67765dd1651d905eb0bb05594",
+      "fresh_discovery_status": "passed",
+      "fresh_use_status": "passed"
+    },
+    {
+      "artifact_id": "candidate-artifact-45a8c8ad94cd8268",
+      "phase": "identity",
+      "package_id": "npm:@modelcontextprotocol/inspector",
+      "source_commit_sha": "638f2bfa5b90f790e89dfb0a2c48feef7af226e4",
+      "resolved_version": "0.22.0",
+      "integrity": "installed-sha256:acef8e3639de5bfb6a01bc3dff9f6dd23251f9d67765dd1651d905eb0bb05594",
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@modelcontextprotocol/inspector"
+    },
+    {
+      "artifact_id": "candidate-artifact-45a8c8ad94cd8268",
+      "phase": "install",
+      "package_id": "npm:@modelcontextprotocol/inspector",
+      "installed_digest": "acef8e3639de5bfb6a01bc3dff9f6dd23251f9d67765dd1651d905eb0bb05594",
+      "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@modelcontextprotocol/inspector",
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@modelcontextprotocol/inspector",
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@modelcontextprotocol/inspector/cli/build/cli.js"
+      ],
+      "install_status": "passed",
+      "evidence_kind": "package-manager-live-install"
+    },
+    {
+      "artifact_id": "candidate-artifact-45a8c8ad94cd8268",
+      "phase": "rollback",
+      "preimage_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
+      "rollback_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
+      "promoted_final_digest": "acef8e3639de5bfb6a01bc3dff9f6dd23251f9d67765dd1651d905eb0bb05594",
       "fresh_absence_status": "passed",
       "promoted_final_status": "passed",
       "promotion_surface_digest": "3f0c139c37e4df73fefc1323a72fdc9dcd28583dc840dd381ae3c5fafa072f05"
@@ -235,8 +352,8 @@
     {
       "artifact_id": "candidate-artifact-4b801a775c03749e",
       "phase": "fresh_process",
-      "initial_process_id": 55693,
-      "fresh_process_id": 56282,
+      "initial_process_id": 64368,
+      "fresh_process_id": 64374,
       "installed_digest": "6b748d06a9da350d725cfd90dba5fbf74ea6fbcae2404ae045900deacf2fdee6",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -275,13 +392,13 @@
       "probe_kind": "semantic-cli-fixture",
       "mock_only": false,
       "installed_digest": "2c5d8de4aef95b39569f42e552a029bee1fa444de0f08a2a443b3b2933265542",
-      "output_sha256": "920e86c10fc1a7b7498d8fa1a5850ed39aa99cb1016fae9a6b7dfb156373f382"
+      "output_sha256": "5f4d371b0bf56806950990bc329487de2491ef8d55a89f4f5c76902f91f7c151"
     },
     {
       "artifact_id": "candidate-artifact-526f681e64e25763",
       "phase": "fresh_process",
-      "initial_process_id": 45417,
-      "fresh_process_id": 45426,
+      "initial_process_id": 63405,
+      "fresh_process_id": 63411,
       "installed_digest": "2c5d8de4aef95b39569f42e552a029bee1fa444de0f08a2a443b3b2933265542",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -326,8 +443,8 @@
     {
       "artifact_id": "candidate-artifact-546e6f3e2c2cb8ed",
       "phase": "fresh_process",
-      "initial_process_id": 54427,
-      "fresh_process_id": 54468,
+      "initial_process_id": 64280,
+      "fresh_process_id": 64282,
       "installed_digest": "3c4a0d036c1cdd37d79912d1691bf2713811ede66a6a5294398a78601b8a052b",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -365,15 +482,15 @@
       "denial_path_status": "passed",
       "probe_kind": "semantic-cli-fixture",
       "mock_only": false,
-      "installed_digest": "c62e9e152edc55c14d849415fb246af1dec80cd2a3bf0c4759d90684df119adc",
+      "installed_digest": "d6ecab375c65dbb3fe501d0dd3eef31ebd4e1199a2875497dacff7acea65e4e4",
       "output_sha256": "4c793827f3a92597880a6809eb2efbf01356925b9339ecb0a232f107440e5295"
     },
     {
       "artifact_id": "candidate-artifact-59add4474e863830",
       "phase": "fresh_process",
-      "initial_process_id": 44590,
-      "fresh_process_id": 44736,
-      "installed_digest": "c62e9e152edc55c14d849415fb246af1dec80cd2a3bf0c4759d90684df119adc",
+      "initial_process_id": 63144,
+      "fresh_process_id": 63146,
+      "installed_digest": "d6ecab375c65dbb3fe501d0dd3eef31ebd4e1199a2875497dacff7acea65e4e4",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
     },
@@ -383,16 +500,17 @@
       "package_id": "npm:@googleworkspace/cli",
       "source_commit_sha": "a3768d0e82ad83cca2da97724e46bea4ff0e6dbd",
       "resolved_version": "0.22.5",
-      "integrity": "installed-sha256:c62e9e152edc55c14d849415fb246af1dec80cd2a3bf0c4759d90684df119adc",
-      "install_root": "/Users/ww/.local/bin/gws"
+      "integrity": "installed-sha256:d6ecab375c65dbb3fe501d0dd3eef31ebd4e1199a2875497dacff7acea65e4e4",
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@googleworkspace/cli"
     },
     {
       "artifact_id": "candidate-artifact-59add4474e863830",
       "phase": "install",
       "package_id": "npm:@googleworkspace/cli",
-      "installed_digest": "c62e9e152edc55c14d849415fb246af1dec80cd2a3bf0c4759d90684df119adc",
+      "installed_digest": "d6ecab375c65dbb3fe501d0dd3eef31ebd4e1199a2875497dacff7acea65e4e4",
       "installed_realpaths": [
-        "/Users/ww/.local/bin/gws"
+        "/Users/ww/.local/bin/gws",
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@googleworkspace/cli"
       ],
       "install_status": "passed",
       "evidence_kind": "package-manager-live-install"
@@ -402,7 +520,7 @@
       "phase": "rollback",
       "preimage_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
       "rollback_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
-      "promoted_final_digest": "c62e9e152edc55c14d849415fb246af1dec80cd2a3bf0c4759d90684df119adc",
+      "promoted_final_digest": "d6ecab375c65dbb3fe501d0dd3eef31ebd4e1199a2875497dacff7acea65e4e4",
       "fresh_absence_status": "passed",
       "promoted_final_status": "passed",
       "promotion_surface_digest": "3f0c139c37e4df73fefc1323a72fdc9dcd28583dc840dd381ae3c5fafa072f05"
@@ -421,13 +539,13 @@
       "probe_kind": "semantic-cli-fixture",
       "mock_only": false,
       "installed_digest": "bab64772a554a148e93d6f53eda361fb8be6bf5d847b3bde138bee046a5392bc",
-      "output_sha256": "077f20bf100bb7095eef34ddf7c7ab065d035d422adc7d6051322675dbf8c144"
+      "output_sha256": "bcf8e16077da1bf12b324a571540b90db7e0cd118906f644cfb620fcd01e9d43"
     },
     {
       "artifact_id": "candidate-artifact-6a556413add14ea6",
       "phase": "fresh_process",
-      "initial_process_id": 44844,
-      "fresh_process_id": 45049,
+      "initial_process_id": 63160,
+      "fresh_process_id": 63185,
       "installed_digest": "bab64772a554a148e93d6f53eda361fb8be6bf5d847b3bde138bee046a5392bc",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -439,7 +557,7 @@
       "source_commit_sha": "8da1f030185bdfe8471220585162991eaeb970e9",
       "resolved_version": "0.7.8",
       "integrity": "sha512-mJ93im3OYUFTbb0/FJrc6pLd89IaNnPRq5a/k9xIqprlhsB5Y8raQJJWBIScUuoP5QOqFe8tTrXs8olqGi4VuA==",
-      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/deslop-cli/dist/cli.mjs"
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/deslop-cli"
     },
     {
       "artifact_id": "candidate-artifact-6a556413add14ea6",
@@ -447,6 +565,7 @@
       "package_id": "npm:deslop-cli",
       "installed_digest": "bab64772a554a148e93d6f53eda361fb8be6bf5d847b3bde138bee046a5392bc",
       "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/deslop-cli",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/deslop-cli",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/deslop-cli/dist/cli.mjs"
       ],
@@ -482,8 +601,8 @@
     {
       "artifact_id": "candidate-artifact-6c329a74bd98c705",
       "phase": "fresh_process",
-      "initial_process_id": 44544,
-      "fresh_process_id": 44560,
+      "initial_process_id": 63132,
+      "fresh_process_id": 63136,
       "installed_digest": "f149938469fb4ba2edc5ab0eb222c4cdd09e9b89005b776020c4c8eafc1015c6",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -495,7 +614,7 @@
       "source_commit_sha": "c8818248ffd9d198b9776bcb52ea0240380d61ff",
       "resolved_version": "0.1.15",
       "integrity": "installed-sha256:f149938469fb4ba2edc5ab0eb222c4cdd09e9b89005b776020c4c8eafc1015c6",
-      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/newsjack/bin/newsjack"
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/newsjack"
     },
     {
       "artifact_id": "candidate-artifact-6c329a74bd98c705",
@@ -503,6 +622,7 @@
       "package_id": "npm:newsjack",
       "installed_digest": "f149938469fb4ba2edc5ab0eb222c4cdd09e9b89005b776020c4c8eafc1015c6",
       "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/newsjack",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/newsjack",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/newsjack/bin/newsjack"
       ],
@@ -538,8 +658,8 @@
     {
       "artifact_id": "candidate-artifact-6faa9ef627416243",
       "phase": "fresh_process",
-      "initial_process_id": 52034,
-      "fresh_process_id": 52348,
+      "initial_process_id": 64177,
+      "fresh_process_id": 64183,
       "installed_digest": "7fa73c14b398ed52e1395868830452f0e71a180e2cb187a989063072100f3c5e",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -577,15 +697,15 @@
       "denial_path_status": "passed",
       "probe_kind": "semantic-cli-fixture",
       "mock_only": false,
-      "installed_digest": "50b90f4343a5880d2dc2814dc85cc498bca8b03f98dbff7334e4a461d8aab67a",
+      "installed_digest": "fa3cab659faf27091113e0ac7eb4a03fa7593b479417df7c8114b95a8f05dc40",
       "output_sha256": "acc6695b3ede4f16ca21c3ffaef434579401692159c27b32ca3e9f1b5bc7ac51"
     },
     {
       "artifact_id": "candidate-artifact-719d3f702b5ef85c",
       "phase": "fresh_process",
-      "initial_process_id": 43484,
-      "fresh_process_id": 43713,
-      "installed_digest": "50b90f4343a5880d2dc2814dc85cc498bca8b03f98dbff7334e4a461d8aab67a",
+      "initial_process_id": 63073,
+      "fresh_process_id": 63076,
+      "installed_digest": "fa3cab659faf27091113e0ac7eb4a03fa7593b479417df7c8114b95a8f05dc40",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
     },
@@ -595,16 +715,17 @@
       "package_id": "npm:@aitytech/agentkits-marketing",
       "source_commit_sha": "8dcf8bf64a683db7e6763e99076b3f62252c2bce",
       "resolved_version": "1.7.2",
-      "integrity": "installed-sha256:50b90f4343a5880d2dc2814dc85cc498bca8b03f98dbff7334e4a461d8aab67a",
-      "install_root": "/Users/ww/.local/lib/node_modules/@aitytech/agentkits-marketing"
+      "integrity": "installed-sha256:fa3cab659faf27091113e0ac7eb4a03fa7593b479417df7c8114b95a8f05dc40",
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@aitytech/agentkits-marketing"
     },
     {
       "artifact_id": "candidate-artifact-719d3f702b5ef85c",
       "phase": "install",
       "package_id": "npm:@aitytech/agentkits-marketing",
-      "installed_digest": "50b90f4343a5880d2dc2814dc85cc498bca8b03f98dbff7334e4a461d8aab67a",
+      "installed_digest": "fa3cab659faf27091113e0ac7eb4a03fa7593b479417df7c8114b95a8f05dc40",
       "installed_realpaths": [
-        "/Users/ww/.local/lib/node_modules/@aitytech/agentkits-marketing"
+        "/Users/ww/.local/lib/node_modules/@aitytech/agentkits-marketing",
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@aitytech/agentkits-marketing"
       ],
       "install_status": "passed",
       "evidence_kind": "package-manager-live-install"
@@ -614,7 +735,7 @@
       "phase": "rollback",
       "preimage_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
       "rollback_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
-      "promoted_final_digest": "50b90f4343a5880d2dc2814dc85cc498bca8b03f98dbff7334e4a461d8aab67a",
+      "promoted_final_digest": "fa3cab659faf27091113e0ac7eb4a03fa7593b479417df7c8114b95a8f05dc40",
       "fresh_absence_status": "passed",
       "promoted_final_status": "passed",
       "promotion_surface_digest": "3f0c139c37e4df73fefc1323a72fdc9dcd28583dc840dd381ae3c5fafa072f05"
@@ -638,8 +759,8 @@
     {
       "artifact_id": "candidate-artifact-75929172581e0e7a",
       "phase": "fresh_process",
-      "initial_process_id": 54507,
-      "fresh_process_id": 55316,
+      "initial_process_id": 64291,
+      "fresh_process_id": 64366,
       "installed_digest": "797f297ce73123553ceeb3adbc00febdb70fe65698b6955e889c526172ee17fa",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -651,7 +772,7 @@
       "source_commit_sha": "d7818c3dc0736a3af1e6878ede0f7aaa25e4d34f",
       "resolved_version": "0.69.6",
       "integrity": "sha512-Q8Uw54Yrp6Tr9niPBxUkPe35cwC2vLZdduCNtOWRwsbzd2/1ApJHen5OufDaiRvHiQKD4xuCw2Q/3TYpKfUsWw==",
-      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@tanstack/cli/dist/bin.js"
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@tanstack/cli"
     },
     {
       "artifact_id": "candidate-artifact-75929172581e0e7a",
@@ -659,6 +780,7 @@
       "package_id": "npm:@tanstack/cli",
       "installed_digest": "797f297ce73123553ceeb3adbc00febdb70fe65698b6955e889c526172ee17fa",
       "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@tanstack/cli",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@tanstack/cli",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@tanstack/cli/dist/bin.js"
       ],
@@ -676,6 +798,51 @@
       "promotion_surface_digest": "3f0c139c37e4df73fefc1323a72fdc9dcd28583dc840dd381ae3c5fafa072f05"
     },
     {
+      "artifact_id": "candidate-artifact-80c307102f02970a",
+      "phase": "behavior",
+      "fixture_id": "candidate-cli-openspec-ui-v1",
+      "semantic_assertions": [
+        "openspec-ui semantic happy path passed",
+        "openspec-ui bounded failure or denial path passed"
+      ],
+      "happy_path_status": "passed",
+      "failure_path_status": "passed",
+      "denial_path_status": "passed",
+      "probe_kind": "semantic-cli-fixture",
+      "mock_only": false,
+      "installed_digest": "6826be6646c00dcc763060869d897d8840495188dd775a987ebd30e296080cb9",
+      "output_sha256": "7f5863d6af42f6e8aa5b2595d6421a536282b1f09fe0ef2329ddcf3586e28333"
+    },
+    {
+      "artifact_id": "candidate-artifact-80c307102f02970a",
+      "phase": "fresh_process",
+      "initial_process_id": 64378,
+      "fresh_process_id": 64391,
+      "installed_digest": "6826be6646c00dcc763060869d897d8840495188dd775a987ebd30e296080cb9",
+      "fresh_discovery_status": "passed",
+      "fresh_use_status": "passed"
+    },
+    {
+      "artifact_id": "candidate-artifact-80c307102f02970a",
+      "phase": "identity",
+      "package_id": "standalone:openspec-ui",
+      "source_commit_sha": "d29a1608e194f437452eec1dfa854d50c8d28602",
+      "resolved_version": "pinned-checksum",
+      "integrity": "installed-sha256:6826be6646c00dcc763060869d897d8840495188dd775a987ebd30e296080cb9",
+      "install_root": "/Users/ww/.local/bin/openspec-ui"
+    },
+    {
+      "artifact_id": "candidate-artifact-80c307102f02970a",
+      "phase": "install",
+      "package_id": "standalone:openspec-ui",
+      "installed_digest": "6826be6646c00dcc763060869d897d8840495188dd775a987ebd30e296080cb9",
+      "installed_realpaths": [
+        "/Users/ww/.local/bin/openspec-ui"
+      ],
+      "install_status": "passed",
+      "evidence_kind": "package-manager-live-install"
+    },
+    {
       "artifact_id": "candidate-artifact-8749c7adb4038991",
       "phase": "behavior",
       "fixture_id": "candidate-cli-archify-v1",
@@ -689,13 +856,13 @@
       "probe_kind": "semantic-cli-fixture",
       "mock_only": false,
       "installed_digest": "ca7d01879d9650bfba70291d1c1533b49c0616f30efc97f6a14654b3288869ae",
-      "output_sha256": "b87431bc4419fb722860d37e57b0d8f67fb6fc3457ac87c369accc57cce47d71"
+      "output_sha256": "976397226b5bccce5701f49bf560110c5091328ac6f5432ad2a655372d8619f4"
     },
     {
       "artifact_id": "candidate-artifact-8749c7adb4038991",
       "phase": "fresh_process",
-      "initial_process_id": 56845,
-      "fresh_process_id": 57088,
+      "initial_process_id": 64401,
+      "fresh_process_id": 64410,
       "installed_digest": "ca7d01879d9650bfba70291d1c1533b49c0616f30efc97f6a14654b3288869ae",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -721,6 +888,120 @@
       "evidence_kind": "package-manager-live-install"
     },
     {
+      "artifact_id": "candidate-artifact-88f70ffde34fa3e3",
+      "phase": "behavior",
+      "fixture_id": "candidate-cli-openspecui-v1",
+      "semantic_assertions": [
+        "openspecui semantic happy path passed",
+        "openspecui bounded failure or denial path passed"
+      ],
+      "happy_path_status": "passed",
+      "failure_path_status": "passed",
+      "denial_path_status": "passed",
+      "probe_kind": "semantic-cli-fixture",
+      "mock_only": false,
+      "installed_digest": "d0e7c5ab348a9cd91d541ad0851e7eb4dbcf67f4175c1d58f0481213256e89fa",
+      "output_sha256": "51b9374402468afac7d6e409cb32072d86d2ffa53ec920c8c3967c2b83d0bb46"
+    },
+    {
+      "artifact_id": "candidate-artifact-88f70ffde34fa3e3",
+      "phase": "fresh_process",
+      "initial_process_id": 63276,
+      "fresh_process_id": 63338,
+      "installed_digest": "d0e7c5ab348a9cd91d541ad0851e7eb4dbcf67f4175c1d58f0481213256e89fa",
+      "fresh_discovery_status": "passed",
+      "fresh_use_status": "passed"
+    },
+    {
+      "artifact_id": "candidate-artifact-88f70ffde34fa3e3",
+      "phase": "identity",
+      "package_id": "npm:openspecui",
+      "source_commit_sha": "0676d44b0620ce76e4fa9fe7c7d80f7969c6954f",
+      "resolved_version": "5.0.0",
+      "integrity": "installed-sha256:d0e7c5ab348a9cd91d541ad0851e7eb4dbcf67f4175c1d58f0481213256e89fa",
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/openspecui"
+    },
+    {
+      "artifact_id": "candidate-artifact-88f70ffde34fa3e3",
+      "phase": "install",
+      "package_id": "npm:openspecui",
+      "installed_digest": "d0e7c5ab348a9cd91d541ad0851e7eb4dbcf67f4175c1d58f0481213256e89fa",
+      "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/openspecui",
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/openspecui",
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/openspecui/dist/cli.mjs"
+      ],
+      "install_status": "passed",
+      "evidence_kind": "package-manager-live-install"
+    },
+    {
+      "artifact_id": "candidate-artifact-88f70ffde34fa3e3",
+      "phase": "rollback",
+      "preimage_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
+      "rollback_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
+      "promoted_final_digest": "d0e7c5ab348a9cd91d541ad0851e7eb4dbcf67f4175c1d58f0481213256e89fa",
+      "fresh_absence_status": "passed",
+      "promoted_final_status": "passed",
+      "promotion_surface_digest": "3f0c139c37e4df73fefc1323a72fdc9dcd28583dc840dd381ae3c5fafa072f05"
+    },
+    {
+      "artifact_id": "candidate-artifact-8980f4baae35c08d",
+      "phase": "behavior",
+      "fixture_id": "candidate-cli-specboard-v1",
+      "semantic_assertions": [
+        "specboard semantic happy path passed",
+        "specboard bounded failure or denial path passed"
+      ],
+      "happy_path_status": "passed",
+      "failure_path_status": "passed",
+      "denial_path_status": "passed",
+      "probe_kind": "semantic-cli-fixture",
+      "mock_only": false,
+      "installed_digest": "2e39b88ea0dd6f86b20392258b9cc1fe8f499ed50120bb32b8d736dbfff97105",
+      "output_sha256": "703c9cebda25bd2a18401aed9f93d28625fd98ba3c1512e58d0f132315d7324b"
+    },
+    {
+      "artifact_id": "candidate-artifact-8980f4baae35c08d",
+      "phase": "fresh_process",
+      "initial_process_id": 64285,
+      "fresh_process_id": 64287,
+      "installed_digest": "2e39b88ea0dd6f86b20392258b9cc1fe8f499ed50120bb32b8d736dbfff97105",
+      "fresh_discovery_status": "passed",
+      "fresh_use_status": "passed"
+    },
+    {
+      "artifact_id": "candidate-artifact-8980f4baae35c08d",
+      "phase": "identity",
+      "package_id": "bun:@sflueckiger/specboard",
+      "source_commit_sha": "0c8b4399e87dc332ef29247207186fe7f6f7186f",
+      "resolved_version": "1.2.0",
+      "integrity": "sha512-fYfRUZGMztcxiJGqOT+ELgHzH74HeGu04jm4IjlSmiKkjjvD+tLk17GRiI5QcUweMz8RKQWXmcBy6Kj9rHa4Fg==",
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/bun/node_modules/@sflueckiger/specboard"
+    },
+    {
+      "artifact_id": "candidate-artifact-8980f4baae35c08d",
+      "phase": "install",
+      "package_id": "bun:@sflueckiger/specboard",
+      "installed_digest": "2e39b88ea0dd6f86b20392258b9cc1fe8f499ed50120bb32b8d736dbfff97105",
+      "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/bun/node_modules/@sflueckiger/specboard",
+        "/Users/ww/.local/share/wagents/candidate-runtime/bun/node_modules/@sflueckiger/specboard",
+        "/Users/ww/.local/share/wagents/candidate-runtime/bun/node_modules/@sflueckiger/specboard/dist/cli.js"
+      ],
+      "install_status": "passed",
+      "evidence_kind": "package-manager-live-install"
+    },
+    {
+      "artifact_id": "candidate-artifact-8980f4baae35c08d",
+      "phase": "rollback",
+      "preimage_digest": "9b44f2832d29335f286c0aa3f1bbd044e0a6fbd984f26b67f9ec4065cb376d49",
+      "rollback_digest": "9b44f2832d29335f286c0aa3f1bbd044e0a6fbd984f26b67f9ec4065cb376d49",
+      "promoted_final_digest": "2e39b88ea0dd6f86b20392258b9cc1fe8f499ed50120bb32b8d736dbfff97105",
+      "fresh_absence_status": "passed",
+      "promoted_final_status": "passed",
+      "promotion_surface_digest": "243e586bec5265cfa9ad9645203d46c360f9d1bb4bc5c6f5401db42d922c8995"
+    },
+    {
       "artifact_id": "candidate-artifact-97676976c4c3c38b",
       "phase": "behavior",
       "fixture_id": "candidate-cli-lathe-v1",
@@ -739,8 +1020,8 @@
     {
       "artifact_id": "candidate-artifact-97676976c4c3c38b",
       "phase": "fresh_process",
-      "initial_process_id": 44531,
-      "fresh_process_id": 44539,
+      "initial_process_id": 63128,
+      "fresh_process_id": 63130,
       "installed_digest": "90f40912832b965ab18d249bdf62420f777f3511867a8305bf7923422b21b23c",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -766,6 +1047,63 @@
       "evidence_kind": "package-manager-live-install"
     },
     {
+      "artifact_id": "candidate-artifact-979ba7601c60bafa",
+      "phase": "behavior",
+      "fixture_id": "candidate-cli-dotagents-v1",
+      "semantic_assertions": [
+        "dotagents semantic happy path passed",
+        "dotagents bounded failure or denial path passed"
+      ],
+      "happy_path_status": "passed",
+      "failure_path_status": "passed",
+      "denial_path_status": "passed",
+      "probe_kind": "semantic-cli-fixture",
+      "mock_only": false,
+      "installed_digest": "ad7366bf26eaaa4756b718b8e5322a579b8e7efa6a25b520c2dd66a2b884ab08",
+      "output_sha256": "879049eeb769335edc798e7c15ae9b40cc913d65571e0caf69abd800f2dd4482"
+    },
+    {
+      "artifact_id": "candidate-artifact-979ba7601c60bafa",
+      "phase": "fresh_process",
+      "initial_process_id": 63263,
+      "fresh_process_id": 63264,
+      "installed_digest": "ad7366bf26eaaa4756b718b8e5322a579b8e7efa6a25b520c2dd66a2b884ab08",
+      "fresh_discovery_status": "passed",
+      "fresh_use_status": "passed"
+    },
+    {
+      "artifact_id": "candidate-artifact-979ba7601c60bafa",
+      "phase": "identity",
+      "package_id": "bun:@iannuttall/dotagents",
+      "source_commit_sha": "7193a940e9b1ab01ab256f3465a0c96830e12b25",
+      "resolved_version": "0.1.3",
+      "integrity": "installed-sha256:ad7366bf26eaaa4756b718b8e5322a579b8e7efa6a25b520c2dd66a2b884ab08",
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/bun/node_modules/@iannuttall/dotagents"
+    },
+    {
+      "artifact_id": "candidate-artifact-979ba7601c60bafa",
+      "phase": "install",
+      "package_id": "bun:@iannuttall/dotagents",
+      "installed_digest": "ad7366bf26eaaa4756b718b8e5322a579b8e7efa6a25b520c2dd66a2b884ab08",
+      "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/bun/node_modules/@iannuttall/dotagents",
+        "/Users/ww/.local/share/wagents/candidate-runtime/bun/node_modules/@iannuttall/dotagents",
+        "/Users/ww/.local/share/wagents/candidate-runtime/bun/node_modules/@iannuttall/dotagents/dist/cli.js"
+      ],
+      "install_status": "passed",
+      "evidence_kind": "package-manager-live-install"
+    },
+    {
+      "artifact_id": "candidate-artifact-979ba7601c60bafa",
+      "phase": "rollback",
+      "preimage_digest": "9b44f2832d29335f286c0aa3f1bbd044e0a6fbd984f26b67f9ec4065cb376d49",
+      "rollback_digest": "9b44f2832d29335f286c0aa3f1bbd044e0a6fbd984f26b67f9ec4065cb376d49",
+      "promoted_final_digest": "ad7366bf26eaaa4756b718b8e5322a579b8e7efa6a25b520c2dd66a2b884ab08",
+      "fresh_absence_status": "passed",
+      "promoted_final_status": "passed",
+      "promotion_surface_digest": "243e586bec5265cfa9ad9645203d46c360f9d1bb4bc5c6f5401db42d922c8995"
+    },
+    {
       "artifact_id": "candidate-artifact-9f3eff82c41b92a3",
       "phase": "behavior",
       "fixture_id": "candidate-cli-opendirectory-v1",
@@ -784,8 +1122,8 @@
     {
       "artifact_id": "candidate-artifact-9f3eff82c41b92a3",
       "phase": "fresh_process",
-      "initial_process_id": 57266,
-      "fresh_process_id": 57507,
+      "initial_process_id": 64416,
+      "fresh_process_id": 64418,
       "installed_digest": "d155f28ea4bec10fb452b603ae761a54e6e6a1bb7258c758f47aa60610940a8a",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -797,7 +1135,7 @@
       "source_commit_sha": "26ff3bbad0bdd7c15d814501533e254f9af7da53",
       "resolved_version": "0.1.97",
       "integrity": "installed-sha256:d155f28ea4bec10fb452b603ae761a54e6e6a1bb7258c758f47aa60610940a8a",
-      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@opendirectory.dev/skills/dist/index.js"
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@opendirectory.dev/skills"
     },
     {
       "artifact_id": "candidate-artifact-9f3eff82c41b92a3",
@@ -805,6 +1143,7 @@
       "package_id": "npm:@opendirectory.dev/skills",
       "installed_digest": "d155f28ea4bec10fb452b603ae761a54e6e6a1bb7258c758f47aa60610940a8a",
       "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@opendirectory.dev/skills",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@opendirectory.dev/skills",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@opendirectory.dev/skills/dist/index.js"
       ],
@@ -835,13 +1174,13 @@
       "probe_kind": "semantic-cli-fixture",
       "mock_only": false,
       "installed_digest": "4903ec3f54453efc9dab07aa281abf6753a6854ed6352dede19d11a46a8a373d",
-      "output_sha256": "7d39f7050d9831f15cb410dab9c0ac3dc8a3945a43cad2baecea970d72353e5d"
+      "output_sha256": "945fd485cec6e51f7204bf981c9eeb361214814e3091c227fab41f70e49e352e"
     },
     {
       "artifact_id": "candidate-artifact-9f65a00b1b57702f",
       "phase": "fresh_process",
-      "initial_process_id": 52677,
-      "fresh_process_id": 53540,
+      "initial_process_id": 64220,
+      "fresh_process_id": 64249,
       "installed_digest": "4903ec3f54453efc9dab07aa281abf6753a6854ed6352dede19d11a46a8a373d",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -885,8 +1224,8 @@
     {
       "artifact_id": "candidate-artifact-b14c726239caa37d",
       "phase": "fresh_process",
-      "initial_process_id": 46774,
-      "fresh_process_id": 46861,
+      "initial_process_id": 63952,
+      "fresh_process_id": 63956,
       "installed_digest": "3d916f4e1acf0dcf5f56bbbc49b77ada773198a0b2a702ebb50f4da76facd750",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -925,13 +1264,13 @@
       "probe_kind": "semantic-cli-fixture",
       "mock_only": false,
       "installed_digest": "2f8fede3f6ba30915ea6cc8331f3f5456f5f7a8cde9e2e5b75be1536de513edf",
-      "output_sha256": "ee7e82cf6250339e96391ff35e77998ce2edaeb2c30c68fbcc2ae0f1cc489af4"
+      "output_sha256": "bc8aaad905d7d5faf120a3746ee1e479c8a6aae9a346695f92880068e1245574"
     },
     {
       "artifact_id": "candidate-artifact-b49a9c5473017286",
       "phase": "fresh_process",
-      "initial_process_id": 45432,
-      "fresh_process_id": 45701,
+      "initial_process_id": 63416,
+      "fresh_process_id": 63554,
       "installed_digest": "2f8fede3f6ba30915ea6cc8331f3f5456f5f7a8cde9e2e5b75be1536de513edf",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -943,7 +1282,7 @@
       "source_commit_sha": "a16e452648eda8a2c05504219d1af66fd428dbf8",
       "resolved_version": "0.7.8",
       "integrity": "sha512-G3spmtZJE/gWWPRJ3rpgUWTPRDJpEmdRja7iNZ7RAXlfpEO+NWVzPTca/cPI9hLwPo2Aq5/BZggo5JDBrwGrlA==",
-      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/react-doctor/bin/react-doctor.js"
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/react-doctor"
     },
     {
       "artifact_id": "candidate-artifact-b49a9c5473017286",
@@ -951,6 +1290,7 @@
       "package_id": "npm:react-doctor",
       "installed_digest": "2f8fede3f6ba30915ea6cc8331f3f5456f5f7a8cde9e2e5b75be1536de513edf",
       "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/react-doctor",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/react-doctor",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/react-doctor/bin/react-doctor.js"
       ],
@@ -986,8 +1326,8 @@
     {
       "artifact_id": "candidate-artifact-d59749b6e9118c22",
       "phase": "fresh_process",
-      "initial_process_id": 44573,
-      "fresh_process_id": 44578,
+      "initial_process_id": 63140,
+      "fresh_process_id": 63142,
       "installed_digest": "5faf727269bbda13632cfefd4d661bfc02aeb998f308aba91ae883ce28dd5155",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -1031,8 +1371,8 @@
     {
       "artifact_id": "candidate-artifact-db11de09098bc7de",
       "phase": "fresh_process",
-      "initial_process_id": 45827,
-      "fresh_process_id": 46323,
+      "initial_process_id": 63743,
+      "fresh_process_id": 63850,
       "installed_digest": "97046003c57600d53764e1a46b40719f40044d5ff06f7be9c1a5507369f1ad17",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -1044,7 +1384,7 @@
       "source_commit_sha": "525453042fae77b81da12ce1f27709c0978ea2a6",
       "resolved_version": "0.5.1",
       "integrity": "installed-sha256:97046003c57600d53764e1a46b40719f40044d5ff06f7be9c1a5507369f1ad17",
-      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/prompt-to-asset/dist/index.js"
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/prompt-to-asset"
     },
     {
       "artifact_id": "candidate-artifact-db11de09098bc7de",
@@ -1052,6 +1392,7 @@
       "package_id": "npm:prompt-to-asset",
       "installed_digest": "97046003c57600d53764e1a46b40719f40044d5ff06f7be9c1a5507369f1ad17",
       "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/prompt-to-asset",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/prompt-to-asset",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/prompt-to-asset",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/prompt-to-asset/dist/index.js",
@@ -1089,8 +1430,8 @@
     {
       "artifact_id": "candidate-artifact-ddba85c261b6145a",
       "phase": "fresh_process",
-      "initial_process_id": 44480,
-      "fresh_process_id": 44511,
+      "initial_process_id": 63108,
+      "fresh_process_id": 63110,
       "installed_digest": "017f0b86fb79be798796a6e93ecd55ca10a53946ead31e9d7f9e57da6980c194",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -1102,7 +1443,7 @@
       "source_commit_sha": "033316ecb8f4982235af4111a2257e80231f5ab1",
       "resolved_version": "1.0.4",
       "integrity": "installed-sha256:017f0b86fb79be798796a6e93ecd55ca10a53946ead31e9d7f9e57da6980c194",
-      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/better-icons/dist/index.js"
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/better-icons"
     },
     {
       "artifact_id": "candidate-artifact-ddba85c261b6145a",
@@ -1110,6 +1451,7 @@
       "package_id": "npm:better-icons",
       "installed_digest": "017f0b86fb79be798796a6e93ecd55ca10a53946ead31e9d7f9e57da6980c194",
       "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/better-icons",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/better-icons",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/better-icons/dist/index.js"
       ],
@@ -1122,6 +1464,63 @@
       "preimage_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
       "rollback_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
       "promoted_final_digest": "017f0b86fb79be798796a6e93ecd55ca10a53946ead31e9d7f9e57da6980c194",
+      "fresh_absence_status": "passed",
+      "promoted_final_status": "passed",
+      "promotion_surface_digest": "3f0c139c37e4df73fefc1323a72fdc9dcd28583dc840dd381ae3c5fafa072f05"
+    },
+    {
+      "artifact_id": "candidate-artifact-e1db2e4e9316b3df",
+      "phase": "behavior",
+      "fixture_id": "candidate-cli-refine-v1",
+      "semantic_assertions": [
+        "refine semantic happy path passed",
+        "refine bounded failure or denial path passed"
+      ],
+      "happy_path_status": "passed",
+      "failure_path_status": "passed",
+      "denial_path_status": "passed",
+      "probe_kind": "semantic-cli-fixture",
+      "mock_only": false,
+      "installed_digest": "4623117e7c4f6248082555e4013a5cde14071f1594b7b0965c8157b07f72f4d8",
+      "output_sha256": "72f02b9479ab0fe4a8e35f59b1a6badaab6113586a31aec8a4e204034d2a209b"
+    },
+    {
+      "artifact_id": "candidate-artifact-e1db2e4e9316b3df",
+      "phase": "fresh_process",
+      "initial_process_id": 63266,
+      "fresh_process_id": 63271,
+      "installed_digest": "4623117e7c4f6248082555e4013a5cde14071f1594b7b0965c8157b07f72f4d8",
+      "fresh_discovery_status": "passed",
+      "fresh_use_status": "passed"
+    },
+    {
+      "artifact_id": "candidate-artifact-e1db2e4e9316b3df",
+      "phase": "identity",
+      "package_id": "npm:transitions-refine",
+      "source_commit_sha": "2c89516d93987839ef1757523f89b76b7d383bc6",
+      "resolved_version": "0.3.34",
+      "integrity": "installed-sha256:4623117e7c4f6248082555e4013a5cde14071f1594b7b0965c8157b07f72f4d8",
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/transitions-refine"
+    },
+    {
+      "artifact_id": "candidate-artifact-e1db2e4e9316b3df",
+      "phase": "install",
+      "package_id": "npm:transitions-refine",
+      "installed_digest": "4623117e7c4f6248082555e4013a5cde14071f1594b7b0965c8157b07f72f4d8",
+      "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/transitions-refine",
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/transitions-refine",
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/transitions-refine/bin/cli.mjs"
+      ],
+      "install_status": "passed",
+      "evidence_kind": "package-manager-live-install"
+    },
+    {
+      "artifact_id": "candidate-artifact-e1db2e4e9316b3df",
+      "phase": "rollback",
+      "preimage_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
+      "rollback_digest": "61681b8948e27a691d529f863f3cacde872c3433aeba64d78c6e8d122af95519",
+      "promoted_final_digest": "4623117e7c4f6248082555e4013a5cde14071f1594b7b0965c8157b07f72f4d8",
       "fresh_absence_status": "passed",
       "promoted_final_status": "passed",
       "promotion_surface_digest": "3f0c139c37e4df73fefc1323a72fdc9dcd28583dc840dd381ae3c5fafa072f05"
@@ -1145,8 +1544,8 @@
     {
       "artifact_id": "candidate-artifact-ed5c163507061f9a",
       "phase": "fresh_process",
-      "initial_process_id": 44391,
-      "fresh_process_id": 44442,
+      "initial_process_id": 63101,
+      "fresh_process_id": 63103,
       "installed_digest": "93d6d7dbc574a0fa79acba28be7a6445fb66f218c851e1694d89be7a8907b4d7",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -1192,8 +1591,8 @@
     {
       "artifact_id": "candidate-artifact-ee095076840132c5",
       "phase": "fresh_process",
-      "initial_process_id": 58330,
-      "fresh_process_id": 58644,
+      "initial_process_id": 64436,
+      "fresh_process_id": 64455,
       "installed_digest": "461983c7a4c136382ec36efe9715bf8eab59995ffdcd78035cb560824867017d",
       "fresh_discovery_status": "passed",
       "fresh_use_status": "passed"
@@ -1205,7 +1604,7 @@
       "source_commit_sha": "fc951a456d30136e2c74df0f567c9b7815d8a9d5",
       "resolved_version": "0.3.57",
       "integrity": "sha512-h7Jv1iEoEPE4zMM/6P+SM/t5aZrPPa4fTjj/FLfwV5uYQ1Q1xnKDgal079iDZEb+TMR9zxgcX1qipo6i+Vlgpg==",
-      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/openspec-playwright/bin/openspec-pw.js"
+      "install_root": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/openspec-playwright"
     },
     {
       "artifact_id": "candidate-artifact-ee095076840132c5",
@@ -1213,6 +1612,7 @@
       "package_id": "npm:openspec-playwright",
       "installed_digest": "461983c7a4c136382ec36efe9715bf8eab59995ffdcd78035cb560824867017d",
       "installed_realpaths": [
+        "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/openspec-playwright",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/openspec-playwright",
         "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/openspec-playwright/bin/openspec-pw.js"
       ],

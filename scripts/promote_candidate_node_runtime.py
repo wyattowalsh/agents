@@ -87,9 +87,17 @@ def validate_prefix(prefix: Path, expected: dict[str, str]) -> dict[str, Path]:
                 raise ValueError(f"conflicting bin name: {bin_name}")
             bins[str(bin_name)] = target
     if "@modelcontextprotocol/inspector" in expected:
-        inspector_cli = prefix / "node_modules" / "@modelcontextprotocol" / "inspector-cli" / "build" / "cli.js"
+        inspector_cli = (
+            prefix
+            / "node_modules"
+            / "@modelcontextprotocol"
+            / "inspector"
+            / "cli"
+            / "build"
+            / "cli.js"
+        )
         if not inspector_cli.is_file():
-            raise ValueError("MCP Inspector dependency CLI is missing")
+            raise ValueError("MCP Inspector root-package CLI is missing")
         bins["mcp-inspector"] = inspector_cli
         bins["mcp-inspector-cli"] = inspector_cli
     return bins
@@ -175,18 +183,37 @@ def repair_inspector_aliases(runtime_root: Path, bin_dir: Path, *, apply: bool) 
         runtime_root
         / "node_modules"
         / "@modelcontextprotocol"
-        / "inspector-cli"
+        / "inspector"
+        / "cli"
         / "build"
         / "cli.js"
     )
     if not target.is_file():
-        raise ValueError(f"MCP Inspector dependency CLI is missing: {target}")
+        raise ValueError(f"MCP Inspector root-package CLI is missing: {target}")
+    metadata_dir = target.parents[1]
+    package_manifest = metadata_dir.parent / "package.json"
+    metadata_path = metadata_dir / "package.json"
+    if not package_manifest.is_file():
+        raise ValueError(f"MCP Inspector package manifest is missing: {package_manifest}")
+    if metadata_path.exists() and not metadata_path.is_symlink():
+        raise ValueError(f"refusing to replace Inspector metadata file: {metadata_path}")
     targets = {"mcp-inspector": target, "mcp-inspector-cli": target}
     preimage = snapshot_bins(bin_dir, set(targets))
-    preimage_digest = surface_digest(runtime_root, preimage)
+    metadata_preimage = snapshot_bins(metadata_dir, {"package.json"})
+
+    def repair_snapshot() -> dict[str, dict[str, Any]]:
+        return {
+            **{f"bin:{name}": row for name, row in snapshot_bins(bin_dir, set(targets)).items()},
+            "metadata:inspector-cli-package": snapshot_bins(metadata_dir, {"package.json"})[
+                "package.json"
+            ],
+        }
+
+    preimage_digest = surface_digest(runtime_root, repair_snapshot())
     preview = {
         "repair": "mcp-inspector-cli-alias",
         "target": str(target),
+        "metadata_compatibility_link": str(metadata_path),
         "preimage_digest": preimage_digest,
     }
     if not apply:
@@ -194,20 +221,24 @@ def repair_inspector_aliases(runtime_root: Path, bin_dir: Path, *, apply: bool) 
 
     try:
         promote_bins(bin_dir, targets, preimage)
-        promoted_digest = surface_digest(runtime_root, snapshot_bins(bin_dir, set(targets)))
+        atomic_symlink(Path("..") / "package.json", metadata_path)
+        promoted_digest = surface_digest(runtime_root, repair_snapshot())
         restore_bins(bin_dir, preimage)
-        rollback_digest = surface_digest(runtime_root, snapshot_bins(bin_dir, set(targets)))
+        restore_bins(metadata_dir, metadata_preimage)
+        rollback_digest = surface_digest(runtime_root, repair_snapshot())
         if rollback_digest != preimage_digest:
             raise RuntimeError("Inspector alias rollback did not restore the exact preimage")
         promote_bins(bin_dir, targets, preimage)
-        final_digest = surface_digest(runtime_root, snapshot_bins(bin_dir, set(targets)))
+        atomic_symlink(Path("..") / "package.json", metadata_path)
+        final_digest = surface_digest(runtime_root, repair_snapshot())
         if final_digest != promoted_digest:
             raise RuntimeError("Inspector alias final promotion differs from rehearsal")
     except Exception:
         restore_bins(bin_dir, preimage)
+        restore_bins(metadata_dir, metadata_preimage)
         raise
 
-    repair = {
+    repair: dict[str, Any] = {
         **preview,
         "rollback_digest": rollback_digest,
         "promoted_surface_digest": final_digest,
@@ -215,15 +246,25 @@ def repair_inspector_aliases(runtime_root: Path, bin_dir: Path, *, apply: bool) 
         "recorded_at": datetime.now(UTC).isoformat(),
     }
     state_path = STATE_DIR / "candidate-node-runtime-latest.json"
-    state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.is_file() else {"version": 1}
-    repairs = [
+    state: dict[str, Any] = (
+        json.loads(state_path.read_text(encoding="utf-8"))
+        if state_path.is_file()
+        else {"version": 1}
+    )
+    raw_repairs = state.get("post_promotion_repairs", [])
+    if not isinstance(raw_repairs, list):
+        raise ValueError("Node promotion repairs must be a list")
+    repairs: list[dict[str, Any]] = [
         item
-        for item in state.get("post_promotion_repairs", [])
+        for item in raw_repairs
         if isinstance(item, dict) and item.get("repair") != repair["repair"]
     ]
     repairs.append(repair)
     state["post_promotion_repairs"] = repairs
-    state["promoted_bins"] = sorted({*state.get("promoted_bins", []), *targets})
+    raw_bins = state.get("promoted_bins", [])
+    if not isinstance(raw_bins, list) or any(not isinstance(item, str) for item in raw_bins):
+        raise ValueError("Node promoted bins must be a string list")
+    state["promoted_bins"] = sorted({*raw_bins, *targets})
     STATE_DIR.mkdir(parents=True, exist_ok=True)
     state_path.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
     return {"ok": True, "mode": "applied", "state_path": str(state_path), **repair}
