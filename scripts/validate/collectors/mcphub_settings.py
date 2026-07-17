@@ -109,11 +109,12 @@ def collect_mcphub_settings_errors(repo_root: Path) -> list[dict[str, str]]:
                         "message": f"chatgpt {key} must be {expected!r}",
                     })
 
+        # harness = default low-tax bundle; nlm = NotebookLM MCP group (single server).
         bounded_client_expectations = {
             "included_endpoint_kinds": ["group", "server"],
-            "included_groups": ["harness"],
+            "included_groups": ["harness", "nlm"],
             "enabled_endpoint_kinds": ["group"],
-            "enabled_groups": ["harness"],
+            "enabled_groups": ["harness", "nlm"],
             "enable_server_endpoints": True,
         }
         for harness in ("default", "codex", "grok", "opencode"):

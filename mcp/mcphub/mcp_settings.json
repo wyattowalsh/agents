@@ -309,6 +309,16 @@
       "timeout": 600000,
       "enabled": false
     },
+    "notebooklm": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "notebooklm-py[mcp]==0.8.0b5",
+        "notebooklm-mcp"
+      ],
+      "description": "Unofficial Google NotebookLM / Gemini Notebook automation (teng-lin/notebooklm-py MCP, beta pin 0.8.0b5).",
+      "timeout": 600000
+    },
     "nullcost": {
       "command": "npx",
       "args": [
@@ -804,6 +814,14 @@
         "fetch",
         "trafilatura",
         "scrapling"
+      ]
+    },
+    {
+      "id": "1156f4a2-e037-5611-b79b-b7c0d23e4ebf",
+      "name": "nlm",
+      "description": "NotebookLM (Gemini Notebook) via teng-lin/notebooklm-py (single server).",
+      "servers": [
+        "notebooklm"
       ]
     },
     {

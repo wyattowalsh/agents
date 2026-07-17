@@ -10,6 +10,16 @@
       },
       "disabled": false
     },
+    "mcphub_group_nlm": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/nlm"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": false
+    },
     "mcphub_server_agent-catalog": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
@@ -330,6 +340,16 @@
       },
       "disabled": true
     },
+    "mcphub_server_notebooklm": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/notebooklm"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
     "mcphub_server_nullcost": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
@@ -404,6 +424,16 @@
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/penpot"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
+    "mcphub_server_qsv": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/qsv"
       ],
       "env": {
         "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"

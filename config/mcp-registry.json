@@ -1253,6 +1253,26 @@
       "tool_approvals": {},
       "platform_overrides": {},
       "description": "Disabled Semiotic visualization MCP example; keep HTTP/cloud modes local opt-in only."
+    },
+    "notebooklm": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "notebooklm-py[mcp]==0.8.0b5",
+        "notebooklm-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 120,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true,
+      "description": "Unofficial Google NotebookLM / Gemini Notebook automation (teng-lin/notebooklm-py MCP, beta pin 0.8.0b5)."
     }
   },
   "mcphub": {
@@ -1672,6 +1692,13 @@
           "shannon-thinking",
           "think-strategies"
         ]
+      },
+      "nlm": {
+        "description": "NotebookLM (Gemini Notebook) via teng-lin/notebooklm-py (single server).",
+        "enabled": true,
+        "servers": [
+          "notebooklm"
+        ]
       }
     },
     "clients": {
@@ -1681,13 +1708,15 @@
           "server"
         ],
         "included_groups": [
-          "harness"
+          "harness",
+          "nlm"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness"
+          "harness",
+          "nlm"
         ],
         "enable_server_endpoints": true
       },
@@ -1699,13 +1728,15 @@
           "server"
         ],
         "included_groups": [
-          "harness"
+          "harness",
+          "nlm"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness"
+          "harness",
+          "nlm"
         ],
         "enable_server_endpoints": true
       },
@@ -1717,13 +1748,15 @@
           "server"
         ],
         "included_groups": [
-          "harness"
+          "harness",
+          "nlm"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness"
+          "harness",
+          "nlm"
         ],
         "enable_server_endpoints": true
       },
@@ -1735,13 +1768,15 @@
           "server"
         ],
         "included_groups": [
-          "harness"
+          "harness",
+          "nlm"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness"
+          "harness",
+          "nlm"
         ],
         "enable_server_endpoints": true,
         "server_endpoint_name_style": "base"
