@@ -1,0 +1,53 @@
+{
+  "source": "https://github.com/dathere/qsv",
+  "release": "21.1.0",
+  "audited_head": "6836cade4117d70807bcd1ede362c11909617a16",
+  "license": "MIT",
+  "npm_package": null,
+  "npm_note": "@qsv/agent-skills not published; local sparse build required",
+  "local_binary": "qsv 21.1.0 (brew); qsvmcp optional preferred",
+  "skills_fleet": [
+    "csv-query",
+    "csv-wrangling",
+    "data-clean",
+    "data-convert",
+    "data-describe",
+    "data-join",
+    "data-profile",
+    "data-quality",
+    "data-validate",
+    "data-viz",
+    "bls-query",
+    "genai-disclaimer",
+    "infer-ontology",
+    "qsv-performance",
+    "reproducible-analysis"
+  ],
+  "skills_excluded": [
+    "build-dashboard",
+    "mcp-release-prep",
+    "release-prep",
+    "review-respond"
+  ],
+  "mcp_tools_startup_approx": 23,
+  "allowed_dirs_default": [
+    "${REPO_ROOT}",
+    "${HOME}/dev"
+  ],
+  "groups": {
+    "primary": "data",
+    "also": [
+      "coding",
+      "research"
+    ],
+    "excluded": [
+      "harness",
+      "tunnel"
+    ]
+  },
+  "risks": [
+    "filesystem read/write under allowed dirs",
+    "describegpt may call user-owned LLM endpoints",
+    "skills require MCP tool surface"
+  ]
+}

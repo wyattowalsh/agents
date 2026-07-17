@@ -8,8 +8,8 @@ Workflow-first groups from `config/mcp-registry.json`. Local managed harnesses d
 | --- | --- |
 | `harness` | Default local baseline: bounded high-signal set with search, docs, llms.txt catalog (`llms-txt-explorer` `list_websites` only), URL fetch, package metadata, Chrome DevTools, and Penpot |
 | `daily` | Routine opt-in expansion for broader repo, browser, and web reading |
-| `coding` | Code-agent context: docs, URL fetch, repo, dependency, browser inspection, and full `jupyter-mcp-server` when JupyterLab is running |
-| `research` | Web and reference research across search (including `open-websearch`), read, archive, wiki, `scrapling` scraping, and bounded `jupyter-mcp-server` notebook reads |
+| `coding` | Code-agent context: docs, URL fetch, repo, dependency, browser inspection, full `jupyter-mcp-server` when JupyterLab is running, and full `qsv` tabular wrangling when local build + binary are present |
+| `research` | Web and reference research across search (including `open-websearch`), read, archive, wiki, `scrapling` scraping, bounded `jupyter-mcp-server` notebook reads, and full `qsv` for local table analysis |
 | `review` | Repo review, docs/source lookup, generated evidence, browser inspection, and bounded `jupyter-mcp-server` notebook reads |
 | `release` | Release checks: versions, repo context, source reads, and package metadata |
 | `personal-work` | Account-backed work suites — explicit user intent only |
@@ -23,6 +23,7 @@ Workflow-first groups from `config/mcp-registry.json`. Local managed harnesses d
 | `reasoning-lab` | Experimental thinking servers — opt-in |
 | `media` | Document and 3D processing servers |
 | `notebooks` | Jupyter notebook read/write and kernel execution (`jupyter-mcp-server`; requires user-owned JupyterLab + `JUPYTER_TOKEN` in `.env.mcphub`) |
+| `data` | Tabular data wrangling (`qsv` MCP; local `qsv`/`qsvmcp` + machine-local build under `mcp/servers/qsv-agent-skills`; allowlist defaults to repo + `$HOME/dev`) |
 | `design` | Design connectors |
 | `productivity` | Productivity connectors |
 | `accounts` | Account connectors — explicit user intent only |

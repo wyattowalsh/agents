@@ -13,7 +13,7 @@
         "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
       },
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "antv-chart": {
       "command": "npx",
@@ -28,7 +28,7 @@
       },
       "description": "Disabled external chart-rendering MCP example from antvis/mcp-server-chart; opt in only after local network/rendering review.",
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "arxiv": {
       "command": "bash",
@@ -54,7 +54,7 @@
       ],
       "description": "Disabled external icon lookup MCP example from better-auth/better-icons; opt in per project before writing icon assets.",
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "brave-search": {
       "command": "npx",
@@ -84,7 +84,7 @@
       ],
       "description": "Disabled local chart generation MCP example from marzukia/charted.",
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "chrome-devtools": {
       "command": "bash",
@@ -110,7 +110,7 @@
         "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
       },
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "context7": {
       "type": "streamable-http",
@@ -173,7 +173,7 @@
         "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
       },
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "docs-index": {
       "command": "uv",
@@ -188,7 +188,7 @@
         "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
       },
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "duckduckgo-search": {
       "command": "uvx",
@@ -210,7 +210,7 @@
         "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
       },
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "exa": {
       "type": "streamable-http",
@@ -275,7 +275,7 @@
       },
       "description": "Disabled credentialed Langfuse observability MCP example; read-only mode is the tracked default.",
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "linkedin": {
       "command": "uvx",
@@ -307,7 +307,7 @@
       ],
       "description": "Disabled local Excalidraw canvas MCP example from yctimlin/mcp_excalidraw.",
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "nullcost": {
       "command": "npx",
@@ -318,7 +318,7 @@
       ],
       "description": "Disabled external cost-estimation MCP example; opt in only after provider/pricing review.",
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "open-websearch": {
       "command": "bash",
@@ -336,7 +336,7 @@
       ],
       "description": "Disabled external OpenSpec MCP compatibility example; repo-native wagents OpenSpec remains the default.",
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "ossinsight": {
       "command": "npx",
@@ -369,7 +369,7 @@
       },
       "description": "Disabled academic paper search MCP example; opt in with provider ToS and credential review.",
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "papersflow": {
       "type": "streamable-http",
@@ -379,13 +379,27 @@
         "enabled": false
       },
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "penpot": {
       "type": "streamable-http",
       "url": "https://design.penpot.app/mcp/stream?userToken=${PENPOT_MCP_USER_TOKEN}",
       "env": {
         "PENPOT_MCP_USER_TOKEN": "${PENPOT_MCP_USER_TOKEN}"
+      },
+      "timeout": 600000
+    },
+    "qsv": {
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/qsv-stdio.sh"
+      ],
+      "env": {
+        "QSV_MCP_BIN_PATH": "${QSV_MCP_BIN_PATH}",
+        "QSV_MCP_ALLOWED_DIRS": "${QSV_MCP_ALLOWED_DIRS}",
+        "QSV_MCP_WORKING_DIR": "${QSV_MCP_WORKING_DIR}",
+        "QSV_MCP_CHECK_UPDATES_ON_STARTUP": "false",
+        "QSV_MCP_OPERATION_TIMEOUT_MS": "600000"
       },
       "timeout": 600000
     },
@@ -402,7 +416,7 @@
         "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
       },
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "remotion-docs": {
       "command": "npx",
@@ -412,7 +426,7 @@
       ],
       "description": "Disabled official Remotion documentation MCP example.",
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "repo-readonly": {
       "command": "uv",
@@ -427,7 +441,7 @@
         "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
       },
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "repomix": {
       "command": "npx",
@@ -454,7 +468,7 @@
       ],
       "description": "Disabled Semiotic visualization MCP example; keep HTTP/cloud modes local opt-in only.",
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "sequential-thinking": {
       "command": "npx",
@@ -485,7 +499,7 @@
         "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
       },
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "source-url-health": {
       "command": "uv",
@@ -500,7 +514,7 @@
         "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
       },
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "structured-thinking": {
       "command": "npx",
@@ -536,7 +550,7 @@
         "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
       },
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     },
     "think-strategies": {
       "command": "npx",
@@ -588,7 +602,7 @@
         "WAGENTS_REPO_ROOT": "${REPO_ROOT}"
       },
       "timeout": 600000,
-      "disabled": true
+      "enabled": false
     }
   },
   "groups": [
@@ -635,7 +649,8 @@
         "package-version-check-mcp",
         "ossinsight",
         "chrome-devtools",
-        "jupyter-mcp-server"
+        "jupyter-mcp-server",
+        "qsv"
       ]
     },
     {
@@ -673,6 +688,14 @@
         "trafilatura",
         "repomix",
         "chrome-devtools"
+      ]
+    },
+    {
+      "id": "19b638ed-3c85-59f7-a6c8-b764175173c6",
+      "name": "data",
+      "description": "Tabular data wrangling and local CSV/Excel/JSONL/Parquet analysis via qsv.",
+      "servers": [
+        "qsv"
       ]
     },
     {
@@ -894,7 +917,8 @@
             "read_notebook",
             "read_cell"
           ]
-        }
+        },
+        "qsv"
       ]
     },
     {

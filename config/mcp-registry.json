@@ -236,6 +236,39 @@
       "platform_overrides": {},
       "tools_allow_all": true
     },
+    "qsv": {
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/qsv-stdio.sh"
+      ],
+      "env": {
+        "QSV_MCP_BIN_PATH": {
+          "env_var": "QSV_MCP_BIN_PATH"
+        },
+        "QSV_MCP_ALLOWED_DIRS": {
+          "env_var": "QSV_MCP_ALLOWED_DIRS"
+        },
+        "QSV_MCP_WORKING_DIR": {
+          "env_var": "QSV_MCP_WORKING_DIR"
+        },
+        "QSV_MCP_CHECK_UPDATES_ON_STARTUP": {
+          "value": "false"
+        },
+        "QSV_MCP_OPERATION_TIMEOUT_MS": {
+          "value": "600000"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
     "repomix": {
       "transport": "stdio",
       "command": "npx",
@@ -1319,7 +1352,8 @@
           "package-version-check-mcp",
           "ossinsight",
           "chrome-devtools",
-          "jupyter-mcp-server"
+          "jupyter-mcp-server",
+          "qsv"
         ]
       },
       "research": {
@@ -1351,7 +1385,8 @@
               "read_notebook",
               "read_cell"
             ]
-          }
+          },
+          "qsv"
         ]
       },
       "review": {
@@ -1507,6 +1542,13 @@
         "enabled": true,
         "servers": [
           "jupyter-mcp-server"
+        ]
+      },
+      "data": {
+        "description": "Tabular data wrangling and local CSV/Excel/JSONL/Parquet analysis via qsv.",
+        "enabled": true,
+        "servers": [
+          "qsv"
         ]
       },
       "design": {
