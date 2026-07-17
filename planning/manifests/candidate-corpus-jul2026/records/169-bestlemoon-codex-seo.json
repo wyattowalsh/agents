@@ -7,24 +7,77 @@
   "license": "MIT",
   "latest_release_or_commit_date": "github-pushed-at:2026-07-03T21:53:18Z",
   "artifact_types_found": [
-    "docs/reference"
+    "MCP server",
+    "agent",
+    "library",
+    "plugin",
+    "skill"
   ],
-  "install_or_integration_decision": "merge_into_existing",
-  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
+  "install_or_integration_decision": "integrated_existing_surface",
+  "reason": "Existing repo catalog surface already covers this source/domain.",
   "auth_required": true,
   "env_vars_or_credentials": [
     "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
   ],
   "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
   "attribution_notes": "Preserve attribution to BestLemoon/codex-seo; verify license before adapting content.",
-  "files_added": [],
-  "files_modified": [],
+  "files_added": [
+    "docs/src/authoring/skills/seo-backlinks.mdx",
+    "docs/src/authoring/skills/seo-competitor-pages.mdx",
+    "docs/src/authoring/skills/seo-content.mdx",
+    "docs/src/authoring/skills/seo-dataforseo.mdx",
+    "docs/src/authoring/skills/seo-geo.mdx",
+    "docs/src/authoring/skills/seo-google.mdx",
+    "docs/src/authoring/skills/seo-hreflang.mdx",
+    "docs/src/authoring/skills/seo-image-gen.mdx",
+    "docs/src/authoring/skills/seo-images.mdx",
+    "docs/src/authoring/skills/seo-local.mdx",
+    "docs/src/authoring/skills/seo-maps.mdx",
+    "docs/src/authoring/skills/seo-page.mdx",
+    "docs/src/authoring/skills/seo-plan.mdx",
+    "docs/src/authoring/skills/seo-programmatic.mdx",
+    "docs/src/authoring/skills/seo-schema.mdx",
+    "docs/src/authoring/skills/seo-sitemap.mdx",
+    "docs/src/authoring/skills/seo-technical.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-backlinks.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-competitor-pages.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-content.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-dataforseo.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-geo.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-google.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-hreflang.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-image-gen.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-images.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-local.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-maps.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-page.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-plan.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-programmatic.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-schema.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-sitemap.mdx",
+    "docs/src/content/docs/skills/catalog/external/seo-technical.mdx",
+    "planning/manifests/candidate-corpus-jul2026/records/169-bestlemoon-codex-seo.json"
+  ],
+  "files_modified": [
+    "docs/public/generated-registries/skills-catalog-browser-index.json",
+    "docs/public/generated-registries/skills-catalog-index.json",
+    "planning/manifests/candidate-corpus-jul2026/all-records.json",
+    "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
+    "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
+    "planning/manifests/candidate-corpus-jul2026/harness-install-assurance.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-decisions.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-targets.json",
+    "planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json"
+  ],
   "tests_or_checks_run": [
     "git ls-remote --symref",
-    "gh api repos/{owner}/{repo}"
+    "gh api repos/BestLemoon/codex-seo",
+    "uv run python scripts/audit_candidate_deep_sources.py --check",
+    "uv run python scripts/apply_candidate_corpus_promotions.py --check",
+    "uv run python scripts/promote_candidate_corpus.py --final-check"
   ],
   "skipped_reason": "",
-  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "reviewer_notes": "Deep source audit completed at ref main. Reviewed promotion overlay applied 17 catalog row(s) and verified 17 live-install evidence row(s).",
   "raw_index": 169,
   "normalized_index": "https://github.com/BestLemoon/codex-seo",
   "duplicate_group": [],
@@ -35,16 +88,16 @@
   "risk_keywords": [
     "seo"
   ],
-  "support_tier": "discovery-only",
+  "support_tier": "curated-installable-final",
   "phase_status": {
     "source_capture": "completed",
-    "deep_research": "completed-public-metadata",
+    "deep_research": "completed-deep-source-audit",
     "overlap": "completed",
     "security": "completed-static",
     "license": "completed-static",
-    "compliance": "completed-static",
+    "compliance": "completed-deep-auth-reconciled",
     "docs_impact": "completed",
-    "decision": "completed"
+    "decision": "completed-overlay-reconciled"
   },
   "source_capture_packet": {
     "git_status": "ok",
@@ -81,11 +134,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -108,11 +161,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -162,7 +215,8 @@
     "auth_required": true,
     "env_vars_or_credentials": [
       "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-    ]
+    ],
+    "evidence_source": "deep-source-audit.json"
   },
   "docs_steward_surfaces": [
     "README",
@@ -178,13 +232,32 @@
     "runbooks",
     "skill-research"
   ],
-  "docs_steward_status": "packet-generated",
+  "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "merge_into_existing",
-    "reason": "Existing repo catalog or registry surface already covers this source/domain."
+    "decision": "integrated_existing_surface",
+    "reason": "Existing repo catalog surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "required_before_promotion": "human trust-gate review"
+    "terminal_route": "integrated-existing-surface",
+    "required_before_live_execution": "explicit user-owned command and credential setup",
+    "scope": "historical-intake-research-only"
+  },
+  "intake_artifact_types_found": [
+    "MCP server",
+    "agent",
+    "library",
+    "plugin",
+    "skill"
+  ],
+  "intake_support_tier": "discovery-only",
+  "intake_docs_steward_status": "packet-generated",
+  "final_integration": {
+    "status": "installable-curated-external",
+    "mutation_applied": true,
+    "catalog_rows": 17,
+    "harness_assurance": "harness-install-assurance.json",
+    "non_skill_assurance": "non-skill-install-assurance.json",
+    "runtime_disposition": "integrated-non-executable-surface"
   }
 }

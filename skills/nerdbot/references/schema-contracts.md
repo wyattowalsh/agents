@@ -10,6 +10,7 @@
 | Claim | claim text, source reference, evidence type, notes | Can point to `raw`, canonical material, or a vault note |
 | Review item | item ID, mode, target, risk, proposed action, status | Save-back queue for query gaps and watch events |
 | Activity entry | timestamp, mode, summary, layer changes, risk/rollback, follow-up | Append-only |
+| Operation transition | strict operation ID, mode, target, state, summary, timestamp | Append-only `prepared` followed by exactly one terminal transition |
 
 ## Public Contract Modules
 
@@ -17,7 +18,7 @@
 |--------|----------|-------|
 | `nerdbot.sources` | Source records, source IDs, checksums, raw paths, pointer stubs | Pure helpers; no filesystem mutation |
 | `nerdbot.evidence` | Claim records, review items, freshness classes, review statuses, confidence caps | Claims default to review-visible until approved |
-| `nerdbot.operations` | Operation journal entries and stable operation IDs | JSONL-friendly append records |
+| `nerdbot.operations` | Strict operation transitions, deterministic intent prefixes, unique operation IDs, and project transactions | Canonical parser shared by replay and activity repair |
 | `nerdbot.retrieval` | Query result payloads from `wiki/` and `indexes/` | Read-only lexical baseline; semantic reranking remains optional |
 | `nerdbot.graph` | Rebuildable graph edges | Derived output, never canonical truth |
 | `nerdbot.watch` | Watch event decisions | Queue, ignore, wait, or classify; never rewrite directly |
@@ -31,6 +32,14 @@
 ## Evidence Ledger Fields
 
 `claim_id`, `claim`, `wiki_path`, `source_id`, `evidence_path`, `evidence_type`, `freshness_class`, `review_status`, `confidence`, `updated`, and `notes` are the required claim keys. Freshness classes are `static`, `slow`, `medium`, `fast`, and `unknown`; review statuses are `pending`, `approved`, `applied`, `rejected`, `blocked`, and `superseded`.
+
+## Operation Journal Fields And States
+
+Operation transitions require `operation_id`, `mode`, `target`, `status`, `summary`, `changed_paths`, `review_items`, `rollback_paths`, and `created_at`. IDs match `op-<8 lowercase hex intent prefix>-<12 lowercase hex unique suffix>`. Modes are the mutating workflow modes plus `repair`; timestamps are valid timezone-aware ISO-8601 values; path arrays contain normalized vault-relative POSIX paths.
+
+The only journal states are `prepared`, `committed`, `failed`, and `review-needed`. The first row for an operation ID must be `prepared`; the next and final row must be exactly one of the three terminal states. All non-state field values remain identical across the transition. `planned` is valid only for an in-memory dry-run preview and must never be appended to `activity/operations.jsonl`.
+
+Replay result rows add `operation_state` alongside replay `status`. Activity projections include only committed operations and end with one exact standalone HTML-comment operation marker.
 
 ## Generated Artifacts
 

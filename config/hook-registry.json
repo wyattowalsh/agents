@@ -284,13 +284,15 @@
       "logical_event": "PreToolUse",
       "mode": "enforce",
       "status_message": "Checking shell safety",
-      "matcher": "Bash|bash|run_shell_command",
+      "matcher": "Bash|bash|run_shell_command|Shell",
       "command": "{hook_runner} destructive-shell-guard --harness {harness}",
       "timeout": 5,
       "bundle_group": "fleet-pre-tool-enforce",
       "bundle_mode": "enforce-chain",
       "harnesses": [
-        "github-copilot"
+        "github-copilot",
+        "claude-code",
+        "gemini-cli"
       ]
     },
     {
@@ -306,7 +308,9 @@
       "bundle_group": "fleet-pre-tool-enforce",
       "bundle_mode": "enforce-chain",
       "harnesses": [
-        "github-copilot"
+        "github-copilot",
+        "claude-code",
+        "gemini-cli"
       ]
     },
     {

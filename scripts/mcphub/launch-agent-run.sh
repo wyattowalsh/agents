@@ -12,6 +12,7 @@ mkdir -p "${MCPHUB_RUN_DIR}"
 printf '%s\n' "$$" >"${MCPHUB_PID_FILE}"
 
 launchctl setenv MCPHUB_BASE_URL "${MCPHUB_BASE_URL}" >/dev/null 2>&1 || true
+launchctl setenv MCPHUB_BIND_HOST "${MCPHUB_BIND_HOST}" >/dev/null 2>&1 || true
 if [[ -n "${MCPHUB_PUBLIC_URL:-}" ]]; then
   launchctl setenv MCPHUB_PUBLIC_URL "${MCPHUB_PUBLIC_URL}" >/dev/null 2>&1 || true
 fi
@@ -31,7 +32,7 @@ trap cleanup EXIT INT TERM
 
 cd "${MCPHUB_REPO_ROOT}"
 export REPO_ROOT="${REPO_ROOT:-${MCPHUB_REPO_ROOT}}"
-npx -y @samanhappy/mcphub &
+bash "${SCRIPT_DIR}/start-server.sh" &
 MCPHUB_CHILD_PID="$!"
 printf '%s\n' "${MCPHUB_CHILD_PID}" >"${MCPHUB_CHILD_PID_FILE}"
 if mcphub_wait_healthy; then

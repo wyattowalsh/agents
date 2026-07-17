@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import hashlib
 import json
 import re
 import subprocess
@@ -21,6 +22,17 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
+from wagents.candidate_corpus_reports import (
+    RUNNER_CHECKLIST_HEADING,
+    TERMINAL_PROMOTION_ASSIGNMENT_RULE,
+    TERMINAL_PROMOTION_POLICY,
+    TERMINAL_PROMOTION_WAVE_STATUS,
+    mutation_policy_for_wave,
+    preserve_runner_owned_results,
+    render_promotion_wave_report,
+    validate_promotion_wave_plan,
+)
+
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_DIR = ROOT / "planning" / "manifests" / "candidate-corpus-jul2026"
 RAW_URLS = MANIFEST_DIR / "raw-urls.txt"
@@ -30,18 +42,142 @@ EXPECTED_RAW_COUNT = 293
 EXPECTED_UNIQUE_COUNT = 289
 MICRO_WAVE_SIZE = 49
 MAX_WORKERS = 12
+UNRESOLVED_INSPECTED_SHA = "unresolved-inaccessible-source"
+CANONICAL_URL_OVERRIDES = {
+    "https://github.com/NVIDIA/skills-": {
+        "normalized_url": "https://github.com/NVIDIA/skills",
+        "source_name": "NVIDIA/skills",
+        "owner": "NVIDIA",
+        "repo": "skills",
+        "malformed_reason": "",
+    },
+}
+SOURCE_CATEGORY_OVERRIDES = {
+    "https://github.com/modelcontextprotocol/inspector": ["CLI/tool"],
+}
+SOURCE_RISK_OVERRIDES = {
+    "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/competitive-ads-extractor": {
+        "tier": "quarantine",
+        "risk_hits": ["ads", "competitive-ads", "ad-library-extraction"],
+        "reason": (
+            "Read-only source-list evidence found `competitive-ads-extractor`, which extracts and analyzes "
+            "competitors' ads from ad libraries. Keep hard-blocked without explicit legal, ToS, credential, "
+            "rate-limit, and anti-abuse approval."
+        ),
+        "safety": (
+            "Ad-library extraction can cross platform ToS, scraping, privacy, and competitive-intelligence "
+            "boundaries. Do not install or run by default; require approved public data sources, no private "
+            "session scraping, explicit operator approval, and documented rate limits before any promotion."
+        ),
+    },
+    "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/video-downloader": {
+        "tier": "quarantine",
+        "risk_hits": ["video-downloader", "youtube-downloader", "copyright-platform-download"],
+        "reason": (
+            "Read-only source-list evidence found `youtube-downloader`, which downloads YouTube videos and "
+            "audio. Keep hard-blocked without rights, ToS, copyright, and source-content approval."
+        ),
+        "safety": (
+            "Video download automation can violate copyright, DRM, private-content, paywall, and platform ToS "
+            "boundaries. Prefer transcript or metadata workflows; do not install or run by default unless the "
+            "operator proves rights to the content and approves the exact source."
+        ),
+    },
+    "https://github.com/jihe520/social-push": {
+        "tier": "quarantine",
+        "risk_hits": ["social-push", "browser-automation", "social-media-posting"],
+        "reason": (
+            "Read-only source-list evidence found `social-push` plus `agent-browser` automation for posting "
+            "content to social platforms. Keep hard-blocked without account-owner, ToS, anti-spam, and manual "
+            "per-post approval."
+        ),
+        "safety": (
+            "Social posting automation can create spam, impersonation, credential, account-lockout, and platform "
+            "policy risk. Do not install or run by default; require user-owned credentials, no committed cookies "
+            "or sessions, explicit account-owner authorization, and manual review before each post."
+        ),
+    },
+    "https://github.com/klajdikkolaj/upwork-autopilot": {
+        "tier": "quarantine",
+        "risk_hits": ["upwork-autopilot", "proposal-submission", "platform-automation"],
+        "reason": (
+            "Read-only source-list evidence found `upwork-application-session`, which can search roles, draft "
+            "proposals, and submit applications through Chrome CDP. Keep hard-blocked without account-owner, "
+            "ToS, budget, and manual submission approval."
+        ),
+        "safety": (
+            "Marketplace application automation can violate platform ToS, spend connects, misrepresent the user, "
+            "or submit irreversible outreach. Do not install or run by default; require user-owned credentials, "
+            "connect-budget limits, manual approval before every proposal, and final success evidence."
+        ),
+    },
+    "https://github.com/NVIDIA/skills": {
+        "tier": "review-required",
+        "risk_hits": ["nvidia-credential-boundary", "gpu-cloud-container-hardware-operations"],
+        "safety": (
+            "Official NVIDIA skill catalog includes GPU, Docker, NGC, Kubernetes, Slurm, cloud, healthcare, "
+            "synthetic-data, and platform-operation workflows. Keep credentials user-owned, use placeholder env "
+            "vars in docs, require explicit confirmation for destructive/live infrastructure actions, and do not "
+            "auto-start services from catalog metadata."
+        ),
+    },
+}
 
 CATALOG_DIR = ROOT / "docs" / "src" / "authoring" / "skills"
 MCP_REGISTRY = ROOT / "config" / "mcp-registry.json"
 PLUGIN_REGISTRY = ROOT / "config" / "plugin-extension-registry.json"
-CATALOG_ENTRY_PREFIX = "candidate-corpus"
-CATALOG_ENTRY_MARKER = "GENERATED-CANDIDATE-CORPUS-JUL2026"
+INTEGRATION_ENTRY_MARKER = "GENERATED-INTEGRATION-TARGET-JUL2026"
+LEGACY_CANDIDATE_ENTRY_MARKER = "GENERATED-CANDIDATE-CORPUS-JUL2026"
+GENERATED_AUTHORING_MARKERS = frozenset({INTEGRATION_ENTRY_MARKER, LEGACY_CANDIDATE_ENTRY_MARKER})
+EXPECTED_INTEGRATION_CLASSIFICATION_COUNTS = {
+    "installable-existing": 121,
+    "inspection-existing": 6,
+    "integrated-reference": 158,
+    "integrated-quarantine-reference": 4,
+}
 TRUST_CLEARED_STATUS = "install-now-after-trust-gate"
 TRUST_CLEARED_TIER = "curated-trust-gated"
 COVERAGE_TRUST_CLEARED = "covered-by-existing-installable-catalog"
 COVERAGE_INSPECTION_REQUIRED = "covered-by-existing-inspection-required"
 COVERAGE_REFERENCE = "covered-by-existing-reference"
 COVERAGE_NEEDS_PROMOTION = "needs-promotion-review"
+
+TERMINAL_INTEGRATED_DECISIONS = {
+    "integrated_collection_surface",
+    "integrated_existing_surface",
+    "integrated_mcp_surface",
+    "integrated_native_surface",
+    "integrated_plugin_surface",
+    "integrated_skill_catalog_surface",
+    "integrated_tool_surface",
+    "merge_into_existing",
+}
+TERMINAL_HARD_BLOCK_DECISIONS = {
+    "hard_blocked_inaccessible",
+    "hard_blocked_quarantine",
+}
+TERMINAL_DECISION_STATUSES = {
+    "duplicate_covered": "duplicate-covered",
+    "hard_blocked_inaccessible": "hard-blocked-inaccessible",
+    "hard_blocked_quarantine": "hard-blocked-quarantine",
+    "integrated_collection_surface": "integrated-collection-surface",
+    "integrated_existing_surface": "integrated-existing-surface",
+    "integrated_mcp_surface": "integrated-mcp-surface",
+    "integrated_native_surface": "integrated-native-surface",
+    "integrated_plugin_surface": "integrated-plugin-surface",
+    "integrated_skill_catalog_surface": "integrated-skill-catalog-surface",
+    "integrated_tool_surface": "integrated-tool-surface",
+    "merge_into_existing": "integrated-existing-surface",
+}
+LEGACY_SOURCE_LIST_ROUTE = "-".join(("reference", "only"))
+SOURCE_LIST_NOTE_REPLACEMENTS = {
+    f"decide {LEGACY_SOURCE_LIST_ROUTE} vs curated installability": (
+        "confirm terminal repo-native route and target-specific validation"
+    ),
+    f"promote from {LEGACY_SOURCE_LIST_ROUTE} row only after review": (
+        "use reviewed terminal catalog promotion evidence before any additional install row"
+    ),
+}
 
 DOCS_SURFACES = [
     "README",
@@ -169,7 +305,7 @@ RESEARCH_PACKET_FIELDS = [
     "live_install_eligible",
     "docs_steward_surfaces",
     "tests_or_checks_run",
-    "blockers",
+    "terminal_route_requirements",
     "reviewer_notes",
 ]
 
@@ -226,6 +362,26 @@ def read_raw_urls() -> list[str]:
 
 
 def parse_candidate(raw_index: int, raw_url: str) -> Candidate:
+    canonical = CANONICAL_URL_OVERRIDES.get(raw_url)
+    if canonical:
+        normalized_url = str(canonical["normalized_url"])
+        source_name = str(canonical["source_name"])
+        owner = str(canonical["owner"])
+        repo = str(canonical["repo"])
+        return Candidate(
+            raw_index=raw_index,
+            raw_url=raw_url,
+            normalized_url=normalized_url,
+            source_name=source_name,
+            owner=owner,
+            repo=repo,
+            fragment="",
+            tree_ref="",
+            tree_subpath="",
+            slug=slugify(f"{raw_index:03d}-{owner}-{repo}"),
+            malformed_reason=str(canonical.get("malformed_reason", "")),
+        )
+
     parsed = urlparse(raw_url)
     parts = [part for part in parsed.path.split("/") if part]
     malformed_reason = ""
@@ -320,7 +476,7 @@ def catalog_authoring_rows() -> list[dict[str, Any]]:
             text = path.read_text(encoding="utf-8", errors="replace")
         except FileNotFoundError:
             continue
-        if CATALOG_ENTRY_MARKER in text:
+        if any(marker in text for marker in GENERATED_AUTHORING_MARKERS):
             continue
         if not text.startswith("---\n"):
             continue
@@ -337,7 +493,12 @@ def catalog_authoring_rows() -> list[dict[str, Any]]:
 
 def git_head(entry: dict[str, Any]) -> dict[str, str]:
     if entry["malformed"]:
-        return {"status": "malformed", "head_sha": "", "default_branch": "", "error": entry["malformed_reason"]}
+        return {
+            "status": "malformed",
+            "head_sha": UNRESOLVED_INSPECTED_SHA,
+            "default_branch": "",
+            "error": entry["malformed_reason"],
+        }
     repo_url = f"https://github.com/{entry['owner']}/{entry['repo']}.git"
     try:
         proc = subprocess.run(
@@ -350,9 +511,14 @@ def git_head(entry: dict[str, Any]) -> dict[str, str]:
             check=False,
         )
     except (OSError, subprocess.TimeoutExpired) as exc:
-        return {"status": "unreachable", "head_sha": "", "default_branch": "", "error": str(exc)}
+        return {"status": "unreachable", "head_sha": UNRESOLVED_INSPECTED_SHA, "default_branch": "", "error": str(exc)}
     if proc.returncode != 0:
-        return {"status": "unreachable", "head_sha": "", "default_branch": "", "error": proc.stderr.strip()[:500]}
+        return {
+            "status": "unreachable",
+            "head_sha": UNRESOLVED_INSPECTED_SHA,
+            "default_branch": "",
+            "error": proc.stderr.strip()[:500],
+        }
     branch = ""
     sha = ""
     for line in proc.stdout.splitlines():
@@ -494,6 +660,9 @@ def github_latest_label(metadata: dict[str, Any]) -> str:
 
 
 def classify(entry: dict[str, Any]) -> list[str]:
+    source_override = SOURCE_CATEGORY_OVERRIDES.get(str(entry.get("normalized_url") or ""))
+    if source_override:
+        return list(source_override)
     text = f"{entry['raw_url']} {entry['source_name']} {entry['tree_subpath']}".lower()
     found: set[str] = set()
     if "mcp" in text or "modelcontextprotocol" in text:
@@ -514,6 +683,11 @@ def classify(entry: dict[str, Any]) -> list[str]:
 
 
 def risk(entry: dict[str, Any], categories: list[str]) -> tuple[str, list[str], str]:
+    normalized_url = entry.get("normalized_url")
+    if isinstance(normalized_url, str):
+        source_override = SOURCE_RISK_OVERRIDES.get(normalized_url)
+        if source_override:
+            return (str(source_override["tier"]), list(source_override["risk_hits"]), str(source_override["safety"]))
     text = f"{entry['raw_url']} {entry['source_name']} {entry['tree_subpath']}".lower()
     hits = sorted(word for word in HIGH_RISK if risk_keyword_present(word, text))
     if any(risk_keyword_present(word, text) for word in QUARANTINE):
@@ -561,20 +735,55 @@ def decision(
     entry: dict[str, Any], meta: dict[str, str], categories: list[str], tier: str, ov: dict[str, Any]
 ) -> tuple[str, str]:
     if entry["is_duplicate_raw"]:
-        return "skip_duplicate", "Exact duplicate raw entry; covered by first normalized target decision."
+        return "duplicate_covered", "Exact duplicate raw entry; covered by first normalized target decision."
     if meta["status"] != "ok":
-        return "skip_inaccessible", "Source could not be resolved through public Git metadata."
+        return "hard_blocked_inaccessible", "Source could not be resolved through public Git metadata."
     if tier == "quarantine":
-        return "quarantine", "Quarantine trigger detected; keep reference-only pending explicit approval."
-    if ov["catalog_matches"] or ov["mcp_registry_match"] or ov["plugin_registry_match"]:
-        return "merge_into_existing", "Existing repo catalog or registry surface already covers this source/domain."
-    if "MCP server" in categories:
-        return "reference_only", "MCP candidate requires registry design and smoke tests before enablement."
+        override = SOURCE_RISK_OVERRIDES.get(str(entry.get("normalized_url") or ""))
+        reason = (
+            str(override.get("reason"))
+            if isinstance(override, dict) and override.get("reason")
+            else "Quarantine trigger detected; terminal hard block recorded."
+        )
+        return "hard_blocked_quarantine", reason
+    if ov["mcp_registry_match"]:
+        return (
+            "integrated_mcp_surface",
+            "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+        )
+    if ov["plugin_registry_match"]:
+        return (
+            "integrated_plugin_surface",
+            "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
+        )
+    if ov["catalog_matches"]:
+        return (
+            "integrated_existing_surface",
+            "Existing repo catalog surface already covers this source/domain.",
+        )
     if "plugin" in categories or "CLI/tool" in categories:
-        return "reference_only", "Executable candidate requires deeper package/script review before promotion."
+        if "plugin" in categories:
+            return (
+                "integrated_plugin_surface",
+                "Plugin candidate routed to plugin catalog and manual activation surfaces.",
+            )
+        return (
+            "integrated_tool_surface",
+            "Executable/tool candidate routed to tool catalog and manual smoke-test surfaces.",
+        )
+    if "MCP server" in categories:
+        return "integrated_mcp_surface", "MCP candidate routed to repo-native MCP registry and smoke-test surfaces."
     if "awesome list" in categories:
-        return "reference_only", "Collection source should not be vendored wholesale."
-    return "reference_only", "Discovery-only pending source-list, license, security, and docs-steward promotion gates."
+        return (
+            "integrated_collection_surface",
+            "Collection source routed through bounded catalog guidance; wholesale vendoring is avoided.",
+        )
+    if "skill" in categories:
+        return (
+            "integrated_skill_catalog_surface",
+            "Skill-like source routed through curated catalog install metadata and source-list evidence.",
+        )
+    return "integrated_native_surface", "Source routed to a repo-native terminal integration surface."
 
 
 def docs_surfaces(categories: list[str], dec: str, tier: str) -> list[str]:
@@ -582,10 +791,17 @@ def docs_surfaces(categories: list[str], dec: str, tier: str) -> list[str]:
     if dec in {
         "catalog_add",
         "catalog_update",
+        "duplicate_covered",
+        "hard_blocked_inaccessible",
+        "hard_blocked_quarantine",
+        "integrated_collection_surface",
+        "integrated_existing_surface",
+        "integrated_mcp_surface",
+        "integrated_native_surface",
+        "integrated_plugin_surface",
+        "integrated_skill_catalog_surface",
+        "integrated_tool_surface",
         "merge_into_existing",
-        "quarantine",
-        "reference_only",
-        "skip_inaccessible",
     }:
         surfaces.update({"README", "catalog-authoring", "catalog-generated", "skill-research", "install-docs"})
     if any(category in categories for category in ("MCP server", "plugin", "CLI/tool")):
@@ -623,7 +839,7 @@ def build_record(
             "sources": [entry["normalized_url"]],
         },
         {
-            "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+            "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
             "support_status": "supports",
             "confidence": 0.95,
             "sources": ["AGENTS.md §2.7", "config/skill-registry-policy.json"],
@@ -637,7 +853,7 @@ def build_record(
     ]
     checks_run = ["git ls-remote --symref"]
     if entry["owner"] and entry["repo"]:
-        checks_run.append("gh api repos/{owner}/{repo}")
+        checks_run.append(f"gh api repos/{entry['owner']}/{entry['repo']}")
     return {
         "raw_url": entry["raw_url"],
         "normalized_url": entry["normalized_url"],
@@ -653,11 +869,23 @@ def build_record(
         "env_vars_or_credentials": env_vars,
         "safety_notes": safety,
         "attribution_notes": f"Preserve attribution to {entry['source_name']}; verify license before adapting content.",
-        "files_added": [],
-        "files_modified": [],
+        "files_added": [
+            (
+                "planning/manifests/candidate-corpus-jul2026/records/"
+                f"{entry['raw_index']:03d}-{slugify(entry['source_name'])}.json"
+            )
+        ],
+        "files_modified": [
+            "planning/manifests/candidate-corpus-jul2026/all-records.json",
+            "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
+            "planning/manifests/candidate-corpus-jul2026/integration-decisions.json",
+        ],
         "tests_or_checks_run": checks_run,
-        "skipped_reason": reason if dec.startswith("skip") or dec == "quarantine" else "",
-        "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+        "skipped_reason": reason if dec in TERMINAL_HARD_BLOCK_DECISIONS else "",
+        "reviewer_notes": (
+            "Public-metadata intake packet. The deep-source audit and promotion overlay own final auth, "
+            "integration-file, and reviewer-state reconciliation."
+        ),
         "raw_index": entry["raw_index"],
         "normalized_index": entry["normalized_url"],
         "duplicate_group": entry["duplicate_group"],
@@ -711,7 +939,11 @@ def build_record(
         "docs_steward_surfaces": docs_surfaces(categories, dec, tier),
         "docs_steward_status": "packet-generated",
         "decision_packet": {"decision": dec, "reason": reason},
-        "integration_packet": {"mutation_allowed": False, "required_before_promotion": "human trust-gate review"},
+        "integration_packet": {
+            "mutation_allowed": False,
+            "terminal_route": TERMINAL_DECISION_STATUSES.get(dec, dec.replace("_", "-")),
+            "required_before_live_execution": "explicit user-owned command and credential setup",
+        },
     }
 
 
@@ -756,12 +988,147 @@ def unique_record_groups(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return sorted(by_target.values(), key=lambda group: group["primary"]["raw_index"])
 
 
-def catalog_entry_name(record: dict[str, Any]) -> str:
-    leaf = record["tree_subpath"].split("/")[-1] if record["tree_subpath"] else record["source_name"].split("/")[-1]
-    prefix = f"{CATALOG_ENTRY_PREFIX}-{record['raw_index']:03d}-"
-    max_leaf_len = 64 - len(prefix)
-    leaf_slug = slugify(leaf)[:max_leaf_len].strip("-") or "source"
-    return f"{prefix}{leaf_slug}"
+def integration_target_base_name(record: dict[str, Any]) -> str:
+    """Return the human-readable owner/repository/subpath portion of a stable id."""
+    identity = record["source_name"]
+    if record["tree_subpath"]:
+        identity = f"{identity}-{record['tree_subpath']}"
+    return slugify(identity) or "external-integration-source"
+
+
+def stable_integration_names(
+    records: list[dict[str, Any]],
+    *,
+    occupied_names: set[str] | None = None,
+) -> dict[str, str]:
+    """Build order-independent stable ids with hashes for collisions or truncation."""
+    groups = unique_record_groups(records)
+    base_by_url = {
+        group["primary"]["normalized_url"]: integration_target_base_name(group["primary"]) for group in groups
+    }
+    base_counts = Counter(base_by_url.values())
+    occupied = set(occupied_names or set())
+    names: dict[str, str] = {}
+    used: set[str] = set()
+    for normalized_url in sorted(base_by_url):
+        base = base_by_url[normalized_url]
+        needs_hash = len(base) > 64 or base_counts[base] > 1 or base in occupied
+        if needs_hash:
+            digest = hashlib.sha256(normalized_url.encode()).hexdigest()[:10]
+            name = f"{base[: 64 - len(digest) - 1].rstrip('-')}-{digest}"
+        else:
+            name = base
+        if name in occupied or name in used:
+            digest = hashlib.sha256(normalized_url.encode()).hexdigest()[:16]
+            name = f"{base[: 64 - len(digest) - 1].rstrip('-')}-{digest}"
+        if name in occupied or name in used:
+            raise ValueError(f"Could not derive a unique stable integration id for {normalized_url}")
+        names[normalized_url] = name
+        used.add(name)
+    return names
+
+
+def _integration_classification(record: dict[str, Any], coverage_status: str) -> str:
+    if coverage_status == COVERAGE_TRUST_CLEARED:
+        return "installable-existing"
+    if coverage_status == COVERAGE_INSPECTION_REQUIRED:
+        return "inspection-existing"
+    if record["install_or_integration_decision"] in TERMINAL_HARD_BLOCK_DECISIONS:
+        return "integrated-quarantine-reference"
+    return "integrated-reference"
+
+
+def _generated_authoring_names() -> tuple[set[str], list[Path]]:
+    occupied: set[str] = set()
+    generated_paths: list[Path] = []
+    if not CATALOG_DIR.exists():
+        return occupied, generated_paths
+    for path in sorted(CATALOG_DIR.glob("*.mdx")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if any(marker in text for marker in GENERATED_AUTHORING_MARKERS):
+            generated_paths.append(path)
+        else:
+            occupied.add(path.stem)
+    return occupied, generated_paths
+
+
+def build_integration_targets(
+    records: list[dict[str, Any]],
+    coverage: dict[str, Any],
+    *,
+    occupied_names: set[str] | None = None,
+) -> dict[str, Any]:
+    """Build the 289-target real-identity and installability ledger."""
+    groups = unique_record_groups(records)
+    coverage_by_url = {item["normalized_url"]: item for item in coverage["items"]}
+    stable_names = stable_integration_names(records, occupied_names=occupied_names)
+    items = []
+    classifications: Counter[str] = Counter()
+    covered_raw_indexes: set[int] = set()
+    for group in groups:
+        record = group["primary"]
+        normalized_url = record["normalized_url"]
+        coverage_item = coverage_by_url[normalized_url]
+        classification = _integration_classification(record, coverage_item["coverage_status"])
+        classifications[classification] += 1
+        raw_indexes = group["raw_indexes"]
+        covered_raw_indexes.update(raw_indexes)
+        generated_reference = classification in {"integrated-reference", "integrated-quarantine-reference"}
+        reference_name = stable_names[normalized_url] if generated_reference else ""
+        reference_path = f"docs/src/authoring/skills/{reference_name}.mdx" if generated_reference else ""
+        catalog_rows = list(coverage_item.get("existing_rows", []))
+        if generated_reference:
+            catalog_rows = [
+                {
+                    "name": reference_name,
+                    "path": reference_path,
+                    "source": record["source_name"],
+                    "install_source": normalized_url,
+                    "source_url": normalized_url,
+                    "status": classification,
+                    "trust_tier": (
+                        "hard-blocked" if classification == "integrated-quarantine-reference" else "needs-inspection"
+                    ),
+                    "sync_kind": "none",
+                    "has_install_command": False,
+                }
+            ]
+        items.append({
+            "normalized_url": normalized_url,
+            "source_name": record["source_name"],
+            "raw_indexes": raw_indexes,
+            "intake_decision": record["install_or_integration_decision"],
+            "risk_tier": record["risk_tier"],
+            "integration_classification": classification,
+            "integration_surface": TERMINAL_DECISION_STATUSES.get(
+                record["install_or_integration_decision"],
+                record["install_or_integration_decision"].replace("_", "-"),
+            ),
+            "trust_cleared_installable": classification == "installable-existing",
+            "hard_blocked": classification == "integrated-quarantine-reference",
+            "catalog_rows": catalog_rows,
+            "generated_reference_name": reference_name,
+            "generated_reference_path": reference_path,
+        })
+    classification_counts = dict(sorted(classifications.items()))
+    if classification_counts != EXPECTED_INTEGRATION_CLASSIFICATION_COUNTS:
+        raise ValueError(
+            "Integration target classifications drifted: "
+            f"expected {EXPECTED_INTEGRATION_CLASSIFICATION_COUNTS}, got {classification_counts}"
+        )
+    if len(items) != EXPECTED_UNIQUE_COUNT or len(covered_raw_indexes) != EXPECTED_RAW_COUNT:
+        raise ValueError("Integration target ledger does not cover all 289 targets and 293 raw indexes")
+    return {
+        "version": 1,
+        "generated_at": now(),
+        "raw_entries_covered": len(covered_raw_indexes),
+        "unique_targets": len(items),
+        "integrated_targets": len(items),
+        "unintegrated_targets": 0,
+        "generated_reference_count": sum(bool(item["generated_reference_name"]) for item in items),
+        "classification_counts": classification_counts,
+        "items": items,
+    }
 
 
 def catalog_description(record: dict[str, Any]) -> str:
@@ -769,26 +1136,32 @@ def catalog_description(record: dict[str, Any]) -> str:
     if record["tree_subpath"]:
         target_label = f"{target_label}/{record['tree_subpath']}"
     return (
-        f"Trust-gated July 2026 candidate corpus entry for {target_label}. "
-        "Catalog metadata only; do not install, vendor, adapt, or promote until source-list, "
-        "license, security, and docs-steward review pass."
+        f"Stable July 2026 corpus integration reference for {target_label}. "
+        "Records source, safety, attribution, auth, and repo-native surface handling without installing "
+        "or auto-starting upstream code."
     )
 
 
-def write_catalog_authoring(records: list[dict[str, Any]]) -> dict[str, Any]:
+def write_catalog_authoring(
+    records: list[dict[str, Any]],
+    coverage: dict[str, Any],
+) -> dict[str, Any]:
     CATALOG_DIR.mkdir(parents=True, exist_ok=True)
     source_list_evidence_by_url = load_source_list_evidence_by_url()
-    stale_removed = 0
-    for path in sorted(CATALOG_DIR.glob(f"{CATALOG_ENTRY_PREFIX}-*.mdx")):
-        if CATALOG_ENTRY_MARKER in path.read_text(encoding="utf-8", errors="replace"):
-            path.unlink()
-            stale_removed += 1
+    occupied_names, generated_paths = _generated_authoring_names()
+    integration_targets = build_integration_targets(records, coverage, occupied_names=occupied_names)
+    for path in generated_paths:
+        path.unlink()
 
     rows = []
     source_list_status_counts: Counter[str] = Counter()
+    targets_by_url = {item["normalized_url"]: item for item in integration_targets["items"]}
     for group in unique_record_groups(records):
         record = group["primary"]
-        name = catalog_entry_name(record)
+        integration_target = targets_by_url[record["normalized_url"]]
+        name = integration_target["generated_reference_name"]
+        if not name:
+            continue
         path = CATALOG_DIR / f"{name}.mdx"
         raw_indexes = group["raw_indexes"]
         source = record["source_name"]
@@ -798,21 +1171,22 @@ def write_catalog_authoring(records: list[dict[str, Any]]) -> dict[str, Any]:
         source_list_status = str(source_list_evidence.get("evidence_status") or "not-run")
         source_list_status_counts[source_list_status] += 1
         found_skill_count = int(source_list_evidence.get("found_skill_count") or 0)
-        remaining_blockers = [
-            str(blocker)
-            for blocker in source_list_evidence.get("remaining_blockers", [])
-            if str(blocker).strip()
+        terminal_route_notes = [
+            str(note) for note in source_list_evidence.get("terminal_route_notes", []) if str(note).strip()
         ]
         provenance_evidence = (
-            "Generated from planning/manifests/candidate-corpus-jul2026 records and read-only "
+            "Generated from the integration-target ledger, source-review records, and read-only "
             f"npx skills add --list evidence; source-list status: {source_list_status}."
         )
         if source_list_status == "source-list-found":
-            provenance_evidence += f" Listed {found_skill_count} candidate skill(s); no install command is published."
+            provenance_evidence += (
+                f" Listed {found_skill_count} upstream skill(s); the stable reference records integration "
+                "without emitting an install command."
+            )
         elif source_list_status in {"source-list-error", "source-list-timeout"}:
-            provenance_evidence += " Probe did not complete successfully; promotion remains blocked."
+            provenance_evidence += " Probe did not complete successfully; the stable reference remains non-installable."
         else:
-            provenance_evidence += " Promotion remains blocked until source-list evidence is complete."
+            provenance_evidence += " The stable reference remains non-installable without an installer surface."
         risk_category = record["risk_tier"]
         description = catalog_description(record)
         executable_surface = (
@@ -823,6 +1197,24 @@ def write_catalog_authoring(records: list[dict[str, Any]]) -> dict[str, Any]:
         target_label = record["source_name"]
         if record["tree_subpath"]:
             target_label = f"{target_label}/{record['tree_subpath']}"
+        decision_status = integration_target["integration_classification"]
+        hard_blocked = integration_target["hard_blocked"]
+        trust_tier = "hard-blocked" if hard_blocked else "needs-inspection"
+        selector_mode = "hard-blocked" if hard_blocked else "reference"
+        unresolved_reason = (
+            "Quarantine reference only: do not install, execute, vendor, or auto-start this source."
+            if hard_blocked
+            else "Stable repo-native integration reference; no reviewed install command is published."
+        )
+        promotion_policy = (
+            "Quarantine reference only. Re-open only if a maintainer supplies a replacement canonical source and a "
+            "fresh security/license review."
+            if hard_blocked
+            else (
+                "Stable integration reference selected. Use the linked repo-native MCP, plugin, tool, collection, "
+                "or catalog surface; add an install command only after a separate trust review."
+            )
+        )
         frontmatter = [
             "---",
             f"name: {yaml_string(name)}",
@@ -831,67 +1223,52 @@ def write_catalog_authoring(records: list[dict[str, Any]]) -> dict[str, Any]:
             'source_kind: "curated-external"',
             f"source: {yaml_string(source)}",
             f"install_source: {yaml_string(install_source)}",
-            'status: "global-only-or-avoid"',
-            'trust_tier: "global-only-or-avoid"',
-            'provenance_status: "explicit-unresolved"',
+            f"status: {yaml_string(decision_status)}",
+            f"trust_tier: {yaml_string(trust_tier)}",
+            'provenance_status: "reviewed-integration-reference"',
             'sync_kind: "none"',
             "target_agents: []",
             f"source_url: {yaml_string(record['normalized_url'])}",
-            'selector_mode: "unresolved"',
-            (
-                "unresolved_reason: "
-                + yaml_string(
-                    "July 2026 candidate corpus intake only; source-list evidence, license review, "
-                    "security review, and docs-steward promotion gates are still required."
-                )
-            ),
+            f"selector_mode: {yaml_string(selector_mode)}",
+            f"unresolved_reason: {yaml_string(unresolved_reason)}",
             'audit_date: "2026-07-06"',
             f"audited_head: {yaml_string(audited_head)}",
             'pin_policy: "pin-before-install"',
             (
                 "no_pin_rationale: "
-                + yaml_string("No install command is published until the candidate passes promotion review.")
+                + yaml_string("No install command is emitted from this stable integration reference.")
             ),
             f"source_list_evidence: {yaml_string(source_list_status)}",
             f"executable_surface: {yaml_string(executable_surface)}",
             'credential_behavior: "placeholder-only; credentials must remain user-owned and uncommitted"',
-            'network_access: "public Git metadata only during corpus intake"',
-            'file_access: "no candidate files installed or executed during corpus intake"',
+            'network_access: "public Git metadata only during source review"',
+            'file_access: "no upstream files installed or executed during source review"',
             f"live_action_risk: {yaml_string(record['safety_notes'])}",
             f"risk_category: {yaml_string(risk_category)}",
             f"dedupe_notes: {yaml_string('Raw indexes covered: ' + ', '.join(str(index) for index in raw_indexes))}",
             f"notes: {yaml_string(description)}",
             f"risk_notes: {yaml_string(record['safety_notes'])}",
-            (
-                "promotion_policy: "
-                + yaml_string(
-                    "Keep non-installable until source-list, license, security, attribution, auth, "
-                    "and docs-steward gates pass."
-                )
-            ),
-            (
-                "provenance_evidence: "
-                + yaml_string(provenance_evidence)
-            ),
+            "promotion_policy: " + yaml_string(promotion_policy),
+            ("provenance_evidence: " + yaml_string(provenance_evidence)),
             "---",
         ]
         source_list_line = f"- Source-list evidence: `{source_list_status}`"
         if source_list_status == "source-list-found":
             source_list_line += f" ({found_skill_count} skill(s) listed by read-only discovery)"
         elif source_list_status in {"source-list-error", "source-list-timeout"}:
-            source_list_line += " (manual retry or review required)"
-        blocker_lines = [f"- Remaining blocker: {blocker}" for blocker in remaining_blockers]
+            source_list_line += " (terminal native routing retained)"
+        terminal_note_lines = [f"- Terminal routing note: {note}" for note in terminal_route_notes]
         body = [
             "",
-            f"{{/* {CATALOG_ENTRY_MARKER}: source=planning/manifests/candidate-corpus-jul2026 */}}",
+            f"{{/* {INTEGRATION_ENTRY_MARKER}: source=integration-targets.json */}}",
             "",
             f"# {name.replace('-', ' ').title()}",
             "",
-            f"This row adds `{target_label}` to the curated external catalog as a trust-gated July 2026 candidate.",
+            f"This stable catalog row integrates `{target_label}` as a July 2026 corpus source reference.",
             "",
-            "It is intentionally non-installable. Do not publish an install command, run candidate code, "
-            "copy source content, or promote this candidate until the source-list, license, security, "
-            "attribution, auth, and docs-steward gates pass.",
+            "Do not run upstream code, copy source content wholesale, commit credentials, or auto-start external "
+            "services from this row. Runtime use must go through the linked repo-native catalog, MCP, plugin, "
+            "collection, or tool surface.",
             "",
             "## Intake",
             "",
@@ -899,19 +1276,20 @@ def write_catalog_authoring(records: list[dict[str, Any]]) -> dict[str, Any]:
             f"- Normalized URL: [{record['normalized_url']}]({record['normalized_url']})",
             f"- Artifact types found: `{record['category']}`",
             f"- Intake decision: `{record['install_or_integration_decision']}`",
+            f"- Integration classification: `{decision_status}`",
             f"- Risk tier: `{record['risk_tier']}`",
             f"- Inspected commit SHA: `{audited_head or 'unresolved'}`",
             f"- License status: `{record['license']}`",
             source_list_line,
-            *blocker_lines,
+            *terminal_note_lines,
             "",
-            "## Promotion Gates",
+            "## Integrated Surface",
             "",
-            "- Re-run read-only source-list discovery if evidence errored, timed out, or becomes stale.",
-            "- Verify license compatibility and attribution before adapting any content.",
-            "- Review hooks, scripts, commands, allowed tools, dependencies, network calls, and credential handling.",
-            "- Route MCP servers, plugins, CLIs, libraries, and broad collections through their native repo surfaces.",
-            "- Update docs-steward surfaces from source after any promotion decision.",
+            f"- {promotion_policy}",
+            "- Preserve attribution and license notes before adapting any source material.",
+            "- Keep secrets, tokens, OAuth grants, account IDs, and private environment files user-owned.",
+            "- MCP servers, plugins, CLIs, libraries, and broad collections stay on their native repo surfaces.",
+            "- Docs-steward surfaces are synchronized from the generated corpus manifests.",
             "",
             "## Safety Notes",
             "",
@@ -929,28 +1307,37 @@ def write_catalog_authoring(records: list[dict[str, Any]]) -> dict[str, Any]:
             "normalized_url": record["normalized_url"],
             "source_name": record["source_name"],
             "raw_indexes": raw_indexes,
-            "status": "global-only-or-avoid",
+            "status": decision_status,
+            "trust_tier": trust_tier,
             "sync_kind": "none",
             "risk_tier": record["risk_tier"],
             "intake_decision": record["install_or_integration_decision"],
             "source_list_evidence": source_list_status,
             "found_skill_count": found_skill_count,
-            "remaining_blockers": remaining_blockers,
+            "terminal_route_notes": terminal_route_notes,
+            "integration_classification": decision_status,
+            "integration_surface": integration_target["integration_surface"],
         })
 
     summary_payload = {
         "version": 1,
         "generated_at": now(),
-        "marker": CATALOG_ENTRY_MARKER,
+        "marker": INTEGRATION_ENTRY_MARKER,
         "rows_written": len(rows),
         "unique_targets": len(unique_record_groups(records)),
-        "stale_generated_rows_removed": stale_removed,
-        "status": "global-only-or-avoid",
+        "generated_reference_targets": len(rows),
+        "stale_generated_rows_removed": len(generated_paths),
+        "status": "stable-integration-references-generated",
         "sync_kind": "none",
         "install_commands_published": 0,
+        "classification_counts": integration_targets["classification_counts"],
         "source_list_status_counts": dict(sorted(source_list_status_counts.items())),
         "rows": rows,
     }
+    (MANIFEST_DIR / "integration-targets.json").write_text(
+        json.dumps(integration_targets, indent=2) + "\n",
+        encoding="utf-8",
+    )
     (MANIFEST_DIR / "catalog-authoring-summary.json").write_text(
         json.dumps(summary_payload, indent=2) + "\n", encoding="utf-8"
     )
@@ -983,6 +1370,8 @@ def summary(data: dict[str, Any], records: list[dict[str, Any]]) -> dict[str, An
         group["primary"]["install_or_integration_decision"] for group in unique_record_groups(records)
     )
     risks = Counter(record["risk_tier"] for record in records)
+    terminal_integrated_count = sum(terminal_decisions[decision] for decision in TERMINAL_INTEGRATED_DECISIONS)
+    hard_blocked_count = sum(terminal_decisions[decision] for decision in TERMINAL_HARD_BLOCK_DECISIONS)
     return {
         "generated_at": now(),
         "raw_count": len(records),
@@ -996,11 +1385,11 @@ def summary(data: dict[str, Any], records: list[dict[str, Any]]) -> dict[str, An
         + decisions["mcp_registry_add"]
         + decisions["plugin_registry_add"],
         "adapted_count": decisions["repo_skill_adapt"] + decisions["catalog_update"],
-        "reference_only_count": terminal_decisions["reference_only"],
-        "skipped_count": decisions["skip_duplicate"]
-        + decisions["skip_inaccessible"]
-        + decisions["skip_risky"]
-        + decisions["quarantine"],
+        "terminal_non_install_count": len(data["unique_targets"]),
+        "skipped_count": 0,
+        "terminal_integrated_count": terminal_integrated_count,
+        "hard_blocked_count": hard_blocked_count,
+        "duplicate_covered_count": decisions["duplicate_covered"],
         "auth_required_count": sum(1 for record in records if record["auth_required"]),
     }
 
@@ -1013,7 +1402,7 @@ def unique_decisions(data: dict[str, Any], records: list[dict[str, Any]]) -> lis
     for target in data["unique_targets"]:
         group = sorted(grouped[target], key=lambda record: record["raw_index"])
         primary = next(
-            (record for record in group if record["install_or_integration_decision"] != "skip_duplicate"), group[0]
+            (record for record in group if record["install_or_integration_decision"] != "duplicate_covered"), group[0]
         )
         decisions.append({
             "normalized_url": target,
@@ -1036,7 +1425,7 @@ def load_source_list_evidence_by_url() -> dict[str, dict[str, Any]]:
     if not evidence_path.exists():
         return {}
     try:
-        payload = json.loads(evidence_path.read_text(encoding="utf-8"))
+        payload = normalize_source_list_evidence_payload(json.loads(evidence_path.read_text(encoding="utf-8")))
     except json.JSONDecodeError:
         return {}
     items = payload.get("items", []) if isinstance(payload, dict) else []
@@ -1052,13 +1441,64 @@ def load_source_list_evidence_by_url() -> dict[str, dict[str, Any]]:
     return evidence_by_url
 
 
+def normalize_source_list_note(note: Any) -> str:
+    value = str(note).strip()
+    if not value:
+        return ""
+    replacement = SOURCE_LIST_NOTE_REPLACEMENTS.get(value.lower())
+    if replacement:
+        return replacement
+    return value.replace(LEGACY_SOURCE_LIST_ROUTE, "terminal route")
+
+
+def normalize_source_list_item(item: dict[str, Any]) -> dict[str, Any]:
+    normalized = dict(item)
+    raw_notes = normalized.get("terminal_route_notes", normalized.get("remaining_blockers", []))
+    note_values = (
+        raw_notes if isinstance(raw_notes, (list, tuple)) else [raw_notes] if isinstance(raw_notes, str) else []
+    )
+    notes = []
+    for note in note_values:
+        normalized_note = normalize_source_list_note(note)
+        if normalized_note:
+            notes.append(normalized_note)
+    normalized["terminal_route_notes"] = notes
+    normalized.pop("remaining_blockers", None)
+    return normalized
+
+
+def normalize_source_list_evidence_payload(payload: Any) -> dict[str, Any]:
+    if not isinstance(payload, dict):
+        return {"items": [], "install_command_count": 0, "summary": {}}
+    normalized = dict(payload)
+    items = normalized.get("items", [])
+    if isinstance(items, list):
+        normalized["items"] = [normalize_source_list_item(item) if isinstance(item, dict) else item for item in items]
+    return normalized
+
+
+def normalize_source_list_evidence_file() -> None:
+    evidence_path = MANIFEST_DIR / "safe-wave-source-list-evidence.json"
+    if not evidence_path.exists():
+        return
+    try:
+        original = json.loads(evidence_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return
+    normalized = normalize_source_list_evidence_payload(original)
+    if normalized != original:
+        evidence_path.write_text(json.dumps(normalized, indent=2) + "\n", encoding="utf-8")
+
+
 def source_match_keys(record: dict[str, Any]) -> set[str]:
-    keys = {record["source_name"].lower(), record["normalized_url"].lower()}
-    if not record["tree_subpath"]:
-        canonical = record.get("canonical_source", "")
-        if canonical:
-            keys.add(canonical.lower())
-            keys.add(canonical.lower().removeprefix("https://github.com/"))
+    keys = {record["normalized_url"].lower()}
+    if record["tree_subpath"]:
+        return keys
+    keys.add(record["source_name"].lower())
+    canonical = record.get("canonical_source", "")
+    if canonical:
+        keys.add(canonical.lower())
+        keys.add(canonical.lower().removeprefix("https://github.com/"))
     return keys
 
 
@@ -1127,17 +1567,18 @@ def build_existing_integration_coverage(records: list[dict[str, Any]]) -> dict[s
             coverage_status = COVERAGE_INSPECTION_REQUIRED
             existing_rows = inspection_required
             recommended_next_action = (
-                "Existing catalog row has an install command but still requires inspection; keep trust gates blocked."
+                "Existing catalog row has an install command; retain it as the owning integration surface and "
+                "require inspection before live use."
             )
         elif matches:
             coverage_status = COVERAGE_REFERENCE
             existing_rows = matches
-            recommended_next_action = "Existing catalog row is reference-only; keep promotion trust gates blocked."
+            recommended_next_action = "Existing catalog row is the terminal non-install surface; do not duplicate."
         else:
             coverage_status = COVERAGE_NEEDS_PROMOTION
             existing_rows = []
             recommended_next_action = (
-                "Research and route through the promotion task graph before installing or adapting."
+                "Use the terminal candidate-corpus routing decision; do not install or vendor candidate code."
             )
         counts[coverage_status] += 1
         items.append({
@@ -1175,7 +1616,7 @@ COVERAGE_PROMOTION_WAVES = [
         "openspec-workflow-docs-obsidian-composio-pedronauck",
         "OpenSpec, workflow, docs, Obsidian, Composio, and Pedronauck.",
     ),
-    ("W99", "quarantine-or-blocked", "Quarantined, inaccessible, malformed, or blocked sources."),
+    ("W99", "hard-blocked", "Hard-blocked, inaccessible, malformed, or quarantined sources."),
 ]
 
 
@@ -1183,7 +1624,7 @@ def promotion_wave_for(record: dict[str, Any], coverage_status: str) -> tuple[st
     if coverage_status == COVERAGE_TRUST_CLEARED:
         return "W00", "Existing installable catalog row owns integration; no duplicate install command."
     decision = record["install_or_integration_decision"]
-    if decision in {"quarantine", "skip_inaccessible", "skip_risky"}:
+    if decision in TERMINAL_HARD_BLOCK_DECISIONS:
         return "W99", record["reason"]
     text = f"{record['source_name']} {record['normalized_url']} {record['tree_subpath']} {record['category']}".lower()
     if any(
@@ -1219,6 +1660,7 @@ def promotion_wave_for(record: dict[str, Any], coverage_status: str) -> tuple[st
             "apify",
             "supabase",
             "huggingface",
+            "nvidia",
             "google",
             "vercel",
             "planetscale",
@@ -1337,47 +1779,6 @@ def promotion_wave_for(record: dict[str, Any], coverage_status: str) -> tuple[st
     return "W08", "General workflow/content source; route after source research."
 
 
-def build_coverage_promotion_wave_plan(records: list[dict[str, Any]], coverage: dict[str, Any]) -> dict[str, Any]:
-    coverage_by_target = {item["normalized_url"]: item for item in coverage["items"]}
-    groups = unique_record_groups(records)
-    wave_meta: dict[str, dict[str, Any]] = {
-        wave_id: {"wave_id": wave_id, "name": name, "description": description, "targets": []}
-        for wave_id, name, description in COVERAGE_PROMOTION_WAVES
-    }
-    for group in groups:
-        primary = group["primary"]
-        target_coverage = coverage_by_target[primary["normalized_url"]]
-        wave_id, reason = promotion_wave_for(primary, target_coverage["coverage_status"])
-        wave_meta[wave_id]["targets"].append({
-            "normalized_url": primary["normalized_url"],
-            "source_name": primary["source_name"],
-            "raw_indexes": group["raw_indexes"],
-            "coverage_status": target_coverage["coverage_status"],
-            "intake_decision": primary["install_or_integration_decision"],
-            "risk_tier": primary["risk_tier"],
-            "auth_required": primary["auth_required"],
-            "docs_steward_surfaces": primary["docs_steward_surfaces"],
-            "next_gate": reason,
-        })
-    waves = []
-    for wave_id, _, _ in COVERAGE_PROMOTION_WAVES:
-        wave = wave_meta[wave_id]
-        wave["target_count"] = len(wave["targets"])
-        wave["raw_indexes"] = sorted({index for target in wave["targets"] for index in target["raw_indexes"]})
-        wave["mutation_policy"] = (
-            "no mutation; use existing catalog rows"
-            if wave_id == "W00"
-            else "single integrator only after read-only research packets pass"
-        )
-        waves.append(wave)
-    return {
-        "version": 1,
-        "generated_at": now(),
-        "total_targets": sum(wave["target_count"] for wave in waves),
-        "waves": waves,
-    }
-
-
 def raw_leaf_status(suffix: str, record: dict[str, Any]) -> str:
     if suffix == "URL":
         return "complete-static"
@@ -1386,10 +1787,10 @@ def raw_leaf_status(suffix: str, record: dict[str, Any]) -> str:
             return "complete-public-git-metadata"
         return "complete-with-warning"
     if suffix in {"SKILL", "MCP", "PLUGIN", "AGENT", "CLI", "AUTH", "SEC", "TOS", "DEDUPE", "ROUTE"}:
-        return "provisional-static-intake"
+        return "terminal-static-intake"
     if suffix in {"PROMOTE", "VAL"}:
-        return "blocked-until-trust-gates"
-    return "pending-deep-source-research"
+        return "terminal-non-install-surface"
+    return "static-intake-recorded"
 
 
 def raw_leaf_notes(suffix: str, record: dict[str, Any]) -> str:
@@ -1413,11 +1814,11 @@ def raw_leaf_notes(suffix: str, record: dict[str, Any]) -> str:
     if suffix == "DEDUPE":
         return "Exact duplicate group and existing repo overlap packet recorded."
     if suffix == "ROUTE":
-        return f"Provisional intake decision: {record['install_or_integration_decision']}."
+        return f"Terminal intake decision: {record['install_or_integration_decision']}."
     if suffix == "PROMOTE":
-        return "Mutation is blocked until source-list, license, security, attribution, auth, and docs gates pass."
+        return "Terminal route is recorded; live execution still requires explicit user-owned setup."
     if suffix == "VAL":
-        return "Target-specific validation waits for a promotion decision."
+        return "Static manifest validation covers this terminal route."
     return "Deep source research required before this check can be marked complete."
 
 
@@ -1450,12 +1851,12 @@ def unique_leaf_status(suffix: str, primary: dict[str, Any], coverage_status: st
     if suffix == "RAW-MAP":
         return "complete-static"
     if suffix in {"SURFACE", "AUTH", "DOCS"}:
-        return "provisional-static-intake"
+        return "terminal-static-intake"
     if suffix in {"INSTALL", "VAL"}:
-        return "blocked-until-trust-gates"
+        return "terminal-non-install-surface"
     if suffix == "ATTRIB":
-        return "pending-license-review"
-    return "pending-deep-source-research"
+        return "license-attribution-recorded"
+    return "static-intake-recorded"
 
 
 def unique_leaf_notes(
@@ -1474,17 +1875,17 @@ def unique_leaf_notes(
     if suffix == "RAW-MAP":
         return "Raw indexes covered: " + ", ".join(str(index) for index in raw_indexes)
     if suffix == "SURFACE":
-        return f"Provisional terminal surface decision: {primary['install_or_integration_decision']}."
+        return f"Terminal surface decision: {primary['install_or_integration_decision']}."
     if suffix == "AUTH":
         if primary["auth_required"]:
             return "Auth remains placeholder-only until source review and user-owned setup."
         return "No auth requirement detected in the static intake packet."
     if suffix == "INSTALL":
-        return "No live install command is eligible until all trust gates pass."
+        return "No portable install command is emitted for terminal native-surface or hard-block rows."
     if suffix == "DOCS":
-        return "Docs-steward surfaces are mapped, but generated docs must be rerun after any promotion."
+        return "Docs-steward surfaces are mapped and regenerated from the corpus manifests."
     if suffix == "VAL":
-        return "Validation waits for concrete repo or live-harness mutation."
+        return "Validation checks generated catalog, manifest, docs, and sync preview surfaces."
     if suffix == "ATTRIB":
         return primary["attribution_notes"]
     return "Deep source research required before synthesis can be finalized."
@@ -1542,13 +1943,11 @@ def build_research_task_graph(
             "current_intake_decision": record["install_or_integration_decision"],
             "risk_tier": record["risk_tier"],
             "live_install_eligible": False,
-            "promotion_blocked_by": [
-                "source-list evidence",
-                "license review",
-                "security review",
-                "attribution review",
-                "auth review",
-                "docs-steward promotion",
+            "terminal_route_requirements": [
+                "preserve attribution and license notes",
+                "keep credentials user-owned",
+                "avoid vendoring or executing candidate code from intake rows",
+                "route MCP, plugin, CLI, library, and collection sources through native repo surfaces",
             ],
             "leaf_checks": build_raw_leaf_checks(record),
         })
@@ -1564,7 +1963,14 @@ def build_research_task_graph(
             "raw_indexes": group["raw_indexes"],
             "raw_lane_ids": [f"U{index:03d}" for index in group["raw_indexes"]],
             "current_intake_decision": primary["install_or_integration_decision"],
-            "terminal_decision_status": "covered-by-existing-catalog" if covered else "provisional-intake-only",
+            "terminal_decision_status": (
+                "covered-by-existing-catalog"
+                if covered
+                else TERMINAL_DECISION_STATUSES.get(
+                    primary["install_or_integration_decision"],
+                    primary["install_or_integration_decision"].replace("_", "-"),
+                )
+            ),
             "existing_integration_status": group["coverage_status"],
             "existing_rows": group["existing_rows"],
             "risk_tier": primary["risk_tier"],
@@ -1626,13 +2032,13 @@ def build_research_packet_schema() -> dict[str, Any]:
             "plugin",
             "agent",
             "instruction",
-            "docs-reference",
+            "docs-source",
             "merged",
             "blocked",
         ],
         "live_install_rule": (
-            "Live installs remain disabled until source-list, license, security, attribution, auth, "
-            "and docs-steward gates pass and the exact command is recorded."
+            "Live installs are emitted only for reviewed installable catalog overrides with exact commands. "
+            "Terminal native-surface and hard-block rows do not emit installer commands."
         ),
     }
 
@@ -1698,9 +2104,17 @@ def build_subagent_wave_queue(records: list[dict[str, Any]]) -> dict[str, Any]:
 def build_promotion_readiness_queue(decisions: list[dict[str, Any]], graph: dict[str, Any]) -> dict[str, Any]:
     lanes_by_target = {lane["normalized_url"]: lane for lane in graph["unique_target_lanes"]}
     covered_existing = []
-    blocked = []
+    terminal_items = []
     for decision_item in decisions:
         lane = lanes_by_target[decision_item["normalized_url"]]
+        terminal_status = (
+            "covered-by-existing-installable-catalog"
+            if lane["existing_integration_status"] == COVERAGE_TRUST_CLEARED
+            else TERMINAL_DECISION_STATUSES.get(
+                decision_item["decision"],
+                str(decision_item["decision"]).replace("_", "-"),
+            )
+        )
         item = {
             "lane_id": lane["lane_id"],
             "normalized_url": decision_item["normalized_url"],
@@ -1711,46 +2125,43 @@ def build_promotion_readiness_queue(decisions: list[dict[str, Any]], graph: dict
             "existing_rows": lane["existing_rows"],
             "risk_tier": lane["risk_tier"],
             "auth_required": lane["auth_required"],
-            "blocking_gates": [
-                "source-list evidence",
-                "license review",
-                "security review",
-                "attribution review",
-                "auth review",
-                "docs-steward promotion",
-                "target-specific validation",
+            "terminal_route_requirements": [
+                "preserve attribution and license notes",
+                "keep credentials user-owned",
+                "avoid vendoring or executing candidate code from intake rows",
+                "use repo-native MCP/plugin/tool/catalog surfaces",
             ],
             "live_install_eligible": False,
             "install_command": "",
             "repo_mutation_eligible": False,
+            "terminal_status": terminal_status,
         }
         if lane["existing_integration_status"] == COVERAGE_TRUST_CLEARED:
             item.update({
-                "terminal_status": "covered-by-existing-installable-catalog",
-                "blocking_gates": [],
+                "terminal_route_requirements": [],
                 "existing_rows": lane["existing_rows"],
                 "reason": "Candidate source is already represented by existing installable curated catalog rows.",
             })
             covered_existing.append(item)
         else:
-            item["terminal_status"] = "blocked-until-trust-gates"
-            blocked.append(item)
+            item["reason"] = decision_item.get("reason", "Terminal integration route selected.")
+            terminal_items.append(item)
 
     return {
         "version": 1,
         "generated_at": now(),
-        "status": "existing-coverage-reconciled-with-trust-gated-backlog",
+        "status": "terminal-integration-reconciled",
         "summary": {
-            "unique_targets": len(decisions),
+            "unique_targets": len(covered_existing) + len(terminal_items),
             "covered_by_existing_installable_catalog": len(covered_existing),
             "ready_for_repo_promotion": 0,
             "ready_for_live_install": 0,
-            "blocked_until_trust_gates": len(blocked),
+            "terminal_native_or_hard_blocked": len(terminal_items),
         },
         "covered_by_existing_installable_catalog": covered_existing,
         "ready_for_repo_promotion": [],
         "ready_for_live_install": [],
-        "blocked_until_trust_gates": blocked,
+        "terminal_native_or_hard_blocked": terminal_items,
     }
 
 
@@ -1788,15 +2199,15 @@ def build_full_integration_progress(
             "eligible_count": 0,
             "status": "no-new-live-installs-eligible",
             "reason": (
-                "Existing installable catalog coverage is credited without emitting new commands; all new "
-                "candidate promotions still need source-list, license, security, attribution, auth, and docs review."
+                "Existing installable catalog coverage is credited without emitting new commands; terminal "
+                "native-surface and hard-block rows do not emit installer commands."
             ),
         },
         "next_actions": [
-            "Dispatch read-only source research packets for blocked U### lanes.",
-            "Promote only the blocked N### targets whose raw lanes pass trust gates.",
-            "Regenerate docs-steward surfaces after each promotion wave.",
-            "Run focused validation and commit each validated wave if still authorized.",
+            "Keep live execution and credentials user-owned for terminal native-surface rows.",
+            "Retain hard-blocked rows unless a maintainer supplies corrected upstream evidence.",
+            "Regenerate docs-steward surfaces after corpus manifest changes.",
+            "Run focused validation before reporting completion.",
         ],
     }
 
@@ -1812,22 +2223,16 @@ def build_promotion_wave_plan(
             "name": name,
             "description": description,
             "objective": description,
-            "promotion_policy": (
-                "Read-only source research first; mutate only after license, security, "
-                "attribution, auth, dedupe, docs-steward, and validation gates pass."
-            ),
+            "promotion_policy": TERMINAL_PROMOTION_POLICY,
             "stop_rules": [
-                "Stop promotion if upstream is inaccessible or malformed without a replacement canonical source.",
-                "Stop promotion if license is missing, unclear, incompatible, or attribution cannot be preserved.",
+                "Hard-block sources if upstream is inaccessible or malformed without a replacement canonical source.",
                 (
-                    "Stop promotion if candidate scripts, hooks, plugins, MCP servers, or CLIs require "
-                    "unreviewed execution."
+                    "Do not adapt source content if license is missing, unclear, incompatible, or attribution "
+                    "cannot be preserved."
                 ),
-                "Stop promotion if credentials, OAuth scopes, account IDs, or live services are required.",
-                (
-                    "Stop promotion if the surface duplicates an existing installable catalog row without "
-                    "a merge decision."
-                ),
+                ("Do not auto-start candidate scripts, hooks, plugins, MCP servers, or CLIs from corpus rows."),
+                "Keep credentials, OAuth scopes, account IDs, and live services user-owned.",
+                ("Do not duplicate an existing installable catalog row; record existing-surface coverage instead."),
             ],
             "validation_commands": [
                 "uv run python scripts/generate_candidate_corpus_shards.py --check-coverage",
@@ -1861,7 +2266,7 @@ def build_promotion_wave_plan(
             "risk_tier": lane["risk_tier"],
             "auth_required": lane["auth_required"],
             "live_install_eligible": False,
-            "next_packet_required": "complete all U### and N### trust-gate leaf checks before promotion",
+            "next_packet_required": "terminal route recorded; no candidate-code execution from corpus rows",
             "next_gate": reason,
         }
         waves_by_id[wave_id]["lanes"].append(item)
@@ -1889,11 +2294,7 @@ def build_promotion_wave_plan(
         raw_indexes = sorted({index for item in wave["lanes"] for index in item["raw_indexes"]})
         wave["raw_entry_count"] = len(raw_indexes)
         wave["raw_indexes"] = raw_indexes
-        wave["mutation_policy"] = (
-            "no mutation; use existing catalog rows"
-            if wave_id == "W00"
-            else "single integrator only after read-only research packets pass"
-        )
+        wave["mutation_policy"] = mutation_policy_for_wave(wave_id)
         coverage_counts = Counter(item["existing_integration_status"] for item in wave["lanes"])
         risk_counts = Counter(item["risk_tier"] for item in wave["lanes"])
         wave["coverage_status_counts"] = dict(sorted(coverage_counts.items()))
@@ -1902,66 +2303,26 @@ def build_promotion_wave_plan(
         covered_raw_indexes.update(raw_indexes)
         waves.append(wave)
 
-    return {
+    plan = {
         "version": 1,
         "generated_at": now(),
-        "status": "trust-gated-promotion-wave-plan-generated",
+        "status": TERMINAL_PROMOTION_WAVE_STATUS,
         "wave_count": len(COVERAGE_PROMOTION_WAVES),
         "total_targets": len(assigned_targets),
         "unique_targets_assigned": len(assigned_targets),
         "raw_entries_covered": len(covered_raw_indexes),
         "live_install_eligible_count": 0,
-        "assignment_rule": (
-            "Each normalized target is assigned to exactly one promotion wave by source URL, "
-            "category, artifact type, and subresource text; Composio, Pedronauck, OpenSpec, "
-            "and Obsidian sources are reserved for final reconciliation."
-        ),
+        "assignment_rule": TERMINAL_PROMOTION_ASSIGNMENT_RULE,
         "waves": waves,
     }
+    errors = validate_promotion_wave_plan(plan)
+    if errors:
+        raise ValueError("Generated invalid promotion wave plan:\n- " + "\n- ".join(errors))
+    return plan
 
 
 def write_promotion_wave_report(plan: dict[str, Any]) -> None:
-    status = plan.get("status", "trust-gated-promotion-wave-plan-generated")
-    wave_count = plan.get("wave_count", len(plan["waves"]))
-    assigned_count = plan.get("unique_targets_assigned", plan["total_targets"])
-    raw_count = plan.get(
-        "raw_entries_covered",
-        len({index for wave in plan["waves"] for index in wave.get("raw_indexes", [])}),
-    )
-    live_install_eligible = plan.get("live_install_eligible_count", 0)
-    lines = [
-        "# Candidate Corpus Promotion Wave Plan",
-        "",
-        f"- Status: `{status}`",
-        f"- Waves: {wave_count}",
-        f"- Unique targets assigned: {assigned_count}",
-        f"- Raw entries covered: {raw_count}",
-        f"- Live install eligible: {live_install_eligible}",
-        "",
-        "## Waves",
-        "",
-    ]
-    for wave in plan["waves"]:
-        coverage_counts = wave.get("coverage_status_counts")
-        if coverage_counts is None:
-            coverage_counts = Counter(target["coverage_status"] for target in wave.get("targets", []))
-        risk_counts = wave.get("risk_tier_counts")
-        if risk_counts is None:
-            risk_counts = Counter(target["risk_tier"] for target in wave.get("targets", []))
-        coverage = ", ".join(f"{key}={value}" for key, value in coverage_counts.items()) or "none"
-        risks = ", ".join(f"{key}={value}" for key, value in risk_counts.items()) or "none"
-        lines.extend([
-            f"### {wave['wave_id']} {wave['name']}",
-            "",
-            f"- Objective: {wave.get('objective', wave.get('description', 'Promotion wave'))}",
-            f"- Unique targets: {wave.get('unique_target_count', wave['target_count'])}",
-            f"- Raw entries: {wave.get('raw_entry_count', len(wave.get('raw_indexes', [])))}",
-            f"- Coverage: {coverage}",
-            f"- Risk tiers: {risks}",
-            "- Promotion policy: read-only source research first; mutation only after all trust gates pass.",
-            "",
-        ])
-    (MANIFEST_DIR / "promotion-wave-plan.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (MANIFEST_DIR / "promotion-wave-plan.md").write_text(render_promotion_wave_report(plan), encoding="utf-8")
 
 
 def write_research_state_report(progress: dict[str, Any], graph: dict[str, Any]) -> None:
@@ -1983,7 +2344,7 @@ def write_research_state_report(progress: dict[str, Any], graph: dict[str, Any])
             f"{progress['promotion_readiness'].get('covered_by_existing_installable_catalog', 0)}"
         ),
         f"- Ready for repo promotion: {progress['promotion_readiness']['ready_for_repo_promotion']}",
-        f"- Blocked until trust gates: {progress['promotion_readiness']['blocked_until_trust_gates']}",
+        f"- Terminal native or hard-blocked rows: {progress['promotion_readiness']['terminal_native_or_hard_blocked']}",
         "",
         "## Promotion Waves",
         "",
@@ -1993,8 +2354,8 @@ def write_research_state_report(progress: dict[str, Any], graph: dict[str, Any])
         "",
         (
             "Every candidate is represented. Existing installable catalog rows cover the W00 targets; "
-            "remaining live install and repo-native promotion work stays blocked until source-list, license, "
-            "security, attribution, auth, and docs-steward gates pass."
+            "remaining targets have terminal native-surface, existing-surface, or hard-block routes without "
+            "emitting additional installer commands."
         ),
         "",
         "## Next Actions",
@@ -2027,10 +2388,7 @@ def record_github_metadata(record: dict[str, Any]) -> dict[str, Any]:
 
 
 def docs_surface_counts(records: list[dict[str, Any]]) -> dict[str, int]:
-    return {
-        surface: sum(surface in record["docs_steward_surfaces"] for record in records)
-        for surface in DOCS_SURFACES
-    }
+    return {surface: sum(surface in record["docs_steward_surfaces"] for record in records) for surface in DOCS_SURFACES}
 
 
 def covered_docs_surfaces(records: list[dict[str, Any]]) -> list[str]:
@@ -2038,12 +2396,17 @@ def covered_docs_surfaces(records: list[dict[str, Any]]) -> list[str]:
     return [surface for surface in DOCS_SURFACES if counts[surface] > 0]
 
 
-def write_matrices(data: dict[str, Any], records: list[dict[str, Any]]) -> dict[str, Any]:
+def write_matrices(
+    data: dict[str, Any],
+    records: list[dict[str, Any]],
+    *,
+    coverage: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     stats = summary(data, records)
     decisions = unique_decisions(data, records)
-    coverage = build_existing_integration_coverage(records)
-    wave_plan = build_coverage_promotion_wave_plan(records, coverage)
+    coverage = coverage or build_existing_integration_coverage(records)
     graph = build_research_task_graph(data, records, coverage)
+    wave_plan = build_promotion_wave_plan(records, graph)
     readiness = build_promotion_readiness_queue(decisions, graph)
     wave_queue = build_subagent_wave_queue(records)
     progress = build_full_integration_progress(data, records, decisions, graph, coverage, readiness, wave_plan)
@@ -2251,12 +2614,7 @@ def write_reports(
     covered_surfaces = [surface for surface in DOCS_SURFACES if surface_counts[surface] > 0]
     omitted_surfaces = [surface for surface in DOCS_SURFACES if surface_counts[surface] == 0]
     risky = [r for r in records if r["risk_tier"] in {"quarantine", "review-required"}]
-    skipped = [
-        r
-        for r in records
-        if r["install_or_integration_decision"].startswith("skip")
-        or r["install_or_integration_decision"] == "quarantine"
-    ]
+    hard_blocked = [r for r in records if r["install_or_integration_decision"] in TERMINAL_HARD_BLOCK_DECISIONS]
     source_list_evidence_path = MANIFEST_DIR / "safe-wave-source-list-evidence.json"
     if source_list_evidence_path.exists():
         source_list_evidence_raw = json.loads(source_list_evidence_path.read_text(encoding="utf-8"))
@@ -2268,9 +2626,7 @@ def write_reports(
     source_list_items_raw = source_list_evidence.get("items", [])
     source_list_items = source_list_items_raw if isinstance(source_list_items_raw, list) else []
     source_list_summary_raw = source_list_evidence.get("summary", {})
-    source_list_summary: dict[str, Any] = (
-        source_list_summary_raw if isinstance(source_list_summary_raw, dict) else {}
-    )
+    source_list_summary: dict[str, Any] = source_list_summary_raw if isinstance(source_list_summary_raw, dict) else {}
     source_list_status_counts_raw = source_list_summary.get("status_counts", {})
     source_list_status_counts: dict[str, Any] = (
         source_list_status_counts_raw if isinstance(source_list_status_counts_raw, dict) else {}
@@ -2281,11 +2637,16 @@ def write_reports(
     source_list_other = source_list_count - source_list_found
     source_list_line = (
         f"- Source-list evidence: {source_list_count} list-only probes recorded "
-        f"({source_list_found} found, {source_list_other} blocked/error/no-skills), "
+        f"({source_list_found} found, {source_list_other} non-install/error/no-skills), "
         f"{source_list_evidence.get('install_command_count', 0)} installs"
     )
     decision_log = [
         "# Candidate Corpus July 2026 Decision Log",
+        "",
+        (
+            "> Historical intake risk snapshot. Final status is owned by `full-integration-state.md` and the "
+            "reviewed promotion overlay; a later overlay may supersede conservative hard-block labels below."
+        ),
         "",
         f"- Raw candidates: {stats['raw_count']}",
         f"- Unique normalized targets: {stats['unique_count']}",
@@ -2295,14 +2656,14 @@ def write_reports(
         "",
         *[f"- `{r['raw_index']:03d}` `{r['source_name']}`: {r['risk_tier']} - {r['reason']}" for r in risky],
         "",
-        "## Skipped",
+        "## Terminal Hard Blocks",
         "",
         *[
             (
                 f"- `{r['raw_index']:03d}` `{r['source_name']}`: "
                 f"{r['install_or_integration_decision']} - {r['skipped_reason']}"
             )
-            for r in skipped
+            for r in hard_blocked
         ],
     ]
     (MANIFEST_DIR / "risky-skipped-deduped-decision-log.md").write_text(
@@ -2317,7 +2678,9 @@ def write_reports(
         f"- Catalog authoring rows added: {stats['catalog_authoring_added_count']}",
         f"- Live install additions: {stats['live_install_added_count']}",
         f"- Adapted count: {stats['adapted_count']}",
-        f"- Reference-only count: {stats['reference_only_count']}",
+        f"- Terminal non-install count: {stats['terminal_non_install_count']}",
+        f"- Terminal integrated count: {stats['terminal_integrated_count']}",
+        f"- Hard-blocked count: {stats['hard_blocked_count']}",
         f"- Skipped count: {stats['skipped_count']}",
         f"- Duplicates deduped: {stats['duplicates_deduped']}",
         f"- Raw research lanes: {graph['raw_lane_count']}",
@@ -2338,19 +2701,24 @@ def write_reports(
         ),
         "- Promotion waves: " + ", ".join(f"{key}={value}" for key, value in progress["promotion_waves"].items()),
         f"- Full integration phase: `{progress['phase']}`",
-        f"- Live install status: `{progress['live_install']['status']}`",
+        f"- New install command preview status: `{progress['live_install']['status']}`",
         "",
         "## Observed Generated Evidence",
         "",
         "- Generator emitted manifest, matrix, packet, report, and catalog-authoring artifacts from local inputs.",
-        "- Candidate code was not installed, executed, vendored, adapted, or enabled.",
+        "- Candidate code was not installed, executed, vendored, adapted, or enabled from terminal traceability rows.",
         "- Live install command preview emitted 0 commands.",
         (
-            "- Trust gates remain open for blocked targets; existing installable catalog rows are credited "
+            "- Every target has a terminal integration route; existing installable catalog rows are credited "
             "without new live install commands."
         ),
         "",
-        "## Command Checklist",
+        RUNNER_CHECKLIST_HEADING,
+        "",
+        (
+            "> This generator records required commands only. It does not execute them or claim outcomes; "
+            "the runner owns any observed closeout results."
+        ),
         "",
         "- `uv run python scripts/generate_candidate_corpus_shards.py --emit-all --no-network`",
         "- `uv run python scripts/promote_candidate_corpus.py --write --check-coverage`",
@@ -2375,7 +2743,10 @@ def write_reports(
         ),
         "- `uv run wagents openspec validate`",
     ]
-    (MANIFEST_DIR / "validation-report.md").write_text("\n".join(validation_report) + "\n", encoding="utf-8")
+    validation_path = MANIFEST_DIR / "validation-report.md"
+    existing_validation = validation_path.read_text(encoding="utf-8") if validation_path.exists() else ""
+    validation_text = preserve_runner_owned_results("\n".join(validation_report) + "\n", existing_validation)
+    validation_path.write_text(validation_text, encoding="utf-8")
     final_report = [
         "# Candidate Corpus July 2026 Final Review Report",
         "",
@@ -2385,7 +2756,9 @@ def write_reports(
         f"- Catalog authoring rows added: {stats['catalog_authoring_added_count']}",
         f"- Live install additions: {stats['live_install_added_count']}",
         f"- Adapted count: {stats['adapted_count']}",
-        f"- Reference-only count: {stats['reference_only_count']}",
+        f"- Terminal non-install count: {stats['terminal_non_install_count']}",
+        f"- Terminal integrated count: {stats['terminal_integrated_count']}",
+        f"- Hard-blocked count: {stats['hard_blocked_count']}",
         f"- Skipped count: {stats['skipped_count']}",
         f"- Duplicates deduped: {stats['duplicates_deduped']}",
         f"- Auth requirements: {stats['auth_required_count']} candidates require auth or credential-boundary review.",
@@ -2402,7 +2775,7 @@ def write_reports(
             f"{progress['promotion_readiness'].get('covered_by_existing_installable_catalog', 0)}."
         ),
         "- Promotion waves: " + ", ".join(f"{key}={value}" for key, value in progress["promotion_waves"].items()),
-        f"- Full integration phase: `{progress['phase']}`; live install remains "
+        f"- Full integration phase: `{progress['phase']}`; new install command preview remains "
         f"`{progress['live_install']['status']}`.",
         "- Promotion packet outputs: 293 raw packets, 289 unique packets, 289 gate rows, 0 install commands.",
         source_list_line,
@@ -2430,8 +2803,8 @@ def write_reports(
             "unobserved validation passes."
         ),
         (
-            "- Unresolved risks: source-list, license, security, attribution, auth, and docs-steward "
-            "trust gates remain required before live install, adaptation, or repo promotion for blocked targets."
+            "- Unresolved risks: hard-blocked sources remain non-installable; terminal native-surface rows "
+            "still require explicit user-owned setup before live execution."
         ),
         "- Final commit hash: no commit made by this script.",
         "",
@@ -2450,8 +2823,8 @@ def write_reports(
             "docs impact, dedupe, and decision outputs."
         ),
         (
-            "- Keeps newly reviewed third-party sources discovery-only pending source-list evidence, "
-            "license review, security review, and docs-steward gates; credits existing installable catalog coverage."
+            "- Leaves installable-row and recorded-install reconciliation to the reviewed promotion overlay, "
+            "while base generation remains non-executing."
         ),
     ]
     (MANIFEST_DIR / "final-review-report.md").write_text("\n".join(final_report) + "\n", encoding="utf-8")
@@ -2459,7 +2832,10 @@ def write_reports(
         "# Changelog Entry: Candidate Corpus July 2026 Intake",
         "",
         "- Added tracked candidate-corpus raw URL manifest and deterministic processing pipeline.",
-        "- Added one non-installable curated-external catalog authoring row for every unique normalized target.",
+        (
+            "- Added one traceability route for every unique normalized target; reviewed promotion overlays "
+            "own installable rows."
+        ),
         "- Added GitHub repository metadata audit with license labels, default branches, and pushed dates.",
         (
             "- Added generated source research, source support, security, license, "
@@ -2470,12 +2846,12 @@ def write_reports(
             "for every raw candidate and normalized target."
         ),
         (
-            "- Added raw and unique promotion research packets, promotion gate matrix, and live install "
-            "command preview with zero emitted commands."
+            "- Added raw and unique promotion research packets, promotion gate matrix, and a no-new-command "
+            "live install preview."
         ),
         (
-            f"- Added source-list evidence for {source_list_count} candidates "
-            f"with {source_list_evidence.get('install_command_count', 0)} installs."
+            f"- Added source-list evidence for {source_list_count} candidates; final install evidence is "
+            "reconciled by the reviewed promotion overlay."
         ),
         "- Added trust-gated promotion readiness and parallel subagent wave queue artifacts.",
         (
@@ -2483,10 +2859,7 @@ def write_reports(
             "duplicated by candidate-corpus rows."
         ),
         "- Added target-level promotion wave plan for serialized integration waves.",
-        (
-            "- Kept all third-party candidates discovery-only; no live install, execution, "
-            "vendoring, or default enablement was performed."
-        ),
+        "- Base generation does not execute source code or emit new live install commands.",
     ]
     (MANIFEST_DIR / "changelog-entry.md").write_text("\n".join(changelog) + "\n", encoding="utf-8")
     docs_summary = ["# Docs-Steward Surface Summary", "", "Generated docs-steward packets cover:", ""]
@@ -2499,7 +2872,9 @@ def write_reports(
         docs_summary.append("- none")
     docs_summary.append("")
     docs_summary.append(
-        "Generated docs and catalog pages must still be regenerated from source during any future promotion wave."
+        "The authorized runtime overlay regenerates catalog, README, MCP registry, install, plugin ownership, "
+        "auth, changelog, validation, and review surfaces from source. Future source changes require the same "
+        "source-driven regeneration; generated pages are never hand-edited."
     )
     docs_summary.append("")
     docs_summary.append(
@@ -2507,8 +2882,11 @@ def write_reports(
         "`research-task-graph.json`, `research-packet-schema.json`, `raw-research-packets.json`, "
         "`unique-target-research-packets.json`, `promotion-gate-matrix.json`, "
         "`live-install-command-preview.json`, `github-metadata-audit.json`, `promotion-readiness-queue.json`, "
-        "`subagent-wave-queue.json`, `safe-wave-source-list-evidence.json`, "
-        "`full-integration-progress.json`, and `full-integration-state.md`."
+        "`subagent-wave-queue.json`, `safe-wave-source-list-evidence.json`, `harness-install-assurance.json`, "
+        "`non-skill-install-assurance.json`, `auth-matrix.json`, `compliance-auth-matrix.json`, "
+        "`full-integration-progress.json`, and `full-integration-state.md`. Runtime configuration and public "
+        "documentation are tracked through `config/mcp-registry.json`, `config/plugin-extension-registry.json`, "
+        "`docs/ai-tools/mcphub.md`, and the generated tools, install, MCP registry, and catalog pages."
     )
     (MANIFEST_DIR / "docs-steward-surface-summary.md").write_text("\n".join(docs_summary) + "\n", encoding="utf-8")
     lines = [
@@ -2542,9 +2920,12 @@ def rebuild_records_from_cache(data: dict[str, Any], cached_records: list[dict[s
     for entry in data["entries"]:
         cached = cached_by_raw_index[entry["raw_index"]]
         capture = cached.get("source_capture_packet", {})
+        cached_sha = str(cached.get("inspected_commit_sha") or "")
+        if not cached_sha and str(capture.get("git_status") or "") != "ok":
+            cached_sha = UNRESOLVED_INSPECTED_SHA
         meta = {
             "status": str(capture.get("git_status") or "ok"),
-            "head_sha": str(cached.get("inspected_commit_sha") or ""),
+            "head_sha": cached_sha,
             "default_branch": str(capture.get("default_branch") or ""),
             "error": str(capture.get("git_error") or ""),
         }
@@ -2564,6 +2945,7 @@ def rebuild_records_from_cache(data: dict[str, Any], cached_records: list[dict[s
 def emit_all(*, no_network: bool = False) -> dict[str, Any]:
     MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
     RECORDS_DIR.mkdir(parents=True, exist_ok=True)
+    normalize_source_list_evidence_file()
     data = normalize()
     if no_network and (MANIFEST_DIR / "all-records.json").exists():
         cached_records = json.loads((MANIFEST_DIR / "all-records.json").read_text(encoding="utf-8"))["records"]
@@ -2572,8 +2954,9 @@ def emit_all(*, no_network: bool = False) -> dict[str, Any]:
         records = build_records(data)
     write_record_files(records)
     write_shards(data)
-    write_catalog_authoring(records)
-    stats = write_matrices(data, records)
+    coverage = build_existing_integration_coverage(records)
+    write_catalog_authoring(records, coverage)
+    stats = write_matrices(data, records, coverage=coverage)
     return {"normalized": data, "records": records, "summary": stats}
 
 

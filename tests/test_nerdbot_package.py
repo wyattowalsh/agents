@@ -8,6 +8,8 @@ import re
 import subprocess
 import sys
 import textwrap
+import tomllib
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -40,7 +42,13 @@ from nerdbot.graph import build_graph, extract_edges, render_graph_report
 from nerdbot.replay import dry_run_replay
 from nerdbot.research import ResearchJournalEntry, should_ingest_from_research
 from nerdbot.retrieval import query_lexical
-from nerdbot.sources import build_source_record, plan_local_file_source, pointer_stub_text
+from nerdbot.sources import (
+    DIRECTORY_MANIFEST_ENTRY_LIMIT,
+    build_source_record,
+    inline_text_location,
+    plan_local_file_source,
+    pointer_stub_text,
+)
 from nerdbot.watch import classify_watch_event, review_item_for_watch_event
 
 
@@ -129,6 +137,38 @@ def test_modes_command_is_documented_in_compatibility_map() -> None:
 
     assert "`nerdbot modes`" in compatibility_doc
     assert f"package version `{VERSION}`" in compatibility_doc
+
+
+def test_skill_and_runtime_versions_are_monotonic_and_runtime_surfaces_match() -> None:
+    skill_text = (NERDBOT_ROOT / "SKILL.md").read_text(encoding="utf-8")
+    skill_version_match = re.search(r"(?m)^  version: [\"'](?P<version>\d+\.\d+\.\d+)[\"']$", skill_text)
+    pyproject = tomllib.loads((NERDBOT_ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+
+    assert skill_version_match is not None
+    skill_version = tuple(int(part) for part in skill_version_match.group("version").split("."))
+    runtime_version = tuple(int(part) for part in VERSION.split("."))
+    assert skill_version >= (1, 1, 0)
+    assert runtime_version >= (0, 2, 0)
+    assert pyproject["project"]["version"] == VERSION
+
+
+def test_portable_skill_archive_excludes_repo_instruction_bridge(tmp_path: Path) -> None:
+    package_script = NERDBOT_ROOT.parent / "skill-creator" / "scripts" / "package.py"
+    package_run = subprocess.run(
+        [sys.executable, str(package_script), str(NERDBOT_ROOT), "--output", str(tmp_path)],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    package_result = json.loads(package_run.stdout)
+    archive = Path(package_result["output_path"])
+
+    with zipfile.ZipFile(archive) as bundle:
+        members = set(bundle.namelist())
+        manifest = json.loads(bundle.read("nerdbot/manifest.json"))
+
+    assert "nerdbot/AGENTS.md" not in members
+    assert "AGENTS.md" not in manifest["files"]
 
 
 def test_all_modes_are_available_to_argparse() -> None:
@@ -234,6 +274,45 @@ def test_local_file_source_defaults_external_and_secret_paths_to_pointer_stubs(t
     assert copied_plan.writes_pointer_stub is False
     assert secret_plan.writes_pointer_stub is True
     assert secret_plan.pointer_reason == "source path looks secret-bearing"
+
+
+def test_local_directory_source_uses_pointer_until_outside_copy_is_explicit(tmp_path: Path) -> None:
+    vault_root = tmp_path / "kb"
+    outside_dir = tmp_path / "incoming"
+    vault_root.mkdir()
+    outside_dir.mkdir()
+    (outside_dir / "note.md").write_text("outside directory", encoding="utf-8")
+
+    pointer_plan = plan_local_file_source(outside_dir, vault_root=vault_root)
+    copied_plan = plan_local_file_source(outside_dir, vault_root=vault_root, copy_outside_root=True)
+
+    assert pointer_plan.writes_pointer_stub is True
+    assert pointer_plan.pointer_reason is not None
+    assert "outside vault root" in pointer_plan.pointer_reason
+    assert copied_plan.writes_pointer_stub is False
+    assert "note.md" in copied_plan.raw_text()
+
+
+def test_directory_manifest_marks_truncation(tmp_path: Path) -> None:
+    vault_root = tmp_path / "kb"
+    source_dir = vault_root / "incoming"
+    source_dir.mkdir(parents=True)
+    for index in range(DIRECTORY_MANIFEST_ENTRY_LIMIT + 1):
+        (source_dir / f"note-{index:03d}.md").write_text("entry", encoding="utf-8")
+
+    plan = plan_local_file_source(source_dir, vault_root=vault_root)
+
+    assert plan.writes_pointer_stub is False
+    assert "manifest truncated after" in plan.raw_text()
+
+
+def test_inline_text_location_changes_with_content_without_leaking_text() -> None:
+    first = inline_text_location("Alpha source")
+    second = inline_text_location("Beta source")
+
+    assert first.startswith("inline:text:")
+    assert first != second
+    assert "Alpha" not in first
 
 
 def test_oversized_local_file_pointer_preserves_metadata(tmp_path: Path) -> None:

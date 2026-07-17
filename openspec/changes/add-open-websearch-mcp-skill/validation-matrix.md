@@ -10,7 +10,7 @@
 | Asset validation | `uv run wagents validate` | pass | Includes catalog quarantine checks. |
 | Catalog preview | `uv run wagents skills sync --dry-run` | open-websearch row reconciles | No `--apply` unless requested. |
 | Docs | `uv run wagents docs generate --no-installed && uv run wagents docs build` | pass | Catalog + MCP registry pages. |
-| Package probe | `MODE=stdio SEARCH_MODE=request npx -y open-websearch@latest` | stdio handshake | Inspector optional. |
+| Package probe | `MODE=stdio SEARCH_MODE=request npx -y open-websearch@2.1.11` | stdio handshake | Inspector optional; matches the audited runtime pin. |
 
 ## Blockers
 

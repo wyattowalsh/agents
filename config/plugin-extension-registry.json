@@ -39,6 +39,40 @@
       "validation_requirements": ["MCP import fixture", "global config rollback fixture"]
     },
     {
+      "id": "lm-studio-mcp",
+      "harness": "lm-studio",
+      "kind": "home-mcp-merge",
+      "source_paths": [
+        "wagents/platforms/lm_studio.py",
+        "config/sync-manifest.json",
+        "scripts/mcphub/wrappers/lm-studio"
+      ],
+      "support_tier": "repo-present-validation-required",
+      "owner_change": "agents-c04-lm-studio-harness",
+      "validation_requirements": [
+        "mcp-merge-fixture",
+        "path-resolution-fixture",
+        "rollback-fixture"
+      ]
+    },
+    {
+      "id": "lm-studio-surfaces",
+      "harness": "lm-studio",
+      "kind": "desktop-surface-projection",
+      "source_paths": [
+        "wagents/platforms/lm_studio.py",
+        "instructions/lm-studio-global.md",
+        "platforms/lm-studio/README.md"
+      ],
+      "support_tier": "repo-present-validation-required",
+      "owner_change": "agents-c04-lm-studio-harness",
+      "validation_requirements": [
+        "preset-render-fixture",
+        "skills-symlink-fixture",
+        "mcp-merge-fixture"
+      ]
+    },
+    {
       "id": "chrome-devtools-upstream-plugin",
       "harness": "multi-harness",
       "kind": "upstream-mcp-skills-plugin",
@@ -50,6 +84,94 @@
         "one active MCP owner per harness",
         "plugin or extension install command recorded",
         "repo MCP fallback fixture"
+      ]
+    },
+    {
+      "id": "candidate-nullcost-plugin",
+      "harness": "multi-harness",
+      "kind": "disabled-native-plugin-candidate",
+      "source_paths": ["https://github.com/johnvouros/nullcost-plugin", "config/mcp-registry.json:nullcost"],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "disabled by default",
+        "placeholder credentials only",
+        "manual activation approval",
+        "cost-estimation provider/pricing review"
+      ]
+    },
+    {
+      "id": "candidate-axiom-plugin",
+      "harness": "multi-harness",
+      "kind": "disabled-native-plugin-candidate",
+      "source_paths": ["https://github.com/CharlesWiltgen/Axiom", "config/mcp-registry.json:axiom-mcp"],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "installed from audited pinned source",
+        "disabled by default",
+        "manual activation approval",
+        "macOS, Xcode, signing, profiling, and process-launch review",
+        "one active MCP owner per harness"
+      ]
+    },
+    {
+      "id": "candidate-hyperframes-plugin",
+      "harness": "multi-harness",
+      "kind": "disabled-native-plugin-candidate",
+      "source_paths": ["https://github.com/heygen-com/hyperframes"],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "installed from audited pinned source",
+        "disabled by default",
+        "manual activation approval",
+        "Bash pre-commit hook and project build review",
+        "media copyright, likeness, brand, and provenance review"
+      ]
+    },
+    {
+      "id": "candidate-designer-skill-plugin",
+      "harness": "multi-harness",
+      "kind": "installed-native-plugin-candidate",
+      "source_paths": ["https://github.com/Pythoughts-labs/designer-skill", "config/mcp-registry.json:designer-skill-mcp"],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "audited version recorded",
+        "update notifier disabled for MCP mode",
+        "project, browser, and design scan review",
+        "one active MCP owner per harness"
+      ]
+    },
+    {
+      "id": "candidate-prompt-to-asset-plugin",
+      "harness": "multi-harness",
+      "kind": "installed-native-plugin-candidate",
+      "source_paths": ["https://github.com/MohamedAbdallah-14/prompt-to-asset", "config/mcp-registry.json:prompt-to-asset"],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "audited version recorded",
+        "MCP dry-run default",
+        "placeholder-only optional provider auth",
+        "explicit provider-spend and output-write approval",
+        "copyright, brand, likeness, and provenance review",
+        "one active MCP owner per harness"
+      ]
+    },
+    {
+      "id": "candidate-opencode-plugin-openspec",
+      "harness": "opencode",
+      "kind": "disabled-runtime-plugin-candidate",
+      "source_paths": ["https://github.com/Octane0411/opencode-plugin-openspec"],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "disabled by default",
+        "manual activation approval",
+        "OpenSpec workflow overlap review",
+        "no automatic plugin array activation"
       ]
     }
   ],
@@ -89,7 +211,8 @@
         "cursor": {"owner": "repo-mcp"},
         "antigravity": {"owner": "repo-mcp"},
         "perplexity-desktop": {"owner": "manual-ui-or-repo-mcp"},
-        "cherry-studio": {"owner": "repo-mcp"}
+        "cherry-studio": {"owner": "repo-mcp"},
+        "lm-studio": {"owner": "repo-mcp"}
       }
     }
   ],

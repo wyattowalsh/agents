@@ -6,6 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/common.sh"
 
 mcphub_load_env
+doctor_status=0
 
 printf 'settings: '
 "${SCRIPT_DIR}/validate-settings.sh" >/dev/null
@@ -52,7 +53,12 @@ fi
 
 printf 'listener: '
 if command -v lsof >/dev/null 2>&1 && lsof -nP -iTCP:"${PORT}" -sTCP:LISTEN >/dev/null 2>&1; then
-  printf 'listening on %s\n' "${PORT}"
+  if mcphub_listener_is_loopback; then
+    printf 'loopback-only on %s:%s\n' "${MCPHUB_BIND_HOST}" "${PORT}"
+  else
+    printf 'unsafe non-loopback listener on %s (%s)\n' "${PORT}" "$(mcphub_listener_endpoints | paste -sd, -)"
+    doctor_status=1
+  fi
 else
   printf 'not listening on %s\n' "${PORT}"
 fi
@@ -121,7 +127,7 @@ else
 fi
 
 printf 'SMART_ROUTING_ENABLED: %s\n' "${SMART_ROUTING_ENABLED:-false}"
-printf 'OpenAPI auth note: /api/openapi.json is documented as public; keep MCPHub bound to 127.0.0.1.\n'
+printf 'Local exposure note: UI, health, and OAuth metadata may be public; loopback-only binding is required.\n'
 
 launcher="${SCRIPT_DIR}/package-version-check-mcp.sh"
 printf 'package-version-check-mcp launcher: '
@@ -137,3 +143,5 @@ if [[ -x "${launcher}" ]]; then
 else
   printf 'missing or not executable\n'
 fi
+
+exit "${doctor_status}"

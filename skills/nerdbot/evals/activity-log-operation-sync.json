@@ -1,0 +1,18 @@
+{
+  "skills": [
+    "nerdbot"
+  ],
+  "query": "/nerdbot derive --root ./knowledge-base --artifact graph --apply",
+  "files": [
+    "knowledge-base/indexes/generated/graph-report.md",
+    "knowledge-base/activity/log.md",
+    "knowledge-base/activity/operations.jsonl"
+  ],
+  "expected_behavior": [
+    "Writes only rebuildable generated artifacts for the derive request.",
+    "Appends activity/operations.jsonl with replayable changed paths.",
+    "Appends activity/log.md with the operation ID, summary, target, and changed paths.",
+    "Keeps both activity surfaces append-only.",
+    "Does not treat generated graph output as canonical wiki material."
+  ]
+}

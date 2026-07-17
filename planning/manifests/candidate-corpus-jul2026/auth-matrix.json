@@ -1,397 +1,1781 @@
 {
   "version": 1,
+  "generated_at": "2026-07-16T02:52:03.352829+00:00",
   "items": [
     {
-      "raw_index": 6,
-      "source_name": "yctimlin/mcp_excalidraw",
+      "raw_index": 1,
+      "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
+      "source_name": "Ratnaditya-J/csvglow",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 2,
+      "normalized_url": "https://github.com/twostraws/SwiftData-Agent-Skill",
+      "source_name": "twostraws/SwiftData-Agent-Skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 4,
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 5,
+      "normalized_url": "https://github.com/antonbabenko/terraform-skill",
+      "source_name": "antonbabenko/terraform-skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 7,
+      "normalized_url": "https://github.com/cloudflare/skills",
+      "source_name": "cloudflare/skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 8,
+      "normalized_url": "https://github.com/Jakubantalik/transitions.dev",
+      "source_name": "Jakubantalik/transitions.dev",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 9,
+      "normalized_url": "https://github.com/WordPress/agent-skills",
+      "source_name": "WordPress/agent-skills",
+      "env_vars_or_credentials": [
+        "ANTHROPIC_API_KEY"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 10,
+      "normalized_url": "https://github.com/timescale/pg-aiguide",
+      "source_name": "timescale/pg-aiguide",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 11,
+      "normalized_url": "https://github.com/Owl-Listener/designer-skills",
+      "source_name": "Owl-Listener/designer-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 12,
+      "normalized_url": "https://github.com/Eronred/aso-skills",
       "source_name": "Eronred/aso-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 15,
-      "source_name": "zubair-trabzada/ai-legal-claude",
+      "raw_index": 13,
+      "normalized_url": "https://github.com/devenjarvis/lathe",
+      "source_name": "devenjarvis/lathe",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 17,
+      "normalized_url": "https://github.com/TanStack/cli",
       "source_name": "TanStack/cli",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 23,
-      "source_name": "onvoyage-ai/gtm-engineer-skills",
+      "raw_index": 18,
+      "normalized_url": "https://github.com/actionbook/rust-skills",
+      "source_name": "actionbook/rust-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 19,
+      "normalized_url": "https://github.com/truongduy2611/app-store-preflight-skills",
+      "source_name": "truongduy2611/app-store-preflight-skills",
+      "env_vars_or_credentials": [
+        "ASC_ISSUER_ID",
+        "ASC_KEY_ID",
+        "ASC_PRIVATE_KEY",
+        "ASC_PRIVATE_KEY_B64",
+        "ASC_PRIVATE_KEY_PATH"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 22,
+      "normalized_url": "https://github.com/conorluddy/ios-simulator-skill",
+      "source_name": "conorluddy/ios-simulator-skill",
+      "env_vars_or_credentials": [
+        "IOS_SIM_HANG_BUDGET_TOKENS"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 26,
+      "normalized_url": "https://github.com/itsmostafa/aws-agent-skills",
+      "source_name": "itsmostafa/aws-agent-skills",
+      "env_vars_or_credentials": [
+        "AWS_PROXY",
+        "AWS_SESSION_TOKEN",
+        "PASSWORD",
+        "REFRESH_TOKEN",
+        "SECRET_HASH"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 27,
+      "normalized_url": "https://github.com/VILA-Lab/FigMirror",
+      "source_name": "VILA-Lab/FigMirror",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 29,
+      "normalized_url": "https://github.com/CharlesWiltgen/Axiom",
+      "source_name": "CharlesWiltgen/Axiom",
+      "env_vars_or_credentials": [
+        "NPM_TOKEN_AXIOM"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 30,
+      "normalized_url": "https://github.com/imxv/Pretty-mermaid-skills",
+      "source_name": "imxv/Pretty-mermaid-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 31,
+      "normalized_url": "https://github.com/ksimback/tech-debt-skill",
+      "source_name": "ksimback/tech-debt-skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 33,
+      "normalized_url": "https://github.com/aiwithremy/claude-skills-llm-council",
+      "source_name": "aiwithremy/claude-skills-llm-council",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 34,
+      "normalized_url": "https://github.com/Haojae/scipilot-figure-skill",
+      "source_name": "Haojae/scipilot-figure-skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 35,
+      "normalized_url": "https://github.com/Kappaemme-git/codex-complexity-optimizer",
+      "source_name": "Kappaemme-git/codex-complexity-optimizer",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 36,
+      "normalized_url": "https://github.com/data-goblin/power-bi-agentic-development",
+      "source_name": "data-goblin/power-bi-agentic-development",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 37,
+      "normalized_url": "https://github.com/solana-foundation/solana-dev-skill",
+      "source_name": "solana-foundation/solana-dev-skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 39,
+      "normalized_url": "https://github.com/ast-grep/agent-skill",
+      "source_name": "ast-grep/agent-skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 40,
+      "normalized_url": "https://github.com/langchain-ai/langchain-skills",
+      "source_name": "langchain-ai/langchain-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 41,
+      "normalized_url": "https://github.com/199-biotechnologies/claude-deep-research-skill",
+      "source_name": "199-biotechnologies/claude-deep-research-skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 42,
+      "normalized_url": "https://github.com/duckdb/duckdb-skills",
+      "source_name": "duckdb/duckdb-skills",
+      "env_vars_or_credentials": [
+        "SECRET",
+        "SECRET_SETUP"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 43,
+      "normalized_url": "https://github.com/gadicc/yahoo-finance2",
+      "source_name": "gadicc/yahoo-finance2",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 44,
+      "normalized_url": "https://github.com/zubair-trabzada/ai-sales-team-claude",
       "source_name": "zubair-trabzada/ai-sales-team-claude",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 45,
+      "normalized_url": "https://github.com/Bhanunamikaze/Agentic-SEO-Skill",
       "source_name": "Bhanunamikaze/Agentic-SEO-Skill",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 46,
+      "normalized_url": "https://github.com/agi-now/buffett-skills",
       "source_name": "agi-now/buffett-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 48,
+      "normalized_url": "https://github.com/fayazara/macos-app-skills",
+      "source_name": "fayazara/macos-app-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 49,
+      "normalized_url": "https://github.com/meodai/skill.color-expert",
+      "source_name": "meodai/skill.color-expert",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 50,
+      "normalized_url": "https://github.com/lawve-ai/awesome-legal-skills",
       "source_name": "lawve-ai/awesome-legal-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 54,
-      "source_name": "JeffLi1993/seo-audit-skill",
+      "raw_index": 52,
+      "normalized_url": "https://github.com/Trae1ounG/paper-plot-skills",
+      "source_name": "Trae1ounG/paper-plot-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 53,
+      "normalized_url": "https://github.com/dbt-labs/dbt-agent-skills",
+      "source_name": "dbt-labs/dbt-agent-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 54,
+      "normalized_url": "https://github.com/JeffLi1993/seo-audit-skill",
+      "source_name": "JeffLi1993/seo-audit-skill",
+      "env_vars_or_credentials": [
+        "GOOGLE_PAGESPEED_API_KEY"
+      ],
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 55,
+      "normalized_url": "https://github.com/LottieFiles/motion-design-skill",
+      "source_name": "LottieFiles/motion-design-skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 56,
+      "normalized_url": "https://github.com/antonbabenko/terraform-skill",
+      "source_name": "antonbabenko/terraform-skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 57,
+      "normalized_url": "https://github.com/Affitor/affiliate-skills",
       "source_name": "Affitor/affiliate-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 58,
+      "normalized_url": "https://github.com/elvisun/newsjack",
+      "source_name": "elvisun/newsjack",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 59,
+      "normalized_url": "https://github.com/borski/travel-hacking-toolkit",
       "source_name": "borski/travel-hacking-toolkit",
+      "env_vars_or_credentials": [
+        "AA_PASSWORD",
+        "AWARDWALLET_API_KEY",
+        "DUFFEL_API_KEY_LIVE",
+        "IGNAV_API_KEY",
+        "RAPIDAPI_KEY",
+        "REJSEPLANEN_API_KEY",
+        "RESROBOT_API_KEY",
+        "SEATS_AERO_API_KEY",
+        "SERPAPI_API_KEY",
+        "SW_PASSWORD",
+        "TRIPADVISOR_API_KEY"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 60,
+      "normalized_url": "https://github.com/aitytech/agentkits-marketing",
+      "source_name": "aitytech/agentkits-marketing",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 61,
+      "normalized_url": "https://github.com/Auriti-Labs/geo-optimizer-skill",
+      "source_name": "Auriti-Labs/geo-optimizer-skill",
+      "env_vars_or_credentials": [
+        "ANTHROPIC_API_KEY",
+        "GEO_LLM_API_KEY",
+        "GROQ_API_KEY",
+        "OPENAI_API_KEY",
+        "PERPLEXITY_API_KEY"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 63,
+      "normalized_url": "https://github.com/Varnan-Tech/opendirectory",
+      "source_name": "Varnan-Tech/opendirectory",
+      "env_vars_or_credentials": [
+        "ACCESS_TOKEN",
+        "AD_ACCOUNT_ID",
+        "ANTHROPIC_API_KEY",
+        "COMPOSIO_API_KEY",
+        "FIRECRAWL_API_KEY",
+        "GEMINI_API_KEY",
+        "GITHUB_REPO",
+        "GITHUB_TOKEN",
+        "GITHUB_USERNAME",
+        "GOOGLE_API_KEY",
+        "GROQ_API_KEY",
+        "LINEAR_API_KEY",
+        "LLM_API_KEY",
+        "NOTION_DATABASE_ID",
+        "NOTION_TOKEN",
+        "OPENAI_API_KEY",
+        "REDDIT_CLIENT_ID",
+        "REDDIT_CLIENT_SECRET",
+        "REDDIT_PASSWORD",
+        "SERPAPI_KEY",
+        "SLACK_WEBHOOK",
+        "SLACK_WEBHOOK_URL",
+        "TADDY_API_KEY",
+        "TAVILY_API_KEY",
+        "TOKEN",
+        "VALIDEMAIL_API_KEY"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 64,
+      "normalized_url": "https://github.com/elastic/agent-skills",
+      "source_name": "elastic/agent-skills",
+      "env_vars_or_credentials": [
+        "AD_PASSWORD",
+        "EC_API_KEY",
+        "ELASTICSEARCH_API_KEY",
+        "ELASTICSEARCH_PASSWORD",
+        "ES_LOCAL_PASSWORD",
+        "FILE_PASSWORD",
+        "JWT_TOKEN",
+        "KIBANA_API_KEY",
+        "KIBANA_PASSWORD",
+        "LDAP_PASSWORD",
+        "NEW_PASSWORD",
+        "PASSWORD"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 66,
+      "normalized_url": "https://github.com/twostraws/Swift-Concurrency-Agent-Skill",
+      "source_name": "twostraws/Swift-Concurrency-Agent-Skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 67,
+      "normalized_url": "https://github.com/AvdLee/Swift-Concurrency-Agent-Skill",
+      "source_name": "AvdLee/Swift-Concurrency-Agent-Skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 68,
+      "normalized_url": "https://github.com/twostraws/Swift-Testing-Agent-Skill",
+      "source_name": "twostraws/Swift-Testing-Agent-Skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 70,
+      "normalized_url": "https://github.com/AvdLee/Swift-Testing-Agent-Skill",
+      "source_name": "AvdLee/Swift-Testing-Agent-Skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 71,
+      "normalized_url": "https://github.com/Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
+      "source_name": "Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 73,
+      "normalized_url": "https://github.com/dadederk/iOS-Accessibility-Agent-Skill",
+      "source_name": "dadederk/iOS-Accessibility-Agent-Skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 77,
+      "normalized_url": "https://github.com/rorkai/app-store-connect-cli-skills",
       "source_name": "rorkai/app-store-connect-cli-skills",
       "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+        "ASC_",
+        "ASC_ADS_",
+        "ASC_ADS_ACCESS_TOKEN",
+        "ASC_ADS_CLIENT_ID",
+        "ASC_ADS_KEY_ID",
+        "ASC_ADS_ORG_ID",
+        "ASC_ADS_PRIVATE_KEY_PATH",
+        "ASC_ADS_TEAM_ID",
+        "ASC_APP_ID",
+        "ASC_ISSUER_ID",
+        "ASC_KEY_ID",
+        "ASC_MATCH_PASSWORD",
+        "ASC_PRIVATE_KEY",
+        "ASC_PRIVATE_KEY_B64",
+        "ASC_PRIVATE_KEY_PATH",
+        "ASC_TIMEOUT",
+        "ASC_TIMEOUT_SECONDS",
+        "ASC_UPLOAD_TIMEOUT",
+        "ASC_UPLOAD_TIMEOUT_SECONDS",
+        "MATCH_PASSWORD"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 78,
+      "normalized_url": "https://github.com/timbroddin/app-store-aso-skill",
       "source_name": "timbroddin/app-store-aso-skill",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 79,
+      "normalized_url": "https://github.com/3paws-ai/mobile-ai-skills/tree/main/skills/appstore-review",
+      "source_name": "3paws-ai/mobile-ai-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 80,
+      "normalized_url": "https://github.com/efremidze/swift-architecture-skill",
+      "source_name": "efremidze/swift-architecture-skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 82,
+      "normalized_url": "https://github.com/AvdLee/Core-Data-Agent-Skill",
+      "source_name": "AvdLee/Core-Data-Agent-Skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 84,
+      "normalized_url": "https://github.com/ivan-magda/swift-security-skill",
+      "source_name": "ivan-magda/swift-security-skill",
+      "env_vars_or_credentials": [
+        "KEYCHAIN_PASSWORD",
+        "P12_PASSWORD"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 85,
+      "normalized_url": "https://github.com/jazzychad/ios-code-audit",
+      "source_name": "jazzychad/ios-code-audit",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 86,
+      "normalized_url": "https://github.com/conorluddy/ios-simulator-skill",
+      "source_name": "conorluddy/ios-simulator-skill",
+      "env_vars_or_credentials": [
+        "IOS_SIM_HANG_BUDGET_TOKENS"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 87,
+      "normalized_url": "https://github.com/daetojemax/figma-to-swiftui-skill",
+      "source_name": "daetojemax/figma-to-swiftui-skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 88,
+      "normalized_url": "https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces",
+      "source_name": "andrewgleave/skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 90,
+      "normalized_url": "https://github.com/twostraws/SwiftAgents",
+      "source_name": "twostraws/SwiftAgents",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 91,
+      "normalized_url": "https://github.com/jakubkrehel/make-interfaces-feel-better",
+      "source_name": "jakubkrehel/make-interfaces-feel-better",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 92,
+      "normalized_url": "https://github.com/apify/agent-skills",
+      "source_name": "apify/agent-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 93,
+      "normalized_url": "https://github.com/NVIDIA/skills",
+      "source_name": "NVIDIA/skills",
+      "env_vars_or_credentials": [
+        "API_KEY",
+        "BREV_API_TOKEN",
+        "DICTIONARY_API_KEY",
+        "DINO_AUTOML_PROFILE",
+        "DUT_UART_PASSWORD_ENV",
+        "FAN_DEFAULT_PROFILE",
+        "GH_TOKEN",
+        "GOOGLE_API_KEY",
+        "HF_TOKEN",
+        "MINIMAL_PROFILE",
+        "NGC_API_KEY",
+        "NGC_CLI_API_KEY",
+        "NVIDIA_API_KEY",
+        "OPENAI_API_KEY",
+        "PASSWORD_ENV",
+        "PROFILE",
+        "RTVI_VLM_API_KEY",
+        "WANDB_API_KEY"
+      ],
+      "safety_notes": "Official NVIDIA skill catalog includes GPU, Docker, NGC, Kubernetes, Slurm, cloud, healthcare, synthetic-data, and platform-operation workflows. Keep credentials user-owned, use placeholder env vars in docs, require explicit confirmation for destructive/live infrastructure actions, and do not auto-start services from catalog metadata.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 94,
+      "normalized_url": "https://github.com/supabase/agent-skills",
+      "source_name": "supabase/agent-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 95,
+      "normalized_url": "https://github.com/aaron-he-zhu/aaron-marketing-skills",
+      "source_name": "aaron-he-zhu/aaron-marketing-skills",
+      "env_vars_or_credentials": [
+        "BAIDU_PUSH_TOKEN"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 96,
+      "normalized_url": "https://github.com/samber/cc-skills-golang",
+      "source_name": "samber/cc-skills-golang",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 97,
+      "normalized_url": "https://github.com/addyosmani/web-quality-skills",
+      "source_name": "addyosmani/web-quality-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 98,
+      "normalized_url": "https://github.com/CloudAI-X/threejs-skills",
+      "source_name": "CloudAI-X/threejs-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 99,
+      "normalized_url": "https://github.com/RKiding/Awesome-finance-skills",
       "source_name": "RKiding/Awesome-finance-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 101,
+      "normalized_url": "https://github.com/ericosiu/ai-marketing-skills",
+      "source_name": "ericosiu/ai-marketing-skills",
+      "env_vars_or_credentials": [
+        "ANTHROPIC_API_KEY",
+        "GEMINI_API_KEY",
+        "GOOGLE_APPLICATION_CREDENTIALS",
+        "OPENAI_API_KEY",
+        "OPENAI_LLM_KEY",
+        "YOUTUBE_API_KEY"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 102,
+      "normalized_url": "https://github.com/SharpAI/DeepCamera",
+      "source_name": "SharpAI/DeepCamera",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 103,
+      "normalized_url": "https://github.com/himself65/finance-skills",
       "source_name": "himself65/finance-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 104,
+      "normalized_url": "https://github.com/eugeniughelbur/obsidian-second-brain",
+      "source_name": "eugeniughelbur/obsidian-second-brain",
+      "env_vars_or_credentials": [
+        "OPENAI_API_KEY"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 105,
+      "normalized_url": "https://github.com/markdown-viewer/skills",
+      "source_name": "markdown-viewer/skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 107,
+      "normalized_url": "https://github.com/Nutlope/hallmark",
+      "source_name": "Nutlope/hallmark",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 109,
+      "normalized_url": "https://github.com/Imbad0202/academic-research-skills-codex",
+      "source_name": "Imbad0202/academic-research-skills-codex",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 110,
+      "normalized_url": "https://github.com/deanpeters/Product-Manager-Skills",
+      "source_name": "deanpeters/Product-Manager-Skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 111,
+      "normalized_url": "https://github.com/PleasePrompto/notebooklm-skill",
+      "source_name": "PleasePrompto/notebooklm-skill",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 112,
+      "normalized_url": "https://github.com/earthtojake/text-to-cad",
+      "source_name": "earthtojake/text-to-cad",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 114,
+      "normalized_url": "https://github.com/AgriciDaniel/claude-seo",
       "source_name": "AgriciDaniel/claude-seo",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 115,
+      "normalized_url": "https://github.com/huggingface/skills",
+      "source_name": "huggingface/skills",
+      "env_vars_or_credentials": [
+        "HF_TOKEN"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 116,
+      "normalized_url": "https://github.com/NVIDIA/SkillSpector",
+      "source_name": "NVIDIA/SkillSpector",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 118,
+      "normalized_url": "https://github.com/millionco/react-doctor",
+      "source_name": "millionco/react-doctor",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 119,
+      "normalized_url": "https://github.com/google/skills",
+      "source_name": "google/skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 120,
+      "normalized_url": "https://github.com/hyhmrright/brooks-lint",
+      "source_name": "hyhmrright/brooks-lint",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 122,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/gh-address-comments",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 123,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/gh-fix-ci",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 124,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/notion-knowledge-capture",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 125,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/internal-comms",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 126,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/paperjsx",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 127,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/email-draft-polish",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 128,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/changelog-generator",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 129,
+      "normalized_url": "https://github.com/MinistaJazz/diasporic-intelligence",
+      "source_name": "MinistaJazz/diasporic-intelligence",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 130,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/content-research-writer",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 132,
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
+      "source_name": "MohamedAbdallah-14/unslop",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 133,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/spreadsheet-formula-helper",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 134,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/competitive-ads-extractor",
       "source_name": "ComposioHQ/awesome-codex-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Quarantine trigger; requires explicit threat model and approval before promotion."
+      "safety_notes": "Ad-library extraction can cross platform ToS, scraping, privacy, and competitive-intelligence boundaries. Do not install or run by default; require approved public data sources, no private session scraping, explicit operator approval, and documented rate limits before any promotion.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 135,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/datadog-logs",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 136,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/developer-growth-analysis",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 137,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/lead-research-assistant",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 138,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/domain-name-brainstormer",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 139,
+      "normalized_url": "https://github.com/kepano/obsidian-skills",
+      "source_name": "kepano/obsidian-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 140,
+      "normalized_url": "https://github.com/coreyhaines31/marketingskills",
+      "source_name": "coreyhaines31/marketingskills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 142,
+      "normalized_url": "https://github.com/googleworkspace/cli",
       "source_name": "googleworkspace/cli",
+      "env_vars_or_credentials": [
+        "GOOGLE_APPLICATION_CREDENTIALS"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 143,
+      "normalized_url": "https://github.com/vercel-labs/agent-skills",
+      "source_name": "vercel-labs/agent-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 152,
+      "raw_index": 144,
+      "normalized_url": "https://github.com/zarazhangrui/frontend-slides",
+      "source_name": "zarazhangrui/frontend-slides",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 146,
+      "normalized_url": "https://github.com/teng-lin/notebooklm-py",
+      "source_name": "teng-lin/notebooklm-py",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 147,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/raffle-winner-picker",
       "source_name": "ComposioHQ/awesome-codex-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Quarantine trigger; requires explicit threat model and approval before promotion."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 154,
-      "source_name": "mobile-next/mobile-mcp",
+      "raw_index": 148,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/langsmith-fetch",
+      "source_name": "ComposioHQ/awesome-codex-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 149,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/canvas-design",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 150,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/image-enhancer",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 151,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/slack-gif-creator",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 152,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/video-downloader",
+      "source_name": "ComposioHQ/awesome-codex-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "Video download automation can violate copyright, DRM, private-content, paywall, and platform ToS boundaries. Prefer transcript or metadata workflows; do not install or run by default unless the operator proves rights to the content and approves the exact source.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 155,
+      "normalized_url": "https://github.com/modelcontextprotocol/inspector",
       "source_name": "modelcontextprotocol/inspector",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 156,
+      "normalized_url": "https://github.com/heygen-com/hyperframes",
+      "source_name": "heygen-com/hyperframes",
+      "env_vars_or_credentials": [
+        "FIGMA_TOKEN",
+        "GOOGLE_API_KEY"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 157,
+      "normalized_url": "https://github.com/Panniantong/Agent-Reach",
       "source_name": "Panniantong/Agent-Reach",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 158,
+      "normalized_url": "https://github.com/product-on-purpose/pm-skills",
+      "source_name": "product-on-purpose/pm-skills",
+      "env_vars_or_credentials": [
+        "ANTHROPIC_API_KEY"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 160,
+      "normalized_url": "https://github.com/geekjourneyx/claude-design-card",
+      "source_name": "geekjourneyx/claude-design-card",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 161,
+      "normalized_url": "https://github.com/antvis/mcp-server-chart",
       "source_name": "antvis/mcp-server-chart",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 164,
-      "source_name": "hashgraph-online/awesome-codex-plugins",
+      "raw_index": 162,
+      "normalized_url": "https://github.com/bcanfield/agentic-tech-debt",
+      "source_name": "bcanfield/agentic-tech-debt",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 165,
-      "source_name": "hashgraph-online/hol-guard-plugin",
+      "raw_index": 163,
+      "normalized_url": "https://github.com/Pythoughts-labs/designer-skill",
+      "source_name": "Pythoughts-labs/designer-skill",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 166,
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/secret-guard",
       "source_name": "hashgraph-online/awesome-codex-plugins",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 168,
+      "normalized_url": "https://github.com/HDeibler/universal-design-principles",
+      "source_name": "HDeibler/universal-design-principles",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 169,
+      "normalized_url": "https://github.com/BestLemoon/codex-seo",
       "source_name": "BestLemoon/codex-seo",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 170,
+      "normalized_url": "https://github.com/avivsinai/langfuse-mcp",
       "source_name": "avivsinai/langfuse-mcp",
       "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+        "LANGFUSE_HOST",
+        "LANGFUSE_MCP_READ_ONLY",
+        "LANGFUSE_PUBLIC_KEY",
+        "LANGFUSE_SECRET_KEY"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 171,
+      "normalized_url": "https://github.com/johnvouros/nullcost-plugin",
       "source_name": "johnvouros/nullcost-plugin",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 172,
+      "normalized_url": "https://github.com/MohamedAbdallah-14/prompt-to-asset",
+      "source_name": "MohamedAbdallah-14/prompt-to-asset",
+      "env_vars_or_credentials": [
+        "BFL_API_KEY",
+        "CLOUDFLARE_ACCOUNT_ID",
+        "CLOUDFLARE_API_TOKEN",
+        "FAL_API_KEY",
+        "FREEPIK_API_KEY",
+        "GEMINI_API_KEY",
+        "GOOGLE_API_KEY",
+        "HF_TOKEN",
+        "HORDE_API_KEY",
+        "HUGGINGFACE_API_KEY",
+        "IDEOGRAM_API_KEY",
+        "LEONARDO_API_KEY",
+        "NIM_API_KEY",
+        "NVIDIA_API_KEY",
+        "OPENAI_API_KEY",
+        "PIXAZO_API_KEY",
+        "RECRAFT_API_KEY",
+        "REPLICATE_API_KEY",
+        "REPLICATE_API_TOKEN",
+        "STABILITY_API_KEY",
+        "TOGETHER_API_KEY"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 173,
+      "normalized_url": "https://github.com/avalonreset/seo-dungeon",
       "source_name": "avalonreset/seo-dungeon",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 174,
-      "source_name": "tim-osterhus/codex-remotion-plugin",
+      "raw_index": 175,
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
+      "source_name": "MohamedAbdallah-14/unslop",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 176,
+      "normalized_url": "https://github.com/summer521521/Zotero_Research_plugin",
       "source_name": "summer521521/Zotero_Research_plugin",
       "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+        "ZOTERO_DB_PATH"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
-      "raw_index": 181,
-      "source_name": "Octane0411/opencode-plugin-openspec",
+      "raw_index": 177,
+      "normalized_url": "https://github.com/PapiScholz/roadmapsmith",
+      "source_name": "PapiScholz/roadmapsmith",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 187,
-      "source_name": "Lumiaqian/openspec-mcp",
+      "raw_index": 178,
+      "normalized_url": "https://github.com/ForceInjection/awesome-skills/tree/main/skills/openspec-assistant",
+      "source_name": "ForceInjection/awesome-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 179,
+      "normalized_url": "https://github.com/fastknifes/openflow",
+      "source_name": "fastknifes/openflow",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 182,
+      "normalized_url": "https://github.com/jixoai/openspecui",
+      "source_name": "jixoai/openspecui",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 184,
+      "normalized_url": "https://github.com/ToruAI/openspec-ui",
+      "source_name": "ToruAI/openspec-ui",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 193,
+      "normalized_url": "https://github.com/devcxl/opencode-spec",
+      "source_name": "devcxl/opencode-spec",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 194,
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/commit-narrator",
       "source_name": "hashgraph-online/awesome-codex-plugins",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 195,
+      "normalized_url": "https://github.com/Rycen7822/codex-rg-guard",
+      "source_name": "Rycen7822/codex-rg-guard",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 197,
+      "normalized_url": "https://github.com/louisedesadeleer/clipify",
       "source_name": "louisedesadeleer/clipify",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 199,
+      "normalized_url": "https://github.com/bentossell/visualise",
+      "source_name": "bentossell/visualise",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 203,
+      "normalized_url": "https://github.com/minhnv0807/ai-business-skills",
+      "source_name": "minhnv0807/ai-business-skills",
+      "env_vars_or_credentials": [
+        "OPENAI_API_KEY"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 204,
+      "normalized_url": "https://github.com/rshankras/claude-code-apple-skills",
+      "source_name": "rshankras/claude-code-apple-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 205,
+      "normalized_url": "https://github.com/jihe520/social-push",
       "source_name": "jihe520/social-push",
+      "env_vars_or_credentials": [
+        "PASSWORD"
+      ],
+      "safety_notes": "Social posting automation can create spam, impersonation, credential, account-lockout, and platform policy risk. Do not install or run by default; require user-owned credentials, no committed cookies or sessions, explicit account-owner authorization, and manual review before each post.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 206,
+      "normalized_url": "https://github.com/WILLOSCAR/research-units-pipeline-skills",
+      "source_name": "WILLOSCAR/research-units-pipeline-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Quarantine trigger; requires explicit threat model and approval before promotion."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 219,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/vercel-react-best-practices",
+      "source_name": "pedronauck/skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 228,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/google-ads",
       "source_name": "pedronauck/skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 236,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/sales-methodology-implementer",
       "source_name": "pedronauck/skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries."
+      "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 241,
+      "raw_index": 257,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/kubernetes-specialist",
       "source_name": "pedronauck/skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 252,
-      "source_name": "pedronauck/skills",
+      "raw_index": 271,
+      "normalized_url": "https://github.com/headroomlabs-ai/headroom",
+      "source_name": "headroomlabs-ai/headroom",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
-    },
-    {
-      "raw_index": 262,
-      "source_name": "pedronauck/skills",
-      "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 272,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/mcp-builder",
       "source_name": "ComposioHQ/awesome-codex-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 274,
-      "source_name": "openags/paper-search-mcp",
+      "raw_index": 273,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/file-organizer",
+      "source_name": "ComposioHQ/awesome-codex-skills",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 279,
-      "source_name": "papersflow-ai/papersflow-codex-plugin",
+      "raw_index": 277,
+      "normalized_url": "https://github.com/epicsagas/llm-transpile",
+      "source_name": "epicsagas/llm-transpile",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 278,
+      "normalized_url": "https://github.com/2kDarki/codex-mem",
+      "source_name": "2kDarki/codex-mem",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 280,
+      "normalized_url": "https://github.com/klajdikkolaj/upwork-autopilot",
       "source_name": "klajdikkolaj/upwork-autopilot",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Quarantine trigger; requires explicit threat model and approval before promotion."
+      "safety_notes": "Marketplace application automation can violate platform ToS, spend connects, misrepresent the user, or submit irreversible outreach. Do not install or run by default; require user-owned credentials, connect-budget limits, manual approval before every proposal, and final success evidence.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 282,
+      "normalized_url": "https://github.com/Kulaxyz/token-diet",
+      "source_name": "Kulaxyz/token-diet",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 283,
+      "normalized_url": "https://github.com/planetscale/database-skills",
+      "source_name": "planetscale/database-skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 285,
+      "normalized_url": "https://github.com/growthenginenowoslawski/coldoutboundskills",
+      "source_name": "growthenginenowoslawski/coldoutboundskills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 286,
+      "normalized_url": "https://github.com/KyuRish/mcp-dashboards",
       "source_name": "KyuRish/mcp-dashboards",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json"
     },
     {
-      "raw_index": 288,
-      "source_name": "nteract/semiotic",
+      "raw_index": 287,
+      "normalized_url": "https://github.com/marzukia/charted",
+      "source_name": "marzukia/charted",
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
-      "safety_notes": "Executable/tool surface requires script and dependency review."
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 291,
+      "normalized_url": "https://github.com/InternScience/Awesome-Scientific-Skills",
+      "source_name": "InternScience/Awesome-Scientific-Skills",
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
     }
   ]
 }

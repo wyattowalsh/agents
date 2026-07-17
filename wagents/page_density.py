@@ -19,9 +19,15 @@ RESEARCH_SECTION_MAX_WORDS = 120
 
 def resolve_density(node: CatalogNode, *, default: PageDensity = "standard") -> PageDensity:
     """Resolve density from node metadata frontmatter."""
-    raw = node.metadata.get("docs-density") or node.metadata.get("density")
+    raw = (
+        node.metadata.get("docs-density")
+        or node.metadata.get("docs_density")
+        or node.metadata.get("density")
+    )
+    if isinstance(raw, str):
+        raw = raw.strip().lower()
     if raw in ("summary", "standard"):
-        return raw
+        return raw  # type: ignore[return-value]
     return default
 
 

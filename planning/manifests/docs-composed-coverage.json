@@ -1,29 +1,29 @@
 {
-  "generated_at": "2026-06-29",
+  "generated_at": "2026-07-16",
   "surface": "all",
-  "total": 398,
-  "composed": 398,
-  "scaffold": 0,
+  "total": 1887,
+  "composed": 35,
+  "scaffold": 1852,
   "missing": 0,
-  "composed_pct": 100.0,
+  "composed_pct": 1.9,
   "by_surface": {
     "agents": {
-      "composed": 8,
-      "scaffold": 0,
+      "composed": 0,
+      "scaffold": 20,
       "missing": 0
     },
     "mcp": {
-      "composed": 1,
-      "scaffold": 0,
+      "composed": 0,
+      "scaffold": 16,
       "missing": 0
     },
     "skills": {
-      "composed": 363,
-      "scaffold": 0,
+      "composed": 0,
+      "scaffold": 1816,
       "missing": 0
     },
     "hooks": {
-      "composed": 23,
+      "composed": 32,
       "scaffold": 0,
       "missing": 0
     },

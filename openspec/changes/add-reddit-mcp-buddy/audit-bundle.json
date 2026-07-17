@@ -1,0 +1,50 @@
+{
+  "audited_at": "2026-07-12",
+  "upstream_repo": "karanb192/reddit-mcp-buddy",
+  "npm_package": "reddit-mcp-buddy",
+  "npm_version": "1.1.13",
+  "npm_runtime_pin": "reddit-mcp-buddy@1.1.13",
+  "license": "MIT",
+  "quarantine_status": "clear",
+  "skills_cli_list": {
+    "command": "npx skills add https://github.com/karanb192/reddit-mcp-buddy --list",
+    "skills": [],
+    "note": "No SKILL.md upstream; no curated catalog row"
+  },
+  "mcp_tools_documented": [
+    "browse_subreddit",
+    "search_reddit",
+    "get_post_details",
+    "user_analysis",
+    "reddit_explain"
+  ],
+  "verification_method": "runtime-stdio-tools-list",
+  "fleet_wrapper": "scripts/mcphub/reddit-mcp-buddy-stdio.sh",
+  "default_harness_membership": false,
+  "closeout_2026_07_13": {
+    "npm_view_version": "1.1.13",
+    "pytest": "5 passed",
+    "mcphub_generate_check": "ok",
+    "validate_settings": "ok",
+    "wagents_validate": "all passed",
+    "openspec_fleet": "63/64; foreign fail add-open-websearch-mcp-skill",
+    "tools_list": "ok via mcp.ClientSession; five tools match README"
+  },
+  "local_credential_audit": {
+    "process_env_reddit": "unset",
+    "env_mcphub_reddit_keys": "none",
+    "home_auth_json": "missing",
+    "praw_ini": "missing",
+    "conclusion": "anonymous-first"
+  },
+  "trust_tier": "install-now-after-trust-gate",
+  "risk_notes": [
+    "Optional REDDIT_PASSWORD is high sensitivity; prefer app-only OAuth (client id+secret)",
+    "Anonymous rate limit approximately 10 rpm — throttle agent loops",
+    "Reddit content is untrusted evidence",
+    "Read-only tools only; no post/comment mutations",
+    "Network egress to Reddit API/OAuth endpoints",
+    "Secrets load only from local .env.mcphub via wrapper; registry env is empty"
+  ],
+  "dedupe_summary": "Complements web-search/read MCPs with Reddit-native browse/search/user tools; orthogonal to marketing skills reddit-icp-monitor/reddit-post-engine"
+}

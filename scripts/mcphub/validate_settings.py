@@ -69,13 +69,15 @@ def validate_settings(settings: dict[str, Any], registry: dict[str, Any]) -> lis
             if not isinstance(group, dict):
                 errors.append(f"group {group_name} must be an object")
                 continue
-            errors.extend(validate_group_server_entries(
-                str(group_name),
-                group,
-                all_server_ids=settings_server_ids,
-                enabled_server_ids=settings_enabled_server_ids,
-                source_prefix="groups",
-            ))
+            errors.extend(
+                validate_group_server_entries(
+                    str(group_name),
+                    group,
+                    all_server_ids=settings_server_ids,
+                    enabled_server_ids=settings_enabled_server_ids,
+                    source_prefix="groups",
+                )
+            )
 
     registry_groups = registry.get("mcphub", {}).get("groups", {})
     if isinstance(registry_groups, dict) and isinstance(groups, dict):

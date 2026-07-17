@@ -6,7 +6,6 @@ import re
 from datetime import date
 from typing import TYPE_CHECKING, Any
 
-from wagents.docs_lint import HAND_MAINTAINED_SENTINEL
 from wagents.parsing import truncate_sentence
 from wagents.site_model import resolve_trust_tier_for_node
 
@@ -73,11 +72,16 @@ def render_catalog_frontmatter_lines(
     ]
 
     if node.kind == "skill":
+        from wagents.site_model import build_install_command
+
         meta = fm.get("metadata") if isinstance(fm.get("metadata"), dict) else {}
         _append_optional(lines, "license", fm.get("license"))
         _append_optional(lines, "trust_tier", resolve_trust_tier_for_node(node))
         _append_optional(lines, "curated_status", fm.get("_curated_status"))
-        _append_optional(lines, "install_command", fm.get("_skills_install_command") or fm.get("install_command"))
+        install_command = fm.get("_skills_install_command") or fm.get("install_command")
+        if not install_command and (node.source or "custom") == "custom":
+            install_command = build_install_command(skill=node.id)
+        _append_optional(lines, "install_command", install_command)
         _append_optional(lines, "sync_kind", fm.get("_sync_kind") or fm.get("sync_kind"))
         if isinstance(meta, dict):
             _append_optional(lines, "metadata.author", meta.get("author"))
@@ -118,11 +122,16 @@ def render_catalog_frontmatter(
 
 
 def render_composed_frontmatter_block(node: CatalogNode, *, wave_id: str) -> str:
-    """Full frontmatter block with composed metadata and HAND-MAINTAINED sentinel."""
+    """Full frontmatter block with composed metadata (regenerable by docs generate)."""
     lines = render_catalog_frontmatter_lines(node, composed=True)
     lines.append(f'composed_by: "{wave_id}"')
     lines.append(f'composed_at: "{date.today().isoformat()}"')
-    return "---\n" + "\n".join(lines) + "\n---\n\n" + HAND_MAINTAINED_SENTINEL + "\n"
+    return (
+        "---\n"
+        + "\n".join(lines)
+        + "\n---\n\n"
+        + "{/* GENERATED-COMPOSED — regenerable by wagents docs generate */}\n"
+    )
 
 
 def enrich_rich_hand_frontmatter(

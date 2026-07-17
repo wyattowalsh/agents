@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 PYTHON_REQUIRES = ">=3.11"
 
 MODES = (
@@ -53,7 +53,9 @@ SOURCE_RECORD_FIELDS = (
 
 EVIDENCE_LEDGER_PATH = "indexes/evidence-ledger.md"
 REVIEW_QUEUE_PATH = "indexes/review-queue.md"
+ACTIVITY_LOG_PATH = "activity/log.md"
 OPERATION_JOURNAL_PATH = "activity/operations.jsonl"
+OPERATION_LOCK_PATH = "activity/.nerdbot-operation.lock"
 RESEARCH_JOURNAL_DIR = "activity/research"
 
 SOURCE_FRESHNESS_CLASSES = ("static", "slow", "medium", "fast", "unknown")
@@ -89,7 +91,16 @@ GRAPH_EDGE_FIELDS = ("source", "target", "edge_type", "evidence_path", "confiden
 GRAPH_EDGE_TYPES = ("links_to", "embeds", "aliases", "cites", "derives_from", "updates", "contradicts", "mentions")
 
 WATCH_EVENT_FIELDS = ("path", "event_type", "risk", "stable", "action", "reason")
-REPLAY_RESULT_FIELDS = ("operation_id", "status", "changed", "skipped", "review_needed", "failed", "resume_token")
+REPLAY_RESULT_FIELDS = (
+    "operation_id",
+    "operation_state",
+    "status",
+    "changed",
+    "skipped",
+    "review_needed",
+    "failed",
+    "resume_token",
+)
 
 GENERATED_ARTIFACTS = {
     "fts_index": "indexes/generated/nerdbot-fts.sqlite3",

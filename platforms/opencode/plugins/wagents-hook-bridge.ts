@@ -12,9 +12,9 @@ import path from "node:path"
  * `hooks/run-wagents-hook <policy> --harness opencode` with a normalized JSON
  * payload on stdin and blocks (throws) when the dispatcher returns a deny.
  *
- * Enforce-tier only and fail-closed only for an explicit deny: if the repo
- * runner cannot be located or the dispatcher errors, the bridge stays inert
- * (fails open) so it never breaks an OpenCode session it does not understand.
+ * Enforce-tier is fail-closed: runner miss, crash, timeout, empty stdout, or
+ * unparseable JSON deny the tool so OpenCode cannot bypass fleet guards.
+ * Sessions outside a managed repo (no runner found) stay inert.
  */
 
 const HOOK_RUNNER_REL = path.join("hooks", "run-wagents-hook")
@@ -89,8 +89,17 @@ function denyReason(decision: Record<string, unknown>): string {
   )
 }
 
+function failClosed(policyId: string, reason: string): never {
+  throw new Error(
+    `[wagents-hook-bridge:${policyId}] ${reason} Install/sync fleet hooks or set WAGENTS_REPO_ROOT to a managed clone.`,
+  )
+}
+
 function runPolicy(repoRoot: string, policyId: string, payload: unknown, options?: { bundle?: boolean }): void {
   const runnerPath = path.join(repoRoot, HOOK_RUNNER_REL)
+  if (!fs.existsSync(runnerPath)) {
+    failClosed(policyId, "Hook runner missing for enforce-tier policy.")
+  }
   const isBundle = Boolean(options?.bundle && policyId.includes(","))
   let args = isBundle
     ? [
@@ -118,19 +127,20 @@ function runPolicy(repoRoot: string, policyId: string, payload: unknown, options
       timeout: commandTimeoutMs,
       cwd: repoRoot,
     })
-  } catch {
-    // Dispatcher missing the policy id, crash, or timeout: fail open.
-    return
+  } catch (err) {
+    // Dispatcher crash, non-zero exit, or timeout: fail closed for enforce-tier.
+    const detail = err instanceof Error ? err.message : "dispatcher error"
+    failClosed(policyId, `Enforce-tier hook failed (${detail}).`)
   }
   const trimmed = stdout.trim()
   if (!trimmed) {
-    return
+    failClosed(policyId, "Enforce-tier hook returned empty stdout.")
   }
   let decision: unknown
   try {
     decision = JSON.parse(trimmed)
   } catch {
-    return
+    failClosed(policyId, "Enforce-tier hook returned non-JSON stdout.")
   }
   if (isDeny(decision)) {
     throw new Error(`[wagents-hook-bridge:${policyId}] ${denyReason(decision as Record<string, unknown>)}`)

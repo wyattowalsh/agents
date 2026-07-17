@@ -5,24 +5,96 @@
   "category": "docs/reference",
   "inspected_commit_sha": "525453042fae77b81da12ce1f27709c0978ea2a6",
   "license": "MIT",
-  "latest_release_or_commit_date": "github-pushed-at:2026-06-30T05:07:34Z",
+  "latest_release_or_commit_date": "github-pushed-at:2026-07-07T05:08:00Z",
   "artifact_types_found": [
-    "docs/reference"
+    "CLI/tool",
+    "MCP server",
+    "agent",
+    "docs/reference",
+    "library",
+    "plugin",
+    "skill"
   ],
-  "install_or_integration_decision": "merge_into_existing",
-  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
-  "auth_required": false,
-  "env_vars_or_credentials": [],
+  "install_or_integration_decision": "integrated_mcp_surface",
+  "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+  "auth_required": true,
+  "env_vars_or_credentials": [
+    "BFL_API_KEY",
+    "CLOUDFLARE_ACCOUNT_ID",
+    "CLOUDFLARE_API_TOKEN",
+    "FAL_API_KEY",
+    "FREEPIK_API_KEY",
+    "GEMINI_API_KEY",
+    "GOOGLE_API_KEY",
+    "HF_TOKEN",
+    "HORDE_API_KEY",
+    "HUGGINGFACE_API_KEY",
+    "IDEOGRAM_API_KEY",
+    "LEONARDO_API_KEY",
+    "NIM_API_KEY",
+    "NVIDIA_API_KEY",
+    "OPENAI_API_KEY",
+    "PIXAZO_API_KEY",
+    "RECRAFT_API_KEY",
+    "REPLICATE_API_KEY",
+    "REPLICATE_API_TOKEN",
+    "STABILITY_API_KEY",
+    "TOGETHER_API_KEY"
+  ],
   "safety_notes": "No elevated keyword risk detected.",
   "attribution_notes": "Preserve attribution to MohamedAbdallah-14/prompt-to-asset; verify license before adapting content.",
-  "files_added": [],
-  "files_modified": [],
+  "files_added": [
+    "docs/src/authoring/skills/app-icon.mdx",
+    "docs/src/authoring/skills/asset-enhancer.mdx",
+    "docs/src/authoring/skills/asset-validation-debug.mdx",
+    "docs/src/authoring/skills/brand-consistency.mdx",
+    "docs/src/authoring/skills/favicon.mdx",
+    "docs/src/authoring/skills/illustration.mdx",
+    "docs/src/authoring/skills/logo.mdx",
+    "docs/src/authoring/skills/og-image.mdx",
+    "docs/src/authoring/skills/svg-authoring.mdx",
+    "docs/src/authoring/skills/t2i-prompt-dialect.mdx",
+    "docs/src/authoring/skills/transparent-bg.mdx",
+    "docs/src/authoring/skills/ui-mockup-prompt.mdx",
+    "docs/src/authoring/skills/vectorize.mdx",
+    "docs/src/content/docs/skills/catalog/external/app-icon.mdx",
+    "docs/src/content/docs/skills/catalog/external/asset-enhancer.mdx",
+    "docs/src/content/docs/skills/catalog/external/asset-validation-debug.mdx",
+    "docs/src/content/docs/skills/catalog/external/brand-consistency.mdx",
+    "docs/src/content/docs/skills/catalog/external/favicon.mdx",
+    "docs/src/content/docs/skills/catalog/external/illustration.mdx",
+    "docs/src/content/docs/skills/catalog/external/logo.mdx",
+    "docs/src/content/docs/skills/catalog/external/og-image.mdx",
+    "docs/src/content/docs/skills/catalog/external/svg-authoring.mdx",
+    "docs/src/content/docs/skills/catalog/external/t2i-prompt-dialect.mdx",
+    "docs/src/content/docs/skills/catalog/external/transparent-bg.mdx",
+    "docs/src/content/docs/skills/catalog/external/ui-mockup-prompt.mdx",
+    "docs/src/content/docs/skills/catalog/external/vectorize.mdx",
+    "planning/manifests/candidate-corpus-jul2026/records/172-mohamedabdallah-14-prompt-to-asset.json"
+  ],
+  "files_modified": [
+    "config/mcp-registry.json",
+    "config/plugin-extension-registry.json",
+    "docs/public/generated-registries/skills-catalog-browser-index.json",
+    "docs/public/generated-registries/skills-catalog-index.json",
+    "mcp/mcphub/mcp_settings.json",
+    "planning/manifests/candidate-corpus-jul2026/all-records.json",
+    "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
+    "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
+    "planning/manifests/candidate-corpus-jul2026/harness-install-assurance.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-decisions.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-targets.json",
+    "planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json"
+  ],
   "tests_or_checks_run": [
     "git ls-remote --symref",
-    "gh api repos/{owner}/{repo}"
+    "gh api repos/MohamedAbdallah-14/prompt-to-asset",
+    "uv run python scripts/audit_candidate_deep_sources.py --check",
+    "uv run python scripts/apply_candidate_corpus_promotions.py --check",
+    "uv run python scripts/promote_candidate_corpus.py --final-check"
   ],
   "skipped_reason": "",
-  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "reviewer_notes": "Deep source audit completed at ref main. Reviewed promotion overlay applied 13 catalog row(s) and verified 13 live-install evidence row(s).",
   "raw_index": 172,
   "normalized_index": "https://github.com/MohamedAbdallah-14/prompt-to-asset",
   "duplicate_group": [],
@@ -31,16 +103,16 @@
   "canonical_source": "https://github.com/MohamedAbdallah-14/prompt-to-asset",
   "risk_tier": "standard-review",
   "risk_keywords": [],
-  "support_tier": "discovery-only",
+  "support_tier": "curated-installable-final",
   "phase_status": {
     "source_capture": "completed",
-    "deep_research": "completed-public-metadata",
+    "deep_research": "completed-deep-source-audit",
     "overlap": "completed",
     "security": "completed-static",
     "license": "completed-static",
-    "compliance": "completed-static",
+    "compliance": "completed-deep-auth-reconciled",
     "docs_impact": "completed",
-    "decision": "completed"
+    "decision": "completed-overlay-reconciled"
   },
   "source_capture_packet": {
     "git_status": "ok",
@@ -56,8 +128,8 @@
     "full_name": "MohamedAbdallah-14/prompt-to-asset",
     "html_url": "https://github.com/MohamedAbdallah-14/prompt-to-asset",
     "default_branch": "main",
-    "pushed_at": "2026-06-30T05:07:34Z",
-    "updated_at": "2026-07-06T19:09:39Z",
+    "pushed_at": "2026-07-07T05:08:00Z",
+    "updated_at": "2026-07-08T16:54:35Z",
     "license_spdx_id": "MIT",
     "license_name": "MIT License",
     "language": "TypeScript",
@@ -98,11 +170,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -125,11 +197,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -158,8 +230,8 @@
       "docs/src/authoring/skills/ui-mockup-prompt.mdx",
       "docs/src/authoring/skills/vectorize.mdx"
     ],
-    "mcp_registry_match": false,
-    "plugin_registry_match": false
+    "mcp_registry_match": true,
+    "plugin_registry_match": true
   },
   "security_packet": {
     "candidate_code_executed": false,
@@ -172,8 +244,31 @@
     "license_name": "MIT License"
   },
   "compliance_packet": {
-    "auth_required": false,
-    "env_vars_or_credentials": []
+    "auth_required": true,
+    "env_vars_or_credentials": [
+      "BFL_API_KEY",
+      "CLOUDFLARE_ACCOUNT_ID",
+      "CLOUDFLARE_API_TOKEN",
+      "FAL_API_KEY",
+      "FREEPIK_API_KEY",
+      "GEMINI_API_KEY",
+      "GOOGLE_API_KEY",
+      "HF_TOKEN",
+      "HORDE_API_KEY",
+      "HUGGINGFACE_API_KEY",
+      "IDEOGRAM_API_KEY",
+      "LEONARDO_API_KEY",
+      "NIM_API_KEY",
+      "NVIDIA_API_KEY",
+      "OPENAI_API_KEY",
+      "PIXAZO_API_KEY",
+      "RECRAFT_API_KEY",
+      "REPLICATE_API_KEY",
+      "REPLICATE_API_TOKEN",
+      "STABILITY_API_KEY",
+      "TOGETHER_API_KEY"
+    ],
+    "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
   },
   "docs_steward_surfaces": [
     "README",
@@ -188,13 +283,34 @@
     "reports",
     "skill-research"
   ],
-  "docs_steward_status": "packet-generated",
+  "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "merge_into_existing",
-    "reason": "Existing repo catalog or registry surface already covers this source/domain."
+    "decision": "integrated_mcp_surface",
+    "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "required_before_promotion": "human trust-gate review"
+    "terminal_route": "integrated-mcp-surface",
+    "required_before_live_execution": "explicit user-owned command and credential setup",
+    "scope": "historical-intake-research-only"
+  },
+  "intake_artifact_types_found": [
+    "CLI/tool",
+    "MCP server",
+    "agent",
+    "docs/reference",
+    "library",
+    "plugin",
+    "skill"
+  ],
+  "intake_support_tier": "discovery-only",
+  "intake_docs_steward_status": "packet-generated",
+  "final_integration": {
+    "status": "installable-curated-external",
+    "mutation_applied": true,
+    "catalog_rows": 13,
+    "harness_assurance": "harness-install-assurance.json",
+    "non_skill_assurance": "non-skill-install-assurance.json",
+    "runtime_disposition": "installed-mixed-runtime"
   }
 }

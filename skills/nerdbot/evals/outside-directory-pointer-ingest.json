@@ -1,0 +1,19 @@
+{
+  "skills": [
+    "nerdbot"
+  ],
+  "query": "/nerdbot ingest --root ./knowledge-base --source ../incoming-directory --apply",
+  "files": [
+    "../incoming-directory",
+    "knowledge-base/raw/sources",
+    "knowledge-base/indexes/source-map.md",
+    "knowledge-base/activity/log.md"
+  ],
+  "expected_behavior": [
+    "Dispatches to Ingest for the provided directory path.",
+    "Treats outside-root directories as pointer-only by default rather than copying a manifest silently.",
+    "Explains that --copy-outside-root is required before copying outside-root directory details into raw/.",
+    "Updates source-map provenance and activity logs when the applied pointer stub is written.",
+    "Does not silently truncate directory evidence without a visible truncation note."
+  ]
+}

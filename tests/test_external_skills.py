@@ -26,10 +26,12 @@ def _write_authoring_mdx(
     trust_tier: str = "curated-trust-gated",
     provenance_status: str = "verified-install-command",
     selector_mode: str = "named",
+    target_agents: tuple[str, ...] = ("codex",),
 ) -> Path:
     install_source = install_source or source
     sync_kind_line = f"sync_kind: {sync_kind}\n" if sync_kind is not None else ""
     path = authoring_dir / f"{name}.mdx"
+    targets = ", ".join(target_agents)
     path.write_text(
         f"""---
 name: {name}
@@ -41,7 +43,7 @@ status: {status}
 trust_tier: {trust_tier}
 provenance_status: {provenance_status}
 source_url: https://github.com/{source}
-target_agents: [codex]
+target_agents: [{targets}]
 {sync_kind_line}selector_mode: {selector_mode}
 install_command: {install_command}
 ---
@@ -342,6 +344,33 @@ def test_read_external_skill_entries_strict_rejects_index_mismatch(tmp_path, mon
 
     with pytest.raises(ExternalSkillCatalogError, match=r"mismatched index rows.*demo-skill"):
         read_external_skill_entries(strict=True)
+
+
+def test_read_external_skill_entries_strict_accepts_public_grok_command_normalization(tmp_path, monkeypatch):
+    authoring_dir = tmp_path / "authoring" / "skills"
+    authoring_dir.mkdir(parents=True)
+    _write_authoring_mdx(
+        authoring_dir,
+        "demo-skill",
+        install_command="npx skills add owner/repo --skill demo-skill -y -g -a codex grok",
+        target_agents=("codex", "grok"),
+    )
+    index_path = tmp_path / "skills-catalog-index.json"
+    _write_catalog_index(
+        index_path,
+        [
+            _catalog_row(
+                install_command="npx skills add owner/repo --skill demo-skill -y -g -a codex",
+                target_agents=["codex", "grok"],
+            )
+        ],
+    )
+    monkeypatch.setattr("wagents.skill_index.AUTHORING_SKILLS_DIR", authoring_dir)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", index_path)
+
+    entries = read_external_skill_entries(strict=True)
+
+    assert entries[0].target_agents == ("codex", "grok")
 
 
 def test_read_external_skill_entries_falls_back_to_index_without_authoring(tmp_path, monkeypatch):

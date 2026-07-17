@@ -48,7 +48,7 @@ def test_flagship_skill_meets_gate(entry: dict) -> None:
     assert evals_manifest.is_file(), f"missing evals/evals.json for flagship skill {name}"
     payload = json.loads(evals_manifest.read_text(encoding="utf-8"))
     eval_items = payload.get("evals") or payload.get("cases") or []
-    assert len(eval_items) >= 1, f"{name} must have at least one eval case"
+    assert len(eval_items) >= 3, f"{name} must have at least three eval cases (flagship gate)"
 
 
 def test_flagship_manifest_matches_catalog_index(manifest: dict) -> None:

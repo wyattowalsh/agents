@@ -37,17 +37,26 @@ def test_justfile_uses_config_driven_ruff_and_ty() -> None:
             assert not re.search(pattern, line), f"justfile hard-codes paths: {line.strip()}"
 
 
-def test_ci_workflows_install_just_at_least_1_52() -> None:
+def _justfile_minimum_version() -> Version:
+    text = _read(ROOT / "justfile")
+    match = re.search(r'^set minimum-version := "([0-9.]+)"$', text, re.MULTILINE)
+    assert match is not None, "justfile must declare minimum-version"
+    return Version(match.group(1))
+
+
+def test_ci_workflows_install_just_at_least_declared_minimum() -> None:
     text = _read(ROOT / ".github" / "workflows" / "ci.yml")
     match = re.search(r"JUST_VERSION:\s*([0-9.]+)", text)
     assert match is not None, "ci.yml must pin JUST_VERSION for workflows job"
-    assert Version(match.group(1)) >= Version("1.52.0")
+    minimum = _justfile_minimum_version()
+    assert minimum >= Version("1.55.0")
+    assert Version(match.group(1)) >= minimum
 
 
 def test_justfile_has_safe_default() -> None:
     justfile = _read(ROOT / "justfile")
-    assert "set default-list := true" in justfile
-    assert "minimum 1.52.0" in justfile
+    assert re.search(r"^set default-list(?:\s*:=\s*true)?$", justfile, re.MULTILINE)
+    assert "minimum 1.55.0" in justfile
     default_idx = justfile.find("[default]")
     install_idx = justfile.find("\ninstall:")
     assert default_idx != -1, "justfile must declare a [default] recipe"

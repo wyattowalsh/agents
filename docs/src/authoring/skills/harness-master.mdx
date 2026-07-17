@@ -1,6 +1,6 @@
 ---
 name: "harness-master"
-description: "Audit harness configs, discover gaps, usage signals, apply approved fixes. Use when tuning Claude, Codex, Copilot, Cursor, Gemini, Grok, OpenCode, or Cherry. NOT agents, MCP, or app telemetry."
+description: "Audit harness configs, discover gaps, usage signals, apply approved fixes. Use when tuning Claude, Codex, Copilot, Cursor, Gemini, Grok, OpenCode, Cherry, or LM Studio. NOT agents, MCP, or app telemetry."
 license: "MIT"
 model: "opus"
 source_kind: "custom"
@@ -55,7 +55,7 @@ If the user invokes `/harness-master` with no arguments:
 
 ## Input Normalization
 
-- Supported harnesses: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`
+- Supported harnesses: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
 - Supported levels: `project`, `global`, `both`
 - Supported research categories: `config`, `plugin`, `extension`, `mcp`, `skill`, `all`
 - Supported usage windows: positive day counts such as `7`, `14`, `30`, or `days=14`; default to `14` when absent
@@ -74,13 +74,14 @@ If the user invokes `/harness-master` with no arguments:
   - `opencode`, `open-code` -> `opencode`
   - `perplexity`, `perplexity-desktop`, `perplexity-mac` -> `perplexity-desktop`
   - `cherry`, `cherrystudio`, `cherry-ai`, `cherry-studio` -> `cherry-studio`
+  - `lm-studio`, `lmstudio`, `lms` -> `lm-studio`
 - Level aliases:
   - `project`, `repo`, `local` -> `project`
   - `global`, `user` -> `global`
   - `both`, `all-levels` -> `both`
 - Split multiple harnesses on commas and whitespace.
 - If the user supplies both `all` and named harnesses, ask which form they want.
-- Deterministic `all` order: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`
+- Deterministic `all` order: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
 - Unknown tokens are never guessed. Ask one focused clarification question.
 
 
@@ -102,7 +103,7 @@ If the user invokes `/harness-master` with no arguments:
 3. If the request is `discover ...`, gap/missing/expand intent, or find-best-for-harness NL, run Discover (infer depth via `classify_intent.py` or discovery-pipeline.md).
 4. If the request is `usage ...`, run Usage Review only.
 5. If the request is `install ...`, run Install Guidance only.
-6. If ad-hoc "find skill for X", redirect to find-skills. If create skill, redirect to skill-creator. If open-ended non-harness research, redirect to `/research`.
+6. If ad-hoc "find skill for X", redirect to `skill-router search` or `npx skills find`. If systematic skill/MCP expansion, stay in Discover. If create skill, redirect to skill-creator. If open-ended non-harness research, redirect to `/research`.
 7. If the request is `apply ...` or an approval phrase, run Apply Approved only if the matching dry-run review already exists in this session. Otherwise rerun audit first.
 8. If the request includes unsupported harnesses, refuse cleanly and list the supported set.
 9. If harnesses are missing (audit/usage), ask only for harnesses or `all`.
@@ -233,7 +234,7 @@ After changing this skill, run:
 ```bash
 python scripts/check.py
 uv run python scripts/usage_probe.py --repo-root . --harness opencode --level both --days 14 --json
-uv run python scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness github-copilot-web --harness github-copilot-cli --harness cursor --harness gemini-cli --harness antigravity --harness opencode --harness perplexity-desktop --harness cherry-studio
+uv run python scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness github-copilot-web --harness github-copilot-cli --harness cursor --harness gemini-cli --harness antigravity --harness opencode --harness perplexity-desktop --harness cherry-studio --harness lm-studio
 ```
 
 Completion criteria:

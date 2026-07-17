@@ -1,11 +1,11 @@
 {
   "most_linked_pages": [
     {
-      "backlinks": 1676,
+      "backlinks": 1616,
       "slug": "/cli"
     },
     {
-      "backlinks": 1608,
+      "backlinks": 1548,
       "slug": "/skills/catalog"
     },
     {
@@ -17,24 +17,24 @@
       "slug": "/agents"
     },
     {
-      "backlinks": 22,
+      "backlinks": 23,
       "slug": "/mcp"
     },
     {
-      "backlinks": 9,
+      "backlinks": 10,
       "slug": "/skills/catalog/custom/review"
     },
     {
-      "backlinks": 8,
-      "slug": "/skills/catalog/custom/research"
+      "backlinks": 7,
+      "slug": "/harness-config/mcp-registry"
     },
     {
       "backlinks": 7,
       "slug": "/skills/catalog/custom/mcp-creator"
     },
     {
-      "backlinks": 6,
-      "slug": "/harness-config/mcp-registry"
+      "backlinks": 7,
+      "slug": "/skills/catalog/custom/wargame"
     },
     {
       "backlinks": 6,
@@ -53,45 +53,17 @@
       "slug": "/skills/catalog/custom/security-scanner"
     },
     {
-      "backlinks": 6,
-      "slug": "/skills/catalog/custom/wargame"
+      "backlinks": 5,
+      "slug": "/contributing"
     },
     {
       "backlinks": 5,
-      "slug": "/contributing"
+      "slug": "/skills/catalog/custom/design"
     }
   ],
   "note": "Counts static absolute-path markdown and MDX/HTML href links only (paths like /foo/); relative links, generated sidebars, and client-created links are not resolved.",
-  "orphan_count": 27,
-  "orphan_pages": [
-    "/skill-research/accessibility",
-    "/skill-research/baseline-ui",
-    "/skill-research/building-native-ui",
-    "/skill-research/ckm:*",
-    "/skill-research/design-agent",
-    "/skill-research/design-doc-mermaid",
-    "/skill-research/design-md",
-    "/skill-research/design-task",
-    "/skill-research/design-taste-frontend",
-    "/skill-research/emil-design-eng",
-    "/skill-research/extract-design-system",
-    "/skill-research/figma-code-connect",
-    "/skill-research/figma-generate-design",
-    "/skill-research/figma-implement-design",
-    "/skill-research/fixing-accessibility",
-    "/skill-research/fixing-metadata",
-    "/skill-research/frontend-designer",
-    "/skill-research/impeccable",
-    "/skill-research/react:components",
-    "/skill-research/shadcn",
-    "/skill-research/shieldcn-badges",
-    "/skill-research/sleek-design-mobile-apps",
-    "/skill-research/stitch-loop",
-    "/skill-research/stitch::generate-design",
-    "/skill-research/tailwind-design-system",
-    "/skill-research/ui-ux-pro-max",
-    "/skill-research/web-design-guidelines"
-  ],
-  "total_internal_links": 3996,
-  "total_pages": 2085
+  "orphan_count": 0,
+  "orphan_pages": [],
+  "total_internal_links": 3910,
+  "total_pages": 1997
 }

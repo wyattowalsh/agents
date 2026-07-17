@@ -31,6 +31,16 @@ DEFAULT_ALLOWED_PREFIXES: tuple[str, ...] = (
     "AGENTS.md",
 )
 
+# Machine-local / secret-adjacent MCP trees under the bare ``mcp/`` prefix.
+# Matched as exact first path segment after ``mcp/``.
+DEFAULT_DENIED_MCP_SUBDIRS: tuple[str, ...] = (
+    "secrets",
+    "servers",
+    "notes",
+    "archives",
+    "cache",
+)
+
 
 class PathNotAllowedError(PermissionError):
     """Raised when a requested relative path falls outside the read-only allowlist."""
@@ -67,6 +77,11 @@ def resolve_read_only_path(
         raise PathNotAllowedError(f"Path escapes the repository root: {relative_path!r}") from exc
 
     rel_str = rel.as_posix()
+    parts = rel.parts
+    if len(parts) >= 2 and parts[0] == "mcp" and parts[1] in DEFAULT_DENIED_MCP_SUBDIRS:
+        raise PathNotAllowedError(
+            f"Path is under a denied local MCP directory: {relative_path!r}"
+        )
     allowed = any(rel_str == prefix or rel_str.startswith(f"{prefix.rstrip('/')}/") for prefix in allowed_prefixes)
     if not allowed:
         raise PathNotAllowedError(f"Path is outside the read-only allowlist: {relative_path!r}")

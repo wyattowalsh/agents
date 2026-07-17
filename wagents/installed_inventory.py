@@ -119,7 +119,10 @@ GROK_SKILL_SCAN_SOURCES: tuple[tuple[Path, str], ...] = (
 LOCAL_SKILL_ROOT_FALLBACKS: dict[str, tuple[tuple[Path, str], ...]] = {
     "antigravity": ((Path(".agents") / "skills", "Antigravity"),),
     "claude-code": ((Path(".claude") / "skills", "Claude Code"),),
-    "codex": ((Path(".codex") / "skills", "Codex"),),
+    "codex": (
+        (Path(".codex") / "skills", "Codex"),
+        (Path(".agents") / "skills", "Codex"),
+    ),
     "crush": (
         (Path(".config") / "crush" / "skills", "Crush"),
         (Path(".agents") / "skills", "Crush"),
@@ -128,9 +131,18 @@ LOCAL_SKILL_ROOT_FALLBACKS: dict[str, tuple[tuple[Path, str], ...]] = {
         (Path(".cursor") / "skills", "Cursor"),
         (Path(".agents") / "skills", "Cursor"),
     ),
-    "gemini-cli": ((Path(".gemini") / "skills", "Gemini CLI"),),
-    "github-copilot": ((Path(".copilot") / "skills", "GitHub Copilot"),),
-    "opencode": ((Path(".config") / "opencode" / "skills", "OpenCode"),),
+    "gemini-cli": (
+        (Path(".gemini") / "skills", "Gemini CLI"),
+        (Path(".agents") / "skills", "Gemini CLI"),
+    ),
+    "github-copilot": (
+        (Path(".copilot") / "skills", "GitHub Copilot"),
+        (Path(".agents") / "skills", "GitHub Copilot"),
+    ),
+    "opencode": (
+        (Path(".config") / "opencode" / "skills", "OpenCode"),
+        (Path(".agents") / "skills", "OpenCode"),
+    ),
 }
 
 SKILL_EXPOSURE_ROOTS: tuple[tuple[str, Path, str, str], ...] = (
@@ -154,21 +166,19 @@ PROJECT_SKILL_EXPOSURE_ROOTS: tuple[tuple[str, Path, str, str], ...] = (
 
 TREE_HASH_ALWAYS_FILES = ("SKILL.md", "metadata.json")
 TREE_HASH_INCLUDED_DIRS = frozenset(("evals", "examples", "references", "scripts", "templates"))
-TREE_HASH_IGNORED_DIRS = frozenset(
-    (
-        ".cache",
-        ".git",
-        ".mypy_cache",
-        ".pytest_cache",
-        ".ruff_cache",
-        ".tox",
-        ".venv",
-        "__pycache__",
-        "build",
-        "dist",
-        "node_modules",
-    )
-)
+TREE_HASH_IGNORED_DIRS = frozenset((
+    ".cache",
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".tox",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "node_modules",
+))
 
 
 @dataclass(frozen=True)
@@ -215,6 +225,7 @@ class InstalledSkillInventoryRow:
     discovered_in: tuple[str, ...]
     target_agents: tuple[str, ...]
     unresolved_reason: str = ""
+    audited_head: str = ""
     sync_kind: str = ""
     exposure_owner: str = ""
     duplicate_class: str = DUPLICATE_CLASS_NONE
@@ -228,10 +239,15 @@ class InstalledSkillInventoryRow:
         return self.provenance_status == "verified-curated-external"
 
     def is_installable(self) -> bool:
-        return self.is_syncable() and bool(self.install_command) and self.provenance_status not in {
-            "curated-unresolved",
-            "read-only-discovered",
-        }
+        return (
+            self.is_syncable()
+            and bool(self.install_command)
+            and self.provenance_status
+            not in {
+                "curated-unresolved",
+                "read-only-discovered",
+            }
+        )
 
     def is_syncable(self) -> bool:
         return infer_sync_kind(self.sync_kind, self.install_command) == SYNC_KIND_SKILLS_CLI
@@ -1354,6 +1370,7 @@ def external_entry_to_inventory_row(entry: ExternalSkillEntry) -> InstalledSkill
         discovered_in=(),
         target_agents=entry.target_agents,
         unresolved_reason="",
+        audited_head=entry.audited_head,
         sync_kind=infer_sync_kind(entry.sync_kind, install_command),
         docs_status=DOCS_STATUS_DOCUMENTED,
     )
@@ -1440,10 +1457,7 @@ def merge_desired_with_installed(
             install_command=(
                 row.install_command
                 if row.install_command
-                and (
-                    row.provenance_status == "verified-curated-external"
-                    or row.provenance_status == "repo-owned"
-                )
+                and (row.provenance_status == "verified-curated-external" or row.provenance_status == "repo-owned")
                 else (row.install_command or existing.install_command)
             ),
             provenance_status=row.provenance_status or existing.provenance_status,
@@ -1451,6 +1465,7 @@ def merge_desired_with_installed(
             selector_mode=row.selector_mode or existing.selector_mode,
             target_agents=row.target_agents or existing.target_agents,
             unresolved_reason=row.unresolved_reason or existing.unresolved_reason,
+            audited_head=row.audited_head or existing.audited_head,
             sync_kind=row.sync_kind or existing.sync_kind,
         )
     merged_rows = tuple(sorted(by_name.values(), key=lambda item: item.name))

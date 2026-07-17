@@ -26,6 +26,26 @@
         "hooks": [
           {
             "type": "command",
+            "command": "./hooks/run-wagents-hook destructive-shell-guard --harness claude-code",
+            "timeout": 5
+          }
+        ],
+        "matcher": "Bash|bash|run_shell_command|Shell"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/run-wagents-hook protected-file-guard --harness claude-code",
+            "timeout": 5
+          }
+        ],
+        "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
             "command": "./hooks/run-wagents-hook git-commit-push-guard --harness claude-code",
             "timeout": 5
           }

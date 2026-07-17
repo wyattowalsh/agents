@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import os
 import re
 import sqlite3
@@ -12,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from nerdbot.contracts import GENERATED_ARTIFACTS
+from nerdbot.evidence import apply_confidence_cap
 from nerdbot.safety import (
     ensure_safe_target,
     fsync_parent_directory,
@@ -20,7 +22,7 @@ from nerdbot.safety import (
 )
 
 SEARCH_ROOTS = ("wiki", "indexes")
-TOKEN_PATTERN = re.compile(r"[A-Za-z0-9_]+")
+TOKEN_PATTERN = re.compile(r"\w+", re.UNICODE)
 HEADING_PATTERN = re.compile(r"^(?P<marks>#{1,6})\s+(?P<title>.+?)\s*$", re.MULTILINE)
 BLOCK_REF_PATTERN = re.compile(r"\^(?P<block>[A-Za-z0-9_-]+)\b")
 SOURCE_ID_PATTERN = re.compile(r"\b(?:source_id|source-id|src)[:=\s]+(?P<id>src-[A-Za-z0-9_-]+)", re.IGNORECASE)
@@ -73,6 +75,13 @@ class FtsBuildResult:
 def tokenize(value: str) -> set[str]:
     """Tokenize text for deterministic lexical matching."""
     return {token.lower() for token in TOKEN_PATTERN.findall(value)}
+
+
+def _confidence_from_overlap(text: str, query_tokens: set[str], freshness_class: str) -> float:
+    """Return a freshness-capped lexical confidence heuristic."""
+    overlap = len(query_tokens & tokenize(text))
+    base_confidence = min(0.95, 0.35 + overlap / max(len(query_tokens), 1))
+    return apply_confidence_cap(base_confidence, freshness_class)
 
 
 def extract_frontmatter_metadata(text: str) -> dict[str, Any]:
@@ -195,7 +204,9 @@ def query_lexical(root: Path, query: str, *, limit: int = 5) -> list[QueryResult
                 snippet=build_snippet(document.text, query_tokens),
                 source_ids=document.source_ids,
                 freshness_class=document.freshness_class,
-                confidence=min(0.95, 0.35 + score / max(len(query_tokens), 1)),
+                confidence=apply_confidence_cap(
+                    min(0.95, 0.35 + score / max(len(query_tokens), 1)), document.freshness_class
+                ),
                 raw_inspection_needed=not document.source_ids,
             )
         )
@@ -238,7 +249,40 @@ def _populate_fts(connection: sqlite3.Connection, documents: list[SearchDocument
             for document in documents
         ],
     )
+    connection.execute("CREATE TABLE nerdbot_meta(key TEXT PRIMARY KEY, value TEXT NOT NULL)")
+    connection.execute(
+        "INSERT INTO nerdbot_meta(key, value) VALUES ('corpus_signature', ?)",
+        (_corpus_signature(documents),),
+    )
     connection.commit()
+
+
+def _corpus_signature(documents: list[SearchDocument]) -> str:
+    """Return a stable signature for the current searchable corpus."""
+    digest = hashlib.sha256()
+    for document in sorted(documents, key=lambda item: (item.path, item.heading or "", item.block_ref or "")):
+        digest.update(document.path.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update((document.heading or "").encode("utf-8"))
+        digest.update(b"\0")
+        digest.update((document.block_ref or "").encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(document.freshness_class.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update("\n".join(document.source_ids).encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(document.text.encode("utf-8"))
+        digest.update(b"\0\0")
+    return digest.hexdigest()
+
+
+def _read_corpus_signature(connection: sqlite3.Connection) -> str | None:
+    """Read the persisted corpus signature, if this index has one."""
+    try:
+        row = connection.execute("SELECT value FROM nerdbot_meta WHERE key = 'corpus_signature'").fetchone()
+    except sqlite3.Error:
+        return None
+    return str(row[0]) if row else None
 
 
 def build_fts_index(root: Path, *, index_path: Path | None = None) -> FtsBuildResult:
@@ -278,8 +322,9 @@ def _query_connection(connection: sqlite3.Connection, query_text: str, *, limit:
     ).fetchall()
     results: list[QueryResult] = []
     for path, heading, block_ref, text, source_ids, freshness_class, rank in rows:
-        score = max(0.35, min(0.95, 0.9 - float(rank)))
+        del rank
         result_source_ids = tuple(value for value in str(source_ids).split("\n") if value)
+        result_freshness_class = freshness_class or "unknown"
         results.append(
             QueryResult(
                 path=path,
@@ -287,8 +332,8 @@ def _query_connection(connection: sqlite3.Connection, query_text: str, *, limit:
                 block_ref=block_ref or None,
                 snippet=build_snippet(text, tokens),
                 source_ids=result_source_ids,
-                freshness_class=freshness_class or "unknown",
-                confidence=score,
+                freshness_class=result_freshness_class,
+                confidence=_confidence_from_overlap(text, tokens, result_freshness_class),
                 raw_inspection_needed=not result_source_ids,
             )
         )
@@ -301,10 +346,15 @@ def query_fts(root: Path, query_text: str, *, limit: int = 5, index_path: Path |
     if not tokens:
         return []
     resolved_index_path, _rel_index_path = _safe_fts_index_path(root, index_path)
-    if resolved_index_path.exists():
-        with closing(_connect_fts(resolved_index_path)) as connection:
-            return _query_connection(connection, query_text, limit=limit)
     documents = iter_search_documents(root)
+    current_signature = _corpus_signature(documents)
+    if resolved_index_path.exists():
+        try:
+            with closing(_connect_fts(resolved_index_path)) as connection:
+                if _read_corpus_signature(connection) == current_signature:
+                    return _query_connection(connection, query_text, limit=limit)
+        except sqlite3.Error:
+            pass
     with closing(_connect_fts(None)) as connection:
         _populate_fts(connection, documents)
         return _query_connection(connection, query_text, limit=limit)

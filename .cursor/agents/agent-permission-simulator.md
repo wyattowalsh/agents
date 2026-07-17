@@ -2,7 +2,7 @@
 name: agent-permission-simulator
 description: Scaffold for simulating agent permission decisions against sample tool
   calls (planned).
-model: inherit
+model: cursor-grok-4.5-high
 readonly: true
 ---
 

@@ -161,6 +161,38 @@ PROJECT_SURFACES: dict[str, list[dict[str, str]]] = {
     "cherry-studio": [
         {"label": "project presets", "path": ".cherry/presets/*.json", "kind": "config", "role": "repo-observed"},
     ],
+    "lm-studio": [
+        {
+            "label": "lm-studio platform adapter",
+            "path": "wagents/platforms/lm_studio.py",
+            "kind": "config",
+            "role": "repo-observed",
+        },
+        {
+            "label": "lm-studio instruction overlay",
+            "path": "instructions/lm-studio-global.md",
+            "kind": "instructions",
+            "role": "authoritative",
+        },
+        {
+            "label": "lm-studio local provider policy",
+            "path": "config/tooling-policy.json",
+            "kind": "config",
+            "role": "repo-observed",
+        },
+        {
+            "label": "portable agents source",
+            "path": "agents/*.md",
+            "kind": "agents",
+            "role": "repo-observed",
+        },
+        {
+            "label": "repo skills source",
+            "path": "skills/*/SKILL.md",
+            "kind": "skills",
+            "role": "repo-observed",
+        },
+    ],
 }
 
 
@@ -331,6 +363,38 @@ GLOBAL_SURFACES: dict[str, list[dict[str, str]]] = {
             "role": "repo-observed",
         },
     ],
+    "lm-studio": [
+        {
+            "label": "lm studio mcp (docs-canonical)",
+            "path": "~/.lmstudio/mcp.json",
+            "kind": "mcp",
+            "role": "authoritative",
+        },
+        {
+            "label": "lm studio config presets",
+            "path": "~/.lmstudio/config-presets/*.preset.json",
+            "kind": "instructions",
+            "role": "generated",
+        },
+        {
+            "label": "lm studio skills mirror",
+            "path": "~/.lmstudio/skills",
+            "kind": "skills",
+            "role": "secondary",
+        },
+        {
+            "label": "lm studio home pointer",
+            "path": "~/.lmstudio-home-pointer",
+            "kind": "config",
+            "role": "secondary",
+        },
+        {
+            "label": "lm studio settings",
+            "path": "~/.lmstudio/settings.json",
+            "kind": "config",
+            "role": "secondary",
+        },
+    ],
 }
 
 
@@ -421,6 +485,33 @@ BLIND_SPOTS: dict[str, list[tuple[str, str, str]]] = {
             "global",
             "Cherry Studio UI settings",
             "App settings such as default model and theme may only be observable through the UI.",
+        ),
+    ],
+    "lm-studio": [
+        (
+            "global",
+            "LM Studio Program MCP UI",
+            "In-app Edit mcp.json and tool-confirmation toggles are UI-managed beyond the file merge.",
+        ),
+        (
+            "global",
+            "Allow calling servers from mcp.json",
+            "API Server setting that exposes mcp.json tools to API clients is UI-managed and may require auth.",
+        ),
+        (
+            "global",
+            "LM Studio home path drift",
+            "Some installs use ~/.cache/lm-studio via ~/.lmstudio-home-pointer instead of ~/.lmstudio.",
+        ),
+        (
+            "global",
+            "Skills plugin requirement",
+            "Mirrored skills need a third-party skills plugin pointed at {home}/skills; Skills CLI has no lm-studio adapter.",
+        ),
+        (
+            "global",
+            "Hooks unsupported",
+            "LM Studio has no first-party hook surface projected by this repo.",
         ),
     ],
 }

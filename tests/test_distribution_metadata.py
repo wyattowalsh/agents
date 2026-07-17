@@ -454,6 +454,7 @@ def test_harness_surface_registry_splits_cloud_desktop_cli_and_editor_variants()
         "grok-build",
         "perplexity-desktop",
         "cherry-studio",
+        "lm-studio",
     }
 
     assert expected_ids.issubset(harnesses)
@@ -465,8 +466,25 @@ def test_harness_surface_registry_splits_cloud_desktop_cli_and_editor_variants()
     assert harnesses["cursor-acp"]["support_tier"] == "repo-present-validation-required"
     assert harnesses["perplexity-desktop"]["support_tier"] == "experimental"
     assert harnesses["cherry-studio"]["support_tier"] == "experimental"
+    assert harnesses["lm-studio"]["support_tier"] == "repo-present-validation-required"
+    assert set(harnesses["lm-studio"]["projection_surfaces"]) == {
+        "mcp",
+        "instructions",
+        "skills",
+        "agents",
+    }
+    lm_studio_contract = "\n".join([
+        *harnesses["lm-studio"]["caveats"],
+        (ROOT / "wagents" / "cli.py").read_text(encoding="utf-8"),
+    ])
+    assert "repo-owned skills" in lm_studio_contract
+    assert "default none" in lm_studio_contract
+    assert "compatible community plugins" in lm_studio_contract
+    assert "repo + global" not in lm_studio_contract
+    assert "global ~/.agents/skills" not in lm_studio_contract
     assert "skills" not in harnesses["claude-desktop"]["projection_surfaces"]
     assert "skills" not in harnesses["chatgpt"]["projection_surfaces"]
+    assert "hooks" not in harnesses["lm-studio"]["projection_surfaces"]
     assert "hooks" in harnesses["grok-build"]["projection_surfaces"]
 
 
@@ -490,6 +508,8 @@ def test_registry_core_freezes_support_tiers_and_plugin_sources():
         "codex-plugin",
         "opencode-runtime-plugins",
         "cherry-studio-mcp-import",
+        "lm-studio-mcp",
+        "lm-studio-surfaces",
     }
 
 
@@ -581,13 +601,9 @@ def test_harness_fixture_support_covers_every_harness_without_tier_promotion():
         else:
             assert evidence["rollback_coverage"] == "present"
             rollback_cmds = [
-                cmd
-                for cmd in evidence["validation_commands"]
-                if "test_harness_rollback_fixtures.py" in cmd
+                cmd for cmd in evidence["validation_commands"] if "test_harness_rollback_fixtures.py" in cmd
             ]
-            assert rollback_cmds, (
-                f"{harness_id} validated tier requires rollback fixture pytest in validation_commands"
-            )
+            assert rollback_cmds, f"{harness_id} validated tier requires rollback fixture pytest in validation_commands"
 
 
 def test_hook_surface_tiers_match_harness_registry_for_shared_ids():

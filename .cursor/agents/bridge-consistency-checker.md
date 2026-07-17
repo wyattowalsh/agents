@@ -1,7 +1,7 @@
 ---
 name: bridge-consistency-checker
 description: Verify instruction bridge and discovery parity across harness sync projections.
-model: inherit
+model: cursor-grok-4.5-high
 readonly: true
 ---
 

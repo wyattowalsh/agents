@@ -15,10 +15,31 @@ SRC_DIR = NERDBOT_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
+import nerdbot.operations as operations
+import nerdbot.workflows as workflows
 from nerdbot.cli import build_parser, main
-from nerdbot.contracts import MODES, OPERATION_JOURNAL_PATH
+from nerdbot.contracts import ACTIVITY_LOG_PATH, MODES, OPERATION_JOURNAL_PATH
 from nerdbot.graph import build_graph
+from nerdbot.operations import latest_operation_entries, load_operation_entries
 from nerdbot.retrieval import build_fts_index, query, query_fts
+
+
+class SimulatedCrash(BaseException):
+    """Model an abrupt process stop that bypasses normal failure transitions."""
+
+
+def _raise_simulated_crash(*args: object, **kwargs: object) -> None:
+    del args, kwargs
+    raise SimulatedCrash
+
+
+def _raise_normal_failure(*args: object, **kwargs: object) -> None:
+    del args, kwargs
+    raise OSError("normal failure")
+
+
+def _source_map_row_count(source_map: str, source_id: str) -> int:
+    return sum(line.startswith(f"| {source_id} |") for line in source_map.splitlines())
 
 
 def _payload(capsys) -> dict[str, Any]:  # type: ignore[no-untyped-def]
@@ -48,6 +69,7 @@ def test_create_apply_scaffolds_and_appends_operation_journal(tmp_path: Path, ca
     assert applied_payload["applied"] is True
     assert (root / "wiki" / "index.md").is_file()
     assert (root / OPERATION_JOURNAL_PATH).is_file()
+    assert "Scaffold Nerdbot KB layers" in (root / ACTIVITY_LOG_PATH).read_text(encoding="utf-8")
 
 
 def test_ingest_apply_captures_source_and_source_map(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
@@ -75,10 +97,49 @@ def test_ingest_apply_captures_source_and_source_map(tmp_path: Path, capsys) -> 
     assert main(["ingest", "--root", str(root), "--source", str(source_dir), "--apply", "--compact"]) == 0
     directory_payload = _payload(capsys)
     directory_raw_path = directory_payload["payload"]["source"]["raw_path"]  # type: ignore[index]
+    assert directory_payload["payload"]["source"]["writes_pointer_stub"] is True  # type: ignore[index]
+    assert "outside vault root" in (root / directory_raw_path).read_text(encoding="utf-8")
+
+    copy_source_dir = tmp_path / "incoming-dir-copy"
+    copy_source_dir.mkdir()
+    (copy_source_dir / "note.md").write_text("Directory note", encoding="utf-8")
+    assert (
+        main([
+            "ingest",
+            "--root",
+            str(root),
+            "--source",
+            str(copy_source_dir),
+            "--copy-outside-root",
+            "--apply",
+            "--compact",
+        ])
+        == 0
+    )
+    directory_payload = _payload(capsys)
+    directory_raw_path = directory_payload["payload"]["source"]["raw_path"]  # type: ignore[index]
     assert "note.md" in (root / directory_raw_path).read_text(encoding="utf-8")
+    assert "Capture source and update source map" in (root / ACTIVITY_LOG_PATH).read_text(encoding="utf-8")
 
 
-def test_ingest_refuses_to_overwrite_existing_raw_capture(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
+def test_inline_text_ingest_uses_content_derived_source_identity(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
+    root = tmp_path / "kb"
+    assert main(["create", "--root", str(root), "--apply", "--compact"]) == 0
+    capsys.readouterr()
+
+    assert main(["ingest", "--root", str(root), "--text", "Alpha source", "--apply", "--compact"]) == 0
+    first_payload = _payload(capsys)
+    assert main(["ingest", "--root", str(root), "--text", "Beta source", "--apply", "--compact"]) == 0
+    second_payload = _payload(capsys)
+
+    first_record = first_payload["payload"]["source"]["record"]  # type: ignore[index]
+    second_record = second_payload["payload"]["source"]["record"]  # type: ignore[index]
+    assert first_record["original_location"].startswith("inline:text:")
+    assert first_record["source_id"] != second_record["source_id"]
+    assert first_record["raw_path"] != second_record["raw_path"]
+
+
+def test_ingest_retry_reconciles_existing_identical_capture(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
     root = tmp_path / "kb"
     assert main(["create", "--root", str(root), "--apply", "--compact"]) == 0
     capsys.readouterr()
@@ -86,12 +147,148 @@ def test_ingest_refuses_to_overwrite_existing_raw_capture(tmp_path: Path, capsys
     assert main(["ingest", "--root", str(root), "--text", "Alpha source", "--apply", "--compact"]) == 0
     capsys.readouterr()
 
-    assert main(["ingest", "--root", str(root), "--text", "Alpha source", "--apply", "--compact"]) == 1
+    assert main(["ingest", "--root", str(root), "--text", "Alpha source", "--apply", "--compact"]) == 0
     payload = _payload(capsys)
 
     assert payload["command"] == "ingest"
-    assert payload["status"] == "error"
-    assert "Refusing to overwrite existing file" in payload["errors"][0]
+    assert payload["status"] == "applied"
+    source_id = payload["payload"]["source"]["record"]["source_id"]  # type: ignore[index]
+    source_map = (root / "indexes" / "source-map.md").read_text(encoding="utf-8")
+    assert _source_map_row_count(source_map, source_id) == 1
+
+
+@pytest.mark.parametrize("boundary", ["raw", "source-map-create", "source-map-row", "commit", "activity"])
+def test_ingest_resumes_or_reconciles_after_each_apply_boundary(
+    tmp_path: Path,
+    capsys,
+    monkeypatch: pytest.MonkeyPatch,
+    boundary: str,
+) -> None:  # type: ignore[no-untyped-def]
+    root = tmp_path / "kb"
+    assert main(["create", "--root", str(root), "--apply", "--compact"]) == 0
+    capsys.readouterr()
+
+    with monkeypatch.context() as patcher:
+        if boundary == "raw":
+            patcher.setattr(workflows, "write_bytes_reconcile_no_follow", _raise_simulated_crash)
+        elif boundary == "source-map-create":
+            patcher.setattr(workflows, "_ensure_source_map", _raise_simulated_crash)
+        elif boundary == "source-map-row":
+            patcher.setattr(workflows, "_append_unique_lines", _raise_simulated_crash)
+        elif boundary == "commit":
+            original_append_state = operations._append_operation_state_locked
+
+            def crash_on_commit(root_path, entries, entry):  # type: ignore[no-untyped-def]
+                if entry.status == "committed":
+                    raise SimulatedCrash
+                return original_append_state(root_path, entries, entry)
+
+            patcher.setattr(operations, "_append_operation_state_locked", crash_on_commit)
+        else:
+            patcher.setattr(
+                operations,
+                "append_activity_log_entry",
+                _raise_simulated_crash,
+            )
+
+        with pytest.raises(SimulatedCrash):
+            main(["ingest", "--root", str(root), "--text", "Crash-safe source", "--apply", "--compact"])
+    capsys.readouterr()
+
+    assert main(["ingest", "--root", str(root), "--text", "Crash-safe source", "--apply", "--compact"]) == 0
+    payload = _payload(capsys)
+    source_record = payload["payload"]["source"]["record"]  # type: ignore[index]
+    raw_path = source_record["raw_path"]
+    source_id = source_record["source_id"]
+    assert (root / raw_path).read_text(encoding="utf-8") == "Crash-safe source"
+    source_map = (root / "indexes" / "source-map.md").read_text(encoding="utf-8")
+    assert _source_map_row_count(source_map, source_id) == 1
+
+    entries = load_operation_entries((root / OPERATION_JOURNAL_PATH).read_text(encoding="utf-8"))
+    ingest_entries = [entry for entry in latest_operation_entries(entries) if entry.mode == "ingest"]
+    assert len(ingest_entries) == 1
+    assert all(entry.status == "committed" for entry in ingest_entries)
+
+
+def test_enrich_resumes_after_crash_between_draft_and_review_queue(
+    tmp_path: Path,
+    capsys,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:  # type: ignore[no-untyped-def]
+    root = tmp_path / "kb"
+    assert main(["create", "--root", str(root), "--apply", "--compact"]) == 0
+    capsys.readouterr()
+
+    with monkeypatch.context() as patcher:
+        patcher.setattr(
+            workflows,
+            "_append_unique_lines",
+            _raise_simulated_crash,
+        )
+        with pytest.raises(SimulatedCrash):
+            main([
+                "enrich",
+                "--root",
+                str(root),
+                "--target",
+                "raw/sources/a.md",
+                "--title",
+                "Alpha",
+                "--apply",
+                "--compact",
+            ])
+    capsys.readouterr()
+
+    assert (
+        main([
+            "enrich",
+            "--root",
+            str(root),
+            "--target",
+            "raw/sources/a.md",
+            "--title",
+            "Alpha",
+            "--apply",
+            "--compact",
+        ])
+        == 0
+    )
+    _payload(capsys)
+    assert (root / "wiki" / "drafts" / "alpha.md").is_file()
+    review_queue = (root / "indexes" / "review-queue.md").read_text(encoding="utf-8")
+    assert review_queue.count("Review draft `wiki/drafts/alpha.md`") == 1
+
+
+def test_ingest_normal_exception_records_failed_then_allows_reconciled_retry(
+    tmp_path: Path,
+    capsys,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:  # type: ignore[no-untyped-def]
+    root = tmp_path / "kb"
+    assert main(["create", "--root", str(root), "--apply", "--compact"]) == 0
+    capsys.readouterr()
+
+    with monkeypatch.context() as patcher:
+        patcher.setattr(workflows, "_append_unique_lines", _raise_normal_failure)
+        assert main(["ingest", "--root", str(root), "--text", "Retry source", "--apply", "--compact"]) == 1
+    failed_payload = _payload(capsys)
+    assert "normal failure" in failed_payload["errors"][0]
+
+    entries = load_operation_entries((root / OPERATION_JOURNAL_PATH).read_text(encoding="utf-8"))
+    ingest_entries = [entry for entry in latest_operation_entries(entries) if entry.mode == "ingest"]
+    assert [entry.status for entry in ingest_entries] == ["failed"]
+    failed_id = ingest_entries[0].operation_id
+    assert failed_id not in (root / ACTIVITY_LOG_PATH).read_text(encoding="utf-8")
+
+    assert main(["ingest", "--root", str(root), "--text", "Retry source", "--apply", "--compact"]) == 0
+    retry_payload = _payload(capsys)
+    source_id = retry_payload["payload"]["source"]["record"]["source_id"]  # type: ignore[index]
+    source_map = (root / "indexes" / "source-map.md").read_text(encoding="utf-8")
+    assert _source_map_row_count(source_map, source_id) == 1
+
+    entries = load_operation_entries((root / OPERATION_JOURNAL_PATH).read_text(encoding="utf-8"))
+    ingest_entries = [entry for entry in latest_operation_entries(entries) if entry.mode == "ingest"]
+    assert [entry.status for entry in ingest_entries] == ["failed", "committed"]
 
 
 def test_ingest_local_binary_source_preserves_bytes_and_checksum(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
@@ -171,6 +368,7 @@ def test_query_fts_graph_watch_and_replay_surfaces(tmp_path: Path, capsys) -> No
 
     results = query(root, "alpha", use_fts=True)
     assert results[0].source_ids == ("src-alpha",)
+    assert results[0].confidence <= 0.95
     assert query_fts(root, "alpha")
     assert not (root / "indexes" / "generated" / "nerdbot-fts.sqlite3").exists()
 
@@ -200,6 +398,37 @@ def test_query_fts_graph_watch_and_replay_surfaces(tmp_path: Path, capsys) -> No
     assert main(["replay", "--root", str(root), "--compact"]) == 0
     replay_payload = _payload(capsys)
     assert replay_payload["payload"]["results"]
+
+
+def test_query_fts_rebuilds_transiently_when_persisted_index_is_stale(tmp_path: Path) -> None:
+    root = tmp_path / "kb"
+    (root / "wiki").mkdir(parents=True)
+    (root / "indexes").mkdir()
+    note = root / "wiki" / "topic.md"
+    note.write_text("---\nfreshness: unknown\n---\n# Alpha\n\nsource_id: src-alpha\n", encoding="utf-8")
+
+    build_fts_index(root)
+    note.write_text("---\nfreshness: unknown\n---\n# Beta\n\nsource_id: src-beta\n", encoding="utf-8")
+
+    assert query_fts(root, "alpha") == []
+    beta_results = query_fts(root, "beta")
+    assert beta_results[0].source_ids == ("src-beta",)
+    assert beta_results[0].confidence <= 0.5
+
+
+def test_query_supports_unicode_tokens(tmp_path: Path) -> None:
+    root = tmp_path / "kb"
+    (root / "wiki").mkdir(parents=True)
+    (root / "indexes").mkdir()
+    (root / "wiki" / "cjk.md").write_text(
+        "---\nfreshness: static\n---\n# 苹果\n\nsource_id: src-cjk\n苹果 公司 供应链风险。\n",
+        encoding="utf-8",
+    )
+
+    results = query(root, "苹果", use_fts=False)
+
+    assert results[0].path == "wiki/cjk.md"
+    assert results[0].source_ids == ("src-cjk",)
 
 
 def test_workflow_root_rejects_symlinked_roots(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]

@@ -7,6 +7,7 @@ import os
 import re
 import shlex
 import shutil
+import tomllib
 from pathlib import Path
 from typing import Any
 
@@ -444,6 +445,20 @@ def render_grok_config(
     return "\n\n".join(part for part in parts if part) + "\n"
 
 
+def grok_configs_semantically_equivalent(current: str, rendered: str) -> bool:
+    """Compare live/runtime-normalized Grok TOML without byte-level comment or order noise."""
+    try:
+        current_data = tomllib.loads(current)
+        rendered_data = tomllib.loads(rendered)
+    except tomllib.TOMLDecodeError:
+        return False
+    for payload in (current_data, rendered_data):
+        ui = payload.get("ui")
+        if isinstance(ui, dict):
+            ui.pop("permission_mode", None)
+    return current_data == rendered_data
+
+
 def resolve_plannotator_binary() -> Path:
     """Return the preferred Plannotator CLI path."""
     return PLANNOTATOR_BIN_PATH
@@ -660,10 +675,7 @@ def sync_grok_plannotator(ctx: SyncContext) -> None:
         return
     _copy_plannotator_exit_plan_hook(ctx, hooks_dir=GROK_HOOKS_DIR)
     destination = GROK_PLANNOTATOR_HOOKS_PATH
-    ctx.note(f"write {destination}")
-    if ctx.apply:
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        destination.write_text(rendered, encoding="utf-8")
+    ctx.write_text(destination, rendered)
     sync_grok_plannotator_skill_overlays(ctx)
 
 
@@ -741,7 +753,8 @@ class Adapter(PlatformAdapter):
 
         rendered = render_grok_config(current, registry, repo_only=False, repo_root=get_repo_root(), policy=policy)
         assert_no_grok_config_drops(current, rendered, registry)
-        ctx.write_text(GROK_CONFIG_PATH, rendered)
+        if not grok_configs_semantically_equivalent(current, rendered):
+            ctx.write_text(GROK_CONFIG_PATH, rendered)
         sync_grok_lsp(ctx)
         sync_grok_agents(ctx)
         sync_grok_fleet_hooks(ctx, repo_root=get_repo_root())

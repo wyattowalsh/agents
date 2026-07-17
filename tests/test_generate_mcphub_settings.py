@@ -176,6 +176,28 @@ def test_validate_settings_rejects_invalid_registry_group_membership():
     assert "mcphub.groups.harness.servers[3] references missing server 'missing'" in errors
 
 
+def test_validate_settings_treats_enabled_false_as_disabled():
+    registry = minimal_registry_with_harness({
+        "fetcher": {"enabled": True},
+        "manual": {"enabled": False},
+    })
+    settings = {
+        "mcpServers": {"fetcher": {}, "manual": {"enabled": False}},
+        "groups": [
+            {
+                "id": group_id_for_name("harness"),
+                "name": "harness",
+                "servers": ["fetcher", "manual"],
+            }
+        ],
+        "systemConfig": valid_system_config(),
+    }
+
+    errors = validate_settings(settings, registry)
+
+    assert "groups.harness.servers[1] references disabled server 'manual'" in errors
+
+
 def test_render_server_entry_emits_streamable_http_type_and_url():
     rendered = render_server_entry({
         "transport": "streamable-http",
@@ -214,6 +236,19 @@ def test_render_server_entry_allows_stdio_without_args():
     assert rendered == {
         "command": "uvx",
     }
+
+
+def test_generate_settings_marks_disabled_servers_inactive_for_runtime():
+    registry = minimal_registry_with_harness({
+        "fetcher": {"transport": "stdio", "command": "npx", "args": ["fetcher-mcp"], "enabled": True},
+        "manual": {"transport": "stdio", "command": "npx", "args": ["manual-mcp"], "enabled": False},
+    })
+
+    generated = generate_settings(registry)
+
+    assert set(generated["mcpServers"]) == {"fetcher", "manual"}
+    assert generated["mcpServers"]["manual"]["enabled"] is False
+    assert validate_settings(generated, registry) == []
 
 
 def test_render_server_entry_emits_openapi_config():

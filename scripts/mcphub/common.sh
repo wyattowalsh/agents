@@ -71,6 +71,15 @@ mcphub_load_env() {
   mcphub_setup_runtime_path
   PORT="${PORT:-${MCPHUB_DEFAULT_PORT}}"
   BASE_PATH="${BASE_PATH-${MCPHUB_DEFAULT_BASE_PATH}}"
+  MCPHUB_BIND_HOST="${MCPHUB_BIND_HOST:-127.0.0.1}"
+  MCPHUB_PACKAGE_VERSION="${MCPHUB_PACKAGE_VERSION:-1.0.24}"
+  case "${MCPHUB_BIND_HOST}" in
+    127.0.0.1|::1|localhost) ;;
+    *)
+      printf 'MCPHUB_BIND_HOST must be loopback-only, got %s\n' "${MCPHUB_BIND_HOST}" >&2
+      return 1
+      ;;
+  esac
   MCPHUB_BASE_URL="${MCPHUB_BASE_URL:-http://127.0.0.1:${PORT}${BASE_PATH}}"
   if [[ "${MCPHUB_SETTING_PATH:-}" != /* ]]; then
     MCPHUB_SETTING_PATH="${MCPHUB_REPO_ROOT}/${MCPHUB_SETTING_PATH}"
@@ -81,7 +90,8 @@ mcphub_load_env() {
   MCPHUB_TUNNEL_TOKEN="${MCPHUB_TUNNEL_TOKEN:-}"
   MCPHUB_ZAPIER_WEBHOOK_URL="${MCPHUB_ZAPIER_WEBHOOK_URL:-}"
   REPO_ROOT="${REPO_ROOT:-${MCPHUB_REPO_ROOT}}"
-  export PORT BASE_PATH MCPHUB_BASE_URL MCPHUB_SETTING_PATH MCPHUB_TUNNEL_TARGET_URL
+  export PORT BASE_PATH MCPHUB_BIND_HOST MCPHUB_PACKAGE_VERSION MCPHUB_BASE_URL MCPHUB_SETTING_PATH
+  export MCPHUB_TUNNEL_TARGET_URL
   export MCPHUB_TUNNEL_PROVIDER MCPHUB_TUNNEL_PROTOCOL MCPHUB_TUNNEL_TOKEN MCPHUB_ZAPIER_WEBHOOK_URL
   export REPO_ROOT
 }
@@ -145,7 +155,7 @@ mcphub_is_managed_local_pid() {
   local command
   command="$(mcphub_process_command "${pid}")"
   case "${command}" in
-    *"${MCPHUB_REPO_ROOT}/scripts/mcphub/launch-agent-run.sh"*|*"@samanhappy/mcphub"*|*"/node_modules/.bin/mcphub"*)
+    *"${MCPHUB_REPO_ROOT}/scripts/mcphub/launch-agent-run.sh"*|*"${MCPHUB_REPO_ROOT}/scripts/mcphub/start-server.sh"*|*"@samanhappy/mcphub"*|*"/node_modules/.bin/mcphub"*)
       return 0
       ;;
     *)
@@ -389,6 +399,23 @@ mcphub_stop_local() {
   mcphub_stop_managed_local
 }
 
+mcphub_listener_endpoints() {
+  command -v lsof >/dev/null 2>&1 || return 1
+  lsof -nP -iTCP:"${PORT}" -sTCP:LISTEN -F n 2>/dev/null | awk '/^n/ {sub(/^n/, ""); print}'
+}
+
+mcphub_listener_is_loopback() {
+  local endpoints endpoint
+  endpoints="$(mcphub_listener_endpoints)" || return 1
+  [[ -n "${endpoints}" ]] || return 1
+  while IFS= read -r endpoint; do
+    case "${endpoint}" in
+      "127.0.0.1:${PORT}"|"[::1]:${PORT}") ;;
+      *) return 1 ;;
+    esac
+  done <<<"${endpoints}"
+}
+
 mcphub_start_local() {
   mkdir -p "${MCPHUB_RUN_DIR}"
   if mcphub_is_healthy; then
@@ -407,10 +434,11 @@ mcphub_start_local() {
   if [[ -x "${pkg_launcher}" ]]; then
     timeout 120 "${pkg_launcher}" --help >/dev/null 2>&1 || true
   fi
-  printf 'starting MCPHub locally with npx @samanhappy/mcphub; logs: %s\n' "${MCPHUB_LOG_FILE}" >&2
+  printf 'starting MCPHub %s on %s:%s; logs: %s\n' \
+    "${MCPHUB_PACKAGE_VERSION}" "${MCPHUB_BIND_HOST}" "${PORT}" "${MCPHUB_LOG_FILE}" >&2
   (
     cd "${MCPHUB_REPO_ROOT}"
-    exec npx -y @samanhappy/mcphub
+    exec bash "${MCPHUB_SCRIPT_DIR}/start-server.sh"
   ) >>"${MCPHUB_LOG_FILE}" 2>&1 &
   printf '%s\n' "$!" >"${MCPHUB_PID_FILE}"
   rm -f "${MCPHUB_CHILD_PID_FILE}"

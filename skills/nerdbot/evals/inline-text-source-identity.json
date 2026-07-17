@@ -1,0 +1,18 @@
+{
+  "skills": [
+    "nerdbot"
+  ],
+  "query": "/nerdbot ingest --root ./knowledge-base --text \"Alpha source\" --apply, then ingest --text \"Beta source\" --apply",
+  "files": [
+    "knowledge-base/raw/sources",
+    "knowledge-base/indexes/source-map.md",
+    "knowledge-base/activity/log.md"
+  ],
+  "expected_behavior": [
+    "Uses a content-derived inline:text label instead of the literal inline:text for every inline source.",
+    "Assigns distinct source IDs and raw paths to distinct inline text payloads.",
+    "Does not expose the full inline text in the original-location identifier.",
+    "Keeps duplicate identical inline content no-clobber behavior visible.",
+    "Records source-map and activity-log entries for applied inline ingests."
+  ]
+}

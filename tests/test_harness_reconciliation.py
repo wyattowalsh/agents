@@ -6,8 +6,9 @@ import importlib.util
 import json
 from pathlib import Path
 from types import SimpleNamespace
+from typing import cast
 
-from wagents.installed_inventory import InstalledSkillInventoryRow
+from wagents.installed_inventory import HarnessQueryResult, InstalledInventorySnapshot, InstalledSkillInventoryRow
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "planning" / "manifests" / "harness-reconciliation.json"
@@ -146,9 +147,7 @@ def test_harness_reconciliation_records_opencode_plugin_source_surfaces() -> Non
 
     assert opencode_rows
     for row in opencode_rows:
-        expected_paths = [
-            path for surface, path in expected_path_by_surface.items() if row["installed_state"][surface]
-        ]
+        expected_paths = [path for surface, path in expected_path_by_surface.items() if row["installed_state"][surface]]
         assert row["source_paths"] == expected_paths
         assert row["source_path"] == expected_paths[0]
 
@@ -211,9 +210,7 @@ def test_skill_rows_subtracts_owner_covered_agents_and_exports_cleanup_metadata(
     monkeypatch.setattr(
         module,
         "repo_skill_owner_covered_agents",
-        lambda row, target_agents, **kwargs: tuple(
-            agent for agent in target_agents if agent in {"codex", "opencode"}
-        ),
+        lambda row, target_agents, **kwargs: tuple(agent for agent in target_agents if agent in {"codex", "opencode"}),
     )
 
     rows, summary = module._skill_rows()
@@ -227,6 +224,69 @@ def test_skill_rows_subtracts_owner_covered_agents_and_exports_cleanup_metadata(
     assert summary["default_sync_missing_by_agent"]["codex"] == 0
     assert summary["default_sync_missing_by_agent"]["opencode"] == 0
     assert summary["default_sync_missing_by_agent"]["claude-code"] == 1
+
+
+def test_skills_sync_treats_upstream_selector_alias_as_installed(monkeypatch) -> None:
+    from wagents import cli as module
+
+    desired = InstalledSkillInventoryRow(
+        name="opsx-tdd",
+        path="",
+        source_path="docs/src/authoring/skills/opsx-tdd.mdx",
+        scope="desired",
+        description="OpenSpec TDD.",
+        license="",
+        version="",
+        author="",
+        source="yuritoledo/openspec-tdd",
+        install_source="yuritoledo/openspec-tdd",
+        source_url="https://github.com/yuritoledo/openspec-tdd",
+        install_command="npx skills add yuritoledo/openspec-tdd --skill opsx:tdd -y -g",
+        provenance_status="verified-curated-external",
+        trust_tier="curated-trust-gated",
+        selector_mode="named",
+        installed_agents=(),
+        discovered_in=(),
+        target_agents=("codex",),
+        sync_kind="skills-cli",
+        docs_status="documented",
+    )
+    installed_alias = InstalledSkillInventoryRow(
+        name="opsx:tdd",
+        path="/Users/example/.agents/skills/opsx-tdd",
+        source_path="/Users/example/.agents/skills/opsx-tdd/SKILL.md",
+        scope="global",
+        description="OpenSpec TDD.",
+        license="",
+        version="",
+        author="",
+        source="yuritoledo/openspec-tdd",
+        install_source="yuritoledo/openspec-tdd",
+        source_url="https://github.com/yuritoledo/openspec-tdd",
+        install_command="",
+        provenance_status="installed-external",
+        trust_tier="github",
+        selector_mode="named",
+        installed_agents=("codex",),
+        discovered_in=("codex",),
+        target_agents=(),
+        sync_kind="skills-cli",
+    )
+    snapshot = InstalledInventorySnapshot(
+        rows=(installed_alias,),
+        queries=(HarnessQueryResult(agent_id="codex", ok=True, entries=()),),
+    )
+
+    monkeypatch.setattr(module, "collect_installed_inventory", lambda **kwargs: snapshot)
+    monkeypatch.setattr(module, "collect_desired_sync_rows", lambda **kwargs: (desired,))
+
+    report = module._build_sync_report(("codex",), include_installed=False, external_entries=[])
+    agents = cast("list[dict[str, object]]", report["agents"])
+    agent_report = agents[0]
+
+    assert agent_report["missing"] == []
+    assert agent_report["commands"] == []
+    assert agent_report["already_present"] == ["opsx-tdd [verified-curated-external] — yuritoledo/openspec-tdd"]
 
 
 def test_harness_reconciliation_is_redacted_and_has_parallel_task_graph() -> None:

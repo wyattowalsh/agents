@@ -9,11 +9,6 @@ license: MIT
 metadata:
   author: wyattowalsh
   version: "1.0.0"
-hooks:
-  PreToolUse:
-    - matcher: Edit
-      hooks:
-        - command: "git diff --quiet HEAD -- README.md 2>/dev/null || echo 'WARNING: README.md has uncommitted changes that may be overwritten'"
 ---
 # Add Badges
 

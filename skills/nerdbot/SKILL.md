@@ -3,13 +3,13 @@ name: nerdbot
 description: >-
   Use when creating, repairing, querying, auditing, or migrating Obsidian-native
   git KBs with raw/wiki layers. NOT for docs sites or generic notes.
-argument-hint: "[create|ingest|enrich|audit|query|derive|improve|migrate] [topic|path]"
+argument-hint: "[create|ingest|enrich|audit|query|derive|improve|migrate|replay|watch-classify] [topic|path]"
 model: opus
 license: MIT
 compatibility: "Requires git and Python 3.11+ for the nerdbot CLI and kb_* compatibility scripts."
 metadata:
   author: wyattowalsh
-  version: "1.0.0"
+  version: "1.1.0"
 user-invocable: true
 ---
 
@@ -40,6 +40,8 @@ Build, query, and maintain Obsidian-native, git-friendly, agent-managed knowledg
 | Natural language: "query/search/ask this KB/wiki/vault about ..."                                      | Query                          | Read maintained `wiki/` + `indexes/`, answer with provenance, and recommend `enrich` or `ingest` if the KB has a gap |
 | Natural language mentioning `Obsidian`, `vault`, `.obsidian`, `[[wikilinks]]`, `embeds`, or `Dataview` | Create / Existing repo / Audit | Route to the matching workflow with Obsidian-native assumptions turned on                                            |
 | Natural language: "audit/lint/check the knowledge base"                                                | Audit                          | Stay read-only unless the user explicitly asks for fixes                                                             |
+| `replay [operation-id]`                                                                                 | Utility                        | Dry-run replay against `activity/operations.jsonl`; do not mutate files                                              |
+| `watch-classify <path>`                                                                                 | Utility                        | Classify a filesystem event for watch-mode safety without mutating files                                             |
 | Requests for generic notes or docs-site work                                                           | Refuse + redirect              | Redirect to the correct workflow or specialized skill                                                                |
 
 ### Empty-Args Handler
@@ -367,12 +369,12 @@ Run compatibility script smoke checks from the skill root:
 Run from the repository root before declaring changes complete unless the command explicitly changes directory:
 
 ```bash
-cd skills/nerdbot && uv run python scripts/check.py
+(cd skills/nerdbot && uv run python scripts/check.py)
 uv run python skills/skill-creator/scripts/audit.py skills/nerdbot --format json
 uv run python skills/skill-creator/scripts/package.py skills/nerdbot --dry-run
 uv run ruff check skills/nerdbot tests/test_nerdbot*.py tests/test_package.py tests/test_skill_creator_audit.py
 uv run ruff format --check skills/nerdbot tests/test_nerdbot*.py tests/test_package.py tests/test_skill_creator_audit.py
-uv run --project skills/nerdbot ty check
+uv run --project skills/nerdbot ty check skills/nerdbot/src tests/test_nerdbot*.py
 uv run pytest tests/test_nerdbot*.py tests/test_package.py tests/test_skill_creator_audit.py -q
 ```
 

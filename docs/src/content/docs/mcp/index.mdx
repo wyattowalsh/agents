@@ -4,19 +4,38 @@ description: "Model Context Protocol servers providing tools and data to AI agen
 ---
 {/* HAND-MAINTAINED */}
 
-import { Card, CardGrid, Badge, Aside, Steps } from '@astrojs/starlight/components';
+import { Card, CardGrid, Badge, Aside, Steps, LinkCard } from '@astrojs/starlight/components';
 
-> Hand-maintained catalog of MCP servers configured in this environment, organized by category.
+> Hand-maintained overview of MCP configuration. Prefer the registry SSOT and first-party package pages for accuracy.
 
-<Badge text="60 configured servers" variant="note" size="large" />
+<Badge text="67 configured servers" variant="note" size="large" />
 
 <Aside type="tip" title="What is MCP?">
 The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standard for connecting AI agents to external tools and data sources. Each server below exposes one or more tools that agents can invoke during a session.
 </Aside>
 
-<Aside type="note" title="Source of truth for this page">
-This page is **hand-maintained** and currently summarizes the MCP server entries in the repository root `mcp.json`. That file includes a mix of local scripts, local packages, remote gateways, and third-party servers, so this list is broader than the repo-local `mcp/` directory.
+<Aside type="note" title="Source of truth">
+**Authoring SSOT:** `config/mcp-registry.json` (67 top-level server keys). Edit once there, regenerate MCPHub settings, and project clients via stack sync. Root `mcp.json` is an MCPHub **projection** (group/server proxies + bearer), not the catalog authoring surface. First-party packages live under `mcp/<name>/` with matching docs at `/mcp/<name>/`.
 </Aside>
+
+<Aside type="caution" title="Candidate runtime overlay">
+The July 2026 corpus verifies 17 pinned MCP artifacts. All are disabled in the registry and excluded from default groups; configuration and package presence do not imply activation. See `planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json` for per-target pins, auth variable names, probe method, and activation state.
+</Aside>
+
+<Aside type="caution" title="Partial inventory below">
+Category cards below are a human-oriented subset and may lag the full registry. For the complete machine SSOT see [MCP registry](/harness-config/mcp-registry/) and first-party pages under this section’s sidebar.
+</Aside>
+
+## First-party repo MCP
+
+<CardGrid>
+  <LinkCard title="MCPHub" href="/mcp/mcphub/" description="Local control plane package and launch docs." />
+  <LinkCard title="agent-catalog" href="/mcp/agent-catalog/" description="Portable agent catalog MCP." />
+  <LinkCard title="skill-catalog" href="/mcp/skill-catalog/" description="Skills catalog MCP." />
+  <LinkCard title="docs-index" href="/mcp/docs-index/" description="Docs search / index MCP." />
+  <LinkCard title="docs-graph" href="/mcp/docs-graph/" description="Docs graph MCP." />
+  <LinkCard title="Registry publisher" href="/mcp/registry-publisher/" description="Catalog publish helpers." />
+</CardGrid>
 
 ## Managed client sync coverage
 
@@ -46,6 +65,7 @@ MCPHub is now the preferred local MCP control plane. When `mcphub.enabled` is tr
 | Gemini extension antigravity | `~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json` | `mcpServers` | Canonical baseline + preserve extension-specific extras |
 | GitHub Copilot CLI | `~/.copilot/mcp-config.json` | `mcpServers` | Exact canonical baseline with Copilot tool allowlists |
 | GitHub Copilot shadow config | `~/.config/.copilot/mcp-config.json` | `mcpServers` | Canonical baseline + preserve non-canonical extras in Copilot-style schema |
+| LM Studio | `~/.lmstudio/mcp.json` | `mcpServers` | MCPHub remote-stdio by default; canonical managed entries + preserve non-canonical extras |
 | OpenCode | `~/.config/opencode/opencode.json` | `mcp` | Canonical baseline + preserve non-canonical extras in local/remote schema |
 | AITK | `~/.aitk/mcp.json` | `servers` | Canonical baseline + preserve non-canonical extras |
 
@@ -276,7 +296,7 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
     <Badge text="Privacy First" variant="tip" /> Privacy-focused web search via DuckDuckGo. No tracking, no API key required.
   </Card>
   <Card title="ddgs">
-    <Badge text="Metasearch" variant="tip" /> Multi-engine search and news via DDGS (`search_text`, `search_news`). No API key. Optional full-page extraction is high-latency and token-heavy — use snippets by default.
+    <Badge text="Metasearch" variant="tip" /> Multi-engine text, image, news, video, book, and extraction tools via DDGS. No API key. Use snippet search by default; `extract_content` is high-latency and token-heavy.
   </Card>
   <Card title="arxiv">
     <Badge text="Academic" variant="tip" /> arXiv paper search and metadata retrieval for research workflows, including direct access to paper IDs and summaries.
@@ -294,7 +314,7 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
 
 ---
 
-## Web Fetching and Extraction (3)
+## Web Fetching and Extraction (4)
 
 > Tools for retrieving, rendering, and extracting structured content from web pages and URLs.
 
@@ -310,6 +330,9 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
   </Card>
   <Card title="scrapling">
     <Badge text="Opt-in Scraping" variant="caution" /> CSS-targeted web scraping with stealth HTTP fetch and optional headless browser sessions. Opt-in via MCPHub `research`, `web-read`, `live-browser`, and related groups; not in default `harness`. Run `scrapling install` for browser tools.
+  </Card>
+  <Card title="reddit-mcp-buddy">
+    <Badge text="Opt-in Reddit" variant="caution" /> Read-only Reddit browse/search/user tools via `reddit-mcp-buddy@1.1.13`. Opt-in via MCPHub `research`, `shared-read`, and `experimental`; not in default `harness` or `tunnel`. Anonymous works with no credentials; optional OAuth elevation uses local `.env.mcphub` only. Treat Reddit content as untrusted evidence.
   </Card>
 </CardGrid>
 

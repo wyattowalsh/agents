@@ -1,41 +1,11 @@
 allowBuilds:
   esbuild: true
-  puppeteer: false
   sharp: true
-  typesense-instantsearch-adapter: false
-
-minimumReleaseAgeExclude:
-  - '@radix-ui/primitive@1.1.5'
-  - '@radix-ui/react-collection@1.1.12'
-  - '@radix-ui/react-context@1.2.0'
-  - '@radix-ui/react-dialog@1.1.19'
-  - '@radix-ui/react-dismissable-layer@1.1.15'
-  - '@radix-ui/react-dropdown-menu@2.1.20'
-  - '@radix-ui/react-focus-scope@1.1.12'
-  - '@radix-ui/react-menu@2.1.20'
-  - '@radix-ui/react-popper@1.3.3'
-  - '@radix-ui/react-presence@1.1.7'
-  - '@radix-ui/react-roving-focus@1.1.15'
-  - '@radix-ui/react-switch@1.3.3'
-  - '@radix-ui/react-tabs@1.1.17'
-  - '@radix-ui/react-tooltip@1.2.12'
-  - starlight-base-path@0.2.0
-  - starlight-changelogs@0.5.1
-  - starlight-versions@0.9.1
 
 patchedDependencies:
   starlight-site-graph@0.5.0: patches/starlight-site-graph@0.5.0.patch
 
 peerDependencyRules:
   allowedVersions:
-    '@pasqal-io/starlight-client-mermaid>@astrojs/markdown-remark': "^6.0.2 || ^7.0.0"
-    '@ascorbic/loader-utils>astro': "^4.14.0 || ^5.0.0-beta.0 || ^6.0.0 || ^7.0.0"
-    '@nullpinter/satteri-katex>satteri': "^0.8.1 || ^0.9.0"
-    astro-plantuml>astro: "^5.5.6 || ^6.0.0 || ^7.0.0"
-    astro-integration-kit>astro: "^4.12.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"
-    starlight-latest-version>astro: "^6.0.4 || ^7.0.0"
     starlight-plugin-icons>typescript: "^5 || ^6"
-    typesense-docsearch-react>@types/react: ">= 16.8.0 < 20.0.0"
-    typesense-docsearch-react>react: ">= 16.8.0 < 20.0.0"
-    typesense-docsearch-react>react-dom: ">= 16.8.0 < 20.0.0"
     vite-plugin-virtual>vite: "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"

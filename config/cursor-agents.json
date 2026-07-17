@@ -5,102 +5,102 @@
     {
       "name": "code-reviewer",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "docs-writer",
       "readonly": false,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "orchestrator",
       "readonly": false,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "performance-profiler",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "planner",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "release-manager",
       "readonly": false,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "researcher",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "security-auditor",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "agent-change-recorder",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "agent-eval-runner",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "agent-permission-simulator",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "agent-registry-publisher",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "agent-transpiler",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "bridge-consistency-checker",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "mcp-capability-mapper",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "mcp-template-maintainer",
       "readonly": false,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "permission-policy-auditor",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "prompt-optimizer",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "skill-author",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     },
     {
       "name": "triage-lead",
       "readonly": true,
-      "model": "inherit"
+      "model": "cursor-grok-4.5-high"
     }
   ]
 }

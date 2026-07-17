@@ -7,6 +7,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import cast
 
 _SCRIPT_ROOT = Path(__file__).resolve().parent.parent
 if str(_SCRIPT_ROOT) not in sys.path:
@@ -15,12 +16,115 @@ if str(_SCRIPT_ROOT) not in sys.path:
 from asset_toolkit.common import emit_validation_output, find_repo_root
 
 
-def _is_eval_manifest(data: dict) -> bool:
+def _is_eval_manifest(data: dict[str, object]) -> bool:
     return "evals" in data
 
 
-def collect_evals(skills_dir: Path) -> list[tuple[Path, dict]]:
-    results: list[tuple[Path, dict]] = []
+def _validate_projection_files(path: Path, data: dict[str, object], add_error) -> None:
+    """Validate opt-in per-case projections owned by a canonical manifest."""
+    if "projection_files" not in data:
+        return
+
+    projection_files = data.get("projection_files")
+    if not isinstance(projection_files, list) or not projection_files:
+        add_error(path, "'projection_files' must be a non-empty list of JSON filenames")
+        return
+
+    declared: list[str] = []
+    for item in projection_files:
+        if not isinstance(item, str) or not item:
+            add_error(path, "each 'projection_files' entry must be a non-empty string")
+            continue
+        candidate = Path(item)
+        if candidate.name != item or candidate.suffix != ".json" or item == "evals.json":
+            add_error(path, f"invalid projection filename: {item!r}")
+            continue
+        declared.append(item)
+
+    if len(declared) != len(set(declared)):
+        add_error(path, "'projection_files' contains duplicate filenames")
+
+    evals = data.get("evals")
+    if not isinstance(evals, list):
+        return
+    cases: dict[str, dict] = {}
+    for index, item in enumerate(evals, start=1):
+        if not isinstance(item, dict):
+            continue
+        case_id = item.get("id")
+        if not isinstance(case_id, str) or not case_id.strip():
+            add_error(path, f"eval {index} requires a non-empty string 'id' when projections are declared")
+            continue
+        expected_filename = f"{case_id}.json"
+        if Path(expected_filename).name != expected_filename:
+            add_error(path, f"eval {index} has a projection-unsafe id: {case_id!r}")
+            continue
+        if case_id in cases:
+            add_error(path, f"eval {index} duplicates id {case_id!r}")
+            continue
+        assertions = item.get("assertions")
+        if not isinstance(assertions, list) or not assertions:
+            add_error(path, f"eval {index} requires a non-empty string list 'assertions' when projections are declared")
+        elif any(not isinstance(assertion, str) or not assertion.strip() for assertion in assertions):
+            add_error(path, f"eval {index} has an invalid 'assertions' entry")
+        files = item.get("files", [])
+        if not isinstance(files, list) or any(not isinstance(file, str) for file in files):
+            add_error(path, f"eval {index} requires a string list 'files' when projections are declared")
+        cases[case_id] = item
+
+    expected = {f"{case_id}.json" for case_id in cases}
+    declared_set = set(declared)
+    if declared_set != expected:
+        missing = sorted(expected - declared_set)
+        extra = sorted(declared_set - expected)
+        details = []
+        if missing:
+            details.append("missing " + ", ".join(missing))
+        if extra:
+            details.append("unexpected " + ", ".join(extra))
+        add_error(path, "projection declaration mismatch: " + "; ".join(details))
+
+    actual = {candidate.name for candidate in path.parent.glob("*.json") if candidate.name != path.name}
+    if actual != declared_set:
+        missing = sorted(declared_set - actual)
+        extra = sorted(actual - declared_set)
+        details = []
+        if missing:
+            details.append("missing files " + ", ".join(missing))
+        if extra:
+            details.append("undeclared files " + ", ".join(extra))
+        add_error(path, "projection file-set mismatch: " + "; ".join(details))
+
+    skill_name = data.get("skill_name")
+    for filename in sorted(expected & actual & declared_set):
+        projection_path = path.parent / filename
+        try:
+            projection = json.loads(projection_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if not isinstance(projection, dict):
+            add_error(projection_path, "top-level JSON value must be an object")
+            continue
+        case = cases[filename.removesuffix(".json")]
+        parity = {
+            "skills": [skill_name],
+            "query": case.get("prompt"),
+            "files": case.get("files", []),
+            "expected_behavior": case.get("assertions", []),
+        }
+        unexpected_fields = sorted(set(projection) - set(parity))
+        missing_fields = sorted(set(parity) - set(projection))
+        if unexpected_fields:
+            add_error(projection_path, "projection has unsupported fields: " + ", ".join(unexpected_fields))
+        if missing_fields:
+            add_error(projection_path, "projection is missing fields: " + ", ".join(missing_fields))
+        for field, expected_value in parity.items():
+            if projection.get(field) != expected_value:
+                add_error(projection_path, f"projection field {field!r} does not match canonical manifest")
+
+
+def collect_evals(skills_dir: Path) -> list[tuple[Path, object]]:
+    results: list[tuple[Path, object]] = []
     if not skills_dir.is_dir():
         return results
     for skill_dir in sorted(skills_dir.iterdir()):
@@ -33,7 +137,7 @@ def collect_evals(skills_dir: Path) -> list[tuple[Path, dict]]:
             try:
                 data = json.loads(eval_file.read_text(encoding="utf-8"))
             except json.JSONDecodeError:
-                data = {}
+                data = None
             results.append((eval_file, data))
     return results
 
@@ -45,18 +149,22 @@ def validate_evals(skills_dir: Path) -> list[dict[str, str]]:
         errors.append({"source": str(source), "message": message})
 
     for path, data in collect_evals(skills_dir):
-        if not data and path.stat().st_size > 2:
+        if data is None:
             add_error(path, "invalid JSON")
             continue
+        if not isinstance(data, dict):
+            add_error(path, "top-level JSON value must be an object")
+            continue
+        record = cast("dict[str, object]", data)
 
-        if _is_eval_manifest(data):
-            skill_name = data.get("skill_name")
+        if _is_eval_manifest(record):
+            skill_name = record.get("skill_name")
             if not isinstance(skill_name, str) or not skill_name.strip():
                 add_error(path, "'skill_name' must be a non-empty string")
             elif not (skills_dir / skill_name).is_dir():
                 add_error(path, f"skill '{skill_name}' does not match a skill directory")
 
-            evals = data.get("evals")
+            evals = record.get("evals")
             if not isinstance(evals, list) or len(evals) < 1:
                 add_error(path, "'evals' must be a non-empty list")
                 continue
@@ -83,25 +191,26 @@ def validate_evals(skills_dir: Path) -> list[dict[str, str]]:
                 expected_output = item.get("expected_output")
                 if not isinstance(expected_output, str) or not expected_output.strip():
                     add_error(path, f"{case_label} missing required non-empty string 'expected_output'")
+            _validate_projection_files(path, record, add_error)
             continue
 
-        if "skills" not in data:
+        if "skills" not in record:
             add_error(path, "missing required field 'skills'")
-        elif not isinstance(data["skills"], list) or len(data["skills"]) < 1:
+        elif not isinstance(record["skills"], list) or len(record["skills"]) < 1:
             add_error(path, "'skills' must be a non-empty list of strings")
         else:
-            for skill in data["skills"]:
+            for skill in record["skills"]:
                 if not isinstance(skill, str):
                     add_error(path, "each entry in 'skills' must be a string")
                 elif not (skills_dir / skill).is_dir():
                     add_error(path, f"skill '{skill}' does not match a skill directory")
 
-        if "query" not in data:
+        if "query" not in record:
             add_error(path, "missing required field 'query'")
-        elif not isinstance(data["query"], str) or not data["query"].strip():
+        elif not isinstance(record["query"], str) or not record["query"].strip():
             add_error(path, "'query' must be a non-empty string")
 
-        expected = data.get("expected_behavior")
+        expected = record.get("expected_behavior")
         if expected is None:
             add_error(path, "missing required field 'expected_behavior'")
         elif not isinstance(expected, list) or len(expected) < 1:

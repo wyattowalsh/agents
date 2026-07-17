@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T17:34:10.203893+00:00",
-  "phase": "promotion-overlay-installed",
+  "generated_at": "2026-07-16T02:52:03.935745+00:00",
+  "phase": "corpus-integration-complete",
   "complete": true,
   "raw_candidates": 293,
   "unique_normalized_targets": 289,
@@ -11,62 +11,138 @@
     "unique_target_lanes": 289,
     "total_leaf_checks": 7879,
     "leaf_status_counts": {
-      "blocked-until-trust-gates": 748,
-      "complete-public-git-metadata": 584,
-      "complete-static": 374,
-      "complete-with-warning": 2,
-      "covered-by-existing-catalog": 1248,
-      "pending-deep-source-research": 1461,
-      "pending-license-review": 289,
-      "provisional-static-intake": 3173
+      "complete-public-git-metadata": 586,
+      "complete-static": 461,
+      "covered-by-existing-catalog": 726,
+      "license-attribution-recorded": 289,
+      "static-intake-recorded": 1461,
+      "terminal-non-install-surface": 922,
+      "terminal-static-intake": 3434
     }
   },
   "existing_integration_coverage": {
     "covered-by-existing-inspection-required": 6,
-    "covered-by-existing-installable-catalog": 120,
-    "needs-promotion-review": 163
+    "covered-by-existing-installable-catalog": 121,
+    "needs-promotion-review": 162
   },
   "promotion_readiness": {
     "unique_targets": 289,
-    "covered_by_existing_installable_catalog": 120,
+    "covered_by_existing_installable_catalog": 121,
     "ready_for_repo_promotion": 0,
     "ready_for_live_install": 0,
-    "blocked_until_trust_gates": 169,
-    "remaining_reference_rows": 175,
-    "promoted_unique_targets": 114,
-    "promoted_installable_rows": 1038,
-    "recorded_install_evidence_rows": 1038
+    "terminal_native_or_hard_blocked": 168,
+    "terminal_non_install_rows": 162,
+    "promoted_unique_targets": 115,
+    "promoted_installable_rows": 1267,
+    "integrated_targets": 289,
+    "unintegrated_targets": 0,
+    "integration_classification_counts": {
+      "inspection-existing": 6,
+      "installable-existing": 121,
+      "integrated-quarantine-reference": 4,
+      "integrated-reference": 158
+    },
+    "integrated_quarantine_targets": 4,
+    "active_install_blocks": 4,
+    "recorded_install_evidence_rows": 1267
   },
   "promotion_waves": {
-    "W00": 120,
-    "W08": 169
+    "W00": 121,
+    "W01": 10,
+    "W02": 3,
+    "W03": 38,
+    "W04": 14,
+    "W05": 5,
+    "W06": 11,
+    "W07": 15,
+    "W08": 68,
+    "W99": 4
   },
   "live_install": {
     "eligible_count": 0,
     "status": "no-live-install-commands-emitted",
-    "installed_skill_rows": 1038,
-    "recorded_install_evidence_rows": 1038,
+    "installed_skill_rows": 1267,
+    "recorded_install_evidence_rows": 1267,
     "new_live_install_commands_emitted": 0,
-    "installed_path_refs": 3115,
-    "verified_skill_md_count": 3115,
+    "installed_path_refs": 4031,
+    "verified_skill_md_count": 4031,
     "missing_skill_md_count": 0,
     "reason": "live-install-command-preview.json remains the no-new-live-install gate artifact; promotion-overrides.json records prior non-dry-run Skills CLI install evidence.",
-    "pre_overlay_preview_status": "live-install-command-preview.json remains the no-new-live-install gate artifact; promotion-overrides.json and catalog-authoring-summary.json record reviewed install evidence."
+    "pre_overlay_preview_status": "live-install-command-preview.json remains the no-new-live-install gate artifact; promotion-overrides.json and catalog-authoring-summary.json record reviewed install evidence.",
+    "harness_assurance_complete": true,
+    "harness_count": 9,
+    "harness_totals": {
+      "already_present": 14400,
+      "missing": 0,
+      "pin_blocked": 0,
+      "unresolved": 1530,
+      "commands": 0
+    }
   },
   "next_actions": [
-    "Dispatch read-only source research packets for blocked U### lanes.",
-    "Promote only the blocked N### targets whose raw lanes pass trust gates.",
-    "Regenerate docs-steward surfaces after each promotion wave.",
-    "Run focused validation and commit each validated wave if still authorized."
+    "Keep live execution and credentials user-owned for terminal native-surface rows.",
+    "Retain hard-blocked rows unless a maintainer supplies corrected upstream evidence.",
+    "Regenerate docs-steward surfaces after corpus manifest changes.",
+    "Run focused validation before reporting completion."
   ],
-  "completion_scope": "Complete for the July 2026 candidate-corpus goal as a trust-gated catalog integration overlay; conservative intake, packet, gate, and install-evidence artifacts remain available for traceability.",
+  "completion_checks": {
+    "raw_candidates_accounted": true,
+    "unique_targets_accounted": true,
+    "all_targets_integrated": true,
+    "candidate_authoring_rows_removed": true,
+    "quarantine_targets_integrated_without_install": true,
+    "promotion_queue_drained": true,
+    "installed_paths_verified": true,
+    "harness_install_assurance": true,
+    "non_skill_install_assurance": true
+  },
+  "completion_errors": [],
+  "completion_scope": "Complete for the July 2026 corpus: every normalized target maps to a permanent catalog integration and one runtime disposition; 1267 skill rows are reconciled across nine harnesses and 63/63 non-skill artifacts are verified, while candidate MCPs, broad-hook plugins, credentials, and quarantines retain their explicit activation gates.",
+  "non_skill_install": {
+    "complete": true,
+    "unique_target_count": 289,
+    "totals": {
+      "runtime_artifacts": 63,
+      "verified_runtime_artifacts": 63,
+      "failed_runtime_artifacts": 0,
+      "disposition_counts": {
+        "configured-disabled-mcp": 9,
+        "hard-quarantined": 4,
+        "installed-cli": 22,
+        "installed-library": 1,
+        "installed-mixed-runtime": 10,
+        "integrated-non-executable-surface": 213,
+        "not-applicable-skill-only": 20,
+        "registered-disabled-plugin": 2,
+        "registered-plugin": 8
+      },
+      "artifact_kind_counts": {
+        "cli": 29,
+        "library": 1,
+        "mcp": 17,
+        "plugin": 16
+      }
+    },
+    "assurance_file": "non-skill-install-assurance.json"
+  },
   "terminal_decisions": {
     "raw_candidates_processed": 293,
     "unique_normalized_targets": 289,
-    "installable_curated_rows": 1038,
-    "live_installs_recorded": 1038,
+    "installable_curated_rows": 1267,
+    "live_installs_recorded": 1267,
     "new_live_install_commands_emitted": 0,
-    "reference_only_or_terminal_gated_rows": 175,
-    "duplicate_raw_groups": 4
+    "terminal_non_install_rows": 162,
+    "duplicate_raw_groups": 4,
+    "conservative_intake_hard_blocks": 4,
+    "integrated_targets": 289,
+    "unintegrated_targets": 0,
+    "integration_classification_counts": {
+      "inspection-existing": 6,
+      "installable-existing": 121,
+      "integrated-quarantine-reference": 4,
+      "integrated-reference": 158
+    },
+    "integrated_quarantine_targets": 4,
+    "active_install_blocks": 4
   }
 }

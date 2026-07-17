@@ -2,7 +2,7 @@
 name: agent-eval-runner
 description: Run structural eval gates for skills and agents; report adequacy without
   live LLM runs.
-model: inherit
+model: cursor-grok-4.5-high
 readonly: true
 ---
 

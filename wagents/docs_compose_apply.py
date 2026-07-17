@@ -9,7 +9,6 @@ from datetime import date
 from wagents import ROOT
 from wagents.catalog import collect_edges
 from wagents.docs_compose import ComposeSurface, collect_compose_targets, is_composed_mdx
-from wagents.docs_lint import HAND_MAINTAINED_SENTINEL
 from wagents.page_frontmatter import render_catalog_frontmatter_lines
 from wagents.rendering import render_agent_page, render_mcp_page, render_skill_page, safe_outer_fence
 from wagents.skill_docs import collect_all_doc_nodes
@@ -39,8 +38,13 @@ def _composed_frontmatter_block(node, *, wave_id: str) -> str:
     lines = render_catalog_frontmatter_lines(node, composed=True)
     lines.append(f'composed_by: "{wave_id}"')
     lines.append(f'composed_at: "{date.today().isoformat()}"')
-    block = "---\n" + "\n".join(lines) + "\n---\n\n"
-    return block + HAND_MAINTAINED_SENTINEL + "\n"
+    # Do not freeze with HAND-MAINTAINED — generate may refresh catalog pages from SSOT.
+    return (
+        "---\n"
+        + "\n".join(lines)
+        + "\n---\n\n"
+        + "{/* GENERATED-COMPOSED — regenerable by wagents docs generate */}\n"
+    )
 
 
 def _replace_frontmatter(text: str, frontmatter_block: str) -> str:
@@ -49,10 +53,10 @@ def _replace_frontmatter(text: str, frontmatter_block: str) -> str:
 
 def _external_provenance_aside(skill_id: str, wave_id: str) -> str:
     return (
-        '<Aside type="note" title="Curated external (hand-maintained)">\n'
+        '<Aside type="note" title="Source & provenance">\n'
         f"Composed {wave_id} using authoring SSOT "
         f"(`docs/src/authoring/skills/{skill_id}.mdx`) + research. "
-        "Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). "
+        "Regenerate with `wagents docs generate`. "
         "Run `/review source` before using in production or promoting.\n"
         "</Aside>"
     )
@@ -60,27 +64,27 @@ def _external_provenance_aside(skill_id: str, wave_id: str) -> str:
 
 def _custom_provenance_aside(source_path: str, wave_id: str) -> str:
     return (
-        '<Aside type="note" title="Repo skill (hand-maintained)">\n'
+        '<Aside type="note" title="Source & provenance">\n'
         f"Composed {wave_id} from `{source_path}`. "
-        "Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).\n"
+        "Regenerate with `wagents docs generate`.\n"
         "</Aside>"
     )
 
 
 def _agent_provenance_aside(source_path: str, wave_id: str) -> str:
     return (
-        '<Aside type="note" title="Repo agent (hand-maintained)">\n'
+        '<Aside type="note" title="Source & provenance">\n'
         f"Composed {wave_id} from `{source_path}`. "
-        "Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).\n"
+        "Regenerate with `wagents docs generate`.\n"
         "</Aside>"
     )
 
 
 def _mcp_provenance_aside(server_id: str, wave_id: str) -> str:
     return (
-        '<Aside type="note" title="Repo MCP server (hand-maintained)">\n'
+        '<Aside type="note" title="Source & provenance">\n'
         f"Composed {wave_id} from `mcp/{server_id}/`. "
-        "Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).\n"
+        "Regenerate with `wagents docs generate`.\n"
         "</Aside>"
     )
 

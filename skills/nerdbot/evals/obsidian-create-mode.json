@@ -1,11 +1,13 @@
 {
-  "skills": ["nerdbot"],
+  "skills": [
+    "nerdbot"
+  ],
   "query": "/nerdbot create \"field guide to incident postmortems\" as an Obsidian vault",
   "files": [],
   "expected_behavior": [
-    "Agent dispatches to the Create workflow and treats Obsidian-native output as the default",
-    "Agent loads references/kb-architecture.md and references/obsidian-vaults.md before proposing starter files",
-    "Agent scaffolds shared .obsidian surfaces, raw/assets, config/obsidian-vault.md, indexes, and the append-only activity log",
-    "Agent uses frontmatter, [[wikilinks]], and Dataview-friendly metadata in starter notes rather than plain Markdown-only templates"
+    "Dispatches to Create and treats Obsidian-native output as the default.",
+    "Loads references/kb-architecture.md and references/obsidian-vaults.md before proposing starter files.",
+    "Scaffolds shared .obsidian surfaces, raw/assets, config/obsidian-vault.md, indexes, and the append-only activity log.",
+    "Uses frontmatter, [[wikilinks]], and Dataview-friendly metadata in starter notes rather than plain Markdown-only templates."
   ]
 }

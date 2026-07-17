@@ -1,1861 +1,2805 @@
 {
   "version": 1,
+  "generated_at": "2026-07-16T02:52:03.351995+00:00",
   "items": [
     {
       "raw_index": 1,
+      "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
       "source_name": "Ratnaditya-J/csvglow",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 2,
-      "source_name": "twostraws/SwiftData-Agent-Skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 3,
-      "source_name": "arjitj2/swiftui-design-principles",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 4,
-      "source_name": "Dimillian/Skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 5,
-      "source_name": "antonbabenko/terraform-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 6,
-      "source_name": "yctimlin/mcp_excalidraw",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 2,
+      "normalized_url": "https://github.com/twostraws/SwiftData-Agent-Skill",
+      "source_name": "twostraws/SwiftData-Agent-Skill",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 3,
+      "normalized_url": "https://github.com/arjitj2/swiftui-design-principles",
+      "source_name": "arjitj2/swiftui-design-principles",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 4,
+      "normalized_url": "https://github.com/Dimillian/Skills",
+      "source_name": "Dimillian/Skills",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 5,
+      "normalized_url": "https://github.com/antonbabenko/terraform-skill",
+      "source_name": "antonbabenko/terraform-skill",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 6,
+      "normalized_url": "https://github.com/yctimlin/mcp_excalidraw",
+      "source_name": "yctimlin/mcp_excalidraw",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 7,
+      "normalized_url": "https://github.com/cloudflare/skills",
       "source_name": "cloudflare/skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 8,
+      "normalized_url": "https://github.com/Jakubantalik/transitions.dev",
       "source_name": "Jakubantalik/transitions.dev",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 9,
+      "normalized_url": "https://github.com/WordPress/agent-skills",
       "source_name": "WordPress/agent-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "ANTHROPIC_API_KEY"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 10,
+      "normalized_url": "https://github.com/timescale/pg-aiguide",
       "source_name": "timescale/pg-aiguide",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 11,
+      "normalized_url": "https://github.com/Owl-Listener/designer-skills",
       "source_name": "Owl-Listener/designer-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 12,
+      "normalized_url": "https://github.com/Eronred/aso-skills",
       "source_name": "Eronred/aso-skills",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 13,
+      "normalized_url": "https://github.com/devenjarvis/lathe",
       "source_name": "devenjarvis/lathe",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 14,
-      "source_name": "Weizhena/Deep-Research-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 15,
-      "source_name": "zubair-trabzada/ai-legal-claude",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 14,
+      "normalized_url": "https://github.com/Weizhena/Deep-Research-skills",
+      "source_name": "Weizhena/Deep-Research-skills",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 15,
+      "normalized_url": "https://github.com/zubair-trabzada/ai-legal-claude",
+      "source_name": "zubair-trabzada/ai-legal-claude",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 16,
+      "normalized_url": "https://github.com/op7418/logo-generator-skill",
       "source_name": "op7418/logo-generator-skill",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 17,
+      "normalized_url": "https://github.com/TanStack/cli",
       "source_name": "TanStack/cli",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 18,
+      "normalized_url": "https://github.com/actionbook/rust-skills",
       "source_name": "actionbook/rust-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 19,
-      "source_name": "truongduy2611/app-store-preflight-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 20,
-      "source_name": "plannotator/tot",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 21,
-      "source_name": "plannotator/effective-html",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 22,
-      "source_name": "conorluddy/ios-simulator-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 23,
-      "source_name": "onvoyage-ai/gtm-engineer-skills",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 19,
+      "normalized_url": "https://github.com/truongduy2611/app-store-preflight-skills",
+      "source_name": "truongduy2611/app-store-preflight-skills",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "ASC_ISSUER_ID",
+        "ASC_KEY_ID",
+        "ASC_PRIVATE_KEY",
+        "ASC_PRIVATE_KEY_B64",
+        "ASC_PRIVATE_KEY_PATH"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 20,
+      "normalized_url": "https://github.com/plannotator/tot",
+      "source_name": "plannotator/tot",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 21,
+      "normalized_url": "https://github.com/plannotator/effective-html",
+      "source_name": "plannotator/effective-html",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 22,
+      "normalized_url": "https://github.com/conorluddy/ios-simulator-skill",
+      "source_name": "conorluddy/ios-simulator-skill",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "IOS_SIM_HANG_BUDGET_TOKENS"
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 23,
+      "normalized_url": "https://github.com/onvoyage-ai/gtm-engineer-skills",
+      "source_name": "onvoyage-ai/gtm-engineer-skills",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 24,
+      "normalized_url": "https://github.com/rohunvora/x-research-skill",
       "source_name": "rohunvora/x-research-skill",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 25,
+      "normalized_url": "https://github.com/better-auth/better-icons",
       "source_name": "better-auth/better-icons",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 26,
+      "normalized_url": "https://github.com/itsmostafa/aws-agent-skills",
       "source_name": "itsmostafa/aws-agent-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "AWS_PROXY",
+        "AWS_SESSION_TOKEN",
+        "PASSWORD",
+        "REFRESH_TOKEN",
+        "SECRET_HASH"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 27,
+      "normalized_url": "https://github.com/VILA-Lab/FigMirror",
       "source_name": "VILA-Lab/FigMirror",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 28,
+      "normalized_url": "https://github.com/dgreenheck/webgpu-claude-skill",
       "source_name": "dgreenheck/webgpu-claude-skill",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 29,
+      "normalized_url": "https://github.com/CharlesWiltgen/Axiom",
       "source_name": "CharlesWiltgen/Axiom",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "NPM_TOKEN_AXIOM"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 30,
+      "normalized_url": "https://github.com/imxv/Pretty-mermaid-skills",
       "source_name": "imxv/Pretty-mermaid-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 31,
+      "normalized_url": "https://github.com/ksimback/tech-debt-skill",
       "source_name": "ksimback/tech-debt-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 32,
+      "normalized_url": "https://github.com/lishix520/academic-paper-skills",
       "source_name": "lishix520/academic-paper-skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 33,
+      "normalized_url": "https://github.com/aiwithremy/claude-skills-llm-council",
       "source_name": "aiwithremy/claude-skills-llm-council",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 34,
+      "normalized_url": "https://github.com/Haojae/scipilot-figure-skill",
       "source_name": "Haojae/scipilot-figure-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 35,
+      "normalized_url": "https://github.com/Kappaemme-git/codex-complexity-optimizer",
       "source_name": "Kappaemme-git/codex-complexity-optimizer",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 36,
+      "normalized_url": "https://github.com/data-goblin/power-bi-agentic-development",
       "source_name": "data-goblin/power-bi-agentic-development",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 37,
+      "normalized_url": "https://github.com/solana-foundation/solana-dev-skill",
       "source_name": "solana-foundation/solana-dev-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 38,
+      "normalized_url": "https://github.com/Gabberflast/academic-pptx-skill",
       "source_name": "Gabberflast/academic-pptx-skill",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 39,
+      "normalized_url": "https://github.com/ast-grep/agent-skill",
       "source_name": "ast-grep/agent-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 40,
+      "normalized_url": "https://github.com/langchain-ai/langchain-skills",
       "source_name": "langchain-ai/langchain-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 41,
+      "normalized_url": "https://github.com/199-biotechnologies/claude-deep-research-skill",
       "source_name": "199-biotechnologies/claude-deep-research-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 42,
+      "normalized_url": "https://github.com/duckdb/duckdb-skills",
       "source_name": "duckdb/duckdb-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "SECRET",
+        "SECRET_SETUP"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 43,
+      "normalized_url": "https://github.com/gadicc/yahoo-finance2",
       "source_name": "gadicc/yahoo-finance2",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 44,
+      "normalized_url": "https://github.com/zubair-trabzada/ai-sales-team-claude",
       "source_name": "zubair-trabzada/ai-sales-team-claude",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 45,
+      "normalized_url": "https://github.com/Bhanunamikaze/Agentic-SEO-Skill",
       "source_name": "Bhanunamikaze/Agentic-SEO-Skill",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 46,
+      "normalized_url": "https://github.com/agi-now/buffett-skills",
       "source_name": "agi-now/buffett-skills",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 47,
+      "normalized_url": "https://github.com/tjboudreaux/cc-thinking-skills",
       "source_name": "tjboudreaux/cc-thinking-skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 48,
+      "normalized_url": "https://github.com/fayazara/macos-app-skills",
       "source_name": "fayazara/macos-app-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 49,
+      "normalized_url": "https://github.com/meodai/skill.color-expert",
       "source_name": "meodai/skill.color-expert",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 50,
+      "normalized_url": "https://github.com/lawve-ai/awesome-legal-skills",
       "source_name": "lawve-ai/awesome-legal-skills",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 51,
+      "normalized_url": "https://github.com/ramziddin/solid-skills",
       "source_name": "ramziddin/solid-skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 52,
+      "normalized_url": "https://github.com/Trae1ounG/paper-plot-skills",
       "source_name": "Trae1ounG/paper-plot-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 53,
-      "source_name": "dbt-labs/dbt-agent-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 54,
-      "source_name": "JeffLi1993/seo-audit-skill",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 53,
+      "normalized_url": "https://github.com/dbt-labs/dbt-agent-skills",
+      "source_name": "dbt-labs/dbt-agent-skills",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 54,
+      "normalized_url": "https://github.com/JeffLi1993/seo-audit-skill",
+      "source_name": "JeffLi1993/seo-audit-skill",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "GOOGLE_PAGESPEED_API_KEY"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 55,
+      "normalized_url": "https://github.com/LottieFiles/motion-design-skill",
       "source_name": "LottieFiles/motion-design-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 56,
+      "normalized_url": "https://github.com/antonbabenko/terraform-skill",
       "source_name": "antonbabenko/terraform-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 57,
+      "normalized_url": "https://github.com/Affitor/affiliate-skills",
       "source_name": "Affitor/affiliate-skills",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 58,
+      "normalized_url": "https://github.com/elvisun/newsjack",
       "source_name": "elvisun/newsjack",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 59,
+      "normalized_url": "https://github.com/borski/travel-hacking-toolkit",
       "source_name": "borski/travel-hacking-toolkit",
       "auth_required": true,
       "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+        "AA_PASSWORD",
+        "AWARDWALLET_API_KEY",
+        "DUFFEL_API_KEY_LIVE",
+        "IGNAV_API_KEY",
+        "RAPIDAPI_KEY",
+        "REJSEPLANEN_API_KEY",
+        "RESROBOT_API_KEY",
+        "SEATS_AERO_API_KEY",
+        "SERPAPI_API_KEY",
+        "SW_PASSWORD",
+        "TRIPADVISOR_API_KEY"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 60,
+      "normalized_url": "https://github.com/aitytech/agentkits-marketing",
       "source_name": "aitytech/agentkits-marketing",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 61,
-      "source_name": "Auriti-Labs/geo-optimizer-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 62,
-      "source_name": "meleantonio/awesome-econ-ai-stuff",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 63,
-      "source_name": "Varnan-Tech/opendirectory",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 64,
-      "source_name": "elastic/agent-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 65,
-      "source_name": "vanab/swiftdata-agent-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 66,
-      "source_name": "twostraws/Swift-Concurrency-Agent-Skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 67,
-      "source_name": "AvdLee/Swift-Concurrency-Agent-Skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 68,
-      "source_name": "twostraws/Swift-Testing-Agent-Skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 69,
-      "source_name": "bocato/swift-testing-agent-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 70,
-      "source_name": "AvdLee/Swift-Testing-Agent-Skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 71,
-      "source_name": "Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 72,
-      "source_name": "n0an/Swift-FormatStyle-Agent-Skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 73,
-      "source_name": "dadederk/iOS-Accessibility-Agent-Skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 74,
-      "source_name": "PasqualeVittoriosi/swift-accessibility-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 75,
-      "source_name": "rgmez/apple-accessibility-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 76,
-      "source_name": "n0an/App-Intents-Agent-Skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 77,
-      "source_name": "rorkai/app-store-connect-cli-skills",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 61,
+      "normalized_url": "https://github.com/Auriti-Labs/geo-optimizer-skill",
+      "source_name": "Auriti-Labs/geo-optimizer-skill",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "ANTHROPIC_API_KEY",
+        "GEO_LLM_API_KEY",
+        "GROQ_API_KEY",
+        "OPENAI_API_KEY",
+        "PERPLEXITY_API_KEY"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 62,
+      "normalized_url": "https://github.com/meleantonio/awesome-econ-ai-stuff",
+      "source_name": "meleantonio/awesome-econ-ai-stuff",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 63,
+      "normalized_url": "https://github.com/Varnan-Tech/opendirectory",
+      "source_name": "Varnan-Tech/opendirectory",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "ACCESS_TOKEN",
+        "AD_ACCOUNT_ID",
+        "ANTHROPIC_API_KEY",
+        "COMPOSIO_API_KEY",
+        "FIRECRAWL_API_KEY",
+        "GEMINI_API_KEY",
+        "GITHUB_REPO",
+        "GITHUB_TOKEN",
+        "GITHUB_USERNAME",
+        "GOOGLE_API_KEY",
+        "GROQ_API_KEY",
+        "LINEAR_API_KEY",
+        "LLM_API_KEY",
+        "NOTION_DATABASE_ID",
+        "NOTION_TOKEN",
+        "OPENAI_API_KEY",
+        "REDDIT_CLIENT_ID",
+        "REDDIT_CLIENT_SECRET",
+        "REDDIT_PASSWORD",
+        "SERPAPI_KEY",
+        "SLACK_WEBHOOK",
+        "SLACK_WEBHOOK_URL",
+        "TADDY_API_KEY",
+        "TAVILY_API_KEY",
+        "TOKEN",
+        "VALIDEMAIL_API_KEY"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 64,
+      "normalized_url": "https://github.com/elastic/agent-skills",
+      "source_name": "elastic/agent-skills",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "AD_PASSWORD",
+        "EC_API_KEY",
+        "ELASTICSEARCH_API_KEY",
+        "ELASTICSEARCH_PASSWORD",
+        "ES_LOCAL_PASSWORD",
+        "FILE_PASSWORD",
+        "JWT_TOKEN",
+        "KIBANA_API_KEY",
+        "KIBANA_PASSWORD",
+        "LDAP_PASSWORD",
+        "NEW_PASSWORD",
+        "PASSWORD"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+    },
+    {
+      "raw_index": 65,
+      "normalized_url": "https://github.com/vanab/swiftdata-agent-skill",
+      "source_name": "vanab/swiftdata-agent-skill",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 66,
+      "normalized_url": "https://github.com/twostraws/Swift-Concurrency-Agent-Skill",
+      "source_name": "twostraws/Swift-Concurrency-Agent-Skill",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 67,
+      "normalized_url": "https://github.com/AvdLee/Swift-Concurrency-Agent-Skill",
+      "source_name": "AvdLee/Swift-Concurrency-Agent-Skill",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 68,
+      "normalized_url": "https://github.com/twostraws/Swift-Testing-Agent-Skill",
+      "source_name": "twostraws/Swift-Testing-Agent-Skill",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 69,
+      "normalized_url": "https://github.com/bocato/swift-testing-agent-skill",
+      "source_name": "bocato/swift-testing-agent-skill",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 70,
+      "normalized_url": "https://github.com/AvdLee/Swift-Testing-Agent-Skill",
+      "source_name": "AvdLee/Swift-Testing-Agent-Skill",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 71,
+      "normalized_url": "https://github.com/Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
+      "source_name": "Erikote04/Swift-API-Design-Guidelines-Agent-Skill",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 72,
+      "normalized_url": "https://github.com/n0an/Swift-FormatStyle-Agent-Skill",
+      "source_name": "n0an/Swift-FormatStyle-Agent-Skill",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 73,
+      "normalized_url": "https://github.com/dadederk/iOS-Accessibility-Agent-Skill",
+      "source_name": "dadederk/iOS-Accessibility-Agent-Skill",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 74,
+      "normalized_url": "https://github.com/PasqualeVittoriosi/swift-accessibility-skill",
+      "source_name": "PasqualeVittoriosi/swift-accessibility-skill",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 75,
+      "normalized_url": "https://github.com/rgmez/apple-accessibility-skills",
+      "source_name": "rgmez/apple-accessibility-skills",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 76,
+      "normalized_url": "https://github.com/n0an/App-Intents-Agent-Skill",
+      "source_name": "n0an/App-Intents-Agent-Skill",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 77,
+      "normalized_url": "https://github.com/rorkai/app-store-connect-cli-skills",
+      "source_name": "rorkai/app-store-connect-cli-skills",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "ASC_",
+        "ASC_ADS_",
+        "ASC_ADS_ACCESS_TOKEN",
+        "ASC_ADS_CLIENT_ID",
+        "ASC_ADS_KEY_ID",
+        "ASC_ADS_ORG_ID",
+        "ASC_ADS_PRIVATE_KEY_PATH",
+        "ASC_ADS_TEAM_ID",
+        "ASC_APP_ID",
+        "ASC_ISSUER_ID",
+        "ASC_KEY_ID",
+        "ASC_MATCH_PASSWORD",
+        "ASC_PRIVATE_KEY",
+        "ASC_PRIVATE_KEY_B64",
+        "ASC_PRIVATE_KEY_PATH",
+        "ASC_TIMEOUT",
+        "ASC_TIMEOUT_SECONDS",
+        "ASC_UPLOAD_TIMEOUT",
+        "ASC_UPLOAD_TIMEOUT_SECONDS",
+        "MATCH_PASSWORD"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 78,
+      "normalized_url": "https://github.com/timbroddin/app-store-aso-skill",
       "source_name": "timbroddin/app-store-aso-skill",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 79,
+      "normalized_url": "https://github.com/3paws-ai/mobile-ai-skills/tree/main/skills/appstore-review",
       "source_name": "3paws-ai/mobile-ai-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 80,
+      "normalized_url": "https://github.com/efremidze/swift-architecture-skill",
       "source_name": "efremidze/swift-architecture-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 81,
+      "normalized_url": "https://github.com/n0an/Background-Execution-Agent-Skill",
       "source_name": "n0an/Background-Execution-Agent-Skill",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 82,
+      "normalized_url": "https://github.com/AvdLee/Core-Data-Agent-Skill",
       "source_name": "AvdLee/Core-Data-Agent-Skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 83,
+      "normalized_url": "https://github.com/mhaviv/Swift-FocusEngine-Agent-Skill",
       "source_name": "mhaviv/Swift-FocusEngine-Agent-Skill",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 84,
+      "normalized_url": "https://github.com/ivan-magda/swift-security-skill",
       "source_name": "ivan-magda/swift-security-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "KEYCHAIN_PASSWORD",
+        "P12_PASSWORD"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 85,
+      "normalized_url": "https://github.com/jazzychad/ios-code-audit",
       "source_name": "jazzychad/ios-code-audit",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 86,
+      "normalized_url": "https://github.com/conorluddy/ios-simulator-skill",
       "source_name": "conorluddy/ios-simulator-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "IOS_SIM_HANG_BUDGET_TOKENS"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 87,
+      "normalized_url": "https://github.com/daetojemax/figma-to-swiftui-skill",
       "source_name": "daetojemax/figma-to-swiftui-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 88,
+      "normalized_url": "https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces",
       "source_name": "andrewgleave/skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 89,
+      "normalized_url": "https://github.com/n0an/Widgets-Agent-Skill",
       "source_name": "n0an/Widgets-Agent-Skill",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 90,
+      "normalized_url": "https://github.com/twostraws/SwiftAgents",
       "source_name": "twostraws/SwiftAgents",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 91,
+      "normalized_url": "https://github.com/jakubkrehel/make-interfaces-feel-better",
       "source_name": "jakubkrehel/make-interfaces-feel-better",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 92,
+      "normalized_url": "https://github.com/apify/agent-skills",
       "source_name": "apify/agent-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 93,
-      "source_name": "NVIDIA/skills-",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "normalized_url": "https://github.com/NVIDIA/skills",
+      "source_name": "NVIDIA/skills",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "API_KEY",
+        "BREV_API_TOKEN",
+        "DICTIONARY_API_KEY",
+        "DINO_AUTOML_PROFILE",
+        "DUT_UART_PASSWORD_ENV",
+        "FAN_DEFAULT_PROFILE",
+        "GH_TOKEN",
+        "GOOGLE_API_KEY",
+        "HF_TOKEN",
+        "MINIMAL_PROFILE",
+        "NGC_API_KEY",
+        "NGC_CLI_API_KEY",
+        "NVIDIA_API_KEY",
+        "OPENAI_API_KEY",
+        "PASSWORD_ENV",
+        "PROFILE",
+        "RTVI_VLM_API_KEY",
+        "WANDB_API_KEY"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 94,
+      "normalized_url": "https://github.com/supabase/agent-skills",
       "source_name": "supabase/agent-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 95,
+      "normalized_url": "https://github.com/aaron-he-zhu/aaron-marketing-skills",
       "source_name": "aaron-he-zhu/aaron-marketing-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "BAIDU_PUSH_TOKEN"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 96,
+      "normalized_url": "https://github.com/samber/cc-skills-golang",
       "source_name": "samber/cc-skills-golang",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 97,
+      "normalized_url": "https://github.com/addyosmani/web-quality-skills",
       "source_name": "addyosmani/web-quality-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 98,
+      "normalized_url": "https://github.com/CloudAI-X/threejs-skills",
       "source_name": "CloudAI-X/threejs-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 99,
+      "normalized_url": "https://github.com/RKiding/Awesome-finance-skills",
       "source_name": "RKiding/Awesome-finance-skills",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 100,
+      "normalized_url": "https://github.com/tt-a1i/archify",
       "source_name": "tt-a1i/archify",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 101,
+      "normalized_url": "https://github.com/ericosiu/ai-marketing-skills",
       "source_name": "ericosiu/ai-marketing-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "ANTHROPIC_API_KEY",
+        "GEMINI_API_KEY",
+        "GOOGLE_APPLICATION_CREDENTIALS",
+        "OPENAI_API_KEY",
+        "OPENAI_LLM_KEY",
+        "YOUTUBE_API_KEY"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 102,
+      "normalized_url": "https://github.com/SharpAI/DeepCamera",
       "source_name": "SharpAI/DeepCamera",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 103,
+      "normalized_url": "https://github.com/himself65/finance-skills",
       "source_name": "himself65/finance-skills",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 104,
+      "normalized_url": "https://github.com/eugeniughelbur/obsidian-second-brain",
       "source_name": "eugeniughelbur/obsidian-second-brain",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "OPENAI_API_KEY"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 105,
+      "normalized_url": "https://github.com/markdown-viewer/skills",
       "source_name": "markdown-viewer/skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 106,
+      "normalized_url": "https://github.com/ningzimu/codex-ppt-skill",
       "source_name": "ningzimu/codex-ppt-skill",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 107,
+      "normalized_url": "https://github.com/Nutlope/hallmark",
       "source_name": "Nutlope/hallmark",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 108,
+      "normalized_url": "https://github.com/remotion-dev/skills",
       "source_name": "remotion-dev/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 109,
+      "normalized_url": "https://github.com/Imbad0202/academic-research-skills-codex",
       "source_name": "Imbad0202/academic-research-skills-codex",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 110,
+      "normalized_url": "https://github.com/deanpeters/Product-Manager-Skills",
       "source_name": "deanpeters/Product-Manager-Skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 111,
+      "normalized_url": "https://github.com/PleasePrompto/notebooklm-skill",
       "source_name": "PleasePrompto/notebooklm-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 112,
+      "normalized_url": "https://github.com/earthtojake/text-to-cad",
       "source_name": "earthtojake/text-to-cad",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 113,
+      "normalized_url": "https://github.com/nicobailon/visual-explainer",
       "source_name": "nicobailon/visual-explainer",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 114,
+      "normalized_url": "https://github.com/AgriciDaniel/claude-seo",
       "source_name": "AgriciDaniel/claude-seo",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 115,
+      "normalized_url": "https://github.com/huggingface/skills",
       "source_name": "huggingface/skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "HF_TOKEN"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 116,
+      "normalized_url": "https://github.com/NVIDIA/SkillSpector",
       "source_name": "NVIDIA/SkillSpector",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 117,
+      "normalized_url": "https://github.com/hardikpandya/stop-slop",
       "source_name": "hardikpandya/stop-slop",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 118,
+      "normalized_url": "https://github.com/millionco/react-doctor",
       "source_name": "millionco/react-doctor",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 119,
+      "normalized_url": "https://github.com/google/skills",
       "source_name": "google/skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 120,
+      "normalized_url": "https://github.com/hyhmrright/brooks-lint",
       "source_name": "hyhmrright/brooks-lint",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 121,
+      "normalized_url": "https://github.com/yujiachen-y/codebase-recon-skill",
       "source_name": "yujiachen-y/codebase-recon-skill",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 122,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/gh-address-comments",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 123,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/gh-fix-ci",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 124,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/notion-knowledge-capture",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 125,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/internal-comms",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 126,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/paperjsx",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 127,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/email-draft-polish",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 128,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/changelog-generator",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 129,
+      "normalized_url": "https://github.com/MinistaJazz/diasporic-intelligence",
       "source_name": "MinistaJazz/diasporic-intelligence",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 130,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/content-research-writer",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 131,
+      "normalized_url": "https://github.com/wgwtest/novel-writing",
       "source_name": "wgwtest/novel-writing",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 132,
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
       "source_name": "MohamedAbdallah-14/unslop",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 133,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/spreadsheet-formula-helper",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 134,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/competitive-ads-extractor",
       "source_name": "ComposioHQ/awesome-codex-skills",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 135,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/datadog-logs",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 136,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/developer-growth-analysis",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 137,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/lead-research-assistant",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 138,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/domain-name-brainstormer",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 139,
+      "normalized_url": "https://github.com/kepano/obsidian-skills",
       "source_name": "kepano/obsidian-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 140,
+      "normalized_url": "https://github.com/coreyhaines31/marketingskills",
       "source_name": "coreyhaines31/marketingskills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 141,
+      "normalized_url": "https://github.com/AllThingsSmitty/css-protips",
       "source_name": "AllThingsSmitty/css-protips",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 142,
+      "normalized_url": "https://github.com/googleworkspace/cli",
       "source_name": "googleworkspace/cli",
       "auth_required": true,
       "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+        "GOOGLE_APPLICATION_CREDENTIALS"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 143,
+      "normalized_url": "https://github.com/vercel-labs/agent-skills",
       "source_name": "vercel-labs/agent-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 144,
+      "normalized_url": "https://github.com/zarazhangrui/frontend-slides",
       "source_name": "zarazhangrui/frontend-slides",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 145,
+      "normalized_url": "https://github.com/phuryn/pm-skills",
       "source_name": "phuryn/pm-skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 146,
+      "normalized_url": "https://github.com/teng-lin/notebooklm-py",
       "source_name": "teng-lin/notebooklm-py",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 147,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/raffle-winner-picker",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 148,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/langsmith-fetch",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 149,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/canvas-design",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 150,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/image-enhancer",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 151,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/slack-gif-creator",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 152,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/video-downloader",
       "source_name": "ComposioHQ/awesome-codex-skills",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 153,
+      "normalized_url": "https://github.com/multica-ai/andrej-karpathy-skills",
       "source_name": "multica-ai/andrej-karpathy-skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 154,
+      "normalized_url": "https://github.com/mobile-next/mobile-mcp",
       "source_name": "mobile-next/mobile-mcp",
-      "auth_required": true,
-      "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 155,
+      "normalized_url": "https://github.com/modelcontextprotocol/inspector",
       "source_name": "modelcontextprotocol/inspector",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 156,
+      "normalized_url": "https://github.com/heygen-com/hyperframes",
       "source_name": "heygen-com/hyperframes",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "FIGMA_TOKEN",
+        "GOOGLE_API_KEY"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 157,
+      "normalized_url": "https://github.com/Panniantong/Agent-Reach",
       "source_name": "Panniantong/Agent-Reach",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 158,
+      "normalized_url": "https://github.com/product-on-purpose/pm-skills",
       "source_name": "product-on-purpose/pm-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "ANTHROPIC_API_KEY"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 159,
+      "normalized_url": "https://github.com/shaom/infocard-skills",
       "source_name": "shaom/infocard-skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 160,
+      "normalized_url": "https://github.com/geekjourneyx/claude-design-card",
       "source_name": "geekjourneyx/claude-design-card",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 161,
+      "normalized_url": "https://github.com/antvis/mcp-server-chart",
       "source_name": "antvis/mcp-server-chart",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 162,
+      "normalized_url": "https://github.com/bcanfield/agentic-tech-debt",
       "source_name": "bcanfield/agentic-tech-debt",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 163,
+      "normalized_url": "https://github.com/Pythoughts-labs/designer-skill",
       "source_name": "Pythoughts-labs/designer-skill",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 164,
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/env-lint",
       "source_name": "hashgraph-online/awesome-codex-plugins",
-      "auth_required": true,
-      "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 165,
+      "normalized_url": "https://github.com/hashgraph-online/hol-guard-plugin",
       "source_name": "hashgraph-online/hol-guard-plugin",
-      "auth_required": true,
-      "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 166,
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/secret-guard",
       "source_name": "hashgraph-online/awesome-codex-plugins",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 167,
+      "normalized_url": "https://github.com/avansaber/tailtest-codex",
       "source_name": "avansaber/tailtest-codex",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 168,
+      "normalized_url": "https://github.com/HDeibler/universal-design-principles",
       "source_name": "HDeibler/universal-design-principles",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 169,
+      "normalized_url": "https://github.com/BestLemoon/codex-seo",
       "source_name": "BestLemoon/codex-seo",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 170,
+      "normalized_url": "https://github.com/avivsinai/langfuse-mcp",
       "source_name": "avivsinai/langfuse-mcp",
       "auth_required": true,
       "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+        "LANGFUSE_HOST",
+        "LANGFUSE_MCP_READ_ONLY",
+        "LANGFUSE_PUBLIC_KEY",
+        "LANGFUSE_SECRET_KEY"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 171,
+      "normalized_url": "https://github.com/johnvouros/nullcost-plugin",
       "source_name": "johnvouros/nullcost-plugin",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 172,
+      "normalized_url": "https://github.com/MohamedAbdallah-14/prompt-to-asset",
       "source_name": "MohamedAbdallah-14/prompt-to-asset",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "BFL_API_KEY",
+        "CLOUDFLARE_ACCOUNT_ID",
+        "CLOUDFLARE_API_TOKEN",
+        "FAL_API_KEY",
+        "FREEPIK_API_KEY",
+        "GEMINI_API_KEY",
+        "GOOGLE_API_KEY",
+        "HF_TOKEN",
+        "HORDE_API_KEY",
+        "HUGGINGFACE_API_KEY",
+        "IDEOGRAM_API_KEY",
+        "LEONARDO_API_KEY",
+        "NIM_API_KEY",
+        "NVIDIA_API_KEY",
+        "OPENAI_API_KEY",
+        "PIXAZO_API_KEY",
+        "RECRAFT_API_KEY",
+        "REPLICATE_API_KEY",
+        "REPLICATE_API_TOKEN",
+        "STABILITY_API_KEY",
+        "TOGETHER_API_KEY"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 173,
+      "normalized_url": "https://github.com/avalonreset/seo-dungeon",
       "source_name": "avalonreset/seo-dungeon",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 174,
+      "normalized_url": "https://github.com/tim-osterhus/codex-remotion-plugin",
       "source_name": "tim-osterhus/codex-remotion-plugin",
-      "auth_required": true,
-      "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 175,
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
       "source_name": "MohamedAbdallah-14/unslop",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 176,
+      "normalized_url": "https://github.com/summer521521/Zotero_Research_plugin",
       "source_name": "summer521521/Zotero_Research_plugin",
       "auth_required": true,
       "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+        "ZOTERO_DB_PATH"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 177,
+      "normalized_url": "https://github.com/PapiScholz/roadmapsmith",
       "source_name": "PapiScholz/roadmapsmith",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 178,
+      "normalized_url": "https://github.com/ForceInjection/awesome-skills/tree/main/skills/openspec-assistant",
       "source_name": "ForceInjection/awesome-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 179,
+      "normalized_url": "https://github.com/fastknifes/openflow",
       "source_name": "fastknifes/openflow",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 180,
+      "normalized_url": "https://github.com/wenqingyu/ralphy-openspec",
       "source_name": "wenqingyu/ralphy-openspec",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 181,
+      "normalized_url": "https://github.com/Octane0411/opencode-plugin-openspec",
       "source_name": "Octane0411/opencode-plugin-openspec",
-      "auth_required": true,
-      "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 182,
+      "normalized_url": "https://github.com/jixoai/openspecui",
       "source_name": "jixoai/openspecui",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 183,
-      "source_name": "sudokar/openspec-plus",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 184,
-      "source_name": "ToruAI/openspec-ui",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 185,
-      "source_name": "sflueckiger/specboard",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 186,
-      "source_name": "wxhou/openspec-playwright",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 187,
-      "source_name": "Lumiaqian/openspec-mcp",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 183,
+      "normalized_url": "https://github.com/sudokar/openspec-plus",
+      "source_name": "sudokar/openspec-plus",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 184,
+      "normalized_url": "https://github.com/ToruAI/openspec-ui",
+      "source_name": "ToruAI/openspec-ui",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 185,
+      "normalized_url": "https://github.com/sflueckiger/specboard",
+      "source_name": "sflueckiger/specboard",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 186,
+      "normalized_url": "https://github.com/wxhou/openspec-playwright",
+      "source_name": "wxhou/openspec-playwright",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 187,
+      "normalized_url": "https://github.com/Lumiaqian/openspec-mcp",
+      "source_name": "Lumiaqian/openspec-mcp",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 188,
+      "normalized_url": "https://github.com/yuritoledo/openspec-tdd",
       "source_name": "yuritoledo/openspec-tdd",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 189,
+      "normalized_url": "https://github.com/mbertani/opsx-feature-dev",
       "source_name": "mbertani/opsx-feature-dev",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 190,
+      "normalized_url": "https://github.com/griffithkk3-del/openspec-reviewed-workflow",
       "source_name": "griffithkk3-del/openspec-reviewed-workflow",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 191,
+      "normalized_url": "https://github.com/mrtooher/fable-mode",
       "source_name": "mrtooher/fable-mode",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 192,
+      "normalized_url": "https://github.com/ndpvt-web/latex-document-skill",
       "source_name": "ndpvt-web/latex-document-skill",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 193,
+      "normalized_url": "https://github.com/devcxl/opencode-spec",
       "source_name": "devcxl/opencode-spec",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 194,
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/commit-narrator",
       "source_name": "hashgraph-online/awesome-codex-plugins",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 195,
+      "normalized_url": "https://github.com/Rycen7822/codex-rg-guard",
       "source_name": "Rycen7822/codex-rg-guard",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 196,
+      "normalized_url": "https://github.com/wzyn20051216/solidworks-automation-skill",
       "source_name": "wzyn20051216/solidworks-automation-skill",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 197,
+      "normalized_url": "https://github.com/louisedesadeleer/clipify",
       "source_name": "louisedesadeleer/clipify",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 198,
+      "normalized_url": "https://github.com/michalparkola/tapestry-skills",
       "source_name": "michalparkola/tapestry-skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 199,
+      "normalized_url": "https://github.com/bentossell/visualise",
       "source_name": "bentossell/visualise",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 200,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/architecture-diagram",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 201,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/agent-md-refactor",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 202,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/brainstorming",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 203,
+      "normalized_url": "https://github.com/minhnv0807/ai-business-skills",
       "source_name": "minhnv0807/ai-business-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "OPENAI_API_KEY"
+      ],
+      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
     },
     {
       "raw_index": 204,
+      "normalized_url": "https://github.com/rshankras/claude-code-apple-skills",
       "source_name": "rshankras/claude-code-apple-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 205,
+      "normalized_url": "https://github.com/jihe520/social-push",
       "source_name": "jihe520/social-push",
       "auth_required": true,
       "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+        "PASSWORD"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 206,
+      "normalized_url": "https://github.com/WILLOSCAR/research-units-pipeline-skills",
       "source_name": "WILLOSCAR/research-units-pipeline-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 207,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/documentation-writer",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 208,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/exa-web-search-free",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 209,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/extreme-software-optimization",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 210,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/game-changing-features",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 211,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/golang-pro",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 212,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/hono",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 213,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/lesson-learned",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 214,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/next-best-practices",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 215,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/shadcn",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 216,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/systematic-debugging",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 217,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/tui-design",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 218,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/vercel-composition-patterns",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 219,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/vercel-react-best-practices",
       "source_name": "pedronauck/skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 220,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/vitest",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 221,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/zod",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 222,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/curated/zustand",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 223,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/alex-hormozi-pitch",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 224,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/brand-storytelling",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 225,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/content-research-writer",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 226,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/copywriting",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 227,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/fundraising",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 228,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/google-ads",
       "source_name": "pedronauck/skills",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 229,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/hormozi-ad-factory",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 230,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/humanizer",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 231,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/pitch-deck",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 232,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/pitch-deck-visuals",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 233,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/pitch-gen",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 234,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/pptx-creator",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 235,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/professional-communication",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 236,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/sales-methodology-implementer",
       "source_name": "pedronauck/skills",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 237,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/startup-validator",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 238,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/viz",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 239,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/marketing/writing-clearly-and-concisely",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 240,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/adversarial-review",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 241,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/ai-sdk",
       "source_name": "pedronauck/skills",
-      "auth_required": true,
-      "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 242,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/building-components",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 243,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/crafting-effective-readmes",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 244,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/creating-spec",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 245,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/design-spec-extraction",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 246,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/devops-engineer",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 247,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/drizzle-orm",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 248,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/drizzle-postgres",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 249,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/electron-builder",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 250,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/electron-dev",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 251,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/electron-release",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 252,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/es-toolkit",
       "source_name": "pedronauck/skills",
-      "auth_required": true,
-      "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 253,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/executing-plans",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 254,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/fixing-motion-performance",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 255,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/helm-chart-scaffolding",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 256,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/hetzner-server",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 257,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/kubernetes-specialist",
       "source_name": "pedronauck/skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 258,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/mermaid-diagrams",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 259,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/motion",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 260,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/motion-react",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 261,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/obsidian-bases",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 262,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/obsidian-cli",
       "source_name": "pedronauck/skills",
-      "auth_required": true,
-      "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 263,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/obsidian-markdown",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 264,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/remotion-best-practices",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 265,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/requirements-clarity",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 266,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/ship-learn-next",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 267,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/tauri-v2",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 268,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/terraform-style-guide",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 269,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/workflow",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 270,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/wrangler",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 271,
+      "normalized_url": "https://github.com/headroomlabs-ai/headroom",
       "source_name": "headroomlabs-ai/headroom",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 272,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/mcp-builder",
       "source_name": "ComposioHQ/awesome-codex-skills",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 273,
+      "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/file-organizer",
       "source_name": "ComposioHQ/awesome-codex-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 274,
+      "normalized_url": "https://github.com/openags/paper-search-mcp",
       "source_name": "openags/paper-search-mcp",
-      "auth_required": true,
-      "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 275,
+      "normalized_url": "https://github.com/iannuttall/dotagents",
       "source_name": "iannuttall/dotagents",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 276,
+      "normalized_url": "https://github.com/mirkobozzetto/espresso",
       "source_name": "mirkobozzetto/espresso",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 277,
+      "normalized_url": "https://github.com/epicsagas/llm-transpile",
       "source_name": "epicsagas/llm-transpile",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 278,
-      "source_name": "2kDarki/codex-mem",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 279,
-      "source_name": "papersflow-ai/papersflow-codex-plugin",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 278,
+      "normalized_url": "https://github.com/2kDarki/codex-mem",
+      "source_name": "2kDarki/codex-mem",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 279,
+      "normalized_url": "https://github.com/papersflow-ai/papersflow-codex-plugin",
+      "source_name": "papersflow-ai/papersflow-codex-plugin",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 280,
+      "normalized_url": "https://github.com/klajdikkolaj/upwork-autopilot",
       "source_name": "klajdikkolaj/upwork-autopilot",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 281,
+      "normalized_url": "https://github.com/wearetechnative/openspec-badge-action",
       "source_name": "wearetechnative/openspec-badge-action",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 282,
+      "normalized_url": "https://github.com/Kulaxyz/token-diet",
       "source_name": "Kulaxyz/token-diet",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 283,
+      "normalized_url": "https://github.com/planetscale/database-skills",
       "source_name": "planetscale/database-skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 284,
+      "normalized_url": "https://github.com/ramziddin/solid-skills",
       "source_name": "ramziddin/solid-skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 285,
+      "normalized_url": "https://github.com/growthenginenowoslawski/coldoutboundskills",
       "source_name": "growthenginenowoslawski/coldoutboundskills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 286,
+      "normalized_url": "https://github.com/KyuRish/mcp-dashboards",
       "source_name": "KyuRish/mcp-dashboards",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 287,
+      "normalized_url": "https://github.com/marzukia/charted",
       "source_name": "marzukia/charted",
-      "auth_required": false,
-      "env_vars_or_credentials": []
-    },
-    {
-      "raw_index": 288,
-      "source_name": "nteract/semiotic",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-      ]
+      ],
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 288,
+      "normalized_url": "https://github.com/nteract/semiotic",
+      "source_name": "nteract/semiotic",
+      "auth_required": false,
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 289,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/better-auth-best-practices",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 290,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/better-auth-organization-best-practices",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 291,
+      "normalized_url": "https://github.com/InternScience/Awesome-Scientific-Skills",
       "source_name": "InternScience/Awesome-Scientific-Skills",
-      "auth_required": false,
-      "env_vars_or_credentials": []
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      ],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 292,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/find-rules",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 293,
+      "normalized_url": "https://github.com/pedronauck/skills/tree/main/skills/community/find-skills",
       "source_name": "pedronauck/skills",
       "auth_required": false,
-      "env_vars_or_credentials": []
+      "env_vars_or_credentials": [],
+      "evidence_source": "deep-source-audit.json"
     }
   ]
 }

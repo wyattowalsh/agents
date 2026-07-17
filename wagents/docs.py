@@ -78,13 +78,13 @@ T = TypeVar("T")
 
 
 def _count_mcp_servers_from_config() -> int | None:
-    """Return configured MCP server count from repo-level mcp.json, if present."""
-    mcp_config = ROOT / "mcp.json"
+    """Return the canonical MCP server count from the registry, if present."""
+    mcp_config = ROOT / "config" / "mcp-registry.json"
     if not mcp_config.exists():
         return None
     try:
         data = json.loads(mcp_config.read_text(encoding="utf-8"))
-        servers = data.get("mcpServers", {})
+        servers = data.get("servers", {})
         return len(servers) if isinstance(servers, dict) else None
     except (OSError, json.JSONDecodeError):
         return None
@@ -96,7 +96,7 @@ def _has_mcp_overview_page() -> bool:
 
 
 def _mcp_overview_badge_stale_reason() -> str | None:
-    """Return remediation when hand-maintained MCP overview badge disagrees with mcp.json."""
+    """Return remediation when the MCP overview badge disagrees with the registry."""
     mcp_index = CONTENT_DIR / "mcp" / "index.mdx"
     if not mcp_index.exists():
         return None
@@ -117,7 +117,7 @@ def _mcp_overview_badge_stale_reason() -> str | None:
     if badge_count != count:
         return (
             f"docs/src/content/docs/mcp/index.mdx MCP badge shows {badge_count} servers but "
-            f"mcp.json defines {count}; update the hand-maintained badge"
+            f"the MCP registry defines {count}; update the hand-maintained badge"
         )
     return None
 
@@ -528,6 +528,21 @@ def write_install_page() -> None:
         '<InstallCommand command={installCommands.all} title="Install the full catalog" '
         'note="Global Skills CLI install across supported agent runtimes." />',
         "",
+        '<Aside type="note" title="Skill catalog scope">',
+        "The full-catalog command installs skills. It does not install CLI or library distributions, start MCP "
+        "servers, or activate native plugins.",
+        "</Aside>",
+        "",
+        "## Install Runtime Tools",
+        "",
+        "Non-skill integrations use package-manager, MCP registry, or native plugin paths selected per source. "
+        "There is no blanket replay command because credentials, filesystem access, network egress, and lifecycle "
+        "hooks require target-specific review.",
+        "",
+        "The July 2026 corpus records 289 runtime dispositions and 63 verified CLI, library, MCP, or plugin "
+        "artifacts in `planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json`. Candidate MCP "
+        "servers and broad-hook plugins remain unavailable until explicitly enabled after review.",
+        "",
         "## Install One Surface",
         "",
         '<InstallCommand command={installCommands.starter} title="Install one starter skill" '
@@ -691,8 +706,8 @@ def write_surfaces_pages(nodes: list) -> None:
         "Tools are the executable and connected capabilities that support agent work. In this repo, that means "
         "MCP servers, the `wagents` CLI, Skills CLI install paths, and runtime plugin manifests.",
         "",
-        f"<p><strong>Current scope:</strong> {custom_mcp} repo MCP package(s), "
-        f"{external_mcp} external MCP tool entries, plus CLI and plugin distribution surfaces.</p>",
+        f"<p><strong>Current scope:</strong> {custom_mcp} first-party MCP package(s), "
+        f"{external_mcp} registry-managed server entries, plus CLI and plugin distribution surfaces.</p>",
         "",
         "<CardGrid>",
         _link_card("MCP Overview", "/mcp/", "Configured MCP servers, MCPHub groups, and client sync coverage."),
@@ -715,7 +730,9 @@ def write_surfaces_pages(nodes: list) -> None:
         "",
         '<Aside type="note" title="Runtime boundary">',
         "Tools are exposed differently per runtime: native MCP config, MCPHub group/server endpoints, "
-        "CLI wrappers, and plugin manifests. Use the runtime matrix before assuming one shape works everywhere.",
+        "CLI wrappers, and plugin manifests. The July 2026 runtime overlay verifies 63/63 artifacts: 29 CLI, "
+        "1 library, 17 MCP, and 16 plugin. Installed or configured does not imply enabled; use the runtime matrix "
+        "and `planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json` for activation truth.",
         "</Aside>",
         "",
     ]
@@ -3001,11 +3018,7 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
             rel = f"{kind_dir}/{node.id}.mdx"
         # Catalog surfaces (skills/agents/mcp detail pages) always regenerate from SSOT.
         # HAND-MAINTAINED only freezes non-catalog hand hubs (start-here, hooks hub, etc.).
-        if (
-            out_file.exists()
-            and _is_hand_maintained_mdx(out_file)
-            and node.kind not in {"skill", "agent", "mcp"}
-        ):
+        if out_file.exists() and _is_hand_maintained_mdx(out_file) and node.kind not in {"skill", "agent", "mcp"}:
             typer.echo(f"  Preserved {rel} (hand-maintained)")
             continue
         out_file.write_text(render_page(node, edges, nodes))

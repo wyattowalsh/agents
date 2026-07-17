@@ -74,6 +74,12 @@ Examples below omit the `uv run` prefix for brevity. Use `wagents ...` after `uv
 | `wagents docs <subcommand>` | Generate, serve, build, preview, or clean the docs site |
 | `wagents hooks <subcommand>` | List and validate lifecycle hooks |
 | `wagents eval <subcommand>` | List, validate, and check eval coverage |
+| `wagents media <subcommand>` | Image optimize and related media helpers |
+| `wagents rtk <subcommand>` | RTK shell-token doctor, sync preview, and gain reports |
+| `wagents apm <subcommand>` | APM materialize/compile helpers for portable projections |
+| `wagents opencode <subcommand>` | OpenCode session/config operator helpers |
+| `wagents catalog <subcommand>` | Catalog index and inventory checks |
+| `wagents grok <subcommand>` | Grok doctor, Plannotator install/sync, harness helpers |
 
 ## Command Reference
 
@@ -304,7 +310,7 @@ wagents install -y
 For third-party skill sources or curated subsets, use `npx skills add` directly:
 
 ```bash
-npx skills add <source> --skill <name> -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
+npx skills add <source> --skill <name> -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
 ```
 
 | Option | Default | Description |
@@ -656,7 +662,7 @@ Remove generated content pages while preserving hand-maintained files:
 wagents docs clean
 ```
 
-Files containing `HAND-MAINTAINED` in their content are preserved during clean operations.
+Intentional hand hubs (`start-here`, `hooks/index`, `mcp/index`, harness-config prose) with `HAND-MAINTAINED` are preserved. Catalog *detail* pages under `skills/catalog/{custom,external}/`, `agents/`, and `mcp/` always regenerate from SSOT and are cleaned even if marked composed.
 
   </TabItem>
 </Tabs>
@@ -694,10 +700,14 @@ Shows source, event, matcher, harness support, handler type, and command/prompt 
 Validate hook definitions for correct structure and known event names:
 
 ```bash
-wagents hooks validate
+# Fleet gate (default harness filter is all)
+wagents hooks validate --harness all
+
+# Single harness projection check
+wagents hooks validate --harness cursor
 ```
 
-Checks that every hook event is a known lifecycle event (`PreToolUse`, `PostToolUse`, etc.), handler types are valid (`command`, `prompt`, `agent`), registry harnesses are supported, and required fields are present.
+Checks that every hook event is a known lifecycle event (`PreToolUse`, `PostToolUse`, etc.), handler types are valid (`command`, `prompt`, `agent`), registry harnesses are supported, and required fields are present. Prefer `--harness all` in maintainer checklists so per-harness projection failures are not missed.
 
   </TabItem>
 </Tabs>

@@ -1,0 +1,4318 @@
+{
+  "version": 1,
+  "generated_at": "2026-07-17T15:14:15.943680+00:00",
+  "assurance_kind": "candidate-runtime-activation",
+  "requested_full_usability": false,
+  "source_target_count": 289,
+  "runtime_artifact_count": 65,
+  "minimum_runtime_artifact_count": 65,
+  "artifacts": [
+    {
+      "artifact_id": "candidate-artifact-719d3f702b5ef85c",
+      "normalized_url": "https://github.com/aitytech/agentkits-marketing",
+      "raw_indexes": [
+        60
+      ],
+      "kind": "library",
+      "package_manager": "npm",
+      "package_name": "@aitytech/agentkits-marketing",
+      "resolved_version": "1.7.2",
+      "entrypoints": [],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "accepted",
+          "errors": []
+        }
+      },
+      "status": "accepted",
+      "errors": []
+    },
+    {
+      "artifact_id": "candidate-artifact-20fe15a3c63da1e1",
+      "normalized_url": "https://github.com/aitytech/agentkits-marketing",
+      "raw_indexes": [
+        60
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "@aitytech/agentkits-marketing",
+      "resolved_version": "1.7.2",
+      "entrypoints": [
+        "agentkits-marketing",
+        "markit"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "accepted",
+          "errors": []
+        }
+      },
+      "status": "accepted",
+      "errors": []
+    },
+    {
+      "artifact_id": "candidate-artifact-e9ca5ef5af71f858",
+      "normalized_url": "https://github.com/antvis/mcp-server-chart",
+      "raw_indexes": [
+        161
+      ],
+      "kind": "mcp",
+      "package_manager": "npm",
+      "package_name": "@antv/mcp-server-chart",
+      "resolved_version": "0.9.10",
+      "entrypoints": [
+        "antv-chart",
+        "mcp-server-chart"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-ed5c163507061f9a",
+      "normalized_url": "https://github.com/Auriti-Labs/geo-optimizer-skill",
+      "raw_indexes": [
+        61
+      ],
+      "kind": "cli",
+      "package_manager": "uv-tool",
+      "package_name": "geo-optimizer-skill[all]",
+      "resolved_version": "4.15.0",
+      "entrypoints": [
+        "geo",
+        "geo-mcp",
+        "geo-web"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-1e95bb968e0b56df",
+      "normalized_url": "https://github.com/Auriti-Labs/geo-optimizer-skill",
+      "raw_indexes": [
+        61
+      ],
+      "kind": "mcp",
+      "package_manager": "uvx",
+      "package_name": "geo-optimizer-skill[mcp]",
+      "resolved_version": "4.15.0",
+      "entrypoints": [
+        "geo-mcp"
+      ],
+      "auth_env_names": [
+        "ANTHROPIC_API_KEY",
+        "GEO_LLM_API_KEY",
+        "GROQ_API_KEY",
+        "OPENAI_API_KEY",
+        "PERPLEXITY_API_KEY"
+      ],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-292b9a078464baca",
+      "normalized_url": "https://github.com/avivsinai/langfuse-mcp",
+      "raw_indexes": [
+        170
+      ],
+      "kind": "mcp",
+      "package_manager": "uv-tool",
+      "package_name": "langfuse-mcp",
+      "resolved_version": "0.10.0",
+      "entrypoints": [
+        "langfuse-mcp"
+      ],
+      "auth_env_names": [
+        "LANGFUSE_HOST",
+        "LANGFUSE_PUBLIC_KEY",
+        "LANGFUSE_SECRET_KEY"
+      ],
+      "auth_required": true,
+      "auth_mode": "environment",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        },
+        "auth": {
+          "predicate": "auth",
+          "status": "incomplete",
+          "errors": [
+            "missing auth receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt",
+        "auth: missing auth receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-ddba85c261b6145a",
+      "normalized_url": "https://github.com/better-auth/better-icons",
+      "raw_indexes": [
+        25
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "better-icons",
+      "resolved_version": "1.0.4",
+      "entrypoints": [
+        "better-icons"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "accepted",
+          "errors": []
+        }
+      },
+      "status": "accepted",
+      "errors": []
+    },
+    {
+      "artifact_id": "candidate-artifact-86b9df2d26726ed5",
+      "normalized_url": "https://github.com/better-auth/better-icons",
+      "raw_indexes": [
+        25
+      ],
+      "kind": "mcp",
+      "package_manager": "npm",
+      "package_name": "better-icons",
+      "resolved_version": "1.0.4",
+      "entrypoints": [
+        "better-icons"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-d26d174b2d052caa",
+      "normalized_url": "https://github.com/CharlesWiltgen/Axiom",
+      "raw_indexes": [
+        29
+      ],
+      "kind": "mcp",
+      "package_manager": "npm",
+      "package_name": "axiom-mcp",
+      "resolved_version": "27.0.0-beta.22",
+      "entrypoints": [
+        "axiom-mcp"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-2483311fc967cbef",
+      "normalized_url": "https://github.com/CharlesWiltgen/Axiom",
+      "raw_indexes": [
+        29
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "axiom@axiom-marketplace",
+      "resolved_version": "27.0.0-beta.22",
+      "entrypoints": [
+        "axiom@axiom-marketplace"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-97676976c4c3c38b",
+      "normalized_url": "https://github.com/devenjarvis/lathe",
+      "raw_indexes": [
+        13
+      ],
+      "kind": "cli",
+      "package_manager": "go",
+      "package_name": "github.com/devenjarvis/lathe",
+      "resolved_version": "0.4.0",
+      "entrypoints": [
+        "lathe"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-6c329a74bd98c705",
+      "normalized_url": "https://github.com/elvisun/newsjack",
+      "raw_indexes": [
+        58
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "newsjack",
+      "resolved_version": "0.1.15",
+      "entrypoints": [
+        "newsjack"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "accepted",
+          "errors": []
+        }
+      },
+      "status": "accepted",
+      "errors": []
+    },
+    {
+      "artifact_id": "candidate-artifact-d59749b6e9118c22",
+      "normalized_url": "https://github.com/epicsagas/llm-transpile",
+      "raw_indexes": [
+        277
+      ],
+      "kind": "cli",
+      "package_manager": "cargo",
+      "package_name": "llm-transpile",
+      "resolved_version": "0.4.1",
+      "entrypoints": [
+        "transpile"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-59add4474e863830",
+      "normalized_url": "https://github.com/googleworkspace/cli",
+      "raw_indexes": [
+        142
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "@googleworkspace/cli",
+      "resolved_version": "0.22.5",
+      "entrypoints": [
+        "gws"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "accepted",
+          "errors": []
+        }
+      },
+      "status": "accepted",
+      "errors": []
+    },
+    {
+      "artifact_id": "candidate-artifact-6a556413add14ea6",
+      "normalized_url": "https://github.com/hardikpandya/stop-slop",
+      "raw_indexes": [
+        117
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "deslop-cli",
+      "resolved_version": "0.7.8",
+      "entrypoints": [
+        "deslop"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "accepted",
+          "errors": []
+        }
+      },
+      "status": "accepted",
+      "errors": []
+    },
+    {
+      "artifact_id": "candidate-artifact-351a044062510f80",
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/commit-narrator",
+      "raw_indexes": [
+        194
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "commit-narrator@candidate-corpus-local",
+      "resolved_version": "0.1.0",
+      "entrypoints": [
+        "commit-narrator@candidate-corpus-local"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-e481630ab46fdac7",
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/env-lint",
+      "raw_indexes": [
+        164
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "env-lint@candidate-corpus-local",
+      "resolved_version": "0.1.0",
+      "entrypoints": [
+        "env-lint@candidate-corpus-local"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-bdc3ddfea5c0f54d",
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/secret-guard",
+      "raw_indexes": [
+        166
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "secret-guard@candidate-corpus-local",
+      "resolved_version": "0.1.0",
+      "entrypoints": [
+        "secret-guard@candidate-corpus-local"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-80e154a7457a7c6a",
+      "normalized_url": "https://github.com/hashgraph-online/hol-guard-plugin",
+      "raw_indexes": [
+        165
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "hol-guard-plugin@awesome-codex-plugins",
+      "resolved_version": "0.1.0",
+      "entrypoints": [
+        "hol-guard-plugin@awesome-codex-plugins"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-33f0f9a9265fa5b8",
+      "normalized_url": "https://github.com/HDeibler/universal-design-principles",
+      "raw_indexes": [
+        168
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "universal-design-principles@awesome-codex-plugins",
+      "resolved_version": "1.0.0",
+      "entrypoints": [
+        "universal-design-principles@awesome-codex-plugins"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-3adf85a4d77f036a",
+      "normalized_url": "https://github.com/heygen-com/hyperframes",
+      "raw_indexes": [
+        156
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "hyperframes",
+      "resolved_version": "0.7.61",
+      "entrypoints": [
+        "hyperframes"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "accepted",
+          "errors": []
+        }
+      },
+      "status": "accepted",
+      "errors": []
+    },
+    {
+      "artifact_id": "candidate-artifact-a09b657e8efe69ff",
+      "normalized_url": "https://github.com/heygen-com/hyperframes",
+      "raw_indexes": [
+        156
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "hyperframes@hyperframes-upstream",
+      "resolved_version": "0.7.61",
+      "entrypoints": [
+        "hyperframes@hyperframes-upstream"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-65e6f7383893e361",
+      "normalized_url": "https://github.com/hyhmrright/brooks-lint",
+      "raw_indexes": [
+        120
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "brooks-lint@awesome-codex-plugins",
+      "resolved_version": "1.4.0",
+      "entrypoints": [
+        "brooks-lint@awesome-codex-plugins"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-979ba7601c60bafa",
+      "normalized_url": "https://github.com/iannuttall/dotagents",
+      "raw_indexes": [
+        275
+      ],
+      "kind": "cli",
+      "package_manager": "bun",
+      "package_name": "@iannuttall/dotagents",
+      "resolved_version": "0.1.3",
+      "entrypoints": [
+        "dotagents"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-e1db2e4e9316b3df",
+      "normalized_url": "https://github.com/Jakubantalik/transitions.dev",
+      "raw_indexes": [
+        8
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "transitions-refine",
+      "resolved_version": "0.3.34",
+      "entrypoints": [
+        "refine"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-88f70ffde34fa3e3",
+      "normalized_url": "https://github.com/jixoai/openspecui",
+      "raw_indexes": [
+        182
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "openspecui",
+      "resolved_version": "5.0.0",
+      "entrypoints": [
+        "openspecui"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-3e26018dc86a0941",
+      "normalized_url": "https://github.com/johnvouros/nullcost-plugin",
+      "raw_indexes": [
+        171
+      ],
+      "kind": "mcp",
+      "package_manager": "npm",
+      "package_name": "nullcost-plugin",
+      "resolved_version": "0.1.6",
+      "entrypoints": [
+        "nullcost",
+        "nullcost-plugin"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-d426861afca85918",
+      "normalized_url": "https://github.com/KyuRish/mcp-dashboards",
+      "raw_indexes": [
+        286
+      ],
+      "kind": "mcp",
+      "package_manager": "npm",
+      "package_name": "mcp-dashboards",
+      "resolved_version": "2.4.0",
+      "entrypoints": [
+        "mcp-dashboards"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-b51bad46e9c71c42",
+      "normalized_url": "https://github.com/Lumiaqian/openspec-mcp",
+      "raw_indexes": [
+        187
+      ],
+      "kind": "mcp",
+      "package_manager": "npm",
+      "package_name": "openspec-mcp",
+      "resolved_version": "0.4.2",
+      "entrypoints": [
+        "openspec-mcp"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-526f681e64e25763",
+      "normalized_url": "https://github.com/marzukia/charted",
+      "raw_indexes": [
+        287
+      ],
+      "kind": "cli",
+      "package_manager": "uv-tool",
+      "package_name": "charted",
+      "resolved_version": "1.2.1",
+      "entrypoints": [
+        "charted",
+        "charted-mcp"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-05661f6ac36ca118",
+      "normalized_url": "https://github.com/marzukia/charted",
+      "raw_indexes": [
+        287
+      ],
+      "kind": "mcp",
+      "package_manager": "uvx",
+      "package_name": "charted[mcp]",
+      "resolved_version": "1.2.1",
+      "entrypoints": [
+        "charted",
+        "charted-mcp"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-b49a9c5473017286",
+      "normalized_url": "https://github.com/millionco/react-doctor",
+      "raw_indexes": [
+        118
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "react-doctor",
+      "resolved_version": "0.7.8",
+      "entrypoints": [
+        "react-doctor"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "accepted",
+          "errors": []
+        }
+      },
+      "status": "accepted",
+      "errors": []
+    },
+    {
+      "artifact_id": "candidate-artifact-c096d134f6d61839",
+      "normalized_url": "https://github.com/mobile-next/mobile-mcp",
+      "raw_indexes": [
+        154
+      ],
+      "kind": "mcp",
+      "package_manager": "npm",
+      "package_name": "@mobilenext/mobile-mcp",
+      "resolved_version": "0.0.62",
+      "entrypoints": [
+        "mcp-server-mobile",
+        "mobile-mcp"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-45a8c8ad94cd8268",
+      "normalized_url": "https://github.com/modelcontextprotocol/inspector",
+      "raw_indexes": [
+        155
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "@modelcontextprotocol/inspector",
+      "resolved_version": "0.22.0",
+      "entrypoints": [
+        "mcp-inspector"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-db11de09098bc7de",
+      "normalized_url": "https://github.com/MohamedAbdallah-14/prompt-to-asset",
+      "raw_indexes": [
+        172
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "prompt-to-asset",
+      "resolved_version": "0.5.1",
+      "entrypoints": [
+        "p2a",
+        "prompt-to-asset"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "accepted",
+          "errors": []
+        }
+      },
+      "status": "accepted",
+      "errors": []
+    },
+    {
+      "artifact_id": "candidate-artifact-1a16a0d4ef6e9795",
+      "normalized_url": "https://github.com/MohamedAbdallah-14/prompt-to-asset",
+      "raw_indexes": [
+        172
+      ],
+      "kind": "mcp",
+      "package_manager": "npm",
+      "package_name": "prompt-to-asset",
+      "resolved_version": "0.5.1",
+      "entrypoints": [
+        "p2a",
+        "prompt-to-asset"
+      ],
+      "auth_env_names": [
+        "BFL_API_KEY",
+        "CLOUDFLARE_ACCOUNT_ID",
+        "CLOUDFLARE_API_TOKEN",
+        "FAL_API_KEY",
+        "FAL_KEY",
+        "FREEPIK_API_KEY",
+        "GEMINI_API_KEY",
+        "GOOGLE_API_KEY",
+        "HF_TOKEN",
+        "HORDE_API_KEY",
+        "HUGGINGFACE_API_KEY",
+        "IDEOGRAM_API_KEY",
+        "LEONARDO_API_KEY",
+        "NIM_API_KEY",
+        "NVIDIA_API_KEY",
+        "OPENAI_API_KEY",
+        "PIXAZO_API_KEY",
+        "PIXAZO_SUBSCRIPTION_KEY",
+        "RECRAFT_API_KEY",
+        "REPLICATE_API_KEY",
+        "REPLICATE_API_TOKEN",
+        "STABILITY_API_KEY",
+        "TOGETHER_API_KEY"
+      ],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-6fb1927f8ea9ae58",
+      "normalized_url": "https://github.com/MohamedAbdallah-14/prompt-to-asset",
+      "raw_indexes": [
+        172
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "prompt-to-asset@awesome-codex-plugins",
+      "resolved_version": "0.1.0",
+      "entrypoints": [
+        "prompt-to-asset@awesome-codex-plugins"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-b14c726239caa37d",
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
+      "raw_indexes": [
+        132,
+        175
+      ],
+      "kind": "cli",
+      "package_manager": "uv-tool",
+      "package_name": "unslop",
+      "resolved_version": "0.6.2",
+      "entrypoints": [
+        "unslop"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-a8f13a9a42ab8b29",
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
+      "raw_indexes": [
+        132,
+        175
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "unslop@awesome-codex-plugins",
+      "resolved_version": "0.6.2",
+      "entrypoints": [
+        "unslop@awesome-codex-plugins"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-80af75ed8efa0694",
+      "normalized_url": "https://github.com/nteract/semiotic",
+      "raw_indexes": [
+        288
+      ],
+      "kind": "mcp",
+      "package_manager": "npm",
+      "package_name": "semiotic",
+      "resolved_version": "3.8.2",
+      "entrypoints": [
+        "semiotic",
+        "semiotic-ai",
+        "semiotic-mcp"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-13a1976cbb27637e",
+      "normalized_url": "https://github.com/NVIDIA/SkillSpector",
+      "raw_indexes": [
+        116
+      ],
+      "kind": "cli",
+      "package_manager": "uv-tool-git",
+      "package_name": "NVIDIA/SkillSpector",
+      "resolved_version": "2.3.13",
+      "entrypoints": [
+        "skillspector"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-8de0c09f86444a35",
+      "normalized_url": "https://github.com/Octane0411/opencode-plugin-openspec",
+      "raw_indexes": [
+        181
+      ],
+      "kind": "plugin",
+      "package_manager": "opencode-plugin",
+      "package_name": "opencode-plugin-openspec",
+      "resolved_version": "0.1.4",
+      "entrypoints": [
+        "candidate-opencode-plugin-openspec"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-680ff5da567f9242",
+      "normalized_url": "https://github.com/openags/paper-search-mcp",
+      "raw_indexes": [
+        274
+      ],
+      "kind": "mcp",
+      "package_manager": "uv-tool",
+      "package_name": "paper-search-mcp",
+      "resolved_version": "0.1.4",
+      "entrypoints": [
+        "paper-search-mcp"
+      ],
+      "auth_env_names": [
+        "PAPER_SEARCH_MCP_CORE_API_KEY",
+        "PAPER_SEARCH_MCP_SEMANTIC_SCHOLAR_API_KEY",
+        "PAPER_SEARCH_MCP_UNPAYWALL_EMAIL",
+        "PAPER_SEARCH_MCP_ZENODO_ACCESS_TOKEN"
+      ],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-6faa9ef627416243",
+      "normalized_url": "https://github.com/Panniantong/Agent-Reach",
+      "raw_indexes": [
+        157
+      ],
+      "kind": "cli",
+      "package_manager": "uv-tool-git",
+      "package_name": "Panniantong/Agent-Reach",
+      "resolved_version": "1.5.0",
+      "entrypoints": [
+        "agent-reach"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-0ac02778606cccb5",
+      "normalized_url": "https://github.com/papersflow-ai/papersflow-codex-plugin",
+      "raw_indexes": [
+        279
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "papersflow-codex-plugin@awesome-codex-plugins",
+      "resolved_version": "1.0.0",
+      "entrypoints": [
+        "papersflow-codex-plugin@awesome-codex-plugins"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-87d525d02df2e4cd",
+      "normalized_url": "https://github.com/papersflow-ai/papersflow-codex-plugin",
+      "raw_indexes": [
+        279
+      ],
+      "kind": "mcp",
+      "package_manager": "hosted",
+      "package_name": "papersflow",
+      "resolved_version": "account-bound",
+      "entrypoints": [
+        "papersflow"
+      ],
+      "auth_env_names": [
+        "PAPERSFLOW_OAUTH_ACCOUNT"
+      ],
+      "auth_required": true,
+      "auth_mode": "oauth",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        },
+        "auth": {
+          "predicate": "auth",
+          "status": "incomplete",
+          "errors": [
+            "missing auth receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt",
+        "auth: missing auth receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-2e2f420fd50d9625",
+      "normalized_url": "https://github.com/PapiScholz/roadmapsmith",
+      "raw_indexes": [
+        177
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "roadmapsmith@awesome-codex-plugins",
+      "resolved_version": "1.2.2",
+      "entrypoints": [
+        "roadmapsmith@awesome-codex-plugins"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-02697ca671fbe971",
+      "normalized_url": "https://github.com/plannotator/tot",
+      "raw_indexes": [
+        20
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "@plannotator/tot",
+      "resolved_version": "0.1.2",
+      "entrypoints": [
+        "tot"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-4816103ef7122647",
+      "normalized_url": "https://github.com/Pythoughts-labs/designer-skill",
+      "raw_indexes": [
+        163
+      ],
+      "kind": "mcp",
+      "package_manager": "npm",
+      "package_name": "designer-skill-mcp",
+      "resolved_version": "0.14.0",
+      "entrypoints": [
+        "designer-skill-mcp"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-daf99ae07763fea9",
+      "normalized_url": "https://github.com/Pythoughts-labs/designer-skill",
+      "raw_indexes": [
+        163
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "designer-skill@awesome-codex-plugins",
+      "resolved_version": "0.14.0",
+      "entrypoints": [
+        "designer-skill@awesome-codex-plugins"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-9f65a00b1b57702f",
+      "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
+      "raw_indexes": [
+        1
+      ],
+      "kind": "cli",
+      "package_manager": "uv-tool",
+      "package_name": "csvglow",
+      "resolved_version": "0.1.0",
+      "entrypoints": [
+        "csvglow"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-d5323a748ddb19ac",
+      "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
+      "raw_indexes": [
+        1
+      ],
+      "kind": "mcp",
+      "package_manager": "uvx",
+      "package_name": "csvglow",
+      "resolved_version": "0.1.0",
+      "entrypoints": [
+        "csvglow"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-546e6f3e2c2cb8ed",
+      "normalized_url": "https://github.com/rorkai/app-store-connect-cli-skills",
+      "raw_indexes": [
+        77
+      ],
+      "kind": "cli",
+      "package_manager": "standalone",
+      "package_name": "asc",
+      "resolved_version": "pinned-checksum",
+      "entrypoints": [
+        "asc"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-8980f4baae35c08d",
+      "normalized_url": "https://github.com/sflueckiger/specboard",
+      "raw_indexes": [
+        185
+      ],
+      "kind": "cli",
+      "package_manager": "bun",
+      "package_name": "@sflueckiger/specboard",
+      "resolved_version": "1.2.0",
+      "entrypoints": [
+        "specboard"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-15b57616743fc15e",
+      "normalized_url": "https://github.com/summer521521/Zotero_Research_plugin",
+      "raw_indexes": [
+        176
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "zotero-research-tools@awesome-codex-plugins",
+      "resolved_version": "0.1.5",
+      "entrypoints": [
+        "zotero-research-tools@awesome-codex-plugins"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-75929172581e0e7a",
+      "normalized_url": "https://github.com/TanStack/cli",
+      "raw_indexes": [
+        17
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "@tanstack/cli",
+      "resolved_version": "0.69.6",
+      "entrypoints": [
+        "tanstack"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "accepted",
+          "errors": []
+        }
+      },
+      "status": "accepted",
+      "errors": []
+    },
+    {
+      "artifact_id": "candidate-artifact-4b801a775c03749e",
+      "normalized_url": "https://github.com/teng-lin/notebooklm-py",
+      "raw_indexes": [
+        146
+      ],
+      "kind": "cli",
+      "package_manager": "uv-tool",
+      "package_name": "notebooklm-py",
+      "resolved_version": "0.7.3",
+      "entrypoints": [
+        "notebooklm"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-1156f8390fbfc4bd",
+      "normalized_url": "https://github.com/tim-osterhus/codex-remotion-plugin",
+      "raw_indexes": [
+        174
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "remotion@awesome-codex-plugins",
+      "resolved_version": "0.1.0",
+      "entrypoints": [
+        "remotion@awesome-codex-plugins"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-80c307102f02970a",
+      "normalized_url": "https://github.com/ToruAI/openspec-ui",
+      "raw_indexes": [
+        184
+      ],
+      "kind": "cli",
+      "package_manager": "standalone",
+      "package_name": "openspec-ui",
+      "resolved_version": "pinned-checksum",
+      "entrypoints": [
+        "openspec-ui"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-8749c7adb4038991",
+      "normalized_url": "https://github.com/tt-a1i/archify",
+      "raw_indexes": [
+        100
+      ],
+      "kind": "cli",
+      "package_manager": "skill-bundled",
+      "package_name": "archify",
+      "resolved_version": "audited-source",
+      "entrypoints": [
+        "archify"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-9f3eff82c41b92a3",
+      "normalized_url": "https://github.com/Varnan-Tech/opendirectory",
+      "raw_indexes": [
+        63
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "@opendirectory.dev/skills",
+      "resolved_version": "0.1.97",
+      "entrypoints": [
+        "opendirectory"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "accepted",
+          "errors": []
+        }
+      },
+      "status": "accepted",
+      "errors": []
+    },
+    {
+      "artifact_id": "candidate-artifact-24574aaff85665c7",
+      "normalized_url": "https://github.com/wenqingyu/ralphy-openspec",
+      "raw_indexes": [
+        180
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "ralphy-spec",
+      "resolved_version": "0.3.6",
+      "entrypoints": [
+        "ralphy-spec"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "accepted",
+          "errors": []
+        }
+      },
+      "status": "accepted",
+      "errors": []
+    },
+    {
+      "artifact_id": "candidate-artifact-ee095076840132c5",
+      "normalized_url": "https://github.com/wxhou/openspec-playwright",
+      "raw_indexes": [
+        186
+      ],
+      "kind": "cli",
+      "package_manager": "npm",
+      "package_name": "openspec-playwright",
+      "resolved_version": "0.3.57",
+      "entrypoints": [
+        "openspec-pw"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "accepted",
+          "errors": []
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "accepted",
+          "errors": []
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "accepted",
+          "errors": []
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "accepted",
+          "errors": []
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "accepted",
+          "errors": []
+        }
+      },
+      "status": "accepted",
+      "errors": []
+    },
+    {
+      "artifact_id": "candidate-artifact-506339db955cf6a8",
+      "normalized_url": "https://github.com/yctimlin/mcp_excalidraw",
+      "raw_indexes": [
+        6
+      ],
+      "kind": "mcp",
+      "package_manager": "npm",
+      "package_name": "mcp-excalidraw-server",
+      "resolved_version": "1.1.0",
+      "entrypoints": [
+        "excalidraw-canvas",
+        "mcp-excalidraw",
+        "mcp-excalidraw-server"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-11e87a7091ea0414",
+      "normalized_url": "https://github.com/yujiachen-y/codebase-recon-skill",
+      "raw_indexes": [
+        121
+      ],
+      "kind": "plugin",
+      "package_manager": "codex-plugin",
+      "package_name": "codebase-recon@awesome-codex-plugins",
+      "resolved_version": "1.0.0",
+      "entrypoints": [
+        "codebase-recon@awesome-codex-plugins"
+      ],
+      "auth_env_names": [],
+      "auth_required": false,
+      "auth_mode": "optional",
+      "phase_results": {
+        "identity": {
+          "predicate": "package-identity",
+          "status": "incomplete",
+          "errors": [
+            "missing identity receipt"
+          ]
+        },
+        "install": {
+          "predicate": "install-receipt",
+          "status": "incomplete",
+          "errors": [
+            "missing install receipt"
+          ]
+        },
+        "behavior": {
+          "predicate": "behavior-probe",
+          "status": "incomplete",
+          "errors": [
+            "missing behavior receipt"
+          ]
+        },
+        "fresh_process": {
+          "predicate": "fresh-process",
+          "status": "incomplete",
+          "errors": [
+            "missing fresh_process receipt"
+          ]
+        },
+        "rollback": {
+          "predicate": "rollback",
+          "status": "incomplete",
+          "errors": [
+            "missing rollback receipt"
+          ]
+        }
+      },
+      "status": "incomplete",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    }
+  ],
+  "totals": {
+    "status_counts": {
+      "accepted": 13,
+      "incomplete": 52
+    },
+    "kind_counts": {
+      "cli": 30,
+      "library": 1,
+      "mcp": 17,
+      "plugin": 17
+    },
+    "active_blocker_count": 52
+  },
+  "active_blockers": [
+    {
+      "artifact_id": "candidate-artifact-e9ca5ef5af71f858",
+      "normalized_url": "https://github.com/antvis/mcp-server-chart",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-ed5c163507061f9a",
+      "normalized_url": "https://github.com/Auriti-Labs/geo-optimizer-skill",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-1e95bb968e0b56df",
+      "normalized_url": "https://github.com/Auriti-Labs/geo-optimizer-skill",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-292b9a078464baca",
+      "normalized_url": "https://github.com/avivsinai/langfuse-mcp",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt",
+        "auth: missing auth receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-86b9df2d26726ed5",
+      "normalized_url": "https://github.com/better-auth/better-icons",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-d26d174b2d052caa",
+      "normalized_url": "https://github.com/CharlesWiltgen/Axiom",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-2483311fc967cbef",
+      "normalized_url": "https://github.com/CharlesWiltgen/Axiom",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-97676976c4c3c38b",
+      "normalized_url": "https://github.com/devenjarvis/lathe",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-d59749b6e9118c22",
+      "normalized_url": "https://github.com/epicsagas/llm-transpile",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-351a044062510f80",
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/commit-narrator",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-e481630ab46fdac7",
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/env-lint",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-bdc3ddfea5c0f54d",
+      "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/secret-guard",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-80e154a7457a7c6a",
+      "normalized_url": "https://github.com/hashgraph-online/hol-guard-plugin",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-33f0f9a9265fa5b8",
+      "normalized_url": "https://github.com/HDeibler/universal-design-principles",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-a09b657e8efe69ff",
+      "normalized_url": "https://github.com/heygen-com/hyperframes",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-65e6f7383893e361",
+      "normalized_url": "https://github.com/hyhmrright/brooks-lint",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-979ba7601c60bafa",
+      "normalized_url": "https://github.com/iannuttall/dotagents",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-e1db2e4e9316b3df",
+      "normalized_url": "https://github.com/Jakubantalik/transitions.dev",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-88f70ffde34fa3e3",
+      "normalized_url": "https://github.com/jixoai/openspecui",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-3e26018dc86a0941",
+      "normalized_url": "https://github.com/johnvouros/nullcost-plugin",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-d426861afca85918",
+      "normalized_url": "https://github.com/KyuRish/mcp-dashboards",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-b51bad46e9c71c42",
+      "normalized_url": "https://github.com/Lumiaqian/openspec-mcp",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-526f681e64e25763",
+      "normalized_url": "https://github.com/marzukia/charted",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-05661f6ac36ca118",
+      "normalized_url": "https://github.com/marzukia/charted",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-c096d134f6d61839",
+      "normalized_url": "https://github.com/mobile-next/mobile-mcp",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-45a8c8ad94cd8268",
+      "normalized_url": "https://github.com/modelcontextprotocol/inspector",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-1a16a0d4ef6e9795",
+      "normalized_url": "https://github.com/MohamedAbdallah-14/prompt-to-asset",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-6fb1927f8ea9ae58",
+      "normalized_url": "https://github.com/MohamedAbdallah-14/prompt-to-asset",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-b14c726239caa37d",
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-a8f13a9a42ab8b29",
+      "normalized_url": "https://github.com/MohamedAbdallah-14/unslop",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-80af75ed8efa0694",
+      "normalized_url": "https://github.com/nteract/semiotic",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-13a1976cbb27637e",
+      "normalized_url": "https://github.com/NVIDIA/SkillSpector",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-8de0c09f86444a35",
+      "normalized_url": "https://github.com/Octane0411/opencode-plugin-openspec",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-680ff5da567f9242",
+      "normalized_url": "https://github.com/openags/paper-search-mcp",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-6faa9ef627416243",
+      "normalized_url": "https://github.com/Panniantong/Agent-Reach",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-0ac02778606cccb5",
+      "normalized_url": "https://github.com/papersflow-ai/papersflow-codex-plugin",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-87d525d02df2e4cd",
+      "normalized_url": "https://github.com/papersflow-ai/papersflow-codex-plugin",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt",
+        "auth: missing auth receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-2e2f420fd50d9625",
+      "normalized_url": "https://github.com/PapiScholz/roadmapsmith",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-02697ca671fbe971",
+      "normalized_url": "https://github.com/plannotator/tot",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-4816103ef7122647",
+      "normalized_url": "https://github.com/Pythoughts-labs/designer-skill",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-daf99ae07763fea9",
+      "normalized_url": "https://github.com/Pythoughts-labs/designer-skill",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-9f65a00b1b57702f",
+      "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-d5323a748ddb19ac",
+      "normalized_url": "https://github.com/Ratnaditya-J/csvglow",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-546e6f3e2c2cb8ed",
+      "normalized_url": "https://github.com/rorkai/app-store-connect-cli-skills",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-8980f4baae35c08d",
+      "normalized_url": "https://github.com/sflueckiger/specboard",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-15b57616743fc15e",
+      "normalized_url": "https://github.com/summer521521/Zotero_Research_plugin",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-4b801a775c03749e",
+      "normalized_url": "https://github.com/teng-lin/notebooklm-py",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-1156f8390fbfc4bd",
+      "normalized_url": "https://github.com/tim-osterhus/codex-remotion-plugin",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-80c307102f02970a",
+      "normalized_url": "https://github.com/ToruAI/openspec-ui",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-8749c7adb4038991",
+      "normalized_url": "https://github.com/tt-a1i/archify",
+      "errors": [
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-506339db955cf6a8",
+      "normalized_url": "https://github.com/yctimlin/mcp_excalidraw",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    },
+    {
+      "artifact_id": "candidate-artifact-11e87a7091ea0414",
+      "normalized_url": "https://github.com/yujiachen-y/codebase-recon-skill",
+      "errors": [
+        "identity: missing identity receipt",
+        "install: missing install receipt",
+        "behavior: missing behavior receipt",
+        "fresh_process: missing fresh_process receipt",
+        "rollback: missing rollback receipt"
+      ]
+    }
+  ],
+  "notes": "This activation ledger fails closed. Historical path/config/dry-run evidence is not imported as an accepted runtime receipt."
+}

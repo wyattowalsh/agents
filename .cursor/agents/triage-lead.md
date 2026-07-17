@@ -2,7 +2,7 @@
 name: triage-lead
 description: Classify incoming work by severity, harness surface, and ownership; route
   to specialist agents.
-model: inherit
+model: cursor-grok-4.5-high
 readonly: true
 ---
 

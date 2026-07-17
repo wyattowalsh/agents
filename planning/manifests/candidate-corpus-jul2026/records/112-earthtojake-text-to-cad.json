@@ -5,24 +5,67 @@
   "category": "docs/reference",
   "inspected_commit_sha": "622c258fbdea64614056bfe33f3d3f183021a374",
   "license": "MIT",
-  "latest_release_or_commit_date": "github-pushed-at:2026-07-06T23:51:08Z",
+  "latest_release_or_commit_date": "github-pushed-at:2026-07-08T20:30:31Z",
   "artifact_types_found": [
-    "docs/reference"
+    "CLI/tool",
+    "agent",
+    "library",
+    "plugin",
+    "skill"
   ],
-  "install_or_integration_decision": "merge_into_existing",
-  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
-  "auth_required": false,
-  "env_vars_or_credentials": [],
+  "install_or_integration_decision": "integrated_existing_surface",
+  "reason": "Existing repo catalog surface already covers this source/domain.",
+  "auth_required": true,
+  "env_vars_or_credentials": [
+    "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+  ],
   "safety_notes": "No elevated keyword risk detected.",
   "attribution_notes": "Preserve attribution to earthtojake/text-to-cad; verify license before adapting content.",
-  "files_added": [],
-  "files_modified": [],
+  "files_added": [
+    "docs/src/authoring/skills/bambu-labs.mdx",
+    "docs/src/authoring/skills/cad-viewer.mdx",
+    "docs/src/authoring/skills/cad.mdx",
+    "docs/src/authoring/skills/dxf.mdx",
+    "docs/src/authoring/skills/gcode.mdx",
+    "docs/src/authoring/skills/implicit-cad.mdx",
+    "docs/src/authoring/skills/sdf.mdx",
+    "docs/src/authoring/skills/sendcutsend.mdx",
+    "docs/src/authoring/skills/srdf.mdx",
+    "docs/src/authoring/skills/step-parts.mdx",
+    "docs/src/authoring/skills/urdf.mdx",
+    "docs/src/content/docs/skills/catalog/external/bambu-labs.mdx",
+    "docs/src/content/docs/skills/catalog/external/cad-viewer.mdx",
+    "docs/src/content/docs/skills/catalog/external/cad.mdx",
+    "docs/src/content/docs/skills/catalog/external/dxf.mdx",
+    "docs/src/content/docs/skills/catalog/external/gcode.mdx",
+    "docs/src/content/docs/skills/catalog/external/implicit-cad.mdx",
+    "docs/src/content/docs/skills/catalog/external/sdf.mdx",
+    "docs/src/content/docs/skills/catalog/external/sendcutsend.mdx",
+    "docs/src/content/docs/skills/catalog/external/srdf.mdx",
+    "docs/src/content/docs/skills/catalog/external/step-parts.mdx",
+    "docs/src/content/docs/skills/catalog/external/urdf.mdx",
+    "planning/manifests/candidate-corpus-jul2026/records/112-earthtojake-text-to-cad.json"
+  ],
+  "files_modified": [
+    "docs/public/generated-registries/skills-catalog-browser-index.json",
+    "docs/public/generated-registries/skills-catalog-index.json",
+    "planning/manifests/candidate-corpus-jul2026/all-records.json",
+    "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
+    "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
+    "planning/manifests/candidate-corpus-jul2026/harness-install-assurance.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-decisions.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-targets.json",
+    "planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json"
+  ],
   "tests_or_checks_run": [
     "git ls-remote --symref",
-    "gh api repos/{owner}/{repo}"
+    "gh api repos/earthtojake/text-to-cad",
+    "uv run python scripts/audit_candidate_deep_sources.py --check",
+    "uv run python scripts/apply_candidate_corpus_promotions.py --check",
+    "uv run python scripts/promote_candidate_corpus.py --final-check"
   ],
   "skipped_reason": "",
-  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "reviewer_notes": "Deep source audit completed at ref main. Reviewed promotion overlay applied 11 catalog row(s) and verified 11 live-install evidence row(s).",
   "raw_index": 112,
   "normalized_index": "https://github.com/earthtojake/text-to-cad",
   "duplicate_group": [],
@@ -31,16 +74,16 @@
   "canonical_source": "https://github.com/earthtojake/text-to-cad",
   "risk_tier": "standard-review",
   "risk_keywords": [],
-  "support_tier": "discovery-only",
+  "support_tier": "curated-installable-final",
   "phase_status": {
     "source_capture": "completed",
-    "deep_research": "completed-public-metadata",
+    "deep_research": "completed-deep-source-audit",
     "overlap": "completed",
     "security": "completed-static",
     "license": "completed-static",
-    "compliance": "completed-static",
+    "compliance": "completed-deep-auth-reconciled",
     "docs_impact": "completed",
-    "decision": "completed"
+    "decision": "completed-overlay-reconciled"
   },
   "source_capture_packet": {
     "git_status": "ok",
@@ -56,8 +99,8 @@
     "full_name": "earthtojake/text-to-cad",
     "html_url": "https://github.com/earthtojake/text-to-cad",
     "default_branch": "main",
-    "pushed_at": "2026-07-06T23:51:08Z",
-    "updated_at": "2026-07-06T21:51:03Z",
+    "pushed_at": "2026-07-08T20:30:31Z",
+    "updated_at": "2026-07-08T18:53:16Z",
     "license_spdx_id": "MIT",
     "license_name": "MIT License",
     "language": "JavaScript",
@@ -95,11 +138,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -122,11 +165,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -167,8 +210,11 @@
     "license_name": "MIT License"
   },
   "compliance_packet": {
-    "auth_required": false,
-    "env_vars_or_credentials": []
+    "auth_required": true,
+    "env_vars_or_credentials": [
+      "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+    ],
+    "evidence_source": "deep-source-audit.json"
   },
   "docs_steward_surfaces": [
     "README",
@@ -183,13 +229,32 @@
     "reports",
     "skill-research"
   ],
-  "docs_steward_status": "packet-generated",
+  "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "merge_into_existing",
-    "reason": "Existing repo catalog or registry surface already covers this source/domain."
+    "decision": "integrated_existing_surface",
+    "reason": "Existing repo catalog surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "required_before_promotion": "human trust-gate review"
+    "terminal_route": "integrated-existing-surface",
+    "required_before_live_execution": "explicit user-owned command and credential setup",
+    "scope": "historical-intake-research-only"
+  },
+  "intake_artifact_types_found": [
+    "CLI/tool",
+    "agent",
+    "library",
+    "plugin",
+    "skill"
+  ],
+  "intake_support_tier": "discovery-only",
+  "intake_docs_steward_status": "packet-generated",
+  "final_integration": {
+    "status": "installable-curated-external",
+    "mutation_applied": true,
+    "catalog_rows": 11,
+    "harness_assurance": "harness-install-assurance.json",
+    "non_skill_assurance": "non-skill-install-assurance.json",
+    "runtime_disposition": "integrated-non-executable-surface"
   }
 }

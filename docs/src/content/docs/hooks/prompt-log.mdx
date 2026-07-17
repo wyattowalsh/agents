@@ -5,16 +5,16 @@ page_kind: "hook"
 source_kind: "registry"
 asset_id: "prompt-log"
 composed: true
-composed_at: "2026-06-16"
-composed_by: "compose-hooks-wave-1"
+composed_at: "2026-07-10"
+composed_by: "regenerate-hook-docs-rv-006"
 docs_density: standard
 ---
 
-{/* HAND-MAINTAINED */}
+{/* GENERATED from config/hook-registry.json — do not hand-edit */}
 
 import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-<Badge text="hook" variant="note" /> <Badge text="UserPromptSubmit" variant="success" /> <Badge text="github-copilot" variant="default" />
+<Badge text="UserPromptSubmit" variant="caution" />  <Badge text="github-copilot" variant="default" />
 
 > Write local prompt audit entries with short retention.
 
@@ -24,18 +24,23 @@ import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 |-------|-------|
 | id | `prompt-log` |
 | logical_event | `UserPromptSubmit` |
+| matcher | — |
 | command | `./hooks/log-prompt.sh` |
 | timeout | `5` |
-| harnesses | `["github-copilot"]` |
+| mode | — |
+| harnesses | `[
+  "github-copilot"
+]` |
 
 <details class="source-disclosure">
-<summary>Full hook config + command reference</summary>
+<summary>Full hook config (registry SSOT)</summary>
 
 ```json title="config/hook-registry.json (entry)"
 {
   "id": "prompt-log",
   "description": "Write local prompt audit entries with short retention.",
   "logical_event": "UserPromptSubmit",
+  "logical_policy": "prompt-log",
   "command": "./hooks/log-prompt.sh",
   "timeout": 5,
   "harnesses": [
@@ -44,28 +49,16 @@ import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 }
 ```
 
-```bash title="hooks/log-prompt.sh"
-#!/bin/bash
-command -v jq &>/dev/null || exit 0
-INPUT=$(cat)
-PROMPT=$(echo "$INPUT" | jq -r '.prompt // empty')
-TS=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-LOG_DIR="$HOME/.claude/logs"
-mkdir -p "$LOG_DIR" && chmod 700 "$LOG_DIR"
-printf '%s' "$PROMPT" | jq -Rs --arg ts "$TS" '{ts: $ts, prompt: .}' >> "${LOG_DIR}/prompts-$(date +%Y-%m-%d).jsonl"
-# Clean up logs older than 30 days
-find "$LOG_DIR" -name "prompts-*.jsonl" -mtime +30 -delete 2>/dev/null
-exit 0
-```
+Command placeholders:
+
+- `{hook_runner}` resolves to the fleet dispatcher (`hooks/wagents-hook.py` or harness projection).
+- `{harness}` is the target harness id at render/install time.
 
 </details>
 
-## Resources
+## Related
 
 <CardGrid>
-  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
-  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="Hooks hub" href="/hooks/" description="Registry overview and harness matrix." />
+  <LinkCard title="CLI hooks" href="/cli/" description="`wagents hooks list|validate`." />
 </CardGrid>
-
----
-[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

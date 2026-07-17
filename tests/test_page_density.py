@@ -29,6 +29,8 @@ def test_resolve_density_defaults_to_standard() -> None:
 
 def test_resolve_density_honors_frontmatter() -> None:
     assert resolve_density(_node(density="standard")) == "standard"
+    assert resolve_density(_node(density="summary")) == "summary"
+    assert resolve_density(_node(docs_density="summary")) == "summary"
 
 
 def test_summary_skips_body_sections_when_source_disclosed() -> None:

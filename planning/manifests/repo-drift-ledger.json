@@ -836,6 +836,42 @@
       "owner_change": "agents-c04-claude-harness",
       "next_action": "merge-with-redaction",
       "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/.lmstudio/mcp.json",
+      "expected_mode": "merged",
+      "current_state": "external-live",
+      "drift_risk": "high",
+      "owner_change": "agents-c04-lm-studio-harness",
+      "next_action": "merge-via-lm-studio-adapter",
+      "validation_command": "uv run pytest tests/test_lm_studio_platform.py -q"
+    },
+    {
+      "path": "~/.lmstudio/config-presets",
+      "expected_mode": "generated",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-lm-studio-harness",
+      "next_action": "sync-via-lm-studio-adapter",
+      "validation_command": "uv run pytest tests/test_lm_studio_platform.py -q"
+    },
+    {
+      "path": "~/.lmstudio/skills",
+      "expected_mode": "symlinked-entries",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-lm-studio-harness",
+      "next_action": "sync-via-lm-studio-adapter",
+      "validation_command": "uv run pytest tests/test_lm_studio_platform.py -q"
+    },
+    {
+      "path": "${REPO_ROOT}/instructions/lm-studio-global.md",
+      "expected_mode": "canonical",
+      "current_state": "tracked-clean",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-lm-studio-harness",
+      "next_action": "sync-via-lm-studio-adapter",
+      "validation_command": "uv run pytest tests/test_lm_studio_platform.py -q"
     }
   ]
 }

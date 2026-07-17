@@ -2,30 +2,44 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
+import os
 import shlex
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-from nerdbot.contracts import GENERATED_ARTIFACTS, OPERATION_JOURNAL_PATH, READ_ONLY_MODES, REVIEW_QUEUE_PATH
+from nerdbot.contracts import (
+    ACTIVITY_LOG_PATH,
+    GENERATED_ARTIFACTS,
+    OPERATION_JOURNAL_PATH,
+    READ_ONLY_MODES,
+    REVIEW_QUEUE_PATH,
+)
 from nerdbot.evidence import (
     detect_untrusted_instruction_patterns,
     review_item_for_suspicious_evidence,
     source_map_entries_by_id,
 )
 from nerdbot.graph import build_graph, render_graph_edges_jsonl, render_graph_report
-from nerdbot.operations import append_operation_entry, build_operation_entry
-from nerdbot.replay import dry_run_replay, load_operation_entries
+from nerdbot.operations import (
+    build_operation_entry,
+    latest_operation_entries,
+    load_operation_entries,
+    operation_apply_transaction,
+    record_operation,
+)
+from nerdbot.replay import dry_run_replay_entry
 from nerdbot.retrieval import build_fts_index, query
 from nerdbot.safety import (
     append_text_no_follow,
     normalize_requested_root,
     normalize_vault_relative_path,
     read_text_no_follow,
-    write_bytes_atomic_no_follow,
+    write_bytes_reconcile_no_follow,
     write_text_atomic_no_follow,
 )
-from nerdbot.sources import plan_local_file_source, plan_text_source, render_source_map_row
+from nerdbot.sources import inline_text_location, plan_local_file_source, plan_text_source, render_source_map_row
 from nerdbot.watch import classify_watch_event, render_watch_checkpoint
 
 if TYPE_CHECKING:
@@ -80,12 +94,39 @@ def append_operation(
     entry = build_operation_entry(
         mode=mode,
         target=target,
-        status="applied",
+        status="committed",
         summary=summary,
         changed_paths=tuple(changed_paths),
     )
-    append_operation_entry(root / OPERATION_JOURNAL_PATH, entry)
+    record_operation(root, entry)
     return entry.to_dict()
+
+
+def _ordered_paths(paths: Sequence[str]) -> list[str]:
+    """Return normalized paths once while preserving their first-seen order."""
+    return list(dict.fromkeys(normalize_vault_relative_path(path) for path in paths))
+
+
+def _append_unique_lines(path: Path, lines: Sequence[str]) -> bool:
+    """Append only exact lines that are not already present after an interrupted apply."""
+    existing = read_text_no_follow(path) if os.path.lexists(path) else ""
+    existing_lines = set(existing.splitlines())
+    missing: list[str] = []
+    for raw_line in lines:
+        line = raw_line.replace("\r", " ").replace("\n", " ")
+        if line not in existing_lines:
+            missing.append(line)
+            existing_lines.add(line)
+    if not missing:
+        return False
+    append_text_no_follow(path, "".join(f"{line}\n" for line in missing))
+    return True
+
+
+def _resume_key(*parts: object) -> str:
+    """Build a compact deterministic key for locating one interrupted intent."""
+    payload = json.dumps(parts, ensure_ascii=False, sort_keys=True, default=str).encode()
+    return hashlib.sha256(payload).hexdigest()
 
 
 def _slug(value: str) -> str:
@@ -123,21 +164,26 @@ def _load_source_map_entries(root: Path) -> dict[str, Any]:
 
 def build_create_result(*, root: Path, apply: bool, force: bool, bootstrap_module: Any) -> dict[str, object]:
     """Plan or apply KB creation using the legacy scaffold implementation."""
-    result = bootstrap_module.scaffold(root, force=force, dry_run=not apply)
+    result = bootstrap_module.scaffold(root, force=force, dry_run=True)
     planned_paths = [*result["created_directories"], *result["created_files"], *result["overwritten_files"]]
     operation = operation_preview(
         "create", root.as_posix(), "Scaffold Nerdbot KB layers and starter files", planned_paths
     )
     changed_paths = planned_paths
     if apply:
-        changed_paths = [*planned_paths, OPERATION_JOURNAL_PATH]
-        operation = append_operation(
+        intended_paths = _ordered_paths([*planned_paths, ACTIVITY_LOG_PATH, OPERATION_JOURNAL_PATH])
+        with operation_apply_transaction(
             root,
             mode="create",
             target=root.as_posix(),
             summary="Scaffold Nerdbot KB layers and starter files",
-            changed_paths=changed_paths,
-        )
+            changed_paths=intended_paths,
+            resume_key=_resume_key("create", root.as_posix(), force),
+        ) as transaction:
+            if transaction.apply_required:
+                result = bootstrap_module.scaffold(root, force=force, dry_run=False)
+        operation = transaction.entry.to_dict()
+        changed_paths = list(transaction.entry.changed_paths)
     return command_envelope(
         command="create",
         mode="create",
@@ -163,7 +209,7 @@ def build_ingest_result(args: Any) -> tuple[int, dict[str, object]]:
             errors=["Provide exactly one of --source or --text"],
         )
     plan = (
-        plan_text_source("inline:text", args.text, capture_method=args.capture_method)
+        plan_text_source(inline_text_location(args.text), args.text, capture_method=args.capture_method)
         if args.text is not None
         else plan_local_file_source(
             Path(args.source),
@@ -178,17 +224,27 @@ def build_ingest_result(args: Any) -> tuple[int, dict[str, object]]:
     )
     changed_paths: list[str] = []
     if args.apply:
-        write_bytes_atomic_no_follow(root / plan.record.raw_path, plan.raw_bytes(), overwrite=False)
-        _ensure_source_map(root)
-        append_text_no_follow(root / "indexes" / "source-map.md", render_source_map_row(plan.record) + "\n")
-        changed_paths = [*rel_paths, OPERATION_JOURNAL_PATH]
-        operation = append_operation(
+        intended_paths = _ordered_paths([*rel_paths, ACTIVITY_LOG_PATH, OPERATION_JOURNAL_PATH])
+        with operation_apply_transaction(
             root,
             mode="ingest",
             target=plan.record.original_location,
             summary="Capture source and update source map",
-            changed_paths=changed_paths,
-        )
+            changed_paths=intended_paths,
+            resume_key=_resume_key(
+                "ingest",
+                plan.record.source_id,
+                plan.record.raw_path,
+                plan.record.checksum,
+                plan.record.size_bytes,
+            ),
+        ) as transaction:
+            if transaction.apply_required:
+                write_bytes_reconcile_no_follow(root / plan.record.raw_path, plan.raw_bytes())
+                _ensure_source_map(root)
+                _append_unique_lines(root / "indexes" / "source-map.md", [render_source_map_row(plan.record)])
+        operation = transaction.entry.to_dict()
+        changed_paths = list(transaction.entry.changed_paths)
     return 0, command_envelope(
         command="ingest",
         mode="ingest",
@@ -220,19 +276,23 @@ def build_enrich_result(args: Any) -> dict[str, object]:
     operation = operation_preview("enrich", source_path, "Create cited pending-review draft", rel_paths)
     changed_paths: list[str] = []
     if args.apply:
-        write_text_atomic_no_follow(root / draft_path, text)
-        append_text_no_follow(
-            root / REVIEW_QUEUE_PATH,
-            f"- [ ] Review draft `{draft_path}` against `{source_path}` before canonical use.\n",
-        )
-        changed_paths = [*rel_paths, OPERATION_JOURNAL_PATH]
-        operation = append_operation(
+        intended_paths = _ordered_paths([*rel_paths, ACTIVITY_LOG_PATH, OPERATION_JOURNAL_PATH])
+        with operation_apply_transaction(
             root,
             mode="enrich",
             target=source_path,
             summary="Create cited pending-review draft",
-            changed_paths=changed_paths,
-        )
+            changed_paths=intended_paths,
+            resume_key=_resume_key("enrich", source_path, draft_path, text),
+        ) as transaction:
+            if transaction.apply_required:
+                write_bytes_reconcile_no_follow(root / draft_path, text.encode("utf-8"))
+                _append_unique_lines(
+                    root / REVIEW_QUEUE_PATH,
+                    [f"- [ ] Review draft `{draft_path}` against `{source_path}` before canonical use."],
+                )
+        operation = transaction.entry.to_dict()
+        changed_paths = list(transaction.entry.changed_paths)
     return command_envelope(
         command="enrich",
         mode="enrich",
@@ -304,25 +364,31 @@ def build_derive_result(args: Any) -> dict[str, object]:
     operation = operation_preview("derive", args.artifact, "Build rebuildable generated artifacts", artifacts)
     changed_paths: list[str] = []
     if args.apply:
-        if args.artifact in {"fts", "all"}:
-            payload["fts"] = build_fts_index(root).to_dict()
-        if args.artifact in {"graph", "all"}:
-            graph = build_graph(root, include_unlayered=args.include_unlayered)
-            write_text_atomic_no_follow(
-                root / GENERATED_ARTIFACTS["graph_edges"], render_graph_edges_jsonl(graph.edges), overwrite=True
-            )
-            write_text_atomic_no_follow(
-                root / GENERATED_ARTIFACTS["graph_report"], render_graph_report(graph), overwrite=True
-            )
-            payload["graph"] = graph.to_dict()
-        changed_paths = [*artifacts, OPERATION_JOURNAL_PATH]
-        operation = append_operation(
+        intended_paths = _ordered_paths([*artifacts, ACTIVITY_LOG_PATH, OPERATION_JOURNAL_PATH])
+        with operation_apply_transaction(
             root,
             mode="derive",
             target=args.artifact,
             summary="Build rebuildable generated artifacts",
-            changed_paths=changed_paths,
-        )
+            changed_paths=intended_paths,
+            resume_key=_resume_key("derive", args.artifact, args.include_unlayered),
+        ) as transaction:
+            if transaction.apply_required:
+                if args.artifact in {"fts", "all"}:
+                    payload["fts"] = build_fts_index(root).to_dict()
+                if args.artifact in {"graph", "all"}:
+                    graph = build_graph(root, include_unlayered=args.include_unlayered)
+                    write_text_atomic_no_follow(
+                        root / GENERATED_ARTIFACTS["graph_edges"],
+                        render_graph_edges_jsonl(graph.edges),
+                        overwrite=True,
+                    )
+                    write_text_atomic_no_follow(
+                        root / GENERATED_ARTIFACTS["graph_report"], render_graph_report(graph), overwrite=True
+                    )
+                    payload["graph"] = graph.to_dict()
+        operation = transaction.entry.to_dict()
+        changed_paths = list(transaction.entry.changed_paths)
     return command_envelope(
         command="derive",
         mode="derive",
@@ -346,15 +412,19 @@ def build_improve_result(args: Any, *, lint_module: Any, inventory_module: Any) 
     operation = operation_preview("improve", root.as_posix(), "Queue review items for KB improvements", rel_paths)
     changed_paths: list[str] = []
     if args.apply and review_lines:
-        append_text_no_follow(root / REVIEW_QUEUE_PATH, "\n".join(review_lines) + "\n")
-        changed_paths = [*rel_paths, OPERATION_JOURNAL_PATH]
-        operation = append_operation(
+        intended_paths = _ordered_paths([*rel_paths, ACTIVITY_LOG_PATH, OPERATION_JOURNAL_PATH])
+        with operation_apply_transaction(
             root,
             mode="improve",
             target=root.as_posix(),
             summary="Queue review items for KB improvements",
-            changed_paths=changed_paths,
-        )
+            changed_paths=intended_paths,
+            resume_key=_resume_key("improve", root.as_posix(), review_lines),
+        ) as transaction:
+            if transaction.apply_required:
+                _append_unique_lines(root / REVIEW_QUEUE_PATH, review_lines)
+        operation = transaction.entry.to_dict()
+        changed_paths = list(transaction.entry.changed_paths)
     return command_envelope(
         command="improve",
         mode="improve",
@@ -390,11 +460,19 @@ def build_migrate_result(args: Any) -> tuple[int, dict[str, object]]:
             "- Destructive cutover: not performed by this command\n"
             "- Rollback: required before any future move/rename/delete\n"
         )
-        write_text_atomic_no_follow(root / plan_path, text, overwrite=True)
-        changed_paths = [plan_path, OPERATION_JOURNAL_PATH]
-        operation = append_operation(
-            root, mode="migrate", target=target, summary="Create additive migration plan", changed_paths=changed_paths
-        )
+        intended_paths = _ordered_paths([plan_path, ACTIVITY_LOG_PATH, OPERATION_JOURNAL_PATH])
+        with operation_apply_transaction(
+            root,
+            mode="migrate",
+            target=target,
+            summary="Create additive migration plan",
+            changed_paths=intended_paths,
+            resume_key=_resume_key("migrate", target, plan_path, text),
+        ) as transaction:
+            if transaction.apply_required:
+                write_text_atomic_no_follow(root / plan_path, text, overwrite=True)
+        operation = transaction.entry.to_dict()
+        changed_paths = list(transaction.entry.changed_paths)
     return 0, command_envelope(
         command="migrate",
         mode="migrate",
@@ -420,13 +498,13 @@ def build_replay_result(args: Any) -> dict[str, object]:
             warnings=["operation journal does not exist"],
             payload={"results": []},
         )
-    entries = load_operation_entries(read_text_no_follow(journal_path))
+    entries = latest_operation_entries(load_operation_entries(read_text_no_follow(journal_path)))
     if args.operation_id:
         entries = [entry for entry in entries if entry.operation_id == args.operation_id]
     existing = {
         path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_file() and not path.is_symlink()
     }
-    results = [dry_run_replay(entry.operation_id, list(entry.changed_paths), existing).to_dict() for entry in entries]
+    results = [dry_run_replay_entry(entry, existing).to_dict() for entry in entries]
     return command_envelope(
         command="replay", mode="audit", target=root.as_posix(), dry_run=True, payload={"results": results}
     )

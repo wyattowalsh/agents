@@ -1,0 +1,72 @@
+{
+  "captured_at": "2026-07-13",
+  "verification_method": "runtime-stdio-tools-list",
+  "runtime_smoke_status": "stdio-mcp-sdk-tools-list-ok",
+  "probe_command": "uv run python: mcp.ClientSession + stdio_client → npx -y reddit-mcp-buddy@1.1.13 initialize + list_tools",
+  "probe_attempts": [
+    {
+      "at": "2026-07-13T04:21:18Z",
+      "method": "content-length-hand-framing",
+      "result": "server_started_no_jsonrpc_response"
+    },
+    {
+      "at": "2026-07-13T20:00:00Z",
+      "method": "content-length-and-ndjson-hand-framing",
+      "result": "no_init_response"
+    },
+    {
+      "at": "2026-07-13T20:11:00Z",
+      "method": "python-mcp-ClientSession-stdio",
+      "result": "exceptiongroup_transient"
+    },
+    {
+      "at": "2026-07-13T20:16:00Z",
+      "method": "python-mcp-ClientSession-stdio",
+      "result": "success",
+      "server": {
+        "name": "reddit-mcp-buddy",
+        "version": "1.1.13"
+      },
+      "tool_names": [
+        "browse_subreddit",
+        "search_reddit",
+        "get_post_details",
+        "user_analysis",
+        "reddit_explain"
+      ]
+    }
+  ],
+  "npm_runtime_pin": "reddit-mcp-buddy@1.1.13",
+  "npm_pin_verified_at": "2026-07-13",
+  "npm_view_version": "1.1.13",
+  "mcp_endpoints": [
+    "http://127.0.0.1:46683/mcp/reddit-mcp-buddy",
+    "http://127.0.0.1:46683/mcp/research",
+    "http://127.0.0.1:46683/mcp/shared-read",
+    "http://127.0.0.1:46683/mcp/experimental"
+  ],
+  "tools_runtime": [
+    "browse_subreddit",
+    "search_reddit",
+    "get_post_details",
+    "user_analysis",
+    "reddit_explain"
+  ],
+  "tools_documented": [
+    "browse_subreddit",
+    "search_reddit",
+    "get_post_details",
+    "user_analysis",
+    "reddit_explain"
+  ],
+  "tools_bounded_registry": [],
+  "tools_match_documented": true,
+  "hub_soft_check": {
+    "root_http": 200,
+    "health_paths": "timeout",
+    "bearer_present": true,
+    "naive_json_post_tools_list": "400 Bad Request (expected — need MCP streamable/SSE client)",
+    "notes": "Hub UI root up; full smoke deferred. Prefer MCP client against /mcp/reddit-mcp-buddy after settings reload."
+  },
+  "notes": "Runtime tools/list matches README five tools. Registry tools_allow_all into research, shared-read, experimental. Anonymous mode verified on cold start."
+}

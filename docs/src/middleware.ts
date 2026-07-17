@@ -57,6 +57,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (pathname.startsWith('/admin')) {
     response.headers.set('x-robots-tag', 'noindex, nofollow');
+    response.headers.set('x-frame-options', 'DENY');
+    response.headers.set('content-security-policy', "frame-ancestors 'none'");
+    response.headers.set('referrer-policy', 'no-referrer');
   }
 
   return response;

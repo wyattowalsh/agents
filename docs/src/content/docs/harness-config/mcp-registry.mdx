@@ -21,13 +21,25 @@ import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components'
 
 ## Overview
 
-`config/mcp-registry.json` normalizes MCP server launch specs (stdio, transport, command/args, env placeholders, timeouts, tool allow/deny, platform_overrides, exclude_from_harnesses, ownership), groups them into logical bundles (research, reasoning, browser, harness, etc.), and declares client-specific projection rules (which groups/servers are included for `opencode`, `grok`, `codex`, `chatgpt`, stdio_bridge, etc.).
+`config/mcp-registry.json` normalizes MCP server launch specs (stdio, transport, command/args, env placeholders, timeouts, tool allow/deny, platform_overrides, exclude_from_harnesses, ownership), groups them into logical bundles (research, reasoning, browser, harness, etc.), and declares client-specific projection rules (which groups/servers are included for `opencode`, `grok`, `codex`, `chatgpt`, `lm-studio`, stdio_bridge, etc.).
 
 MCPHub uses this to produce `mcp_settings.json`; `scripts/sync_agent_stack.py` consumes it for per-client config emission (exact vs merge behavior documented in the registry and sync surfaces).
 
+## MCPHub control plane
+
+When `mcphub.enabled` is true:
+
+| Setting | Value / policy |
+| --- | --- |
+| Managed URL | `http://127.0.0.1:46683` with MCP under `/mcp` |
+| Auth | Bearer token via `MCPHUB_BEARER_TOKEN` (keep enabled; secrets only in `.env.mcphub`) |
+| Public tunnel | `https://mcp.w4w.dev/mcp` only when tunnel is enabled; credentials stay local |
+| Smart Routing | **Opt-in / default off** (needs Postgres + pgvector + embeddings) |
+| Projection adapters | Include `grok`/`opencode` (`http`) and `lm-studio` (`remote-stdio`) |
+
 ## What It Controls
 
-- ~38 MCP servers (brave-search, duckduckgo-search, ddgs, chrome-devtools, context7, jupyter-mcp-server, llms-txt-explorer, fetch, repomix, docling, arxiv, wikipedia, gmail, linkedin, thinking servers, etc.; ffmpeg is registered but disabled in favor of skill/CLI routing). Default `harness` exposes `llms-txt-explorer` as `list_websites` only; `check_website` is opt-in via workflow groups and excluded from `tunnel`. `jupyter-mcp-server` is opt-in via `notebooks` and workflow groups; requires user-owned JupyterLab. `scrapling` (CSS-targeted scraping, anti-bot fetch) is opt-in via `research`, `media-work`, `live-browser`, `heavy`, and `experimental`, with bounded `get`/`bulk_get` in `web-read` and `get` only in `shared-read`; excluded from `harness`, `tunnel`, and `browser`.
+- **67** top-level MCP server keys in the live registry. Media work prefers skill/CLI `ffmpeg` routing — there is **no** standalone `ffmpeg` server key.
 - Per-server: transport, command (often npx/uvx with repo wrappers for chrome-devtools), env (API keys via placeholders), enabled, timeouts, tools list or `*` + tools_allow_all, tool_approvals, platform_overrides, exclude_from_harnesses, ownership rules (plugin vs extension vs repo_mcp)
 - Named groups for targeting (`harness`, `tunnel`, `daily`, `coding`, `research`, `review`, `release`, capability groups, and risk/exposure groups)
 - Client defaults and overrides (transport, auth, included_groups, enable_server_endpoints, etc.)
@@ -39,10 +51,12 @@ Chrome DevTools has special one-owner rules (Claude Code / Copilot plugins own t
 
 Projections target:
 - Codex, OpenCode, Grok, ChatGPT (via MCPHub or direct)
-- Claude Desktop, Cursor, Gemini, Cherry Studio, Crush, AITK, Copilot CLI shadow configs, etc.
-- Repo `mcp.json` (distribution manifest) and `~/.config/...` home merges/generates.
+- Claude Desktop, Cursor, Gemini, Cherry Studio, Crush, LM Studio, AITK, Copilot CLI shadow configs, etc.
+- Repo `mcp.json` (MCPHub distribution projection) and `~/.config/...` home merges/generates.
 
-See `config/sync-manifest.json` for which outputs are generated vs merged.
+See `config/sync-manifest.json` for which outputs are generated vs merged. Refresh the embedded JSON dump below with `uv run wagents docs compose --regen-configs --config mcp-registry` after registry edits.
+
+
 
 
 
@@ -194,7 +208,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "grok",
           "antigravity",
           "perplexity-desktop",
-          "cherry-studio"
+          "cherry-studio",
+          "lm-studio"
         ]
       },
       "tools_allow_all": true
@@ -202,6 +217,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
     "context7": {
       "transport": "streamable-http",
       "auth_policy": "oauth",
+      "owner": "admin",
       "url": "https://mcp.context7.com/mcp/oauth",
       "env": {},
       "enabled": true,
@@ -310,7 +326,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "get_latest_package_versions",
@@ -330,6 +346,24 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "env_var": "PENPOT_MCP_USER_TOKEN"
         }
       },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "reddit-mcp-buddy": {
+      "description": "Read-only Reddit browse/search/user tools (anonymous works; optional OAuth via local .env.mcphub).",
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/reddit-mcp-buddy-stdio.sh"
+      ],
+      "env": {},
       "enabled": true,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
@@ -563,7 +597,10 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "transport": "stdio",
       "command": "uvx",
       "args": [
-        "ddgs-mcp-server==0.5.1"
+        "--from",
+        "ddgs[mcp]",
+        "ddgs",
+        "mcp"
       ],
       "auth_policy": "none",
       "env": {},
@@ -1110,6 +1147,447 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "tool_approvals": {},
       "platform_overrides": {}
+    },
+    "antv-chart": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@antv/mcp-server-chart@0.9.10"
+      ],
+      "env": {
+        "VIS_REQUEST_SERVER": {
+          "env_var": "VIS_REQUEST_SERVER"
+        },
+        "SERVICE_ID": {
+          "env_var": "SERVICE_ID"
+        },
+        "DISABLED_TOOLS": {
+          "env_var": "ANTV_CHART_DISABLED_TOOLS"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled external chart-rendering MCP example from antvis/mcp-server-chart; opt in only after local network/rendering review."
+    },
+    "axiom-mcp": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "axiom-mcp@27.0.0-beta.22"
+      ],
+      "env": {
+        "AXIOM_MCP_MODE": {
+          "value": "production"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled Apple/Xcode automation MCP from CharlesWiltgen/Axiom; keep inert until a project-scoped binary-execution and signing review is approved."
+    },
+    "better-icons": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "better-icons@1.0.4",
+        "mcp"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled external icon lookup MCP example from better-auth/better-icons; opt in per project before writing icon assets."
+    },
+    "charted": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "charted[mcp]==1.2.1",
+        "charted-mcp"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled local chart generation MCP example from marzukia/charted."
+    },
+    "csvglow": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "csvglow==0.1.0",
+        "csvglow",
+        "--mcp"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled local CSV and spreadsheet visualization MCP from Ratnaditya-J/csvglow; constrain input and output paths before enabling."
+    },
+    "designer-skill-mcp": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "designer-skill-mcp@0.14.0"
+      ],
+      "env": {
+        "NO_UPDATE_NOTIFIER": {
+          "value": "1"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled local design workflow MCP from Pythoughts-labs/designer-skill; opt in per project after file-write and update-check review."
+    },
+    "geo-mcp": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "geo-optimizer-skill[mcp]==4.15.0",
+        "geo-mcp"
+      ],
+      "env": {
+        "GEO_LLM_PROVIDER": {
+          "env_var": "GEO_LLM_PROVIDER"
+        },
+        "GEO_LLM_API_KEY": {
+          "env_var": "GEO_LLM_API_KEY"
+        },
+        "PERPLEXITY_API_KEY": {
+          "env_var": "PERPLEXITY_API_KEY"
+        },
+        "OPENAI_API_KEY": {
+          "env_var": "OPENAI_API_KEY"
+        },
+        "ANTHROPIC_API_KEY": {
+          "env_var": "ANTHROPIC_API_KEY"
+        },
+        "GROQ_API_KEY": {
+          "env_var": "GROQ_API_KEY"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled GEO audit MCP from Auriti-Labs/geo-optimizer-skill; basic audits are keyless and optional provider credentials remain user-owned."
+    },
+    "langfuse-mcp": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "langfuse-mcp==0.10.0"
+      ],
+      "env": {
+        "LANGFUSE_PUBLIC_KEY": {
+          "env_var": "LANGFUSE_PUBLIC_KEY"
+        },
+        "LANGFUSE_SECRET_KEY": {
+          "env_var": "LANGFUSE_SECRET_KEY"
+        },
+        "LANGFUSE_HOST": {
+          "env_var": "LANGFUSE_HOST"
+        },
+        "LANGFUSE_MCP_READ_ONLY": {
+          "value": "true"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled credentialed Langfuse observability MCP example from https://github.com/avivsinai/langfuse-mcp; read-only mode is the tracked default."
+    },
+    "mcp-excalidraw": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-excalidraw-server@1.1.0"
+      ],
+      "env": {
+        "EXCALIDRAW_NO_AUTOSTART": {
+          "value": "1"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled local Excalidraw canvas MCP example from yctimlin/mcp_excalidraw."
+    },
+    "mcp-dashboards": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-dashboards@2.4.0",
+        "--stdio"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled interactive dashboard MCP example from https://github.com/KyuRish/mcp-dashboards; opt in only after chart export, browser preview, and local-file handling review."
+    },
+    "mobile-mcp": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mobilenext/mobile-mcp@0.0.62"
+      ],
+      "env": {
+        "MOBILEMCP_DISABLE_TELEMETRY": {
+          "value": "1"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled mobile device automation MCP example from https://github.com/mobile-next/mobile-mcp; requires explicit device, simulator, signing, privacy, and destructive-action review before use."
+    },
+    "nullcost": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "nullcost-plugin@0.1.6",
+        "mcp-server"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled external cost-estimation MCP example from https://github.com/johnvouros/nullcost-plugin; opt in only after provider/pricing review."
+    },
+    "openspec-mcp": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "openspec-mcp@0.4.2",
+        "${REPO_ROOT}"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled external OpenSpec MCP compatibility example from https://github.com/Lumiaqian/openspec-mcp; repo-native wagents OpenSpec remains the default."
+    },
+    "paper-search-mcp": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "paper-search-mcp==0.1.4"
+      ],
+      "env": {
+        "PAPER_SEARCH_MCP_CORE_API_KEY": {
+          "env_var": "PAPER_SEARCH_MCP_CORE_API_KEY"
+        },
+        "SEMANTIC_SCHOLAR_API_KEY": {
+          "env_var": "SEMANTIC_SCHOLAR_API_KEY"
+        },
+        "ZENODO_ACCESS_TOKEN": {
+          "env_var": "ZENODO_ACCESS_TOKEN"
+        },
+        "UNPAYWALL_EMAIL": {
+          "env_var": "UNPAYWALL_EMAIL"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled academic paper search MCP example; opt in with provider ToS and credential review."
+    },
+    "papersflow": {
+      "transport": "streamable-http",
+      "url": "https://doxa.papersflow.ai/mcp",
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled hosted Papersflow research MCP example; account/OAuth boundary required before use.",
+      "oauth": {
+        "enabled": false
+      }
+    },
+    "prompt-to-asset": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "prompt-to-asset@0.5.1"
+      ],
+      "env": {
+        "PROMPT_TO_BUNDLE_TRANSPORT": {
+          "value": "stdio"
+        },
+        "PROMPT_TO_BUNDLE_DRY_RUN": {
+          "value": "1"
+        },
+        "OPENAI_API_KEY": {
+          "env_var": "OPENAI_API_KEY"
+        },
+        "IDEOGRAM_API_KEY": {
+          "env_var": "IDEOGRAM_API_KEY"
+        },
+        "RECRAFT_API_KEY": {
+          "env_var": "RECRAFT_API_KEY"
+        },
+        "BFL_API_KEY": {
+          "env_var": "BFL_API_KEY"
+        },
+        "GEMINI_API_KEY": {
+          "env_var": "GEMINI_API_KEY"
+        },
+        "STABILITY_API_KEY": {
+          "env_var": "STABILITY_API_KEY"
+        },
+        "HORDE_API_KEY": {
+          "env_var": "HORDE_API_KEY"
+        },
+        "GOOGLE_API_KEY": {
+          "env_var": "GOOGLE_API_KEY"
+        },
+        "TOGETHER_API_KEY": {
+          "env_var": "TOGETHER_API_KEY"
+        },
+        "LEONARDO_API_KEY": {
+          "env_var": "LEONARDO_API_KEY"
+        },
+        "FAL_API_KEY": {
+          "env_var": "FAL_API_KEY"
+        },
+        "FAL_KEY": {
+          "env_var": "FAL_KEY"
+        },
+        "FREEPIK_API_KEY": {
+          "env_var": "FREEPIK_API_KEY"
+        },
+        "PIXAZO_API_KEY": {
+          "env_var": "PIXAZO_API_KEY"
+        },
+        "PIXAZO_SUBSCRIPTION_KEY": {
+          "env_var": "PIXAZO_SUBSCRIPTION_KEY"
+        },
+        "HF_TOKEN": {
+          "env_var": "HF_TOKEN"
+        },
+        "HUGGINGFACE_API_KEY": {
+          "env_var": "HUGGINGFACE_API_KEY"
+        },
+        "CLOUDFLARE_API_TOKEN": {
+          "env_var": "CLOUDFLARE_API_TOKEN"
+        },
+        "CLOUDFLARE_ACCOUNT_ID": {
+          "env_var": "CLOUDFLARE_ACCOUNT_ID"
+        },
+        "NVIDIA_API_KEY": {
+          "env_var": "NVIDIA_API_KEY"
+        },
+        "NIM_API_KEY": {
+          "env_var": "NIM_API_KEY"
+        },
+        "REPLICATE_API_TOKEN": {
+          "env_var": "REPLICATE_API_TOKEN"
+        },
+        "REPLICATE_API_KEY": {
+          "env_var": "REPLICATE_API_KEY"
+        }
+      },
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled asset-generation MCP from MohamedAbdallah-14/prompt-to-asset; provider credentials are optional and user-owned, with copyright, brand, likeness, and provenance review required before use."
+    },
+    "remotion-docs": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@remotion/mcp@latest"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled official Remotion documentation MCP example."
+    },
+    "semiotic": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "--package=semiotic@3.7.5",
+        "semiotic-mcp"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Disabled Semiotic visualization MCP example from https://github.com/nteract/semiotic; keep HTTP/cloud modes local opt-in only."
     }
   },
   "mcphub": {
@@ -1121,7 +1599,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
     "tool_timeout_sec": 90,
     "projection_adapters": {
       "grok": "http",
-      "opencode": "http"
+      "opencode": "http",
+      "lm-studio": "remote-stdio"
     },
     "settings_path": "mcp/mcphub/mcp_settings.json",
     "openapi_export_path": "mcp/mcphub/openapi.json",
@@ -1241,7 +1720,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
               "read_notebook",
               "read_cell"
             ]
-          }
+          },
+          "reddit-mcp-buddy"
         ]
       },
       "review": {
@@ -1458,7 +1938,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
             "tools": [
               "get"
             ]
-          }
+          },
+          "reddit-mcp-buddy"
         ]
       },
       "credentialed": {
@@ -1518,7 +1999,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "deep-lucid-3d",
           "lotus-wisdom-mcp",
           "shannon-thinking",
-          "think-strategies"
+          "think-strategies",
+          "reddit-mcp-buddy"
         ]
       }
     },
@@ -1611,6 +2093,24 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "tunnel"
         ],
         "enable_server_endpoints": false
+      },
+      "lm-studio": {
+        "transport": "stdio",
+        "auth": "env_var",
+        "included_endpoint_kinds": [
+          "group",
+          "server"
+        ],
+        "included_groups": [
+          "harness"
+        ],
+        "enabled_endpoint_kinds": [
+          "group"
+        ],
+        "enabled_groups": [
+          "harness"
+        ],
+        "enable_server_endpoints": true
       },
       "stdio_bridge": {
         "transport": "stdio",

@@ -95,3 +95,14 @@ def test_bridge_source_dispatches_bundle_path_through_runner() -> None:
     assert "run-wagents-hook" in source
     assert 'runPolicy(repoRoot, policies.join(",")' in source
     assert "{ bundle: true }" in source
+
+
+def test_bridge_source_fail_closed_on_dispatcher_errors() -> None:
+    """RV-003: enforce-tier misses must deny, not silently allow."""
+    source = BRIDGE.read_text(encoding="utf-8")
+    assert "failClosed" in source
+    assert "empty stdout" in source
+    assert "non-JSON" in source
+    # Old fail-open comment must not remain as the active catch path.
+    assert "fail open" not in source.lower() or "fail-closed" in source.lower()
+    assert "Dispatcher missing the policy id, crash, or timeout: fail open" not in source

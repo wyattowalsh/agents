@@ -55,6 +55,8 @@ def test_browser_index_schema_file_exists_and_loads() -> None:
         "install-now",
         "inspect",
         "avoid",
+        "integrated",
+        "hard-blocked",
     ]
 
 

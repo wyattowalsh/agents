@@ -1,7 +1,8 @@
 import { defineConfig } from 'astro/config';
+import { copyFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
+import { join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { unified } from '@astrojs/markdown-remark';
-import react from '@astrojs/react';
 import vercel from '@astrojs/vercel';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
@@ -46,10 +47,40 @@ const safeStarlightRemarkAsides = () => {
     return transform(tree, file);
   };
 };
+const siteGraphHubVisibility = [
+  // Keep the Pixi/d3 graph off high-volume catalog/research leaves.
+  '/',
+  '/start-here/',
+  '/install/',
+  '/cli/',
+  '/runtimes/',
+  '/reference/',
+  '/contributing/',
+  '/surfaces/**',
+  '/harness-config/**',
+  '/architecture/**',
+  '/hooks/',
+  '/mcp/',
+  '/agents/',
+  '/skills/catalog/',
+  '/skills/catalog/custom/',
+  '/skills/catalog/external/',
+  '/catalog/**',
+  '/reports/**',
+];
 const siteGraphConfig = {
   ...starlightSiteGraphConfig,
   starlight: true,
   overridePageSidebar: false,
+  graphConfig: {
+    ...starlightSiteGraphConfig.graphConfig,
+    visibilityRules: siteGraphHubVisibility,
+  },
+  backlinksConfig: {
+    ...starlightSiteGraphConfig.backlinksConfig,
+    // Keep backlinks available more broadly; they are lighter than the Pixi graph.
+    visibilityRules: starlightSiteGraphConfig.backlinksConfig?.visibilityRules ?? ['**/*'],
+  },
   sitemapConfig: {
     ...starlightSiteGraphConfig.sitemapConfig,
     styleRules: new Map(starlightSiteGraphConfig.sitemapConfig.styleRules),
@@ -64,6 +95,26 @@ const docsServerManualChunks = (id) => {
     return 'vendor-d3';
   }
 };
+const mirrorAstroPrerenderChunks = () => ({
+  name: 'mirror-astro-prerender-chunks',
+  apply: 'build',
+  writeBundle(options) {
+    const outDir = options.dir ? resolve(options.dir) : '';
+    if (!outDir.endsWith(`${sep}.prerender`)) return;
+    const sharedChunksDir = join(outDir, '..', 'chunks');
+    const prerenderChunksDir = join(outDir, 'chunks');
+    if (!existsSync(sharedChunksDir)) return;
+    mkdirSync(prerenderChunksDir, { recursive: true });
+    for (const fileName of readdirSync(sharedChunksDir)) {
+      if (!/^[A-Za-z0-9_-]+\.mjs$/.test(fileName)) continue;
+      const sourcePath = join(sharedChunksDir, fileName);
+      const targetPath = join(prerenderChunksDir, fileName);
+      if (!existsSync(targetPath)) {
+        copyFileSync(sourcePath, targetPath);
+      }
+    }
+  },
+});
 
 export default defineConfig({
   adapter: vercel(),
@@ -71,7 +122,9 @@ export default defineConfig({
   // Keep the Starlight docs static; admin/API routes opt into Vercel functions with `prerender = false`.
   output: 'static',
   build: {
-    concurrency: 1,
+    // Serial was forced for OOM risk on ~2k pages; raise cautiously with memory headroom.
+    // Override: ASTRO_BUILD_CONCURRENCY=1 for low-memory CI agents.
+    concurrency: Number(process.env.ASTRO_BUILD_CONCURRENCY || 2),
   },
   site: 'https://agents.w4w.dev',
   redirects: {
@@ -96,6 +149,7 @@ export default defineConfig({
     },
     plugins: [
       tailwindcss(),
+      mirrorAstroPrerenderChunks(),
     ],
     environments: {
       client: {
@@ -140,7 +194,6 @@ export default defineConfig({
     },
   },
   integrations: [
-    react(),
     astroMermaid({
       autoTheme: true,
       mermaidConfig: {

@@ -3,28 +3,50 @@
   "normalized_url": "https://github.com/nteract/semiotic",
   "source_name": "nteract/semiotic",
   "category": "MCP server",
-  "inspected_commit_sha": "7f187f5718bdc11ea4c4e7d33b06e626fb195bc9",
+  "inspected_commit_sha": "81b96d9f81bba0655a403b535bb5b1210dc3d752",
   "license": "Apache-2.0",
-  "latest_release_or_commit_date": "github-pushed-at:2026-07-06T21:54:41Z",
+  "latest_release_or_commit_date": "github-pushed-at:2026-07-08T19:14:09Z",
   "artifact_types_found": [
-    "MCP server"
+    "CLI/tool",
+    "MCP server",
+    "agent",
+    "library",
+    "plugin",
+    "skill"
   ],
-  "install_or_integration_decision": "reference_only",
-  "reason": "MCP candidate requires registry design and smoke tests before enablement.",
-  "auth_required": true,
-  "env_vars_or_credentials": [
-    "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-  ],
+  "install_or_integration_decision": "integrated_mcp_surface",
+  "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+  "auth_required": false,
+  "env_vars_or_credentials": [],
   "safety_notes": "Executable/tool surface requires script and dependency review.",
   "attribution_notes": "Preserve attribution to nteract/semiotic; verify license before adapting content.",
-  "files_added": [],
-  "files_modified": [],
+  "files_added": [
+    "docs/src/authoring/skills/nteract-semiotic.mdx",
+    "docs/src/content/docs/skills/catalog/external/nteract-semiotic.mdx",
+    "planning/manifests/candidate-corpus-jul2026/records/288-nteract-semiotic.json"
+  ],
+  "files_modified": [
+    "config/mcp-registry.json",
+    "docs/public/generated-registries/skills-catalog-browser-index.json",
+    "docs/public/generated-registries/skills-catalog-index.json",
+    "mcp/mcphub/mcp_settings.json",
+    "planning/manifests/candidate-corpus-jul2026/all-records.json",
+    "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
+    "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
+    "planning/manifests/candidate-corpus-jul2026/harness-install-assurance.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-decisions.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-targets.json",
+    "planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json"
+  ],
   "tests_or_checks_run": [
     "git ls-remote --symref",
-    "gh api repos/{owner}/{repo}"
+    "gh api repos/nteract/semiotic",
+    "uv run python scripts/audit_candidate_deep_sources.py --check",
+    "uv run python scripts/apply_candidate_corpus_promotions.py --check",
+    "uv run python scripts/promote_candidate_corpus.py --final-check"
   ],
   "skipped_reason": "",
-  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "reviewer_notes": "Deep source audit completed at ref main. Final repo-native route integrated_mcp_surface is recorded; no Skills CLI row applies.",
   "raw_index": 288,
   "normalized_index": "https://github.com/nteract/semiotic",
   "duplicate_group": [],
@@ -33,16 +55,16 @@
   "canonical_source": "https://github.com/nteract/semiotic",
   "risk_tier": "executable-surface-review-required",
   "risk_keywords": [],
-  "support_tier": "discovery-only",
+  "support_tier": "repo-native-terminal-final",
   "phase_status": {
     "source_capture": "completed",
-    "deep_research": "completed-public-metadata",
+    "deep_research": "completed-deep-source-audit",
     "overlap": "completed",
     "security": "completed-static",
     "license": "completed-static",
-    "compliance": "completed-static",
+    "compliance": "completed-deep-auth-reconciled",
     "docs_impact": "completed",
-    "decision": "completed"
+    "decision": "completed-overlay-reconciled"
   },
   "source_capture_packet": {
     "git_status": "ok",
@@ -58,8 +80,8 @@
     "full_name": "nteract/semiotic",
     "html_url": "https://github.com/nteract/semiotic",
     "default_branch": "main",
-    "pushed_at": "2026-07-06T21:54:41Z",
-    "updated_at": "2026-07-06T21:54:47Z",
+    "pushed_at": "2026-07-08T19:14:09Z",
+    "updated_at": "2026-07-08T19:12:12Z",
     "license_spdx_id": "Apache-2.0",
     "license_name": "Apache License 2.0",
     "language": "TypeScript",
@@ -87,11 +109,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -114,11 +136,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -133,7 +155,7 @@
   ],
   "overlap_packet": {
     "catalog_matches": [],
-    "mcp_registry_match": false,
+    "mcp_registry_match": true,
     "plugin_registry_match": false
   },
   "security_packet": {
@@ -147,10 +169,9 @@
     "license_name": "Apache License 2.0"
   },
   "compliance_packet": {
-    "auth_required": true,
-    "env_vars_or_credentials": [
-      "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-    ]
+    "auth_required": false,
+    "env_vars_or_credentials": [],
+    "evidence_source": "deep-source-audit.json"
   },
   "docs_steward_surfaces": [
     "README",
@@ -167,13 +188,33 @@
     "runbooks",
     "skill-research"
   ],
-  "docs_steward_status": "packet-generated",
+  "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "reference_only",
-    "reason": "MCP candidate requires registry design and smoke tests before enablement."
+    "decision": "integrated_mcp_surface",
+    "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "required_before_promotion": "human trust-gate review"
+    "terminal_route": "integrated-mcp-surface",
+    "required_before_live_execution": "explicit user-owned command and credential setup",
+    "scope": "historical-intake-research-only"
+  },
+  "intake_artifact_types_found": [
+    "CLI/tool",
+    "MCP server",
+    "agent",
+    "library",
+    "plugin",
+    "skill"
+  ],
+  "intake_support_tier": "discovery-only",
+  "intake_docs_steward_status": "packet-generated",
+  "final_integration": {
+    "status": "terminal-repo-native-decision",
+    "mutation_applied": true,
+    "catalog_rows": 0,
+    "harness_assurance": "harness-install-assurance.json",
+    "non_skill_assurance": "non-skill-install-assurance.json",
+    "runtime_disposition": "configured-disabled-mcp"
   }
 }

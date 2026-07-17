@@ -1,7 +1,7 @@
 ---
 name: docs-writer
 description: Update or create technical documentation grounded in the current codebase.
-model: inherit
+model: cursor-grok-4.5-high
 readonly: false
 ---
 

@@ -10,6 +10,9 @@ import { captureServerEvent } from '../../lib/admin/telemetry';
 export const prerender = false;
 
 const admin = Astro.locals.admin;
+if (!admin?.isAuthenticated) {
+  return Astro.redirect('/admin/login?redirect=%2Fadmin');
+}
 const dashboardData = isFeatureEnabled('admin_dashboard_metrics', admin.featureOverrides)
   ? await getDashboardData(admin.requestId)
   : {

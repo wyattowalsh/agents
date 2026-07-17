@@ -49,6 +49,27 @@ def _make_skill_with_eval_manifest(repo, name, eval_items):
     (evals_dir / "evals.json").write_text(json.dumps({"skill_name": name, "evals": eval_items}, indent=2))
 
 
+def _add_declared_projection(repo, name, case):
+    """Add a legacy per-case file declared as a projection of one manifest case."""
+    evals_dir = repo / "skills" / name / "evals"
+    manifest_path = evals_dir / "evals.json"
+    manifest = json.loads(manifest_path.read_text())
+    filename = f"{case['id']}.json"
+    manifest["projection_files"] = [filename]
+    manifest_path.write_text(json.dumps(manifest, indent=2))
+    (evals_dir / filename).write_text(
+        json.dumps(
+            {
+                "skills": [name],
+                "query": case["prompt"],
+                "files": case.get("files", []),
+                "expected_behavior": case.get("assertions", []),
+            },
+            indent=2,
+        )
+    )
+
+
 class TestEvalList:
     def test_no_evals(self, patched_repo):
         result = runner.invoke(app, ["eval", "list"])
@@ -103,6 +124,54 @@ class TestEvalList:
         assert payload["skills"][0]["skill"] == "test-skill"
         assert payload["skills"][0]["eval_count"] == 2
         assert payload["skills"][0]["sample_query"] == "first prompt"
+
+    def test_declared_projection_is_not_double_counted(self, patched_repo):
+        case = {
+            "id": "one",
+            "prompt": "first prompt",
+            "expected_output": "first output",
+            "files": [],
+            "assertions": ["first assertion"],
+        }
+        _make_skill_with_eval_manifest(patched_repo, "test-skill", [case])
+        _add_declared_projection(patched_repo, "test-skill", case)
+
+        result = runner.invoke(app, ["eval", "list", "--format", "json"])
+
+        assert result.exit_code == 0
+        payload = json.loads(result.output)
+        assert payload["eval_count"] == 1
+        assert payload["skills"][0]["eval_count"] == 1
+
+    def test_undeclared_legacy_file_keeps_existing_counting_behavior(self, patched_repo):
+        case = {"id": "one", "prompt": "first prompt", "expected_output": "first output"}
+        _make_skill_with_eval_manifest(patched_repo, "test-skill", [case])
+        evals_dir = patched_repo / "skills" / "test-skill" / "evals"
+        (evals_dir / "legacy.json").write_text(
+            json.dumps({"skills": ["test-skill"], "query": "legacy", "expected_behavior": ["legacy"]})
+        )
+
+        result = runner.invoke(app, ["eval", "list", "--format", "json"])
+
+        assert result.exit_code == 0
+        assert json.loads(result.output)["eval_count"] == 2
+
+    def test_invalid_projection_declaration_cannot_hide_a_legacy_eval(self, patched_repo):
+        case = {"id": "one", "prompt": "first prompt", "expected_output": "first output"}
+        _make_skill_with_eval_manifest(patched_repo, "test-skill", [case])
+        evals_dir = patched_repo / "skills" / "test-skill" / "evals"
+        manifest_path = evals_dir / "evals.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["projection_files"] = ["legacy.json"]
+        manifest_path.write_text(json.dumps(manifest, indent=2))
+        (evals_dir / "legacy.json").write_text(
+            json.dumps({"skills": ["test-skill"], "query": "legacy", "expected_behavior": ["legacy"]})
+        )
+
+        result = runner.invoke(app, ["eval", "list", "--format", "json"])
+
+        assert result.exit_code == 0
+        assert json.loads(result.output)["eval_count"] == 2
 
     @staticmethod
     def test_real_repo():
@@ -240,6 +309,121 @@ class TestEvalValidate:
         assert result.exit_code == 0
         assert "All evals valid" in result.output
 
+    def test_valid_declared_projection(self, patched_repo):
+        case = {
+            "id": "case-1",
+            "prompt": "Run the eval",
+            "expected_output": "A valid output description.",
+            "files": ["evals/files/input.txt"],
+            "assertions": ["Uses the skill correctly."],
+        }
+        _make_skill_with_eval_manifest(patched_repo, "test-skill", [case])
+        _add_declared_projection(patched_repo, "test-skill", case)
+
+        result = runner.invoke(app, ["eval", "validate"])
+
+        assert result.exit_code == 0
+        assert "All evals valid" in result.output
+
+    def test_declared_projection_requires_exact_parity(self, patched_repo):
+        case = {
+            "id": "case-1",
+            "prompt": "Run the eval",
+            "expected_output": "A valid output description.",
+            "assertions": ["Uses the skill correctly."],
+        }
+        _make_skill_with_eval_manifest(patched_repo, "test-skill", [case])
+        _add_declared_projection(patched_repo, "test-skill", case)
+        projection = patched_repo / "skills" / "test-skill" / "evals" / "case-1.json"
+        payload = json.loads(projection.read_text())
+        payload["query"] = "drifted prompt"
+        projection.write_text(json.dumps(payload, indent=2))
+
+        result = runner.invoke(app, ["eval", "validate"])
+
+        assert result.exit_code == 1
+        assert "does not match canonical manifest" in result.output
+
+    def test_declared_projection_rejects_behavior_drift_and_remains_counted(self, patched_repo):
+        case = {
+            "id": "case-1",
+            "prompt": "Run the eval",
+            "expected_output": "A valid output description.",
+            "assertions": ["Uses the skill correctly."],
+        }
+        _make_skill_with_eval_manifest(patched_repo, "test-skill", [case])
+        _add_declared_projection(patched_repo, "test-skill", case)
+        projection = patched_repo / "skills" / "test-skill" / "evals" / "case-1.json"
+        payload = json.loads(projection.read_text())
+        payload["expected_behavior"] = ["Divergent behavior"]
+        projection.write_text(json.dumps(payload, indent=2))
+
+        validation = runner.invoke(app, ["eval", "validate"])
+        listing = runner.invoke(app, ["eval", "list", "--format", "json"])
+
+        assert validation.exit_code == 1
+        assert "expected_behavior" in validation.output
+        assert listing.exit_code == 0
+        assert json.loads(listing.output)["eval_count"] == 2
+
+    def test_declared_projection_rejects_unsupported_fields_and_remains_counted(self, patched_repo):
+        case = {
+            "id": "case-1",
+            "prompt": "Run the eval",
+            "expected_output": "A valid output description.",
+            "assertions": ["Uses the skill correctly."],
+        }
+        _make_skill_with_eval_manifest(patched_repo, "test-skill", [case])
+        _add_declared_projection(patched_repo, "test-skill", case)
+        projection = patched_repo / "skills" / "test-skill" / "evals" / "case-1.json"
+        payload = json.loads(projection.read_text())
+        payload["hidden_expectation"] = "not part of the canonical case"
+        projection.write_text(json.dumps(payload, indent=2))
+
+        validation = runner.invoke(app, ["eval", "validate"])
+        listing = runner.invoke(app, ["eval", "list", "--format", "json"])
+
+        assert validation.exit_code == 1
+        assert "unsupported fields" in validation.output
+        assert listing.exit_code == 0
+        assert json.loads(listing.output)["eval_count"] == 2
+
+    def test_declared_projection_non_object_is_rejected_without_crashing(self, patched_repo):
+        case = {
+            "id": "case-1",
+            "prompt": "Run the eval",
+            "expected_output": "A valid output description.",
+            "assertions": ["Uses the skill correctly."],
+        }
+        _make_skill_with_eval_manifest(patched_repo, "test-skill", [case])
+        _add_declared_projection(patched_repo, "test-skill", case)
+        projection = patched_repo / "skills" / "test-skill" / "evals" / "case-1.json"
+        projection.write_text("[]")
+
+        validation = runner.invoke(app, ["eval", "validate"])
+        listing = runner.invoke(app, ["eval", "list", "--format", "json"])
+
+        assert validation.exit_code == 1
+        assert "top-level JSON value must be an object" in validation.output
+        assert listing.exit_code == 0
+        assert json.loads(listing.output)["eval_count"] == 2
+
+    def test_projection_declaration_rejects_missing_and_undeclared_files(self, patched_repo):
+        case = {"id": "case-1", "prompt": "Run the eval", "expected_output": "Valid output."}
+        _make_skill_with_eval_manifest(patched_repo, "test-skill", [case])
+        manifest_path = patched_repo / "skills" / "test-skill" / "evals" / "evals.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["projection_files"] = ["case-1.json"]
+        manifest_path.write_text(json.dumps(manifest, indent=2))
+        (manifest_path.parent / "extra.json").write_text(
+            json.dumps({"skills": ["test-skill"], "query": "extra", "expected_behavior": ["extra"]})
+        )
+
+        result = runner.invoke(app, ["eval", "validate"])
+
+        assert result.exit_code == 1
+        assert "projection file-set mismatch" in result.output
+
     def test_eval_manifest_missing_prompt(self, patched_repo):
         _make_skill_with_eval_manifest(
             patched_repo,
@@ -326,6 +510,19 @@ class TestEvalValidate:
         (evals_dir / "bad.json").write_text("{invalid json")
         result = runner.invoke(app, ["eval", "validate"])
         assert result.exit_code == 1
+
+    def test_non_object_json_is_rejected_without_crashing(self, patched_repo):
+        skill_dir = patched_repo / "skills" / "test-skill"
+        skill_dir.mkdir(parents=True)
+        (skill_dir / "SKILL.md").write_text("---\nname: test-skill\ndescription: Test\n---\n\n# Test\n")
+        evals_dir = skill_dir / "evals"
+        evals_dir.mkdir()
+        (evals_dir / "array.json").write_text("[]")
+
+        result = runner.invoke(app, ["eval", "validate"])
+
+        assert result.exit_code == 1
+        assert "top-level JSON value must be an object" in result.output
 
     @staticmethod
     def test_real_repo():

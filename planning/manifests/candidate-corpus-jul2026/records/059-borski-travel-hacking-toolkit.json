@@ -7,24 +7,139 @@
   "license": "MIT",
   "latest_release_or_commit_date": "github-pushed-at:2026-05-02T22:24:59Z",
   "artifact_types_found": [
-    "CLI/tool"
+    "MCP server",
+    "agent",
+    "library",
+    "plugin",
+    "skill"
   ],
-  "install_or_integration_decision": "merge_into_existing",
-  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
+  "install_or_integration_decision": "integrated_existing_surface",
+  "reason": "Existing repo catalog surface already covers this source/domain.",
   "auth_required": true,
   "env_vars_or_credentials": [
-    "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+    "AA_PASSWORD",
+    "AWARDWALLET_API_KEY",
+    "DUFFEL_API_KEY_LIVE",
+    "IGNAV_API_KEY",
+    "RAPIDAPI_KEY",
+    "REJSEPLANEN_API_KEY",
+    "RESROBOT_API_KEY",
+    "SEATS_AERO_API_KEY",
+    "SERPAPI_API_KEY",
+    "SW_PASSWORD",
+    "TRIPADVISOR_API_KEY"
   ],
   "safety_notes": "Executable/tool surface requires script and dependency review.",
   "attribution_notes": "Preserve attribution to borski/travel-hacking-toolkit; verify license before adapting content.",
-  "files_added": [],
-  "files_modified": [],
+  "files_added": [
+    "docs/src/authoring/skills/alliances.mdx",
+    "docs/src/authoring/skills/american-airlines.mdx",
+    "docs/src/authoring/skills/amex-travel.mdx",
+    "docs/src/authoring/skills/atlas-obscura.mdx",
+    "docs/src/authoring/skills/award-calendar.mdx",
+    "docs/src/authoring/skills/award-holds.mdx",
+    "docs/src/authoring/skills/award-sweet-spots.mdx",
+    "docs/src/authoring/skills/awardwallet.mdx",
+    "docs/src/authoring/skills/bilt.mdx",
+    "docs/src/authoring/skills/booking-guidance.mdx",
+    "docs/src/authoring/skills/cabin-codes.mdx",
+    "docs/src/authoring/skills/chase-travel.mdx",
+    "docs/src/authoring/skills/compare-flights.mdx",
+    "docs/src/authoring/skills/compare-hotels.mdx",
+    "docs/src/authoring/skills/deutsche-bahn.mdx",
+    "docs/src/authoring/skills/duffel.mdx",
+    "docs/src/authoring/skills/fallback-and-resilience.mdx",
+    "docs/src/authoring/skills/flight-search-strategy.mdx",
+    "docs/src/authoring/skills/google-flights.mdx",
+    "docs/src/authoring/skills/hotel-chains.mdx",
+    "docs/src/authoring/skills/ignav.mdx",
+    "docs/src/authoring/skills/lessons-learned.mdx",
+    "docs/src/authoring/skills/partner-awards.mdx",
+    "docs/src/authoring/skills/plan-trip.mdx",
+    "docs/src/authoring/skills/points-valuations.mdx",
+    "docs/src/authoring/skills/premium-hotels.mdx",
+    "docs/src/authoring/skills/rapidapi.mdx",
+    "docs/src/authoring/skills/round-the-world.mdx",
+    "docs/src/authoring/skills/scandinavia-transit.mdx",
+    "docs/src/authoring/skills/seatmaps.mdx",
+    "docs/src/authoring/skills/seats-aero.mdx",
+    "docs/src/authoring/skills/serpapi.mdx",
+    "docs/src/authoring/skills/southwest.mdx",
+    "docs/src/authoring/skills/status-match.mdx",
+    "docs/src/authoring/skills/stopovers.mdx",
+    "docs/src/authoring/skills/ticketsatwork.mdx",
+    "docs/src/authoring/skills/transfer-bonuses.mdx",
+    "docs/src/authoring/skills/transfer-partners.mdx",
+    "docs/src/authoring/skills/trip-calculator.mdx",
+    "docs/src/authoring/skills/trip-planner.mdx",
+    "docs/src/authoring/skills/tripadvisor.mdx",
+    "docs/src/authoring/skills/wheretocredit.mdx",
+    "docs/src/authoring/skills/wikipedia-airports.mdx",
+    "docs/src/content/docs/skills/catalog/external/alliances.mdx",
+    "docs/src/content/docs/skills/catalog/external/american-airlines.mdx",
+    "docs/src/content/docs/skills/catalog/external/amex-travel.mdx",
+    "docs/src/content/docs/skills/catalog/external/atlas-obscura.mdx",
+    "docs/src/content/docs/skills/catalog/external/award-calendar.mdx",
+    "docs/src/content/docs/skills/catalog/external/award-holds.mdx",
+    "docs/src/content/docs/skills/catalog/external/award-sweet-spots.mdx",
+    "docs/src/content/docs/skills/catalog/external/awardwallet.mdx",
+    "docs/src/content/docs/skills/catalog/external/bilt.mdx",
+    "docs/src/content/docs/skills/catalog/external/booking-guidance.mdx",
+    "docs/src/content/docs/skills/catalog/external/cabin-codes.mdx",
+    "docs/src/content/docs/skills/catalog/external/chase-travel.mdx",
+    "docs/src/content/docs/skills/catalog/external/compare-flights.mdx",
+    "docs/src/content/docs/skills/catalog/external/compare-hotels.mdx",
+    "docs/src/content/docs/skills/catalog/external/deutsche-bahn.mdx",
+    "docs/src/content/docs/skills/catalog/external/duffel.mdx",
+    "docs/src/content/docs/skills/catalog/external/fallback-and-resilience.mdx",
+    "docs/src/content/docs/skills/catalog/external/flight-search-strategy.mdx",
+    "docs/src/content/docs/skills/catalog/external/google-flights.mdx",
+    "docs/src/content/docs/skills/catalog/external/hotel-chains.mdx",
+    "docs/src/content/docs/skills/catalog/external/ignav.mdx",
+    "docs/src/content/docs/skills/catalog/external/lessons-learned.mdx",
+    "docs/src/content/docs/skills/catalog/external/partner-awards.mdx",
+    "docs/src/content/docs/skills/catalog/external/plan-trip.mdx",
+    "docs/src/content/docs/skills/catalog/external/points-valuations.mdx",
+    "docs/src/content/docs/skills/catalog/external/premium-hotels.mdx",
+    "docs/src/content/docs/skills/catalog/external/rapidapi.mdx",
+    "docs/src/content/docs/skills/catalog/external/round-the-world.mdx",
+    "docs/src/content/docs/skills/catalog/external/scandinavia-transit.mdx",
+    "docs/src/content/docs/skills/catalog/external/seatmaps.mdx",
+    "docs/src/content/docs/skills/catalog/external/seats-aero.mdx",
+    "docs/src/content/docs/skills/catalog/external/serpapi.mdx",
+    "docs/src/content/docs/skills/catalog/external/southwest.mdx",
+    "docs/src/content/docs/skills/catalog/external/status-match.mdx",
+    "docs/src/content/docs/skills/catalog/external/stopovers.mdx",
+    "docs/src/content/docs/skills/catalog/external/ticketsatwork.mdx",
+    "docs/src/content/docs/skills/catalog/external/transfer-bonuses.mdx",
+    "docs/src/content/docs/skills/catalog/external/transfer-partners.mdx",
+    "docs/src/content/docs/skills/catalog/external/trip-calculator.mdx",
+    "docs/src/content/docs/skills/catalog/external/trip-planner.mdx",
+    "docs/src/content/docs/skills/catalog/external/tripadvisor.mdx",
+    "docs/src/content/docs/skills/catalog/external/wheretocredit.mdx",
+    "docs/src/content/docs/skills/catalog/external/wikipedia-airports.mdx",
+    "planning/manifests/candidate-corpus-jul2026/records/059-borski-travel-hacking-toolkit.json"
+  ],
+  "files_modified": [
+    "docs/public/generated-registries/skills-catalog-browser-index.json",
+    "docs/public/generated-registries/skills-catalog-index.json",
+    "planning/manifests/candidate-corpus-jul2026/all-records.json",
+    "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
+    "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
+    "planning/manifests/candidate-corpus-jul2026/harness-install-assurance.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-decisions.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-targets.json",
+    "planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json"
+  ],
   "tests_or_checks_run": [
     "git ls-remote --symref",
-    "gh api repos/{owner}/{repo}"
+    "gh api repos/borski/travel-hacking-toolkit",
+    "uv run python scripts/audit_candidate_deep_sources.py --check",
+    "uv run python scripts/apply_candidate_corpus_promotions.py --check",
+    "uv run python scripts/promote_candidate_corpus.py --final-check"
   ],
   "skipped_reason": "",
-  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "reviewer_notes": "Deep source audit completed at ref main. Reviewed promotion overlay applied 43 catalog row(s) and verified 43 live-install evidence row(s).",
   "raw_index": 59,
   "normalized_index": "https://github.com/borski/travel-hacking-toolkit",
   "duplicate_group": [],
@@ -33,16 +148,16 @@
   "canonical_source": "https://github.com/borski/travel-hacking-toolkit",
   "risk_tier": "executable-surface-review-required",
   "risk_keywords": [],
-  "support_tier": "discovery-only",
+  "support_tier": "curated-installable-final",
   "phase_status": {
     "source_capture": "completed",
-    "deep_research": "completed-public-metadata",
+    "deep_research": "completed-deep-source-audit",
     "overlap": "completed",
     "security": "completed-static",
     "license": "completed-static",
-    "compliance": "completed-static",
+    "compliance": "completed-deep-auth-reconciled",
     "docs_impact": "completed",
-    "decision": "completed"
+    "decision": "completed-overlay-reconciled"
   },
   "source_capture_packet": {
     "git_status": "ok",
@@ -59,7 +174,7 @@
     "html_url": "https://github.com/borski/travel-hacking-toolkit",
     "default_branch": "main",
     "pushed_at": "2026-05-02T22:24:59Z",
-    "updated_at": "2026-07-06T16:28:25Z",
+    "updated_at": "2026-07-08T03:57:10Z",
     "license_spdx_id": "MIT",
     "license_name": "MIT License",
     "language": "Python",
@@ -90,11 +205,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -117,11 +232,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -196,8 +311,19 @@
   "compliance_packet": {
     "auth_required": true,
     "env_vars_or_credentials": [
-      "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-    ]
+      "AA_PASSWORD",
+      "AWARDWALLET_API_KEY",
+      "DUFFEL_API_KEY_LIVE",
+      "IGNAV_API_KEY",
+      "RAPIDAPI_KEY",
+      "REJSEPLANEN_API_KEY",
+      "RESROBOT_API_KEY",
+      "SEATS_AERO_API_KEY",
+      "SERPAPI_API_KEY",
+      "SW_PASSWORD",
+      "TRIPADVISOR_API_KEY"
+    ],
+    "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
   },
   "docs_steward_surfaces": [
     "README",
@@ -214,13 +340,32 @@
     "runbooks",
     "skill-research"
   ],
-  "docs_steward_status": "packet-generated",
+  "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "merge_into_existing",
-    "reason": "Existing repo catalog or registry surface already covers this source/domain."
+    "decision": "integrated_existing_surface",
+    "reason": "Existing repo catalog surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "required_before_promotion": "human trust-gate review"
+    "terminal_route": "integrated-existing-surface",
+    "required_before_live_execution": "explicit user-owned command and credential setup",
+    "scope": "historical-intake-research-only"
+  },
+  "intake_artifact_types_found": [
+    "MCP server",
+    "agent",
+    "library",
+    "plugin",
+    "skill"
+  ],
+  "intake_support_tier": "discovery-only",
+  "intake_docs_steward_status": "packet-generated",
+  "final_integration": {
+    "status": "installable-curated-external",
+    "mutation_applied": true,
+    "catalog_rows": 43,
+    "harness_assurance": "harness-install-assurance.json",
+    "non_skill_assurance": "non-skill-install-assurance.json",
+    "runtime_disposition": "integrated-non-executable-surface"
   }
 }

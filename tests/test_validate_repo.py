@@ -54,9 +54,7 @@ def test_cursor_agents_config_matches_schema() -> None:
 
 
 def test_opencode_agents_config_matches_schema() -> None:
-    schema = json.loads(
-        (REPO_ROOT / "config" / "schemas" / "opencode-agents.schema.json").read_text(encoding="utf-8")
-    )
+    schema = json.loads((REPO_ROOT / "config" / "schemas" / "opencode-agents.schema.json").read_text(encoding="utf-8"))
     data = json.loads((REPO_ROOT / "config" / "opencode-agents.json").read_text(encoding="utf-8"))
 
     jsonschema.Draft202012Validator(schema).validate(data)
@@ -401,6 +399,68 @@ body
     assert result.returncode == 1
     combined = (result.stdout + result.stderr).lower()
     assert "quarantined" in combined or "snailsploit/claude-red" in combined
+
+
+def test_quarantine_docs_only_reference_is_allowed(mini_repo: Path) -> None:
+    """A hard-blocked source may remain visible when every install surface is disabled."""
+    qreg = mini_repo / "planning/manifests/security-quarantine-register.json"
+    qreg.parent.mkdir(parents=True, exist_ok=True)
+    qreg.write_text(
+        json.dumps({
+            "quarantine_triggers": ["offensive security workflows"],
+            "external_repo_records": [
+                {
+                    "id": "EXT-TEST",
+                    "repo": "snailsploit/claude-red",
+                    "trigger": "offensive security workflows",
+                    "default_action": "quarantine-reference",
+                }
+            ],
+        }),
+        encoding="utf-8",
+    )
+    authoring_dir = mini_repo / "docs" / "src" / "authoring" / "skills"
+    authoring_dir.mkdir(parents=True, exist_ok=True)
+    authoring_dir.joinpath("claude-red-quarantine.mdx").write_text(
+        """---
+name: claude-red-quarantine
+description: attributed quarantine record
+source_kind: curated-external
+source: snailsploit/claude-red
+install_source: https://github.com/snailsploit/claude-red
+status: integrated-quarantine-reference
+trust_tier: hard-blocked
+provenance_status: reviewed-quarantine-reference
+source_url: https://github.com/snailsploit/claude-red
+sync_kind: none
+target_agents: []
+---
+No install or execution is permitted.
+""",
+        encoding="utf-8",
+    )
+    index_dir = mini_repo / "docs" / "public" / "generated-registries"
+    index_dir.mkdir(parents=True, exist_ok=True)
+    index_dir.joinpath("skills-catalog-index.json").write_text(
+        json.dumps({
+            "externalSkillIndex": [
+                {
+                    "name": "claude-red-quarantine",
+                    "source": "snailsploit/claude-red",
+                    "status": "hard-blocked-quarantine",
+                    "syncKind": "none",
+                    "targetAgents": [],
+                    "installable": False,
+                    "installCommand": "",
+                }
+            ]
+        }),
+        encoding="utf-8",
+    )
+
+    result = _run_validate_repo(cwd=mini_repo)
+
+    assert result.returncode == 0, result.stdout + result.stderr
 
 
 def test_quarantine_register_rejects_undeclared_trigger(mini_repo: Path) -> None:

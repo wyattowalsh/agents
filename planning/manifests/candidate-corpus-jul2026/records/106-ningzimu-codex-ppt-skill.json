@@ -3,26 +3,46 @@
   "normalized_url": "https://github.com/ningzimu/codex-ppt-skill",
   "source_name": "ningzimu/codex-ppt-skill",
   "category": "skill",
-  "inspected_commit_sha": "93c1e013965a3b42f272252030b2e1a5abede710",
+  "inspected_commit_sha": "4ccb1ad8a68d5ddde211be3113420a8e1e64ed7a",
   "license": "MIT",
-  "latest_release_or_commit_date": "github-pushed-at:2026-06-20T15:56:57Z",
+  "latest_release_or_commit_date": "github-pushed-at:2026-07-07T14:00:02Z",
   "artifact_types_found": [
+    "CLI/tool",
+    "agent",
+    "library",
     "skill"
   ],
-  "install_or_integration_decision": "merge_into_existing",
-  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
+  "install_or_integration_decision": "integrated_existing_surface",
+  "reason": "Existing repo catalog surface already covers this source/domain.",
   "auth_required": false,
   "env_vars_or_credentials": [],
   "safety_notes": "No elevated keyword risk detected.",
   "attribution_notes": "Preserve attribution to ningzimu/codex-ppt-skill; verify license before adapting content.",
-  "files_added": [],
-  "files_modified": [],
+  "files_added": [
+    "docs/src/authoring/skills/codex-ppt.mdx",
+    "docs/src/content/docs/skills/catalog/external/codex-ppt.mdx",
+    "planning/manifests/candidate-corpus-jul2026/records/106-ningzimu-codex-ppt-skill.json"
+  ],
+  "files_modified": [
+    "docs/public/generated-registries/skills-catalog-browser-index.json",
+    "docs/public/generated-registries/skills-catalog-index.json",
+    "planning/manifests/candidate-corpus-jul2026/all-records.json",
+    "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
+    "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
+    "planning/manifests/candidate-corpus-jul2026/harness-install-assurance.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-decisions.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-targets.json",
+    "planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json"
+  ],
   "tests_or_checks_run": [
     "git ls-remote --symref",
-    "gh api repos/{owner}/{repo}"
+    "gh api repos/ningzimu/codex-ppt-skill",
+    "uv run python scripts/audit_candidate_deep_sources.py --check",
+    "uv run python scripts/apply_candidate_corpus_promotions.py --check",
+    "uv run python scripts/promote_candidate_corpus.py --final-check"
   ],
   "skipped_reason": "",
-  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "reviewer_notes": "Deep source audit completed at ref main. Reviewed promotion overlay applied 1 catalog row(s) and verified 1 live-install evidence row(s).",
   "raw_index": 106,
   "normalized_index": "https://github.com/ningzimu/codex-ppt-skill",
   "duplicate_group": [],
@@ -31,16 +51,16 @@
   "canonical_source": "https://github.com/ningzimu/codex-ppt-skill",
   "risk_tier": "standard-review",
   "risk_keywords": [],
-  "support_tier": "discovery-only",
+  "support_tier": "curated-installable-final",
   "phase_status": {
     "source_capture": "completed",
-    "deep_research": "completed-public-metadata",
+    "deep_research": "completed-deep-source-audit",
     "overlap": "completed",
     "security": "completed-static",
     "license": "completed-static",
-    "compliance": "completed-static",
+    "compliance": "completed-deep-auth-reconciled",
     "docs_impact": "completed",
-    "decision": "completed"
+    "decision": "completed-overlay-reconciled"
   },
   "source_capture_packet": {
     "git_status": "ok",
@@ -56,8 +76,8 @@
     "full_name": "ningzimu/codex-ppt-skill",
     "html_url": "https://github.com/ningzimu/codex-ppt-skill",
     "default_branch": "main",
-    "pushed_at": "2026-06-20T15:56:57Z",
-    "updated_at": "2026-07-06T22:40:31Z",
+    "pushed_at": "2026-07-07T14:00:02Z",
+    "updated_at": "2026-07-08T18:52:47Z",
     "license_spdx_id": "MIT",
     "license_name": "MIT License",
     "language": "Python",
@@ -89,11 +109,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -116,11 +136,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -152,7 +172,8 @@
   },
   "compliance_packet": {
     "auth_required": false,
-    "env_vars_or_credentials": []
+    "env_vars_or_credentials": [],
+    "evidence_source": "deep-source-audit.json"
   },
   "docs_steward_surfaces": [
     "README",
@@ -167,13 +188,31 @@
     "reports",
     "skill-research"
   ],
-  "docs_steward_status": "packet-generated",
+  "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "merge_into_existing",
-    "reason": "Existing repo catalog or registry surface already covers this source/domain."
+    "decision": "integrated_existing_surface",
+    "reason": "Existing repo catalog surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "required_before_promotion": "human trust-gate review"
+    "terminal_route": "integrated-existing-surface",
+    "required_before_live_execution": "explicit user-owned command and credential setup",
+    "scope": "historical-intake-research-only"
+  },
+  "intake_artifact_types_found": [
+    "CLI/tool",
+    "agent",
+    "library",
+    "skill"
+  ],
+  "intake_support_tier": "discovery-only",
+  "intake_docs_steward_status": "packet-generated",
+  "final_integration": {
+    "status": "installable-curated-external",
+    "mutation_applied": true,
+    "catalog_rows": 1,
+    "harness_assurance": "harness-install-assurance.json",
+    "non_skill_assurance": "non-skill-install-assurance.json",
+    "runtime_disposition": "integrated-non-executable-surface"
   }
 }

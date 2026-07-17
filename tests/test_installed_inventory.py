@@ -273,6 +273,35 @@ def test_query_harness_skills_falls_back_for_plugin_overlap_harnesses(tmp_path):
         assert entry.raw_agents == (label,)
 
 
+def test_query_harness_skills_fallback_includes_universal_root_for_codex_and_opencode(tmp_path):
+    universal_skill = tmp_path / ".agents" / "skills" / "universal-skill"
+    universal_skill.mkdir(parents=True)
+    (universal_skill / "SKILL.md").write_text(
+        "---\nname: universal-skill\ndescription: Universal fallback\n---\n"
+    )
+
+    def runner(cmd, **kwargs):
+        raise subprocess.TimeoutExpired(cmd, kwargs["timeout"])
+
+    results = query_harness_skills(
+        agent_ids=("codex", "opencode"),
+        runner=runner,
+        timeout_sec=3,
+        home=tmp_path,
+    )
+
+    by_agent = {result.agent_id: result for result in results}
+    for agent_id, label in (("codex", "Codex"), ("opencode", "OpenCode")):
+        result = by_agent[agent_id]
+        assert result.ok
+        assert result.error.startswith("Fallback local skill-root inventory after timeout:")
+        assert len(result.entries) == 1
+        entry = result.entries[0]
+        assert entry.name == "universal-skill"
+        assert entry.path == str(universal_skill)
+        assert entry.raw_agents == (label,)
+
+
 def test_run_harness_command_captures_large_stdout():
     script = (
         "import json; "
@@ -419,6 +448,29 @@ def test_merge_local_skill_roots_into_query_adds_internal_skills(tmp_path):
     merged = _merge_local_skill_roots_into_query(query, home=home)
     names = {entry.name for entry in merged.entries}
     assert "skill-registry-lock" in names
+
+
+@pytest.mark.parametrize(("agent_id", "label"), [("gemini-cli", "Gemini CLI"), ("github-copilot", "GitHub Copilot")])
+def test_merge_local_skill_roots_scans_universal_agents_root_for_cli_shared_harnesses(
+    tmp_path,
+    agent_id: str,
+    label: str,
+) -> None:
+    home = tmp_path / "home"
+    skill_dir = home / ".agents" / "skills" / "skill-registry-lock"
+    skill_dir.mkdir(parents=True)
+    (skill_dir / "SKILL.md").write_text(
+        "---\nname: skill-registry-lock\ndescription: Internal scaffold\n---\n\n# Skill Registry Lock\n",
+        encoding="utf-8",
+    )
+
+    query = HarnessQueryResult(agent_id=agent_id, ok=True, entries=())
+    merged = _merge_local_skill_roots_into_query(query, home=home)
+    (entry,) = [item for item in merged.entries if item.name == "skill-registry-lock"]
+
+    assert entry.queried_agent == agent_id
+    assert entry.path == str(skill_dir)
+    assert entry.raw_agents == (label,)
 
 
 def test_repo_skill_exposure_owner_prefers_opencode_direct_repo_path(tmp_path):

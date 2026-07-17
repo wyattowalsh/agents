@@ -2,7 +2,7 @@
 name: mcp-capability-mapper
 description: Map MCP server tools to harness registry entries and maintainer docs
   surfaces.
-model: inherit
+model: cursor-grok-4.5-high
 readonly: true
 ---
 

@@ -1,5 +1,7 @@
 {
-  "skills": ["nerdbot"],
+  "skills": [
+    "nerdbot"
+  ],
   "query": "/nerdbot improve ./knowledge-base add DeepWiki-style wiki planning, GraphRAG global retrieval, STORM outlines, stale-claim detection, and diagram exports",
   "files": [
     "knowledge-base/config/wiki-plan.json",
@@ -9,11 +11,11 @@
     "knowledge-base/indexes/generated/graph-report.md"
   ],
   "expected_behavior": [
-    "Agent loads references/advanced-wiki-logics.md before planning SOTA LLM-wiki behavior",
-    "Agent maps DeepWiki, GraphRAG, STORM, stale-claim, and diagram requests into Nerdbot raw/wiki/indexes/config/activity surfaces",
-    "Agent keeps graph/global retrieval and diagrams as read-only or rebuildable derived outputs before any wiki promotion",
-    "Agent treats cited source IDs as leads requiring source-map or raw/canonical verification rather than proof",
-    "Agent queues stale, contradictory, unsupported, duplicate-entity, or diagram-validation issues for review instead of rewriting canonical wiki pages directly",
-    "Agent does not vendor external wiki/RAG projects or add required cloud/vector dependencies to the baseline workflow"
+    "Loads references/advanced-wiki-logics.md before planning SOTA LLM-wiki behavior.",
+    "Maps DeepWiki, GraphRAG, STORM, stale-claim, and diagram requests into Nerdbot raw/wiki/indexes/config/activity surfaces.",
+    "Keeps graph/global retrieval and diagrams as read-only or rebuildable derived outputs before any wiki promotion.",
+    "Treats cited source IDs as leads requiring source-map or raw/canonical verification rather than proof.",
+    "Queues stale, contradictory, unsupported, duplicate-entity, or diagram-validation issues for review instead of rewriting canonical wiki pages directly.",
+    "Does not vendor external wiki/RAG projects or add required cloud/vector dependencies to the baseline workflow."
   ]
 }

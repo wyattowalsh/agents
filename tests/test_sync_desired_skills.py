@@ -206,13 +206,47 @@ npx skills add owner/repo --skill syncable-skill -y -g -a codex
     assert {entry.name for entry in desired} == {"syncable-skill"}
 
 
+def test_sync_apply_blocks_floating_install_now_without_pin(monkeypatch):
+    curated = parse_external_skill_entries(
+        """
+## Install Now After Trust Gate
+
+```bash
+npx skills add vercel-labs/agent-skills --skill floating-skill -y -g -a codex
+```
+"""
+    )[0]
+    desired_row = external_entry_to_inventory_row(curated)
+
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (desired_row,))
+
+    dry = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
+    assert dry.exit_code == 0
+    assert "pin-blocked (1)" in dry.output
+    assert "floating-skill" in dry.output
+
+    apply = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply"])
+    assert apply.exit_code == 1
+    assert "--accept-floating" in apply.output
+
+    monkeypatch.setattr(
+        "subprocess.run",
+        lambda *args, **kwargs: subprocess.CompletedProcess(args=args[0], returncode=0),
+    )
+    accepted = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply", "--accept-floating"])
+    assert accepted.exit_code == 0
+
+
 def test_sync_reports_uninstalled_install_now_as_missing(monkeypatch):
     curated = parse_external_skill_entries(
         """
 ## Install Now After Trust Gate
 
 ```bash
-npx skills add vercel-labs/agent-skills --skill missing-curated -y -g -a codex
+npx skills add vercel-labs/agent-skills@abc123 --skill missing-curated -y -g -a codex
 ```
 """
     )[0]
@@ -228,7 +262,10 @@ npx skills add vercel-labs/agent-skills --skill missing-curated -y -g -a codex
     assert result.exit_code == 0
     assert "missing (1)" in result.output
     assert "missing-curated [verified-curated-external]" in result.output
-    assert "npx skills add vercel-labs/agent-skills --skill missing-curated -y -g -a codex" in result.output
+    assert (
+        "npx skills add vercel-labs/agent-skills@abc123 --skill missing-curated -y -g -a codex"
+        in result.output
+    )
 
 
 def test_sync_preserves_pinned_multi_skill_bundle_command(monkeypatch):
@@ -303,7 +340,7 @@ def test_sync_grok_desired_install_now_uses_claude_code_adapter(monkeypatch):
 ## Install Now After Trust Gate
 
 ```bash
-npx skills add vercel-labs/agent-skills --skill grok-curated -y -g -a grok
+npx skills add vercel-labs/agent-skills@abc123 --skill grok-curated -y -g -a grok
 ```
 """
     )[0]
@@ -330,7 +367,7 @@ npx skills add vercel-labs/agent-skills --skill grok-curated -y -g -a grok
             "npx",
             "skills",
             "add",
-            "vercel-labs/agent-skills",
+            "vercel-labs/agent-skills@abc123",
             "--skill",
             "grok-curated",
             "-y",
@@ -681,7 +718,13 @@ def test_sync_apply_partial_failure_json_includes_apply_failures(monkeypatch):
 
     def mock_run(cmd, **kwargs):
         calls.append(cmd)
-        return subprocess.CompletedProcess(cmd, 1 if len(calls) == 1 else 0)
+        assert kwargs == {"capture_output": True, "text": True}
+        return subprocess.CompletedProcess(
+            cmd,
+            1 if len(calls) == 1 else 0,
+            stdout="installer out",
+            stderr="installer err",
+        )
 
     monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
     monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
@@ -699,6 +742,8 @@ def test_sync_apply_partial_failure_json_includes_apply_failures(monkeypatch):
     assert payload["mode"] == "apply"
     assert len(payload["apply_failures"]) == 1
     assert payload["apply_failures"][0]["returncode"] == 1
+    assert payload["apply_failures"][0]["stdout"] == "installer out"
+    assert payload["apply_failures"][0]["stderr"] == "installer err"
 
 
 def test_sync_apply_continue_on_error_runs_all_batches(monkeypatch):

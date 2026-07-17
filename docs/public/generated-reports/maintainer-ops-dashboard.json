@@ -23,7 +23,7 @@
         "latest"
       ],
       "path": "docs/public/generated-reports/docs-graph-snapshot.json",
-      "summary": "1 snapshots"
+      "summary": "10 snapshots"
     },
     "docs-link-check": {
       "keys": [
@@ -76,7 +76,7 @@
         "total_pages"
       ],
       "path": "docs/public/generated-reports/site-graph-insights.json",
-      "summary": "27 orphans"
+      "summary": "0 orphans"
     }
   }
 }

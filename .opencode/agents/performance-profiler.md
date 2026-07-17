@@ -7,10 +7,7 @@ temperature: 0.1
 color: secondary
 permission:
   edit: deny
-  bash:
-    '*': ask
-    git diff*: allow
-    rg *: allow
+  bash: deny
   webfetch: ask
 ---
 
@@ -21,7 +18,7 @@ Analyze performance bottlenecks and recommend the highest-leverage fixes.
 
 ## Hard Boundary
 
-Read-only unless the user explicitly asks for implementation.
+Read-only unless the user explicitly asks for implementation. Do not use shell to mutate the tree; recommend measured fixes for a write-capable agent to apply.
 
 ## Workflow
 

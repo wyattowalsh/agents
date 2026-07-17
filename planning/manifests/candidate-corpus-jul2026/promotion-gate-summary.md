@@ -1,11 +1,15 @@
-# Candidate Corpus Promotion Gate Summary
+# Candidate Corpus Integration Gate Summary
 
 - Unique targets evaluated: 289
-- Covered by existing installable catalog rows: 120
+- Integrated targets: 289
+- Unintegrated targets: 0
+- Integration classifications: {'inspection-existing': 6, 'installable-existing': 121, 'integrated-quarantine-reference': 4, 'integrated-reference': 158}
+- Trust-cleared installable targets: 121
+- Integrated quarantine references: 4
+- Active install blocks: 4
 - Ready for repo promotion: 0
 - Ready for live install: 0
-- Blocked until trust gates: 169
 - Live install commands emitted: 0
 
-Existing installable catalog coverage is credited without emitting new live install commands.
-The remaining packet files are promotion work queues, not proof of completed adaptation or installation.
+Every normalized source has a stable catalog integration; integration classification is independent from trust-cleared installability.
+Quarantine references remain non-installable with active hard blocks.

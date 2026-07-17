@@ -2,7 +2,7 @@
 name: skill-author
 description: Read-only advisor for skill authoring, audits, and eval planning. Does
   not edit skill files.
-model: inherit
+model: cursor-grok-4.5-high
 readonly: true
 ---
 

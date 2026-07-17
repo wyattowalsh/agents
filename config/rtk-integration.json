@@ -162,6 +162,14 @@
       "expected_show_any": [],
       "notes": "MCP-only harness; no shell hook surface for RTK."
     },
+    "lm-studio": {
+      "tier": "E",
+      "mode": "not-applicable",
+      "init": [],
+      "show": [],
+      "expected_show_any": [],
+      "notes": "MCP-only desktop harness; no shell hook surface for RTK."
+    },
     "chatgpt": {
       "tier": "E",
       "mode": "not-applicable",

@@ -2,7 +2,7 @@
 name: performance-profiler
 description: Investigate performance bottlenecks and recommend the highest-leverage
   fixes.
-model: inherit
+model: cursor-grok-4.5-high
 readonly: true
 ---
 
@@ -14,7 +14,7 @@ Analyze performance bottlenecks and recommend the highest-leverage fixes.
 
 ## Hard Boundary
 
-Read-only unless the user explicitly asks for implementation.
+Read-only unless the user explicitly asks for implementation. Do not use shell to mutate the tree; recommend measured fixes for a write-capable agent to apply.
 
 ## Workflow
 

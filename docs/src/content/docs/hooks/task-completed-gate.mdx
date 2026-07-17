@@ -5,16 +5,16 @@ page_kind: "hook"
 source_kind: "registry"
 asset_id: "task-completed-gate"
 composed: true
-composed_at: "2026-06-29"
-composed_by: "compose-hooks-fleet-g3b-g4"
+composed_at: "2026-07-10"
+composed_by: "regenerate-hook-docs-rv-006"
 docs_density: standard
 ---
 
-{/* HAND-MAINTAINED */}
+{/* GENERATED from config/hook-registry.json — do not hand-edit */}
 
-import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-<Badge text="hook" variant="note" /> <Badge text="Stop" variant="caution" /> <Badge text="claude-code" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+<Badge text="Stop" variant="caution" /> <Badge text="enforce" variant="tip" /> <Badge text="claude-code" variant="default" />
 
 > Block task completion when modified files have syntax errors, incomplete markers, or failing tests.
 
@@ -23,25 +23,25 @@ import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components'
 | Field | Value |
 |-------|-------|
 | id | `task-completed-gate` |
-| mode | `enforce` |
 | logical_event | `Stop` |
+| matcher | — |
 | command | `{repo_root}/hooks/task-completed-gate.sh` |
 | timeout | `120` |
-| harnesses | `["claude-code"]` |
-
-<Aside type="note">
-Claude Code Stop gate implemented as a direct shell handler (`hooks/task-completed-gate.sh`). Wired through `.claude/settings.json`; blocks completion when modified files have syntax errors, incomplete markers, or failing tests.
-</Aside>
+| mode | `enforce` |
+| harnesses | `[
+  "claude-code"
+]` |
 
 <details class="source-disclosure">
-<summary>Full hook config</summary>
+<summary>Full hook config (registry SSOT)</summary>
 
 ```json title="config/hook-registry.json (entry)"
 {
   "id": "task-completed-gate",
   "description": "Block task completion when modified files have syntax errors, incomplete markers, or failing tests.",
-  "mode": "enforce",
   "logical_event": "Stop",
+  "logical_policy": "task-completed-gate",
+  "mode": "enforce",
   "command": "{repo_root}/hooks/task-completed-gate.sh",
   "timeout": 120,
   "harnesses": [
@@ -50,15 +50,16 @@ Claude Code Stop gate implemented as a direct shell handler (`hooks/task-complet
 }
 ```
 
-Command: `.../hooks/task-completed-gate.sh`
+Command placeholders:
+
+- `{hook_runner}` resolves to the fleet dispatcher (`hooks/wagents-hook.py` or harness projection).
+- `{harness}` is the target harness id at render/install time.
+
 </details>
 
-## Resources
+## Related
 
 <CardGrid>
-  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
-  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="Hooks hub" href="/hooks/" description="Registry overview and harness matrix." />
+  <LinkCard title="CLI hooks" href="/cli/" description="`wagents hooks list|validate`." />
 </CardGrid>
-
----
-[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

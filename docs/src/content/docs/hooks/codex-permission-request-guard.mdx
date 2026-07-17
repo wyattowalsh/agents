@@ -5,16 +5,16 @@ page_kind: "hook"
 source_kind: "registry"
 asset_id: "codex-permission-request-guard"
 composed: true
-composed_at: "2026-06-16"
-composed_by: "compose-hooks-wave-1"
+composed_at: "2026-07-10"
+composed_by: "regenerate-hook-docs-rv-006"
 docs_density: standard
 ---
 
-{/* HAND-MAINTAINED */}
+{/* GENERATED from config/hook-registry.json — do not hand-edit */}
 
-import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-<Badge text="hook" variant="note" /> <Badge text="PermissionRequest" variant="caution" /> <Badge text="codex" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+<Badge text="PermissionRequest" variant="caution" /> <Badge text="enforce" variant="tip" /> <Badge text="codex" variant="default" />
 
 > Deny high-risk Codex permission requests and otherwise preserve the normal approval flow.
 
@@ -23,28 +23,28 @@ import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components'
 | Field | Value |
 |-------|-------|
 | id | `codex-permission-request-guard` |
-| status_message | `Checking approval request safety` |
-| mode | `enforce` |
 | logical_event | `PermissionRequest` |
-| command | `python3 {repo_root}/hooks/wagents-hook.py codex-permission-request-guard --harness {harness}` |
+| matcher | — |
+| command | `{hook_runner} codex-permission-request-guard --harness {harness}` |
 | timeout | `5` |
-| harnesses | `["codex"]` |
-
-<Aside type="note">
-Policy `_policy_codex_permission_request_guard` denies on destructive shell or protected path signals; otherwise lets normal flow continue.
-</Aside>
+| mode | `enforce` |
+| harnesses | `[
+  "codex"
+]` |
+| status_message | Checking approval request safety |
 
 <details class="source-disclosure">
-<summary>Full hook config + command reference</summary>
+<summary>Full hook config (registry SSOT)</summary>
 
 ```json title="config/hook-registry.json (entry)"
 {
   "id": "codex-permission-request-guard",
   "description": "Deny high-risk Codex permission requests and otherwise preserve the normal approval flow.",
-  "status_message": "Checking approval request safety",
-  "mode": "enforce",
   "logical_event": "PermissionRequest",
-  "command": "python3 {repo_root}/hooks/wagents-hook.py codex-permission-request-guard --harness {harness}",
+  "logical_policy": "codex-permission-request-guard",
+  "mode": "enforce",
+  "status_message": "Checking approval request safety",
+  "command": "{hook_runner} codex-permission-request-guard --harness {harness}",
   "timeout": 5,
   "harnesses": [
     "codex"
@@ -52,23 +52,16 @@ Policy `_policy_codex_permission_request_guard` denies on destructive shell or p
 }
 ```
 
-```python title="hooks/wagents-hook.py (policy)"
-def _policy_codex_permission_request_guard(payload: NormalizedPayload) -> int:
-    reason = _destructive_shell_reason(payload.command) or _protected_payload_reason(payload)
-    if reason:
-        return _codex_permission_deny(payload, reason, "codex-permission-request-guard")
-    return 0
-```
+Command placeholders:
 
-Command: `python3 .../wagents-hook.py codex-permission-request-guard --harness codex`
+- `{hook_runner}` resolves to the fleet dispatcher (`hooks/wagents-hook.py` or harness projection).
+- `{harness}` is the target harness id at render/install time.
+
 </details>
 
-## Resources
+## Related
 
 <CardGrid>
-  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
-  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="Hooks hub" href="/hooks/" description="Registry overview and harness matrix." />
+  <LinkCard title="CLI hooks" href="/cli/" description="`wagents hooks list|validate`." />
 </CardGrid>
-
----
-[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

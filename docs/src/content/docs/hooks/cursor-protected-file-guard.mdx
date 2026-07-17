@@ -5,16 +5,16 @@ page_kind: "hook"
 source_kind: "registry"
 asset_id: "cursor-protected-file-guard"
 composed: true
-composed_at: "2026-06-23"
-composed_by: "compose-hooks-cursor-wave-1"
+composed_at: "2026-07-10"
+composed_by: "regenerate-hook-docs-rv-006"
 docs_density: standard
 ---
 
-{/* HAND-MAINTAINED */}
+{/* GENERATED from config/hook-registry.json — do not hand-edit */}
 
-import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-<Badge text="hook" variant="note" /> <Badge text="PreToolUse" variant="caution" /> <Badge text="cursor" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+<Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> <Badge text="cursor" variant="default" />
 
 > Block protected files, secret-bearing paths, git internals, traversal, and direct lockfile edits in Cursor.
 
@@ -23,54 +23,50 @@ import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components'
 | Field | Value |
 |-------|-------|
 | id | `cursor-protected-file-guard` |
-| status_message | `Checking protected paths` |
-| mode | `enforce` |
 | logical_event | `PreToolUse` |
-| matcher | `Write\|Edit\|MultiEdit\|apply_patch\|edit\|create\|replace\|write_file\|Bash\|bash\|run_shell_command` |
-| command | `python3 {repo_root}/hooks/wagents-hook.py cursor-protected-file-guard --harness {harness}` |
+| matcher | `Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command` |
+| command | `{hook_runner} cursor-protected-file-guard --harness {harness}` |
 | timeout | `5` |
-| harnesses | `["cursor"]` |
-
-<Aside type="note">
-Dispatcher policy `_policy_codex_protected_file_guard` + shared `_protected_payload_reason` / `_path_block_reason` (covers secrets, .git, traversal, lockfiles).
-</Aside>
+| mode | `enforce` |
+| harnesses | `[
+  "cursor"
+]` |
+| bundle_group | `fleet-pre-tool-enforce` |
+| bundle_mode | `enforce-chain` |
+| status_message | Checking protected paths |
 
 <details class="source-disclosure">
-<summary>Full hook config + command reference</summary>
+<summary>Full hook config (registry SSOT)</summary>
 
 ```json title="config/hook-registry.json (entry)"
 {
   "id": "cursor-protected-file-guard",
   "description": "Block protected files, secret-bearing paths, git internals, traversal, and direct lockfile edits in Cursor.",
-  "status_message": "Checking protected paths",
-  "mode": "enforce",
   "logical_event": "PreToolUse",
+  "logical_policy": "cursor-protected-file-guard",
+  "mode": "enforce",
+  "status_message": "Checking protected paths",
   "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
-  "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-protected-file-guard --harness {harness}",
+  "command": "{hook_runner} cursor-protected-file-guard --harness {harness}",
   "timeout": 5,
+  "bundle_group": "fleet-pre-tool-enforce",
+  "bundle_mode": "enforce-chain",
   "harnesses": [
     "cursor"
   ]
 }
 ```
 
-```python title="hooks/wagents-hook.py (policy excerpt)"
-def _policy_codex_protected_file_guard(payload: NormalizedPayload) -> int:
-    reason = _protected_payload_reason(payload)
-    if reason:
-        return _deny(payload, reason, policy_id="cursor-protected-file-guard")
-    return 0
-```
+Command placeholders:
 
-Command (Cursor): `python3 {repo_root}/hooks/wagents-hook.py cursor-protected-file-guard --harness cursor`
+- `{hook_runner}` resolves to the fleet dispatcher (`hooks/wagents-hook.py` or harness projection).
+- `{harness}` is the target harness id at render/install time.
+
 </details>
 
-## Resources
+## Related
 
 <CardGrid>
-  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
-  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="Hooks hub" href="/hooks/" description="Registry overview and harness matrix." />
+  <LinkCard title="CLI hooks" href="/cli/" description="`wagents hooks list|validate`." />
 </CardGrid>
-
----
-[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

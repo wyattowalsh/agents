@@ -1,0 +1,21 @@
+# Affected surfaces
+
+- `wagents/platforms/lm_studio.py` (new)
+- `wagents/platforms/__init__.py`
+- `scripts/sync_agent_stack.py`
+- `scripts/mcphub/wrappers/lm-studio` (new)
+- `config/harness-surface-registry.json`
+- `config/mcp-registry.json`
+- `config/plugin-extension-registry.json`
+- `config/sync-manifest.json`
+- `config/rtk-integration.json`
+- `config/image-input-optimizer.json`
+- `planning/manifests/harness-fixture-support.json`
+- `skills/harness-master/scripts/discovery/classify_intent.py`
+- `skills/harness-master/scripts/discover_surfaces.py`
+- `skills/harness-master/SKILL.md`
+- `docs/src/authoring/skills/harness-master.mdx`
+- `AGENTS.md`
+- `wagents/cli.py`
+- `platforms/lm-studio/README.md` (new)
+- `tests/test_lm_studio_platform.py` (new)

@@ -342,6 +342,23 @@
 			"mode": "merged"
 		},
 		{
+			"path": "~/.lmstudio/mcp.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.lmstudio/config-presets",
+			"mode": "generated"
+		},
+		{
+			"path": "~/.lmstudio/skills",
+			"mode": "symlinked-entries"
+		},
+		{
+			"path": "${REPO_ROOT}/instructions/lm-studio-global.md",
+			"mode": "canonical"
+		},
+
+		{
 			"path": "~/.codex/skills",
 			"mode": "symlinked-entries"
 		},

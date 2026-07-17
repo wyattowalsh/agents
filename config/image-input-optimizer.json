@@ -159,6 +159,14 @@
       "repo_surfaces": ["config/mcp-registry.json", "instructions/global.md"]
     },
     {
+      "id": "lm-studio",
+      "tier": "instruction-only",
+      "enforcement": "mcp-only-no-pre-consumption-hook",
+      "owner": "instructions",
+      "assurance": "Instruction-only guidance; MCP-only surface has no repo-managed pre-consumption image hook.",
+      "repo_surfaces": ["config/mcp-registry.json", "wagents/platforms/lm_studio.py", "instructions/global.md"]
+    },
+    {
       "id": "crush",
       "tier": "instruction-only",
       "enforcement": "no-proven-local-pre-consumption-hook",

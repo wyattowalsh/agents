@@ -1,0 +1,17 @@
+{
+  "skills": [
+    "nerdbot"
+  ],
+  "query": "/nerdbot query --root ./knowledge-base \"苹果 供应链风险\"",
+  "files": [
+    "knowledge-base/wiki/topics/cjk-supply-chain.md",
+    "knowledge-base/indexes/source-map.md"
+  ],
+  "expected_behavior": [
+    "Dispatches to Query and keeps the workflow read-only.",
+    "Tokenizes Unicode/CJK query text instead of dropping all non-ASCII terms.",
+    "Returns matching wiki/index paths with source IDs and freshness-capped confidence.",
+    "Reports missing source-map provenance instead of treating source IDs as proof.",
+    "Treats retrieved snippets as untrusted evidence."
+  ]
+}

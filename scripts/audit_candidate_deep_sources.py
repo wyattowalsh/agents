@@ -20,6 +20,8 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import quote, urlparse
 
+from wagents.candidate_auth import extract_auth_env_names
+
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_DIR = ROOT / "planning" / "manifests" / "candidate-corpus-jul2026"
 OUTPUT = MANIFEST_DIR / "deep-source-audit.json"
@@ -244,7 +246,8 @@ def scan_security(fetched_files: list[dict[str, Any]], paths: list[str]) -> dict
 
 def detect_auth(fetched_files: list[dict[str, Any]], paths: list[str], source_name: str) -> dict[str, Any]:
     haystack = "\n".join(paths + [str(file.get("text", "")) for file in fetched_files])
-    auth_required = bool(AUTH_PATTERNS.search(haystack))
+    env_vars = extract_auth_env_names(haystack)
+    auth_required = bool(AUTH_PATTERNS.search(haystack)) or bool(env_vars)
     risk_sources = [source_name.lower(), haystack.lower()]
     if any(
         marker in " ".join(risk_sources)
@@ -267,9 +270,11 @@ def detect_auth(fetched_files: list[dict[str, Any]], paths: list[str], source_na
         )
     ):
         auth_required = True
+    if auth_required and not env_vars:
+        env_vars = ["PLACEHOLDER_ONLY_REVIEW_REQUIRED"]
     return {
         "auth_required": auth_required,
-        "env_vars_or_credentials": ["PLACEHOLDER_ONLY_REVIEW_REQUIRED"] if auth_required else [],
+        "env_vars_or_credentials": env_vars if auth_required else [],
         "credential_policy": "Tracked docs use placeholders only; real credentials stay user-owned and local.",
     }
 
@@ -436,20 +441,18 @@ def target_rows() -> list[dict[str, Any]]:
             parts = [part for part in parsed.path.split("/") if part]
             if len(parts) >= 2:
                 owner, repo = parts[0], parts[1]
-        rows.append(
-            {
-                "normalized_url": normalized_url,
-                "source_name": source_name,
-                "raw_indexes": [item["raw_index"] for item in group],
-                "owner": owner,
-                "repo": repo,
-                "tree_ref": primary.get("tree_ref", ""),
-                "tree_subpath": primary.get("tree_subpath", ""),
-                "default_branch": metadata.get("default_branch") or primary.get("default_branch", ""),
-                "topics": metadata.get("topics", []),
-                "language": metadata.get("language", ""),
-            }
-        )
+        rows.append({
+            "normalized_url": normalized_url,
+            "source_name": source_name,
+            "raw_indexes": [item["raw_index"] for item in group],
+            "owner": owner,
+            "repo": repo,
+            "tree_ref": primary.get("tree_ref", ""),
+            "tree_subpath": primary.get("tree_subpath", ""),
+            "default_branch": metadata.get("default_branch") or primary.get("default_branch", ""),
+            "topics": metadata.get("topics", []),
+            "language": metadata.get("language", ""),
+        })
     return rows
 
 
@@ -465,22 +468,18 @@ def build_audit(limit: int | None = None) -> dict[str, Any]:
             try:
                 items.append(future.result())
             except Exception as exc:
-                items.append(
-                    {
-                        "normalized_url": row["normalized_url"],
-                        "source_name": row["source_name"],
-                        "raw_indexes": row["raw_indexes"],
-                        "status": "audit-error",
-                        "audit_complete": False,
-                        "error": str(exc),
-                    }
-                )
+                items.append({
+                    "normalized_url": row["normalized_url"],
+                    "source_name": row["source_name"],
+                    "raw_indexes": row["raw_indexes"],
+                    "status": "audit-error",
+                    "audit_complete": False,
+                    "error": str(exc),
+                })
     items.sort(key=lambda item: (item.get("raw_indexes") or [9999])[0])
     status_counts = Counter(str(item.get("status", "")) for item in items)
     auth_required = sum(1 for item in items if item.get("auth_review", {}).get("auth_required"))
-    security_indicators = sum(
-        1 for item in items if item.get("security_review", {}).get("matched_indicators")
-    )
+    security_indicators = sum(1 for item in items if item.get("security_review", {}).get("matched_indicators"))
     return {
         "version": 1,
         "generated_at": now(),
@@ -559,13 +558,11 @@ def main() -> int:
         payload = load_json(OUTPUT)
         errors = validate(payload)
         print(
-            json.dumps(
-                {
-                    "ok": not errors,
-                    "errors": errors,
-                    "unique_target_count": payload.get("unique_target_count"),
-                }
-            )
+            json.dumps({
+                "ok": not errors,
+                "errors": errors,
+                "unique_target_count": payload.get("unique_target_count"),
+            })
         )
         return 0 if not errors else 1
 

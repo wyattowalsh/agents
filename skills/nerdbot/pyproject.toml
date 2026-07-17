@@ -1,6 +1,6 @@
 [project]
 name = "nerdbot"
-version = "0.1.0"
+version = "0.2.0"
 description = "Local-first Obsidian-compatible knowledge-base toolkit"
 requires-python = ">=3.11"
 license = "MIT"

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T16:14:57.524700+00:00",
+  "generated_at": "2026-07-16T02:45:28.693626+00:00",
   "raw_lane_id_format": "U###",
   "unique_target_lane_id_format": "N###",
   "required_packet_fields": [
@@ -24,7 +24,7 @@
     "live_install_eligible",
     "docs_steward_surfaces",
     "tests_or_checks_run",
-    "blockers",
+    "terminal_route_requirements",
     "reviewer_notes"
   ],
   "raw_leaf_check_suffixes": [
@@ -65,9 +65,9 @@
     "plugin",
     "agent",
     "instruction",
-    "docs-reference",
+    "docs-source",
     "merged",
     "blocked"
   ],
-  "live_install_rule": "Live installs remain disabled until source-list, license, security, attribution, auth, and docs-steward gates pass and the exact command is recorded."
+  "live_install_rule": "Live installs are emitted only for reviewed installable catalog overrides with exact commands. Terminal native-surface and hard-block rows do not emit installer commands."
 }

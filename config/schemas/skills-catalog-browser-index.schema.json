@@ -38,7 +38,7 @@
           "pattern": "^/skills/catalog/external/[^/]+/$"
         },
         "lane": {
-          "enum": ["install-now", "inspect", "avoid"]
+          "enum": ["install-now", "inspect", "avoid", "integrated", "hard-blocked"]
         },
         "sourceType": { "type": "string" },
         "tagFacetIds": { "type": "string" },

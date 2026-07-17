@@ -25,7 +25,7 @@
       "color": "primary",
       "permission": {
         "edit": "deny",
-        "bash": "ask",
+        "bash": "deny",
         "webfetch": "ask",
         "task": {
           "*": "deny",
@@ -111,11 +111,7 @@
       "color": "secondary",
       "permission": {
         "edit": "deny",
-        "bash": {
-          "*": "ask",
-          "git diff*": "allow",
-          "rg *": "allow"
-        },
+        "bash": "deny",
         "webfetch": "ask"
       }
     },

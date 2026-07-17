@@ -11,6 +11,7 @@ The current package keeps the original helper scripts available while adding an 
 - `schema/` and `config/` store contracts and operational settings.
 - `indexes/` stores coverage maps, source maps, inventories, and navigation.
 - `activity/log.md` records every mutating batch and is append-only.
+- `activity/operations.jsonl` is the canonical operation record; the human log is an idempotent, repairable projection keyed by operation ID.
 - Query and audit flows are read-only by default.
 
 ## CLI
@@ -64,7 +65,7 @@ Nerdbot keeps advanced dependencies optional so the safe baseline remains fast a
 
 - `nerdbot.sources` defines source records, deterministic source IDs, checksums, raw paths, outside-root copy gates, and pointer-stub text.
 - `nerdbot.evidence` defines evidence-ledger claims, review-queue items, freshness classes, review statuses, and confidence caps.
-- `nerdbot.operations` defines append-friendly, unique operation journal entries for replayable mutating work.
+- `nerdbot.operations` serializes project writers with an OS file lock, commits unique canonical JSONL entries, and idempotently repairs matching human activity-log projections after interruptions.
 - `nerdbot.retrieval` implements dependency-light lexical search and SQLite FTS5/BM25 search across `wiki/` and `indexes/`.
 - `nerdbot.graph` extracts rebuildable graph edges from Markdown links, Obsidian wikilinks, embeds, aliases, and source citations, then renders generated reports with untrusted targets quoted as Markdown code.
 - `nerdbot.watch`, `nerdbot.replay`, and `nerdbot.research` provide non-mutating policy helpers for watch classification, dry-run replay, and autoresearcher save-back gates.

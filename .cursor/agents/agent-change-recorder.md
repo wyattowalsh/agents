@@ -2,7 +2,7 @@
 name: agent-change-recorder
 description: Record agent definition changes with validation evidence for maintainer
   audit trails.
-model: inherit
+model: cursor-grok-4.5-high
 readonly: true
 ---
 

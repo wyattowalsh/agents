@@ -25,6 +25,7 @@ from wagents.platforms.grok import (
     apply_model_defaults,
     assert_no_grok_config_drops,
     blend_owned_table,
+    grok_configs_semantically_equivalent,
     is_grok_blend_header,
     is_grok_owned_header,
     missing_plannotator_core_skills,
@@ -56,8 +57,7 @@ def _fleet_registry() -> dict[str, object]:
                 "matcher": "Bash|bash",
                 "mode": "enforce",
                 "command": (
-                    "python3 {repo_root}/hooks/wagents-hook.py "
-                    "codex-destructive-shell-guard --harness {harness}"
+                    "python3 {repo_root}/hooks/wagents-hook.py codex-destructive-shell-guard --harness {harness}"
                 ),
                 "timeout": 5,
                 "harnesses": ["codex"],
@@ -93,13 +93,11 @@ def test_grok_build_subprocess_destructive_shell_emits_block_json():
     runner = Path(__file__).resolve().parents[1] / "hooks" / "run-wagents-hook"
     completed = subprocess.run(
         [str(runner), "cursor-destructive-shell-guard", "--harness", "grok-build"],
-        input=json.dumps(
-            {
-                "hook_event_name": "PreToolUse",
-                "tool_name": "bash",
-                "tool_input": {"command": "rm -rf /"},
-            }
-        ),
+        input=json.dumps({
+            "hook_event_name": "PreToolUse",
+            "tool_name": "bash",
+            "tool_input": {"command": "rm -rf /"},
+        }),
         text=True,
         capture_output=True,
         cwd=Path(__file__).resolve().parents[1],
@@ -153,9 +151,8 @@ def test_grok_plannotator_policy_unified_source_and_legacy_parity():
     # The default policy source is the unified harness-neutral file.
     assert PLANNOTATOR_HOOKS_POLICY_PATH.name == "plannotator-hooks.policy.json"
     # The legacy grok-specific file is a byte-identical re-export (no drift).
-    assert (
-        PLANNOTATOR_HOOKS_POLICY_LEGACY_PATH.read_text(encoding="utf-8")
-        == PLANNOTATOR_HOOKS_POLICY_PATH.read_text(encoding="utf-8")
+    assert PLANNOTATOR_HOOKS_POLICY_LEGACY_PATH.read_text(encoding="utf-8") == PLANNOTATOR_HOOKS_POLICY_PATH.read_text(
+        encoding="utf-8"
     )
 
 
@@ -301,6 +298,32 @@ def test_render_grok_config_home_blend_ui(tmp_path, monkeypatch):
     assert "yolo = true" in rendered
 
 
+def test_grok_config_semantic_equivalence_ignores_runtime_permission_and_toml_layout():
+    rendered = """\
+[ui]
+permission_mode = "always-approve"
+yolo = true
+
+[mcp_servers.demo]
+url = "http://127.0.0.1:46683/mcp/demo"
+headers = { Authorization = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+"""
+    runtime = """\
+[ui]
+yolo = true
+permission_mode = "ask"
+
+[mcp_servers.demo]
+url = "http://127.0.0.1:46683/mcp/demo"
+
+[mcp_servers.demo.headers]
+Authorization = "Bearer ${MCPHUB_BEARER_TOKEN}"
+"""
+
+    assert grok_configs_semantically_equivalent(runtime, rendered)
+    assert not grok_configs_semantically_equivalent(runtime.replace("/mcp/demo", "/mcp/other"), rendered)
+
+
 def test_apply_model_defaults_from_tooling_policy():
     body = '[models]\ndefault = "old"\n'
     policy = {"model_defaults": {"grok": {"default": "grok-composer-2.5-fast", "web_search": "grok-4.20-multi-agent"}}}
@@ -406,6 +429,10 @@ def test_sync_grok_plannotator_writes_home_hooks_and_shim(tmp_path, monkeypatch)
     assert destination.read_text(encoding="utf-8").startswith("{")
     assert hook_destination.exists()
     assert hook_destination.stat().st_mode & 0o111
+
+    check_ctx = SyncContext(apply=False)
+    sync_grok_plannotator(check_ctx)
+    assert check_ctx.changes == []
 
 
 def test_sync_home_skips_plannotator_when_disabled(tmp_path, monkeypatch):

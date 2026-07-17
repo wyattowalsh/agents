@@ -364,6 +364,27 @@
       "notes": [
         "Fixture-executable via test_grok_platform.py, sync_agent_stack grok slices, and grok rollback merge tests."
       ]
+    },
+    {
+      "harness_id": "lm-studio",
+      "owner_change": "agents-c04-lm-studio-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-executable",
+      "fixture_classes": [
+        "mcp-merge-fixture",
+        "preset-render-fixture",
+        "skills-symlink-fixture",
+        "path-resolution-fixture",
+        "rollback-fixture"
+      ],
+      "validation_commands": [
+        "uv run pytest tests/test_lm_studio_platform.py -q",
+        "uv run pytest tests/test_distribution_metadata.py -q -k harness",
+        "uv run python scripts/sync_agent_stack.py --targets home --platforms lm-studio --check",
+        "uv run wagents validate"
+      ],
+      "rollback_coverage": "present",
+      "promotion_blocker": "Promote to validated after live LM Studio UI smoke and longer-lived rollback evidence."
     }
   ]
 }

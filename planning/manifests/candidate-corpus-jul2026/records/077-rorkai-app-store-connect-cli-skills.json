@@ -8,24 +8,105 @@
   "latest_release_or_commit_date": "github-pushed-at:2026-07-06T08:35:16Z",
   "artifact_types_found": [
     "CLI/tool",
+    "agent",
     "skill"
   ],
-  "install_or_integration_decision": "merge_into_existing",
-  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
+  "install_or_integration_decision": "integrated_existing_surface",
+  "reason": "Existing repo catalog surface already covers this source/domain.",
   "auth_required": true,
   "env_vars_or_credentials": [
-    "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+    "ASC_",
+    "ASC_ADS_",
+    "ASC_ADS_ACCESS_TOKEN",
+    "ASC_ADS_CLIENT_ID",
+    "ASC_ADS_KEY_ID",
+    "ASC_ADS_ORG_ID",
+    "ASC_ADS_PRIVATE_KEY_PATH",
+    "ASC_ADS_TEAM_ID",
+    "ASC_APP_ID",
+    "ASC_ISSUER_ID",
+    "ASC_KEY_ID",
+    "ASC_MATCH_PASSWORD",
+    "ASC_PRIVATE_KEY",
+    "ASC_PRIVATE_KEY_B64",
+    "ASC_PRIVATE_KEY_PATH",
+    "ASC_TIMEOUT",
+    "ASC_TIMEOUT_SECONDS",
+    "ASC_UPLOAD_TIMEOUT",
+    "ASC_UPLOAD_TIMEOUT_SECONDS",
+    "MATCH_PASSWORD"
   ],
   "safety_notes": "Requires safety, compliance, credential, ToS, and anti-abuse boundaries.",
   "attribution_notes": "Preserve attribution to rorkai/app-store-connect-cli-skills; verify license before adapting content.",
-  "files_added": [],
-  "files_modified": [],
+  "files_added": [
+    "docs/src/authoring/skills/asc-app-create-ui.mdx",
+    "docs/src/authoring/skills/asc-apple-ads.mdx",
+    "docs/src/authoring/skills/asc-aso-audit.mdx",
+    "docs/src/authoring/skills/asc-build-lifecycle.mdx",
+    "docs/src/authoring/skills/asc-cli-usage.mdx",
+    "docs/src/authoring/skills/asc-crash-triage.mdx",
+    "docs/src/authoring/skills/asc-id-resolver.mdx",
+    "docs/src/authoring/skills/asc-localize-metadata.mdx",
+    "docs/src/authoring/skills/asc-metadata-sync.mdx",
+    "docs/src/authoring/skills/asc-notarization.mdx",
+    "docs/src/authoring/skills/asc-ppp-pricing.mdx",
+    "docs/src/authoring/skills/asc-release-flow.mdx",
+    "docs/src/authoring/skills/asc-revenuecat-catalog-sync.mdx",
+    "docs/src/authoring/skills/asc-screenshot-resize.mdx",
+    "docs/src/authoring/skills/asc-shots-pipeline.mdx",
+    "docs/src/authoring/skills/asc-signing-setup.mdx",
+    "docs/src/authoring/skills/asc-submission-health.mdx",
+    "docs/src/authoring/skills/asc-subscription-localization.mdx",
+    "docs/src/authoring/skills/asc-testflight-orchestration.mdx",
+    "docs/src/authoring/skills/asc-wall-submit.mdx",
+    "docs/src/authoring/skills/asc-whats-new-writer.mdx",
+    "docs/src/authoring/skills/asc-workflow.mdx",
+    "docs/src/authoring/skills/asc-xcode-build.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-app-create-ui.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-apple-ads.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-aso-audit.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-build-lifecycle.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-cli-usage.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-crash-triage.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-id-resolver.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-localize-metadata.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-metadata-sync.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-notarization.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-ppp-pricing.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-release-flow.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-revenuecat-catalog-sync.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-screenshot-resize.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-shots-pipeline.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-signing-setup.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-submission-health.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-subscription-localization.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-testflight-orchestration.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-wall-submit.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-whats-new-writer.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-workflow.mdx",
+    "docs/src/content/docs/skills/catalog/external/asc-xcode-build.mdx",
+    "planning/manifests/candidate-corpus-jul2026/records/077-rorkai-app-store-connect-cli-skills.json"
+  ],
+  "files_modified": [
+    "docs/public/generated-registries/skills-catalog-browser-index.json",
+    "docs/public/generated-registries/skills-catalog-index.json",
+    "planning/manifests/candidate-corpus-jul2026/all-records.json",
+    "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
+    "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
+    "planning/manifests/candidate-corpus-jul2026/harness-install-assurance.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-decisions.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-targets.json",
+    "planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json"
+  ],
   "tests_or_checks_run": [
     "git ls-remote --symref",
-    "gh api repos/{owner}/{repo}"
+    "gh api repos/rorkai/app-store-connect-cli-skills",
+    "uv run python scripts/audit_candidate_deep_sources.py --check",
+    "uv run python scripts/apply_candidate_corpus_promotions.py --check",
+    "uv run python scripts/promote_candidate_corpus.py --final-check"
   ],
   "skipped_reason": "",
-  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "reviewer_notes": "Deep source audit completed at ref main. Reviewed promotion overlay applied 23 catalog row(s) and verified 23 live-install evidence row(s).",
   "raw_index": 77,
   "normalized_index": "https://github.com/rorkai/app-store-connect-cli-skills",
   "duplicate_group": [],
@@ -36,16 +117,16 @@
   "risk_keywords": [
     "app-store-connect"
   ],
-  "support_tier": "discovery-only",
+  "support_tier": "curated-installable-final",
   "phase_status": {
     "source_capture": "completed",
-    "deep_research": "completed-public-metadata",
+    "deep_research": "completed-deep-source-audit",
     "overlap": "completed",
     "security": "completed-static",
     "license": "completed-static",
-    "compliance": "completed-static",
+    "compliance": "completed-deep-auth-reconciled",
     "docs_impact": "completed",
-    "decision": "completed"
+    "decision": "completed-overlay-reconciled"
   },
   "source_capture_packet": {
     "git_status": "ok",
@@ -62,7 +143,7 @@
     "html_url": "https://github.com/rorkai/app-store-connect-cli-skills",
     "default_branch": "main",
     "pushed_at": "2026-07-06T08:35:16Z",
-    "updated_at": "2026-07-06T18:48:39Z",
+    "updated_at": "2026-07-08T06:57:00Z",
     "license_spdx_id": "MIT",
     "license_name": "MIT License",
     "language": "",
@@ -96,11 +177,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -123,11 +204,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -182,8 +263,28 @@
   "compliance_packet": {
     "auth_required": true,
     "env_vars_or_credentials": [
-      "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
-    ]
+      "ASC_",
+      "ASC_ADS_",
+      "ASC_ADS_ACCESS_TOKEN",
+      "ASC_ADS_CLIENT_ID",
+      "ASC_ADS_KEY_ID",
+      "ASC_ADS_ORG_ID",
+      "ASC_ADS_PRIVATE_KEY_PATH",
+      "ASC_ADS_TEAM_ID",
+      "ASC_APP_ID",
+      "ASC_ISSUER_ID",
+      "ASC_KEY_ID",
+      "ASC_MATCH_PASSWORD",
+      "ASC_PRIVATE_KEY",
+      "ASC_PRIVATE_KEY_B64",
+      "ASC_PRIVATE_KEY_PATH",
+      "ASC_TIMEOUT",
+      "ASC_TIMEOUT_SECONDS",
+      "ASC_UPLOAD_TIMEOUT",
+      "ASC_UPLOAD_TIMEOUT_SECONDS",
+      "MATCH_PASSWORD"
+    ],
+    "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
   },
   "docs_steward_surfaces": [
     "README",
@@ -200,13 +301,30 @@
     "runbooks",
     "skill-research"
   ],
-  "docs_steward_status": "packet-generated",
+  "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "merge_into_existing",
-    "reason": "Existing repo catalog or registry surface already covers this source/domain."
+    "decision": "integrated_existing_surface",
+    "reason": "Existing repo catalog surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "required_before_promotion": "human trust-gate review"
+    "terminal_route": "integrated-existing-surface",
+    "required_before_live_execution": "explicit user-owned command and credential setup",
+    "scope": "historical-intake-research-only"
+  },
+  "intake_artifact_types_found": [
+    "CLI/tool",
+    "agent",
+    "skill"
+  ],
+  "intake_support_tier": "discovery-only",
+  "intake_docs_steward_status": "packet-generated",
+  "final_integration": {
+    "status": "installable-curated-external",
+    "mutation_applied": true,
+    "catalog_rows": 23,
+    "harness_assurance": "harness-install-assurance.json",
+    "non_skill_assurance": "non-skill-install-assurance.json",
+    "runtime_disposition": "installed-cli"
   }
 }

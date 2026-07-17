@@ -1,5 +1,7 @@
 {
-  "skills": ["nerdbot"],
+  "skills": [
+    "nerdbot"
+  ],
   "query": "/nerdbot enrich ./knowledge-base/wiki/topics/vendor-landscape.md using the new evidence in ./knowledge-base/raw/extracts/vendor-brief-2026.md",
   "files": [
     "knowledge-base/wiki/topics/vendor-landscape.md",
@@ -8,11 +10,11 @@
     "knowledge-base/indexes/coverage.md"
   ],
   "expected_behavior": [
-    "Agent dispatches to the Enrich workflow based on the explicit '/nerdbot enrich' invocation",
-    "Agent loads references/kb-operations.md and references/page-templates.md before shaping the next wiki edit",
-    "Agent synthesizes only from raw evidence or declared canonical material instead of freewriting unsupported content",
-    "Agent refreshes provenance links and the affected source-map or coverage rows in the same batch as the wiki edit",
-    "Agent preserves user-authored voice by extending, annotating, or supplementing instead of blindly rewriting canonical material",
-    "Agent appends an activity-log entry that records the enrich batch and any remaining open questions"
+    "Dispatches to Enrich based on the explicit '/nerdbot enrich' invocation.",
+    "Loads references/kb-operations.md and references/page-templates.md before shaping the next wiki edit.",
+    "Synthesizes only from raw evidence or declared canonical material instead of freewriting unsupported content.",
+    "Refreshes provenance links and affected source-map or coverage rows in the same batch as the wiki edit.",
+    "Preserves user-authored voice by extending, annotating, or supplementing instead of blindly rewriting canonical material.",
+    "Appends an activity-log entry that records the enrich batch and remaining open questions."
   ]
 }

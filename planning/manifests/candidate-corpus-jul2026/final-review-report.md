@@ -2,16 +2,25 @@
 
 - Total raw candidates processed: 293
 - Total unique normalized targets: 289
-- Catalog authoring rows after overlay: 1213
-- Promoted installable curated-external rows: 1038
-- Recorded install evidence rows: 1038
-- Installed path references verified: 3115/3115
+- Catalog authoring rows after overlay: 1429
+- Promoted installable curated-external rows: 1267
+- Recorded install evidence rows: 1267
+- Installed path references verified: 4031/4031
 - Missing installed `SKILL.md` files: 0
-- New live install commands emitted: 0
-- Remaining reference or terminal-gated rows: 175
-- Full integration phase: `promotion-overlay-installed`; live install status is `no-live-install-commands-emitted`.
-- Status note: no new installer commands were emitted during validation; 1038 install evidence rows and 3115 installed `SKILL.md` path references are recorded and verified by the promotion overlay.
-- Deep source audit: 288 audited targets, 1 terminal blocker, candidate code executed: false.
+- Post-install harness commands remaining: 0
+- Post-install desired rows missing across harnesses: 0
+- Non-skill runtime artifacts verified: 63/63
+- Non-skill normalized targets accounted for: 289/289
+- Terminal non-install traceability rows: 162
+- Integrated normalized targets: 289/289
+- Unintegrated normalized targets: 0
+- Integrated quarantine references: 4
+- Active install blocks: 4
+- Full integration phase: `corpus-integration-complete`; new install command preview status is `no-live-install-commands-emitted`.
+- Status note: post-install reconciliation covers 9 harnesses with 0 missing desired rows and 0 commands.
+- The maintainer-authorized install reconciliation completed with a zero-command post-install dry-run; raw installer output is not committed.
+- Deep source audit: 289 audited targets, 0 terminal blocker, candidate code executed: false.
+- Separately authorized runtime overlay: pinned packages and plugins were installed or registered, 63/63 artifacts were verified with bounded probes or package/config inventory, and unsafe service-starting probes were not run.
 - Generator-owned conservative intake artifacts remain available for traceability.
 - No commit made by this script.
 
@@ -23,13 +32,15 @@ chore: integrate candidate corpus July 2026 promotion overlay
 
 - Adds deterministic candidate corpus normalization, sharding, coverage, generated catalog authoring rows, and promotion overlay validation.
 - Records read-only source-list/deep-source evidence and reviewed install metadata for promoted curated external rows, including installed-root verification.
-- Keeps validation commands explicit and avoids re-running installers during checks.
+- Installs or registers the audited CLI, library, MCP, and native plugin overlay; records exact activation state, placeholder-only auth requirements, and disabled safety boundaries.
+- Records the authorized install reconciliation and keeps subsequent validation checks non-mutating.
 
 ## Promotion Overlay Completion
 
-- Full integration phase: `promotion-overlay-installed`.
-- Promoted overrides: 1038.
-- Recorded install evidence rows: 1038.
-- Installed path references verified: 3115/3115.
+- Full integration phase: `corpus-integration-complete`.
+- Promoted overrides: 1267.
+- Recorded install evidence rows: 1267.
+- Installed path references verified: 4031/4031.
 - Missing installed `SKILL.md` files: 0.
+- Non-skill runtime artifacts verified: 63/63.
 - Final commit hash: no commit made by this script.

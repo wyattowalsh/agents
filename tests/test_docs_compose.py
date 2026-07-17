@@ -71,8 +71,8 @@ def test_compose_skill_mdx_external_contract(tmp_path, monkeypatch) -> None:
     )
     text = compose_skill_mdx(node, [], [node], wave_id="test-wave")
     assert "composed: true" in text
-    assert "{/* HAND-MAINTAINED */}" in text
-    assert "Curated external (hand-maintained)" in text
+    assert "GENERATED-COMPOSED" in text or "composed_by" in text
+    assert "Source & provenance" in text
 
 
 def test_should_skip_upgrade_when_already_at_wave() -> None:

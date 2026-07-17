@@ -445,6 +445,41 @@
       ]
     },
     {
+      "id": "lm-studio",
+      "label": "LM Studio",
+      "brand": "LM Studio",
+      "surface_kind": "desktop-app",
+      "owner_change": "agents-c04-lm-studio-harness",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": [
+        "wagents/platforms/lm_studio.py",
+        "instructions/lm-studio-global.md",
+        "config/sync-manifest.json:LM Studio mcp.json",
+        "scripts/mcphub/wrappers/lm-studio",
+        "config/tooling-policy.json:local_llm_providers.lmstudio"
+      ],
+      "projection_surfaces": [
+        "mcp",
+        "instructions",
+        "skills",
+        "agents"
+      ],
+      "validation_requirements": [
+        "mcp-merge-fixture",
+        "preset-render-fixture",
+        "skills-symlink-fixture",
+        "path-resolution-fixture",
+        "rollback-fixture"
+      ],
+      "caveats": [
+        "Instructions and agents project as managed config-presets (wagents-*.preset.json), not AGENTS.md auto-load.",
+        "Skills optionally mirror repo-owned skills to {home}/skills for separately installed compatible community plugins; default none. Skills CLI has no native lm-studio agent, and global skills are not mirrored.",
+        "Hooks are unsupported.",
+        "Home path may resolve via ~/.lmstudio-home-pointer (not always ~/.lmstudio).",
+        "Local LLM provider wiring for Codex/OpenCode is orthogonal to MCP/preset/skills projection."
+      ]
+    },
+    {
       "id": "crush",
       "label": "Crush",
       "brand": "Crush",

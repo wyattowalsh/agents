@@ -826,14 +826,15 @@ class Adapter(PlatformAdapter):
                         "command": [entry["command"], *entry["args"]],
                         "enabled": enabled,
                         "environment": {
-                            token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=True)
+                            # Disk MCP maps keep placeholders (never materialize local secrets).
+                            token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=False)
                         },
                     }
             return servers
 
         servers: dict[str, Any] = {}
         for name, entry in enabled_registry_servers(registry, harness or self.name).items():
-            args = replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True)
+            args = replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=False)
             remote_url = self._extract_remote_url(entry["command"], args)
             server: dict[str, Any]
             if remote_url:
@@ -842,7 +843,7 @@ class Adapter(PlatformAdapter):
                 server = {"type": "local", "command": [entry["command"], *args], "enabled": True}
             if entry.get("env"):
                 server["environment"] = {
-                    key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
+                    key: render_env_value(value, fallbacks, local_values=False) for key, value in entry["env"].items()
                 }
             servers[name] = server
         return servers  # note: OpenCode nests under "mcp", not "mcpServers"

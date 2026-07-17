@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "observed_date": "2026-07-15",
+  "source_corpus": {
+    "raw_entries": 293,
+    "unique_normalized_targets": 289,
+    "duplicate_groups": 4,
+    "deep_audited_targets": 289,
+    "promoted_install_rows": 1267,
+    "terminal_non_install_rows": 162,
+    "hard_quarantined_targets": 4,
+    "installed_path_references_verified": 4031,
+    "missing_skill_files": 0
+  },
+  "harness_reconciliation": {
+    "inventory_rows": 1779,
+    "target_harnesses": 9,
+    "desired_rows_present_per_harness": 1600,
+    "missing": 0,
+    "pin_blocked": 0,
+    "commands": 0,
+    "non_syncable_inventory_rows_per_harness": 170,
+    "fallback_harnesses": []
+  },
+  "validation": {
+    "pytest": "2183 passed, 1 skipped in 287.70s",
+    "candidate_corpus_tests": "79 passed",
+    "ruff": "focused paths passed",
+    "ty": "not rerun in the final pass",
+    "format_check": "focused paths passed",
+    "diff_check": "passed",
+    "wagents_validate": "passed",
+    "readme_check": "passed",
+    "docs_generate_check": "passed",
+    "catalog_index_check": "passed",
+    "openspec": "candidate strict 1 passed; global 63 passed and 1 unrelated add-reddit-mcp-buddy no-delta failure",
+    "docs_build": "1852 pages generated; 2287 HTML files indexed; internal links valid",
+    "home_stack_check": "passed",
+    "mcphub_smoke": "loopback-only listener; all, ddgs, and harness routes passed",
+    "verify_before_stop": "not rerun in the final pass",
+    "task_completed_gate": "not rerun in the final pass"
+  },
+  "secret_scan": {
+    "changed_tracked_files_scanned": 2323,
+    "untracked_files_scanned": 489,
+    "confirmed_secret_matches": 0,
+    "reviewed_false_positives": 1,
+    "false_positive_reason": "An upstream reviewed filename in the deep source audit matched an sk-shaped token pattern."
+  },
+  "auth": {
+    "raw_entries_requiring_auth_boundary": 165,
+    "unique_targets_requiring_auth_boundary": 162,
+    "unique_placeholder_names": 125,
+    "real_credentials_persisted": false,
+    "credentialed_external_actions_exercised": false
+  },
+  "residual_warnings": [
+    "MCPHub aggregate health is degraded at 34/38 because four optional servers are disconnected; authenticated all, ddgs, and harness smoke routes pass.",
+    "Docs build reports dependency and local Node/Vercel compatibility warnings without build or link failures.",
+    "Four sources remain hard-quarantined and excluded from default sync.",
+    "170 local inventory rows per harness remain non-syncable traceability rows, not missing desired installs.",
+    "Global OpenSpec validation has one unrelated failure because add-reddit-mcp-buddy has no specification delta; the candidate change passes strict validation."
+  ]
+}

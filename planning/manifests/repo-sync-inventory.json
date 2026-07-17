@@ -1111,6 +1111,58 @@
         "uv run wagents validate"
       ],
       "secret_handling": "path-only"
+    },
+    {
+      "path": "~/.lmstudio/mcp.json",
+      "mode": "merged",
+      "location_class": "home",
+      "source_tier": "merged-live-config",
+      "owner_change": "agents-c04-lm-studio-harness",
+      "drift_policy": "merged",
+      "validation_evidence": [
+        "uv run pytest tests/test_lm_studio_platform.py -q",
+        "uv run wagents validate"
+      ],
+      "secret_handling": "path-only"
+    },
+    {
+      "path": "~/.lmstudio/config-presets",
+      "mode": "generated",
+      "location_class": "home",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-lm-studio-harness",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run pytest tests/test_lm_studio_platform.py -q",
+        "uv run wagents validate"
+      ],
+      "secret_handling": "redacted"
+    },
+    {
+      "path": "~/.lmstudio/skills",
+      "mode": "symlinked-entries",
+      "location_class": "home",
+      "source_tier": "merged-live-config",
+      "owner_change": "agents-c04-lm-studio-harness",
+      "drift_policy": "symlinked-entries",
+      "validation_evidence": [
+        "uv run pytest tests/test_lm_studio_platform.py -q",
+        "uv run wagents validate"
+      ],
+      "secret_handling": "path-only"
+    },
+    {
+      "path": "${REPO_ROOT}/instructions/lm-studio-global.md",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c04-lm-studio-harness",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_lm_studio_platform.py -q",
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
     }
   ]
 }

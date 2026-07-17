@@ -44,7 +44,7 @@ deep analysis.
 
 | $ARGUMENTS | Mode | Action |
 |------------|------|--------|
-| Empty | `scan` | Full codebase security scan with triage/sampling |
+| Empty | — | Show dispatch menu and example invocations; **do not** start a scan |
 | `scan [path]` | `scan` | Full security scan of path (default: cwd) |
 | `check <file/dir>` | `check` | Targeted security check on specific files |
 | `deps [path]` | `deps` | Dependency lockfile analysis |
@@ -52,6 +52,19 @@ deep analysis.
 | `compliance <standard>` | `compliance` | SOC2/GDPR/HIPAA heuristic checklist |
 | `report` | `report` | Dashboard visualization of findings |
 | Unrecognized input | — | Ask for clarification |
+
+## Empty / Help Gallery
+
+When `$ARGUMENTS` is empty, show the dispatch table above plus examples:
+
+- `/security-scanner scan`
+- `/security-scanner check src/auth/`
+- `/security-scanner deps`
+- `/security-scanner secrets`
+- `/security-scanner compliance soc2`
+- `/security-scanner report`
+
+State that a full scan runs only after the user picks a mode (for example `scan`); empty invocation is menu-only.
 
 ## Mode: scan
 

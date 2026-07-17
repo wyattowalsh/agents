@@ -87,9 +87,10 @@ include = [
     "scripts/**/*.py",
     "skills/**/scripts/**/*.py",
     "skills/nerdbot/src/**/*.py",
+    "mcp/source-url-health/**/*.py",
     "hooks/wagents-hook.py",
 ]
-extend-exclude = ["mcp/**", "skills/**/evals/**"]
+extend-exclude = ["skills/**/evals/**"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "C4", "RUF", "TC", "PT", "RET"]
@@ -108,14 +109,14 @@ known-first-party = ["wagents", "nerdbot"]
 # Keep Ty explicitly declared for config discovery, scoped checks, and tooling detection.
 [tool.ty.environment]
 python-version = "3.13"
-root = [".", "skills/nerdbot/src"]
-extra-paths = ["skills/skill-creator/scripts", "skills/nerdbot/scripts"]
+root = [".", "skills/nerdbot/src", "mcp/source-url-health"]
+extra-paths = ["skills/skill-creator/scripts", "skills/nerdbot/scripts", "mcp/source-url-health"]
 
 [tool.ty.analysis]
 allowed-unresolved-imports = ["audit", "progress", "package", "asset_toolkit.**", "kb_bootstrap", "kb_inventory", "kb_lint", "PIL", "PIL.**"]
 
 [tool.ty.src]
-include = ["wagents", "scripts", "tests", "skills/nerdbot/src", "skills/nerdbot/scripts"]
+include = ["wagents", "scripts", "tests", "skills/nerdbot/src", "skills/nerdbot/scripts", "mcp/source-url-health"]
 # scripts/validate uses runtime sys.path bootstrap (ruff E402 ignored); exclude from ty.
 exclude = ["scripts/validate/**", "tests/docs_ui/**"]
 

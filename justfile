@@ -1,12 +1,12 @@
 set shell := ["bash", "-euo", "pipefail", "-c"]
-set default-list := true
+set default-list
 set minimum-version := "1.55.0"
 
 # ---------------------------------------------------------------------------- #
 #                                 DEPENDENCIES                                 #
 # ---------------------------------------------------------------------------- #
 
-# Just: https://just.systems (minimum 1.52.0 — default-list, [arg long])
+# Just: https://just.systems (minimum 1.55.0; minimum-version, default-list, [arg long])
 # npx: Skills CLI (https://github.com/vercel-labs/add-skill)
 # uv: Python toolchain (https://docs.astral.sh/uv/)
 
@@ -32,72 +32,72 @@ default:
 #                              SKILLS INSTALLATION                             #
 # ---------------------------------------------------------------------------- #
 
-[group("install")]
 [doc("Install all skills to all agents (global)")]
+[group("install")]
 install:
     npx -y skills add {{ repo }} --skill '*' --agent '*' -g -y
 
-[group("install")]
-[doc("Install all skills to one agent")]
 [arg("agent", long, pattern="^[a-z0-9][a-z0-9-]*$", help="Harness id (e.g. claude-code, cursor)")]
+[doc("Install all skills to one agent")]
+[group("install")]
 [positional-arguments]
 install-agent agent:
     npx -y skills add {{ repo }} --skill '*' -a "$1" -g -y
 
-[group("install")]
-[doc("Install specific skill(s) to all agents")]
 [arg("skill", long, pattern="^[A-Za-z0-9._*/-]+$", help="Skill name or glob")]
+[doc("Install specific skill(s) to all agents")]
+[group("install")]
 [positional-arguments]
 install-skill skill:
     npx -y skills add {{ repo }} --skill "$1" --agent '*' -g -y
 
-[group("install")]
 [doc("Install all skills to Claude (Code + Desktop)")]
+[group("install")]
 install-claude:
     npx -y skills add {{ repo }} --skill '*' -a claude-code -g -y
 
-[group("install")]
 [doc("Install all skills to Cursor")]
+[group("install")]
 install-cursor:
     npx -y skills add {{ repo }} --skill '*' -a cursor -g -y
 
-[group("install")]
 [doc("Install all skills to GitHub Copilot")]
+[group("install")]
 install-copilot:
     npx -y skills add {{ repo }} --skill '*' -a github-copilot -g -y
 
-[group("install")]
 [doc("Install all skills to Gemini CLI")]
+[group("install")]
 install-gemini:
     npx -y skills add {{ repo }} --skill '*' -a gemini-cli -g -y
 
-[group("install")]
 [doc("Install all skills to Codex")]
+[group("install")]
 install-codex:
     npx -y skills add {{ repo }} --skill '*' -a codex -g -y
 
-[group("install")]
 [doc("Install all skills to OpenCode")]
+[group("install")]
 install-opencode:
     npx -y skills add {{ repo }} --skill '*' -a opencode -g -y
 
-[group("install")]
 [doc("Install all skills to Crush")]
+[group("install")]
 install-crush:
     npx -y skills add {{ repo }} --skill '*' -a crush -g -y
 
-[group("install")]
 [doc("Install all skills to Antigravity")]
+[group("install")]
 install-antigravity:
     npx -y skills add {{ repo }} --skill '*' -a antigravity -g -y
 
-[group("install")]
 [doc("List available skills without installing")]
+[group("install")]
 list:
     npx -y skills add {{ repo }} --list
 
-[group("install")]
 [doc("Refresh installed skills from their recorded sources")]
+[group("install")]
 update:
     npx -y skills update
 
@@ -105,24 +105,24 @@ update:
 #                                     SYNC                                     #
 # ---------------------------------------------------------------------------- #
 
-[group("sync")]
 [doc("Apply config/agent-delegation-policy.json task allowlists to opencode-agents.json")]
+[group("sync")]
 materialize-opencode-tasks:
     uv run python scripts/materialize_opencode_task_permissions.py --apply
 
-[group("sync")]
 [doc("Regenerate .opencode/agents from agents/ + config/opencode-agents.json")]
+[group("sync")]
 sync-opencode:
     uv run python scripts/materialize_opencode_task_permissions.py --apply
     uv run python scripts/sync_agent_stack.py --apply --targets repo --platforms opencode
 
-[group("sync")]
 [doc("Recompute apm.lock.yaml local_deployed_file_hashes from on-disk files")]
+[group("sync")]
 refresh-apm-lock:
     uv run wagents apm refresh-lock
 
-[group("sync")]
 [doc("OpenCode agent contract tests + platform sync check")]
+[group("sync")]
 verify-opencode:
     uv run pytest tests/test_sync_agent_stack.py tests/test_validate_repo.py tests/test_harness_plan_fixtures.py tests/test_apm_materialize.py -q -k "doctor_opencode or refresh_lock or opencode_managed or check_opencode_managed or render_opencode_agents_use or opencode_sync_repo or opencode_agents_on_disk or opencode_agents_config or opencode_agent_overlay" --tb=line
     uv run python scripts/sync_agent_stack.py --check --targets repo --platforms opencode
@@ -132,37 +132,37 @@ verify-opencode:
 #                                    CHECKS                                    #
 # ---------------------------------------------------------------------------- #
 
-[group("checks")]
 [doc("Validate all skills and agents")]
+[group("checks")]
 validate:
     uv run wagents validate
 
-[group("checks")]
 [doc("Run test suite")]
+[group("checks")]
 test:
     uv run pytest
 
-[group("checks")]
 [doc("Lint Python code")]
+[group("checks")]
 lint:
     uv run ruff check
 
-[group("checks")]
 [doc("Check Python formatting")]
+[group("checks")]
 format:
     uv run ruff format --check
 
-[group("checks")]
 [doc("Type-check Python code")]
+[group("checks")]
 typecheck:
     uv run ty check
 
-[group("checks")]
 [doc("Lint, format-check, and type-check Python code")]
+[group("checks")]
 check-python: lint format typecheck
 
-[group("checks")]
 [doc("Lint GitHub Actions workflows (actionlint + analyzer)")]
+[group("checks")]
 ci-check:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -178,48 +178,48 @@ ci-check:
             print("workflow-analyzer OK:", d["file"])'
     done
 
-[group("checks")]
 [doc("Verify agent stack sync projections are fresh")]
+[group("checks")]
 sync-check:
     uv run python scripts/check_agent_stack.py
 
-[group("checks")]
 [doc("Audit all skill quality scores")]
+[group("checks")]
 audit:
     uv run python skills/skill-creator/scripts/audit.py --all --format table
 
-[group("checks")]
 [doc("Package all skills (dry-run)")]
+[group("checks")]
 package:
     uv run wagents package --all --dry-run
 
-[group("checks")]
 [doc("Run portable skill CI checks")]
+[group("checks")]
 skill-portability-check:
     SKILL_PORTABLE_CI=1 uv run pytest tests/test_skill_portability.py tests/test_skill_bundled_toolkit.py tests/test_skills_no_wagents.py tests/test_skills_p7_operator_paths.py tests/test_namer_catalog_parity.py tests/test_composed_catalog_script_parity.py tests/test_package.py -q --tb=line
 
-[group("checks")]
 [doc("Verify bundled asset_toolkit SSOT")]
+[group("checks")]
 skill-toolkit-sync-check:
     uv run python scripts/sync_skill_portability.py --check
 
-[group("checks")]
 [doc("Fast inner-loop check: validate + lint + key pytest subset")]
+[group("checks")]
 verify-fast:
     uv run wagents validate
     uv run ruff check
     uv run pytest tests/test_skills_catalog_schemas.py tests/test_catalog_index_parity.py tests/test_skill_index.py tests/test_authoring_sync.py -q --tb=line
 
-[group("checks")]
 [doc("Docs-focused check: generate + lint + build")]
+[group("checks")]
 verify-docs:
     uv run wagents docs generate --no-installed --check
     uv run wagents catalog index --check
     uv run wagents docs lint
     uv run wagents docs build
 
-[group("checks")]
 [doc("Full pre-PR check: verify-fast + verify-docs + ci-check")]
+[group("checks")]
 verify-all: verify-fast verify-docs ci-check
     uv run wagents openspec validate
 
@@ -227,18 +227,18 @@ verify-all: verify-fast verify-docs ci-check
 #                                   OPENSPEC                                   #
 # ---------------------------------------------------------------------------- #
 
-[group("openspec")]
 [doc("Diagnose OpenSpec tooling and project state")]
+[group("openspec")]
 openspec-doctor:
     uv run wagents openspec doctor
 
-[group("openspec")]
 [doc("Validate OpenSpec specs and changes")]
+[group("openspec")]
 openspec-validate:
     uv run wagents openspec validate
 
-[group("openspec")]
 [doc("Print OpenSpec update command for downstream tool artifacts")]
+[group("openspec")]
 openspec-update:
     uv run wagents openspec update
 
@@ -246,8 +246,8 @@ openspec-update:
 #                                     DOCS                                     #
 # ---------------------------------------------------------------------------- #
 
-[group("docs")]
 [doc("Regenerate README.md")]
+[group("docs")]
 readme:
     uv run wagents readme
 
@@ -255,59 +255,59 @@ readme:
 #                                    MCPHUB                                    #
 # ---------------------------------------------------------------------------- #
 
-[group("mcphub")]
 [doc("Start local MCPHub control plane with npx")]
+[group("mcphub")]
 mcphub-up:
     scripts/mcphub/up.sh
 
-[group("mcphub")]
 [doc("Stop local MCPHub control plane")]
+[group("mcphub")]
 mcphub-down:
     scripts/mcphub/down.sh
 
-[group("mcphub")]
 [doc("Tail local MCPHub logs")]
+[group("mcphub")]
 mcphub-logs:
     scripts/mcphub/logs.sh
 
-[group("mcphub")]
 [doc("Check local MCPHub prerequisites and health")]
+[group("mcphub")]
 mcphub-doctor:
     scripts/mcphub/doctor.sh
 
-[group("mcphub")]
 [doc("Generate mcp/mcphub/mcp_settings.json from config/mcp-registry.json")]
+[group("mcphub")]
 mcphub-generate:
     uv run python scripts/generate_mcphub_settings.py
 
-[group("mcphub")]
 [doc("Fail when tracked MCPHub settings are stale vs registry")]
+[group("mcphub")]
 mcphub-generate-check:
     uv run python scripts/generate_mcphub_settings.py --check
 
-[group("mcphub")]
 [doc("Validate tracked MCPHub settings")]
+[group("mcphub")]
 mcphub-validate:
     scripts/mcphub/validate-settings.sh
 
-[group("mcphub")]
 [doc("Export MCPHub OpenAPI spec")]
+[group("mcphub")]
 mcphub-openapi:
     scripts/mcphub/export-openapi.sh
 
-[group("mcphub")]
 [doc("Sync runtime settings, warm package-version-check-mcp, restart LaunchAgent")]
+[group("mcphub")]
 [positional-arguments]
 mcphub-reconcile-runtime *FLAGS:
     scripts/mcphub/reconcile-runtime.sh "$@"
 
-[group("mcphub")]
 [doc("Run MCPHub health and tools/list smoke test")]
+[group("mcphub")]
 mcphub-smoke:
     scripts/mcphub/smoke.sh
 
-[group("mcphub")]
 [doc("Install local LaunchAgent template")]
+[group("mcphub")]
 mcphub-install-launch-agent:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -319,8 +319,8 @@ mcphub-install-launch-agent:
     launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist"
     launchctl kickstart -k "gui/$(id -u)/com.wyattowalsh.mcphub"
 
-[group("mcphub")]
 [doc("Uninstall local LaunchAgent")]
+[group("mcphub")]
 mcphub-uninstall-launch-agent:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -331,39 +331,39 @@ mcphub-uninstall-launch-agent:
 #                                      APM                                     #
 # ---------------------------------------------------------------------------- #
 
-[group("apm")]
 [doc("Materialize via apm (installs to apm_modules/ and harness dirs)")]
+[group("apm")]
 apm-materialize:
     #!/usr/bin/env bash
     set -euo pipefail
     command -v apm >/dev/null || { echo "apm CLI not found (pip install apm-cli)" >&2; exit 127; }
     apm install --frozen || apm install
 
-[group("apm")]
 [doc("Install bundle via apm (primary path)")]
+[group("apm")]
 apm-install:
     #!/usr/bin/env bash
     set -euo pipefail
     command -v apm >/dev/null || { echo "apm CLI not found (pip install apm-cli)" >&2; exit 127; }
     apm install wyattowalsh/agents
 
-[group("apm")]
 [doc("Compile context with apm")]
+[group("apm")]
 apm-compile:
     #!/usr/bin/env bash
     set -euo pipefail
     command -v apm >/dev/null || { echo "apm CLI not found (pip install apm-cli)" >&2; exit 127; }
     apm compile
 
-[group("apm")]
 [doc("Run apm audit in CI mode (no-drift for local tolerance)")]
+[group("apm")]
 apm-audit:
     #!/usr/bin/env bash
     set -euo pipefail
     command -v apm >/dev/null || { echo "apm CLI not found (pip install apm-cli)" >&2; exit 127; }
     apm audit --ci --no-drift
 
-[group("apm")]
 [doc("Diagnose apm CLI presence and version")]
+[group("apm")]
 apm-doctor:
     @command -v apm >/dev/null && apm --version || echo "apm CLI not found (pip install apm-cli)"

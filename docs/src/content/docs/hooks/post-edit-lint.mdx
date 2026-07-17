@@ -5,16 +5,16 @@ page_kind: "hook"
 source_kind: "registry"
 asset_id: "post-edit-lint"
 composed: true
-composed_at: "2026-06-16"
-composed_by: "compose-hooks-wave-1"
+composed_at: "2026-07-10"
+composed_by: "regenerate-hook-docs-rv-006"
 docs_density: standard
 ---
 
-{/* HAND-MAINTAINED */}
+{/* GENERATED from config/hook-registry.json — do not hand-edit */}
 
 import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-<Badge text="hook" variant="note" /> <Badge text="PostToolUse" variant="success" /> <Badge text="github-copilot" variant="default" />
+<Badge text="PostToolUse" variant="caution" />  <Badge text="github-copilot" variant="default" />
 
 > Return concise lint/type context after edits.
 
@@ -24,87 +24,46 @@ import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 |-------|-------|
 | id | `post-edit-lint` |
 | logical_event | `PostToolUse` |
-| matcher | `Edit\|Write\|MultiEdit\|edit\|create\|write_file\|replace` |
+| matcher | `Edit|Write|MultiEdit|edit|create|write_file|replace` |
 | command | `./hooks/lint-check.sh` |
 | timeout | `30` |
-| harnesses | `["github-copilot"]` |
+| mode | — |
+| harnesses | `[
+  "github-copilot"
+]` |
+| bundle_group | `copilot-post-edit-quality` |
+| bundle_mode | `context-chain` |
 
 <details class="source-disclosure">
-<summary>Full hook config + command reference</summary>
+<summary>Full hook config (registry SSOT)</summary>
 
 ```json title="config/hook-registry.json (entry)"
 {
   "id": "post-edit-lint",
   "description": "Return concise lint/type context after edits.",
   "logical_event": "PostToolUse",
+  "logical_policy": "post-edit-lint",
   "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace",
   "command": "./hooks/lint-check.sh",
   "timeout": 30,
+  "bundle_group": "copilot-post-edit-quality",
+  "bundle_mode": "context-chain",
   "harnesses": [
     "github-copilot"
   ]
 }
 ```
 
-```bash title="hooks/lint-check.sh"
-#!/bin/bash
-command -v jq &>/dev/null || exit 0
-INPUT=$(cat)
-FILE_PATH=$(echo "$INPUT" | jq -r '
-  .tool_input.file_path
-  // (
-    (.toolArgs | fromjson? // .toolArgs // {})
-    | if type == "object" then (.filePath // .path // .target_file // empty) else empty end
-  )
-  // empty
-')
-[ -z "$FILE_PATH" ] || [ ! -f "$FILE_PATH" ] && exit 0
+Command placeholders:
 
-case "${FILE_PATH##*.}" in
-  py)
-    DETAILS=""
-    if [ -f "pyproject.toml" ] && command -v uv &>/dev/null; then
-      LINT=$(uv run ruff check "$FILE_PATH" 2>&1)
-      LINT_EXIT=$?
-      LINT=$(echo "$LINT" | head -20)
-      [ $LINT_EXIT -ne 0 ] && printf -v DETAILS "%sRuff issues in %s:\n%s\n\n" "$DETAILS" "$FILE_PATH" "$LINT"
-    elif command -v ruff &>/dev/null; then
-      LINT=$(ruff check "$FILE_PATH" 2>&1)
-      LINT_EXIT=$?
-      LINT=$(echo "$LINT" | head -20)
-      [ $LINT_EXIT -ne 0 ] && printf -v DETAILS "%sRuff issues in %s:\n%s\n\n" "$DETAILS" "$FILE_PATH" "$LINT"
-    fi
-    if [ -f "pyproject.toml" ] && command -v uv &>/dev/null; then
-      case "$FILE_PATH" in
-        wagents/*|scripts/*)
-          TYPECHECK=$(uv run ty check --output-format concise --no-progress "$FILE_PATH" 2>&1)
-          TYPECHECK_EXIT=$?
-          TYPECHECK=$(echo "$TYPECHECK" | head -20)
-          [ $TYPECHECK_EXIT -ne 0 ] && printf -v DETAILS "%sTy issues in %s:\n%s\n" "$DETAILS" "$FILE_PATH" "$TYPECHECK"
-          ;;
-      esac
-    fi
-    [ -n "$DETAILS" ] && jq -n --arg msg "$DETAILS" '{"hookSpecificOutput":{"hookEventName":"PostToolUse"},"additionalContext":$msg}' ;;
-  ts|tsx)
-    if [ -f "node_modules/.bin/tsc" ]; then
-      ERRS=$(timeout 25 node_modules/.bin/tsc --noEmit --pretty false 2>&1)
-      TSC_EXIT=$?
-      ERRS=$(echo "$ERRS" | head -20)
-      [ $TSC_EXIT -ne 0 ] && printf -v MSG "TypeScript errors:\n%s" "$ERRS" && \
-        jq -n --arg msg "$MSG" '{"hookSpecificOutput":{"hookEventName":"PostToolUse"},"additionalContext":$msg}'
-    fi ;;
-esac
-exit 0
-```
+- `{hook_runner}` resolves to the fleet dispatcher (`hooks/wagents-hook.py` or harness projection).
+- `{harness}` is the target harness id at render/install time.
 
 </details>
 
-## Resources
+## Related
 
 <CardGrid>
-  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
-  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="Hooks hub" href="/hooks/" description="Registry overview and harness matrix." />
+  <LinkCard title="CLI hooks" href="/cli/" description="`wagents hooks list|validate`." />
 </CardGrid>
-
----
-[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

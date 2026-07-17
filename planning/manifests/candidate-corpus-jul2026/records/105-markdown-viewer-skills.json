@@ -7,22 +7,42 @@
   "license": "NOASSERTION (license not detected by GitHub API)",
   "latest_release_or_commit_date": "github-pushed-at:2026-05-26T06:51:22Z",
   "artifact_types_found": [
+    "CLI/tool",
     "skill"
   ],
-  "install_or_integration_decision": "reference_only",
-  "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates.",
-  "auth_required": false,
-  "env_vars_or_credentials": [],
+  "install_or_integration_decision": "integrated_skill_catalog_surface",
+  "reason": "Skill-like source routed through curated catalog install metadata and source-list evidence.",
+  "auth_required": true,
+  "env_vars_or_credentials": [
+    "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+  ],
   "safety_notes": "No elevated keyword risk detected.",
   "attribution_notes": "Preserve attribution to markdown-viewer/skills; verify license before adapting content.",
-  "files_added": [],
-  "files_modified": [],
+  "files_added": [
+    "docs/src/authoring/skills/markdown-viewer-skills.mdx",
+    "docs/src/content/docs/skills/catalog/external/markdown-viewer-skills.mdx",
+    "planning/manifests/candidate-corpus-jul2026/records/105-markdown-viewer-skills.json"
+  ],
+  "files_modified": [
+    "docs/public/generated-registries/skills-catalog-browser-index.json",
+    "docs/public/generated-registries/skills-catalog-index.json",
+    "planning/manifests/candidate-corpus-jul2026/all-records.json",
+    "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
+    "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
+    "planning/manifests/candidate-corpus-jul2026/harness-install-assurance.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-decisions.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-targets.json",
+    "planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json"
+  ],
   "tests_or_checks_run": [
     "git ls-remote --symref",
-    "gh api repos/{owner}/{repo}"
+    "gh api repos/markdown-viewer/skills",
+    "uv run python scripts/audit_candidate_deep_sources.py --check",
+    "uv run python scripts/apply_candidate_corpus_promotions.py --check",
+    "uv run python scripts/promote_candidate_corpus.py --final-check"
   ],
   "skipped_reason": "",
-  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "reviewer_notes": "Deep source audit completed at ref main. Final repo-native route integrated_skill_catalog_surface is recorded; no Skills CLI row applies.",
   "raw_index": 105,
   "normalized_index": "https://github.com/markdown-viewer/skills",
   "duplicate_group": [],
@@ -31,16 +51,16 @@
   "canonical_source": "https://github.com/markdown-viewer/skills",
   "risk_tier": "standard-review",
   "risk_keywords": [],
-  "support_tier": "discovery-only",
+  "support_tier": "repo-native-terminal-final",
   "phase_status": {
     "source_capture": "completed",
-    "deep_research": "completed-public-metadata",
+    "deep_research": "completed-deep-source-audit",
     "overlap": "completed",
     "security": "completed-static",
     "license": "completed-static",
-    "compliance": "completed-static",
+    "compliance": "completed-deep-auth-reconciled",
     "docs_impact": "completed",
-    "decision": "completed"
+    "decision": "completed-overlay-reconciled"
   },
   "source_capture_packet": {
     "git_status": "ok",
@@ -57,7 +77,7 @@
     "html_url": "https://github.com/markdown-viewer/skills",
     "default_branch": "main",
     "pushed_at": "2026-05-26T06:51:22Z",
-    "updated_at": "2026-07-06T18:54:06Z",
+    "updated_at": "2026-07-08T14:21:12Z",
     "license_spdx_id": "",
     "license_name": "",
     "language": "",
@@ -77,11 +97,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -104,11 +124,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -137,8 +157,11 @@
     "license_name": ""
   },
   "compliance_packet": {
-    "auth_required": false,
-    "env_vars_or_credentials": []
+    "auth_required": true,
+    "env_vars_or_credentials": [
+      "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+    ],
+    "evidence_source": "deep-source-audit.json"
   },
   "docs_steward_surfaces": [
     "README",
@@ -153,13 +176,29 @@
     "reports",
     "skill-research"
   ],
-  "docs_steward_status": "packet-generated",
+  "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "reference_only",
-    "reason": "Discovery-only pending source-list, license, security, and docs-steward promotion gates."
+    "decision": "integrated_skill_catalog_surface",
+    "reason": "Skill-like source routed through curated catalog install metadata and source-list evidence."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "required_before_promotion": "human trust-gate review"
+    "terminal_route": "integrated-skill-catalog-surface",
+    "required_before_live_execution": "explicit user-owned command and credential setup",
+    "scope": "historical-intake-research-only"
+  },
+  "intake_artifact_types_found": [
+    "CLI/tool",
+    "skill"
+  ],
+  "intake_support_tier": "discovery-only",
+  "intake_docs_steward_status": "packet-generated",
+  "final_integration": {
+    "status": "terminal-repo-native-decision",
+    "mutation_applied": false,
+    "catalog_rows": 0,
+    "harness_assurance": "harness-install-assurance.json",
+    "non_skill_assurance": "non-skill-install-assurance.json",
+    "runtime_disposition": "integrated-non-executable-surface"
   }
 }

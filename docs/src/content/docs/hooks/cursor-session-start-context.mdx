@@ -5,16 +5,16 @@ page_kind: "hook"
 source_kind: "registry"
 asset_id: "cursor-session-start-context"
 composed: true
-composed_at: "2026-06-23"
-composed_by: "compose-hooks-cursor-wave-1"
+composed_at: "2026-07-10"
+composed_by: "regenerate-hook-docs-rv-006"
 docs_density: standard
 ---
 
-{/* HAND-MAINTAINED */}
+{/* GENERATED from config/hook-registry.json — do not hand-edit */}
 
-import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-<Badge text="hook" variant="note" /> <Badge text="SessionStart" variant="success" /> <Badge text="cursor" variant="default" /> <Badge text="mode: context" variant="tip" />
+<Badge text="SessionStart" variant="caution" /> <Badge text="context" variant="tip" /> <Badge text="cursor" variant="default" />
 
 > Report lightweight Cursor session and repository context.
 
@@ -23,30 +23,29 @@ import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components'
 | Field | Value |
 |-------|-------|
 | id | `cursor-session-start-context` |
-| status_message | `Gathering Cursor session context` |
-| mode | `context` |
 | logical_event | `SessionStart` |
-| matcher | `startup\|resume\|clear` |
-| command | `python3 {repo_root}/hooks/wagents-hook.py cursor-session-start-context --harness {harness}` |
+| matcher | `startup|resume|clear` |
+| command | `{hook_runner} cursor-session-start-context --harness {harness}` |
 | timeout | `5` |
-| harnesses | `["cursor"]` |
-
-<Aside type="note">
-Uses the shared `wagents-hook.py` dispatcher (policy: `_policy_codex_session_start_context`). Provides git context + note that hooks are sourced from registry.
-</Aside>
+| mode | `context` |
+| harnesses | `[
+  "cursor"
+]` |
+| status_message | Gathering Cursor session context |
 
 <details class="source-disclosure">
-<summary>Full hook config + command reference</summary>
+<summary>Full hook config (registry SSOT)</summary>
 
 ```json title="config/hook-registry.json (entry)"
 {
   "id": "cursor-session-start-context",
   "description": "Report lightweight Cursor session and repository context.",
-  "status_message": "Gathering Cursor session context",
-  "mode": "context",
   "logical_event": "SessionStart",
+  "logical_policy": "cursor-session-start-context",
+  "mode": "context",
+  "status_message": "Gathering Cursor session context",
   "matcher": "startup|resume|clear",
-  "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-session-start-context --harness {harness}",
+  "command": "{hook_runner} cursor-session-start-context --harness {harness}",
   "timeout": 5,
   "harnesses": [
     "cursor"
@@ -54,35 +53,16 @@ Uses the shared `wagents-hook.py` dispatcher (policy: `_policy_codex_session_sta
 }
 ```
 
-```python title="hooks/wagents-hook.py (relevant policy + dispatcher)"
-# ... (full file at repo root; key entrypoints below)
-def _policy_codex_session_start_context(payload: NormalizedPayload) -> int:
-    message = (
-        f"Cursor session context: {_git_session_context(payload.cwd)}; managed hooks source=config/hook-registry.json."
-    )
-    return _additional_context(payload, message, policy_id="cursor-session-start-context")
+Command placeholders:
 
-# main dispatch
-POLICIES = {
-    "cursor-session-start-context": _policy_codex_session_start_context,
-    ...
-}
-if __name__ == "__main__":
-    raise SystemExit(main())
-```
+- `{hook_runner}` resolves to the fleet dispatcher (`hooks/wagents-hook.py` or harness projection).
+- `{harness}` is the target harness id at render/install time.
 
-Command executed (after template expansion for Cursor harness):
-`python3 /path/to/repo/hooks/wagents-hook.py cursor-session-start-context --harness cursor`
-
-See full `wagents-hook.py` and `_git_session_context` for implementation.
 </details>
 
-## Resources
+## Related
 
 <CardGrid>
-  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
-  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="Hooks hub" href="/hooks/" description="Registry overview and harness matrix." />
+  <LinkCard title="CLI hooks" href="/cli/" description="`wagents hooks list|validate`." />
 </CardGrid>
-
----
-[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

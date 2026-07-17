@@ -211,20 +211,9 @@ IMAGE_OPTIMIZER_DANGEROUS_ENV_NAMES = {
     "PYTHONPATH",
     "UV_TOOL_BIN_DIR",
 }
-SECRET_BASENAMES = {
-    ".env",
-    ".env.local",
-    ".env.production",
-    ".env.staging",
-    ".env.development",
-    ".env.test",
-    "credentials.json",
-    "secrets.json",
-    "service-account.json",
-    "token.pickle",
-}
-PRIVATE_KEY_BASENAMES = {"id_rsa", "id_ed25519", "id_ecdsa", "id_dsa"}
-PRIVATE_KEY_SUFFIXES = {".pem", ".key", ".p12", ".pfx"}
+# Secret basename classification is SSOT in wagents/hooks/policies/secret_paths.py
+# (loaded by path so the standalone dispatcher does not require an installed package).
+_is_secret_basename = _load_policy_attr("secret_paths", "is_secret_basename")
 LOCKFILE_RE = re.compile(
     r"(?i)(^|/)(package-lock\.json|pnpm-lock\.yaml|yarn\.lock|bun\.lockb|uv\.lock|poetry\.lock|cargo\.lock|gemfile\.lock)$"
 )
@@ -1437,10 +1426,15 @@ def _path_block_reason(path: str) -> str | None:
     if ".git" in parts:
         return f"Protected git internal path: {cleaned}"
     basename = Path(cleaned).name
-    if basename in SECRET_BASENAMES:
+    if _is_secret_basename is not None and _is_secret_basename(basename):
+        if Path(basename).suffix.lower() in {".pem", ".key", ".p12", ".pfx"} or basename.lower() in {
+            "id_rsa",
+            "id_ed25519",
+            "id_ecdsa",
+            "id_dsa",
+        }:
+            return f"Protected private key file: {cleaned}"
         return f"Protected secret-bearing file: {cleaned}"
-    if basename in PRIVATE_KEY_BASENAMES or Path(cleaned).suffix.lower() in PRIVATE_KEY_SUFFIXES:
-        return f"Protected private key file: {cleaned}"
     if LOCKFILE_RE.search(cleaned):
         return f"Lock files should not be edited directly: {cleaned}"
     return None

@@ -34,9 +34,12 @@ Machine callers should prefer CLI JSON payloads. `plan` includes both `suggested
 | Wiki plan | `config/wiki-plan.json` or `config/wiki-plan.md` | Optional steering surface for scope, focus paths, page hierarchy, and caps; never overrides provenance or approval gates |
 | Evidence ledger | `indexes/evidence-ledger.md` | Update with claim-level provenance when wiki claims change |
 | Review queue | `indexes/review-queue.md` | Queue uncertain save-back, parser warnings, and watch events before promotion |
-| Operation journal | `activity/operations.jsonl` | Append-only JSONL for replayable operations |
+| Activity log | `activity/log.md` | Append-only human projection of committed operations, keyed by an exact standalone `<!-- nerdbot-operation-id: ... -->` marker; missing committed entries are repaired idempotently from the journal |
+| Operation journal | `activity/operations.jsonl` | Canonical append-only JSONL with `prepared -> committed|failed|review-needed`; immutable payload and exactly one terminal transition per operation ID |
 | Research journal | `activity/research/` | Journal-only by default; approved ingest required before adding sources |
 | Generated artifacts | `indexes/generated/` | Rebuildable; never canonical |
+
+Mutating workflows serialize the entire apply batch—not only journal appends—through `activity/.nerdbot-operation.lock`. After bootstrapping any required coordination directory and lock file, a writer must append `prepared` before its first workflow data write and append one terminal transition while it still owns the lock. Abrupt stops may leave `prepared` for deterministic resume; ordinary exceptions record `failed`. Only `committed` entries reach the activity log.
 
 ## Advanced Wiki Payloads
 

@@ -10,7 +10,7 @@ composed_by: "compose-hooks-wave-1"
 
 {/* HAND-MAINTAINED */}
 
-import { Card, CardGrid, Badge, Aside } from '@astrojs/starlight/components';
+import { Card, CardGrid, Badge, Aside, LinkCard } from '@astrojs/starlight/components';
 
 > Repo-managed, portable lifecycle hooks declared in `config/hook-registry.json`. These provide safety, context, formatting, lint, research guards, and audit surfaces across harnesses. Hand-maintained catalog pages (composed).
 
@@ -140,24 +140,14 @@ Claude Code uses Stop / SubagentStop quality gates wired through `.claude/settin
 
 ## Research guards (multi-harness)
 
-Activated by research prompts. Span codex, claude-code, github-copilot, gemini-cli. Use state machine + ledger for invariants.
+Activated by research prompts. Span **codex, claude-code, cursor, github-copilot, gemini-cli**. Use state machine + ledger for invariants. Detail pages: `/hooks/<id>/`.
 
 <CardGrid>
-  <Card title="research-prompt-triage-context">
-    <Badge text="UserPromptSubmit" variant="success" /> <Badge text="context" variant="tip" /> Detects research intent, activates state, injects method reminders.
-  </Card>
-  <Card title="research-readonly-write-guard">
-    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Blocks source writes while research state is active (degraded=audit).
-  </Card>
-  <Card title="research-dangerous-shell-guard">
-    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Blocks dangerous shell during research (degraded=audit).
-  </Card>
-  <Card title="research-evidence-ledger">
-    <Badge text="PostToolUse" variant="success" /> <Badge text="audit" variant="tip" /> Appends provenance (URLs, retrieval tools) to per-session ledger for later verification.
-  </Card>
-  <Card title="research-stop-verifier">
-    <Badge text="Stop" variant="caution" /> <Badge text="enforce" variant="tip" /> Final invariant checks (ledger, claims, state) before allowing research session to stop. 30s timeout.
-  </Card>
+  <LinkCard title="research-prompt-triage-context" href="/hooks/research-prompt-triage-context/" description="UserPromptSubmit · context — Detects research intent, activates state, injects method reminders." />
+  <LinkCard title="research-readonly-write-guard" href="/hooks/research-readonly-write-guard/" description="PreToolUse · enforce — Blocks source writes while research state is active (degraded=audit)." />
+  <LinkCard title="research-dangerous-shell-guard" href="/hooks/research-dangerous-shell-guard/" description="PreToolUse · enforce — Blocks dangerous shell during research (degraded=audit)." />
+  <LinkCard title="research-evidence-ledger" href="/hooks/research-evidence-ledger/" description="PostToolUse · audit — Appends provenance to the per-session ledger." />
+  <LinkCard title="research-stop-verifier" href="/hooks/research-stop-verifier/" description="Stop · enforce — Final invariant checks before allowing research session stop." />
 </CardGrid>
 
 ## Dispatcher & Implementation Notes
@@ -197,6 +187,29 @@ The repo default tier is **`bundle`** after [Hooks Bundle Promotion v2](https://
 - Registry: `config/hook-registry.json`
 - Safety surface also includes MCPHub groups and agent permissionMode settings.
 - Research skill: `/skills/catalog/custom/research/`
+
+<CardGrid>
+  <LinkCard
+    title="Install skills & harnesses"
+    href="/install/"
+    description="Portable install paths, wagents skills sync dry-run, and harness onboarding."
+  />
+  <LinkCard
+    title="Harness config hub"
+    href="/harness-config/"
+    description="Sync manifest, MCP registry, RTK, and fleet projection surfaces."
+  />
+  <LinkCard
+    title="MCPHub"
+    href="/mcp/"
+    description="Local MCP control plane, groups, and registry-driven server projection."
+  />
+  <LinkCard
+    title="CLI reference"
+    href="/cli/"
+    description="wagents validate, hooks, docs generate, and maintainer commands."
+  />
+</CardGrid>
 
 ---
 [View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

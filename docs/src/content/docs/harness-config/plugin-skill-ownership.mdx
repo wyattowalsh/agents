@@ -107,6 +107,27 @@ Native and runtime plugins are documented through the harness config docs and th
 | Gemini extensions | `~/.gemini/extensions`, `~/.gemini/settings.json` | Local extension rows are preserved unless a registry or catalog entry promotes them. |
 | Chrome DevTools upstream plugin/extension | `config/plugin-extension-registry.json`, MCP registry ownership rules | Plugin/extension owners suppress duplicate standalone MCP projection for that harness. |
 
+### July 2026 candidate plugin activation
+
+The candidate-corpus runtime overlay verifies 16 native plugin artifacts. Their
+portable skill fallbacks are reconciled independently across nine supported
+harnesses; native plugin activation is recorded in
+`config/plugin-extension-registry.json` and must not be inferred from skill
+installation.
+
+Active reviewed Codex plugin surfaces are `brooks-lint`, `codebase-recon`,
+`commit-narrator`, `designer-skill`, `env-lint`, `prompt-to-asset`, `remotion`,
+`roadmapsmith`, `secret-guard`, `universal-design-principles`, and `unslop`.
+`axiom` and `hyperframes` are installed but disabled because their native
+bundles contribute broad lifecycle hooks. `hol-guard-plugin`,
+`papersflow-codex-plugin`, and `zotero-research-tools` also remain disabled at
+their reviewed security or account boundary. Enabling any disabled plugin is a
+separate activation decision; `wagents skills sync` does not make it active.
+
+Per-target package pins, resolved paths, smoke-test method, auth variable names,
+and activation state are recorded in
+`planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json`.
+
 ## Skill Documentation
 
 Custom skills are documented from the repo-owned skill catalog path:

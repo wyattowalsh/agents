@@ -150,6 +150,34 @@ def test_protected_file_blocks_env():
     assert evaluate_protected_file(".env") is not None
 
 
+@pytest.mark.parametrize(
+    "path",
+    [
+        ".env.mcphub",
+        "config/.env.mcphub",
+        ".env.local",
+        "secrets.json",
+        "auth.json",
+        "certs/server.pem",
+    ],
+)
+def test_protected_file_blocks_secret_class_paths(path: str) -> None:
+    assert evaluate_protected_file(path) is not None
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        ".env.example",
+        ".env.sample",
+        ".env.template",
+        "src/main.py",
+    ],
+)
+def test_protected_file_allows_safe_env_templates_and_src(path: str) -> None:
+    assert evaluate_protected_file(path) is None
+
+
 def test_protected_file_allows_src():
     assert evaluate_protected_file("src/main.py") is None
 

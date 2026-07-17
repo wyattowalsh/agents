@@ -914,14 +914,14 @@ source = { editable = "mcp/source-url-health" }
 dependencies = [
     { name = "fastmcp" },
     { name = "httpx" },
-    { name = "wagents" },
+    { name = "idna" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "fastmcp", specifier = ">=2" },
     { name = "httpx", specifier = ">=0.28.1" },
-    { name = "wagents", editable = "." },
+    { name = "idna", specifier = ">=3.11" },
 ]
 
 [[package]]

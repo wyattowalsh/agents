@@ -550,7 +550,12 @@ def _summarize_report_payload(slug: str, payload: Any) -> str:
     if slug == "docs-dependency-drift":
         return "drift detected" if payload.get("drift_detected") else "no drift"
     if slug == "llms-txt-coverage":
-        return f"{payload.get('pages_missing_title', 0)} missing title"
+        missing_title = payload.get("missing_title") or []
+        if isinstance(missing_title, list):
+            missing_count = len(missing_title)
+        else:
+            missing_count = int(payload.get("pages_missing_title") or 0)
+        return f"{missing_count} missing title"
     if slug == "site-graph-insights":
         return f"{payload.get('orphan_count', 0)} orphans"
     if slug == "docs-link-check":

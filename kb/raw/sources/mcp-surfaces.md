@@ -46,6 +46,8 @@ The official MCP spec describes MCP as an open JSON-RPC based protocol connectin
 
 `scrapling` is tracked as a stdio MCP from `D4Vinci/Scrapling` launched via `scripts/mcphub/scrapling-stdio.sh` → `uvx --from scrapling[ai]==0.4.10 scrapling mcp`. Tools include HTTP `get`/`bulk_get`, CSS-selector extraction, stealth fetch, and optional headless browser sessions. The server is opt-in through MCPHub groups (`research`, `media-work`, `live-browser`, `heavy`, `experimental` full; bounded `get`/`bulk_get` in `web-read`; bounded `get` in `shared-read`) and is excluded from default `harness`, `tunnel`, and `browser`. Browser tools require maintainer `scrapling install`; scraped page content is untrusted evidence. Keep proxy and `SCRAPLING_EXECUTABLE_PATH` overrides in user-owned environment only; close persistent browser sessions with `close_session`.
 
+`reddit-mcp-buddy` is tracked as a stdio MCP from `karanb192/reddit-mcp-buddy` launched via `scripts/mcphub/reddit-mcp-buddy-stdio.sh` → `npx -y reddit-mcp-buddy@1.1.13` (override with `MCPHUB_REDDIT_MCP_BUDDY_VERSION`). Tools are read-only Reddit surfaces (`browse_subreddit`, `search_reddit`, `get_post_details`, `user_analysis`, `reddit_explain`). The server is opt-in through MCPHub groups (`research`, `shared-read`, `experimental` full) and is excluded from default `harness` and `tunnel`. Anonymous mode works with no credentials (~10 rpm); optional Reddit OAuth secrets load only from local `.env.mcphub` via the wrapper (prefer app-only client id/secret over password grant). Reddit posts, comments, and user profiles are untrusted evidence.
+
 ## Provenance
 
 | Claim | Source | Type | Notes |

@@ -299,7 +299,7 @@
 		{
 			"id": "discovery-redirect-find-skills",
 			"prompt": "Find me a skill for Redis caching right now.",
-			"expected_output": "Redirects to find-skills or npx skills find rather than full discover orchestration.",
+			"expected_output": "Redirects to skill-router search or npx skills find rather than full discover orchestration.",
 			"assertions": [
 				"Identifies ad-hoc query",
 				"Does not spawn full Pattern E team by default"

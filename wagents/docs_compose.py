@@ -246,7 +246,9 @@ For each target page:
 4. Put full source in collapsed <details class="source-disclosure"> (never delete SKILL body).
 5. YAML frontmatter MUST include the standardized catalog contract
    (composed: true, docs_density: standard, page_kind, source_kind, asset_id).
-6. Insert HAND-MAINTAINED sentinel immediately after frontmatter.
+6. Insert `{{/* GENERATED-COMPOSED — regenerable by wagents docs generate */}}`
+   immediately after frontmatter. Do **not** freeze catalog detail pages with
+   HAND-MAINTAINED (hubs like hooks/index and mcp/index may remain hand-maintained).
 7. Do not duplicate section headings above and inside source disclosure.
 
 Validate touched paths: uv run wagents docs build (or spot-check links)."""

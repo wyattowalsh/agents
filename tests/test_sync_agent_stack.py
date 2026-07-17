@@ -150,7 +150,7 @@ def test_render_opencode_mcp_renders_local_servers():
             "type": "local",
             "command": ["uvx", "foo-mcp"],
             "enabled": True,
-            "environment": {"FOO_TOKEN": "secret"},
+            "environment": {"FOO_TOKEN": "${FOO_TOKEN}"},
         }
     }
 
@@ -404,6 +404,43 @@ def test_merge_server_maps_strips_stale_mcphub_namespace_entries():
     for payload in (merged, platform_merged):
         assert [name for name in payload if name.startswith("mcphub")] == ["mcphub_group_harness"]
         assert payload["custom-local"] == {"type": "local"}
+
+
+def test_parse_args_default_targets_is_repo_only():
+    from scripts.sync_agent_stack import parse_args
+
+    args = parse_args(["--check"])
+    assert args.targets == "repo"
+
+
+def test_merge_client_mcp_config_preserves_local_only_servers(tmp_path, monkeypatch):
+    from scripts import sync_agent_stack as sas
+
+    path = tmp_path / "claude_desktop_config.json"
+    path.write_text(
+        json.dumps(
+            {
+                "mcpServers": {
+                    "user-local-only": {"command": "echo", "args": ["hi"]},
+                    "will-be-managed": {"command": "old"},
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(sas, "CLAUDE_DESKTOP_CONFIG_PATH", path)
+
+    rendered = {"will-be-managed": {"command": "new", "args": []}}
+    monkeypatch.setattr(
+        sas,
+        "render_client_mcp",
+        lambda registry, fallbacks, harness=None: {"mcpServers": rendered},
+    )
+    ctx = sas.SyncContext(apply=True)
+    sas.merge_client_mcp_config(ctx, path, {}, {}, "claude-desktop")
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    assert payload["mcpServers"]["user-local-only"]["command"] == "echo"
+    assert payload["mcpServers"]["will-be-managed"]["command"] == "new"
 
 
 def test_render_opencode_mcp_can_use_base_names_for_server_endpoint_templates():
@@ -821,7 +858,7 @@ def test_render_cherry_import_files_writes_all_and_per_server_files():
                 "type": "stdio",
                 "command": "uvx",
                 "args": ["duckduckgo-mcp-server"],
-                "env": {"DUCK_TOKEN": "secret"},
+                "env": {"DUCK_TOKEN": "${DUCK_TOKEN}"},
             }
         }
     }
@@ -835,7 +872,7 @@ def test_render_cherry_import_files_writes_all_and_per_server_files():
                 "type": "stdio",
                 "command": "uvx",
                 "args": ["duckduckgo-mcp-server"],
-                "env": {"DUCK_TOKEN": "secret"},
+                "env": {"DUCK_TOKEN": "${DUCK_TOKEN}"},
             },
         }
     }

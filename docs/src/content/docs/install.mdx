@@ -13,6 +13,16 @@ Use this page to choose the shortest safe path. Live install/apply commands are 
 
 <InstallCommand command={installCommands.all} title="Install the full catalog" note="Global Skills CLI install across supported agent runtimes." />
 
+<Aside type="note" title="Skill catalog scope">
+The full-catalog command installs skills. It does not install CLI or library distributions, start MCP servers, or activate native plugins.
+</Aside>
+
+## Install Runtime Tools
+
+Non-skill integrations use package-manager, MCP registry, or native plugin paths selected per source. There is no blanket replay command because credentials, filesystem access, network egress, and lifecycle hooks require target-specific review.
+
+The July 2026 corpus records 289 runtime dispositions and 63 verified CLI, library, MCP, or plugin artifacts in `planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json`. Candidate MCP servers and broad-hook plugins remain unavailable until explicitly enabled after review.
+
 ## Install One Surface
 
 <InstallCommand command={installCommands.starter} title="Install one starter skill" note="Start with review before installing the full catalog." />

@@ -9,6 +9,9 @@ import { captureServerEvent } from '../../lib/admin/telemetry';
 export const prerender = false;
 
 const admin = Astro.locals.admin;
+if (!admin?.isAuthenticated) {
+  return Astro.redirect('/admin/login?redirect=%2Fadmin%2Fevents');
+}
 const selectedEvent = Astro.url.searchParams.get('event');
 const requestedLimit = Number(Astro.url.searchParams.get('limit') ?? 50);
 const limit = Number.isFinite(requestedLimit) ? Math.max(10, Math.min(requestedLimit, 100)) : 50;

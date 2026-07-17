@@ -8,18 +8,33 @@ install, import, execute, or enable candidate code.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import sys
 from collections import Counter, defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_DIR = ROOT / "planning" / "manifests" / "candidate-corpus-jul2026"
+AUTHORING_DIR = ROOT / "docs" / "src" / "authoring" / "skills"
 EXPECTED_RAW_COUNT = 293
 EXPECTED_UNIQUE_COUNT = 289
+EXPECTED_CLASSIFICATION_COUNTS = {
+    "installable-existing": 121,
+    "inspection-existing": 6,
+    "integrated-reference": 158,
+    "integrated-quarantine-reference": 4,
+}
+GENERATED_REFERENCE_CLASSIFICATIONS = {
+    "integrated-reference",
+    "integrated-quarantine-reference",
+}
 
 RAW_PACKET_FILE = "raw-research-packets.json"
 UNIQUE_PACKET_FILE = "unique-target-research-packets.json"
@@ -27,6 +42,9 @@ GATE_MATRIX_FILE = "promotion-gate-matrix.json"
 INSTALL_PREVIEW_FILE = "live-install-command-preview.json"
 SUMMARY_FILE = "promotion-gate-summary.md"
 DEEP_AUDIT_FILE = "deep-source-audit.json"
+HARNESS_ASSURANCE_FILE = "harness-install-assurance.json"
+NON_SKILL_ASSURANCE_FILE = "non-skill-install-assurance.json"
+INTEGRATION_TARGET_FILE = "integration-targets.json"
 
 _SOURCE_LIST_EVIDENCE_GATE_STATUSES: tuple[tuple[str, str], ...] = (
     ("source-list-found", "source-list-found-pending-promotion-review"),
@@ -38,14 +56,20 @@ _SOURCE_LIST_EVIDENCE_GATE_STATUSES: tuple[tuple[str, str], ...] = (
 )
 
 TERMINAL_DECISION_MAP = {
-    "merge_into_existing": "merged",
-    "quarantine": "blocked",
-    "reference_only": "docs-reference",
-    "skip_duplicate": "merged",
-    "skip_inaccessible": "blocked",
+    "duplicate_covered": "merged",
+    "hard_blocked_inaccessible": "hard-blocked",
+    "hard_blocked_quarantine": "hard-blocked",
+    "integrated_collection_surface": "collection-surface",
+    "integrated_existing_surface": "existing-surface",
+    "integrated_mcp_surface": "mcp-surface",
+    "integrated_native_surface": "native-surface",
+    "integrated_plugin_surface": "plugin-surface",
+    "integrated_skill_catalog_surface": "skill-catalog-surface",
+    "integrated_tool_surface": "tool-surface",
+    "merge_into_existing": "existing-surface",
 }
 
-TRUST_GATES = [
+TERMINAL_ROUTE_CHECKS = [
     "source-list evidence",
     "license review",
     "security review",
@@ -82,7 +106,16 @@ def write_json(name: str, payload: Any) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
-def dedupe(values: list[Any]) -> list[Any]:
+def semantic_json_sha256(path: Path) -> str:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError(f"{path} must contain a JSON object")
+    payload.pop("generated_at", None)
+    raw = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode()
+    return hashlib.sha256(raw).hexdigest()
+
+
+def dedupe(values: Iterable[Any]) -> list[Any]:
     seen = set()
     result = []
     for value in values:
@@ -96,6 +129,145 @@ def dedupe(values: list[Any]) -> list[Any]:
 
 def by_normalized(items: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     return {item["normalized_url"].lower(): item for item in items}
+
+
+def normalized_raw_indexes(value: Any) -> list[int]:
+    if not isinstance(value, list):
+        return []
+    indexes = {
+        int(index)
+        for index in value
+        if (isinstance(index, int) and not isinstance(index, bool)) or (isinstance(index, str) and index.isdigit())
+    }
+    return sorted(indexes)
+
+
+def integration_target_errors(payload: Any, normalized: Any) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(payload, dict):
+        return ["integration-targets.json is not an object"]
+    items = payload.get("items", [])
+    if not isinstance(items, list):
+        return ["integration-targets.json items must be a list"]
+    targets = [item for item in items if isinstance(item, dict)]
+    if len(targets) != len(items):
+        errors.append("integration targets contain non-object rows")
+    if payload.get("raw_entries_covered") != EXPECTED_RAW_COUNT:
+        errors.append("integration targets raw entry count is not 293")
+    if payload.get("unique_targets") != EXPECTED_UNIQUE_COUNT or len(targets) != EXPECTED_UNIQUE_COUNT:
+        errors.append("integration target count is not 289")
+    if payload.get("integrated_targets") != EXPECTED_UNIQUE_COUNT:
+        errors.append("integration target integrated count is not 289")
+    if payload.get("unintegrated_targets") != 0:
+        errors.append("integration target unintegrated count is not zero")
+
+    normalized_targets = normalized.get("unique_targets", []) if isinstance(normalized, dict) else []
+    target_urls = [str(item.get("normalized_url") or "").lower() for item in targets]
+    normalized_urls = [str(url).lower() for url in normalized_targets]
+    if len(target_urls) != len(set(target_urls)):
+        errors.append("integration targets contain duplicate normalized URLs")
+    if set(target_urls) != set(normalized_urls):
+        errors.append("integration target URLs do not match normalized targets")
+    normalized_entries = normalized.get("entries", []) if isinstance(normalized, dict) else []
+    expected_raw_by_url: dict[str, list[int]] = defaultdict(list)
+    for entry in normalized_entries if isinstance(normalized_entries, list) else []:
+        if not isinstance(entry, dict) or not isinstance(entry.get("normalized_url"), str):
+            continue
+        raw_index = entry.get("raw_index")
+        if isinstance(raw_index, int) and not isinstance(raw_index, bool):
+            expected_raw_by_url[entry["normalized_url"].lower()].append(raw_index)
+
+    classifications: Counter[str] = Counter()
+    raw_indexes: list[int] = []
+    target_skill_keys: set[tuple[str, str]] = set()
+    generated_reference_count = 0
+    for item in targets:
+        normalized_url = str(item.get("normalized_url") or "")
+        key = normalized_url.lower()
+        item_raw_indexes = normalized_raw_indexes(item.get("raw_indexes"))
+        raw_indexes.extend(item_raw_indexes)
+        if item_raw_indexes != sorted(expected_raw_by_url.get(key, [])):
+            errors.append(f"integration target raw indexes drifted: {normalized_url}")
+        classification = str(item.get("integration_classification") or "")
+        if classification not in EXPECTED_CLASSIFICATION_COUNTS:
+            errors.append(f"integration target has invalid classification: {normalized_url}")
+        else:
+            classifications[classification] += 1
+        hard_blocked = item.get("hard_blocked") is True
+        if hard_blocked != (classification == "integrated-quarantine-reference"):
+            errors.append(f"integration target hard-block state drifted: {normalized_url}")
+        if hard_blocked and item.get("trust_cleared_installable") is not False:
+            errors.append(f"hard-blocked target is marked installable: {normalized_url}")
+
+        rows = item.get("catalog_rows", [])
+        if not isinstance(rows, list) or not rows:
+            errors.append(f"integration target has no catalog rows: {normalized_url}")
+            continue
+        install_rows = [row for row in rows if isinstance(row, dict) and existing_row_has_install_surface(row)]
+        derived_installable = bool(install_rows) and all(existing_row_trust_cleared(row) for row in install_rows)
+        if hard_blocked:
+            derived_installable = False
+        if item.get("trust_cleared_installable") is not derived_installable:
+            errors.append(f"integration target installability disagrees with catalog rows: {normalized_url}")
+        generated_name = str(item.get("generated_reference_name") or "")
+        generated_path = str(item.get("generated_reference_path") or "")
+        has_generated_identity = bool(generated_name and generated_path)
+        expects_generated_identity = classification in GENERATED_REFERENCE_CLASSIFICATIONS
+        if bool(generated_name) != bool(generated_path):
+            errors.append(f"integration target has incomplete generated reference identity: {normalized_url}")
+        elif expects_generated_identity and not has_generated_identity:
+            errors.append(
+                f"integration target reference classification lacks generated reference identity: {normalized_url}"
+            )
+        elif not expects_generated_identity and has_generated_identity:
+            errors.append(
+                f"integration target existing classification exposes generated reference identity: {normalized_url}"
+            )
+        generated_reference_count += int(has_generated_identity)
+        matching_reference_rows: list[dict[str, Any]] = []
+        for row in rows:
+            if not isinstance(row, dict):
+                errors.append(f"integration target has a non-object catalog row: {normalized_url}")
+                continue
+            row_name = str(row.get("name") or "")
+            row_path = str(row.get("path") or "")
+            target_skill_key = (key, row_name)
+            if not row_name or target_skill_key in target_skill_keys:
+                errors.append(f"integration target has a duplicate or empty URL/skill mapping: {normalized_url}")
+            target_skill_keys.add(target_skill_key)
+            if row_name.startswith("candidate-corpus-") or "candidate-corpus-" in row_path:
+                errors.append(f"integration target retains a candidate-corpus authoring row: {normalized_url}")
+            if has_generated_identity and row_name == generated_name and row_path == generated_path:
+                matching_reference_rows.append(row)
+        if has_generated_identity:
+            if len(matching_reference_rows) != 1:
+                errors.append(
+                    f"integration target generated reference identity does not match exactly one catalog row: "
+                    f"{normalized_url}"
+                )
+            else:
+                reference_row = matching_reference_rows[0]
+                if (
+                    reference_row.get("has_install_command") is True
+                    or bool(str(reference_row.get("install_command") or "").strip())
+                    or str(reference_row.get("sync_kind") or "").strip() != "none"
+                ):
+                    errors.append(f"generated integration reference exposes an install surface: {normalized_url}")
+
+    if sorted(raw_indexes) != list(range(1, EXPECTED_RAW_COUNT + 1)):
+        errors.append("integration targets do not cover raw indexes 1 through 293 exactly once")
+    if dict(classifications) != EXPECTED_CLASSIFICATION_COUNTS:
+        errors.append("integration target classifications do not match the expected 121/6/158/4 split")
+    if payload.get("classification_counts") != EXPECTED_CLASSIFICATION_COUNTS:
+        errors.append("integration target top-level classification counts drifted")
+    if payload.get("generated_reference_count") != generated_reference_count:
+        errors.append("integration target generated reference count drifted")
+    expected_reference_count = sum(
+        EXPECTED_CLASSIFICATION_COUNTS.get(classification, 0) for classification in GENERATED_REFERENCE_CLASSIFICATIONS
+    )
+    if generated_reference_count != expected_reference_count:
+        errors.append("integration target item generated reference count does not match reference classifications")
+    return errors
 
 
 def existing_row_has_install_surface(row: dict[str, Any]) -> bool:
@@ -113,7 +285,7 @@ def existing_row_trust_cleared(row: dict[str, Any]) -> bool:
 
 
 def packet_has_trust_cleared_existing_row(packet: dict[str, Any]) -> bool:
-    rows = packet.get("existing_rows", [])
+    rows = packet.get("catalog_rows", packet.get("existing_rows", []))
     if not isinstance(rows, list):
         return False
     install_surface_rows = [row for row in rows if isinstance(row, dict) and existing_row_has_install_surface(row)]
@@ -121,10 +293,7 @@ def packet_has_trust_cleared_existing_row(packet: dict[str, Any]) -> bool:
 
 
 def packet_has_trust_cleared_coverage(packet: dict[str, Any]) -> bool:
-    return (
-        packet.get("existing_integration_status") == COVERAGE_TRUST_CLEARED
-        and packet_has_trust_cleared_existing_row(packet)
-    )
+    return packet.get("trust_cleared_installable") is True and packet_has_trust_cleared_existing_row(packet)
 
 
 def readiness_by_url(readiness: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -133,7 +302,7 @@ def readiness_by_url(readiness: dict[str, Any]) -> dict[str, dict[str, Any]]:
         "covered_by_existing_installable_catalog",
         "ready_for_repo_promotion",
         "ready_for_live_install",
-        "blocked_until_trust_gates",
+        "terminal_native_or_hard_blocked",
     ):
         for item in readiness.get(bucket, []):
             result[item["normalized_url"].lower()] = item
@@ -179,22 +348,30 @@ def source_status(record: dict[str, Any]) -> str:
 
 def surface_decision(record: dict[str, Any]) -> str:
     decision = record.get("install_or_integration_decision", "")
-    return TERMINAL_DECISION_MAP.get(decision, "blocked")
+    return TERMINAL_DECISION_MAP.get(decision, "native-surface")
 
 
-def record_blockers(record: dict[str, Any], readiness_item: dict[str, Any] | None) -> list[str]:
-    blockers = list(readiness_item.get("blocking_gates", TRUST_GATES) if readiness_item else TRUST_GATES)
+def record_route_requirements(record: dict[str, Any], readiness_item: dict[str, Any] | None) -> list[str]:
+    requirements = list(
+        readiness_item.get("terminal_route_requirements", TERMINAL_ROUTE_CHECKS)
+        if readiness_item
+        else TERMINAL_ROUTE_CHECKS
+    )
     if record.get("skipped_reason"):
-        blockers.append(record["skipped_reason"])
-    if record.get("install_or_integration_decision") == "skip_duplicate":
-        blockers.append("duplicate raw entry covered by canonical normalized target")
+        requirements.append(record["skipped_reason"])
+    if record.get("install_or_integration_decision") == "duplicate_covered":
+        requirements.append("duplicate raw entry covered by canonical normalized target")
     if source_status(record) == "unavailable":
-        blockers.append("upstream unavailable or malformed")
-    return dedupe(blockers)
+        requirements.append("upstream unavailable or malformed")
+    return dedupe(requirements)
 
 
 def build_context() -> dict[str, Any]:
     normalized = load_json("normalized-urls.json")
+    integration_targets = load_json(INTEGRATION_TARGET_FILE)
+    target_errors = integration_target_errors(integration_targets, normalized)
+    if target_errors:
+        raise ValueError("invalid integration target ledger: " + "; ".join(target_errors))
     records = load_json("all-records.json")["records"]
     decisions = load_json("integration-decisions.json")["decisions"]
     coverage = load_json("existing-integration-coverage.json")
@@ -221,9 +398,12 @@ def build_context() -> dict[str, Any]:
         for target in wave["targets"]
     }
     source_list_by_url = by_normalized(source_list_evidence.get("items", []))
+    integration_targets_by_url = by_normalized(integration_targets["items"])
 
     return {
         "normalized": normalized,
+        "integration_targets": integration_targets,
+        "integration_targets_by_url": integration_targets_by_url,
         "records": records,
         "schema": schema,
         "normalized_entries_by_raw": normalized_entries_by_raw,
@@ -245,6 +425,7 @@ def build_raw_packets(context: dict[str, Any]) -> list[dict[str, Any]]:
         raw_lane = context["raw_lanes_by_index"][record["raw_index"]]
         readiness_item = context["readiness_by_url"].get(key)
         coverage_item = context["coverage_by_url"].get(key, {})
+        integration_target = context["integration_targets_by_url"][key]
         source_list_item = context["source_list_by_url"].get(key)
         packet = {
             "packet_id": f"U{record['raw_index']:03d}",
@@ -268,12 +449,18 @@ def build_raw_packets(context: dict[str, Any]) -> list[dict[str, Any]]:
             "live_install_eligible": False,
             "docs_steward_surfaces": record["docs_steward_surfaces"],
             "tests_or_checks_run": record["tests_or_checks_run"],
-            "blockers": record_blockers(record, readiness_item),
+            "terminal_route_requirements": record_route_requirements(record, readiness_item),
             "reviewer_notes": record["reviewer_notes"],
             "current_intake_decision": record["install_or_integration_decision"],
             "risk_tier": record["risk_tier"],
             "risk_keywords": record["risk_keywords"],
             "canonical_source": record["canonical_source"],
+            "integration_classification": integration_target["integration_classification"],
+            "integration_surface": integration_target["integration_surface"],
+            "trust_cleared_installable": integration_target["trust_cleared_installable"],
+            "hard_blocked": integration_target["hard_blocked"],
+            "integrated": bool(integration_target.get("catalog_rows")),
+            "catalog_rows": integration_target["catalog_rows"],
             "existing_integration_status": coverage_item.get("coverage_status", "unknown"),
             "existing_rows": coverage_item.get("existing_rows", []),
             "source_list_evidence": source_list_item or {},
@@ -283,7 +470,7 @@ def build_raw_packets(context: dict[str, Any]) -> list[dict[str, Any]]:
             "license_packet": record["license_packet"],
             "security_packet": record["security_packet"],
             "compliance_packet": record["compliance_packet"],
-            "execution_policy": "candidate code was not executed; live install is blocked until all trust gates pass",
+            "execution_policy": "candidate code was not executed; terminal rows do not emit live install commands",
         }
         packets.append(packet)
     return packets
@@ -304,14 +491,16 @@ def build_unique_packets(context: dict[str, Any], raw_packets: list[dict[str, An
         raw_group = sorted(groups[key], key=lambda packet: packet["raw_index"])
         primary = raw_group[0]
         coverage_item = context["coverage_by_url"].get(key, {})
+        integration_target = context["integration_targets_by_url"][key]
         decision_item = context["decisions_by_url"].get(key, {})
-        readiness_item = context["readiness_by_url"].get(key, {})
         unique_lane = context["unique_lanes_by_url"][key]
         wave = context["wave_by_url"].get(key, {})
         source_list_item = context["source_list_by_url"].get(key)
-        blockers = dedupe([blocker for packet in raw_group for blocker in packet["blockers"]])
+        route_requirements = dedupe(
+            requirement for packet in raw_group for requirement in packet["terminal_route_requirements"]
+        )
         if coverage_item.get("coverage_status") == COVERAGE_TRUST_CLEARED:
-            blockers = []
+            route_requirements = []
         env_values = dedupe([value for packet in raw_group for value in packet["env_vars_or_credentials"]])
         docs_surfaces = sorted({surface for packet in raw_group for surface in packet["docs_steward_surfaces"]})
         artifact_types = sorted({artifact for packet in raw_group for artifact in packet["artifact_types_found"]})
@@ -333,14 +522,20 @@ def build_unique_packets(context: dict[str, Any], raw_packets: list[dict[str, An
             "attribution_notes": dedupe([packet["attribution_notes"] for packet in raw_group]),
             "current_intake_decision": decision_item.get("decision", primary["current_intake_decision"]),
             "surface_decision": unique_lane["terminal_decision_status"],
+            "integration_classification": integration_target["integration_classification"],
+            "integration_surface": integration_target["integration_surface"],
+            "trust_cleared_installable": integration_target["trust_cleared_installable"],
+            "hard_blocked": integration_target["hard_blocked"],
+            "integrated": bool(integration_target.get("catalog_rows")),
+            "catalog_rows": integration_target["catalog_rows"],
             "existing_integration_status": coverage_item.get("coverage_status", "unknown"),
             "existing_rows": coverage_item.get("existing_rows", []),
             "source_list_evidence": source_list_item or {},
-            "install_command": readiness_item.get("install_command", ""),
-            "live_install_eligible": readiness_item.get("live_install_eligible", False),
-            "repo_mutation_eligible": readiness_item.get("repo_mutation_eligible", False),
+            "install_command": "",
+            "live_install_eligible": False,
+            "repo_mutation_eligible": False,
             "docs_steward_surfaces": docs_surfaces,
-            "blockers": blockers,
+            "terminal_route_requirements": route_requirements,
             "leaf_checks": unique_lane["leaf_checks"],
             "promotion_wave": wave,
             "reviewer_notes": "Unique-target synthesis packet; final promotion requires all raw packet gates to pass.",
@@ -351,6 +546,7 @@ def build_unique_packets(context: dict[str, Any], raw_packets: list[dict[str, An
 
 def gate_statuses(packet: dict[str, Any]) -> dict[str, str]:
     has_existing_installable = packet_has_trust_cleared_coverage(packet)
+    classification = str(packet.get("integration_classification") or "")
     source_list_evidence = packet.get("source_list_evidence") or {}
     source_list_evidence_status = source_list_evidence.get("evidence_status")
     has_source_list = bool(source_list_evidence)
@@ -368,6 +564,39 @@ def gate_statuses(packet: dict[str, Any]) -> dict[str, str]:
             "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
             "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
             "live install": "no-new-live-install-command-emitted",
+        }
+    if classification == "integrated-quarantine-reference":
+        return {
+            "source-list evidence": "quarantine-source-evidence-recorded",
+            "license review": "quarantine-license-evidence-recorded",
+            "security review": "hard-quarantine-risk-recorded",
+            "attribution review": "quarantine-source-attribution-recorded",
+            "auth review": "non-executable-reference-no-auth-use",
+            "docs-steward promotion": "stable-quarantine-reference-generated-and-indexed",
+            "target-specific validation": "quarantine-reference-validated",
+            "live install": "active-hard-block-no-command",
+        }
+    if classification == "integrated-reference":
+        return {
+            "source-list evidence": "source-evidence-recorded-for-reference",
+            "license review": "reference-license-evidence-recorded",
+            "security review": "non-executable-reference-boundary-recorded",
+            "attribution review": "reference-source-attribution-recorded",
+            "auth review": "non-executable-reference-no-auth-use",
+            "docs-steward promotion": "stable-reference-generated-and-indexed",
+            "target-specific validation": "integrated-reference-validated",
+            "live install": "non-installable-reference-no-command",
+        }
+    if classification == "inspection-existing":
+        return {
+            "source-list evidence": "existing-catalog-surface-recorded",
+            "license review": "existing-surface-retains-inspection-gate",
+            "security review": "existing-surface-retains-inspection-gate",
+            "attribution review": "existing-surface-attribution-recorded",
+            "auth review": "existing-surface-retains-inspection-gate",
+            "docs-steward promotion": "existing-inspection-surface-indexed",
+            "target-specific validation": "integration-present-installability-not-cleared",
+            "live install": "inspection-required-no-command",
         }
     license_status = "metadata-present-needs-file-review" if packet["licenses"] else "missing-license-review"
     if any(str(license_value).lower().startswith("not-fetched") for license_value in packet["licenses"]):
@@ -390,86 +619,108 @@ def gate_statuses(packet: dict[str, Any]) -> dict[str, str]:
         "auth review": "auth-required-review" if packet["auth_required"] else "metadata-only-no-auth-detected",
         "docs-steward promotion": "catalog-intake-present-final-docs-pending",
         "target-specific validation": "pending-target-validation",
-        "live install": "blocked",
+        "live install": "terminal-native-surface-no-command",
     }
 
 
 def build_gate_matrix(unique_packets: list[dict[str, Any]]) -> dict[str, Any]:
     items = []
     gate_counts: dict[str, Counter[str]] = defaultdict(Counter)
-    covered_count = 0
-    blocked_count = 0
+    classifications: Counter[str] = Counter()
+    integrated_count = 0
+    trust_cleared_installable_count = 0
+    active_install_blocks = 0
     for packet in unique_packets:
         statuses = gate_statuses(packet)
-        covered = packet_has_trust_cleared_coverage(packet)
-        covered_count += int(covered)
-        blocked_count += int(not covered)
+        classification = str(packet.get("integration_classification") or "")
+        classifications[classification] += 1
+        integrated_count += int(packet.get("integrated") is True)
+        trust_cleared_installable_count += int(packet_has_trust_cleared_coverage(packet))
+        active_install_blocks += int(packet.get("hard_blocked") is True)
         for gate, status in statuses.items():
             gate_counts[gate][status] += 1
-        items.append(
-            {
-                "packet_id": packet["packet_id"],
-                "normalized_url": packet["normalized_url"],
-                "raw_indexes": packet["raw_indexes"],
-                "existing_integration_status": packet["existing_integration_status"],
-                "auth_required": packet["auth_required"],
-                "gate_statuses": statuses,
-                "final_status": (
-                    COVERAGE_TRUST_CLEARED if covered else "blocked-until-trust-gates"
-                ),
-                "install_command": "",
-            }
-        )
+        items.append({
+            "packet_id": packet["packet_id"],
+            "normalized_url": packet["normalized_url"],
+            "raw_indexes": packet["raw_indexes"],
+            "integration_classification": classification,
+            "integration_surface": packet["integration_surface"],
+            "trust_cleared_installable": packet["trust_cleared_installable"],
+            "hard_blocked": packet["hard_blocked"],
+            "integrated": packet["integrated"],
+            "existing_integration_status": packet["existing_integration_status"],
+            "auth_required": packet["auth_required"],
+            "gate_statuses": statuses,
+            "final_status": classification,
+            "install_command": "",
+        })
     return {
         "version": 1,
         "generated_at": now(),
         "summary": {
             "unique_targets": len(unique_packets),
-            "covered_by_existing_installable_catalog": covered_count,
+            "integrated_targets": integrated_count,
+            "unintegrated_targets": len(unique_packets) - integrated_count,
+            "classification_counts": dict(sorted(classifications.items())),
+            "trust_cleared_installable_targets": trust_cleared_installable_count,
+            "integrated_quarantine_targets": classifications["integrated-quarantine-reference"],
+            "active_install_blocks": active_install_blocks,
             "ready_for_repo_promotion": 0,
             "ready_for_live_install": 0,
-            "blocked_until_trust_gates": blocked_count,
         },
-        "trust_gates": TRUST_GATES,
+        "terminal_route_checks": TERMINAL_ROUTE_CHECKS,
         "gate_status_counts": {gate: dict(counts) for gate, counts in sorted(gate_counts.items())},
         "items": items,
     }
 
 
 def build_install_preview(unique_packets: list[dict[str, Any]]) -> dict[str, Any]:
-    covered_targets = [
+    trust_cleared_installable_targets = [
         {
             "packet_id": packet["packet_id"],
             "normalized_url": packet["normalized_url"],
             "raw_indexes": packet["raw_indexes"],
-            "existing_rows": packet["existing_rows"],
+            "integration_classification": packet["integration_classification"],
+            "catalog_rows": packet["catalog_rows"],
         }
         for packet in unique_packets
         if packet_has_trust_cleared_coverage(packet)
     ]
-    blocked = [
+    non_installable_integrated_targets = [
         {
             "packet_id": packet["packet_id"],
             "normalized_url": packet["normalized_url"],
             "raw_indexes": packet["raw_indexes"],
-            "blocking_gates": packet["blockers"],
+            "integration_classification": packet["integration_classification"],
+            "hard_blocked": packet["hard_blocked"],
+            "terminal_route_requirements": packet["terminal_route_requirements"],
         }
         for packet in unique_packets
         if not packet_has_trust_cleared_coverage(packet)
     ]
+    integrated_quarantine_targets = [
+        item for item in non_installable_integrated_targets if item["hard_blocked"] is True
+    ]
+    classifications = Counter(str(packet["integration_classification"]) for packet in unique_packets)
     return {
         "version": 1,
         "generated_at": now(),
         "status": "no-live-install-commands-emitted",
         "command_count": 0,
         "commands": [],
-        "covered_existing_target_count": len(covered_targets),
-        "covered_existing_targets": covered_targets,
-        "blocked_target_count": len(blocked),
-        "blocked_targets": blocked,
+        "integrated_target_count": sum(packet.get("integrated") is True for packet in unique_packets),
+        "unintegrated_target_count": sum(packet.get("integrated") is not True for packet in unique_packets),
+        "classification_counts": dict(sorted(classifications.items())),
+        "trust_cleared_installable_target_count": len(trust_cleared_installable_targets),
+        "trust_cleared_installable_targets": trust_cleared_installable_targets,
+        "non_installable_integrated_target_count": len(non_installable_integrated_targets),
+        "non_installable_integrated_targets": non_installable_integrated_targets,
+        "integrated_quarantine_target_count": len(integrated_quarantine_targets),
+        "integrated_quarantine_targets": integrated_quarantine_targets,
+        "active_install_blocks": len(integrated_quarantine_targets),
         "rule": (
-            "Do not run npx skills add, wagents skills sync --apply, MCP installs, or plugin installs until "
-            "target packets pass source, license, security, attribution, auth, docs, and validation gates."
+            "This artifact is command-free. Integration classification does not grant live-install permission, "
+            "and hard-quarantine references retain active install blocks."
         ),
     }
 
@@ -479,23 +730,22 @@ def promotion_target_key(item: dict[str, Any]) -> tuple[Any, Any, tuple[Any, ...
 
 
 def promotion_final_status(item: dict[str, Any]) -> str:
-    statuses = item.get("gate_statuses") or {}
-    if (
-        item.get("existing_integration_status") == COVERAGE_TRUST_CLEARED
-        and statuses.get("live install") == "no-new-live-install-command-emitted"
-    ):
-        return COVERAGE_TRUST_CLEARED
-    return "blocked-until-trust-gates"
+    return str(item.get("integration_classification") or "")
 
 
-def expected_matrix_summary(items: list[dict[str, Any]]) -> dict[str, int]:
-    covered = sum(1 for item in items if promotion_final_status(item) == COVERAGE_TRUST_CLEARED)
+def expected_matrix_summary(items: list[dict[str, Any]]) -> dict[str, Any]:
+    classifications = Counter(promotion_final_status(item) for item in items)
+    integrated = sum(item.get("integrated") is True for item in items)
     return {
         "unique_targets": len(items),
-        "covered_by_existing_installable_catalog": covered,
+        "integrated_targets": integrated,
+        "unintegrated_targets": len(items) - integrated,
+        "classification_counts": dict(sorted(classifications.items())),
+        "trust_cleared_installable_targets": sum(item.get("trust_cleared_installable") is True for item in items),
+        "integrated_quarantine_targets": classifications["integrated-quarantine-reference"],
+        "active_install_blocks": sum(item.get("hard_blocked") is True for item in items),
         "ready_for_repo_promotion": 0,
         "ready_for_live_install": 0,
-        "blocked_until_trust_gates": len(items) - covered,
     }
 
 
@@ -510,29 +760,29 @@ def expected_gate_status_counts(items: list[dict[str, Any]]) -> dict[str, dict[s
 
 def expected_preview_partitions(
     unique_packets: list[dict[str, Any]],
-) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    covered = []
-    blocked = []
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+    trust_cleared_installable = []
+    non_installable_integrated = []
     for packet in unique_packets:
         if packet_has_trust_cleared_coverage(packet):
-            covered.append(
-                {
-                    "packet_id": packet.get("packet_id"),
-                    "normalized_url": packet.get("normalized_url"),
-                    "raw_indexes": packet.get("raw_indexes"),
-                    "existing_rows": packet.get("existing_rows"),
-                }
-            )
+            trust_cleared_installable.append({
+                "packet_id": packet.get("packet_id"),
+                "normalized_url": packet.get("normalized_url"),
+                "raw_indexes": packet.get("raw_indexes"),
+                "integration_classification": packet.get("integration_classification"),
+                "catalog_rows": packet.get("catalog_rows"),
+            })
         else:
-            blocked.append(
-                {
-                    "packet_id": packet.get("packet_id"),
-                    "normalized_url": packet.get("normalized_url"),
-                    "raw_indexes": packet.get("raw_indexes"),
-                    "blocking_gates": packet.get("blockers"),
-                }
-            )
-    return covered, blocked
+            non_installable_integrated.append({
+                "packet_id": packet.get("packet_id"),
+                "normalized_url": packet.get("normalized_url"),
+                "raw_indexes": packet.get("raw_indexes"),
+                "integration_classification": packet.get("integration_classification"),
+                "hard_blocked": packet.get("hard_blocked"),
+                "terminal_route_requirements": packet.get("terminal_route_requirements"),
+            })
+    quarantine = [item for item in non_installable_integrated if item["hard_blocked"] is True]
+    return trust_cleared_installable, non_installable_integrated, quarantine
 
 
 def _packet_rows(payload: Any) -> list[dict[str, Any]]:
@@ -569,9 +819,7 @@ def missing_installed_skill_md_paths(override: dict[str, Any]) -> list[str]:
 
 def live_install_evidence_stats(overrides: list[Any]) -> dict[str, Any]:
     live_rows = [
-        override
-        for override in overrides
-        if isinstance(override, dict) and override.get("live_install_executed")
+        override for override in overrides if isinstance(override, dict) and override.get("live_install_executed")
     ]
     installed_paths = [
         raw_path
@@ -579,11 +827,7 @@ def live_install_evidence_stats(overrides: list[Any]) -> dict[str, Any]:
         for raw_path in override.get("installed_paths", [])
         if isinstance(raw_path, str) and raw_path.strip()
     ]
-    missing = [
-        path
-        for override in live_rows
-        for path in missing_installed_skill_md_paths(override)
-    ]
+    missing = [path for override in live_rows for path in missing_installed_skill_md_paths(override)]
     return {
         "live_install_rows": len(live_rows),
         "installed_path_refs": len(installed_paths),
@@ -608,19 +852,26 @@ def expected_unique_packet_keys(
 
 
 def promotion_gate_summary_text(matrix: dict[str, Any], preview: dict[str, Any]) -> str:
-    covered_count = matrix["summary"].get("covered_by_existing_installable_catalog", 0)
+    summary = matrix["summary"]
     lines = [
-        "# Candidate Corpus Promotion Gate Summary",
+        "# Candidate Corpus Integration Gate Summary",
         "",
-        f"- Unique targets evaluated: {matrix['summary']['unique_targets']}",
-        f"- Covered by existing installable catalog rows: {covered_count}",
-        f"- Ready for repo promotion: {matrix['summary']['ready_for_repo_promotion']}",
-        f"- Ready for live install: {matrix['summary']['ready_for_live_install']}",
-        f"- Blocked until trust gates: {matrix['summary']['blocked_until_trust_gates']}",
+        f"- Unique targets evaluated: {summary['unique_targets']}",
+        f"- Integrated targets: {summary['integrated_targets']}",
+        f"- Unintegrated targets: {summary['unintegrated_targets']}",
+        f"- Integration classifications: {summary['classification_counts']}",
+        f"- Trust-cleared installable targets: {summary['trust_cleared_installable_targets']}",
+        f"- Integrated quarantine references: {summary['integrated_quarantine_targets']}",
+        f"- Active install blocks: {summary['active_install_blocks']}",
+        f"- Ready for repo promotion: {summary['ready_for_repo_promotion']}",
+        f"- Ready for live install: {summary['ready_for_live_install']}",
         f"- Live install commands emitted: {preview['command_count']}",
         "",
-        "Existing installable catalog coverage is credited without emitting new live install commands.",
-        "The remaining packet files are promotion work queues, not proof of completed adaptation or installation.",
+        (
+            "Every normalized source has a stable catalog integration; integration classification is independent "
+            "from trust-cleared installability."
+        ),
+        "Quarantine references remain non-installable with active hard blocks.",
     ]
     return "\n".join(lines) + "\n"
 
@@ -671,8 +922,10 @@ def validate_outputs() -> dict[str, Any]:
     preview = load_json(INSTALL_PREVIEW_FILE)
     schema = load_json("research-packet-schema.json")
     normalized = load_json("normalized-urls.json")
+    integration_targets = load_json(INTEGRATION_TARGET_FILE)
 
     errors: list[str] = []
+    errors.extend(integration_target_errors(integration_targets, normalized))
     required = set(schema.get("required_packet_fields", [])) if isinstance(schema, dict) else set()
     raw_packet_rows = raw.get("packets", []) if isinstance(raw, dict) else []
     unique_packet_rows = unique.get("packets", []) if isinstance(unique, dict) else []
@@ -687,6 +940,10 @@ def validate_outputs() -> dict[str, Any]:
     normalized_targets = normalized.get("unique_targets", []) if isinstance(normalized, dict) else []
     if not isinstance(normalized_targets, list):
         normalized_targets = []
+    target_items = integration_targets.get("items", []) if isinstance(integration_targets, dict) else []
+    if not isinstance(target_items, list):
+        target_items = []
+    targets_by_url = by_normalized([item for item in target_items if isinstance(item, dict)])
     if not isinstance(raw, dict):
         errors.append("raw packets payload is not an object")
     if not isinstance(unique, dict):
@@ -724,29 +981,42 @@ def validate_outputs() -> dict[str, Any]:
         errors.append("a packet is unexpectedly live-install eligible")
     if any(packet.get("install_command") for packet in raw_packets + unique_packets):
         errors.append("a packet unexpectedly emitted an install command")
-    for packet in unique_packets:
-        if packet.get("existing_integration_status") == COVERAGE_TRUST_CLEARED:
-            if not packet_has_trust_cleared_existing_row(packet):
-                errors.append(
-                    f"covered packet {packet.get('normalized_url')} lacks trust-cleared existing catalog row"
-                )
-        elif packet_has_trust_cleared_existing_row(packet):
-            errors.append(
-                f"packet {packet.get('normalized_url')} has trust-cleared existing catalog row but blocked status"
-            )
+    target_fields = (
+        "integration_classification",
+        "integration_surface",
+        "trust_cleared_installable",
+        "hard_blocked",
+        "catalog_rows",
+    )
+    for packet in raw_packets + unique_packets:
+        target = targets_by_url.get(str(packet.get("normalized_url") or "").lower())
+        if target is None:
+            errors.append(f"packet has no integration target: {packet.get('normalized_url')}")
+            continue
+        for field in target_fields:
+            if packet.get(field) != target.get(field):
+                errors.append(f"packet {packet.get('packet_id')} {field} drifted from integration target")
+        if packet.get("integrated") is not bool(target.get("catalog_rows")):
+            errors.append(f"packet {packet.get('packet_id')} integrated state drifted from integration target")
     preview_commands = preview_payload.get("commands", [])
     if not isinstance(preview_commands, list):
         preview_commands = []
     if preview_payload.get("command_count") != 0 or preview_commands != []:
-        errors.append("live install preview emitted commands before trust gates")
+        errors.append("live install preview emitted commands from terminal rows")
 
     summary = matrix.get("summary", {}) if isinstance(matrix, dict) else {}
     if not isinstance(summary, dict):
         summary = {}
-    covered = _safe_count(summary.get("covered_by_existing_installable_catalog", 0))
-    blocked = _safe_count(summary.get("blocked_until_trust_gates", 0))
-    if covered + blocked != EXPECTED_UNIQUE_COUNT:
-        errors.append("gate matrix does not account for every unique target")
+    if _safe_count(summary.get("integrated_targets")) != EXPECTED_UNIQUE_COUNT:
+        errors.append("gate matrix does not report all 289 targets integrated")
+    if _safe_count(summary.get("unintegrated_targets")) != 0:
+        errors.append("gate matrix reports unintegrated targets")
+    if summary.get("classification_counts") != EXPECTED_CLASSIFICATION_COUNTS:
+        errors.append("gate matrix integration classification counts drifted")
+    if _safe_count(summary.get("integrated_quarantine_targets")) != 4:
+        errors.append("gate matrix quarantine integration count drifted")
+    if _safe_count(summary.get("active_install_blocks")) != 4:
+        errors.append("gate matrix active install block count drifted")
     if len(matrix_items) != EXPECTED_UNIQUE_COUNT:
         errors.append(f"gate matrix item count {len(matrix_items)} != {EXPECTED_UNIQUE_COUNT}")
 
@@ -760,13 +1030,21 @@ def validate_outputs() -> dict[str, Any]:
         errors.append("gate matrix target rows do not match unique packet order")
 
     unique_by_key = {promotion_target_key(packet): packet for packet in unique_packets}
-    expected_status_keys = set(TRUST_GATES) | {"live install"}
+    expected_status_keys = set(TERMINAL_ROUTE_CHECKS) | {"live install"}
     for item in matrix_items:
         key = promotion_target_key(item)
         packet = unique_by_key.get(key)
         if packet is None:
             continue
-        for field in ("existing_integration_status", "auth_required"):
+        for field in (
+            "integration_classification",
+            "integration_surface",
+            "trust_cleared_installable",
+            "hard_blocked",
+            "integrated",
+            "existing_integration_status",
+            "auth_required",
+        ):
             if item.get(field) != packet.get(field):
                 errors.append(f"gate matrix row {item.get('packet_id')} {field} drifted from unique packet")
         expected_statuses = gate_statuses(packet)
@@ -783,28 +1061,43 @@ def validate_outputs() -> dict[str, Any]:
     expected_summary = expected_matrix_summary(matrix_items)
     if summary != expected_summary:
         errors.append("gate matrix summary does not match matrix rows")
-    if not isinstance(matrix, dict) or matrix.get("trust_gates") != TRUST_GATES:
-        errors.append("gate matrix trust gates drifted")
+    if not isinstance(matrix, dict) or matrix.get("terminal_route_checks") != TERMINAL_ROUTE_CHECKS:
+        errors.append("gate matrix terminal route checks drifted")
     if not isinstance(matrix, dict) or matrix.get("gate_status_counts") != expected_gate_status_counts(matrix_items):
         errors.append("gate matrix gate status counts do not match rows")
 
     if preview_payload.get("command_count") != len(preview_commands):
         errors.append("live install preview command count does not match commands")
-    expected_covered, expected_blocked = expected_preview_partitions(unique_packets)
-    covered_existing_targets = preview_payload.get("covered_existing_targets", [])
-    blocked_targets = preview_payload.get("blocked_targets", [])
-    if not isinstance(covered_existing_targets, list):
-        covered_existing_targets = []
-    if not isinstance(blocked_targets, list):
-        blocked_targets = []
-    if preview_payload.get("covered_existing_target_count") != len(covered_existing_targets):
-        errors.append("live install preview covered target count does not match rows")
-    if preview_payload.get("blocked_target_count") != len(blocked_targets):
-        errors.append("live install preview blocked target count does not match rows")
-    if covered_existing_targets != expected_covered:
-        errors.append("live install preview covered targets do not match unique packets")
-    if blocked_targets != expected_blocked:
-        errors.append("live install preview blocked targets do not match unique packets")
+    expected_installable, expected_non_installable, expected_quarantine = expected_preview_partitions(unique_packets)
+    installable_targets = preview_payload.get("trust_cleared_installable_targets", [])
+    non_installable_targets = preview_payload.get("non_installable_integrated_targets", [])
+    quarantine_targets = preview_payload.get("integrated_quarantine_targets", [])
+    if not isinstance(installable_targets, list):
+        installable_targets = []
+    if not isinstance(non_installable_targets, list):
+        non_installable_targets = []
+    if not isinstance(quarantine_targets, list):
+        quarantine_targets = []
+    if preview_payload.get("integrated_target_count") != EXPECTED_UNIQUE_COUNT:
+        errors.append("live install preview integrated target count drifted")
+    if preview_payload.get("unintegrated_target_count") != 0:
+        errors.append("live install preview reports unintegrated targets")
+    if preview_payload.get("classification_counts") != EXPECTED_CLASSIFICATION_COUNTS:
+        errors.append("live install preview classification counts drifted")
+    if preview_payload.get("trust_cleared_installable_target_count") != len(installable_targets):
+        errors.append("live install preview installable target count does not match rows")
+    if preview_payload.get("non_installable_integrated_target_count") != len(non_installable_targets):
+        errors.append("live install preview non-installable target count does not match rows")
+    if preview_payload.get("integrated_quarantine_target_count") != len(quarantine_targets):
+        errors.append("live install preview quarantine target count does not match rows")
+    if preview_payload.get("active_install_blocks") != len(quarantine_targets):
+        errors.append("live install preview active install block count does not match quarantine rows")
+    if installable_targets != expected_installable:
+        errors.append("live install preview installable targets do not match unique packets")
+    if non_installable_targets != expected_non_installable:
+        errors.append("live install preview non-installable targets do not match unique packets")
+    if quarantine_targets != expected_quarantine:
+        errors.append("live install preview quarantine targets do not match unique packets")
 
     try:
         summary_text = (MANIFEST_DIR / SUMMARY_FILE).read_text(encoding="utf-8")
@@ -835,6 +1128,7 @@ def _load_promotions() -> list[dict[str, Any]]:
 
 def validate_final_state() -> dict[str, Any]:
     normalized = load_json("normalized-urls.json")
+    integration_targets = load_json(INTEGRATION_TARGET_FILE)
     all_records = load_json("all-records.json")
     summary = load_json("catalog-authoring-summary.json")
     progress = load_json("full-integration-progress.json")
@@ -843,12 +1137,19 @@ def validate_final_state() -> dict[str, Any]:
     unique_packets = load_json(UNIQUE_PACKET_FILE)
     final_report = (MANIFEST_DIR / "final-review-report.md").read_text(encoding="utf-8")
     overrides = _load_promotions()
+    harness_assurance = load_json(HARNESS_ASSURANCE_FILE)
+    non_skill_assurance = load_json(NON_SKILL_ASSURANCE_FILE)
 
     records = all_records.get("records", []) if isinstance(all_records, dict) else []
     deep_items = deep_audit.get("items", []) if isinstance(deep_audit, dict) else []
     raw_packet_rows = raw_packets.get("packets", []) if isinstance(raw_packets, dict) else []
     unique_packet_rows = unique_packets.get("packets", []) if isinstance(unique_packets, dict) else []
     errors: list[str] = []
+    errors.extend(integration_target_errors(integration_targets, normalized))
+    target_items = integration_targets.get("items", []) if isinstance(integration_targets, dict) else []
+    if not isinstance(target_items, list):
+        target_items = []
+    targets_by_url = by_normalized([item for item in target_items if isinstance(item, dict)])
 
     if normalized.get("raw_count") != EXPECTED_RAW_COUNT:
         errors.append("normalized raw_count drifted")
@@ -860,6 +1161,8 @@ def validate_final_state() -> dict[str, Any]:
         errors.append("raw research packets do not cover every raw candidate")
     if len(unique_packet_rows) != EXPECTED_UNIQUE_COUNT:
         errors.append("unique research packets do not cover every normalized target")
+    if list(AUTHORING_DIR.glob("candidate-corpus-*.mdx")):
+        errors.append("candidate-corpus authoring rows remain after integration")
     if deep_audit.get("candidate_code_executed") is not False:
         errors.append("deep source audit must not execute candidate code")
     if deep_audit.get("unique_target_count") != EXPECTED_UNIQUE_COUNT:
@@ -871,15 +1174,49 @@ def validate_final_state() -> dict[str, Any]:
     terminal_blocker_count = _safe_count(status_counts.get("terminal-blocker"))
     if audited_count + terminal_blocker_count != EXPECTED_UNIQUE_COUNT:
         errors.append("deep source audit status counts do not cover every normalized target")
-    nvidia_blockers = [
+    deep_by_url = {
+        str(item.get("normalized_url") or "").lower(): item
+        for item in deep_items
+        if isinstance(item, dict) and item.get("normalized_url")
+    }
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        deep_item = deep_by_url.get(str(record.get("normalized_url") or "").lower(), {})
+        auth_review = deep_item.get("auth_review", {}) if isinstance(deep_item, dict) else {}
+        if isinstance(auth_review, dict) and deep_item.get("audit_complete"):
+            if record.get("auth_required") is not bool(auth_review.get("auth_required")):
+                errors.append(f"record {record.get('raw_index')} auth drifted from deep source audit")
+            expected_env = {
+                str(value)
+                for value in auth_review.get("env_vars_or_credentials", [])
+                if str(value).strip() and str(value) != "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+            }
+            actual_env = set(record.get("env_vars_or_credentials", []))
+            if not expected_env.issubset(actual_env):
+                errors.append(f"record {record.get('raw_index')} auth variables drifted from deep source audit")
+            if not auth_review.get("auth_required") and actual_env:
+                errors.append(f"record {record.get('raw_index')} has auth variables without a deep auth boundary")
+        if not record.get("files_added") or not record.get("files_modified"):
+            errors.append(f"record {record.get('raw_index')} lacks final integration file evidence")
+    nvidia_records = [
+        record
+        for record in records
+        if isinstance(record, dict) and record.get("raw_url") == "https://github.com/NVIDIA/skills-"
+    ]
+    if len(nvidia_records) != 1:
+        errors.append("malformed NVIDIA/skills- raw entry is not preserved exactly once")
+    elif nvidia_records[0].get("normalized_url") != "https://github.com/NVIDIA/skills":
+        errors.append("malformed NVIDIA/skills- raw entry is not resolved to canonical NVIDIA/skills")
+    nvidia_audited = [
         item
         for item in deep_items
         if isinstance(item, dict)
-        and item.get("normalized_url") == "https://github.com/NVIDIA/skills-"
-        and item.get("status") == "terminal-blocker"
+        and item.get("normalized_url") == "https://github.com/NVIDIA/skills"
+        and item.get("status") == "audited"
     ]
-    if len(nvidia_blockers) != 1:
-        errors.append("malformed NVIDIA/skills- target is not recorded as one terminal blocker")
+    if len(nvidia_audited) != 1:
+        errors.append("canonical NVIDIA/skills target is not recorded as one audited target")
 
     live_stats = live_install_evidence_stats(overrides)
     live_installed = live_stats["live_install_rows"]
@@ -899,16 +1236,85 @@ def validate_final_state() -> dict[str, Any]:
     if progress.get("live_install", {}).get("missing_skill_md_count") != len(missing_skill_md):
         errors.append("missing SKILL.md count does not match progress")
     if missing_skill_md:
-        errors.append(
-            "recorded live install evidence has missing SKILL.md paths: "
-            + ", ".join(missing_skill_md[:5])
-        )
+        errors.append("recorded live install evidence has missing SKILL.md paths: " + ", ".join(missing_skill_md[:5]))
     if any(override.get("source_list_evidence") != "source-list-found" for override in overrides):
         errors.append("a promoted override lacks source-list-found evidence")
-    if any(not override.get("license") for override in overrides):
+    if any(str(override.get("license") or "").upper() in {"", "NOASSERTION", "UNKNOWN"} for override in overrides):
         errors.append("a promoted override lacks license evidence")
+    if any(str(override.get("intake_decision") or "").startswith("hard_blocked_") for override in overrides):
+        errors.append("a terminal hard-block override was promoted")
+    for override in overrides:
+        normalized_url = str(override.get("normalized_url") or "")
+        target = targets_by_url.get(normalized_url.lower())
+        if target is None:
+            errors.append(f"promoted override has no integration target: {normalized_url}")
+            continue
+        if target.get("hard_blocked") is True:
+            errors.append(f"hard-blocked integration target was promoted: {normalized_url}")
+        if target.get("integration_classification") != "installable-existing":
+            errors.append(f"current promoted override is not classified installable-existing: {normalized_url}")
+        target_row_names = {
+            str(row.get("name") or "") for row in target.get("catalog_rows", []) if isinstance(row, dict)
+        }
+        if str(override.get("skill_name") or "") not in target_row_names:
+            errors.append(f"promoted override row is absent from integration target: {normalized_url}")
+    assurance_totals = harness_assurance.get("totals", {}) if isinstance(harness_assurance, dict) else {}
+    if harness_assurance.get("complete") is not True or harness_assurance.get("target_harness_count") != 9:
+        errors.append("post-install harness assurance is incomplete")
+    if any(_safe_count(assurance_totals.get(field)) for field in ("missing", "pin_blocked", "commands")):
+        errors.append("post-install harness assurance has remaining install work")
+    fingerprint_paths = (
+        ("catalog_index_sha256", ROOT / "docs/public/generated-registries/skills-catalog-index.json"),
+        ("promotion_overrides_sha256", MANIFEST_DIR / "promotion-overrides.json"),
+    )
+    for field, path in fingerprint_paths:
+        if not path.is_file() or harness_assurance.get(field) != hashlib.sha256(path.read_bytes()).hexdigest():
+            errors.append(f"post-install harness assurance {field} is stale")
+    non_skill_items = non_skill_assurance.get("items", []) if isinstance(non_skill_assurance, dict) else []
+    if non_skill_assurance.get("complete") is not True or non_skill_assurance.get("unique_target_count") != 289:
+        errors.append("non-skill install assurance is incomplete")
+    if not isinstance(non_skill_items, list) or len(non_skill_items) != EXPECTED_UNIQUE_COUNT:
+        errors.append("non-skill install assurance does not cover 289 targets")
+        non_skill_items = []
+    non_skill_urls = {
+        str(item.get("normalized_url") or "").lower()
+        for item in non_skill_items
+        if isinstance(item, dict) and item.get("normalized_url")
+    }
+    if non_skill_urls != set(targets_by_url):
+        errors.append("non-skill install assurance target coverage drifted")
+    if non_skill_assurance.get("failed_artifacts"):
+        errors.append("non-skill install assurance contains failed runtime artifacts")
+    non_skill_source_paths = {
+        "integration_decisions": MANIFEST_DIR / "integration-decisions.json",
+        "mcp_registry": ROOT / "config/mcp-registry.json",
+        "plugin_registry": ROOT / "config/plugin-extension-registry.json",
+        "tooling_policy": ROOT / "config/tooling-policy.json",
+    }
+    expected_non_skill_fingerprints = {
+        name: semantic_json_sha256(path) for name, path in non_skill_source_paths.items()
+    }
+    if non_skill_assurance.get("source_fingerprints") != expected_non_skill_fingerprints:
+        errors.append("non-skill install assurance source fingerprints are stale")
     if progress.get("complete") is not True:
         errors.append("full integration progress does not mark completion")
+    if progress.get("phase") != "corpus-integration-complete":
+        errors.append("full integration progress phase is not corpus-integration-complete")
+    if progress.get("non_skill_install", {}).get("complete") is not True:
+        errors.append("full integration progress does not bind complete non-skill assurance")
+    progress_readiness = progress.get("promotion_readiness", {})
+    if not isinstance(progress_readiness, dict):
+        progress_readiness = {}
+    if progress_readiness.get("integrated_targets") != EXPECTED_UNIQUE_COUNT:
+        errors.append("progress does not report all 289 targets integrated")
+    if progress_readiness.get("unintegrated_targets") != 0:
+        errors.append("progress reports unintegrated targets")
+    if progress_readiness.get("integration_classification_counts") != EXPECTED_CLASSIFICATION_COUNTS:
+        errors.append("progress integration classifications drifted")
+    if progress_readiness.get("integrated_quarantine_targets") != 4:
+        errors.append("progress quarantine integration count drifted")
+    if progress_readiness.get("active_install_blocks") != 4:
+        errors.append("progress active install block count drifted")
     if progress.get("unique_terminal_decisions") != EXPECTED_UNIQUE_COUNT:
         errors.append("progress unique terminal decisions drifted")
     terminal_decisions = progress.get("terminal_decisions", {})
@@ -926,6 +1332,11 @@ def validate_final_state() -> dict[str, Any]:
         "unique": normalized.get("unique_count"),
         "deep_audited": audited_count,
         "deep_terminal_blockers": terminal_blocker_count,
+        "integrated_targets": integration_targets.get("integrated_targets"),
+        "unintegrated_targets": integration_targets.get("unintegrated_targets"),
+        "integration_classification_counts": integration_targets.get("classification_counts"),
+        "integrated_quarantine_targets": EXPECTED_CLASSIFICATION_COUNTS["integrated-quarantine-reference"],
+        "active_install_blocks": sum(item.get("hard_blocked") is True for item in target_items),
         "promoted_overrides": len(overrides),
         "live_installed": live_installed,
         "installed_path_refs": installed_path_refs,

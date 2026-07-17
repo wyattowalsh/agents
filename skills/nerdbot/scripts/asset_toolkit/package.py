@@ -8,12 +8,18 @@ Runs portability checks, generates a manifest.json, and creates a
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import json
+import os
 import re
+import stat
 import sys
+import tempfile
+import unicodedata
 import zipfile
+from dataclasses import dataclass
 from datetime import UTC, datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from _shared import (
     ABSOLUTE_PATH_RE,
@@ -25,10 +31,15 @@ from _shared import (
 )
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-ASSET_TOOLKIT_SRC = SCRIPT_DIR / "asset_toolkit"
+# The canonical script lives directly under ``scripts/`` while portable copies
+# live inside ``scripts/asset_toolkit/``.  In either layout, resolve the seven
+# modules from the directory that actually owns the toolkit bundle.
+ASSET_TOOLKIT_SRC = SCRIPT_DIR if SCRIPT_DIR.name == "asset_toolkit" else SCRIPT_DIR / "asset_toolkit"
 PORTABLE_TOOLKIT_MODULES = frozenset({
     "__init__.py",
+    "_shared.py",
     "common.py",
+    "package.py",
     "validate_skill.py",
     "validate_evals.py",
     "validate_hooks.py",
@@ -39,22 +50,53 @@ WAGENTS_RE = re.compile(r"\bwagents\b", re.IGNORECASE)
 # Constants
 # ---------------------------------------------------------------------------
 
-EXCLUDE_PATTERNS = {"__pycache__", ".DS_Store", ".git", "*.pyc", "*.tmp"}
+MAX_ARCHIVE_FILES = 2_048
+MAX_ARCHIVE_DEPTH = 24
+MAX_ARCHIVE_FILE_BYTES = 32 * 1024 * 1024
+MAX_ARCHIVE_TOTAL_BYTES = 128 * 1024 * 1024
+MAX_MANIFEST_NAME_BYTES = 64
+MAX_MANIFEST_VERSION_BYTES = 128
+MAX_MANIFEST_DESCRIPTION_BYTES = 1_024
+MAX_MANIFEST_LICENSE_BYTES = 128
+MAX_MANIFEST_AUTHOR_BYTES = 256
+ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
+
+WINDOWS_RESERVED_BASENAMES = frozenset({
+    "AUX",
+    "CON",
+    "CONIN$",
+    "CONOUT$",
+    "NUL",
+    "PRN",
+    *(f"COM{index}" for index in range(1, 10)),
+    *(f"LPT{index}" for index in range(1, 10)),
+})
+WINDOWS_FORBIDDEN_CHARACTERS = frozenset('<>:"|?*')
+
+EXCLUDE_PATTERNS = {"*.pyc", "*.pyo", "*.tmp", "*.skill.zip", ".coverage*"}
 EXCLUDE_DIRS = {
     "__pycache__",
+    ".cache",
+    ".eggs",
     ".git",
+    ".hypothesis",
+    ".ipynb_checkpoints",
     ".mypy_cache",
+    ".nox",
     ".pytest_cache",
+    ".pytype",
     ".ruff_cache",
+    ".tox",
     ".ty",
     ".venv",
     "build",
     "dist",
+    "htmlcov",
     "node_modules",
     "venv",
 }
-EXCLUDE_EXTENSIONS = {".pyc", ".tmp"}
-EXCLUDE_NAMES = {".DS_Store", "manifest.json"}
+EXCLUDE_EXTENSIONS = {".pyc", ".pyo", ".tmp"}
+EXCLUDE_NAMES = {".DS_Store", "AGENTS.md", "coverage.xml", "manifest.json"}
 
 # Regex: @ imports at the start of a line (repo-specific path assumptions)
 AT_IMPORT_RE = re.compile(r"^@\S+", re.MULTILINE)
@@ -69,13 +111,96 @@ def _warn(msg: str) -> None:
     print(f"[package] {msg}", file=sys.stderr)
 
 
+def _source_date_epoch() -> int | None:
+    raw = os.environ.get("SOURCE_DATE_EPOCH")
+    if raw is None:
+        return None
+    try:
+        epoch = int(raw, 10)
+    except ValueError as exc:
+        raise PackageSafetyError("SOURCE_DATE_EPOCH must be a non-negative integer") from exc
+    if epoch < 0:
+        raise PackageSafetyError("SOURCE_DATE_EPOCH must be a non-negative integer")
+    return epoch
+
+
 def _now() -> str:
-    return datetime.now(UTC).isoformat()
+    epoch = _source_date_epoch()
+    if epoch is None:
+        return datetime.now(UTC).isoformat()
+    try:
+        return datetime.fromtimestamp(epoch, UTC).isoformat()
+    except (OverflowError, OSError, ValueError) as exc:
+        raise PackageSafetyError("SOURCE_DATE_EPOCH is outside the supported timestamp range") from exc
+
+
+def _zip_timestamp() -> tuple[int, int, int, int, int, int]:
+    epoch = _source_date_epoch()
+    if epoch is None:
+        return ZIP_TIMESTAMP
+    # The ZIP timestamp format supports 1980-01-01 through 2107-12-31 and
+    # stores seconds at two-second resolution.
+    clamped = min(max(epoch, 315_532_800), 4_354_819_199)
+    value = datetime.fromtimestamp(clamped, UTC)
+    return (value.year, value.month, value.day, value.hour, value.minute, value.second // 2 * 2)
+
+
+class PackageSafetyError(ValueError):
+    """Raised when an input cannot be packaged without crossing a safety boundary."""
+
+
+@dataclass(frozen=True)
+class ArchiveMember:
+    """A snapshotted regular file and its normalized archive-relative name."""
+
+    source: Path
+    trusted_root: Path
+    archive_path: str
+    device: int
+    inode: int
+    size: int
+    mtime_ns: int
 
 
 # ---------------------------------------------------------------------------
 # File filtering
 # ---------------------------------------------------------------------------
+
+
+def _stat_is_reparse_point(observed: os.stat_result) -> bool:
+    reparse_flag = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0)
+    attributes = getattr(observed, "st_file_attributes", 0)
+    return bool(reparse_flag and attributes & reparse_flag)
+
+
+def _path_is_junction(path: Path) -> bool:
+    checker = getattr(path, "is_junction", None)
+    if not callable(checker):
+        return False
+    try:
+        return bool(checker())
+    except OSError as exc:
+        raise PackageSafetyError(f"cannot inspect archive path for junctions {path}: {exc}") from exc
+
+
+def _is_link_or_reparse_point(path: Path, observed: os.stat_result) -> bool:
+    return stat.S_ISLNK(observed.st_mode) or _stat_is_reparse_point(observed) or _path_is_junction(path)
+
+
+def _normalize_portable_segment(segment: str, *, label: str) -> str:
+    normalized = unicodedata.normalize("NFC", segment)
+    if not normalized or normalized in {".", ".."}:
+        raise PackageSafetyError(f"invalid {label}: {segment!r}")
+    if any(unicodedata.category(character) == "Cc" for character in normalized):
+        raise PackageSafetyError(f"control character is forbidden in {label}: {segment!r}")
+    if any(character in WINDOWS_FORBIDDEN_CHARACTERS for character in normalized):
+        raise PackageSafetyError(f"Windows-forbidden character is present in {label}: {segment!r}")
+    if normalized.endswith((" ", ".")):
+        raise PackageSafetyError(f"trailing dot or space is forbidden in {label}: {segment!r}")
+    basename = normalized.split(".", 1)[0].upper()
+    if basename in WINDOWS_RESERVED_BASENAMES:
+        raise PackageSafetyError(f"Windows-reserved name is forbidden in {label}: {segment!r}")
+    return normalized
 
 
 def _is_reports_file(path: Path) -> bool:
@@ -109,42 +234,179 @@ def _should_exclude(path: Path, referenced_report_files: set[Path] | None = None
         return True
     if path.suffix in EXCLUDE_EXTENSIONS:
         return True
+    if any(fnmatch.fnmatchcase(path.name, pattern) for pattern in EXCLUDE_PATTERNS):
+        return True
     if any(part in EXCLUDE_DIRS for part in path.parts):
+        return True
+    if any(part.endswith(".egg-info") for part in path.parts):
         return True
     return _is_reports_file(path) and path not in (referenced_report_files or set())
 
 
 def _should_prune_dir(path: Path) -> bool:
     """Return True if directory traversal should not descend into path."""
-    return any(part in EXCLUDE_DIRS for part in path.parts)
+    return any(part in EXCLUDE_DIRS or part.endswith(".egg-info") for part in path.parts)
+
+
+def _normalize_member_name(path: str | Path) -> str:
+    """Return a safe, NFC-normalized POSIX ZIP member name."""
+    raw = path.as_posix() if isinstance(path, Path) else path
+    if not raw or "\\" in raw or "\x00" in raw:
+        raise PackageSafetyError(f"unsafe archive member name: {raw!r}")
+    if raw.startswith("/"):
+        raise PackageSafetyError(f"absolute archive member path is forbidden: {raw!r}")
+    raw_parts = raw.split("/")
+    if any(part in {"", ".", ".."} for part in raw_parts):
+        raise PackageSafetyError(f"archive path traversal is forbidden: {raw!r}")
+    normalized = "/".join(_normalize_portable_segment(part, label="archive member segment") for part in raw_parts)
+    pure = PurePosixPath(normalized)
+    if pure.is_absolute() or any(part in {"", ".", ".."} for part in pure.parts):
+        raise PackageSafetyError(f"archive path traversal is forbidden: {raw!r}")
+    return pure.as_posix()
+
+
+def _ensure_unique_member_names(names: list[str]) -> None:
+    """Reject exact, Unicode-normalized, and case-insensitive member collisions."""
+    normalized_seen: dict[str, str] = {}
+    casefold_seen: dict[str, str] = {}
+    for raw_name in names:
+        normalized = _normalize_member_name(raw_name)
+        if previous := normalized_seen.get(normalized):
+            raise PackageSafetyError(f"duplicate normalized archive member names: {previous!r} and {raw_name!r}")
+        normalized_seen[normalized] = raw_name
+        folded = normalized.casefold()
+        if previous := casefold_seen.get(folded):
+            raise PackageSafetyError(f"case-insensitive archive member collision: {previous!r} and {raw_name!r}")
+        casefold_seen[folded] = raw_name
+
+
+def _assert_directory_no_follow(path: Path, *, label: str) -> None:
+    try:
+        path_stat = path.lstat()
+    except OSError as exc:
+        raise PackageSafetyError(f"cannot inspect {label} {path}: {exc}") from exc
+    if _is_link_or_reparse_point(path, path_stat):
+        raise PackageSafetyError(f"symbolic link, junction, or reparse point is forbidden for {label}: {path}")
+    if not stat.S_ISDIR(path_stat.st_mode):
+        raise PackageSafetyError(f"expected directory for {label}: {path}")
+
+
+def _assert_no_symlink_ancestors(trusted_root: Path, source: Path) -> None:
+    """Revalidate every archive-local parent without following symlinks."""
+    try:
+        relative = source.relative_to(trusted_root)
+    except ValueError as exc:
+        raise PackageSafetyError(f"archive source escapes trusted root: {source}") from exc
+
+    _assert_directory_no_follow(trusted_root, label="trusted root")
+    current = trusted_root
+    for part in relative.parts[:-1]:
+        current = current / part
+        _assert_directory_no_follow(current, label="archive parent")
+
+
+def _snapshot_regular_file(source: Path, trusted_root: Path, archive_path: str | Path) -> ArchiveMember:
+    """Capture immutable identity fields for a regular, non-linked input file."""
+    normalized = _normalize_member_name(archive_path)
+    if len(PurePosixPath(normalized).parts) > MAX_ARCHIVE_DEPTH:
+        raise PackageSafetyError(f"archive depth limit exceeded for {normalized!r}: maximum is {MAX_ARCHIVE_DEPTH}")
+    _assert_no_symlink_ancestors(trusted_root, source)
+    try:
+        source_stat = source.lstat()
+    except OSError as exc:
+        raise PackageSafetyError(f"cannot inspect archive input {source}: {exc}") from exc
+    if _is_link_or_reparse_point(source, source_stat):
+        raise PackageSafetyError(
+            f"symbolic link, junction, or reparse point is forbidden in skill package: {normalized}"
+        )
+    if not stat.S_ISREG(source_stat.st_mode):
+        raise PackageSafetyError(f"non-regular file is forbidden in skill package: {normalized}")
+    if source_stat.st_nlink > 1:
+        raise PackageSafetyError(
+            f"hard-linked file is forbidden in skill package: {normalized} has {source_stat.st_nlink} links"
+        )
+    if source_stat.st_size > MAX_ARCHIVE_FILE_BYTES:
+        raise PackageSafetyError(
+            f"per-file byte limit exceeded for {normalized!r}: {source_stat.st_size} > {MAX_ARCHIVE_FILE_BYTES}"
+        )
+    return ArchiveMember(
+        source=source,
+        trusted_root=trusted_root,
+        archive_path=normalized,
+        device=source_stat.st_dev,
+        inode=source_stat.st_ino,
+        size=source_stat.st_size,
+        mtime_ns=source_stat.st_mtime_ns,
+    )
+
+
+def _validate_archive_members(
+    members: list[ArchiveMember],
+    *,
+    generated_file_count: int = 0,
+    generated_bytes: int = 0,
+) -> None:
+    file_count = len(members) + generated_file_count
+    if file_count > MAX_ARCHIVE_FILES:
+        raise PackageSafetyError(f"archive file-count limit exceeded: {file_count} > {MAX_ARCHIVE_FILES}")
+    _ensure_unique_member_names([member.archive_path for member in members])
+    total_bytes = sum(member.size for member in members) + generated_bytes
+    if total_bytes > MAX_ARCHIVE_TOTAL_BYTES:
+        raise PackageSafetyError(f"archive total byte limit exceeded: {total_bytes} > {MAX_ARCHIVE_TOTAL_BYTES}")
 
 
 def _collect_files(
     skill_dir: Path,
     referenced_report_files: set[Path] | None = None,
-) -> tuple[list[Path], list[Path]]:
+) -> tuple[list[ArchiveMember], list[Path]]:
     """Collect non-excluded files from the skill directory.
 
-    Returns (included, excluded) as lists of paths relative to skill_dir.
+    Returns snapshotted included members and excluded paths relative to skill_dir.
     """
-    included: list[Path] = []
+    included: list[ArchiveMember] = []
     excluded: list[Path] = []
+    included_bytes = 0
 
     def walk(directory: Path) -> None:
-        for path in sorted(directory.iterdir()):
+        nonlocal included_bytes
+        try:
+            children = sorted(directory.iterdir(), key=lambda item: unicodedata.normalize("NFC", item.name))
+        except OSError as exc:
+            raise PackageSafetyError(f"cannot enumerate skill directory {directory}: {exc}") from exc
+        for path in children:
             rel = path.relative_to(skill_dir)
-            if path.is_dir():
-                if _should_prune_dir(rel):
-                    excluded.append(rel)
-                    continue
-                walk(path)
+            if _should_prune_dir(rel):
+                excluded.append(rel)
                 continue
-            if not path.is_file():
+            try:
+                path_stat = path.lstat()
+            except OSError as exc:
+                raise PackageSafetyError(f"cannot inspect skill entry {rel.as_posix()}: {exc}") from exc
+            if _is_link_or_reparse_point(path, path_stat):
+                raise PackageSafetyError(
+                    f"symbolic link, junction, or reparse point is forbidden in skill package: {rel.as_posix()}"
+                )
+            if stat.S_ISDIR(path_stat.st_mode):
+                if len(rel.parts) > MAX_ARCHIVE_DEPTH:
+                    raise PackageSafetyError(
+                        f"archive depth limit exceeded for {rel.as_posix()!r}: maximum is {MAX_ARCHIVE_DEPTH}"
+                    )
+                walk(path)
                 continue
             if _should_exclude(rel, referenced_report_files=referenced_report_files):
                 excluded.append(rel)
-            else:
-                included.append(rel)
+                continue
+            if not stat.S_ISREG(path_stat.st_mode):
+                raise PackageSafetyError(f"non-regular file is forbidden in skill package: {rel.as_posix()}")
+            member = _snapshot_regular_file(path, skill_dir, rel)
+            included.append(member)
+            if len(included) > MAX_ARCHIVE_FILES:
+                raise PackageSafetyError(f"archive file-count limit exceeded: {len(included)} > {MAX_ARCHIVE_FILES}")
+            included_bytes += member.size
+            if included_bytes > MAX_ARCHIVE_TOTAL_BYTES:
+                raise PackageSafetyError(
+                    f"archive total byte limit exceeded: {included_bytes} > {MAX_ARCHIVE_TOTAL_BYTES}"
+                )
 
     walk(skill_dir)
 
@@ -330,19 +592,98 @@ def run_portability_checks(skill_dir: Path, fm: dict, body: str) -> list[dict]:
 # ---------------------------------------------------------------------------
 
 
-def generate_manifest(fm: dict, files: list[Path]) -> dict:
-    """Generate a manifest.json dict for the ZIP bundle."""
-    meta = fm.get("metadata", {}) if isinstance(fm.get("metadata"), dict) else {}
+def _bounded_manifest_string(value: object, *, label: str, max_bytes: int) -> str:
+    if not isinstance(value, str):
+        raise PackageSafetyError(f"manifest field {label} must be a string")
+    normalized = unicodedata.normalize("NFC", value)
+    size = len(normalized.encode("utf-8"))
+    if size > max_bytes:
+        raise PackageSafetyError(f"manifest field {label} exceeds its byte limit: {size} > {max_bytes}")
+    return normalized
+
+
+def _validated_manifest_metadata(fm: dict, *, fallback_name: str) -> dict[str, str]:
+    metadata = fm.get("metadata", {})
+    if not isinstance(metadata, dict):
+        raise PackageSafetyError("frontmatter metadata must be an object")
+    name = _bounded_manifest_string(
+        fm.get("name", fallback_name),
+        label="name",
+        max_bytes=MAX_MANIFEST_NAME_BYTES,
+    )
+    version = _bounded_manifest_string(
+        metadata.get("version", "0.0.0"),
+        label="version",
+        max_bytes=MAX_MANIFEST_VERSION_BYTES,
+    )
     return {
-        "name": fm.get("name", "unknown"),
-        "version": str(meta.get("version", "0.0.0")),
-        "description": fm.get("description", ""),
-        "license": fm.get("license", ""),
-        "author": meta.get("author", ""),
-        "files": [str(f) for f in sorted(files)],
+        "name": _validate_archive_component(name, label="skill name"),
+        "version": _validate_archive_component(version, label="skill version"),
+        "description": _bounded_manifest_string(
+            fm.get("description", ""),
+            label="description",
+            max_bytes=MAX_MANIFEST_DESCRIPTION_BYTES,
+        ),
+        "license": _bounded_manifest_string(
+            fm.get("license", ""),
+            label="license",
+            max_bytes=MAX_MANIFEST_LICENSE_BYTES,
+        ),
+        "author": _bounded_manifest_string(
+            metadata.get("author", ""),
+            label="author",
+            max_bytes=MAX_MANIFEST_AUTHOR_BYTES,
+        ),
+    }
+
+
+def generate_manifest(
+    fm: dict,
+    files: list[ArchiveMember],
+    *,
+    fallback_name: str = "unknown",
+) -> dict[str, object]:
+    """Generate a validated manifest.json dict for the ZIP bundle."""
+    metadata = _validated_manifest_metadata(fm, fallback_name=fallback_name)
+    return {
+        **metadata,
+        "files": sorted(file.archive_path for file in files),
         "created_at": _now(),
         "packaged_by": "package.py",
     }
+
+
+def _encode_manifest(manifest: dict[str, object]) -> bytes:
+    try:
+        return (json.dumps(manifest, indent=2, ensure_ascii=False) + "\n").encode("utf-8")
+    except (TypeError, ValueError, UnicodeError) as exc:
+        raise PackageSafetyError(f"manifest cannot be encoded as UTF-8 JSON: {exc}") from exc
+
+
+def _existing_toolkit_paths(included: list[ArchiveMember]) -> set[str]:
+    prefix = "scripts/asset_toolkit/"
+    return {member.archive_path.removeprefix(prefix) for member in included if member.archive_path.startswith(prefix)}
+
+
+def _validate_existing_toolkit(included: list[ArchiveMember]) -> bool:
+    existing = _existing_toolkit_paths(included)
+    if not existing:
+        return False
+    expected = set(PORTABLE_TOOLKIT_MODULES)
+    if existing != expected:
+        missing = sorted(expected - existing)
+        unexpected = sorted(existing - expected)
+        details: list[str] = []
+        if missing:
+            details.append(f"missing: {', '.join(missing)}")
+        if unexpected:
+            details.append(f"unexpected: {', '.join(unexpected)}")
+        raise PackageSafetyError(
+            "existing scripts/asset_toolkit must contain exactly the seven portable modules ("
+            + "; ".join(details)
+            + ")"
+        )
+    return True
 
 
 # ---------------------------------------------------------------------------
@@ -350,59 +691,163 @@ def generate_manifest(fm: dict, files: list[Path]) -> dict:
 # ---------------------------------------------------------------------------
 
 
-def _asset_toolkit_files(skill_dir: Path, included: list[Path]) -> list[tuple[Path, Path]]:
-    """Return (source, archive_rel) pairs for vendored asset_toolkit files."""
-    if not ASSET_TOOLKIT_SRC.is_dir():
+def _asset_toolkit_files(included: list[ArchiveMember]) -> list[ArchiveMember]:
+    """Return canonical portable toolkit members when the skill has no local bundle."""
+    if _validate_existing_toolkit(included):
         return []
-    has_toolkit = any(str(path).startswith("scripts/asset_toolkit/") for path in included)
-    if has_toolkit:
-        return []
-    pairs: list[tuple[Path, Path]] = []
+    _assert_directory_no_follow(ASSET_TOOLKIT_SRC, label="vendored toolkit root")
+    members: list[ArchiveMember] = []
     for module_name in sorted(PORTABLE_TOOLKIT_MODULES):
         src = ASSET_TOOLKIT_SRC / module_name
-        if not src.is_file():
-            continue
-        pairs.append((src, Path("scripts") / "asset_toolkit" / module_name))
-    return pairs
+        try:
+            src.lstat()
+        except FileNotFoundError as exc:
+            raise PackageSafetyError(f"missing vendored toolkit module: {src}") from exc
+        except OSError as exc:
+            raise PackageSafetyError(f"cannot inspect vendored toolkit module {src}: {exc}") from exc
+        archive_path = Path("scripts") / "asset_toolkit" / module_name
+        members.append(_snapshot_regular_file(src, ASSET_TOOLKIT_SRC, archive_path))
+    return members
 
 
-def create_zip(skill_dir: Path, output_dir: Path, files: list[Path], manifest: dict) -> tuple[Path, list[str]]:
-    """Create the .skill.zip bundle and return (path, errors)."""
-    name = manifest["name"]
-    version = manifest["version"]
-    zip_name = f"{name}-v{version}.skill.zip"
-    zip_path = output_dir / zip_name
-    errors: list[str] = []
+def _validate_archive_component(value: object, *, label: str) -> str:
+    if not isinstance(value, str):
+        raise PackageSafetyError(f"{label} must be a string")
+    raw = unicodedata.normalize("NFC", value)
+    if not raw or raw in {".", ".."} or "/" in raw or "\\" in raw or "\x00" in raw:
+        raise PackageSafetyError(f"unsafe {label} for archive publication: {raw!r}")
+    return _normalize_portable_segment(raw, label=label)
 
-    output_dir.mkdir(parents=True, exist_ok=True)
+
+def _stat_matches_snapshot(member: ArchiveMember, observed: os.stat_result) -> bool:
+    return (
+        stat.S_ISREG(observed.st_mode)
+        and not _stat_is_reparse_point(observed)
+        and observed.st_nlink == 1
+        and observed.st_dev == member.device
+        and observed.st_ino == member.inode
+        and observed.st_size == member.size
+        and observed.st_mtime_ns == member.mtime_ns
+    )
+
+
+def _read_regular_file_no_follow(member: ArchiveMember) -> bytes:
+    """Read a snapshotted member while rejecting link swaps and mutations."""
+    _assert_no_symlink_ancestors(member.trusted_root, member.source)
+    try:
+        before = member.source.lstat()
+    except OSError as exc:
+        raise PackageSafetyError(f"cannot revalidate archive input {member.archive_path}: {exc}") from exc
+    if not _stat_matches_snapshot(member, before):
+        raise PackageSafetyError(f"archive input changed after collection: {member.archive_path}")
+
+    flags = os.O_RDONLY | getattr(os, "O_BINARY", 0)
+    flags |= getattr(os, "O_CLOEXEC", 0)
+    flags |= getattr(os, "O_NOFOLLOW", 0)
+    try:
+        descriptor = os.open(member.source, flags)
+    except OSError as exc:
+        raise PackageSafetyError(
+            f"cannot open archive input without following links: {member.archive_path}: {exc}"
+        ) from exc
 
     try:
-        with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
-            archive_root = Path(name)
-            for rel_path in sorted(files):
-                abs_path = skill_dir / rel_path
-                try:
-                    zf.write(abs_path, str(archive_root / rel_path))
-                except OSError as exc:
-                    errors.append(f"Failed to add {rel_path}: {exc}")
-                    _warn(f"Skipping {rel_path}: {exc}")
+        opened = os.fstat(descriptor)
+        if not _stat_matches_snapshot(member, opened):
+            raise PackageSafetyError(f"archive input changed while opening: {member.archive_path}")
+        with os.fdopen(descriptor, "rb", closefd=False) as handle:
+            payload = handle.read(member.size + 1)
+        if len(payload) != member.size:
+            raise PackageSafetyError(f"archive input changed while reading: {member.archive_path}")
+        after = os.fstat(descriptor)
+        if not _stat_matches_snapshot(member, after):
+            raise PackageSafetyError(f"archive input changed while reading: {member.archive_path}")
+        return payload
+    finally:
+        os.close(descriptor)
 
-            for src_path, rel_path in _asset_toolkit_files(skill_dir, files):
-                try:
-                    zf.write(src_path, str(archive_root / rel_path))
-                except OSError as exc:
-                    errors.append(f"Failed to add vendored {rel_path}: {exc}")
-                    _warn(f"Skipping vendored {rel_path}: {exc}")
 
-            manifest_json = json.dumps(manifest, indent=2) + "\n"
-            zf.writestr(str(archive_root / "manifest.json"), manifest_json)
+def _zip_info(filename: str) -> zipfile.ZipInfo:
+    info = zipfile.ZipInfo(filename, date_time=_zip_timestamp())
+    info.compress_type = zipfile.ZIP_DEFLATED
+    info.create_system = 3
+    info.external_attr = (stat.S_IFREG | 0o644) << 16
+    return info
+
+
+def _write_zip(path: Path, archive_root: str, files: list[ArchiveMember], manifest_json: bytes) -> None:
+    entries = [(f"{archive_root}/{member.archive_path}", _read_regular_file_no_follow(member)) for member in files]
+    entries.append((f"{archive_root}/manifest.json", manifest_json))
+    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as archive:
+        for filename, payload in sorted(entries, key=lambda entry: entry[0]):
+            archive.writestr(_zip_info(filename), payload)
+
+
+def _fsync_file(path: Path) -> None:
+    with path.open("rb") as handle:
+        os.fsync(handle.fileno())
+
+
+def _fsync_directory(path: Path) -> None:
+    """Persist a directory entry update where directory fsync is supported."""
+    if os.name == "nt":
+        return
+    flags = os.O_RDONLY | getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_DIRECTORY", 0)
+    descriptor = os.open(path, flags)
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+def _atomic_write_text(path: Path, content: str) -> None:
+    """Publish a UTF-8 text artifact through a sibling temporary file."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temp_name = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
+    temp_path = Path(temp_name)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.chmod(temp_path, 0o644)
+        os.replace(temp_path, path)
+        _fsync_directory(path.parent)
     except Exception:
-        # Clean up partial ZIP on failure
-        if zip_path.exists():
-            zip_path.unlink()
+        temp_path.unlink(missing_ok=True)
         raise
 
-    return zip_path, errors
+
+def create_zip(
+    skill_dir: Path,
+    output_dir: Path,
+    files: list[ArchiveMember],
+    manifest: dict,
+    manifest_json: bytes | None = None,
+) -> tuple[Path, list[str]]:
+    """Create the .skill.zip bundle and return (path, errors)."""
+    del skill_dir  # Member records retain their trusted source roots.
+    name = _validate_archive_component(manifest["name"], label="skill name")
+    version = _validate_archive_component(manifest["version"], label="skill version")
+    manifest_payload = manifest_json if manifest_json is not None else _encode_manifest(manifest)
+    zip_name = f"{name}-v{version}.skill.zip"
+    zip_path = output_dir / zip_name
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    descriptor, temp_name = tempfile.mkstemp(prefix=f".{zip_name}.", suffix=".tmp", dir=output_dir)
+    os.close(descriptor)
+    temp_path = Path(temp_name)
+    try:
+        _write_zip(temp_path, name, files, manifest_payload)
+        os.chmod(temp_path, 0o644)
+        _fsync_file(temp_path)
+        os.replace(temp_path, zip_path)
+        _fsync_directory(output_dir)
+    except Exception:
+        temp_path.unlink(missing_ok=True)
+        raise
+
+    return zip_path, []
 
 
 # ---------------------------------------------------------------------------
@@ -412,11 +857,12 @@ def create_zip(skill_dir: Path, output_dir: Path, files: list[Path], manifest: d
 
 def package_skill(skill_dir: Path, output_dir: Path, dry_run: bool = False, force: bool = False) -> dict:
     """Package a single skill and return a result dict."""
-    skill_dir = skill_dir.resolve()
+    skill_dir = Path(os.path.abspath(skill_dir))
     skill_md = skill_dir / "SKILL.md"
 
     result: dict = {
         "skill": skill_dir.name,
+        "description": "",
         "version": "0.0.0",
         "output_path": None,
         "files_included": [],
@@ -428,16 +874,32 @@ def package_skill(skill_dir: Path, output_dir: Path, dry_run: bool = False, forc
         "errors": [],
     }
 
-    if not skill_md.is_file():
+    if not skill_dir.exists():
         result["errors"].append(f"SKILL.md not found in {skill_dir}")
         return result
 
-    content = skill_md.read_text(encoding="utf-8", errors="replace")
+    try:
+        _assert_directory_no_follow(skill_dir, label="skill root")
+        skill_member = _snapshot_regular_file(skill_md, skill_dir, "SKILL.md")
+        content = _read_regular_file_no_follow(skill_member).decode("utf-8", errors="replace")
+    except PackageSafetyError as exc:
+        result["blocked"] = True
+        result["errors"].append(str(exc))
+        return result
+
     fm, body = parse_frontmatter(content)
 
-    meta = fm.get("metadata", {}) if isinstance(fm.get("metadata"), dict) else {}
-    version = str(meta.get("version", "0.0.0"))
-    result["version"] = version
+    try:
+        manifest_metadata = _validated_manifest_metadata(fm, fallback_name=skill_dir.name)
+    except PackageSafetyError as exc:
+        result["blocked"] = True
+        result["errors"].append(str(exc))
+        return result
+    archive_name = manifest_metadata["name"]
+    archive_version = manifest_metadata["version"]
+    result["version"] = archive_version
+    result["description"] = manifest_metadata["description"]
+    result["output_path"] = str(output_dir / f"{archive_name}-v{archive_version}.skill.zip")
 
     # Portability checks
     checks = run_portability_checks(skill_dir, fm, body)
@@ -450,31 +912,49 @@ def package_skill(skill_dir: Path, output_dir: Path, dry_run: bool = False, forc
 
     # Collect files
     referenced_report_files = _referenced_report_files(skill_dir, body)
-    included, excluded = _collect_files(
-        skill_dir,
-        referenced_report_files=referenced_report_files,
-    )
-    result["files_included"] = [str(f) for f in included]
-    result["files_excluded"] = [str(f) for f in excluded]
+    try:
+        source_members, excluded = _collect_files(
+            skill_dir,
+            referenced_report_files=referenced_report_files,
+        )
+        included = [*source_members, *_asset_toolkit_files(source_members)]
+        manifest = generate_manifest(fm, included, fallback_name=skill_dir.name)
+        manifest_json = _encode_manifest(manifest)
+        _validate_archive_members(
+            included,
+            generated_file_count=1,
+            generated_bytes=len(manifest_json),
+        )
+    except PackageSafetyError as exc:
+        result["blocked"] = True
+        result["errors"].append(str(exc))
+        return result
+    result["files_included"] = sorted(member.archive_path for member in included)
+    result["files_excluded"] = sorted(_normalize_member_name(path) for path in excluded)
 
     if failed and not force:
         result["blocked"] = True
         if not dry_run:
             result["errors"].append("Packaging blocked by portability failures. Re-run with --force to override.")
-        name = fm.get("name", skill_dir.name)
-        result["output_path"] = str(output_dir / f"{name}-v{version}.skill.zip")
         return result
 
     if dry_run:
-        name = fm.get("name", skill_dir.name)
-        result["output_path"] = str(output_dir / f"{name}-v{version}.skill.zip")
         if failed and force:
             result["warnings"].append("Portability failures overridden with --force during dry run")
         return result
 
-    # Create ZIP, then generate manifest from what was actually packaged
-    manifest = generate_manifest(fm, included)
-    zip_path, zip_errors = create_zip(skill_dir, output_dir, included, manifest)
+    try:
+        zip_path, zip_errors = create_zip(
+            skill_dir,
+            output_dir,
+            included,
+            manifest,
+            manifest_json,
+        )
+    except (PackageSafetyError, OSError, zipfile.BadZipFile, zipfile.LargeZipFile) as exc:
+        result["blocked"] = True
+        result["errors"].append(str(exc))
+        return result
     result["output_path"] = str(zip_path)
     result["errors"].extend(zip_errors)
     if failed and force:
@@ -508,7 +988,7 @@ def package_all(skills_dir: Path, output_dir: Path, dry_run: bool = False, force
             {
                 "name": r["skill"],
                 "version": r["version"],
-                "description": "",
+                "description": r.get("description", ""),
                 "zip": (
                     Path(r["output_path"]).name
                     if (not dry_run and not r.get("blocked") and r.get("output_path"))
@@ -520,21 +1000,10 @@ def package_all(skills_dir: Path, output_dir: Path, dry_run: bool = False, force
         "created_at": _now(),
     }
 
-    # Fill in descriptions from frontmatter
-    for entry in top_manifest["skills"]:
-        skill_name = entry.get("name")
-        if not isinstance(skill_name, str):
-            continue
-        skill_md = skills_dir / skill_name / "SKILL.md"
-        if skill_md.is_file():
-            content = skill_md.read_text(encoding="utf-8", errors="replace")
-            fm, _ = parse_frontmatter(content)
-            entry["description"] = fm.get("description", "")
-
     if not dry_run:
         output_dir.mkdir(parents=True, exist_ok=True)
         manifest_path = output_dir / "manifest.json"
-        manifest_path.write_text(json.dumps(top_manifest, indent=2) + "\n", encoding="utf-8")
+        _atomic_write_text(manifest_path, json.dumps(top_manifest, indent=2) + "\n")
 
     return {"results": results, "manifest": top_manifest}
 

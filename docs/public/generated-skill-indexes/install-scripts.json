@@ -1,280 +1,280 @@
 {
-  "customAll": "npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+  "customAll": "npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
   "customIndividual": [
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill add-badges -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill add-badges -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "add-badges"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill agent-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill agent-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "agent-conventions"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill agent-runtime-governance -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill agent-runtime-governance -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "agent-runtime-governance"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill api-designer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill api-designer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "api-designer"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill changelog-writer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill changelog-writer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "changelog-writer"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill cross-agent-install-smoke -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill cross-agent-install-smoke -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "cross-agent-install-smoke"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill data-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill data-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "data-pipeline-architect"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill data-wizard -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill data-wizard -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "data-wizard"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill database-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill database-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "database-architect"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill design -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill design -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "design"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill devops-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill devops-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "devops-engineer"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill docling-graph -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill docling-graph -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "docling-graph"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill docs-steward -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill docs-steward -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "docs-steward"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill draw-thing -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill draw-thing -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "draw-thing"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill email-whiz -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill email-whiz -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "email-whiz"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill event-driven-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill event-driven-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "event-driven-architect"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill ffmpeg -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill ffmpeg -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "ffmpeg"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "files-buddy"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill git-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill git-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "git-workflow"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill grok-delegate -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill grok-delegate -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "grok-delegate"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "harness-master"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill host-panel -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill host-panel -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "host-panel"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill i18n-localization -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill i18n-localization -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "i18n-localization"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill incident-response-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill incident-response-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "incident-response-engineer"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill infrastructure-coder -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill infrastructure-coder -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "infrastructure-coder"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill javascript-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill javascript-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "javascript-conventions"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill learn -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill learn -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "learn"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill mcp-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill mcp-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "mcp-creator"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill mcphub-operator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill mcphub-operator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "mcphub-operator"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill namer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill namer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "namer"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill nerdbot -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill nerdbot -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "nerdbot"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill new-project -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill new-project -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "new-project"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill observability-advisor -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill observability-advisor -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "observability-advisor"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill opencode-ensemble -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill opencode-ensemble -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "opencode-ensemble"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill openspec-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill openspec-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "openspec-workflow"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "orchestrator"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill pentest -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill pentest -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "pentest"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill performance-profiler -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill performance-profiler -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "performance-profiler"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill prompt-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill prompt-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "prompt-engineer"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill python-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill python-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "python-conventions"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill reasoning-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill reasoning-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "reasoning-router"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill release-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill release-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "release-pipeline-architect"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill research -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill research -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "research"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "review"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill schema-evolution-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill schema-evolution-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "schema-evolution-planner"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill security-scanner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill security-scanner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "security-scanner"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill shell-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill shell-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "shell-conventions"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill shell-scripter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill shell-scripter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "shell-scripter"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-bundle-curator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-bundle-curator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-bundle-curator"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-compat-matrix -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-compat-matrix -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-compat-matrix"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-creator"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-eval-scaffolder -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-eval-scaffolder -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-eval-scaffolder"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-install-dry-run-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-install-dry-run-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-install-dry-run-planner"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-lifecycle-manager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-lifecycle-manager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-lifecycle-manager"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-localization-packager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-localization-packager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-localization-packager"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-package-manifest-enricher -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-package-manifest-enricher -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-package-manifest-enricher"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-quality-dashboard -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-quality-dashboard -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-quality-dashboard"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-registry-lock -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-registry-lock -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-registry-lock"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-router"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-signing-verifier -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-signing-verifier -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-signing-verifier"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-tag-taxonomist -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-tag-taxonomist -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-tag-taxonomist"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-token-budget-linter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-token-budget-linter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-token-budget-linter"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-trace-debugger -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-trace-debugger -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "skill-trace-debugger"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill tech-debt-analyzer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill tech-debt-analyzer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "tech-debt-analyzer"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill test-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill test-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "test-architect"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill things-manager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill things-manager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "things-manager"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill trafilatura -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill trafilatura -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "trafilatura"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill wargame -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill wargame -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "wargame"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill yt-dlp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "command": "npx skills add github:wyattowalsh/agents --skill yt-dlp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "name": "yt-dlp"
     }
   ],
@@ -305,6 +305,16 @@
         "affiliate-check"
       ],
       "source": "Affitor/affiliate-skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "drawio-skill"
+      ],
+      "source": "Agents365-ai/drawio-skill",
       "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
@@ -1170,6 +1180,826 @@
         "underdeclared-agent"
       ],
       "source": "NVIDIA/SkillSpector",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill rag-blueprint -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "rag-blueprint"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill rag-eval -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "rag-eval"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill rag-perf -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "rag-perf"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill skill-card-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "skill-card-generator"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-analyze-changenet-rca -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-analyze-changenet-rca"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-analyze-gaps-visual-changenet -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-analyze-gaps-visual-changenet"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-analyze-gaps-vlm-bcq -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-analyze-gaps-vlm-bcq"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-convert-dataset-format -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-convert-dataset-format"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-finetune-clip -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-finetune-clip"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-finetune-cosmos-embed -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-finetune-cosmos-embed"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-finetune-cosmos-reason -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-finetune-cosmos-reason"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-finetune-huggingface-model -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-finetune-huggingface-model"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-generate-image-grounding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-generate-image-grounding"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-generate-referring-expressions -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-generate-referring-expressions"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-generate-video-reasoning-annotations -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-generate-video-reasoning-annotations"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-launch-workflow -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-launch-workflow"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-list-capabilities -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-list-capabilities"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-mine-aoi-images -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-mine-aoi-images"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-port-huggingface-model -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-port-huggingface-model"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-route-visual-changenet-samples -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-route-visual-changenet-samples"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-automl -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-run-automl"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-automl-deft-pipeline -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-run-automl-deft-pipeline"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-deft-aoi -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-run-deft-aoi"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-inference-service -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-run-inference-service"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-on-brev -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-run-on-brev"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-on-kubernetes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-run-on-kubernetes"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-on-local-docker -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-run-on-local-docker"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-on-slurm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-run-on-slurm"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-platform -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-run-platform"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-setup-nvidia-gpu-host -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-setup-nvidia-gpu-host"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-action-recognition -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-action-recognition"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-bevfusion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-bevfusion"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-centerpose -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-centerpose"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-deformable-detr -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-deformable-detr"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-depth-anything-v2 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-depth-anything-v2"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-dino -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-dino"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-fast-foundation-stereo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-fast-foundation-stereo"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-foundation-stereo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-foundation-stereo"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-grounding-dino -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-grounding-dino"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-image-classification -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-image-classification"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-mask-auto-encoder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-mask-auto-encoder"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-mask-auto-label -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-mask-auto-label"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-mask-grounding-dino -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-mask-grounding-dino"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-mask2former -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-mask2former"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-metric-learning-recognition -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-metric-learning-recognition"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-nvdinov2 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-nvdinov2"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-nvpanoptix3d -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-nvpanoptix3d"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-ocdnet -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-ocdnet"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-ocrnet -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-ocrnet"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-oneformer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-oneformer"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-optical-inspection -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-optical-inspection"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-pointpillars -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-pointpillars"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-pose-classification -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-pose-classification"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-reid -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-reid"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-rtdetr -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-rtdetr"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-segformer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-segformer"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-single-step -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-single-step"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-sparse4d -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-sparse4d"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-visual-changenet -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-train-visual-changenet"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-validate-dataset-format -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tao-validate-dataset-format"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-adding-cutile-kernel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tilegym-adding-cutile-kernel"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-converting-cutile-to-julia -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tilegym-converting-cutile-to-julia"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-converting-cutile-to-triton -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tilegym-converting-cutile-to-triton"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-cutile-autotuning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tilegym-cutile-autotuning"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-cutile-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tilegym-cutile-python"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-improve-cutile-kernel-perf -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tilegym-improve-cutile-kernel-perf"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-monkey-patch-kernels-to-transformers -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "tilegym-monkey-patch-kernels-to-transformers"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-ask-video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-ask-video"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-dense-captioning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-deploy-dense-captioning"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-detection-tracking-2d -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-deploy-detection-tracking-2d"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-detection-tracking-3d -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-deploy-detection-tracking-3d"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-profile -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-deploy-profile"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-video-embedding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-deploy-video-embedding"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-generate-video-calibration -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-generate-video-calibration"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-generate-video-report -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-generate-video-report"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-manage-alerts -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-manage-alerts"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-manage-video-io-storage -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-manage-video-io-storage"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-query-analytics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-query-analytics"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-search-archive -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-search-archive"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-setup-behavior-analytics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-setup-behavior-analytics"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-setup-video-analytics-api -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-setup-video-analytics-api"
+      ],
+      "source": "NVIDIA/skills",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-summarize-video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vss-summarize-video"
+      ],
+      "source": "NVIDIA/skills",
       "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
@@ -2171,16 +3001,6 @@
         "vitest"
       ],
       "source": "PaulRBerg/agent-skills",
-      "sourceType": "curated-external",
-      "status": "install-now-after-trust-gate",
-      "trustTier": "curated-trust-gated"
-    },
-    {
-      "command": "npx skills add PleasePrompto/notebooklm-skill --skill notebooklm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "notebooklm"
-      ],
-      "source": "PleasePrompto/notebooklm-skill",
       "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
@@ -5030,6 +5850,156 @@
       "trustTier": "curated-trust-gated"
     },
     {
+      "command": "npx skills add dathere/qsv --skill bls-query -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "bls-query"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill csv-query -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "csv-query"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill csv-wrangling -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "csv-wrangling"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill data-clean -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "data-clean"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill data-convert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "data-convert"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill data-describe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "data-describe"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill data-join -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "data-join"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill data-profile -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "data-profile"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill data-quality -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "data-quality"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill data-validate -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "data-validate"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill data-viz -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "data-viz"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill genai-disclaimer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "genai-disclaimer"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill infer-ontology -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "infer-ontology"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill qsv-performance -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "qsv-performance"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add dathere/qsv --skill reproducible-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "reproducible-analysis"
+      ],
+      "source": "dathere/qsv",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "fetching-dbt-docs"
@@ -7155,6 +8125,16 @@
         "recipe-watch-drive-changes"
       ],
       "source": "googleworkspace/cli",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add gosom/google-maps-scraper@0ef302ecc72a8872d5dac68cbbeab78800f80fdd --skill google-maps-scraper -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "google-maps-scraper"
+      ],
+      "source": "gosom/google-maps-scraper",
       "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
@@ -11184,6 +12164,16 @@
       "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add https://github.com/teng-lin/notebooklm-py --skill notebooklm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "notebooklm"
+      ],
+      "source": "teng-lin/notebooklm-py",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
     },
     {
       "command": "npx skills add tim-osterhus/codex-remotion-plugin --skill remotion-video-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",

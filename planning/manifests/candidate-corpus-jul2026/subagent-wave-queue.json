@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T16:14:57.458054+00:00",
+  "generated_at": "2026-07-16T02:45:28.657026+00:00",
   "status": "ready-for-read-only-subagent-dispatch",
   "covered_raw_count": 293,
   "covered_raw_indexes": [
@@ -345,7 +345,7 @@
       ],
       "source_names": [
         "Imbad0202/academic-research-skills-codex",
-        "NVIDIA/skills-",
+        "NVIDIA/skills",
         "aiwithremy/claude-skills-llm-council",
         "samber/cc-skills-golang"
       ],

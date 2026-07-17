@@ -278,8 +278,7 @@ def select_tasks(
     selected = [
         task
         for task in tasks
-        if task_matches_filters(task, waves, risk_tiers)
-        and (force or task.normalized_url.lower() not in existing)
+        if task_matches_filters(task, waves, risk_tiers) and (force or task.normalized_url.lower() not in existing)
     ]
     return selected[:limit] if limit is not None else selected
 
@@ -321,20 +320,19 @@ def run_task(task: SourceListTask, timeout_seconds: int) -> dict[str, Any]:
 
 
 def remaining_blockers(task: SourceListTask, evidence_status: str) -> list[str]:
-    blockers = [
-        "license file review",
-        "executable surface security review",
-        "attribution review",
-        "docs-steward promotion review",
-        "target-specific validation",
+    requirements = [
+        "terminal route: license and attribution recorded in manifest/catalog",
+        "terminal route: executable surface constrained to audited install metadata",
+        "terminal route: docs-steward surfaces synchronized",
+        "terminal route: target-specific validation recorded",
     ]
     if task.coverage_status == "covered-by-existing-installable-catalog":
-        blockers.insert(0, "do not duplicate existing installable catalog rows")
+        requirements.insert(0, "terminal route: reuse existing installable catalog row; no duplicate command")
     if task.auth_required:
-        blockers.insert(0, "auth and credential boundary review")
+        requirements.insert(0, "terminal route: placeholder-only auth and credential boundary recorded")
     if evidence_status != "source-list-found":
-        blockers.insert(0, evidence_status)
-    return blockers
+        requirements.insert(0, f"terminal route: source-list evidence status {evidence_status}")
+    return requirements
 
 
 def normalize_evidence_item(item: dict[str, Any], tasks_by_url: dict[str, SourceListTask]) -> dict[str, Any]:
@@ -355,9 +353,7 @@ def normalize_evidence_item(item: dict[str, Any], tasks_by_url: dict[str, Source
     normalized["timed_out"] = timed_out_raw if isinstance(timed_out_raw, bool) else False
     normalized.setdefault("duration_seconds", None)
     reported_skill_count_raw = normalized.get("reported_skill_count")
-    normalized["reported_skill_count"] = (
-        reported_skill_count_raw if isinstance(reported_skill_count_raw, int) else None
-    )
+    normalized["reported_skill_count"] = reported_skill_count_raw if isinstance(reported_skill_count_raw, int) else None
     exit_code_raw = normalized.get("exit_code", 1)
     normalized["exit_code"] = exit_code_raw if isinstance(exit_code_raw, int) else 1
     found_skill_count_raw = normalized.get("found_skill_count", 0)
@@ -374,7 +370,7 @@ def normalize_evidence_item(item: dict[str, Any], tasks_by_url: dict[str, Source
             reported_skill_count=normalized["reported_skill_count"],
         )
     normalized.setdefault("stderr_excerpt", "")
-    normalized.setdefault("remaining_blockers", remaining_blockers(task, normalized["evidence_status"]) if task else [])
+    normalized["remaining_blockers"] = remaining_blockers(task, normalized["evidence_status"]) if task else []
     return normalized
 
 
@@ -383,10 +379,7 @@ def merge_items(
     new_items: list[dict[str, Any]],
     tasks_by_url: dict[str, SourceListTask],
 ) -> list[dict[str, Any]]:
-    merged = {
-        item["normalized_url"].lower(): normalize_evidence_item(item, tasks_by_url)
-        for item in existing_items
-    }
+    merged = {item["normalized_url"].lower(): normalize_evidence_item(item, tasks_by_url) for item in existing_items}
     for item in new_items:
         merged[item["normalized_url"].lower()] = normalize_evidence_item(item, tasks_by_url)
     return sorted(merged.values(), key=lambda item: (min(item["raw_indexes"]), item["normalized_url"].lower()))
@@ -446,9 +439,8 @@ def validate_evidence(*, require_complete: bool) -> dict[str, Any]:
             errors.append(f"non-list-only evidence command: {item.get('normalized_url')}")
         if item.get("evidence_status") not in VALID_EVIDENCE_STATUSES:
             errors.append(f"invalid evidence status for {item.get('normalized_url')}: {item.get('evidence_status')}")
-        if (
-            item.get("evidence_status") == "source-list-found"
-            and (item.get("exit_code") != 0 or item.get("found_skill_count", 0) <= 0)
+        if item.get("evidence_status") == "source-list-found" and (
+            item.get("exit_code") != 0 or item.get("found_skill_count", 0) <= 0
         ):
             errors.append(f"inconsistent source-list-found item: {item.get('normalized_url')}")
     if evidence.get("live_install_executed") is not False or evidence.get("install_command_count") != 0:
@@ -475,8 +467,7 @@ def run_tasks(tasks: list[SourceListTask], *, concurrency: int, timeout_seconds:
             item = future.result()
             results.append(item)
             print(
-                f"[{completed_count}/{total}] {item['evidence_status']} "
-                f"{task.wave_id} {task.normalized_url}",
+                f"[{completed_count}/{total}] {item['evidence_status']} {task.wave_id} {task.normalized_url}",
                 file=sys.stderr,
                 flush=True,
             )

@@ -794,7 +794,8 @@ def render_copilot_mcp(
                 server = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
                 server["type"] = "stdio"
                 server["tools"] = ["*"]
-                server["env"] = {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=True)}
+                # Disk MCP maps keep placeholders (never materialize local secrets).
+                server["env"] = {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=False)}
             servers[spec["name"]] = server
         return {"mcpServers": servers}
 
@@ -804,11 +805,11 @@ def render_copilot_mcp(
             "tools": entry.get("tools", ["*"]),
             "type": entry.get("transport", "stdio"),
             "command": entry["command"],
-            "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True),
+            "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=False),
         }
         if entry.get("env"):
             server["env"] = {
-                key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
+                key: render_env_value(value, fallbacks, local_values=False) for key, value in entry["env"].items()
             }
         servers[name] = server
     return {"mcpServers": servers}
@@ -1542,6 +1543,7 @@ def sync_repo_targets(
 
 
 def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+    # Disk-persisted home configs must use placeholders only (no secret materialization).
     if mcphub_enabled(registry):
         mode = mcphub_projection_mode(registry, "gemini-cli", "remote-stdio")
         token_env = mcphub_bearer_env_var(registry)
@@ -1557,7 +1559,9 @@ def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> di
             else:
                 server = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
                 server["type"] = "stdio"
-                server["env"] = {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=True)}
+                server["env"] = {
+                    token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=False)
+                }
             servers[spec["name"]] = server
         return servers
 
@@ -1566,11 +1570,11 @@ def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> di
         server: dict[str, Any] = {
             "type": entry.get("transport", "stdio"),
             "command": entry["command"],
-            "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True),
+            "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=False),
         }
         if entry.get("env"):
             server["env"] = {
-                key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
+                key: render_env_value(value, fallbacks, local_values=False) for key, value in entry["env"].items()
             }
         if entry.get("tools") and entry.get("tools") != ["*"]:
             server["includeTools"] = entry["tools"]
@@ -1583,6 +1587,7 @@ def render_client_mcp(
     fallbacks: dict[str, str],
     harness: str | None = None,
 ) -> dict[str, Any]:
+    # Disk-persisted client MCP maps: placeholders only (no secret materialization).
     if mcphub_enabled(registry):
         mode = mcphub_projection_mode(registry, harness, "remote-stdio")
         token_env = mcphub_bearer_env_var(registry)
@@ -1597,7 +1602,9 @@ def render_client_mcp(
                 }
             else:
                 server = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
-                server["env"] = {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=True)}
+                server["env"] = {
+                    token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=False)
+                }
             servers[spec["name"]] = server
         return {"mcpServers": servers}
 
@@ -1605,11 +1612,11 @@ def render_client_mcp(
     for name, entry in enabled_registry_servers(registry, harness).items():
         server: dict[str, Any] = {
             "command": entry["command"],
-            "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True),
+            "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=False),
         }
         if entry.get("env"):
             server["env"] = {
-                key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
+                key: render_env_value(value, fallbacks, local_values=False) for key, value in entry["env"].items()
             }
         servers[name] = server
     return {"mcpServers": servers}
@@ -1693,13 +1700,16 @@ def render_opencode_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> 
                     "type": "local",
                     "command": [entry["command"], *entry["args"]],
                     "enabled": enabled,
-                    "environment": {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=True)},
+                    # Disk MCP maps keep placeholders (never materialize local secrets).
+                    "environment": {
+                        token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=False)
+                    },
                 }
         return servers
 
     servers: dict[str, Any] = {}
     for name, entry in enabled_registry_servers(registry, "opencode").items():
-        args = replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True)
+        args = replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=False)
         remote_url = extract_remote_url(entry["command"], args)
         server: dict[str, Any]
         if remote_url:
@@ -1708,7 +1718,7 @@ def render_opencode_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> 
             server = {"type": "local", "command": [entry["command"], *args], "enabled": True}
         if entry.get("env"):
             server["environment"] = {
-                key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
+                key: render_env_value(value, fallbacks, local_values=False) for key, value in entry["env"].items()
             }
         servers[name] = server
     return servers
@@ -1739,6 +1749,7 @@ def render_opencode_lmstudio_provider(policy: dict[str, Any], fallbacks: dict[st
         "npm": opencode.get("npm", "@ai-sdk/openai-compatible"),
         "name": provider.get("name", "LM Studio (local)"),
         "options": {
+            # D9 carve-out: local LLM baseURL may resolve machine-local values.
             "baseURL": resolve_local_llm_base_url(provider, fallbacks, local_values=True),
         },
         "models": models or {str(provider.get("default_model", "local-model")): {"name": "LM Studio Local Model"}},
@@ -2302,7 +2313,7 @@ def cherry_remote_transport(url: str) -> str:
 
 
 def render_cherry_server(name: str, entry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
-    args = replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True)
+    args = replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=False)
     remote_url = extract_remote_url(entry["command"], args)
 
     if remote_url:
@@ -2319,7 +2330,7 @@ def render_cherry_server(name: str, entry: dict[str, Any], fallbacks: dict[str, 
 
     if entry.get("env"):
         server["env"] = {
-            key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
+            key: render_env_value(value, fallbacks, local_values=False) for key, value in entry["env"].items()
         }
 
     return server
@@ -2342,7 +2353,9 @@ def render_cherry_import_files(registry: dict[str, Any], fallbacks: dict[str, st
             else:
                 server = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
                 server["type"] = "stdio"
-                server["env"] = {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=True)}
+                server["env"] = {
+                    token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=False)
+                }
             all_servers[spec["name"]] = server
             if spec["kind"] == "group":
                 files[f"group-{spec['group']}.json"] = {"mcpServers": {spec["name"]: server}}
@@ -2514,11 +2527,23 @@ def merge_client_mcp_config(
     fallbacks: dict[str, str],
     harness: str | None = None,
 ) -> None:
+    """Merge managed MCP servers into a client config without dropping local-only entries.
+
+    Rendered servers use placeholders (local_values=False path inside
+    ``render_client_mcp``); user-owned servers outside the managed name set are
+    preserved via :func:`merge_server_maps`.
+    """
     if not path.exists():
         return
-    settings = load_json(path)
-    settings["mcpServers"] = render_client_mcp(registry, fallbacks, harness)["mcpServers"]
-    write_json(ctx, path, settings)
+    current = load_json(path)
+    existing = current.get("mcpServers")
+    if not isinstance(existing, dict):
+        existing = {}
+    rendered = render_client_mcp(registry, fallbacks, harness)["mcpServers"]
+    known = set(rendered)
+    settings = dict(current)
+    settings["mcpServers"] = merge_server_maps(rendered, existing, known)
+    write_local_json_config(ctx, path, settings, current=current)
 
 
 def merge_claude_settings_local(ctx: SyncContext, registry: dict[str, Any]) -> None:
@@ -2555,6 +2580,8 @@ def sync_home_targets(
             sync_platform_home_target("grok", ctx, registry, policy, fallbacks, hook_registry)
         if platform_filter_allows(platforms_filter, "opencode"):
             sync_platform_home_target("opencode", ctx, registry, policy, fallbacks, hook_registry)
+        if platform_filter_allows(platforms_filter, "lm-studio"):
+            sync_platform_home_target("lm-studio", ctx, registry, policy, fallbacks, hook_registry)
         return
     sync_codex_entrypoint(ctx)
     ensure_symlink(ctx, CLAUDE_ENTRYPOINT_PATH, GLOBAL_MD)
@@ -2620,6 +2647,8 @@ def sync_home_targets(
         ctx, CHERRY_STUDIO_MANAGED_IMPORT_DIR, render_cherry_import_files(registry, fallbacks)
     )
     merge_cherry_studio_config(ctx)
+    if platform_filter_allows(platforms_filter, "lm-studio", "shared"):
+        sync_platform_home_target("lm-studio", ctx, registry, policy, fallbacks, hook_registry)
     sync_skill_entries(ctx, CODEX_SKILLS_DIR)
     sync_skill_entries(ctx, COPILOT_SKILLS_DIR)
     sync_skill_entries(ctx, GEMINI_SKILLS_DIR)
@@ -2642,7 +2671,11 @@ def sync_home_targets(
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Sync repo-managed agent stack config into local harnesses.")
-    parser.add_argument("--targets", default="all", help="Comma-separated list: repo,home,all")
+    parser.add_argument(
+        "--targets",
+        default="repo",
+        help="Comma-separated list: repo,home,all (default: repo — home requires explicit opt-in)",
+    )
     parser.add_argument("--apply", action="store_true", help="Apply changes")
     parser.add_argument("--check", action="store_true", help="Check drift without writing")
     parser.add_argument(
@@ -2704,7 +2737,12 @@ def main(argv: list[str] | None = None) -> int:
     registry = load_registry(ctx)
     hook_registry = load_hook_registry()
     fallbacks = load_current_secret_fallbacks()
-    targets = {item.strip() for item in args.targets.split(",")} if args.targets != "all" else {"repo", "home"}
+    if args.targets == "all":
+        targets = {"repo", "home"}
+    else:
+        targets = {item.strip() for item in args.targets.split(",") if item.strip()}
+        if not targets:
+            targets = {"repo"}
     platforms_filter = (
         {item.strip() for item in args.platforms.split(",") if item.strip()}
         if getattr(args, "platforms", None)

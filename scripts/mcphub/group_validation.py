@@ -47,7 +47,7 @@ def enabled_settings_server_ids(settings_servers: dict[str, Any]) -> set[str]:
     return {
         name
         for name, entry in settings_servers.items()
-        if not isinstance(entry, dict) or entry.get("disabled") is not True
+        if not isinstance(entry, dict) or (entry.get("disabled") is not True and entry.get("enabled") is not False)
     }
 
 

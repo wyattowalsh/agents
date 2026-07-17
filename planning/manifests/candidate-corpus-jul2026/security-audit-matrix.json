@@ -923,8 +923,8 @@
     },
     {
       "raw_index": 93,
-      "source_name": "NVIDIA/skills-",
-      "risk_tier": "standard-review",
+      "source_name": "NVIDIA/skills",
+      "risk_tier": "review-required",
       "security_packet": {
         "candidate_code_executed": false,
         "network_probe_scope": "public Git metadata only",

@@ -1,7 +1,7 @@
 ---
 name: planner
 description: Create a codebase-grounded implementation plan before coding.
-model: inherit
+model: cursor-grok-4.5-high
 readonly: true
 ---
 

@@ -1,0 +1,17 @@
+{
+  "skills": [
+    "nerdbot"
+  ],
+  "query": "/nerdbot replay --root ./knowledge-base --operation-id op-example and /nerdbot watch-classify wiki/index.md --stable",
+  "files": [
+    "knowledge-base/activity/operations.jsonl",
+    "knowledge-base/wiki/index.md"
+  ],
+  "expected_behavior": [
+    "Dispatches explicit replay and watch-classify requests through the Utility workflow.",
+    "Keeps both utility commands read-only.",
+    "Filters replay to the requested operation ID when provided.",
+    "Classifies stable canonical wiki changes for review instead of auto-applying save-back.",
+    "Does not append activity logs or operation journals during utility reads."
+  ]
+}

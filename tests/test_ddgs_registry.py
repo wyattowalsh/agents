@@ -22,7 +22,7 @@ def test_ddgs_server_entry(registry: dict) -> None:
     server = registry["servers"]["ddgs"]
     assert server["transport"] == "stdio"
     assert server["command"] == "uvx"
-    assert server["args"] == ["ddgs-mcp-server==0.5.1"]
+    assert server["args"] == ["--from", "ddgs[mcp]", "ddgs", "mcp"]
     assert server["auth_policy"] == "none"
     assert server["enabled"] is True
 
@@ -38,3 +38,7 @@ def test_ddgs_follows_duckduckgo_in_harness(registry: dict) -> None:
 def test_ddgs_excluded_from_tunnel(registry: dict) -> None:
     groups = registry["mcphub"]["groups"]
     assert "ddgs" not in group_server_names(groups["tunnel"])
+
+
+def test_ddgs_server_id_is_not_shadowed_by_a_group_id(registry: dict) -> None:
+    assert "ddgs" not in registry["mcphub"]["groups"]

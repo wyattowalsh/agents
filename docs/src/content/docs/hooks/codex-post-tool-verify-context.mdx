@@ -5,16 +5,16 @@ page_kind: "hook"
 source_kind: "registry"
 asset_id: "codex-post-tool-verify-context"
 composed: true
-composed_at: "2026-06-16"
-composed_by: "compose-hooks-wave-1"
+composed_at: "2026-07-10"
+composed_by: "regenerate-hook-docs-rv-006"
 docs_density: standard
 ---
 
-{/* HAND-MAINTAINED */}
+{/* GENERATED from config/hook-registry.json — do not hand-edit */}
 
-import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-<Badge text="hook" variant="note" /> <Badge text="PostToolUse" variant="success" /> <Badge text="codex" variant="default" /> <Badge text="mode: context" variant="tip" />
+<Badge text="PostToolUse" variant="caution" /> <Badge text="context" variant="tip" /> <Badge text="codex" variant="default" />
 
 > Run lightweight context-only post-edit quality checks and return verification guidance after Codex tool use.
 
@@ -23,30 +23,29 @@ import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components'
 | Field | Value |
 |-------|-------|
 | id | `codex-post-tool-verify-context` |
-| status_message | `Checking post-edit quality` |
-| mode | `context` |
 | logical_event | `PostToolUse` |
-| matcher | `Write\|Edit\|MultiEdit\|apply_patch\|edit\|create\|replace\|write_file\|Bash\|bash\|run_shell_command` |
-| command | `python3 {repo_root}/hooks/wagents-hook.py codex-post-tool-verify-context --harness {harness}` |
+| matcher | `Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command` |
+| command | `{hook_runner} codex-post-tool-verify-context --harness {harness}` |
 | timeout | `5` |
-| harnesses | `["codex"]` |
-
-<Aside type="note">
-Policy `_policy_codex_post_tool_verify_context` runs limited quality path checks (ruff/ty context) and injects guidance via additionalContext. Does not block.
-</Aside>
+| mode | `context` |
+| harnesses | `[
+  "codex"
+]` |
+| status_message | Checking post-edit quality |
 
 <details class="source-disclosure">
-<summary>Full hook config + command reference</summary>
+<summary>Full hook config (registry SSOT)</summary>
 
 ```json title="config/hook-registry.json (entry)"
 {
   "id": "codex-post-tool-verify-context",
   "description": "Run lightweight context-only post-edit quality checks and return verification guidance after Codex tool use.",
-  "status_message": "Checking post-edit quality",
-  "mode": "context",
   "logical_event": "PostToolUse",
+  "logical_policy": "codex-post-tool-verify-context",
+  "mode": "context",
+  "status_message": "Checking post-edit quality",
   "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
-  "command": "python3 {repo_root}/hooks/wagents-hook.py codex-post-tool-verify-context --harness {harness}",
+  "command": "{hook_runner} codex-post-tool-verify-context --harness {harness}",
   "timeout": 5,
   "harnesses": [
     "codex"
@@ -54,23 +53,16 @@ Policy `_policy_codex_post_tool_verify_context` runs limited quality path checks
 }
 ```
 
-```python title="hooks/wagents-hook.py (policy)"
-def _policy_codex_post_tool_verify_context(payload: NormalizedPayload) -> int:
-    repo_root, quality_paths = _quality_paths(payload)
-    paths = [str(path.relative_to(repo_root)) for path in quality_paths] or _candidate_paths(payload)
-    # ... runs fast ruff/ty on small set and emits additionalContext
-    ...
-```
+Command placeholders:
 
-Command: `python3 ... codex-post-tool-verify-context --harness codex`
+- `{hook_runner}` resolves to the fleet dispatcher (`hooks/wagents-hook.py` or harness projection).
+- `{harness}` is the target harness id at render/install time.
+
 </details>
 
-## Resources
+## Related
 
 <CardGrid>
-  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
-  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="Hooks hub" href="/hooks/" description="Registry overview and harness matrix." />
+  <LinkCard title="CLI hooks" href="/cli/" description="`wagents hooks list|validate`." />
 </CardGrid>
-
----
-[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

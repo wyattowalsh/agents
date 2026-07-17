@@ -7,6 +7,13 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = true
 
+[mcp_servers.mcphub_group_nlm]
+url = "http://127.0.0.1:46683/mcp/nlm"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = true
+
 [mcp_servers.mcphub_server_agent-catalog]
 url = "http://127.0.0.1:46683/mcp/agent-catalog"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
@@ -231,6 +238,13 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_notebooklm]
+url = "http://127.0.0.1:46683/mcp/notebooklm"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_nullcost]
 url = "http://127.0.0.1:46683/mcp/nullcost"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
@@ -282,6 +296,13 @@ enabled = false
 
 [mcp_servers.mcphub_server_penpot]
 url = "http://127.0.0.1:46683/mcp/penpot"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_qsv]
+url = "http://127.0.0.1:46683/mcp/qsv"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
 startup_timeout_sec = 90
 tool_timeout_sec = 90

@@ -26,6 +26,10 @@ hero:
     - text: Install
       link: /install/
       icon: right-arrow
+    - text: Start Here
+      link: /start-here/
+      variant: minimal
+      icon: right-arrow
     - text: System Overview
       link: /surfaces/
       variant: minimal
@@ -56,12 +60,12 @@ A surface is a portable piece of agent configuration. `wagents` keeps each surfa
   <a class="surface-node surface-node--skills" href="/skills/catalog/">
     <span class="surface-kicker">02</span>
     <strong>Skills</strong>
-    <span>1598 catalog entries: 69 repo-owned, 1529 curated external.</span>
+    <span>1537 catalog entries: 69 repo-owned, 1468 curated external.</span>
   </a>
   <a class="surface-node surface-node--tools" href="/surfaces/tools/">
     <span class="surface-kicker">03</span>
     <strong>Tools</strong>
-    <span>76 MCP tools plus CLI and plugin surfaces.</span>
+    <span>77 MCP tools plus CLI and plugin surfaces.</span>
   </a>
   <a class="surface-node surface-node--hooks" href="/hooks/">
     <span class="surface-kicker">04</span>
@@ -96,7 +100,7 @@ Runtimes consume the same surfaces through native files, generated projections, 
   <span class="stat stat-harness">9 Supported Runtimes</span>
   <span class="stat stat-agent">20 Agent Definitions</span>
   <span class="stat stat-mcp">16 Repo MCP</span>
-  <span class="stat stat-mcp">60 External MCP</span>
+  <span class="stat stat-mcp">61 External MCP</span>
 </div>
 
 ## Install Paths
@@ -148,5 +152,5 @@ Workflow cards are grouped by the surface they exercise so the catalog stays con
 </CardGrid>
 
 <Aside type="note" title="How these docs work">
-Catalog pages are generated from `skills/`, `agents/`, and `mcp/` via `wagents docs generate`. Onboarding pages stay hand-maintained. See [Contributing](/contributing/) for CI/CD, generated artifact, and validation detail.
+Repo-owned catalog pages are generated from `skills/`, `agents/`, and `mcp/` via `wagents docs generate`. Curated external rows are authored in `docs/src/authoring/skills/*.mdx` and emitted into the skills catalog index. Onboarding pages stay hand-maintained. See [Contributing](/contributing/) for CI/CD, generated artifact, and validation detail.
 </Aside>

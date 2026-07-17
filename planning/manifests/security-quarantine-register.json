@@ -9,7 +9,11 @@
     "browser profile credential access",
     "offensive security workflows",
     "opaque remote execution",
-    "unreviewed telemetry upload"
+    "unreviewed telemetry upload",
+    "competitive intelligence scraping",
+    "copyright and platform-policy risk",
+    "automated social posting",
+    "automated marketplace submission"
   ],
   "external_repo_records": [
     {
@@ -39,6 +43,63 @@
       "trigger": "offensive security workflows",
       "default_action": "quarantine",
       "required_review": ["red-team scope", "safe-use policy", "separate install profile", "explicit user approval"]
+    },
+    {
+      "id": "EXT-085",
+      "repo": "ComposioHQ/awesome-codex-skills/tree/master/competitive-ads-extractor",
+      "trigger": "competitive intelligence scraping",
+      "default_action": "quarantine-reference",
+      "required_review": [
+        "legal and platform terms review",
+        "public-data-only source policy",
+        "credential and private-session boundary",
+        "rate-limit and anti-abuse controls",
+        "explicit user approval",
+        "no install or default enablement"
+      ]
+    },
+    {
+      "id": "EXT-086",
+      "repo": "ComposioHQ/awesome-codex-skills/tree/master/video-downloader",
+      "trigger": "copyright and platform-policy risk",
+      "default_action": "quarantine-reference",
+      "required_review": [
+        "content-rights and copyright review",
+        "DRM paywall and private-content exclusion",
+        "platform terms review",
+        "exact source-content approval",
+        "explicit user approval",
+        "no install or default enablement"
+      ]
+    },
+    {
+      "id": "EXT-087",
+      "repo": "jihe520/social-push",
+      "trigger": "automated social posting",
+      "default_action": "quarantine-reference",
+      "required_review": [
+        "account-owner authorization",
+        "credential cookie and session boundary",
+        "platform terms and anti-spam review",
+        "manual approval before each post",
+        "explicit user approval",
+        "no install or default enablement"
+      ]
+    },
+    {
+      "id": "EXT-088",
+      "repo": "klajdikkolaj/upwork-autopilot",
+      "trigger": "automated marketplace submission",
+      "default_action": "quarantine-reference",
+      "required_review": [
+        "account-owner authorization",
+        "platform terms and representation review",
+        "credential and browser-profile boundary",
+        "connect-budget limit",
+        "manual approval before every proposal",
+        "explicit user approval",
+        "no install or default enablement"
+      ]
     }
   ],
   "exception_workflow": [

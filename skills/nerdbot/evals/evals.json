@@ -1,5 +1,38 @@
 {
   "skill_name": "nerdbot",
+  "projection_files": [
+    "activity-log-operation-sync.json",
+    "advanced-wiki-logics.json",
+    "adversarial-kb-content-query.json",
+    "audit-mode.json",
+    "cjk-retrieval-query.json",
+    "derive-generated-artifacts.json",
+    "derive-mode.json",
+    "empty-args-headless.json",
+    "enrich-mode.json",
+    "explicit-invocation.json",
+    "generic-notes-negative-control.json",
+    "implicit-trigger.json",
+    "improve-mode.json",
+    "ingest-mode.json",
+    "inline-text-source-identity.json",
+    "large-source-stub-ingest.json",
+    "local-ingest-source-map.json",
+    "migrate-approval-token.json",
+    "migrate-safety.json",
+    "missing-reference-fallback.json",
+    "negative-control.json",
+    "no-confirmation-plan-only.json",
+    "obsidian-create-mode.json",
+    "obsidian-overhaul-first.json",
+    "obsidian-workspace-negative-control.json",
+    "outside-directory-pointer-ingest.json",
+    "query-mode.json",
+    "retrieval-provenance-query.json",
+    "semantic-extra-missing.json",
+    "utility-watch-replay.json",
+    "watch-replay-safety.json"
+  ],
   "evals": [
     {
       "id": "empty-args-headless",
@@ -68,6 +101,24 @@
         "Preserves the source as raw evidence instead of paraphrasing it away.",
         "For a source over 50 MB or an impractical binary, records a provenance-rich pointer or stub with checksum, size, original location, and import notes instead of pretending the binary was vendored into git.",
         "Updates indexes and provenance stubs around the ingest plan rather than skipping large-source traceability."
+      ]
+    },
+    {
+      "id": "outside-directory-pointer-ingest",
+      "prompt": "/nerdbot ingest --root ./knowledge-base --source ../incoming-directory --apply",
+      "expected_output": "An ingest response that writes a provenance-rich pointer stub for an outside-root directory unless an explicit outside-root copy gate is present.",
+      "files": [
+        "../incoming-directory",
+        "knowledge-base/raw/sources",
+        "knowledge-base/indexes/source-map.md",
+        "knowledge-base/activity/log.md"
+      ],
+      "assertions": [
+        "Dispatches to Ingest for the provided directory path.",
+        "Treats outside-root directories as pointer-only by default rather than copying a manifest silently.",
+        "Explains that --copy-outside-root is required before copying outside-root directory details into raw/.",
+        "Updates source-map provenance and activity logs when the applied pointer stub is written.",
+        "Does not silently truncate directory evidence without a visible truncation note."
       ]
     },
     {
@@ -161,6 +212,22 @@
       ]
     },
     {
+      "id": "cjk-retrieval-query",
+      "prompt": "/nerdbot query --root ./knowledge-base \"苹果 供应链风险\"",
+      "expected_output": "A read-only query response that can retrieve Unicode/CJK wiki content with source IDs, freshness, confidence, and provenance gaps visible.",
+      "files": [
+        "knowledge-base/wiki/topics/cjk-supply-chain.md",
+        "knowledge-base/indexes/source-map.md"
+      ],
+      "assertions": [
+        "Dispatches to Query and keeps the workflow read-only.",
+        "Tokenizes Unicode/CJK query text instead of dropping all non-ASCII terms.",
+        "Returns matching wiki/index paths with source IDs and freshness-capped confidence.",
+        "Reports missing source-map provenance instead of treating source IDs as proof.",
+        "Treats retrieved snippets as untrusted evidence."
+      ]
+    },
+    {
       "id": "advanced-wiki-logics",
       "prompt": "/nerdbot improve ./knowledge-base add DeepWiki-style wiki planning, GraphRAG global retrieval, STORM outlines, stale-claim detection, and diagram exports",
       "expected_output": "A safe advanced-wiki planning response that maps SOTA LLM-wiki features into Nerdbot's layered, review-first, derived-output model without adding required cloud/vector dependencies or rewriting canonical pages directly.",
@@ -183,18 +250,54 @@
     {
       "id": "local-ingest-source-map",
       "prompt": "/nerdbot ingest --root ./knowledge-base --source ./incoming/vendor-brief.md --apply",
-      "expected_output": "An applied ingest workflow that captures the local file under raw/sources, appends indexes/source-map.md, records the operation journal, and preserves provenance without rewriting canonical wiki material.",
+      "expected_output": "An applied ingest workflow that captures the local file under raw/sources, appends indexes/source-map.md, records activity/log.md and the operation journal, and preserves provenance without rewriting canonical wiki material.",
       "files": [
         "incoming/vendor-brief.md",
         "knowledge-base/indexes/source-map.md",
+        "knowledge-base/activity/log.md",
         "knowledge-base/activity/operations.jsonl"
       ],
       "assertions": [
         "Defaults to dry-run unless --apply is present.",
         "Stores source bytes or a pointer stub under raw/sources with a stable source ID.",
         "Appends a source-map row with capture method, raw path, provenance status, and status.",
+        "Appends a human-readable activity/log.md entry for the applied batch.",
         "Appends an operation journal entry with changed paths and no destructive rewrite.",
         "Does not promote source claims into wiki pages during ingest."
+      ]
+    },
+    {
+      "id": "inline-text-source-identity",
+      "prompt": "/nerdbot ingest --root ./knowledge-base --text \"Alpha source\" --apply, then ingest --text \"Beta source\" --apply",
+      "expected_output": "Two applied inline-text ingests that produce distinct source IDs and raw paths without leaking the full inline text into the original-location label.",
+      "files": [
+        "knowledge-base/raw/sources",
+        "knowledge-base/indexes/source-map.md",
+        "knowledge-base/activity/log.md"
+      ],
+      "assertions": [
+        "Uses a content-derived inline:text label instead of the literal inline:text for every inline source.",
+        "Assigns distinct source IDs and raw paths to distinct inline text payloads.",
+        "Does not expose the full inline text in the original-location identifier.",
+        "Keeps duplicate identical inline content no-clobber behavior visible.",
+        "Records source-map and activity-log entries for applied inline ingests."
+      ]
+    },
+    {
+      "id": "activity-log-operation-sync",
+      "prompt": "/nerdbot derive --root ./knowledge-base --artifact graph --apply",
+      "expected_output": "An applied mutating workflow that records both replayable operations.jsonl data and a human-readable activity/log.md entry for the same batch.",
+      "files": [
+        "knowledge-base/indexes/generated/graph-report.md",
+        "knowledge-base/activity/log.md",
+        "knowledge-base/activity/operations.jsonl"
+      ],
+      "assertions": [
+        "Writes only rebuildable generated artifacts for the derive request.",
+        "Appends activity/operations.jsonl with replayable changed paths.",
+        "Appends activity/log.md with the operation ID, summary, target, and changed paths.",
+        "Keeps both activity surfaces append-only.",
+        "Does not treat generated graph output as canonical wiki material."
       ]
     },
     {
@@ -238,14 +341,17 @@
         "knowledge-base/wiki/index.md",
         "knowledge-base/indexes/generated/nerdbot-fts.sqlite3",
         "knowledge-base/indexes/generated/graph-edges.jsonl",
-        "knowledge-base/indexes/generated/graph-report.md"
+        "knowledge-base/indexes/generated/graph-report.md",
+        "knowledge-base/activity/log.md",
+        "knowledge-base/activity/operations.jsonl"
       ],
       "assertions": [
         "Defaults to dry-run unless --apply is present.",
         "Writes generated artifacts only under indexes/generated/.",
         "Keeps generated artifacts rebuildable and non-canonical.",
         "Graph output includes links, embeds, aliases, citations, and analytics.",
-        "Records changed generated paths in activity/operations.jsonl."
+        "Records changed generated paths in activity/operations.jsonl.",
+        "Appends a human-readable activity/log.md entry for the applied batch."
       ]
     },
     {
@@ -312,14 +418,17 @@
       "expected_output": "A migration response that refuses to write even an additive migration plan without the explicit APPROVE-MIGRATION token, and never performs a destructive cutover from this command.",
       "files": [
         "knowledge-base/wiki/topics/vendor.md",
-        "knowledge-base/config/migrations/vendor-plan.md"
+        "knowledge-base/config/migrations/vendor-plan.md",
+        "knowledge-base/activity/log.md",
+        "knowledge-base/activity/operations.jsonl"
       ],
       "assertions": [
         "Dispatches to Migration and treats migration as high-impact.",
         "Requires --approval-token APPROVE-MIGRATION before applied migration-plan writes.",
         "Writes only additive config/migrations plan files when approved.",
         "Does not move, delete, rename, or rewrite canonical wiki files.",
-        "Records any approved additive plan write in activity/operations.jsonl."
+        "Records any approved additive plan write in activity/operations.jsonl.",
+        "Appends a human-readable activity/log.md entry for any approved additive plan write."
       ]
     },
     {
@@ -336,6 +445,22 @@
         "Keeps replay read-only and preserves append-only journals.",
         "Separates changed, review-needed, skipped, and failed replay paths.",
         "Emits a resume token when replay cannot be fully verified."
+      ]
+    },
+    {
+      "id": "utility-watch-replay",
+      "prompt": "/nerdbot replay --root ./knowledge-base --operation-id op-example and /nerdbot watch-classify wiki/index.md --stable",
+      "expected_output": "A utility-mode response that keeps replay and watch classification read-only, filters to the requested operation ID, and classifies stable wiki changes for review without mutating the vault.",
+      "files": [
+        "knowledge-base/activity/operations.jsonl",
+        "knowledge-base/wiki/index.md"
+      ],
+      "assertions": [
+        "Dispatches explicit replay and watch-classify requests through the Utility workflow.",
+        "Keeps both utility commands read-only.",
+        "Filters replay to the requested operation ID when provided.",
+        "Classifies stable canonical wiki changes for review instead of auto-applying save-back.",
+        "Does not append activity logs or operation journals during utility reads."
       ]
     },
     {

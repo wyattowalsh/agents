@@ -387,11 +387,12 @@ class PlatformAdapter(ABC):
         for name, entry in enabled_registry_servers(registry, harness or self.name).items():
             server: dict[str, Any] = {
                 "command": entry["command"],
-                "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True),
+                # Disk MCP maps keep placeholders (never materialize local secrets).
+                "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=False),
             }
             if entry.get("env"):
                 server["env"] = {
-                    key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
+                    key: render_env_value(value, fallbacks, local_values=False) for key, value in entry["env"].items()
                 }
             servers[name] = server
         return {"mcpServers": servers}

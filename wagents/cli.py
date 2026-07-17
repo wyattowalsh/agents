@@ -22,6 +22,7 @@ from wagents.context import (
     detect_install_mode,
     get_repo_root,
     get_repo_root_optional,
+    resolve_repo_root,
 )
 from wagents.docs import docs_app, regenerate_sidebar_and_indexes
 
@@ -31,7 +32,12 @@ from wagents.eval_adequacy import (
     build_adequacy_report,
     filter_high_risk,
 )
-from wagents.external_skills import ExternalSkillCatalogError, ExternalSkillEntry, read_external_skill_entries
+from wagents.external_skills import (
+    ExternalSkillCatalogError,
+    ExternalSkillEntry,
+    read_external_skill_entries,
+    sync_apply_pin_satisfied,
+)
 from wagents.installed_inventory import (
     InstalledSkillInventoryRow,
     build_skill_cleanup_report,
@@ -155,9 +161,7 @@ rtk_app = typer.Typer(help="Diagnose and sync RTK token-saving hooks")
 app.add_typer(rtk_app, name="rtk")
 app.add_typer(self_app, name="self")
 
-apm_app = typer.Typer(
-    help="APM (Microsoft Agent Package Manager) facade: materialize .apm/, doctor, refresh-lock"
-)
+apm_app = typer.Typer(help="APM (Microsoft Agent Package Manager) facade: materialize .apm/, doctor, refresh-lock")
 app.add_typer(apm_app, name="apm")
 register_validate_commands(app)
 
@@ -495,8 +499,9 @@ def _collect_doctor_checks() -> list[dict[str, str]]:
     """Collect environment and toolchain diagnostics for the repo."""
     checks: list[dict[str, str]] = []
     tool_paths: dict[str, str | None] = {}
+    repo_root = resolve_repo_root(cwd=Path.cwd()) or get_repo_root_optional() or ROOT
 
-    pyproject_file = ROOT / "pyproject.toml"
+    pyproject_file = repo_root / "pyproject.toml"
     requires_python = ""
     if pyproject_file.exists():
         data = tomllib.loads(pyproject_file.read_text())
@@ -552,7 +557,7 @@ def _collect_doctor_checks() -> list[dict[str, str]]:
                 )
             )
 
-    docs_dir = ROOT / "docs"
+    docs_dir = repo_root / "docs"
     package_json = docs_dir / "package.json"
     lock_file = docs_dir / "pnpm-lock.yaml"
     node_modules = docs_dir / "node_modules"
@@ -874,7 +879,7 @@ def _collect_doctor_checks() -> list[dict[str, str]]:
                 capture_output=True,
                 text=True,
                 check=False,
-                cwd=ROOT,
+                cwd=repo_root,
             )
         except OSError:
             checks.append(
@@ -1337,6 +1342,43 @@ def _sync_row_summary(row: InstalledSkillInventoryRow) -> str:
     return f"{row.name} [{row.provenance_status}]{suffix}"
 
 
+def _sync_row_install_names(row: InstalledSkillInventoryRow) -> set[str]:
+    """Return catalog plus upstream selector names that can satisfy a sync row."""
+    names = {row.name}
+    spec = _skills_cli_install_spec(row)
+    if spec is None:
+        return names
+    selector_mode = cast("str", spec["selector_mode"])
+    if selector_mode in {"named", "source-spec"}:
+        names.update(cast("tuple[str, ...]", spec["skills"]))
+    return {name for name in names if name}
+
+
+def _rows_share_install_source(left: InstalledSkillInventoryRow, right: InstalledSkillInventoryRow) -> bool:
+    """Return true when two inventory rows clearly refer to the same upstream source."""
+    left_sources = {left.source, left.install_source, left.source_url} - {""}
+    right_sources = {right.source, right.install_source, right.source_url} - {""}
+    return bool(left_sources and right_sources and left_sources.intersection(right_sources))
+
+
+def _sync_row_installed_agents(
+    row: InstalledSkillInventoryRow,
+    all_rows: tuple[InstalledSkillInventoryRow, ...],
+) -> tuple[str, ...]:
+    """Return installed agents for a desired row, including upstream selector aliases."""
+    names = _sync_row_install_names(row)
+    installed_agents = set(row.installed_agents)
+    for candidate in all_rows:
+        if candidate is row:
+            continue
+        if candidate.name not in names:
+            continue
+        if candidate.name != row.name and not _rows_share_install_source(row, candidate):
+            continue
+        installed_agents.update(candidate.installed_agents)
+    return tuple(sorted(installed_agents))
+
+
 def _repo_skill_covered_by_non_cli_owner(row: InstalledSkillInventoryRow, agent_id: str) -> bool:
     """Return true when repo bundle coverage should suppress Skills CLI install."""
     return bool(repo_skill_owner_covered_agents(row, (agent_id,)))
@@ -1356,10 +1398,54 @@ def _optional_installed_superseded(
     return replacement in verified_names
 
 
+def _partition_missing_for_pin_gate(
+    missing: list[InstalledSkillInventoryRow],
+    *,
+    accept_floating: bool,
+) -> tuple[list[InstalledSkillInventoryRow], list[InstalledSkillInventoryRow]]:
+    """Split install-now curated rows that lack pin/audited-head evidence."""
+    if accept_floating:
+        return missing, []
+    allowed: list[InstalledSkillInventoryRow] = []
+    blocked: list[InstalledSkillInventoryRow] = []
+    for row in missing:
+        if row.is_verified_curated() and not sync_apply_pin_satisfied(
+            install_command=row.install_command,
+            audited_head=row.audited_head,
+        ):
+            blocked.append(row)
+        else:
+            allowed.append(row)
+    return allowed, blocked
+
+
+def apply_dry_run_pin_gate(
+    report: dict[str, object],
+    *,
+    strict_pin: bool,
+    accept_floating: bool,
+) -> dict[str, object]:
+    """Apply dry-run pin-gate failure when strict and floating install-now rows exist.
+
+    Mutates *report* in place and returns it for chaining. Soft dry-run leaves
+    ``ok`` unchanged when *strict_pin* is False.
+    """
+    pin_blocked_value = report.get("pin_blocked_count")
+    pin_blocked_count = pin_blocked_value if isinstance(pin_blocked_value, int) else 0
+    if strict_pin and pin_blocked_count and not accept_floating:
+        report["ok"] = False
+        report["error"] = str(
+            report.get("pin_gate") or "Floating install-now curated skills blocked; pass --accept-floating or pin @ref."
+        )
+        report["error_type"] = "pin-gate"
+    return report
+
+
 def _build_sync_report(
     target_agents: tuple[str, ...],
     *,
     include_installed: bool,
+    accept_floating: bool = False,
     external_entries: list[ExternalSkillEntry] | None = None,
 ) -> dict[str, object]:
     """Build dry-run/apply data for additive skill sync."""
@@ -1387,6 +1473,7 @@ def _build_sync_report(
                 "error": query.error,
                 "warning": "",
                 "missing": [],
+                "pin_blocked": [],
                 "already_present": [],
                 "unresolved": [],
                 "skipped": [],
@@ -1406,10 +1493,15 @@ def _build_sync_report(
             if not _row_targets_agent(row, agent_id):
                 skipped.append(row)
                 continue
-            if agent_id in row.installed_agents or _repo_skill_covered_by_non_cli_owner(row, agent_id):
+            if agent_id in _sync_row_installed_agents(row, merged.rows) or _repo_skill_covered_by_non_cli_owner(
+                row,
+                agent_id,
+            ):
                 already_present.append(row)
             else:
                 missing.append(row)
+
+        missing, pin_blocked = _partition_missing_for_pin_gate(missing, accept_floating=accept_floating)
 
         for row in optional_installed:
             if not include_installed:
@@ -1437,6 +1529,7 @@ def _build_sync_report(
             "error": "",
             "warning": query.error if query is not None and query.ok else "",
             "missing": [_sync_row_summary(row) for row in sorted(missing, key=lambda item: item.name)],
+            "pin_blocked": [_sync_row_summary(row) for row in sorted(pin_blocked, key=lambda item: item.name)],
             "already_present": [_sync_row_summary(row) for row in sorted(already_present, key=lambda item: item.name)],
             "unresolved": [_sync_row_summary(row) for row in sorted(unresolved, key=lambda item: item.name)],
             "skipped": [_sync_row_summary(row) for row in sorted(skipped, key=lambda item: item.name)],
@@ -1444,12 +1537,20 @@ def _build_sync_report(
             "_command_argvs": [command["argv"] for command in command_groups],
         })
 
+    pin_blocked_total = sum(len(cast("list[str]", a.get("pin_blocked") or [])) for a in report_agents)
     report: dict[str, object] = {
         "ok": not hard_error_agents,
         "inventory_count": len(merged.rows),
         "include_installed": include_installed,
+        "accept_floating": accept_floating,
+        "pin_blocked_count": pin_blocked_total,
         "agents": report_agents,
     }
+    if pin_blocked_total and not accept_floating:
+        report["pin_gate"] = (
+            "Install-now curated skills without @ref pin or audited_head are blocked on apply; "
+            "pass --accept-floating to override."
+        )
     if hard_error_agents:
         report["error"] = "Target harness inventory failed for: " + ", ".join(sorted(hard_error_agents))
         report["error_type"] = "inventory"
@@ -1514,8 +1615,10 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
         warning = str(agent_payload.get("warning") or "")
         if warning:
             typer.echo(f"  warning: {warning}")
-        for key in ["missing", "already_present", "unresolved", "skipped"]:
+        for key in ["missing", "pin_blocked", "already_present", "unresolved", "skipped"]:
             rows = cast("list[str]", agent_payload.get(key) or [])
+            if not rows and key == "pin_blocked":
+                continue
             typer.echo(f"  {key.replace('_', '-')} ({len(rows)})")
             for row in rows:
                 typer.echo(f"    - {row}")
@@ -1523,6 +1626,11 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
         typer.echo(f"  commands ({len(commands)})")
         for command in commands:
             typer.echo(f"    {command}")
+        typer.echo("")
+    pin_gate = str(report.get("pin_gate") or "")
+    pin_blocked_count = report.get("pin_blocked_count")
+    if pin_gate and isinstance(pin_blocked_count, int) and pin_blocked_count:
+        typer.echo(pin_gate)
         typer.echo("")
 
 
@@ -1945,14 +2053,25 @@ def skills_sync(
         "--include-installed",
         help="Include verified one-off installed external skills outside the curated desired set",
     ),
+    accept_floating: bool = typer.Option(
+        False,
+        "--accept-floating",
+        help="Allow apply for install-now curated skills without @ref pin or audited_head",
+    ),
+    strict_pin: bool = typer.Option(
+        False,
+        "--strict-pin",
+        help="Fail dry-run when install-now curated skills lack @ref pin or audited_head",
+    ),
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Additively sync repo and curated external skills across supported harnesses.
 
-    Dry-run previews missing installs per harness. Apply runs every planned Skills CLI
-    batch across all target harnesses before exiting; partial failures set ``ok: false``
-    and populate ``apply_failures`` in JSON/JSONL output with ``argv``, ``returncode``,
-    and ``text`` for each failed command.
+    Dry-run previews missing installs per harness (soft on floating pins unless
+    ``--strict-pin``). Apply runs every planned Skills CLI batch across all target
+    harnesses before exiting; partial failures set ``ok: false`` and populate
+    ``apply_failures`` in JSON/JSONL output with ``argv``, ``returncode``, and
+    ``text`` for each failed command.
     """
     if not shutil.which("npx"):
         typer.echo("Error: npx not found. Install Node.js first.", err=True)
@@ -1974,16 +2093,30 @@ def skills_sync(
     report = _build_sync_report(
         target_agents,
         include_installed=include_installed,
+        accept_floating=accept_floating,
         external_entries=external_entries,
     )
     agent_reports = cast("list[dict[str, object]]", report.get("agents") or [])
     structured_output = format_ in {"json", "jsonl"}
 
+    pin_blocked_value = report.get("pin_blocked_count")
+    pin_blocked_count = pin_blocked_value if isinstance(pin_blocked_value, int) else 0
+
     if dry_run:
+        apply_dry_run_pin_gate(report, strict_pin=strict_pin, accept_floating=accept_floating)
         _emit_sync_report(report, dry_run=True, format_=format_)
         if not bool(report.get("ok", True)):
             raise typer.Exit(code=1)
         return
+
+    if pin_blocked_count and not accept_floating:
+        report["ok"] = False
+        report["error"] = str(
+            report.get("pin_gate") or "Floating install-now curated skills blocked; pass --accept-floating to apply."
+        )
+        report["error_type"] = "pin-gate"
+        _emit_sync_report(report, dry_run=False, format_=format_)
+        raise typer.Exit(code=1)
 
     if not structured_output:
         _emit_sync_report(report, dry_run=False, format_=format_)
@@ -1993,30 +2126,39 @@ def skills_sync(
         raise typer.Exit(code=1)
 
     grok_mirror_needed = False
-    apply_failures: list[tuple[list[str], int]] = []
+    apply_failures: list[dict[str, object]] = []
     for payload in agent_reports:
         if payload.get("agent") == "grok" and payload.get("_command_argvs"):
             grok_mirror_needed = True
         for argv in cast("list[list[str]]", payload.get("_command_argvs") or []):
-            result = subprocess.run(argv, capture_output=False)
+            result = subprocess.run(
+                argv,
+                capture_output=structured_output,
+                text=structured_output,
+            )
             if result.returncode != 0:
-                apply_failures.append((argv, result.returncode))
+                failure: dict[str, object] = {
+                    "argv": argv,
+                    "returncode": result.returncode,
+                    "text": _command_text(argv),
+                }
+                if structured_output:
+                    failure["stdout"] = (result.stdout or "").strip()
+                    failure["stderr"] = (result.stderr or "").strip()
+                apply_failures.append(failure)
     if grok_mirror_needed:
         mirrored = mirror_grok_skills_from_claude()
         if mirrored:
             typer.echo(f"Mirrored {mirrored} skill(s) into ~/.grok/skills")
     if apply_failures:
         report["ok"] = False
-        report["apply_failures"] = [
-            {"argv": argv, "returncode": returncode, "text": _command_text(argv)}
-            for argv, returncode in apply_failures
-        ]
+        report["apply_failures"] = apply_failures
         if structured_output:
             _emit_sync_report(report, dry_run=False, format_=format_)
         else:
-            for argv, returncode in apply_failures:
+            for failure in apply_failures:
                 typer.echo(
-                    f"apply failed ({returncode}): {' '.join(argv)}",
+                    f"apply failed ({failure['returncode']}): {failure['text']}",
                     err=True,
                 )
         raise typer.Exit(code=1)
@@ -2044,13 +2186,11 @@ def catalog_index(
         if reason:
             if format_ == "json" or format_ == "jsonl":
                 typer.echo(
-                    json.dumps(
-                        {
-                            "ok": False,
-                            "error": reason,
-                            "paths": [str(CATALOG_INDEX_PATH), str(CATALOG_BROWSER_INDEX_PATH)],
-                        }
-                    )
+                    json.dumps({
+                        "ok": False,
+                        "error": reason,
+                        "paths": [str(CATALOG_INDEX_PATH), str(CATALOG_BROWSER_INDEX_PATH)],
+                    })
                 )
             else:
                 typer.echo(reason, err=True)
@@ -2068,8 +2208,7 @@ def catalog_index(
         typer.echo(reason)
     else:
         typer.echo(
-            f"{CATALOG_INDEX_PATH.relative_to(ROOT)} and "
-            f"{CATALOG_BROWSER_INDEX_PATH.relative_to(ROOT)} are up to date"
+            f"{CATALOG_INDEX_PATH.relative_to(ROOT)} and {CATALOG_BROWSER_INDEX_PATH.relative_to(ROOT)} are up to date"
         )
 
 
@@ -2698,7 +2837,8 @@ def readme(
             (
                 "First-party MCP servers authored in this repository (see `AGENTS.md` §2). "
                 "Curated external servers are configured in `config/mcp-registry.json` "
-                "and exposed via MCPHub."
+                "and rendered into MCPHub settings; disabled entries remain unavailable until explicit "
+                "enablement and group assignment."
             ),
             "",
             "| Name | Description |",
@@ -2767,6 +2907,11 @@ def readme(
         "- [Grok Build](https://x.ai/)",
         "- [OpenCode](https://github.com/anomalyco/opencode) — native AGENTS.md support with repo-level config",
         "- [Cherry Studio](https://www.cherry-ai.com/) — MCP-only via MCPHub registry",
+        (
+            "- [LM Studio](https://lmstudio.ai/) — MCP and managed instruction/agent preset "
+            "projections; optional repo-owned skill mirror for compatible community plugins "
+            "(default: none)"
+        ),
         "And other [agentskills.io](https://agentskills.io)-compatible agents.",
         "",
     ])
@@ -2933,6 +3078,78 @@ def hooks_convert(
 # ---------------------------------------------------------------------------
 
 
+def _declared_eval_projection_files(data: object, evals_dir: Path) -> set[str]:
+    """Return projection names only when the manifest declaration is closed and safe."""
+    if not isinstance(data, dict):
+        return set()
+    declared = data.get("projection_files")
+    evals = data.get("evals")
+    if not isinstance(declared, list) or not declared or not isinstance(evals, list):
+        return set()
+
+    declared_strings = [item for item in declared if isinstance(item, str)]
+    if len(declared_strings) != len(declared) or len(set(declared_strings)) != len(declared_strings):
+        return set()
+    if any(Path(name).name != name or not name.endswith(".json") or name == "evals.json" for name in declared_strings):
+        return set()
+
+    skill_name = data.get("skill_name")
+    if not isinstance(skill_name, str) or not skill_name.strip() or skill_name != evals_dir.parent.name:
+        return set()
+    cases: dict[str, dict] = {}
+    for item in evals:
+        if not isinstance(item, dict):
+            return set()
+        case_id = item.get("id")
+        prompt = item.get("prompt")
+        expected_output = item.get("expected_output")
+        assertions = item.get("assertions")
+        files = item.get("files", [])
+        if (
+            not isinstance(case_id, str)
+            or not case_id
+            or case_id in cases
+            or Path(f"{case_id}.json").name != f"{case_id}.json"
+            or not isinstance(prompt, str)
+            or not prompt.strip()
+            or not isinstance(expected_output, str)
+            or not expected_output.strip()
+            or not isinstance(assertions, list)
+            or not assertions
+            or any(not isinstance(assertion, str) or not assertion.strip() for assertion in assertions)
+            or not isinstance(files, list)
+            or any(not isinstance(file, str) for file in files)
+        ):
+            return set()
+        cases[case_id] = item
+    case_ids = list(cases)
+    expected = {f"{case_id}.json" for case_id in case_ids}
+    declared_set = set(declared_strings)
+    actual = {path.name for path in evals_dir.glob("*.json") if path.name != "evals.json"}
+    if declared_set != expected or expected != actual:
+        return set()
+
+    for filename in declared_set:
+        try:
+            projection = json.loads((evals_dir / filename).read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return set()
+        if not isinstance(projection, dict):
+            return set()
+        case = cases[filename.removesuffix(".json")]
+        parity = {
+            "skills": [skill_name],
+            "query": case.get("prompt"),
+            "files": case.get("files", []),
+            "expected_behavior": case.get("assertions", []),
+        }
+        if set(projection) != set(parity):
+            return set()
+        if any(projection.get(field) != value for field, value in parity.items()):
+            return set()
+    return declared_set
+
+
 def _collect_evals() -> list[tuple[Path, dict]]:
     """Scan skills/*/evals/*.json and return (path, parsed_data) pairs."""
     results: list[tuple[Path, dict]] = []
@@ -2945,10 +3162,20 @@ def _collect_evals() -> list[tuple[Path, dict]]:
         evals_dir = skill_dir / "evals"
         if not evals_dir.is_dir():
             continue
-        for eval_file in sorted(evals_dir.glob("*.json")):
+        projection_files: set[str] = set()
+        manifest_path = evals_dir / "evals.json"
+        if manifest_path.is_file():
             try:
-                data = json.loads(eval_file.read_text())
-                results.append((eval_file, data))
+                manifest_data = json.loads(manifest_path.read_text(encoding="utf-8"))
+            except json.JSONDecodeError:
+                manifest_data = {}
+            projection_files = _declared_eval_projection_files(manifest_data, evals_dir)
+        for eval_file in sorted(evals_dir.glob("*.json")):
+            if eval_file.name in projection_files:
+                continue
+            try:
+                data = json.loads(eval_file.read_text(encoding="utf-8"))
+                results.append((eval_file, data if isinstance(data, dict) else {}))
             except json.JSONDecodeError:
                 results.append((eval_file, {}))
     return results

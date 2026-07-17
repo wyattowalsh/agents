@@ -7,6 +7,9 @@ import { captureServerEvent } from '../../lib/admin/telemetry';
 export const prerender = false;
 
 const admin = Astro.locals.admin;
+if (!admin?.isAuthenticated) {
+  return Astro.redirect('/admin/login?redirect=%2Fadmin%2Fflags');
+}
 const featureEntries = getFeatureEntries(admin.featureOverrides);
 const saved = Astro.url.searchParams.get('saved') === '1';
 

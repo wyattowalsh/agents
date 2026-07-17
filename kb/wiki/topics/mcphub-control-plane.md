@@ -53,7 +53,7 @@ Runtime state lives in gitignored `.mcphub/` (PID files, logs, optional `cloudfl
 
 - **13** top-level shell scripts + **11** harness wrappers under `scripts/mcphub/wrappers/` (each wrapper calls `ensure-running.sh` then execs the harness CLI).
 - `remote-stdio.sh` bridges stdio clients via `mcp-remote` + bearer header (registry `stdio_bridge` client; Codex `remote-stdio` adapter).
-- `chrome-devtools-browser-url.sh`, `docling-stdio.sh`, `jupyter-mcp-server-stdio.sh`, and `scrapling-stdio.sh` are repo-local server launchers referenced from tracked settings.
+- `chrome-devtools-browser-url.sh`, `docling-stdio.sh`, `jupyter-mcp-server-stdio.sh`, `scrapling-stdio.sh`, and `reddit-mcp-buddy-stdio.sh` are repo-local server launchers referenced from tracked settings.
 
 ### Tunnel and public surface
 

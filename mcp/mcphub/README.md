@@ -26,6 +26,12 @@ Bearer auth must remain enabled for MCP endpoints. The local bearer value lives
 only in `.env.mcphub` as `MCPHUB_BEARER_TOKEN`; it is not stored in
 `mcp_settings.json`.
 
+The repo launcher pins MCPHub 1.0.24 and injects
+`scripts/mcphub/bind-loopback.cjs` so the HTTP listener binds to
+`MCPHUB_BIND_HOST=127.0.0.1`. Upstream 1.0.24 otherwise listens on all
+interfaces. `just mcphub-doctor` treats any wildcard or non-loopback listener as
+a failure.
+
 ## First Run
 
 ```bash

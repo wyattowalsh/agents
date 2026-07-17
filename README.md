@@ -21,7 +21,7 @@ New here? Start with [START-HERE.md](START-HERE.md) for a 30-minute onboarding p
 Install all skills globally into your favorite agents:
 
 ```bash
-npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
+npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
 ```
 
 For non-trivial repository changes, check the OpenSpec workflow state:
@@ -82,7 +82,7 @@ Reusable actions and knowledge bases for AI agents.
 | files-buddy | Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders. NOT for shell script generation, CI/CD, databases, or non-macOS platform cleanup. |
 | git-workflow | Git operations: conventional commits, PR descriptions, branch strategy, conflict resolution, code archaeology, bisect. Use for git workflow tasks. NOT for code review, CI/CD, or changelogs. |
 | grok-delegate | Use when delegating to native Grok CLI for default Tier-T trivial leaves or wave/tune nodes from parent harnesses. NOT for harness sync or wrappers. |
-| harness-master | Audit harness configs, discover gaps, usage signals, apply approved fixes. Use when tuning Claude, Codex, Copilot, Cursor, Gemini, Grok, OpenCode, or Cherry. NOT agents, MCP, or app telemetry. |
+| harness-master | Audit harness configs, discover gaps, usage signals, apply approved fixes. Use when tuning Claude, Codex, Copilot, Cursor, Gemini, Grok, OpenCode, Cherry, or LM Studio. NOT agents, MCP, or app telemetry. |
 | host-panel | Facilitate research-grounded panels in roundtable, Oxford, and Socratic formats. Use when exploring contested topics from multiple angles. NOT for Q&A, code review, or real human opinion simulation. |
 | i18n-localization | Plan and review localization changes across app, docs, and web surfaces. Use for string extraction, locale routing, plural/date/number formatting, RTL, pseudo-locale QA, message catalogs, and translation readiness. NOT for generic copy editing, frontend visual design, SEO, or JavaScript conventions. |
 | incident-response-engineer | Operational incident response for triage, containment, communications, recovery, and postmortems. Use when coordinating outages or service degradation. NOT for code review or proactive security scanning. |
@@ -161,7 +161,7 @@ System prompts and context definitions for AI agents.
 
 ## 🔌 MCP Servers
 
-First-party MCP servers authored in this repository (see `AGENTS.md` §2). Curated external servers are configured in `config/mcp-registry.json` and exposed via MCPHub.
+First-party MCP servers authored in this repository (see `AGENTS.md` §2). Curated external servers are configured in `config/mcp-registry.json` and rendered into MCPHub settings; disabled entries remain unavailable until explicit enablement and group assignment.
 
 | Name | Description |
 | ---- | ----------- |
@@ -227,6 +227,7 @@ Third-party skill collections can be installed directly with `npx skills add <so
 - [Grok Build](https://x.ai/)
 - [OpenCode](https://github.com/anomalyco/opencode) — native AGENTS.md support with repo-level config
 - [Cherry Studio](https://www.cherry-ai.com/) — MCP-only via MCPHub registry
+- [LM Studio](https://lmstudio.ai/) — MCP and managed instruction/agent preset projections; optional repo-owned skill mirror for compatible community plugins (default: none)
 And other [agentskills.io](https://agentskills.io)-compatible agents.
 
 ## 📚 Documentation

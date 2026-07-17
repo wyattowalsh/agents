@@ -7,22 +7,118 @@
   "license": "MIT",
   "latest_release_or_commit_date": "github-pushed-at:2026-06-08T12:35:40Z",
   "artifact_types_found": [
+    "agent",
+    "library",
+    "plugin",
     "skill"
   ],
-  "install_or_integration_decision": "merge_into_existing",
-  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
+  "install_or_integration_decision": "integrated_existing_surface",
+  "reason": "Existing repo catalog surface already covers this source/domain.",
   "auth_required": false,
   "env_vars_or_credentials": [],
   "safety_notes": "No elevated keyword risk detected.",
   "attribution_notes": "Preserve attribution to tjboudreaux/cc-thinking-skills; verify license before adapting content.",
-  "files_added": [],
-  "files_modified": [],
+  "files_added": [
+    "docs/src/authoring/skills/thinking-archetypes.mdx",
+    "docs/src/authoring/skills/thinking-bayesian.mdx",
+    "docs/src/authoring/skills/thinking-bounded-rationality.mdx",
+    "docs/src/authoring/skills/thinking-circle-of-competence.mdx",
+    "docs/src/authoring/skills/thinking-cynefin.mdx",
+    "docs/src/authoring/skills/thinking-debiasing.mdx",
+    "docs/src/authoring/skills/thinking-dual-process.mdx",
+    "docs/src/authoring/skills/thinking-effectuation.mdx",
+    "docs/src/authoring/skills/thinking-feedback-loops.mdx",
+    "docs/src/authoring/skills/thinking-fermi-estimation.mdx",
+    "docs/src/authoring/skills/thinking-first-principles.mdx",
+    "docs/src/authoring/skills/thinking-five-whys-plus.mdx",
+    "docs/src/authoring/skills/thinking-inversion.mdx",
+    "docs/src/authoring/skills/thinking-jobs-to-be-done.mdx",
+    "docs/src/authoring/skills/thinking-kepner-tregoe.mdx",
+    "docs/src/authoring/skills/thinking-leverage-points.mdx",
+    "docs/src/authoring/skills/thinking-lindy-effect.mdx",
+    "docs/src/authoring/skills/thinking-map-territory.mdx",
+    "docs/src/authoring/skills/thinking-margin-of-safety.mdx",
+    "docs/src/authoring/skills/thinking-model-combination.mdx",
+    "docs/src/authoring/skills/thinking-model-router.mdx",
+    "docs/src/authoring/skills/thinking-model-selection.mdx",
+    "docs/src/authoring/skills/thinking-occams-razor.mdx",
+    "docs/src/authoring/skills/thinking-ooda.mdx",
+    "docs/src/authoring/skills/thinking-opportunity-cost.mdx",
+    "docs/src/authoring/skills/thinking-pre-mortem.mdx",
+    "docs/src/authoring/skills/thinking-probabilistic.mdx",
+    "docs/src/authoring/skills/thinking-red-team.mdx",
+    "docs/src/authoring/skills/thinking-regret-minimization.mdx",
+    "docs/src/authoring/skills/thinking-reversibility.mdx",
+    "docs/src/authoring/skills/thinking-scientific-method.mdx",
+    "docs/src/authoring/skills/thinking-second-order.mdx",
+    "docs/src/authoring/skills/thinking-socratic.mdx",
+    "docs/src/authoring/skills/thinking-steel-manning.mdx",
+    "docs/src/authoring/skills/thinking-systems.mdx",
+    "docs/src/authoring/skills/thinking-theory-of-constraints.mdx",
+    "docs/src/authoring/skills/thinking-thought-experiment.mdx",
+    "docs/src/authoring/skills/thinking-triz.mdx",
+    "docs/src/authoring/skills/thinking-via-negativa.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-archetypes.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-bayesian.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-bounded-rationality.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-circle-of-competence.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-cynefin.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-debiasing.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-dual-process.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-effectuation.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-feedback-loops.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-fermi-estimation.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-first-principles.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-five-whys-plus.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-inversion.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-jobs-to-be-done.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-kepner-tregoe.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-leverage-points.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-lindy-effect.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-map-territory.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-margin-of-safety.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-model-combination.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-model-router.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-model-selection.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-occams-razor.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-ooda.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-opportunity-cost.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-pre-mortem.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-probabilistic.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-red-team.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-regret-minimization.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-reversibility.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-scientific-method.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-second-order.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-socratic.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-steel-manning.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-systems.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-theory-of-constraints.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-thought-experiment.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-triz.mdx",
+    "docs/src/content/docs/skills/catalog/external/thinking-via-negativa.mdx",
+    "planning/manifests/candidate-corpus-jul2026/records/047-tjboudreaux-cc-thinking-skills.json"
+  ],
+  "files_modified": [
+    "docs/public/generated-registries/skills-catalog-browser-index.json",
+    "docs/public/generated-registries/skills-catalog-index.json",
+    "planning/manifests/candidate-corpus-jul2026/all-records.json",
+    "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
+    "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
+    "planning/manifests/candidate-corpus-jul2026/harness-install-assurance.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-decisions.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-targets.json",
+    "planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json"
+  ],
   "tests_or_checks_run": [
     "git ls-remote --symref",
-    "gh api repos/{owner}/{repo}"
+    "gh api repos/tjboudreaux/cc-thinking-skills",
+    "uv run python scripts/audit_candidate_deep_sources.py --check",
+    "uv run python scripts/apply_candidate_corpus_promotions.py --check",
+    "uv run python scripts/promote_candidate_corpus.py --final-check"
   ],
   "skipped_reason": "",
-  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "reviewer_notes": "Deep source audit completed at ref main. Reviewed promotion overlay applied 39 catalog row(s) and verified 39 live-install evidence row(s).",
   "raw_index": 47,
   "normalized_index": "https://github.com/tjboudreaux/cc-thinking-skills",
   "duplicate_group": [],
@@ -31,16 +127,16 @@
   "canonical_source": "https://github.com/tjboudreaux/cc-thinking-skills",
   "risk_tier": "standard-review",
   "risk_keywords": [],
-  "support_tier": "discovery-only",
+  "support_tier": "curated-installable-final",
   "phase_status": {
     "source_capture": "completed",
-    "deep_research": "completed-public-metadata",
+    "deep_research": "completed-deep-source-audit",
     "overlap": "completed",
     "security": "completed-static",
     "license": "completed-static",
-    "compliance": "completed-static",
+    "compliance": "completed-deep-auth-reconciled",
     "docs_impact": "completed",
-    "decision": "completed"
+    "decision": "completed-overlay-reconciled"
   },
   "source_capture_packet": {
     "git_status": "ok",
@@ -57,7 +153,7 @@
     "html_url": "https://github.com/tjboudreaux/cc-thinking-skills",
     "default_branch": "main",
     "pushed_at": "2026-06-08T12:35:40Z",
-    "updated_at": "2026-07-06T19:41:03Z",
+    "updated_at": "2026-07-08T15:28:43Z",
     "license_spdx_id": "MIT",
     "license_name": "MIT License",
     "language": "JavaScript",
@@ -88,11 +184,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -115,11 +211,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -189,7 +285,8 @@
   },
   "compliance_packet": {
     "auth_required": false,
-    "env_vars_or_credentials": []
+    "env_vars_or_credentials": [],
+    "evidence_source": "deep-source-audit.json"
   },
   "docs_steward_surfaces": [
     "README",
@@ -204,13 +301,31 @@
     "reports",
     "skill-research"
   ],
-  "docs_steward_status": "packet-generated",
+  "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "merge_into_existing",
-    "reason": "Existing repo catalog or registry surface already covers this source/domain."
+    "decision": "integrated_existing_surface",
+    "reason": "Existing repo catalog surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "required_before_promotion": "human trust-gate review"
+    "terminal_route": "integrated-existing-surface",
+    "required_before_live_execution": "explicit user-owned command and credential setup",
+    "scope": "historical-intake-research-only"
+  },
+  "intake_artifact_types_found": [
+    "agent",
+    "library",
+    "plugin",
+    "skill"
+  ],
+  "intake_support_tier": "discovery-only",
+  "intake_docs_steward_status": "packet-generated",
+  "final_integration": {
+    "status": "installable-curated-external",
+    "mutation_applied": true,
+    "catalog_rows": 39,
+    "harness_assurance": "harness-install-assurance.json",
+    "non_skill_assurance": "non-skill-install-assurance.json",
+    "runtime_disposition": "integrated-non-executable-surface"
   }
 }

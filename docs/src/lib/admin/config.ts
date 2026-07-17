@@ -55,7 +55,11 @@ export function getConfiguredAdminPassword(): string {
 }
 
 export function getAdminSessionSecret(): string {
-  return import.meta.env.DOCS_ADMIN_SESSION_SECRET ?? getConfiguredAdminPassword();
+  const explicit = import.meta.env.DOCS_ADMIN_SESSION_SECRET ?? '';
+  if (explicit) return explicit;
+  // Never derive production session crypto from the shared password.
+  if (!import.meta.env.DEV) return '';
+  return getConfiguredAdminPassword();
 }
 
 export function getPublicPostHogKey(): string {
@@ -88,14 +92,19 @@ export function isPostHogQueryConfigured(): boolean {
 
 export function getAdminConfigSnapshot() {
   const explicitSessionSecret = Boolean(import.meta.env.DOCS_ADMIN_SESSION_SECRET);
+  const hasPassword = Boolean(getConfiguredAdminPassword());
+  const hasSessionSecret = Boolean(getAdminSessionSecret());
+  // Derived only in DEV when password is used as the HMAC key fallback.
+  const usingDerivedSessionSecret =
+    Boolean(import.meta.env.DEV) && !explicitSessionSecret && hasPassword && hasSessionSecret;
 
   return {
-    hasAdminPassword: Boolean(getConfiguredAdminPassword()),
+    hasAdminPassword: hasPassword,
     hasExplicitSessionSecret: explicitSessionSecret,
-    hasSessionSecret: Boolean(getAdminSessionSecret()),
+    hasSessionSecret,
     posthogQueryConfigured: isPostHogQueryConfigured(),
     publicTelemetryConfigured: isPublicTelemetryConfigured(),
-    usingDerivedSessionSecret: !explicitSessionSecret && Boolean(getConfiguredAdminPassword()),
+    usingDerivedSessionSecret,
     usingDevelopmentPasswordFallback: false,
   };
 }

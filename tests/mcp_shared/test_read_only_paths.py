@@ -81,6 +81,35 @@ def test_custom_allowed_prefixes_override_default(fake_repo: Path) -> None:
     )
 
 
+@pytest.mark.parametrize(
+    "rel",
+    [
+        "mcp/secrets/token.env",
+        "mcp/servers/local/config.json",
+        "mcp/notes/private.md",
+        "mcp/archives/old.zip",
+        "mcp/cache/tmp.bin",
+    ],
+)
+def test_resolve_rejects_denied_mcp_local_subdirs(fake_repo: Path, rel: str) -> None:
+    parts = rel.split("/")
+    target = fake_repo
+    for part in parts[:-1]:
+        target = target / part
+        target.mkdir(parents=True, exist_ok=True)
+    (fake_repo.joinpath(*parts)).write_text("x", encoding="utf-8")
+    with pytest.raises(PathNotAllowedError):
+        resolve_read_only_path(rel, repo_root=fake_repo)
+
+
+def test_resolve_allows_first_party_mcp_server_path(fake_repo: Path) -> None:
+    path = fake_repo / "mcp" / "source-url-health" / "server.py"
+    path.parent.mkdir(parents=True)
+    path.write_text("# ok", encoding="utf-8")
+    resolved = resolve_read_only_path("mcp/source-url-health/server.py", repo_root=fake_repo)
+    assert resolved == path.resolve()
+
+
 def test_read_text_within_allowlist_reads_content(fake_repo: Path) -> None:
     content = read_text_within_allowlist("skills/review/SKILL.md", repo_root=fake_repo)
     assert "name: review" in content

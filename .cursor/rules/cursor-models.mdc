@@ -1,0 +1,12 @@
+---
+description: Pin Task/subagent model launches to Cursor Grok 4.5 High
+alwaysApply: true
+---
+
+# Cursor Model Pin
+
+When calling `Task` or launching subagents, set `model` to `cursor-grok-4.5-high` only (or omit `model` so custom-agent frontmatter wins).
+
+Do not pass Claude, GPT, Composer, Terra, or Sol model slugs.
+
+Custom agents under `.cursor/agents/` are pinned to `cursor-grok-4.5-high`.

@@ -967,12 +967,14 @@ def test_mcp_overview_badge_stale_reason_detects_drift(tmp_repo):
         '---\ntitle: MCP\n---\n{/* HAND-MAINTAINED */}\n<Badge text="9 configured servers" />\n',
         encoding="utf-8",
     )
-    (tmp_repo / "mcp.json").write_text('{"mcpServers": {"a": {}, "b": {}, "c": {}}}', encoding="utf-8")
+    config_dir = tmp_repo / "config"
+    config_dir.mkdir(exist_ok=True)
+    (config_dir / "mcp-registry.json").write_text('{"servers": {"a": {}, "b": {}, "c": {}}}', encoding="utf-8")
 
     reason = _mcp_overview_badge_stale_reason()
     assert reason is not None
     assert "shows 9 servers" in reason
-    assert "defines 3" in reason
+    assert "registry defines 3" in reason
 
 
 def test_mcp_overview_badge_stale_reason_passes_when_aligned(tmp_repo):
@@ -982,6 +984,8 @@ def test_mcp_overview_badge_stale_reason_passes_when_aligned(tmp_repo):
         '---\ntitle: MCP\n---\n{/* HAND-MAINTAINED */}\n<Badge text="2 configured servers" />\n',
         encoding="utf-8",
     )
-    (tmp_repo / "mcp.json").write_text('{"mcpServers": {"a": {}, "b": {}}}', encoding="utf-8")
+    config_dir = tmp_repo / "config"
+    config_dir.mkdir(exist_ok=True)
+    (config_dir / "mcp-registry.json").write_text('{"servers": {"a": {}, "b": {}}}', encoding="utf-8")
 
     assert _mcp_overview_badge_stale_reason() is None

@@ -71,7 +71,7 @@ python skills/harness-master/scripts/discovery/merge_artifacts.py --artifacts ..
 
 | Signal | Route |
 | ------ | ----- |
-| ad-hoc "find skill for X" | `find-skills` / `npx skills find` |
+| ad-hoc "find skill for X" | `skill-router search` / `npx skills find` |
 | create skill | `skill-creator` |
 | open-ended non-harness research | `/research` |
 | config fixes from findings | Audit dry-run + `apply approved` |

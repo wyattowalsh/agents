@@ -70,7 +70,7 @@ This installs the `plannotator` binary, core slash skills (`/plannotator-review`
 **Repo sources:**
 
 - Hook policy: `config/grok-plannotator-hooks.json` (placeholders resolved on sync)
-- Exit-plan shim: `scripts/grok/plannotator-exit-plan-hook.sh` (maps Plannotator `block` → Grok `deny`)
+- Exit-plan shim: `scripts/grok/plannotator-exit-plan-hook.py` (loads session `plan.md` only for the active UUID session/cwd, feeds Claude-shaped stdin to `plannotator`, maps allow/deny/block → Grok `decision`; fail-open on crash/unmapped output; never cross-project plan fallback)
 - Project skill overlays: `.grok/skills/plannotator-{review,annotate,last}/`
 
 **Ongoing sync (default-on):**

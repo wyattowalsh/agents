@@ -26,6 +26,7 @@ SUPPORTED_HARNESSES = [
     "opencode",
     "perplexity-desktop",
     "cherry-studio",
+    "lm-studio",
 ]
 
 HARNESS_ALIASES: dict[str, list[str]] = {
@@ -71,6 +72,9 @@ HARNESS_ALIASES: dict[str, list[str]] = {
     "cherrystudio": ["cherry-studio"],
     "cherry-ai": ["cherry-studio"],
     "cherry-studio": ["cherry-studio"],
+    "lm-studio": ["lm-studio"],
+    "lmstudio": ["lm-studio"],
+    "lms": ["lm-studio"],
 }
 
 LEVEL_ALIASES: dict[str, str] = {
@@ -111,6 +115,7 @@ DETERMINISTIC_ALL_ORDER = [
     "opencode",
     "perplexity-desktop",
     "cherry-studio",
+    "lm-studio",
 ]
 
 

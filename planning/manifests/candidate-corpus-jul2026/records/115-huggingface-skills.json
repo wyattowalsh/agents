@@ -3,26 +3,86 @@
   "normalized_url": "https://github.com/huggingface/skills",
   "source_name": "huggingface/skills",
   "category": "skill",
-  "inspected_commit_sha": "2aad4f7a8d2d8360cf65364291489e65370caad8",
+  "inspected_commit_sha": "89d91fd4d0e6d4330471ba35f1c388489e94b496",
   "license": "Apache-2.0",
-  "latest_release_or_commit_date": "github-pushed-at:2026-07-06T17:58:20Z",
+  "latest_release_or_commit_date": "github-pushed-at:2026-07-07T14:32:22Z",
   "artifact_types_found": [
+    "CLI/tool",
+    "MCP server",
+    "agent",
+    "library",
+    "plugin",
     "skill"
   ],
-  "install_or_integration_decision": "merge_into_existing",
-  "reason": "Existing repo catalog or registry surface already covers this source/domain.",
-  "auth_required": false,
-  "env_vars_or_credentials": [],
+  "install_or_integration_decision": "integrated_existing_surface",
+  "reason": "Existing repo catalog surface already covers this source/domain.",
+  "auth_required": true,
+  "env_vars_or_credentials": [
+    "HF_TOKEN"
+  ],
   "safety_notes": "No elevated keyword risk detected.",
   "attribution_notes": "Preserve attribution to huggingface/skills; verify license before adapting content.",
-  "files_added": [],
-  "files_modified": [],
+  "files_added": [
+    "docs/src/authoring/skills/hf-cli.mdx",
+    "docs/src/authoring/skills/hf-mem.mdx",
+    "docs/src/authoring/skills/huggingface-best.mdx",
+    "docs/src/authoring/skills/huggingface-community-evals.mdx",
+    "docs/src/authoring/skills/huggingface-datasets.mdx",
+    "docs/src/authoring/skills/huggingface-gradio.mdx",
+    "docs/src/authoring/skills/huggingface-llm-trainer.mdx",
+    "docs/src/authoring/skills/huggingface-local-models.mdx",
+    "docs/src/authoring/skills/huggingface-lora-space-builder.mdx",
+    "docs/src/authoring/skills/huggingface-paper-publisher.mdx",
+    "docs/src/authoring/skills/huggingface-papers.mdx",
+    "docs/src/authoring/skills/huggingface-spaces.mdx",
+    "docs/src/authoring/skills/huggingface-tool-builder.mdx",
+    "docs/src/authoring/skills/huggingface-trackio.mdx",
+    "docs/src/authoring/skills/huggingface-vision-trainer.mdx",
+    "docs/src/authoring/skills/huggingface-zerogpu.mdx",
+    "docs/src/authoring/skills/train-sentence-transformers.mdx",
+    "docs/src/authoring/skills/transformers-js.mdx",
+    "docs/src/authoring/skills/trl-training.mdx",
+    "docs/src/content/docs/skills/catalog/external/hf-cli.mdx",
+    "docs/src/content/docs/skills/catalog/external/hf-mem.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-best.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-community-evals.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-datasets.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-gradio.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-llm-trainer.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-local-models.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-lora-space-builder.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-paper-publisher.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-papers.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-spaces.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-tool-builder.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-trackio.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-vision-trainer.mdx",
+    "docs/src/content/docs/skills/catalog/external/huggingface-zerogpu.mdx",
+    "docs/src/content/docs/skills/catalog/external/train-sentence-transformers.mdx",
+    "docs/src/content/docs/skills/catalog/external/transformers-js.mdx",
+    "docs/src/content/docs/skills/catalog/external/trl-training.mdx",
+    "planning/manifests/candidate-corpus-jul2026/records/115-huggingface-skills.json"
+  ],
+  "files_modified": [
+    "docs/public/generated-registries/skills-catalog-browser-index.json",
+    "docs/public/generated-registries/skills-catalog-index.json",
+    "planning/manifests/candidate-corpus-jul2026/all-records.json",
+    "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
+    "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
+    "planning/manifests/candidate-corpus-jul2026/harness-install-assurance.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-decisions.json",
+    "planning/manifests/candidate-corpus-jul2026/integration-targets.json",
+    "planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json"
+  ],
   "tests_or_checks_run": [
     "git ls-remote --symref",
-    "gh api repos/{owner}/{repo}"
+    "gh api repos/huggingface/skills",
+    "uv run python scripts/audit_candidate_deep_sources.py --check",
+    "uv run python scripts/apply_candidate_corpus_promotions.py --check",
+    "uv run python scripts/promote_candidate_corpus.py --final-check"
   ],
   "skipped_reason": "",
-  "reviewer_notes": "Automated public-metadata packet; human review required before promotion.",
+  "reviewer_notes": "Deep source audit completed at ref main. Reviewed promotion overlay applied 19 catalog row(s) and verified 19 live-install evidence row(s).",
   "raw_index": 115,
   "normalized_index": "https://github.com/huggingface/skills",
   "duplicate_group": [],
@@ -31,16 +91,16 @@
   "canonical_source": "https://github.com/huggingface/skills",
   "risk_tier": "standard-review",
   "risk_keywords": [],
-  "support_tier": "discovery-only",
+  "support_tier": "curated-installable-final",
   "phase_status": {
     "source_capture": "completed",
-    "deep_research": "completed-public-metadata",
+    "deep_research": "completed-deep-source-audit",
     "overlap": "completed",
     "security": "completed-static",
     "license": "completed-static",
-    "compliance": "completed-static",
+    "compliance": "completed-deep-auth-reconciled",
     "docs_impact": "completed",
-    "decision": "completed"
+    "decision": "completed-overlay-reconciled"
   },
   "source_capture_packet": {
     "git_status": "ok",
@@ -56,8 +116,8 @@
     "full_name": "huggingface/skills",
     "html_url": "https://github.com/huggingface/skills",
     "default_branch": "main",
-    "pushed_at": "2026-07-06T17:58:20Z",
-    "updated_at": "2026-07-06T19:32:08Z",
+    "pushed_at": "2026-07-07T14:32:22Z",
+    "updated_at": "2026-07-08T17:05:57Z",
     "license_spdx_id": "Apache-2.0",
     "license_name": "Apache License 2.0",
     "language": "Python",
@@ -77,11 +137,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -104,11 +164,11 @@
       ]
     },
     {
-      "claim": "Promotion remains blocked pending source-list, license, security, and docs-steward gates.",
+      "claim": "Terminal integration routing is recorded without executing or vendoring candidate code.",
       "support_status": "supports",
       "confidence": 0.95,
       "sources": [
-        "AGENTS.md \u00a72.7",
+        "AGENTS.md §2.7",
         "config/skill-registry-policy.json"
       ]
     },
@@ -158,8 +218,11 @@
     "license_name": "Apache License 2.0"
   },
   "compliance_packet": {
-    "auth_required": false,
-    "env_vars_or_credentials": []
+    "auth_required": true,
+    "env_vars_or_credentials": [
+      "HF_TOKEN"
+    ],
+    "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
   },
   "docs_steward_surfaces": [
     "README",
@@ -174,13 +237,33 @@
     "reports",
     "skill-research"
   ],
-  "docs_steward_status": "packet-generated",
+  "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "merge_into_existing",
-    "reason": "Existing repo catalog or registry surface already covers this source/domain."
+    "decision": "integrated_existing_surface",
+    "reason": "Existing repo catalog surface already covers this source/domain."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "required_before_promotion": "human trust-gate review"
+    "terminal_route": "integrated-existing-surface",
+    "required_before_live_execution": "explicit user-owned command and credential setup",
+    "scope": "historical-intake-research-only"
+  },
+  "intake_artifact_types_found": [
+    "CLI/tool",
+    "MCP server",
+    "agent",
+    "library",
+    "plugin",
+    "skill"
+  ],
+  "intake_support_tier": "discovery-only",
+  "intake_docs_steward_status": "packet-generated",
+  "final_integration": {
+    "status": "installable-curated-external",
+    "mutation_applied": true,
+    "catalog_rows": 19,
+    "harness_assurance": "harness-install-assurance.json",
+    "non_skill_assurance": "non-skill-install-assurance.json",
+    "runtime_disposition": "integrated-non-executable-surface"
   }
 }

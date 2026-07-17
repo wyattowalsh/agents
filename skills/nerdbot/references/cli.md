@@ -38,7 +38,7 @@ nerdbot watch-classify wiki/index.md --stable
 - `modes` is read-only and presents a polished workflow gallery for humans or JSON callers.
 - `create`, `ingest`, `enrich`, `derive`, `improve`, and `migrate` default to dry-run unless `--apply` is present.
 - `audit`, `query`, `replay`, and `watch-classify` are read-only workflows.
-- Applied mutating workflows append `activity/operations.jsonl` with replayable changed paths.
+- Applied mutating workflows hold the project lock across the whole batch, append `prepared` before mutation, append one terminal `committed`, `failed`, or `review-needed` transition, and project only committed operations to `activity/log.md`; retries resume prepared intents and repair missing committed projections idempotently.
 - `migrate --apply` writes only an additive migration plan and requires `--approval-token APPROVE-MIGRATION`; it does not move, delete, or rewrite canonical files.
 
 ## First KB Walkthrough
@@ -58,4 +58,4 @@ Review dry-run output before every `--apply`. `bootstrap` remains the compatibil
 
 ## Output Contract
 
-Operational commands emit JSON so other agents, hooks, and CI jobs can consume results without parsing prose. Workflow commands share an envelope with `command`, `mode`, `target`, `status`, `dry_run`, `applied`, `planned_changes`, `changed_paths`, `operation`, `journal_path`, `warnings`, `errors`, `suggested_next_actions`, and command-specific `payload`. Human-facing discovery commands support `--view guide` for dependency-free terminal cards with risk posture, gate path, safety promises, roadmap lanes, and copy-friendly next commands while preserving JSON with `--view json`.
+Operational commands emit JSON so other agents, hooks, and CI jobs can consume results without parsing prose. Workflow commands share an envelope with `command`, `mode`, `target`, `status`, `dry_run`, `applied`, `planned_changes`, `changed_paths`, `operation`, `journal_path`, `warnings`, `errors`, `suggested_next_actions`, and command-specific `payload`. Replay result rows expose both canonical `operation_state` and derived replay `status`; callers must not treat those fields as interchangeable. Human-facing discovery commands support `--view guide` for dependency-free terminal cards with risk posture, gate path, safety promises, roadmap lanes, and copy-friendly next commands while preserving JSON with `--view json`.

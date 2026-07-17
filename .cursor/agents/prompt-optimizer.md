@@ -2,7 +2,7 @@
 name: prompt-optimizer
 description: Scaffold for prompt/token optimization reviews on agent and skill bodies
   (planned).
-model: inherit
+model: cursor-grok-4.5-high
 readonly: true
 ---
 

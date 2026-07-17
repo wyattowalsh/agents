@@ -32,6 +32,7 @@ Use MCPHub only when you explicitly opt in. Repo docs and public catalog default
 | Cursor Agent Client Protocol | `repo-present-validation-required` | `fixture-executable` | `uv run pytest tests/test_harness_plan_fixtures.py -q -k cursor_acp`<br />`uv run pytest tests/test_sync_agent_stack.py -q -k 'cursor_adapter_sync_home or cursor_adapter_render'`<br />`uv run wagents validate` |
 | Perplexity Desktop | `experimental` | `docs-ledger-required` | `uv run wagents validate` |
 | Cherry Studio | `experimental` | `fixture-plan-only` | `uv run wagents validate` |
+| LM Studio | `repo-present-validation-required` | `fixture-executable` | `uv run pytest tests/test_lm_studio_platform.py -q`<br />`uv run pytest tests/test_distribution_metadata.py -q -k harness`<br />`uv run python scripts/sync_agent_stack.py --targets home --platforms lm-studio --check` |
 | Crush | `repo-present-validation-required` | `fixture-plan-only` | `uv run wagents validate` |
 | Grok Build | `repo-present-validation-required` | `fixture-executable` | `uv run pytest tests/test_grok_platform.py -q`<br />`uv run pytest tests/test_sync_agent_stack.py -q -k grok`<br />`uv run pytest tests/test_harness_rollback_fixtures.py -q -k grok` |
 
@@ -51,3 +52,4 @@ These harnesses have **fixture-executable** status in `planning/manifests/harnes
 - `cursor-bugbot` — Repo-owned .cursor/BUGBOT.md render fixture present.
 - `cursor-acp` — Repo-owned project MCP and CLI permissions for agent acp.
 - `grok-build` — Fixture-executable via test_grok_platform.py, sync_agent_stack grok slices, and grok rollback merge tests.
+- `lm-studio` — Promote to validated after live LM Studio UI smoke and longer-lived rollback evidence.

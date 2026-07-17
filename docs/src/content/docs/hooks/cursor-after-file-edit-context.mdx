@@ -5,16 +5,16 @@ page_kind: "hook"
 source_kind: "registry"
 asset_id: "cursor-after-file-edit-context"
 composed: true
-composed_at: "2026-06-29"
-composed_by: "compose-hooks-fleet-g3b-g4"
+composed_at: "2026-07-10"
+composed_by: "regenerate-hook-docs-rv-006"
 docs_density: standard
 ---
 
-{/* HAND-MAINTAINED */}
+{/* GENERATED from config/hook-registry.json — do not hand-edit */}
 
-import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-<Badge text="hook" variant="note" /> <Badge text="AfterFileEdit" variant="success" /> <Badge text="cursor" variant="default" /> <Badge text="mode: context" variant="tip" />
+<Badge text="AfterFileEdit" variant="caution" /> <Badge text="context" variant="tip" /> <Badge text="cursor" variant="default" />
 
 > Return lightweight post-edit quality context after Cursor file edits.
 
@@ -23,28 +23,28 @@ import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components'
 | Field | Value |
 |-------|-------|
 | id | `cursor-after-file-edit-context` |
-| status_message | `Checking post-edit quality` |
-| mode | `context` |
 | logical_event | `AfterFileEdit` |
-| command | `python3 {repo_root}/hooks/wagents-hook.py cursor-after-file-edit-context --harness {harness}` |
+| matcher | — |
+| command | `{hook_runner} cursor-after-file-edit-context --harness {harness}` |
 | timeout | `5` |
-| harnesses | `["cursor"]` |
-
-<Aside type="note">
-Maps to Cursor's native `afterFileEdit` event. Context-tier (never blocks): the dispatcher reuses `_policy_codex_post_tool_verify_context` with a harness-aware label so post-edit quality hints are surfaced as additional context for Cursor.
-</Aside>
+| mode | `context` |
+| harnesses | `[
+  "cursor"
+]` |
+| status_message | Checking post-edit quality |
 
 <details class="source-disclosure">
-<summary>Full hook config + policy reference</summary>
+<summary>Full hook config (registry SSOT)</summary>
 
 ```json title="config/hook-registry.json (entry)"
 {
   "id": "cursor-after-file-edit-context",
   "description": "Return lightweight post-edit quality context after Cursor file edits.",
-  "status_message": "Checking post-edit quality",
-  "mode": "context",
   "logical_event": "AfterFileEdit",
-  "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-after-file-edit-context --harness {harness}",
+  "logical_policy": "cursor-after-file-edit-context",
+  "mode": "context",
+  "status_message": "Checking post-edit quality",
+  "command": "{hook_runner} cursor-after-file-edit-context --harness {harness}",
   "timeout": 5,
   "harnesses": [
     "cursor"
@@ -52,15 +52,16 @@ Maps to Cursor's native `afterFileEdit` event. Context-tier (never blocks): the 
 }
 ```
 
-Command: `python3 .../wagents-hook.py cursor-after-file-edit-context --harness cursor`
+Command placeholders:
+
+- `{hook_runner}` resolves to the fleet dispatcher (`hooks/wagents-hook.py` or harness projection).
+- `{harness}` is the target harness id at render/install time.
+
 </details>
 
-## Resources
+## Related
 
 <CardGrid>
-  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
-  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="Hooks hub" href="/hooks/" description="Registry overview and harness matrix." />
+  <LinkCard title="CLI hooks" href="/cli/" description="`wagents hooks list|validate`." />
 </CardGrid>
-
----
-[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

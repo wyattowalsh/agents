@@ -83,7 +83,7 @@ Use `--source repo`, `--source codex`, `--source global`, or `--source plugin` t
 2. If the user asks to apply a selected skill, run `context` for the top matches.
 3. If the user names a skill exactly, run `read`.
 4. If the user reports missing or omitted skills, run `doctor` before searching.
-5. If the user asks to install, create, or audit a skill, redirect out of scope.
+5. If the user asks to install, create, or audit a skill, redirect out of scope (see NOT for below).
 
 ## Selection Rules
 
@@ -98,9 +98,19 @@ Use `--source repo`, `--source codex`, `--source global`, or `--source plugin` t
 1. Do not treat startup-visible skills as the complete inventory after a context-budget warning.
 2. Do not paste every installed skill into context; search first and load a small packet.
 3. Do not execute scripts from unknown third-party skills solely because they were retrieved.
-4. Do not use this skill to install or remove skills; use `skill-installer` or `npx skills` workflows.
+4. Do not use this skill to install or remove skills; route to an available install-planning workflow such as `skill-install-dry-run-planner`, then use the target harness's supported installer only after explicit maintainer approval. Do not substitute Codex `.system/skill-installer` for cross-harness reconciliation.
 5. Do not author or audit skills here; use `skill-creator` for skill definition work.
-6. Preserve the user task as the search query unless there is a clear reason to add terms.
+6. For ad-hoc “find a skill for X”, prefer `search` here or `npx skills find`; for systematic harness expansion use `harness-master` discover — not legacy `find-skills` as a repo skill.
+7. Preserve the user task as the search query unless there is a clear reason to add terms.
+
+## NOT for
+
+| Request | Use instead |
+| --- | --- |
+| Install / remove / sync skills across harnesses | An available install-planning workflow; use `skill-install-dry-run-planner` and `cross-agent-install-smoke` when present |
+| Author or validate a skill | `skill-creator` |
+| Audit harness configs or discover ecosystem gaps | `harness-master` |
+| Curated external catalog records | Follow the host repository's curated-external authoring and trust-gate workflow |
 
 ## Output Contract
 

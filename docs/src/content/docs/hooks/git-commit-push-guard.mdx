@@ -5,16 +5,16 @@ page_kind: "hook"
 source_kind: "registry"
 asset_id: "git-commit-push-guard"
 composed: true
-composed_at: "2026-06-29"
-composed_by: "compose-hooks-fleet-g3b-g4"
+composed_at: "2026-07-10"
+composed_by: "regenerate-hook-docs-rv-006"
 docs_density: standard
 ---
 
-{/* HAND-MAINTAINED */}
+{/* GENERATED from config/hook-registry.json — do not hand-edit */}
 
-import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-<Badge text="hook" variant="note" /> <Badge text="PreToolUse" variant="caution" /> <Badge text="multi-harness" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+<Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> <Badge text="codex" variant="default" /> <Badge text="claude-code" variant="default" /> <Badge text="cursor" variant="default" /> <Badge text="github-copilot" variant="default" /> <Badge text="gemini-cli" variant="default" />
 
 > Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites across the fleet.
 
@@ -23,31 +23,38 @@ import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components'
 | Field | Value |
 |-------|-------|
 | id | `git-commit-push-guard` |
-| status_message | `Checking git commit/push safety` |
-| mode | `enforce` |
 | logical_event | `PreToolUse` |
-| matcher | `Bash\|bash\|run_shell_command\|shell\|terminal` |
-| command | `python3 {repo_root}/hooks/wagents-hook.py git-commit-push-guard --harness {harness}` |
+| matcher | `Bash|bash|run_shell_command|shell|terminal` |
+| command | `{hook_runner} git-commit-push-guard --harness {harness}` |
 | timeout | `5` |
-| harnesses | `["codex", "claude-code", "cursor", "github-copilot", "gemini-cli"]` |
-
-<Aside type="caution">
-Cross-harness Tier B policy. Decision logic in `wagents/hooks/policies/git_commit_push_guard.py` (`evaluate_git_commit_push`) blocks force-pushes to protected branches, history rewrites, and hook-skipping commits (`--no-verify`, `--no-gpg-sign`). Each harness renders its own native deny shape; Grok consumes it via the fleet deny adapter.
-</Aside>
+| mode | `enforce` |
+| harnesses | `[
+  "codex",
+  "claude-code",
+  "cursor",
+  "github-copilot",
+  "gemini-cli"
+]` |
+| bundle_group | `fleet-pre-tool-enforce` |
+| bundle_mode | `enforce-chain` |
+| status_message | Checking git commit/push safety |
 
 <details class="source-disclosure">
-<summary>Full hook config + policy reference</summary>
+<summary>Full hook config (registry SSOT)</summary>
 
 ```json title="config/hook-registry.json (entry)"
 {
   "id": "git-commit-push-guard",
   "description": "Block force-pushes to protected branches, hook-skipping commits, and unsafe history rewrites across the fleet.",
-  "status_message": "Checking git commit/push safety",
-  "mode": "enforce",
   "logical_event": "PreToolUse",
+  "logical_policy": "git-commit-push-guard",
+  "mode": "enforce",
+  "status_message": "Checking git commit/push safety",
   "matcher": "Bash|bash|run_shell_command|shell|terminal",
-  "command": "python3 {repo_root}/hooks/wagents-hook.py git-commit-push-guard --harness {harness}",
+  "command": "{hook_runner} git-commit-push-guard --harness {harness}",
   "timeout": 5,
+  "bundle_group": "fleet-pre-tool-enforce",
+  "bundle_mode": "enforce-chain",
   "harnesses": [
     "codex",
     "claude-code",
@@ -58,23 +65,16 @@ Cross-harness Tier B policy. Decision logic in `wagents/hooks/policies/git_commi
 }
 ```
 
-```python title="wagents/hooks/policies/git_commit_push_guard.py (decision)"
-def evaluate_git_commit_push(command: str) -> str | None:
-    """Return a deny reason for unsafe git commit/push commands, else None."""
-    # Force push (--force / -f / --force-with-lease bypass) to protected
-    # branches, history rewrites, and --no-verify / --no-gpg-sign commits.
-    ...
-```
+Command placeholders:
 
-Command: `python3 .../wagents-hook.py git-commit-push-guard --harness <name>`
+- `{hook_runner}` resolves to the fleet dispatcher (`hooks/wagents-hook.py` or harness projection).
+- `{harness}` is the target harness id at render/install time.
+
 </details>
 
-## Resources
+## Related
 
 <CardGrid>
-  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
-  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="Hooks hub" href="/hooks/" description="Registry overview and harness matrix." />
+  <LinkCard title="CLI hooks" href="/cli/" description="`wagents hooks list|validate`." />
 </CardGrid>
-
----
-[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

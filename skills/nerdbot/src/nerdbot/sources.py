@@ -23,6 +23,7 @@ SECRET_FILENAMES = {
     "id_ed25519",
 }
 SECRET_SUFFIXES = {".key", ".pem", ".p12", ".pfx"}
+DIRECTORY_MANIFEST_ENTRY_LIMIT = 200
 
 
 @dataclass(frozen=True, slots=True)
@@ -161,6 +162,12 @@ def pointer_stub_text(record: SourceRecord, reason: str) -> str:
     )
 
 
+def inline_text_location(content: str | bytes) -> str:
+    """Return a stable, non-content-leaking location label for inline source text."""
+    raw_content = content.encode("utf-8") if isinstance(content, str) else content
+    return f"inline:text:{checksum_bytes(raw_content)[:12]}"
+
+
 def plan_text_source(original_location: str, content: str | bytes, *, capture_method: str) -> SourceIngestPlan:
     """Plan ingestion for provided text/bytes without writing files."""
     raw_content = content.encode("utf-8") if isinstance(content, str) else content
@@ -188,12 +195,39 @@ def plan_local_file_source(
     if expanded.is_symlink():
         record = build_source_record(location, capture_method="pointer-stub", size_bytes=size_bytes)
         return SourceIngestPlan(record=record, raw_content=None, pointer_reason="source is a symlink")
+    try:
+        resolved.relative_to(vault_root_resolved)
+        outside_vault_root = False
+    except ValueError:
+        outside_vault_root = True
+    if outside_vault_root and not copy_outside_root and resolved.is_dir():
+        record = build_source_record(
+            location,
+            capture_method="pointer-stub",
+            size_bytes=size_bytes,
+            raw_path=f"raw/sources/{stable_source_id(location)}.md",
+        )
+        return SourceIngestPlan(
+            record=record,
+            raw_content=None,
+            pointer_reason="source is outside vault root; pass --copy-outside-root to copy intentionally",
+        )
     if resolved.is_dir():
         entries = []
-        for child in sorted(resolved.rglob("*"))[:200]:
+        truncated = False
+        for child in sorted(resolved.rglob("*")):
             if child.is_file() and not child.is_symlink():
                 entries.append(child.relative_to(resolved).as_posix())
-        manifest = "# Directory source manifest\n\n" + "\n".join(f"- {entry}" for entry in entries) + "\n"
+                if len(entries) == DIRECTORY_MANIFEST_ENTRY_LIMIT:
+                    truncated = True
+                    break
+        manifest_lines = ["# Directory source manifest", "", *[f"- {entry}" for entry in entries]]
+        if truncated:
+            manifest_lines.append(
+                f"- ... manifest truncated after {DIRECTORY_MANIFEST_ENTRY_LIMIT} file entries; "
+                "rerun with a narrower source for full detail"
+            )
+        manifest = "\n".join(manifest_lines) + "\n"
         record = build_source_record(
             location,
             capture_method="directory-manifest",
@@ -212,11 +246,6 @@ def plan_local_file_source(
             raw_path=f"raw/sources/{stable_source_id(location)}.md",
         )
         return SourceIngestPlan(record=record, raw_content=None, pointer_reason="source path looks secret-bearing")
-    try:
-        resolved.relative_to(vault_root_resolved)
-        outside_vault_root = False
-    except ValueError:
-        outside_vault_root = True
     if outside_vault_root and not copy_outside_root:
         record = build_source_record(
             location,

@@ -156,7 +156,7 @@
   padding: 1rem;
   border: 1px solid var(--border-console);
   border-radius: var(--radius-md);
-  background: oklch(0.12 0.012 220 / 0.78);
+  background: var(--surface-console, oklch(0.12 0.012 220 / 0.78));
   box-shadow: var(--hero-panel-shadow);
 }
 
@@ -169,11 +169,15 @@
   padding: 1rem;
   border: 1px solid var(--border-panel);
   border-radius: var(--radius-sm);
-  background: linear-gradient(180deg, oklch(0.18 0.018 220 / 0.78), oklch(0.13 0.012 220 / 0.6));
+  background: var(
+    --surface-console-stage,
+    linear-gradient(180deg, oklch(0.18 0.018 220 / 0.78), oklch(0.13 0.012 220 / 0.6))
+  );
 }
 
 .pipeline-label {
-  color: var(--sl-color-white);
+  /* Fixed light text on intentionally dark console chrome (do not use --sl-color-white). */
+  color: oklch(0.94 0.01 205);
   font-family: var(--sl-font-mono);
   font-size: 0.78rem;
   font-weight: 700;
@@ -182,9 +186,18 @@
 }
 
 .pipeline-detail {
-  color: var(--text-console);
+  color: oklch(0.82 0.03 205);
   font-size: 0.88rem;
   line-height: 1.5;
+}
+
+:root[data-theme='light'] .projection-pipeline {
+  --surface-console: oklch(0.18 0.02 220 / 0.94);
+  --surface-console-stage: linear-gradient(
+    180deg,
+    oklch(0.24 0.025 220 / 0.92),
+    oklch(0.17 0.018 220 / 0.9)
+  );
 }
 
 .pipeline-connector {

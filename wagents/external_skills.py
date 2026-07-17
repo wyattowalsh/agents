@@ -169,6 +169,40 @@ def is_skills_cli_install_command(command: str) -> bool:
     return len(parts) >= 4 and parts[:3] == ["npx", "skills", "add"]
 
 
+def install_source_spec_has_pin(spec: str) -> bool:
+    """Return whether a Skills CLI install source token includes an explicit @ref pin."""
+    token = str(spec or "").strip()
+    if not token:
+        return False
+    if token.startswith("github:"):
+        token = token.removeprefix("github:")
+    if "@" not in token:
+        return False
+    base, ref = token.rsplit("@", 1)
+    return bool(ref.strip()) and "/" in base
+
+
+def skills_cli_install_source_from_command(command: str) -> str:
+    """Extract the install source token from a Skills CLI install command."""
+    try:
+        parts = shlex.split(command)
+    except ValueError:
+        return ""
+    if len(parts) < 4 or parts[:3] != ["npx", "skills", "add"]:
+        return ""
+    return parts[3]
+
+
+def sync_apply_pin_satisfied(*, install_command: str, audited_head: str = "") -> bool:
+    """Return whether curated install-now apply has pin or audited-head evidence."""
+    if str(audited_head or "").strip():
+        return True
+    source = skills_cli_install_source_from_command(install_command)
+    if not source:
+        return True
+    return install_source_spec_has_pin(source)
+
+
 def infer_sync_kind(sync_kind: str | None, install_command: str) -> str:
     """Normalize or infer how an external entry participates in harness sync."""
     normalized = str(sync_kind or "").strip()
@@ -223,12 +257,10 @@ def curated_external_authoring_errors(
         })
 
     if status == GLOBAL_ONLY_OR_AVOID_STATUS and install_command:
-        errors.append(
-            {
-                "source": source,
-                "message": "global-only-or-avoid authoring rows must leave 'install_command' empty",
-            }
-        )
+        errors.append({
+            "source": source,
+            "message": "global-only-or-avoid authoring rows must leave 'install_command' empty",
+        })
     elif sync_kind == SYNC_KIND_NONE and is_skills_cli_install_command(install_command):
         errors.append({"source": source, "message": "sync_kind none rows must not publish npx skills add"})
 
@@ -405,6 +437,8 @@ def _validate_external_index_parity(
 
 
 def _external_sync_projection(entry: ExternalSkillEntry) -> dict[str, object]:
+    from .site_model import normalize_public_install_command
+
     return {
         "name": entry.name,
         "source": entry.source.removeprefix("github:"),
@@ -412,7 +446,9 @@ def _external_sync_projection(entry: ExternalSkillEntry) -> dict[str, object]:
         "status": entry.status,
         "trust_tier": entry.trust_tier,
         "provenance_status": entry.provenance_status,
-        "install_command": entry.install_command,
+        # Authoring records logical Grok coverage, while the generated public
+        # command drops Grok because Skills CLI has no native Grok adapter.
+        "install_command": normalize_public_install_command(entry.install_command),
         "target_agents": tuple(entry.target_agents),
         "selector_mode": entry.selector_mode,
         "sync_kind": infer_sync_kind(entry.sync_kind, entry.install_command),
@@ -646,6 +682,17 @@ def _promotion_policy(status: str) -> str:
         "install-now-after-trust-gate": "Install only after trust gate; audit again before repo promotion.",
         "inspect-then-install": "Inspect source, hooks, scripts, credentials, and dedupe before install.",
         "global-only-or-avoid": "Keep global-only or avoid unless explicitly approved.",
+        "integrated-collection-surface": "Terminal collection integration; do not vendor wholesale.",
+        "integrated-existing-surface": "Terminal existing-surface integration; do not duplicate.",
+        "integrated-mcp-surface": "Terminal MCP integration; use repo-native MCP surfaces only.",
+        "integrated-native-surface": "Terminal native-surface integration; no portable skill install emitted.",
+        "integrated-plugin-surface": "Terminal plugin integration; use plugin registry/manual activation only.",
+        "integrated-skill-catalog-surface": (
+            "Terminal skill-catalog integration; install metadata is recorded separately."
+        ),
+        "integrated-tool-surface": "Terminal tool integration; use tool docs/manual smoke tests only.",
+        "hard-blocked-inaccessible": "Hard-blocked because the upstream source is inaccessible or malformed.",
+        "hard-blocked-quarantine": "Hard-blocked by quarantine policy; do not install or execute.",
     }.get(status, "")
 
 
