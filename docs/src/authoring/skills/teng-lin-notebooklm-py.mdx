@@ -1,0 +1,49 @@
+---
+name: "teng-lin-notebooklm-py"
+description: "Superseded reference pointer for teng-lin/notebooklm-py. Canonical installable catalog skill id is notebooklm (see docs/src/authoring/skills/notebooklm.mdx)."
+title: "Teng Lin Notebooklm Py (Superseded)"
+source_kind: "curated-external"
+source: "teng-lin/notebooklm-py"
+install_source: "https://github.com/teng-lin/notebooklm-py"
+status: "integrated-reference"
+trust_tier: "curated-trust-gated"
+provenance_status: "reviewed-integration-reference"
+sync_kind: "none"
+target_agents: []
+source_url: "https://github.com/teng-lin/notebooklm-py"
+selector_mode: "reference"
+unresolved_reason: "Superseded by canonical installable row name=notebooklm; do not dual-install under a second catalog id."
+audit_date: "2026-07-17"
+audited_head: "54fd52f8c8aca3b1fe3f54487403fa924f390697"
+pin_policy: "pin-before-install"
+no_pin_rationale: "No separate install command; use notebooklm.mdx install_command and hybrid runtime pins documented there."
+source_list_evidence: "source-list-found"
+executable_surface: "none-from-this-row"
+credential_behavior: "placeholder-only; credentials must remain user-owned and uncommitted"
+network_access: "public Git metadata only for this reference row"
+file_access: "no upstream files installed from this reference row"
+live_action_risk: "None from this row; runtime actions go through the notebooklm skill/CLI/MCP surfaces."
+risk_category: "standard-review"
+dedupe_notes: "Canonical skill id notebooklm owns Skills CLI install. MCP server id notebooklm + MCPHub group nlm owned by config/mcp-registry.json."
+notes: "Superseded July 2026 pointer to the installable notebooklm catalog row for teng-lin/notebooklm-py."
+risk_notes: "Keep this row non-installable to avoid dual selectors."
+promotion_policy: "Do not re-promote as a second installable skill. Update notebooklm.mdx for install/runtime changes."
+provenance_evidence: "Promoted install surface is docs/src/authoring/skills/notebooklm.mdx after 2026-07-17 hybrid install (CLI 0.7.3, MCP 0.8.0b5 uvx, Skills CLI selector notebooklm)."
+---
+
+{/* SUPERSEDED-REFERENCE: canonical installable row = notebooklm.mdx */}
+
+# Teng Lin Notebooklm Py (Superseded)
+
+This row is a **reference pointer** only.
+
+## Use instead
+
+| Surface | Location |
+| --- | --- |
+| Installable skill catalog | [`notebooklm.mdx`](./notebooklm.mdx) |
+| Skills CLI | `npx skills add https://github.com/teng-lin/notebooklm-py --skill notebooklm …` |
+| MCP registry server | `config/mcp-registry.json` → `servers.notebooklm` |
+| MCPHub group | `mcphub.groups.nlm` |
+
+Do not run a second competing install for this package under a different catalog skill id.

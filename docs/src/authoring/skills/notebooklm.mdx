@@ -1,74 +1,82 @@
 ---
 name: "notebooklm"
-description: "Use this skill to query your Google NotebookLM notebooks directly from Claude Code for source-grounded, citation-backed answers from Gemini. Browser automation, library management, persistent auth. Drastically reduced hallucinations through document-only responses."
+description: "Complete API for Google NotebookLM (Gemini Notebook) via teng-lin/notebooklm-py — notebooks, sources, artifacts, CLI, and optional MCP. Activates on /notebooklm or intent like create a podcast about X."
 title: "Notebooklm"
 source_kind: "curated-external"
-source: "PleasePrompto/notebooklm-skill"
-install_source: "PleasePrompto/notebooklm-skill"
-install_command: "npx skills add PleasePrompto/notebooklm-skill --skill notebooklm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+source: "teng-lin/notebooklm-py"
+install_source: "https://github.com/teng-lin/notebooklm-py"
+install_command: "npx skills add https://github.com/teng-lin/notebooklm-py --skill notebooklm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode"
 install_skill_name: "notebooklm"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
-source_url: "https://github.com/PleasePrompto/notebooklm-skill"
+source_url: "https://github.com/teng-lin/notebooklm-py"
 selector_mode: "named"
-audit_date: "2026-07-07"
-audited_head: "eea5cb28ba79"
+audit_date: "2026-07-17"
+audited_head: "54fd52f8c8aca3b1fe3f54487403fa924f390697"
 license: "MIT"
 pin_policy: "pin-before-install"
-no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review before future promotion updates."
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited upstream HEAD is recorded for drift review. Runtime CLI/MCP pins are separate (CLI notebooklm-py 0.7.3 hybrid; MCP uvx notebooklm-py[mcp]==0.8.0b5)."
 source_list_evidence: "source-list-found"
-executable_surface: "Prompt/instruction skill installed through the Skills CLI; no repo-vendored third-party code, hooks, MCP server, daemon, or background service is enabled by this catalog row."
-credential_behavior: "No Google or NotebookLM credentials are stored; OAuth/session actions remain user-owned."
-network_access: "Notebook or document access remains explicit and must respect privacy and copyright."
-file_access: "Reads user-provided source notes/files only when requested."
-live_action_risk: "Do not upload private, copyrighted, or confidential content without explicit user intent."
+executable_surface: "Prompt/instruction skill plus optional global CLI (notebooklm) and MCP server (notebooklm-mcp via uvx). No third-party tree vendored into repo skills/. Skills CLI local install materializes the full upstream package under ~/.agents/skills/notebooklm (often tens of MB: tests, deploy, lockfiles), not a prompt-only SKILL.md."
+credential_behavior: "Auth cookies and profiles remain user-owned under ~/.notebooklm; never commit storage_state or NOTEBOOKLM_AUTH_JSON."
+network_access: "Talks to Google NotebookLM undocumented APIs; respect privacy, rate limits, and copyright when adding sources."
+file_access: "May upload local files as sources or download artifacts when the user requests those actions."
+live_action_risk: "Can create/delete notebooks, generate media, and share notebooks when invoked; require explicit user intent for destructive or public-sharing actions."
 risk_category: "personal-knowledge-privacy-review"
-dedupe_notes: "Raw indexes covered: 111"
-notes: "Use this skill to query your Google NotebookLM notebooks directly from Claude Code for source-grounded, citation-backed answers from Gemini. Browser automation, library management, persistent auth. Drastically reduced hallucinations through document-only responses."
-risk_notes: "Do not upload private, copyrighted, or confidential content without explicit user intent."
-promotion_policy: "Installable curated row is allowed after reviewing source-list evidence, audited HEAD, upstream license, selector behavior, duplicate triggers, Skills CLI risk output, and local harness install output; re-run source/security review before adapting upstream content beyond this selected skill entry."
-provenance_evidence: "Read-only source-list evidence found selector `notebooklm` in `PleasePrompto/notebooklm-skill`. Upstream license `MIT` and audited HEAD `eea5cb28ba79` were captured before promotion. Local Skills CLI installed `notebooklm` into supported harness roots. Skills CLI output reported Med Risk, Socket 0 alerts, Snyk Med Risk."
+dedupe_notes: "Supersedes PleasePrompto/notebooklm-skill as the canonical catalog id notebooklm on this machine. Complementary skill nlm-index remains separate. OpenCode dual surface: (1) opencode-plugin-notebooklm@latest plugin, (2) MCPHub group nlm → server notebooklm, (3) CLI/skill body for shell. Prefer one path per task; do not remove the plugin without explicit maintainer intent."
+notes: "Complete API for Google NotebookLM (Gemini Notebook) via teng-lin/notebooklm-py — notebooks, sources, artifacts, CLI, and optional MCP."
+risk_notes: "Unofficial library; Google APIs can break without notice. Do not upload private/confidential content without explicit user intent. MCP is beta-pinned (0.8.0b5). Local Skills CLI root may be a full upstream tree (~65MB) — treat scripts/deploy as untrusted for blind execution; agents should follow SKILL.md/CLI only."
+promotion_policy: "Installable after source-list evidence, MIT attribution, audited HEAD, selector notebooklm, Skills CLI multi-agent install, and local fingerprint checks. Re-audit before upgrading MCP pin past 0.8.0b5 or promoting CLI to a new major."
+provenance_evidence: "npx skills add https://github.com/teng-lin/notebooklm-py --list returned selector notebooklm. Audited HEAD 54fd52f8c8aca3b1fe3f54487403fa924f390697. PyPI stable 0.7.3 lacks mcp extra; MCP entrypoint verified via uvx notebooklm-py[mcp]==0.8.0b5. Auth check status ok on local CLI 0.7.3. Prior PleasePrompto row replaced as canonical notebooklm catalog entry."
 ---
 
 # Notebooklm
 
-This row promotes `PleasePrompto/notebooklm-skill` from the July 2026 candidate corpus into an installable curated external skill.
+Curated external skill from [teng-lin/notebooklm-py](https://github.com/teng-lin/notebooklm-py) for full programmatic NotebookLM / Gemini Notebook automation (CLI skill body + optional MCP).
 
-## Reviewed Integration
+## Reviewed integration
 
-- Raw indexes covered: 111
-- Normalized URL: [https://github.com/PleasePrompto/notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill)
 - Catalog skill id: `notebooklm`
 - Upstream install selector: `notebooklm`
-- Install command: `npx skills add PleasePrompto/notebooklm-skill --skill notebooklm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
-- Inspected commit SHA: `eea5cb28ba79`
-- License status: `MIT`
-- Source-list evidence: `source-list-found`
-- Live local install recorded: `true`
+- Install command: `npx skills add https://github.com/teng-lin/notebooklm-py --skill notebooklm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Inspected commit SHA: `54fd52f8c8aca3b1fe3f54487403fa924f390697`
+- License: MIT
+- Runtime (hybrid, this workstation):
+  - CLI tool: `notebooklm-py[browser]==0.7.3` via `uv tool`
+  - MCP: `uvx --from "notebooklm-py[mcp]==0.8.0b5" notebooklm-mcp` (registry server `notebooklm`, MCPHub group `nlm`)
+- Project skill: `notebooklm skill install --scope project --force`
+- User skill refresh: `notebooklm skill install --scope user` (Claude + `~/.agents` only)
 
-## Local Install Evidence
+## Local install evidence
 
-- Executed command: `npx --yes skills add PleasePrompto/notebooklm-skill --list`
-- Executed command: `npx --yes skills add PleasePrompto/notebooklm-skill --skill notebooklm --dry-run`
-- Executed command: `npx --yes skills add PleasePrompto/notebooklm-skill --skill notebooklm -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
-- Installed path: `~/.agents/skills/notebooklm`
-- Installed path: `~/.claude/skills/notebooklm`
-- Installed path: `~/.config/crush/skills/notebooklm`
-- Install evidence note: Live command installed the selected skill into supported Skills CLI harness roots. The Skills CLI has no native grok adapter in this environment; Grok follows this repo convention by consuming the Claude Code mirrored skill root. Verified install roots: ~/.agents/skills, ~/.claude/skills, and ~/.config/crush/skills.
+- `npx --yes skills add https://github.com/teng-lin/notebooklm-py --list` → selector `notebooklm`
+- Multi-agent Skills CLI install to supported harness roots
+- Verified paths (post-install): `~/.agents/skills/notebooklm` (full upstream tree; not prompt-only), Claude/Grok/Codex/Cursor/Gemini/OpenCode/Crush via symlink or adapter roots
+- Grok: no native Skills CLI `-a grok`; mirror via Claude/`~/.agents` conventions
+- Antigravity: Skills CLI target when adapter path exists; otherwise N/A if no discovery root on the machine
+- MCPHub: server `notebooklm` + group `nlm` on clients `default`, `codex`, `grok`, `opencode` (not in default `harness` group; not bloating harness token tax)
 
-## Safety Notes
+## Surface matrix (OpenCode / harnesses)
 
-- Credential behavior: No Google or NotebookLM credentials are stored; OAuth/session actions remain user-owned.
-- Network access: Notebook or document access remains explicit and must respect privacy and copyright.
-- File access: Reads user-provided source notes/files only when requested.
-- Live action risk: Do not upload private, copyrighted, or confidential content without explicit user intent.
-- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
-- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+| Path | Role | Notes |
+| --- | --- | --- |
+| Skill body `/notebooklm` | Prompt + CLI guidance | Install id `notebooklm` |
+| CLI `notebooklm` 0.7.3 | Auth, list, mutate | Hybrid stable track |
+| MCPHub group `nlm` | Tool schema via hub | uvx pin `0.8.0b5`; clients group-enabled |
+| `opencode-plugin-notebooklm@latest` | OpenCode-native plugin | Distinct from MCPHub; leave enabled unless overlap pain |
 
-## Docs-Steward Notes
+## Safety notes
 
-- This row is the installable catalog promotion for the matching candidate-corpus intake row.
-- Auth, install, validation, attribution, and promotion evidence remain visible in the candidate corpus manifests.
+- Unofficial Google APIs — breakage and rate limits possible
+- Keep `~/.notebooklm` credentials user-owned and uncommitted
+- Prefer non-mutating probes (`notebooklm auth check`, `list`) before generate/delete/share
+- Do not auto-start remote MCP HTTP binds without explicit user intent
+- Do not execute random scripts from the full local skill tree without review
+
+## Docs-steward notes
+
+- Canonical Bucket A row for skill id `notebooklm`
+- Reference row `teng-lin-notebooklm-py` is superseded; do not publish a second install command for the same selector
