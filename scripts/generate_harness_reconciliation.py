@@ -32,6 +32,7 @@ from wagents.installed_inventory import (
     skill_cleanup_metadata_for_exposures,
     supported_agent_ids,
 )
+from wagents.skill_coverage import evaluate_skill_presence
 
 OUT = ROOT / "planning" / "manifests" / "harness-reconciliation.json"
 HOME = Path.home()
@@ -149,6 +150,8 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
     default_missing_by_agent: dict[str, int] = dict.fromkeys(all_agents, 0)
     include_installed_missing_by_agent: dict[str, int] = dict.fromkeys(all_agents, 0)
     query_blocked_by_agent: dict[str, int] = dict.fromkeys(all_agents, 0)
+    store_missing_by_agent: dict[str, int] = dict.fromkeys(all_agents, 0)
+    projection_missing_by_agent: dict[str, int] = dict.fromkeys(all_agents, 0)
 
     desired_names = {row.name for row in desired}
     for row in merged.rows:
@@ -158,13 +161,36 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
             target_agents = tuple(row.target_agents or all_agents)
         unknown = set(target_agents) & failed_agents
         owner_covered = set(repo_skill_owner_covered_agents(row, target_agents, home=HOME, root=ROOT))
-        missing = set(target_agents) - set(row.installed_agents) - unknown - owner_covered
+        # Inventory installed_agents already excludes Cursor store-only paths, but
+        # still compute store vs projection explicitly so Cursor cannot false-zero
+        # when the universal store is present and ~/.cursor/skills is not.
+        store_missing_agents: set[str] = set()
+        projection_missing_agents: set[str] = set()
+        for agent in target_agents:
+            if agent in unknown or agent in owner_covered:
+                continue
+            if agent == "cursor":
+                presence = evaluate_skill_presence(row.name, "cursor", home=HOME, repo_root=ROOT)
+                if not presence.store_present and not presence.projection_present:
+                    store_missing_agents.add(agent)
+                elif presence.store_present and not presence.projection_present:
+                    projection_missing_agents.add(agent)
+                continue
+            if agent not in row.installed_agents:
+                store_missing_agents.add(agent)
+
+        missing = set(store_missing_agents) | set(projection_missing_agents)
         classification, action, rationale = _skill_disposition(row, all_agents, missing, unknown)
         if owner_covered and row.provenance_status == "repo-owned" and classification == "synced":
             rationale = (
                 "Repo-owned skill is covered by a native plugin or direct repo skill path for "
                 f"{', '.join(sorted(owner_covered))}; no duplicate Skills CLI install is recommended."
             )
+        if projection_missing_agents and "cursor" in projection_missing_agents:
+            rationale = (
+                f"{rationale} Cursor has Skills CLI store presence without ~/.cursor/skills "
+                "projection; store/secondary is not durable Cursor sync."
+            ).strip()
         cleanup_meta = skill_cleanup_metadata_for_exposures(
             cleanup_by_name.get(row.name, ()),
             fallback_docs_status=row.docs_status,
@@ -172,6 +198,10 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
         if row.name in desired_names or row.provenance_status in {"repo-owned", "verified-curated-external"}:
             for agent in missing:
                 default_missing_by_agent[agent] = default_missing_by_agent.get(agent, 0) + 1
+            for agent in store_missing_agents:
+                store_missing_by_agent[agent] = store_missing_by_agent.get(agent, 0) + 1
+            for agent in projection_missing_agents:
+                projection_missing_by_agent[agent] = projection_missing_by_agent.get(agent, 0) + 1
             for agent in unknown:
                 query_blocked_by_agent[agent] = query_blocked_by_agent.get(agent, 0) + 1
         if row.provenance_status in {"repo-owned", "verified-curated-external", "installed-external"}:
@@ -191,6 +221,8 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
                 "installed_agents": list(row.installed_agents),
                 "target_agents": list(target_agents),
                 "missing_agents": sorted(missing),
+                "store_missing_agents": sorted(store_missing_agents),
+                "projection_missing_agents": sorted(projection_missing_agents),
                 "owner_covered_agents": sorted(owner_covered),
                 "query_blocked_agents": sorted(unknown),
                 "exposure_owner": cleanup_meta["exposure_owner"],
@@ -216,6 +248,8 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
         "classification_counts": dict(Counter(row["classification"] for row in rows)),
         "default_sync_missing_by_agent": default_missing_by_agent,
         "include_installed_missing_by_agent": include_installed_missing_by_agent,
+        "store_missing_by_agent": store_missing_by_agent,
+        "projection_missing_by_agent": projection_missing_by_agent,
         "query_blocked_by_agent": query_blocked_by_agent,
     }
     return rows, summary

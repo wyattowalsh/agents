@@ -91,6 +91,72 @@ AGENT_LABEL_TO_ID = {
 
 INSTALLED_SKILL_SUPERSESSION_PATH = ROOT / "config" / "skill-installed-supersession.json"
 
+# Skills CLI universal store (home-relative). Distinct from per-harness projections.
+UNIVERSAL_SKILL_STORE_REL = Path(".agents") / "skills"
+CURSOR_HOME_PROJECTION_REL = Path(".cursor") / "skills"
+
+
+def skill_dir_has_body(skill_dir: Path) -> bool:
+    """True when ``skill_dir/SKILL.md`` exists as a readable file."""
+    skill_file = skill_dir / "SKILL.md"
+    return skill_file.is_file()
+
+
+def _path_under_root_nofollow(path: Path, root: Path) -> bool:
+    """Return True when ``path`` is ``root`` or a descendant without following symlinks."""
+    try:
+        path_abs = path.expanduser()
+        root_abs = root.expanduser()
+        if not path_abs.is_absolute():
+            path_abs = Path.cwd() / path_abs
+        if not root_abs.is_absolute():
+            root_abs = Path.cwd() / root_abs
+        path_norm = os.path.normpath(str(path_abs))
+        root_norm = os.path.normpath(str(root_abs))
+        if path_norm == root_norm:
+            return True
+        prefix = root_norm + os.sep
+        return path_norm.startswith(prefix)
+    except (OSError, ValueError, TypeError):
+        return False
+
+
+def is_repo_cursor_skills_path(path: Path, repo_root: Path) -> bool:
+    """True when ``path`` is under a repo project's ``.cursor/skills`` tree.
+
+    Project Cursor skills never count toward global Cursor presence or coverage.
+    """
+    return _path_under_root_nofollow(path, Path(repo_root) / ".cursor" / "skills")
+
+
+def is_cursor_home_projection_path(path: Path, home: Path) -> bool:
+    """True when ``path`` is under ``~/.cursor/skills`` (home projection)."""
+    return _path_under_root_nofollow(path, Path(home) / CURSOR_HOME_PROJECTION_REL)
+
+
+def is_skill_store_path(path: Path, home: Path) -> bool:
+    """True when ``path`` is under the Skills CLI universal store."""
+    return _path_under_root_nofollow(path, Path(home) / UNIVERSAL_SKILL_STORE_REL)
+
+
+def cursor_entry_counts_as_global_projection(
+    path: Path,
+    *,
+    home: Path,
+    repo_root: Path | None = None,
+) -> bool:
+    """Return whether a Cursor inventory path counts as global projection presence.
+
+    - Repo ``.cursor/skills/**`` → never
+    - ``~/.agents/skills/**`` (store only) → never (store is tracked separately)
+    - ``~/.cursor/skills/**`` → yes
+    """
+    if repo_root is not None and is_repo_cursor_skills_path(path, repo_root):
+        return False
+    if is_skill_store_path(path, home) and not is_cursor_home_projection_path(path, home):
+        return False
+    return is_cursor_home_projection_path(path, home)
+
 
 def load_installed_skill_supersession_aliases(*, repo_root: Path | None = None) -> dict[str, str]:
     """Return stale installed skill ids mapped to verified catalog replacement ids."""
@@ -117,24 +183,23 @@ GROK_SKILL_SCAN_SOURCES: tuple[tuple[Path, str], ...] = (
 )
 
 LOCAL_SKILL_ROOT_FALLBACKS: dict[str, tuple[tuple[Path, str], ...]] = {
-    "antigravity": ((Path(".agents") / "skills", "Antigravity"),),
+    "antigravity": ((UNIVERSAL_SKILL_STORE_REL, "Antigravity"),),
     "claude-code": ((Path(".claude") / "skills", "Claude Code"),),
     "codex": ((Path(".codex") / "skills", "Codex"),),
     "crush": (
         (Path(".config") / "crush" / "skills", "Crush"),
-        (Path(".agents") / "skills", "Crush"),
+        (UNIVERSAL_SKILL_STORE_REL, "Crush"),
     ),
-    "cursor": (
-        (Path(".cursor") / "skills", "Cursor"),
-        (Path(".agents") / "skills", "Cursor"),
-    ),
+    # Cursor global projection only — store presence is tracked separately via
+    # skill_coverage.store_present. Repo `.cursor/skills/**` never counts here.
+    "cursor": ((CURSOR_HOME_PROJECTION_REL, "Cursor"),),
     "gemini-cli": ((Path(".gemini") / "skills", "Gemini CLI"),),
     "github-copilot": ((Path(".copilot") / "skills", "GitHub Copilot"),),
     "opencode": ((Path(".config") / "opencode" / "skills", "OpenCode"),),
 }
 
 SKILL_EXPOSURE_ROOTS: tuple[tuple[str, Path, str, str], ...] = (
-    ("multi-harness", Path(".agents") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
+    ("multi-harness", UNIVERSAL_SKILL_STORE_REL, EXPOSURE_OWNER_SKILLS_CLI, "global"),
     ("claude-code", Path(".claude") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
     ("codex", Path(".codex") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
     ("opencode", Path(".config") / "opencode" / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
@@ -142,7 +207,7 @@ SKILL_EXPOSURE_ROOTS: tuple[tuple[str, Path, str, str], ...] = (
     ("gemini-cli", Path(".gemini") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
     ("github-copilot", Path(".copilot") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
     ("grok", Path(".grok") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
-    ("cursor", Path(".cursor") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
+    ("cursor", CURSOR_HOME_PROJECTION_REL, EXPOSURE_OWNER_SKILLS_CLI, "global"),
 )
 
 PROJECT_SKILL_EXPOSURE_ROOTS: tuple[tuple[str, Path, str, str], ...] = (
@@ -154,21 +219,19 @@ PROJECT_SKILL_EXPOSURE_ROOTS: tuple[tuple[str, Path, str, str], ...] = (
 
 TREE_HASH_ALWAYS_FILES = ("SKILL.md", "metadata.json")
 TREE_HASH_INCLUDED_DIRS = frozenset(("evals", "examples", "references", "scripts", "templates"))
-TREE_HASH_IGNORED_DIRS = frozenset(
-    (
-        ".cache",
-        ".git",
-        ".mypy_cache",
-        ".pytest_cache",
-        ".ruff_cache",
-        ".tox",
-        ".venv",
-        "__pycache__",
-        "build",
-        "dist",
-        "node_modules",
-    )
-)
+TREE_HASH_IGNORED_DIRS = frozenset((
+    ".cache",
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".tox",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "node_modules",
+))
 
 
 @dataclass(frozen=True)
@@ -228,10 +291,15 @@ class InstalledSkillInventoryRow:
         return self.provenance_status == "verified-curated-external"
 
     def is_installable(self) -> bool:
-        return self.is_syncable() and bool(self.install_command) and self.provenance_status not in {
-            "curated-unresolved",
-            "read-only-discovered",
-        }
+        return (
+            self.is_syncable()
+            and bool(self.install_command)
+            and self.provenance_status
+            not in {
+                "curated-unresolved",
+                "read-only-discovered",
+            }
+        )
 
     def is_syncable(self) -> bool:
         return infer_sync_kind(self.sync_kind, self.install_command) == SYNC_KIND_SKILLS_CLI
@@ -588,7 +656,40 @@ def _query_one_harness(
                 )
             )
     query = HarnessQueryResult(agent_id=agent_id, ok=True, entries=tuple(entries))
-    return _merge_local_skill_roots_into_query(query, home=home)
+    return _filter_global_harness_entries(
+        _merge_local_skill_roots_into_query(query, home=home),
+        home=home,
+        repo_root=repo_root,
+    )
+
+
+def _filter_global_harness_entries(
+    query: HarnessQueryResult,
+    *,
+    home: Path,
+    repo_root: Path | None = None,
+) -> HarnessQueryResult:
+    """Drop Cursor paths that must not count as global projection presence."""
+    if query.agent_id != "cursor":
+        return query
+    filtered = tuple(
+        entry
+        for entry in query.entries
+        if entry.path
+        and cursor_entry_counts_as_global_projection(
+            Path(entry.path),
+            home=home,
+            repo_root=repo_root,
+        )
+    )
+    if len(filtered) == len(query.entries):
+        return query
+    return HarnessQueryResult(
+        agent_id=query.agent_id,
+        ok=query.ok,
+        entries=filtered,
+        error=query.error,
+    )
 
 
 def _append_local_skill_root_entries(
@@ -679,7 +780,8 @@ def _query_local_harness_roots(agent_id: str, *, home: Path, reason: str) -> Har
         )
     if not entries:
         return None
-    return HarnessQueryResult(agent_id=agent_id, ok=True, entries=tuple(entries), error=reason)
+    query = HarnessQueryResult(agent_id=agent_id, ok=True, entries=tuple(entries), error=reason)
+    return _filter_global_harness_entries(query, home=home, repo_root=None)
 
 
 def _append_grok_skill_entries(
@@ -1078,24 +1180,41 @@ def _iter_skill_exposures(*, root: Path, home: Path) -> list[SkillExposure]:
                     canonical_owner=canonical_owner,
                     repo_owned=repo_owned,
                     is_symlink=skill_dir.is_symlink(),
-                    skill_hash=_file_hash(resolved_skill_file if resolved_skill_file.exists() else skill_file),
-                    tree_hash=_tree_hash(resolved_dir),
+                    # Lazy cleanup hashing: fill only when duplicate classification needs it.
+                    skill_hash="",
+                    tree_hash="",
                     docs_status=_docs_status_for_skill(name, repo_owned=repo_owned, root=root),
                 )
             )
     return exposures
 
 
-def _duplicate_class_for_group(exposures: list[SkillExposure]) -> str:
+def _with_cleanup_hashes(exposure: SkillExposure) -> SkillExposure:
+    """Compute skill/tree hashes for an exposure when not already populated."""
+    if exposure.skill_hash and exposure.tree_hash:
+        return exposure
+    skill_file = Path(exposure.source_path)
+    resolved_dir = Path(exposure.resolved_path)
+    return replace(
+        exposure,
+        skill_hash=exposure.skill_hash or _file_hash(skill_file),
+        tree_hash=exposure.tree_hash or _tree_hash(resolved_dir),
+    )
+
+
+def _duplicate_class_for_group(exposures: list[SkillExposure]) -> tuple[str, list[SkillExposure]]:
+    """Classify duplicates, hashing trees only when realpaths diverge."""
     if len(exposures) <= 1:
-        return DUPLICATE_CLASS_NONE
+        return DUPLICATE_CLASS_NONE, exposures
     realpaths = {item.resolved_path for item in exposures if item.resolved_path}
     if len(realpaths) <= 1:
-        return DUPLICATE_CLASS_SAME_REALPATH
-    tree_hashes = {item.tree_hash for item in exposures if item.tree_hash}
+        # Same realpath → no body hash required for classification.
+        return DUPLICATE_CLASS_SAME_REALPATH, exposures
+    hashed = [_with_cleanup_hashes(item) for item in exposures]
+    tree_hashes = {item.tree_hash for item in hashed if item.tree_hash}
     if len(tree_hashes) <= 1:
-        return DUPLICATE_CLASS_SAME_BODY
-    return DUPLICATE_CLASS_DIVERGENT_BODY
+        return DUPLICATE_CLASS_SAME_BODY, hashed
+    return DUPLICATE_CLASS_DIVERGENT_BODY, hashed
 
 
 def _cleanup_action_for_exposure(exposure: SkillExposure, duplicate_class: str) -> str:
@@ -1123,8 +1242,8 @@ def collect_skill_cleanup_exposures(*, root: Path | None = None, home: Path | No
         by_name.setdefault(exposure.name, []).append(exposure)
     annotated: list[SkillExposure] = []
     for group in by_name.values():
-        duplicate_class = _duplicate_class_for_group(group)
-        for exposure in group:
+        duplicate_class, classified = _duplicate_class_for_group(group)
+        for exposure in classified:
             annotated.append(
                 replace(
                     exposure,
@@ -1440,10 +1559,7 @@ def merge_desired_with_installed(
             install_command=(
                 row.install_command
                 if row.install_command
-                and (
-                    row.provenance_status == "verified-curated-external"
-                    or row.provenance_status == "repo-owned"
-                )
+                and (row.provenance_status == "verified-curated-external" or row.provenance_status == "repo-owned")
                 else (row.install_command or existing.install_command)
             ),
             provenance_status=row.provenance_status or existing.provenance_status,

@@ -59,6 +59,8 @@ from wagents.openspec import (
 )
 from wagents.output import emit_structured_output, normalize_output_format
 from wagents.parsing import parse_frontmatter, to_title
+from wagents.platforms.base import HOME
+from wagents.platforms.cursor import ensure_cursor_authoritative_links
 from wagents.plugins import load_command_plugins
 from wagents.rendering import scaffold_doc_page
 from wagents.self_cmd import self_app
@@ -69,6 +71,7 @@ from wagents.site_model import (
     build_install_command,
     docs_asset_repo_path,
 )
+from wagents.skill_coverage import evaluate_skill_presence
 from wagents.telemetry import begin_command_telemetry, doctor_telemetry_check, end_command_telemetry
 
 
@@ -1356,15 +1359,98 @@ def _optional_installed_superseded(
     return replacement in verified_names
 
 
+SYNC_BUCKET_KEYS = (
+    "already_present",
+    "projection_ensure",
+    "projection_blocked",
+    "store_missing",
+    "internal_projection",
+    "skipped",
+)
+SYNC_SAMPLE_LIMIT = 5
+
+
+def _empty_sync_buckets() -> dict[str, list[InstalledSkillInventoryRow]]:
+    return {key: [] for key in SYNC_BUCKET_KEYS}
+
+
+def _classify_cursor_sync_row(
+    row: InstalledSkillInventoryRow,
+    *,
+    home: Path,
+    preferred_non_cli: bool,
+) -> str:
+    """Return the Cursor sync bucket for one desired/installable skill row.
+
+    ``already_present`` only when preferred non-CLI ownership covers the row, or
+    when both the Skills CLI store and ``~/.cursor/skills`` projection are present
+    and ensure would not block a divergent real tree.
+    Store-only secondary presence is never treated as durable Cursor sync.
+    """
+    if preferred_non_cli:
+        return "already_present"
+
+    presence = evaluate_skill_presence(row.name, "cursor", home=home)
+    if presence.projection_present and not presence.store_present:
+        # Home projection without store — preserve; do not plan Skills CLI install.
+        return "internal_projection"
+    if not presence.store_present:
+        return "store_missing"
+
+    # Store present: use ensure dry-run to distinguish covered vs ensure vs blocked.
+    ensure_report = ensure_cursor_authoritative_links(names=[row.name], home=home, dry_run=True)
+    if ensure_report.blocked:
+        return "projection_blocked"
+    if ensure_report.skipped_missing_store:
+        return "store_missing"
+    if ensure_report.already_correct and presence.projection_present:
+        return "already_present"
+    if ensure_report.created or ensure_report.repaired or not presence.projection_present:
+        return "projection_ensure"
+    return "already_present"
+
+
+def _classify_harness_sync_row(
+    row: InstalledSkillInventoryRow,
+    agent_id: str,
+    *,
+    home: Path,
+) -> str:
+    """Return the sync bucket for one row on one harness."""
+    preferred_non_cli = _repo_skill_covered_by_non_cli_owner(row, agent_id)
+    if agent_id == "cursor":
+        return _classify_cursor_sync_row(row, home=home, preferred_non_cli=preferred_non_cli)
+    if preferred_non_cli or agent_id in row.installed_agents:
+        return "already_present"
+    return "store_missing"
+
+
+def _summarize_bucket_rows(rows: list[InstalledSkillInventoryRow]) -> list[str]:
+    return [_sync_row_summary(row) for row in sorted(rows, key=lambda item: item.name)]
+
+
+def _compact_sync_bucket_payload(rows: list[str], *, verbose: bool) -> dict[str, object]:
+    """Compact default JSON uses counts + samples to avoid OOM on large fleets."""
+    if verbose:
+        return {"count": len(rows), "items": rows}
+    return {
+        "count": len(rows),
+        "sample": rows[:SYNC_SAMPLE_LIMIT],
+        "truncated": max(0, len(rows) - SYNC_SAMPLE_LIMIT),
+    }
+
+
 def _build_sync_report(
     target_agents: tuple[str, ...],
     *,
     include_installed: bool,
     external_entries: list[ExternalSkillEntry] | None = None,
+    home: Path | None = None,
 ) -> dict[str, object]:
     """Build dry-run/apply data for additive skill sync."""
     # Always collect the full cross-harness inventory so a skill present in any
     # harness is visible when checking what is missing in the requested targets.
+    home_dir = Path(home) if home is not None else HOME
     snapshot = collect_installed_inventory(external_entries=external_entries)
     merged = merge_desired_with_installed(
         snapshot,
@@ -1382,46 +1468,53 @@ def _build_sync_report(
         query = query_by_agent.get(agent_id)
         if query is not None and not query.ok:
             hard_error_agents.append(agent_id)
+            empty_buckets = {key: [] for key in SYNC_BUCKET_KEYS}
             report_agents.append({
                 "agent": agent_id,
                 "error": query.error,
                 "warning": "",
                 "missing": [],
-                "already_present": [],
+                **empty_buckets,
                 "unresolved": [],
-                "skipped": [],
                 "commands": [],
+                "_projection_ensure_names": [],
             })
             continue
 
-        missing: list[InstalledSkillInventoryRow] = []
-        already_present: list[InstalledSkillInventoryRow] = []
+        buckets = _empty_sync_buckets()
         unresolved: list[InstalledSkillInventoryRow] = []
-        skipped: list[InstalledSkillInventoryRow] = []
 
         for row in verified_rows:
             if not row.is_syncable():
-                skipped.append(row)
+                buckets["skipped"].append(row)
                 continue
             if not _row_targets_agent(row, agent_id):
-                skipped.append(row)
+                buckets["skipped"].append(row)
                 continue
-            if agent_id in row.installed_agents or _repo_skill_covered_by_non_cli_owner(row, agent_id):
-                already_present.append(row)
-            else:
-                missing.append(row)
+            bucket = _classify_harness_sync_row(row, agent_id, home=home_dir)
+            buckets[bucket].append(row)
 
         for row in optional_installed:
             if not include_installed:
-                skipped.append(row)
+                buckets["skipped"].append(row)
                 continue
             if _optional_installed_superseded(row, verified_rows):
-                skipped.append(row)
+                buckets["skipped"].append(row)
                 continue
-            if agent_id in row.installed_agents:
-                already_present.append(row)
+            if agent_id == "cursor":
+                bucket = _classify_cursor_sync_row(
+                    row,
+                    home=home_dir,
+                    preferred_non_cli=False,
+                )
+                if bucket == "store_missing" and not row.is_installable():
+                    unresolved.append(row)
+                else:
+                    buckets[bucket].append(row)
+            elif agent_id in row.installed_agents:
+                buckets["already_present"].append(row)
             elif row.is_installable():
-                missing.append(row)
+                buckets["store_missing"].append(row)
             else:
                 unresolved.append(row)
 
@@ -1429,19 +1522,31 @@ def _build_sync_report(
             if include_installed or _row_targets_agent(row, agent_id):
                 unresolved.append(row)
             else:
-                skipped.append(row)
+                buckets["skipped"].append(row)
 
-        command_groups = _sync_command_groups(missing, agent_id)
+        # Skills CLI batches only for store_missing. projection_ensure is linked after apply.
+        store_missing = buckets["store_missing"]
+        command_groups = _sync_command_groups(store_missing, agent_id)
+        # Backward-compatible alias: missing == store_missing summaries.
+        missing_summaries = _summarize_bucket_rows(store_missing)
         report_agents.append({
             "agent": agent_id,
             "error": "",
             "warning": query.error if query is not None and query.ok else "",
-            "missing": [_sync_row_summary(row) for row in sorted(missing, key=lambda item: item.name)],
-            "already_present": [_sync_row_summary(row) for row in sorted(already_present, key=lambda item: item.name)],
-            "unresolved": [_sync_row_summary(row) for row in sorted(unresolved, key=lambda item: item.name)],
-            "skipped": [_sync_row_summary(row) for row in sorted(skipped, key=lambda item: item.name)],
+            "missing": missing_summaries,
+            "already_present": _summarize_bucket_rows(buckets["already_present"]),
+            "projection_ensure": _summarize_bucket_rows(buckets["projection_ensure"]),
+            "projection_blocked": _summarize_bucket_rows(buckets["projection_blocked"]),
+            "store_missing": missing_summaries,
+            "internal_projection": _summarize_bucket_rows(buckets["internal_projection"]),
+            "unresolved": _summarize_bucket_rows(unresolved),
+            "skipped": _summarize_bucket_rows(buckets["skipped"]),
             "commands": [command["text"] for command in command_groups],
             "_command_argvs": [command["argv"] for command in command_groups],
+            "_projection_ensure_names": [
+                row.name for row in sorted(buckets["projection_ensure"], key=lambda item: item.name)
+            ],
+            "_store_missing_rows": store_missing,
         })
 
     report: dict[str, object] = {
@@ -1467,7 +1572,30 @@ def _sync_error_report(error: str, *, include_installed: bool) -> dict[str, obje
     }
 
 
-def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str = "text") -> None:
+def _public_agent_sync_payload(agent_payload: dict[str, object], *, verbose: bool) -> dict[str, object]:
+    """Strip private keys and optionally compact large bucket lists."""
+    public: dict[str, object] = {}
+    for key, value in agent_payload.items():
+        if str(key).startswith("_"):
+            continue
+        if key in SYNC_BUCKET_KEYS or key in {"missing", "unresolved"}:
+            rows = cast("list[str]", value or [])
+            if verbose:
+                public[key] = rows
+            else:
+                public[key] = _compact_sync_bucket_payload(rows, verbose=False)
+            continue
+        public[key] = value
+    return public
+
+
+def _emit_sync_report(
+    report: dict[str, object],
+    *,
+    dry_run: bool,
+    format_: str = "text",
+    verbose: bool = False,
+) -> None:
     """Emit a skills sync report in text, json, or jsonl format."""
     mode = "dry-run" if dry_run else "apply"
     agent_reports = cast("list[dict[str, object]]", report.get("agents") or [])
@@ -1476,10 +1604,8 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
         "mode": mode,
         "inventory_count": report.get("inventory_count"),
         "include_installed": report.get("include_installed"),
-        "agents": [
-            {key: value for key, value in agent_payload.items() if not str(key).startswith("_")}
-            for agent_payload in agent_reports
-        ],
+        "verbose": verbose,
+        "agents": [_public_agent_sync_payload(agent_payload, verbose=verbose) for agent_payload in agent_reports],
     }
     if "error" in report:
         json_payload["error"] = report.get("error")
@@ -1487,6 +1613,8 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
         json_payload["error_type"] = report.get("error_type")
     if "apply_failures" in report:
         json_payload["apply_failures"] = report.get("apply_failures")
+    if "cursor_projection_ensure" in report:
+        json_payload["cursor_projection_ensure"] = report.get("cursor_projection_ensure")
     if format_ != "text":
         _emit_structured_output(
             format_,
@@ -1504,6 +1632,15 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
         typer.echo(f"error: {top_level_error}")
     typer.echo(f"Inventory rows: {report['inventory_count']}")
     typer.echo("")
+    text_bucket_keys = [
+        "store_missing",
+        "projection_ensure",
+        "projection_blocked",
+        "already_present",
+        "internal_projection",
+        "unresolved",
+        "skipped",
+    ]
     for agent_payload in agent_reports:
         typer.echo(f"[{agent_payload['agent']}]")
         error = str(agent_payload.get("error") or "")
@@ -1514,11 +1651,14 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
         warning = str(agent_payload.get("warning") or "")
         if warning:
             typer.echo(f"  warning: {warning}")
-        for key in ["missing", "already_present", "unresolved", "skipped"]:
+        for key in text_bucket_keys:
             rows = cast("list[str]", agent_payload.get(key) or [])
             typer.echo(f"  {key.replace('_', '-')} ({len(rows)})")
-            for row in rows:
+            display_rows = rows if verbose else rows[:SYNC_SAMPLE_LIMIT]
+            for row in display_rows:
                 typer.echo(f"    - {row}")
+            if not verbose and len(rows) > SYNC_SAMPLE_LIMIT:
+                typer.echo(f"    ... truncated {len(rows) - SYNC_SAMPLE_LIMIT} more (use --verbose)")
         commands = cast("list[str]", agent_payload.get("commands") or [])
         typer.echo(f"  commands ({len(commands)})")
         for command in commands:
@@ -1945,14 +2085,20 @@ def skills_sync(
         "--include-installed",
         help="Include verified one-off installed external skills outside the curated desired set",
     ),
+    verbose: bool = typer.Option(
+        False,
+        "--verbose",
+        help="Emit full bucket name lists in JSON/text (default is compact counts + samples)",
+    ),
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Additively sync repo and curated external skills across supported harnesses.
 
-    Dry-run previews missing installs per harness. Apply runs every planned Skills CLI
-    batch across all target harnesses before exiting; partial failures set ``ok: false``
-    and populate ``apply_failures`` in JSON/JSONL output with ``argv``, ``returncode``,
-    and ``text`` for each failed command.
+    Dry-run previews missing installs per harness. Apply runs Skills CLI batches for
+    ``store_missing`` only, then ensures Cursor authoritative home projections for
+    ``projection_ensure`` names. Partial failures set ``ok: false`` and populate
+    ``apply_failures`` in JSON/JSONL output with ``argv``, ``returncode``, and
+    ``text`` for each failed command.
     """
     if not shutil.which("npx"):
         typer.echo("Error: npx not found. Install Node.js first.", err=True)
@@ -1966,6 +2112,7 @@ def skills_sync(
             _sync_error_report(str(exc), include_installed=include_installed),
             dry_run=dry_run,
             format_=format_,
+            verbose=verbose,
         )
         raise typer.Exit(code=1) from exc
 
@@ -1980,16 +2127,16 @@ def skills_sync(
     structured_output = format_ in {"json", "jsonl"}
 
     if dry_run:
-        _emit_sync_report(report, dry_run=True, format_=format_)
+        _emit_sync_report(report, dry_run=True, format_=format_, verbose=verbose)
         if not bool(report.get("ok", True)):
             raise typer.Exit(code=1)
         return
 
     if not structured_output:
-        _emit_sync_report(report, dry_run=False, format_=format_)
+        _emit_sync_report(report, dry_run=False, format_=format_, verbose=verbose)
     if not bool(report.get("ok", True)):
         if structured_output:
-            _emit_sync_report(report, dry_run=False, format_=format_)
+            _emit_sync_report(report, dry_run=False, format_=format_, verbose=verbose)
         raise typer.Exit(code=1)
 
     grok_mirror_needed = False
@@ -2005,6 +2152,42 @@ def skills_sync(
         mirrored = mirror_grok_skills_from_claude()
         if mirrored:
             typer.echo(f"Mirrored {mirrored} skill(s) into ~/.grok/skills")
+
+    # After Skills CLI store installs, ensure Cursor home projections for names
+    # that already had store bodies (or just received them via CLI batches).
+    cursor_ensure_names: list[str] = []
+    for payload in agent_reports:
+        if payload.get("agent") != "cursor":
+            continue
+        cursor_ensure_names.extend(cast("list[str]", payload.get("_projection_ensure_names") or []))
+        # Newly installed store_missing rows also need Cursor projection links.
+        cursor_ensure_names.extend(
+            row.name for row in cast("list[InstalledSkillInventoryRow]", payload.get("_store_missing_rows") or [])
+        )
+    # Deduplicate while preserving order.
+    seen_ensure: set[str] = set()
+    ordered_ensure: list[str] = []
+    for name in cursor_ensure_names:
+        if name in seen_ensure:
+            continue
+        seen_ensure.add(name)
+        ordered_ensure.append(name)
+    if ordered_ensure:
+        ensure_report = ensure_cursor_authoritative_links(names=ordered_ensure, dry_run=False)
+        report["cursor_projection_ensure"] = {
+            "created": list(ensure_report.created),
+            "repaired": list(ensure_report.repaired),
+            "already_correct": list(ensure_report.already_correct),
+            "blocked": list(ensure_report.blocked),
+            "skipped_missing_store": list(ensure_report.skipped_missing_store),
+        }
+        if ensure_report.blocked and not structured_output:
+            for blocked in ensure_report.blocked:
+                typer.echo(
+                    f"cursor projection blocked: {blocked.get('name')}: {blocked.get('reason')}",
+                    err=True,
+                )
+
     if apply_failures:
         report["ok"] = False
         report["apply_failures"] = [
@@ -2012,7 +2195,7 @@ def skills_sync(
             for argv, returncode in apply_failures
         ]
         if structured_output:
-            _emit_sync_report(report, dry_run=False, format_=format_)
+            _emit_sync_report(report, dry_run=False, format_=format_, verbose=verbose)
         else:
             for argv, returncode in apply_failures:
                 typer.echo(
@@ -2022,7 +2205,7 @@ def skills_sync(
         raise typer.Exit(code=1)
 
     if structured_output:
-        _emit_sync_report(report, dry_run=False, format_=format_)
+        _emit_sync_report(report, dry_run=False, format_=format_, verbose=verbose)
 
 
 @catalog_app.command("index")

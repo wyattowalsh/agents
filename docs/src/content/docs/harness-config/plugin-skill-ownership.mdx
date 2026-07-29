@@ -25,7 +25,8 @@ Repo-owned skills come from `skills/<name>/SKILL.md`. A harness should expose ea
 | OpenCode | Direct repo path when `opencode.json` has `skills.paths: ["skills"]` | Do not add duplicate Skills CLI copies for repo-owned skills; keep runtime plugins in the repo/live plugin array. |
 | Claude Code | Skills CLI unless a native plugin install is explicitly chosen | Repo-owned global skill copies remain valid fallback exposure. |
 | Grok Build | Grok project/global skills plus Claude-compatible mirrored exposure | Skills CLI has no native Grok adapter; sync uses Claude Code adapter and mirrors only when requested by the sync path. |
-| Gemini CLI, Antigravity, Crush, Cursor, GitHub Copilot | Skills CLI or platform projection surface | Keep local plugin/extension surfaces separate from repo skill copies unless a registry row declares one-owner behavior. |
+| Gemini CLI, Antigravity, Crush, GitHub Copilot | Skills CLI or platform projection surface | Keep local plugin/extension surfaces separate from repo skill copies unless a registry row declares one-owner behavior. |
+| Cursor | Skills CLI store (`~/.agents/skills`) plus home projection (`~/.cursor/skills`) | Store/secondary presence is **not** durable Cursor sync. `wagents skills sync` treats Cursor as covered only when preferred non-CLI ownership applies or both store and `~/.cursor/skills` projection are present. Store-only rows go to `projection_ensure` (authoritative symlink) or `store_missing` (Skills CLI first). |
 
 The normalized report fields are:
 
@@ -38,6 +39,10 @@ The normalized report fields are:
 
 <Aside type="caution" title="Apply boundary">
 `wagents skills cleanup --dry-run` is read-only. It may identify symlinks, stale plugin caches, or home config drift, but it does not delete files, refresh plugin caches, or write live harness configs. Those actions need a separately reviewed apply path.
+</Aside>
+
+<Aside type="note" title="Cursor store vs projection">
+For Cursor, `~/.agents/skills` is a secondary Skills CLI store. Durable global sync requires `~/.cursor/skills/<name>` (usually a symlink to the store). Repo `.cursor/skills/**` never counts as global coverage. Dry-run JSON buckets include `already_present`, `projection_ensure`, `projection_blocked`, `store_missing`, `internal_projection`, and `skipped`.
 </Aside>
 
 ## Commands

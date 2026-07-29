@@ -404,6 +404,12 @@ wagents skills sync --agent github-copilot
 # Include verified one-off installed external skills
 wagents skills sync --include-installed
 
+# Compact JSON (counts + samples) — default for --format json
+wagents skills sync --agent cursor --format json
+
+# Full bucket lists
+wagents skills sync --agent cursor --format json --verbose
+
 # Execute the verified install commands
 wagents skills sync --apply
 ```
@@ -412,12 +418,18 @@ wagents skills sync --apply
 |--------|---------|-------------|
 | `-a`, `--agent` | all | Restrict sync to one or more harnesses |
 | `--all-agents` | `false` | Explicitly target all supported harnesses |
-| `--dry-run` | `true` | Preview missing, already-present, unresolved, skipped rows, and exact install commands |
-| `--apply` | `false` | Execute only the verified additive install commands |
+| `--dry-run` | `true` | Preview store-missing, projection-ensure, already-present, unresolved, skipped rows, and exact install commands |
+| `--apply` | `false` | Run Skills CLI for `store_missing` only, then ensure Cursor `~/.cursor/skills` links for `projection_ensure` |
 | `--include-installed` | `false` | Include verified one-off installed external skills outside the curated desired set |
+| `--verbose` | `false` | Emit full bucket name lists (default JSON is compact counts + samples to avoid OOM) |
+| `--format` | `text` | `text`, `json`, or `jsonl` |
 
 <Aside type="note" title="Desired sync set">
 By default, sync targets repo-owned custom skills plus verified curated external skills. It never removes user-installed skills.
+</Aside>
+
+<Aside type="note" title="Cursor presence">
+Cursor is already present only when preferred non-CLI ownership covers the skill, or when both the Skills CLI store and `~/.cursor/skills` projection exist. Store-only secondary presence is never treated as durable Cursor sync.
 </Aside>
 
 <Aside type="tip" title="Inventory fallback">

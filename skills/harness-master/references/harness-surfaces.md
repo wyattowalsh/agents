@@ -125,8 +125,8 @@ Install agent name: `github-copilot`
 | global | `~/.cursor/permissions.json` | authoritative, medium confidence | Still referenced by current docs but newer CLI docs also use CLI config |
 | global | `~/.cursor/cli-config.json` | authoritative | CLI global config |
 | global | `~/.cursor/hooks.json` | authoritative when present | User hooks |
-| global | `~/.cursor/skills` | authoritative when present | Cursor-native global skills |
-| global | `~/.agents/skills` | secondary | Compatibility global skills directory |
+| global | `~/.cursor/skills` | authoritative when present | Cursor-native global skills — durable synced surface for `wagents skills sync` |
+| global | `~/.agents/skills` | secondary | Compatibility / Skills CLI universal store; store presence alone is **not** durable Cursor sync |
 | global | `~/.cursor/agents/*.md` | authoritative when present | Global Cursor subagents |
 | global | Cursor user rules in settings UI | blind-spot | UI-managed unless exported |
 | global | Team rules/dashboard | blind-spot | Org-managed, not observable from local files |
