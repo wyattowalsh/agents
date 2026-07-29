@@ -9,9 +9,9 @@ docs_density: standard
 license: "Apache-2.0"
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a claude-code codex crush cursor grok opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "fetching-dbt-docs"
 ---
 
@@ -24,15 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="fetching-dbt-docs"
   description="Fetch, cache, and consult dbt documentation safely for dbt project work while keeping warehouse and admin actions credential-gated."
-  installCommand={`npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a claude-code codex crush cursor grok opencode`}
   installLabel="Install"
   usage="/fetching-dbt-docs"
-  badges={[{ text: "fetching-dbt-docs", variant: "note" }, { text: "440 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "fetching-dbt-docs", variant: "note" }, { text: "431 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/fetching-dbt-docs.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -40,11 +40,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/fetching-d
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a claude-code codex crush cursor grok opencode
 ```
 
 ## Trust / Audit
@@ -86,7 +86,7 @@ This row integrates `dbt-labs/dbt-agent-skills` as an installable curated extern
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -107,13 +107,13 @@ title: "Fetching dbt Docs"
 source_kind: "curated-external"
 source: "dbt-labs/dbt-agent-skills"
 install_source: "dbt-labs/dbt-agent-skills"
-install_command: "npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a claude-code codex crush cursor grok opencode"
 install_skill_name: "fetching-dbt-docs"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/dbt-labs/dbt-agent-skills"
 selector_mode: "named"
 audit_date: "2026-07-07"
@@ -145,7 +145,7 @@ This row integrates `dbt-labs/dbt-agent-skills` as an installable curated extern
 - Normalized URL: [https://github.com/dbt-labs/dbt-agent-skills](https://github.com/dbt-labs/dbt-agent-skills)
 - Catalog skill id: `fetching-dbt-docs`
 - Upstream install selector: `fetching-dbt-docs`
-- Install command: `npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Install command: `npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a claude-code codex crush cursor grok opencode`
 - Inspected commit SHA: `9eee2733ed63bb26edb8fcd0237d8c4589a773e6`
 - License status: `Apache-2.0`
 - Source-list evidence: `source-list-found`
@@ -154,13 +154,13 @@ This row integrates `dbt-labs/dbt-agent-skills` as an installable curated extern
 ## Local Install Evidence
 
 - Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs --dry-run`
-- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity`
+- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g`
 - Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a claude-code`
 - Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a codex`
 - Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a crush`
 - Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a cursor`
-- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a gemini-cli`
-- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a github-copilot`
+- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g`
+- Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g`
 - Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a claude-code`
 - Executed command: `npx --yes skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a opencode`
 - Installed path: `~/.agents/skills/fetching-dbt-docs`

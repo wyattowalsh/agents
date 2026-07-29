@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "generated_at": "2026-07-16T02:52:00.707729+00:00",
+  "generated_at": "2026-07-29T09:28:37.881491+00:00",
   "raw_entries_covered": 293,
   "unique_targets": 289,
   "integrated_targets": 289,
   "unintegrated_targets": 0,
-  "generated_reference_count": 162,
+  "generated_reference_count": 158,
   "classification_counts": {
     "inspection-existing": 6,
     "installable-existing": 121,
@@ -19,10 +19,10 @@
       "raw_indexes": [
         1
       ],
-      "intake_decision": "integrated_mcp_surface",
+      "intake_decision": "integrated_existing_surface",
       "risk_tier": "standard-review",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-existing-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -2367,10 +2367,10 @@
       "raw_indexes": [
         29
       ],
-      "intake_decision": "integrated_mcp_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "standard-review",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -4556,10 +4556,10 @@
       "raw_indexes": [
         61
       ],
-      "intake_decision": "integrated_mcp_surface",
+      "intake_decision": "integrated_skill_catalog_surface",
       "risk_tier": "standard-review",
       "integration_classification": "integrated-reference",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-skill-catalog-surface",
       "trust_cleared_installable": false,
       "hard_blocked": false,
       "catalog_rows": [
@@ -11417,27 +11417,27 @@
       "raw_indexes": [
         111
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_skill_catalog_surface",
       "risk_tier": "standard-review",
-      "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
-      "trust_cleared_installable": true,
+      "integration_classification": "integrated-reference",
+      "integration_surface": "integrated-skill-catalog-surface",
+      "trust_cleared_installable": false,
       "hard_blocked": false,
       "catalog_rows": [
         {
-          "name": "notebooklm",
-          "path": "docs/src/authoring/skills/notebooklm.mdx",
+          "name": "pleaseprompto-notebooklm-skill",
+          "path": "docs/src/authoring/skills/pleaseprompto-notebooklm-skill.mdx",
           "source": "PleasePrompto/notebooklm-skill",
           "install_source": "PleasePrompto/notebooklm-skill",
           "source_url": "https://github.com/PleasePrompto/notebooklm-skill",
-          "status": "install-now-after-trust-gate",
-          "trust_tier": "curated-trust-gated",
-          "sync_kind": "skills-cli",
-          "has_install_command": true
+          "status": "integrated-reference",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "none",
+          "has_install_command": false
         }
       ],
-      "generated_reference_name": "",
-      "generated_reference_path": ""
+      "generated_reference_name": "pleaseprompto-notebooklm-skill",
+      "generated_reference_path": "docs/src/authoring/skills/pleaseprompto-notebooklm-skill.mdx"
     },
     {
       "normalized_url": "https://github.com/earthtojake/text-to-cad",
@@ -12208,10 +12208,10 @@
       "raw_indexes": [
         120
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "standard-review",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -12324,10 +12324,10 @@
       "raw_indexes": [
         121
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "standard-review",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -12633,10 +12633,10 @@
         132,
         175
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "standard-review",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -12728,21 +12728,9 @@
       "integration_surface": "hard-blocked-quarantine",
       "trust_cleared_installable": false,
       "hard_blocked": true,
-      "catalog_rows": [
-        {
-          "name": "composiohq-awesome-codex-skills-competitive-ads-extractor",
-          "path": "docs/src/authoring/skills/composiohq-awesome-codex-skills-competitive-ads-extractor.mdx",
-          "source": "ComposioHQ/awesome-codex-skills",
-          "install_source": "ComposioHQ/awesome-codex-skills",
-          "source_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/competitive-ads-extractor",
-          "status": "integrated-quarantine-reference",
-          "trust_tier": "hard-blocked",
-          "sync_kind": "none",
-          "has_install_command": false
-        }
-      ],
-      "generated_reference_name": "composiohq-awesome-codex-skills-competitive-ads-extractor",
-      "generated_reference_path": "docs/src/authoring/skills/composiohq-awesome-codex-skills-competitive-ads-extractor.mdx"
+      "catalog_rows": [],
+      "generated_reference_name": "",
+      "generated_reference_path": ""
     },
     {
       "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/datadog-logs",
@@ -15082,27 +15070,27 @@
       "raw_indexes": [
         146
       ],
-      "intake_decision": "integrated_native_surface",
+      "intake_decision": "integrated_mcp_surface",
       "risk_tier": "standard-review",
-      "integration_classification": "integrated-reference",
-      "integration_surface": "integrated-native-surface",
-      "trust_cleared_installable": false,
+      "integration_classification": "installable-existing",
+      "integration_surface": "integrated-mcp-surface",
+      "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
         {
-          "name": "teng-lin-notebooklm-py",
-          "path": "docs/src/authoring/skills/teng-lin-notebooklm-py.mdx",
+          "name": "notebooklm",
+          "path": "docs/src/authoring/skills/notebooklm.mdx",
           "source": "teng-lin/notebooklm-py",
-          "install_source": "teng-lin/notebooklm-py",
+          "install_source": "https://github.com/teng-lin/notebooklm-py",
           "source_url": "https://github.com/teng-lin/notebooklm-py",
-          "status": "integrated-reference",
-          "trust_tier": "needs-inspection",
-          "sync_kind": "none",
-          "has_install_command": false
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
         }
       ],
-      "generated_reference_name": "teng-lin-notebooklm-py",
-      "generated_reference_path": "docs/src/authoring/skills/teng-lin-notebooklm-py.mdx"
+      "generated_reference_name": "",
+      "generated_reference_path": ""
     },
     {
       "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/raffle-winner-picker",
@@ -15256,21 +15244,9 @@
       "integration_surface": "hard-blocked-quarantine",
       "trust_cleared_installable": false,
       "hard_blocked": true,
-      "catalog_rows": [
-        {
-          "name": "composiohq-awesome-codex-skills-video-downloader",
-          "path": "docs/src/authoring/skills/composiohq-awesome-codex-skills-video-downloader.mdx",
-          "source": "ComposioHQ/awesome-codex-skills",
-          "install_source": "ComposioHQ/awesome-codex-skills",
-          "source_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/video-downloader",
-          "status": "integrated-quarantine-reference",
-          "trust_tier": "hard-blocked",
-          "sync_kind": "none",
-          "has_install_command": false
-        }
-      ],
-      "generated_reference_name": "composiohq-awesome-codex-skills-video-downloader",
-      "generated_reference_path": "docs/src/authoring/skills/composiohq-awesome-codex-skills-video-downloader.mdx"
+      "catalog_rows": [],
+      "generated_reference_name": "",
+      "generated_reference_path": ""
     },
     {
       "normalized_url": "https://github.com/multica-ai/andrej-karpathy-skills",
@@ -16515,10 +16491,10 @@
       "raw_indexes": [
         163
       ],
-      "intake_decision": "integrated_mcp_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "standard-review",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -16543,10 +16519,10 @@
       "raw_indexes": [
         164
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "executable-surface-review-required",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -16571,10 +16547,10 @@
       "raw_indexes": [
         165
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "executable-surface-review-required",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -16599,10 +16575,10 @@
       "raw_indexes": [
         166
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "executable-surface-review-required",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -16655,10 +16631,10 @@
       "raw_indexes": [
         168
       ],
-      "intake_decision": "integrated_native_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "standard-review",
       "integration_classification": "integrated-reference",
-      "integration_surface": "integrated-native-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": false,
       "hard_blocked": false,
       "catalog_rows": [
@@ -16915,10 +16891,10 @@
       "raw_indexes": [
         171
       ],
-      "intake_decision": "integrated_mcp_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "executable-surface-review-required",
       "integration_classification": "integrated-reference",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": false,
       "hard_blocked": false,
       "catalog_rows": [
@@ -16943,10 +16919,10 @@
       "raw_indexes": [
         172
       ],
-      "intake_decision": "integrated_mcp_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "standard-review",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -17186,10 +17162,10 @@
       "raw_indexes": [
         174
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "executable-surface-review-required",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -17214,10 +17190,10 @@
       "raw_indexes": [
         176
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "executable-surface-review-required",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -17242,10 +17218,10 @@
       "raw_indexes": [
         177
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "standard-review",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -17872,10 +17848,10 @@
       "raw_indexes": [
         194
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "executable-surface-review-required",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -18978,21 +18954,9 @@
       "integration_surface": "hard-blocked-quarantine",
       "trust_cleared_installable": false,
       "hard_blocked": true,
-      "catalog_rows": [
-        {
-          "name": "jihe520-social-push",
-          "path": "docs/src/authoring/skills/jihe520-social-push.mdx",
-          "source": "jihe520/social-push",
-          "install_source": "jihe520/social-push",
-          "source_url": "https://github.com/jihe520/social-push",
-          "status": "integrated-quarantine-reference",
-          "trust_tier": "hard-blocked",
-          "sync_kind": "none",
-          "has_install_command": false
-        }
-      ],
-      "generated_reference_name": "jihe520-social-push",
-      "generated_reference_path": "docs/src/authoring/skills/jihe520-social-push.mdx"
+      "catalog_rows": [],
+      "generated_reference_name": "",
+      "generated_reference_path": ""
     },
     {
       "normalized_url": "https://github.com/WILLOSCAR/research-units-pipeline-skills",
@@ -21044,10 +21008,10 @@
       "raw_indexes": [
         279
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "risk_tier": "executable-surface-review-required",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "catalog_rows": [
@@ -21111,21 +21075,9 @@
       "integration_surface": "hard-blocked-quarantine",
       "trust_cleared_installable": false,
       "hard_blocked": true,
-      "catalog_rows": [
-        {
-          "name": "klajdikkolaj-upwork-autopilot",
-          "path": "docs/src/authoring/skills/klajdikkolaj-upwork-autopilot.mdx",
-          "source": "klajdikkolaj/upwork-autopilot",
-          "install_source": "klajdikkolaj/upwork-autopilot",
-          "source_url": "https://github.com/klajdikkolaj/upwork-autopilot",
-          "status": "integrated-quarantine-reference",
-          "trust_tier": "hard-blocked",
-          "sync_kind": "none",
-          "has_install_command": false
-        }
-      ],
-      "generated_reference_name": "klajdikkolaj-upwork-autopilot",
-      "generated_reference_path": "docs/src/authoring/skills/klajdikkolaj-upwork-autopilot.mdx"
+      "catalog_rows": [],
+      "generated_reference_name": "",
+      "generated_reference_path": ""
     },
     {
       "normalized_url": "https://github.com/wearetechnative/openspec-badge-action",

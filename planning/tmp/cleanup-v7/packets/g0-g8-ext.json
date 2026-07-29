@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "paths_written": [
+    "planning/tmp/cleanup-v7/g8-ext.json"
+  ],
+  "notes": "EXT-085..088 register present; authoring+index absent; quarantine collector 0 errors; g8-dod stale"
+}

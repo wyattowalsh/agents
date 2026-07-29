@@ -20,12 +20,6 @@ from wagents.hooks.render import (
     render_codex_hooks as _render_codex_hooks_shared,
 )
 from wagents.hooks.render import (
-    render_copilot_hooks as _render_copilot_hooks_shared,
-)
-from wagents.hooks.render import (
-    render_gemini_hooks as _render_gemini_hooks_shared,
-)
-from wagents.hooks.render import (
     render_hook_command as _render_hook_command,
 )
 from wagents.hooks.render import (
@@ -51,8 +45,6 @@ CONFIG_DIR = REPO_ROOT / "config"
 GLOBAL_MD = REPO_ROOT / "instructions" / "global.md"
 CODEX_GLOBAL_MD = REPO_ROOT / "instructions" / "codex-global.md"
 CLAUDE_COMPAT_MD = REPO_ROOT / "instructions" / "claude-code-global.md"
-COPILOT_GLOBAL_MD = REPO_ROOT / "instructions" / "copilot-global.md"
-GEMINI_GLOBAL_MD = REPO_ROOT / "instructions" / "gemini-cli-global.md"
 OPENCODE_GLOBAL_MD = REPO_ROOT / "instructions" / "opencode-global.md"
 OPENCODE_AGENTS_OVERLAY_MD = REPO_ROOT / "instructions" / "opencode-agents-overlay.md"
 MCP_REGISTRY_PATH = CONFIG_DIR / "mcp-registry.json"
@@ -62,12 +54,7 @@ SYNC_MANIFEST_PATH = CONFIG_DIR / "sync-manifest.json"
 CODEX_CONFIG_COPY_PATH = CONFIG_DIR / "codex-config.toml"
 REPO_MCP_PATH = REPO_ROOT / "mcp.json"
 VSCODE_MCP_PATH = REPO_ROOT / ".vscode" / "mcp.json"
-COPILOT_REPO_INSTRUCTIONS_PATH = REPO_ROOT / ".github" / "copilot-instructions.md"
-COPILOT_RULES_DIR = REPO_ROOT / ".github" / "instructions"
-COPILOT_HOOKS_DIR = REPO_ROOT / ".github" / "hooks"
-COPILOT_AGENTS_REPO_DIR = REPO_ROOT / "platforms" / "copilot" / "agents"
 HOOKS_DIR = REPO_ROOT / "hooks"
-CLAUDE_RULES_DIR = REPO_ROOT / ".claude" / "rules"
 SKILLS_DIR = REPO_ROOT / "skills"
 
 HOME = Path.home()
@@ -82,21 +69,7 @@ GROK_CONFIG_PATH = HOME / ".grok" / "config.toml"
 GROK_CONFIG_REPO_PATH = REPO_ROOT / ".grok" / "config.toml"
 CODEX_HOOKS_PATH = HOME / ".codex" / "hooks.json"
 CODEX_SKILLS_DIR = HOME / ".codex" / "skills"
-COPILOT_ENTRYPOINT_PATH = HOME / ".copilot" / "copilot-instructions.md"
-COPILOT_MCP_PATH = HOME / ".copilot" / "mcp-config.json"
-COPILOT_SHADOW_MCP_PATH = HOME / ".config" / ".copilot" / "mcp-config.json"
-COPILOT_AGENTS_HOME_DIR = HOME / ".copilot" / "agents"
-COPILOT_SKILLS_DIR = HOME / ".copilot" / "skills"
-COPILOT_SETTINGS_PATH = HOME / ".copilot" / "settings.json"
-COPILOT_SUBAGENTS_ENV_PATH = HOME / ".config" / "copilot-subagents.env"
 CURSOR_MCP_PATH = HOME / ".cursor" / "mcp.json"
-GEMINI_SETTINGS_PATH = HOME / ".gemini" / "settings.json"
-GEMINI_ANTIGRAVITY_MCP_PATH = HOME / ".gemini" / "antigravity" / "mcp_config.json"
-GEMINI_EXTENSION_MCP_PATH = (
-    HOME / ".gemini" / "extensions" / "outline-driven-development" / "antigravity" / "mcp_config.json"
-)
-GEMINI_ENTRYPOINT_PATH = HOME / ".gemini" / "GEMINI.md"
-GEMINI_SKILLS_DIR = HOME / ".gemini" / "skills"
 OPENCODE_CONFIG_PATH = HOME / ".config" / "opencode" / "opencode.json"
 OPENCODE_TUI_CONFIG_PATH = HOME / ".config" / "opencode" / "tui.json"
 OPENCODE_TUI_PLUGINS_TEMPLATE_PATH = CONFIG_DIR / "opencode-tui-plugins.json"
@@ -117,19 +90,17 @@ OPENCODE_OCTTO_TEMPLATE_PATH = CONFIG_DIR / "opencode-octto.json"
 OPENCODE_REPO_CONFIG_PATH = REPO_ROOT / "opencode.json"
 OPENCODE_PLUGINS_DIR = HOME / ".config" / "opencode" / "plugins"
 AITK_MCP_PATH = HOME / ".aitk" / "mcp.json"
-CRUSH_CONFIG_PATH = HOME / ".config" / "crush" / "crush.json"
 CHERRY_STUDIO_DIR = HOME / "Library" / "Application Support" / "CherryStudio"
 CHERRY_STUDIO_IMPORT_DIR = CHERRY_STUDIO_DIR / "mcp-import"
 CHERRY_STUDIO_MANAGED_IMPORT_DIR = CHERRY_STUDIO_IMPORT_DIR / "managed"
 CURSOR_RULES_REPO_DIR = REPO_ROOT / ".cursor" / "rules"
 PERPLEXITY_SKILLS_REPO_DIR = REPO_ROOT / ".perplexity" / "skills"
 CHERRY_PRESETS_REPO_DIR = REPO_ROOT / ".cherry" / "presets"
-ANTIGRAVITY_RULES_REPO_DIR = REPO_ROOT / ".antigravity" / "rules"
 OPENCODE_PLUGIN_MANIFEST_REPO_PATH = REPO_ROOT / ".opencode-plugin" / "plugin.json"
 CURSOR_RULES_DIR = HOME / ".cursor" / "rules"
+CURSOR_HOME_RULES_ALLOWLIST = frozenset({"cursor-models.mdc"})
 PERPLEXITY_SKILLS_DIR = HOME / ".perplexity" / "skills"
 CHERRY_PRESETS_DIR = CHERRY_STUDIO_DIR / "presets"
-ANTIGRAVITY_RULES_DIR = HOME / ".gemini" / "antigravity" / "rules"
 OPENCODE_PLUGIN_MANIFEST_PATH = OPENCODE_PLUGINS_DIR / "agents" / "plugin.json"
 CHROME_DEVTOOLS_OPENCODE_LAUNCHER = "~/.config/opencode/tools/chrome-devtools-launcher.sh"
 MCPHUB_CHROME_DEVTOOLS_LAUNCHER = REPO_ROOT / "scripts" / "mcphub" / "chrome-devtools-browser-url.sh"
@@ -280,7 +251,7 @@ NORMALIZED_BASES: dict[str, dict[str, Any]] = {
         "args": ["-y", "tavily-mcp"],
     },
 }
-COPILOT_TOOLS_OVERRIDES = {
+SERVER_TOOLS_OVERRIDES = {
     "package-version-check-mcp": [
         "get_latest_package_versions",
         "get_github_action_versions_and_args",
@@ -407,6 +378,25 @@ def sync_directory_files(
         stale_path.unlink()
 
 
+def sync_cursor_home_allowlisted_rules(ctx: SyncContext) -> None:
+    """Copy allowlisted Cursor rules to ~/.cursor/rules without deleting home orphans."""
+    if not CURSOR_RULES_REPO_DIR.exists():
+        return
+    if ctx.apply:
+        CURSOR_RULES_DIR.mkdir(parents=True, exist_ok=True)
+    for name in sorted(CURSOR_HOME_RULES_ALLOWLIST):
+        source = CURSOR_RULES_REPO_DIR / name
+        if not source.is_file():
+            ctx.note(f"skip missing allowlisted Cursor rule: {name}")
+            continue
+        target = CURSOR_RULES_DIR / name
+        if target.exists() and target.read_bytes() == source.read_bytes():
+            continue
+        ctx.note(f"copy {source} -> {target}")
+        if ctx.apply:
+            shutil.copy2(str(source), str(target))
+
+
 def ensure_symlink(ctx: SyncContext, path: Path, target: Path) -> None:
     try:
         target_str = os.path.relpath(target, start=path.parent)
@@ -439,6 +429,26 @@ def sync_skill_entries(ctx: SyncContext, target_dir: Path) -> None:
         ensure_symlink(ctx, target, skill_dir)
 
 
+def sync_additive_skill_bridge(ctx: SyncContext, source_dir: Path, target_dir: Path) -> None:
+    """Expose a canonical skill root without replacing user-owned entries."""
+    if not source_dir.is_dir():
+        return
+    if target_dir.is_symlink():
+        return
+    if not target_dir.exists():
+        ensure_symlink(ctx, target_dir, source_dir)
+        return
+    if not target_dir.is_dir():
+        return
+    for skill_dir in sorted(source_dir.iterdir()):
+        if not skill_dir.is_dir() or not (skill_dir / "SKILL.md").exists():
+            continue
+        target = target_dir / skill_dir.name
+        if target.exists() or target.is_symlink():
+            continue
+        ensure_symlink(ctx, target, skill_dir)
+
+
 def load_codex_config() -> dict[str, Any]:
     with CODEX_CONFIG_PATH.open("rb") as handle:
         return tomllib.load(handle)
@@ -456,16 +466,6 @@ def load_current_secret_fallbacks() -> dict[str, str]:
             value = value.strip().strip("'\"")
             if key and value and "replace-with" not in value:
                 fallbacks.setdefault(key, value)
-    if GEMINI_SETTINGS_PATH.exists():
-        for server in load_json(GEMINI_SETTINGS_PATH).get("mcpServers", {}).values():
-            for key, value in server.get("env", {}).items():
-                if isinstance(value, str) and value and not value.startswith("${"):
-                    fallbacks.setdefault(key, value)
-    if COPILOT_MCP_PATH.exists():
-        for server in load_json(COPILOT_MCP_PATH).get("mcpServers", {}).values():
-            for key, value in server.get("env", {}).items():
-                if isinstance(value, str) and value and not value.startswith("${"):
-                    fallbacks.setdefault(key, value)
     for server in load_codex_config().get("mcp_servers", {}).values():
         for key, value in server.get("env", {}).items():
             if isinstance(value, str) and value and not value.startswith("${"):
@@ -647,32 +647,18 @@ def seed_registry_from_current_state() -> dict[str, Any]:
         if VSCODE_MCP_PATH.exists()
         else {}
     )
-    copilot_servers = (
-        {normalize_name(name): value for name, value in load_json(COPILOT_MCP_PATH).get("mcpServers", {}).items()}
-        if COPILOT_MCP_PATH.exists()
-        else {}
-    )
-    gemini_servers = (
-        {normalize_name(name): value for name, value in load_json(GEMINI_SETTINGS_PATH).get("mcpServers", {}).items()}
-        if GEMINI_SETTINGS_PATH.exists()
-        else {}
-    )
     codex_servers = parse_codex_servers()
     names = sorted({
         *repo_servers.keys(),
         *vscode_servers.keys(),
-        *copilot_servers.keys(),
-        *gemini_servers.keys(),
         *codex_servers.keys(),
     })
 
     servers: dict[str, Any] = {}
     for name in names:
         base = (
-            gemini_servers.get(name)
-            or codex_servers.get(name)
+            codex_servers.get(name)
             or repo_servers.get(name)
-            or copilot_servers.get(name)
             or vscode_servers.get(name)
             or {}
         )
@@ -684,7 +670,7 @@ def seed_registry_from_current_state() -> dict[str, Any]:
             "enabled": base.get("enabled", True),
             "startup_timeout_sec": int(base.get("startup_timeout_sec", 90)),
             "timeout_ms": int((repo_servers.get(name) or vscode_servers.get(name) or {}).get("timeout", 600000)),
-            "tools": list((copilot_servers.get(name) or {}).get("tools", ["*"])),
+            "tools": ["*"],
             "tool_approvals": {},
             "platform_overrides": {},
         }
@@ -693,8 +679,8 @@ def seed_registry_from_current_state() -> dict[str, Any]:
                 entry.update(override)
         if name == "context7":
             entry["env"] = {"CONTEXT7_API_KEY": {"env_var": "CONTEXT7_API_KEY"}}
-        if name in COPILOT_TOOLS_OVERRIDES:
-            entry["tools"] = COPILOT_TOOLS_OVERRIDES[name]
+        if name in SERVER_TOOLS_OVERRIDES:
+            entry["tools"] = SERVER_TOOLS_OVERRIDES[name]
         if not entry["command"]:
             continue
         servers[name] = entry
@@ -768,49 +754,6 @@ def render_repo_mcp(registry: dict[str, Any]) -> dict[str, Any]:
             }
         if entry.get("timeout_ms"):
             server["timeout"] = entry["timeout_ms"]
-        servers[name] = server
-    return {"mcpServers": servers}
-
-
-def render_copilot_mcp(
-    registry: dict[str, Any],
-    fallbacks: dict[str, str],
-    harness: str = "github-copilot-cli",
-) -> dict[str, Any]:
-    if mcphub_enabled(registry):
-        servers: dict[str, Any] = {}
-        mode = mcphub_projection_mode(registry, harness, "remote-stdio")
-        token_env = mcphub_bearer_env_var(registry)
-        for spec in mcphub_endpoint_specs(registry, harness):
-            if mode == "http":
-                server = {
-                    "tools": ["*"],
-                    "type": "http",
-                    "url": spec["url"],
-                    "enabled": bool(spec["enabled"]),
-                    "headers": {"Authorization": f"Bearer ${{{token_env}}}"},
-                }
-            else:
-                server = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
-                server["type"] = "stdio"
-                server["tools"] = ["*"]
-                # Disk MCP maps keep placeholders (never materialize local secrets).
-                server["env"] = {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=False)}
-            servers[spec["name"]] = server
-        return {"mcpServers": servers}
-
-    servers: dict[str, Any] = {}
-    for name, entry in enabled_registry_servers(registry, harness).items():
-        server: dict[str, Any] = {
-            "tools": entry.get("tools", ["*"]),
-            "type": entry.get("transport", "stdio"),
-            "command": entry["command"],
-            "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=False),
-        }
-        if entry.get("env"):
-            server["env"] = {
-                key: render_env_value(value, fallbacks, local_values=False) for key, value in entry["env"].items()
-            }
         servers[name] = server
     return {"mcpServers": servers}
 
@@ -929,11 +872,6 @@ def _hook_repo_root(repo_relative: bool) -> str:
     return "." if repo_relative else str(REPO_ROOT)
 
 
-def render_copilot_hooks(hook_registry: dict[str, Any], *, perf_tier: str | None = None) -> dict[str, Any]:
-    # Copilot hooks always run with the repo as cwd, so commands stay repo-relative.
-    return _render_copilot_hooks_shared(hook_registry, repo_root=".", perf_tier=perf_tier)
-
-
 def render_codex_hooks(hook_registry: dict[str, Any], *, repo_relative: bool = False) -> dict[str, Any]:
     return _render_codex_hooks_shared(hook_registry, repo_root=_hook_repo_root(repo_relative))
 
@@ -949,8 +887,6 @@ def render_standard_hooks(
         return _render_codex_hooks_shared(hook_registry, repo_root=repo_root)
     if harness == "claude-code":
         return _render_claude_hooks(hook_registry, repo_root=repo_root)
-    if harness == "gemini-cli":
-        return _render_gemini_hooks_shared(hook_registry, repo_root=repo_root)
     raise ValueError(f"render_standard_hooks does not support harness {harness!r}")
 
 
@@ -1351,56 +1287,6 @@ def merge_codex_config(
     )
 
 
-def generate_copilot_repo_instructions(ctx: SyncContext) -> None:
-    copilot_text = COPILOT_GLOBAL_MD.read_text(encoding="utf-8")
-    global_text = GLOBAL_MD.read_text(encoding="utf-8").rstrip("\n")
-    content, replacements = re.subn(
-        r"^@.*instructions/global\.md\s*$",
-        global_text,
-        copilot_text,
-        count=1,
-        flags=re.MULTILINE,
-    )
-    if replacements != 1:
-        raise ValueError(f"Expected a single global.md import in {COPILOT_GLOBAL_MD}")
-    content = MANAGED_HEADER + content
-    write_text(ctx, COPILOT_REPO_INSTRUCTIONS_PATH, content)
-
-
-def parse_claude_rule(path: Path) -> tuple[list[str], str]:
-    text = path.read_text(encoding="utf-8")
-    if not text.startswith("---\n"):
-        return [], text
-    _, frontmatter, body = text.split("---\n", 2)
-    patterns: list[str] = []
-    for line in frontmatter.splitlines():
-        stripped = line.strip()
-        if stripped.startswith("- "):
-            patterns.append(stripped[2:].strip().strip('"'))
-    return patterns, body.lstrip()
-
-
-def generate_copilot_rule_instructions(ctx: SyncContext) -> None:
-    for rule_path in sorted(CLAUDE_RULES_DIR.glob("*.md")):
-        patterns, body = parse_claude_rule(rule_path)
-        apply_to = ",".join(patterns)
-        rendered = f'---\napplyTo: "{apply_to}"\n---\n\n{MANAGED_HEADER}{body}'
-        output_path = COPILOT_RULES_DIR / f"{rule_path.stem}.instructions.md"
-        write_text(ctx, output_path, rendered)
-
-
-def generate_copilot_hooks(ctx: SyncContext, hook_registry: dict[str, Any]) -> None:
-    perf_tier = _resolve_hook_perf_tier()
-    sync_hook_projection(
-        lambda dest, data: write_json(ctx, dest, data),
-        harness="github-copilot",
-        dest_path=COPILOT_HOOKS_DIR / "policy.json",
-        render_fn=lambda: render_copilot_hooks(hook_registry, perf_tier=perf_tier),
-        perf_tier=perf_tier,
-        apply=ctx.apply,
-    )
-
-
 def merge_claude_settings(ctx: SyncContext, policy: dict[str, Any], hook_registry: dict[str, Any]) -> None:
     settings = load_json(CLAUDE_SETTINGS_PATH) if CLAUDE_SETTINGS_PATH.exists() else {}
     allow = settings.setdefault("permissions", {}).setdefault("allow", [])
@@ -1422,58 +1308,6 @@ def merge_claude_settings(ctx: SyncContext, policy: dict[str, Any], hook_registr
                 suffix = command.split(hook_name, 1)[1]
                 hook["command"] = f"{HOOKS_DIR / hook_name}{suffix}"
     write_json(ctx, CLAUDE_SETTINGS_PATH, settings)
-
-
-def merge_copilot_config(ctx: SyncContext, policy: dict[str, Any]) -> None:
-    config = load_json(COPILOT_SETTINGS_PATH) if COPILOT_SETTINGS_PATH.exists() else {}
-    defaults = policy.get("model_defaults", {}).get("copilot", {})
-    config["model"] = defaults.get("model", config.get("model"))
-    config["effortLevel"] = defaults.get("effort_level", config.get("effortLevel"))
-    if "continue_on_auto_mode" in defaults:
-        config["continueOnAutoMode"] = defaults["continue_on_auto_mode"]
-    trusted = set(config.get("trustedFolders", []))
-    trusted.update(policy.get("trusted_roots", []))
-    config["trustedFolders"] = sorted(trusted)
-    allowed = set(config.get("allowedUrls", config.get("allowed_urls", [])))
-    for domain in policy.get("docs_domains", []):
-        allowed.add(f"https://{domain}")
-    config.pop("allowed_urls", None)
-    config["allowedUrls"] = sorted(allowed)
-    write_json(ctx, COPILOT_SETTINGS_PATH, config)
-
-
-def sync_copilot_subagent_env(ctx: SyncContext, policy: dict[str, Any]) -> None:
-    defaults = policy.get("model_defaults", {}).get("copilot", {})
-    limits = defaults.get("subagent_limits")
-    if not limits:
-        content = (
-            "# Managed by wagents sync (scripts/sync_agent_stack.py).\n"
-            "unset COPILOT_SUBAGENT_MAX_CONCURRENT\n"
-            "unset COPILOT_SUBAGENT_MAX_DEPTH\n"
-        )
-        write_text(ctx, COPILOT_SUBAGENTS_ENV_PATH, content)
-        return
-    max_concurrent = int(limits["max_concurrent"])
-    max_depth = int(limits["max_depth"])
-    content = (
-        "# Managed by wagents sync (scripts/sync_agent_stack.py).\n"
-        f'export COPILOT_SUBAGENT_MAX_CONCURRENT="{max_concurrent}"\n'
-        f'export COPILOT_SUBAGENT_MAX_DEPTH="{max_depth}"\n'
-    )
-    write_text(ctx, COPILOT_SUBAGENTS_ENV_PATH, content)
-
-
-def sync_copilot_agents(ctx: SyncContext) -> None:
-    if ctx.apply:
-        COPILOT_AGENTS_REPO_DIR.mkdir(parents=True, exist_ok=True)
-    if COPILOT_AGENTS_HOME_DIR.exists() and not COPILOT_AGENTS_HOME_DIR.is_symlink():
-        for agent_file in sorted(COPILOT_AGENTS_HOME_DIR.glob("*.agent.md")):
-            destination = COPILOT_AGENTS_REPO_DIR / agent_file.name
-            if not destination.exists():
-                ctx.note(f"copy {agent_file} -> {destination}")
-                if ctx.apply:
-                    shutil.copy2(agent_file, destination)
-    ensure_symlink(ctx, COPILOT_AGENTS_HOME_DIR, COPILOT_AGENTS_REPO_DIR)
 
 
 def load_platform_adapter(name: str) -> Any:
@@ -1530,43 +1364,41 @@ def sync_repo_targets(
         sync_platform_repo_target("codex", ctx, registry, hook_registry, policy)
     if platform_filter_allows(platforms_filter, "claude-code"):
         sync_platform_repo_target("claude-code", ctx, registry, hook_registry, policy)
-    if platform_filter_allows(platforms_filter, "gemini-cli"):
-        sync_platform_repo_target("gemini-cli", ctx, registry, hook_registry, policy)
-    if platform_filter_allows(platforms_filter, "repo-core"):
-        generate_copilot_repo_instructions(ctx)
-        generate_copilot_rule_instructions(ctx)
-        generate_copilot_hooks(ctx, hook_registry)
     if platform_filter_allows(platforms_filter, "opencode"):
         sync_platform_repo_target("opencode", ctx, registry, hook_registry, policy)
     if platform_filter_allows(platforms_filter, "grok"):
         sync_platform_repo_target("grok", ctx, registry, hook_registry, policy)
 
 
-def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+def render_flat_mcp(
+    registry: dict[str, Any],
+    fallbacks: dict[str, str],
+    harness: str,
+) -> dict[str, Any]:
     # Disk-persisted home configs must use placeholders only (no secret materialization).
     if mcphub_enabled(registry):
-        mode = mcphub_projection_mode(registry, "gemini-cli", "remote-stdio")
+        mode = mcphub_projection_mode(registry, harness, "remote-stdio")
         token_env = mcphub_bearer_env_var(registry)
         servers: dict[str, Any] = {}
-        for spec in mcphub_endpoint_specs(registry, "gemini-cli"):
+        for spec in mcphub_endpoint_specs(registry, harness):
+            if not spec["enabled"]:
+                continue
             if mode == "http":
                 server = {
                     "type": "http",
                     "url": spec["url"],
-                    "enabled": bool(spec["enabled"]),
                     "headers": {"Authorization": f"Bearer ${{{token_env}}}"},
                 }
             else:
                 server = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
+                server.pop("disabled", None)
+                server.pop("enabled", None)
                 server["type"] = "stdio"
-                server["env"] = {
-                    token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=False)
-                }
             servers[spec["name"]] = server
         return servers
 
     servers: dict[str, Any] = {}
-    for name, entry in enabled_registry_servers(registry, "gemini-cli").items():
+    for name, entry in enabled_registry_servers(registry, harness).items():
         server: dict[str, Any] = {
             "type": entry.get("transport", "stdio"),
             "command": entry["command"],
@@ -1602,9 +1434,6 @@ def render_client_mcp(
                 }
             else:
                 server = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
-                server["env"] = {
-                    token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=False)
-                }
             servers[spec["name"]] = server
         return {"mcpServers": servers}
 
@@ -1649,22 +1478,19 @@ def merge_server_root_config(
     root_key: str,
     rendered: dict[str, Any],
     known_names: set[str] | None = None,
+    *,
+    create: bool = False,
 ) -> None:
-    if not path.exists():
+    if not path.exists() and not create:
         return
-    settings = load_json(path)
+    settings = load_json(path) if path.exists() else {}
     existing = settings.get(root_key)
     if not isinstance(existing, dict):
-        return
+        if not create:
+            return
+        existing = {}
     settings[root_key] = merge_server_maps(rendered, existing, known_names)
     write_json(ctx, path, settings)
-
-
-def render_shadow_copilot_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
-    servers = render_copilot_mcp(registry, fallbacks, "github-copilot-cli")["mcpServers"]
-    for server in servers.values():
-        server["source"] = "user"
-    return servers
 
 
 def extract_remote_url(command: str, args: list[Any]) -> str | None:
@@ -1700,10 +1526,6 @@ def render_opencode_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> 
                     "type": "local",
                     "command": [entry["command"], *entry["args"]],
                     "enabled": enabled,
-                    # Disk MCP maps keep placeholders (never materialize local secrets).
-                    "environment": {
-                        token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=False)
-                    },
                 }
         return servers
 
@@ -2353,9 +2175,6 @@ def render_cherry_import_files(registry: dict[str, Any], fallbacks: dict[str, st
             else:
                 server = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
                 server["type"] = "stdio"
-                server["env"] = {
-                    token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=False)
-                }
             all_servers[spec["name"]] = server
             if spec["kind"] == "group":
                 files[f"group-{spec['group']}.json"] = {"mcpServers": {spec["name"]: server}}
@@ -2481,45 +2300,6 @@ def merge_cherry_studio_config(ctx: SyncContext) -> None:
         write_json(ctx, config_path, {})
 
 
-def merge_gemini_settings(
-    ctx: SyncContext,
-    registry: dict[str, Any],
-    policy: dict[str, Any],
-    fallbacks: dict[str, str],
-    hook_registry: dict[str, Any],
-) -> None:
-    if not GEMINI_SETTINGS_PATH.exists():
-        return
-    settings = load_json(GEMINI_SETTINGS_PATH)
-    settings["mcpServers"] = render_gemini_mcp(registry, fallbacks)
-
-    if CLAUDE_SETTINGS_PATH.exists():
-        claude_settings = load_json(CLAUDE_SETTINGS_PATH)
-        for key in ["permissions", "enabledPlugins", "alwaysThinkingEnabled", "autoUpdatesChannel"]:
-            if key in claude_settings:
-                settings[key] = claude_settings[key]
-    settings["hooks"] = merge_hook_groups(settings.get("hooks", {}), render_standard_hooks(hook_registry, "gemini-cli"))
-
-    defaults = policy.get("model_defaults", {}).get("gemini", {})
-    if "model" in defaults:
-        settings["model"] = defaults["model"]
-    if "effort_level" in defaults:
-        settings["effortLevel"] = defaults["effort_level"]
-
-    trusted = set(settings.get("trusted_folders", []))
-    trusted.update(policy.get("trusted_roots", []))
-    settings["trusted_folders"] = sorted(trusted)
-
-    allowed = set(settings.get("allowed_urls", []))
-    for domain in policy.get("docs_domains", []):
-        allowed.add(f"https://{domain}")
-    settings["allowed_urls"] = sorted(allowed)
-
-    settings["experimental"] = True
-
-    write_json(ctx, GEMINI_SETTINGS_PATH, settings)
-
-
 def merge_client_mcp_config(
     ctx: SyncContext,
     path: Path,
@@ -2576,17 +2356,18 @@ def sync_home_targets(
     if not platform_filter_allows(platforms_filter, "shared"):
         if platform_filter_allows(platforms_filter, "cursor"):
             sync_platform_home_target("cursor", ctx, registry, policy, fallbacks, hook_registry)
+            sync_cursor_home_allowlisted_rules(ctx)
         if platform_filter_allows(platforms_filter, "grok"):
             sync_platform_home_target("grok", ctx, registry, policy, fallbacks, hook_registry)
         if platform_filter_allows(platforms_filter, "opencode"):
             sync_platform_home_target("opencode", ctx, registry, policy, fallbacks, hook_registry)
         if platform_filter_allows(platforms_filter, "lm-studio"):
             sync_platform_home_target("lm-studio", ctx, registry, policy, fallbacks, hook_registry)
+        if platform_filter_allows(platforms_filter, "crush"):
+            sync_platform_home_target("crush", ctx, registry, policy, fallbacks, hook_registry)
         return
     sync_codex_entrypoint(ctx)
     ensure_symlink(ctx, CLAUDE_ENTRYPOINT_PATH, GLOBAL_MD)
-    ensure_symlink(ctx, COPILOT_ENTRYPOINT_PATH, COPILOT_GLOBAL_MD)
-    write_text(ctx, GEMINI_ENTRYPOINT_PATH, "@./AGENTS.md\n@./instructions/gemini-cli-global.md\n")
     write_text(
         ctx,
         CLAUDE_COMPAT_MD,
@@ -2599,10 +2380,6 @@ def sync_home_targets(
     merge_claude_settings_local(ctx, registry)
     merge_client_mcp_config(ctx, CLAUDE_DESKTOP_CONFIG_PATH, registry, fallbacks, "claude-desktop")
     sync_platform_home_target("cursor", ctx, registry, policy, fallbacks, hook_registry)
-    merge_copilot_config(ctx, policy)
-    sync_copilot_subagent_env(ctx, policy)
-    merge_gemini_settings(ctx, registry, policy, fallbacks, hook_registry)
-    write_json(ctx, COPILOT_MCP_PATH, render_copilot_mcp(registry, fallbacks, "github-copilot-cli"))
     merge_server_root_config(
         ctx,
         CHATGPT_MCP_PATH,
@@ -2610,35 +2387,16 @@ def sync_home_targets(
         render_client_mcp(registry, fallbacks, "chatgpt")["mcpServers"],
         managed_registry_server_names(registry, "chatgpt"),
     )
-    merge_server_root_config(
-        ctx,
-        COPILOT_SHADOW_MCP_PATH,
-        "mcpServers",
-        render_shadow_copilot_mcp(registry, fallbacks),
-        managed_registry_server_names(registry, "github-copilot-cli"),
-    )
-    merge_server_root_config(
-        ctx,
-        GEMINI_ANTIGRAVITY_MCP_PATH,
-        "mcpServers",
-        render_client_mcp(registry, fallbacks, "antigravity")["mcpServers"],
-        managed_registry_server_names(registry, "antigravity"),
-    )
-    merge_server_root_config(
-        ctx,
-        GEMINI_EXTENSION_MCP_PATH,
-        "mcpServers",
-        render_client_mcp(registry, fallbacks, "antigravity-extension")["mcpServers"],
-        managed_registry_server_names(registry, "antigravity-extension"),
-    )
     if platform_filter_allows(platforms_filter, "opencode"):
         sync_platform_home_target("opencode", ctx, registry, policy, fallbacks, hook_registry)
     merge_server_root_config(
-        ctx, AITK_MCP_PATH, "servers", render_gemini_mcp(registry, fallbacks), managed_registry_server_names(registry)
+        ctx,
+        AITK_MCP_PATH,
+        "servers",
+        render_flat_mcp(registry, fallbacks, harness="crush"),
+        managed_registry_server_names(registry, "crush"),
     )
-    merge_server_root_config(
-        ctx, CRUSH_CONFIG_PATH, "mcp", render_gemini_mcp(registry, fallbacks), managed_registry_server_names(registry)
-    )
+    sync_platform_home_target("crush", ctx, registry, policy, fallbacks, hook_registry)
     merge_codex_config(ctx, registry, policy, fallbacks)
     if platform_filter_allows(platforms_filter, "grok"):
         sync_platform_home_target("grok", ctx, registry, policy, fallbacks, hook_registry)
@@ -2650,13 +2408,9 @@ def sync_home_targets(
     if platform_filter_allows(platforms_filter, "lm-studio", "shared"):
         sync_platform_home_target("lm-studio", ctx, registry, policy, fallbacks, hook_registry)
     sync_skill_entries(ctx, CODEX_SKILLS_DIR)
-    sync_skill_entries(ctx, COPILOT_SKILLS_DIR)
-    sync_skill_entries(ctx, GEMINI_SKILLS_DIR)
-    sync_copilot_agents(ctx)
-    sync_directory_files(ctx, CURSOR_RULES_REPO_DIR, CURSOR_RULES_DIR, suffix=".mdc")
+    sync_cursor_home_allowlisted_rules(ctx)
     sync_directory_files(ctx, PERPLEXITY_SKILLS_REPO_DIR, PERPLEXITY_SKILLS_DIR, suffix=".md")
     sync_directory_files(ctx, CHERRY_PRESETS_REPO_DIR, CHERRY_PRESETS_DIR, suffix=".json")
-    sync_directory_files(ctx, ANTIGRAVITY_RULES_REPO_DIR, ANTIGRAVITY_RULES_DIR, suffix=".md")
     if OPENCODE_PLUGIN_MANIFEST_REPO_PATH.exists():
         target_plugin_dir = OPENCODE_PLUGIN_MANIFEST_PATH.parent
         target_plugin_dir.mkdir(parents=True, exist_ok=True)

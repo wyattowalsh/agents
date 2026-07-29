@@ -8,14 +8,14 @@ import { Card, CardGrid, Badge, Aside, Steps, LinkCard } from '@astrojs/starligh
 
 > Hand-maintained overview of MCP configuration. Prefer the registry SSOT and first-party package pages for accuracy.
 
-<Badge text="67 configured servers" variant="note" size="large" />
+<Badge text="69 configured servers" variant="note" size="large" />
 
 <Aside type="tip" title="What is MCP?">
 The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standard for connecting AI agents to external tools and data sources. Each server below exposes one or more tools that agents can invoke during a session.
 </Aside>
 
 <Aside type="note" title="Source of truth">
-**Authoring SSOT:** `config/mcp-registry.json` (67 top-level server keys). Edit once there, regenerate MCPHub settings, and project clients via stack sync. Root `mcp.json` is an MCPHub **projection** (group/server proxies + bearer), not the catalog authoring surface. First-party packages live under `mcp/<name>/` with matching docs at `/mcp/<name>/`.
+**Authoring SSOT:** `config/mcp-registry.json` (69 top-level server keys). Edit once there, regenerate MCPHub settings, and project clients via stack sync. Root `mcp.json` is an MCPHub **projection** (group/server proxies + bearer), not the catalog authoring surface. First-party packages live under `mcp/<name>/` with matching docs at `/mcp/<name>/`.
 </Aside>
 
 <Aside type="caution" title="Candidate runtime overlay">
@@ -44,11 +44,11 @@ Edit `config/mcp-registry.json`, then preview local drift with `uv run python sc
 </Aside>
 
 <Aside type="note" title="MCPHub local control plane">
-MCPHub is now the preferred local MCP control plane. When `mcphub.enabled` is true in `config/mcp-registry.json`, clients receive MCPHub all, group, server, and disabled Smart Routing endpoints rooted at `http://127.0.0.1:46683`. Start it locally with `just mcphub-up`; Docker is not used for the managed launch path. ChatGPT remote MCP access uses the opt-in Cloudflare Tunnel URL from `.env.mcphub`.
+MCPHub is now the preferred local MCP control plane. When `mcphub.enabled` is true in `config/mcp-registry.json`, each client receives its configured MCPHub endpoint subset rooted at `http://127.0.0.1:46683`; bounded clients persist enabled endpoints only. Start it locally with `just mcphub-up`; Docker is not used for the managed launch path. ChatGPT remote MCP access uses the opt-in Cloudflare Tunnel URL from `.env.mcphub`.
 </Aside>
 
 <Aside type="note" title="Exact vs merge behavior">
-`ChatGPT Desktop`, the GitHub Copilot shadow config, `Gemini antigravity`, the Gemini extension config, `OpenCode`, `AITK`, and `Crush` all receive the canonical baseline **and** preserve non-canonical extras already present in those files. `Claude Desktop`, `Cursor`, `Gemini CLI`, `GitHub Copilot CLI`, and `Codex` are rewritten to the exact canonical baseline. `Cherry Studio` receives a generated import pack in a tool-owned subdirectory instead of direct config mutation so unmanaged local MCP entries and ad hoc import bundles in the parent directory stay untouched.
+`ChatGPT Desktop`, `OpenCode`, `Crush`, and `AITK` receive their canonical projection **and** preserve non-canonical extras already present in those files. `Claude Desktop`, `Cursor`, and `Codex` receive their exact configured projections. `Cherry Studio` receives a generated import pack in a tool-owned subdirectory instead of direct config mutation so unmanaged local MCP entries and ad hoc import bundles in the parent directory stay untouched.
 </Aside>
 
 | Client | Managed path | Root key / shape | Sync behavior |
@@ -58,13 +58,8 @@ MCPHub is now the preferred local MCP control plane. When `mcphub.enabled` is tr
 | Claude Desktop | `~/Library/Application Support/Claude/claude_desktop_config.json` | `mcpServers` | Exact canonical baseline |
 | Cherry Studio | `~/Library/Application Support/CherryStudio/mcp-import/managed/` | `all.json` + one `<server>.json` per managed server | Generated import pack; does not mutate live app state |
 | Codex | `~/.codex/config.toml` | `[mcp_servers.<name>]` | Exact canonical baseline |
-| Crush | `~/.config/crush/crush.json` | `mcp` | Canonical baseline + preserve non-canonical extras |
+| Crush | `~/.config/crush/crush.json` | `mcp` | Enabled harness-bounded projection + preserve non-canonical extras |
 | Cursor | `~/.cursor/mcp.json` | `mcpServers` | Exact canonical baseline |
-| Gemini CLI | `~/.gemini/settings.json` | `mcpServers` | Exact canonical baseline |
-| Gemini antigravity | `~/.gemini/antigravity/mcp_config.json` | `mcpServers` | Canonical baseline + preserve non-canonical extras |
-| Gemini extension antigravity | `~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json` | `mcpServers` | Canonical baseline + preserve extension-specific extras |
-| GitHub Copilot CLI | `~/.copilot/mcp-config.json` | `mcpServers` | Exact canonical baseline with Copilot tool allowlists |
-| GitHub Copilot shadow config | `~/.config/.copilot/mcp-config.json` | `mcpServers` | Canonical baseline + preserve non-canonical extras in Copilot-style schema |
 | LM Studio | `~/.lmstudio/mcp.json` | `mcpServers` | MCPHub remote-stdio by default; canonical managed entries + preserve non-canonical extras |
 | OpenCode | `~/.config/opencode/opencode.json` | `mcp` | Canonical baseline + preserve non-canonical extras in local/remote schema |
 | AITK | `~/.aitk/mcp.json` | `servers` | Canonical baseline + preserve non-canonical extras |
@@ -101,7 +96,7 @@ Use server key `duckduckgo` with the `duckduckgo-mcp-server` package.
 
 #### Standard JSON clients (`mcpServers`)
 
-Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravity, and the Gemini extension config.
+Applies to ChatGPT Desktop, Claude Desktop, and Cursor.
 
 ```json
 {
@@ -120,21 +115,6 @@ Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravi
 [mcp_servers.duckduckgo]
 command = "uvx"
 args = ["duckduckgo-mcp-server"]
-```
-
-#### GitHub Copilot CLI (`~/.copilot/mcp-config.json`)
-
-```json
-{
-  "mcpServers": {
-    "duckduckgo": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": ["duckduckgo-mcp-server"],
-      "tools": ["*"]
-    }
-  }
-}
 ```
 
 #### OpenCode (`~/.config/opencode/opencode.json`)
@@ -173,7 +153,7 @@ Replace `<repo>` in the examples below with the absolute path to your local chec
 
 #### Standard JSON clients (`mcpServers`)
 
-Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravity, and the Gemini extension config.
+Applies to ChatGPT Desktop, Claude Desktop, and Cursor.
 
 ```json
 {
@@ -192,21 +172,6 @@ Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravi
 [mcp_servers.chrome-devtools]
 command = "bash"
 args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
-```
-
-#### GitHub Copilot CLI (`~/.copilot/mcp-config.json`)
-
-```json
-{
-  "mcpServers": {
-    "chrome-devtools": {
-      "type": "stdio",
-      "command": "bash",
-      "args": ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"],
-      "tools": ["*"]
-    }
-  }
-}
 ```
 
 #### OpenCode (`~/.config/opencode/opencode.json`)

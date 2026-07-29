@@ -1,6 +1,6 @@
 {
   "skills": ["harness-master"],
-  "query": "/harness-master install claude-code github-copilot",
+  "query": "/harness-master install claude-code codex",
   "files": [],
   "expected_behavior": [
     "Agent enters Install Guidance rather than audit or apply mode",

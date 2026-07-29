@@ -69,11 +69,15 @@ from wagents.plugins import load_command_plugins
 from wagents.rendering import scaffold_doc_page
 from wagents.self_cmd import self_app
 from wagents.site_model import (
+    ADDITIONAL_INTEGRATION_SURFACES,
     REPO_SOURCE,
     SUPPORTED_AGENT_IDS,
     VISUAL_ASSET_BY_ID,
     build_install_command,
     docs_asset_repo_path,
+)
+from wagents.site_model import (
+    SUPPORTED_AGENTS as SUPPORTED_AGENT_RECORDS,
 )
 from wagents.telemetry import begin_command_telemetry, doctor_telemetry_check, end_command_telemetry
 
@@ -210,8 +214,6 @@ SKILL_SOURCES = (
     "codex",
     "global",
     "claude-code",
-    "gemini-cli",
-    "github-copilot",
     "opencode",
     "plugin",
 )
@@ -1361,7 +1363,7 @@ def _rows_share_install_source(left: InstalledSkillInventoryRow, right: Installe
     return bool(left_sources and right_sources and left_sources.intersection(right_sources))
 
 
-def _sync_row_installed_agents(
+def sync_row_installed_agents(
     row: InstalledSkillInventoryRow,
     all_rows: tuple[InstalledSkillInventoryRow, ...],
 ) -> tuple[str, ...]:
@@ -1493,7 +1495,7 @@ def _build_sync_report(
             if not _row_targets_agent(row, agent_id):
                 skipped.append(row)
                 continue
-            if agent_id in _sync_row_installed_agents(row, merged.rows) or _repo_skill_covered_by_non_cli_owner(
+            if agent_id in sync_row_installed_agents(row, merged.rows) or _repo_skill_covered_by_non_cli_owner(
                 row,
                 agent_id,
             ):
@@ -2893,26 +2895,24 @@ def readme(
         "",
     ])
 
-    # Supported agents
+    # Managed agents and separately typed integration surfaces.
     content_parts.extend([
-        "## 🤝 Supported Agents",
+        "## 🤝 Managed Agent Families",
         "",
-        "- [Antigravity](https://antigravity.google/)",
-        "- [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview)",
-        "- [Codex](https://github.com/openai/codex)",
-        "- [Crush](https://github.com/crush-ai/crush)",
-        "- [Cursor](https://cursor.sh/)",
-        "- [Gemini CLI](https://github.com/google/gemini-cli)",
-        "- [GitHub Copilot](https://github.com/features/copilot)",
-        "- [Grok Build](https://x.ai/)",
-        "- [OpenCode](https://github.com/anomalyco/opencode) — native AGENTS.md support with repo-level config",
-        "- [Cherry Studio](https://www.cherry-ai.com/) — MCP-only via MCPHub registry",
-        (
-            "- [LM Studio](https://lmstudio.ai/) — MCP and managed instruction/agent preset "
-            "projections; optional repo-owned skill mirror for compatible community plugins "
-            "(default: none)"
-        ),
-        "And other [agentskills.io](https://agentskills.io)-compatible agents.",
+    ])
+    for agent in SUPPORTED_AGENT_RECORDS:
+        content_parts.append(f"- [{agent.label}]({agent.href}) — {agent.description}")
+    content_parts.extend([
+        "",
+        "## 🔌 Additional Integration Surfaces",
+        "",
+    ])
+    for surface in ADDITIONAL_INTEGRATION_SURFACES:
+        content_parts.append(f"- [{surface.label}]({surface.href}) — `{surface.surface_kind}`: {surface.description}")
+    content_parts.extend([
+        "",
+        "Other [agentskills.io](https://agentskills.io)-compatible agents may consume portable skills, "
+        "but they are not counted as managed families.",
         "",
     ])
 
@@ -3034,7 +3034,7 @@ def hooks_validate(
     harness: str = typer.Option(
         "all",
         "--harness",
-        help="Harness filter: all, codex, claude-code, cursor, github-copilot, gemini-cli",
+        help="Harness filter: all, codex, claude-code, cursor, grok, opencode",
     ),
 ):
     """Validate all hooks across skills, agents, and settings."""

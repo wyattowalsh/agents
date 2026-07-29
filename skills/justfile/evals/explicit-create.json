@@ -1,0 +1,14 @@
+{
+  "skills": [
+    "justfile"
+  ],
+  "query": "/justfile create a house-style justfile with safe default list and a test recipe for this Python repo",
+  "files": [],
+  "expected_behavior": [
+    "Dispatches to create from /justfile create",
+    "Applies opt-in gate (path/overwrite/side-effects) before writing",
+    "Uses house-style settings such as default-list and minimum-version",
+    "Documents recipes with [doc] and safe [default] list behavior",
+    "Does not run destructive recipes after scaffolding"
+  ]
+}

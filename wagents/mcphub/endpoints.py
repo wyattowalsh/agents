@@ -270,18 +270,8 @@ def render_mcphub_stdio_server(
     local_values: bool = True,
     render_env_value: Any | None = None,
 ) -> dict[str, Any]:
-    token_env = mcphub_bearer_env_var(registry)
-    if fallbacks is not None and render_env_value is not None:
-        return {
-            "command": render_portable_path(mcphub_remote_stdio()),
-            "args": [url],
-            "env": {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=local_values)},
-            "disabled": not enabled,
-        }
-    repo_root = get_repo_root()
     return {
-        "command": f"${repo_root}/scripts/mcphub/remote-stdio.sh",
+        "command": render_portable_path(mcphub_remote_stdio()),
         "args": [url],
-        "env": {token_env: "${" + token_env + "}"},
         "disabled": not enabled,
     }

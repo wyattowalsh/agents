@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-86b9df2d26726ed5",
+  "mcp_server": "better-icons",
+  "transaction_id": "89c3b268b66a42e19ab673d204b40e31",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "73a7ab6bf2a7f1af085754a5142bd97486502f564ab51aa0a76b9ea967e30b4d",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "d46219238a56359ab08689de7f1b0c8fd41878d373a44098c0d04a35dc128912",
+  "isolated_rollback_digest": "d46219238a56359ab08689de7f1b0c8fd41878d373a44098c0d04a35dc128912",
+  "fresh_absence": {
+    "better-icons": null
+  },
+  "fresh_absence_process_id": 20504,
+  "fresh_absence_output_sha256": "2f675565a556b23e4cb28d6a533dd796ea2ffedda2971ecdf3769927fcc88729",
+  "restored_use_process_id": 20592,
+  "restored_use_output_sha256": "3c5313fa2f0df735592d9fb2166b274b72f43c08db301d19d239b68222975a44",
+  "restored_use_launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-mcp-entrypoint-rollback-candidate-artifact-86b9df2d26726ed5-omq7z5mi/bin/better-icons",
+  "restored_use_launch_realpath": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/better-icons/dist/index.js",
+  "installed_digest": "d2d20dc93af65e99c4df16a14aeeae5d4d580be29cfa924d81517b24cbd31aca",
+  "status": "passed"
+}

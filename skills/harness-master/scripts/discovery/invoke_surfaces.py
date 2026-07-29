@@ -17,11 +17,8 @@ DEFAULT_HARNESSES = [
     "claude-code",
     "codex",
     "cursor",
-    "gemini-cli",
-    "github-copilot",
     "grok-build",
     "opencode",
-    "antigravity",
 ]
 
 

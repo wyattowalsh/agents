@@ -7,14 +7,10 @@
 3. [Claude Desktop](#claude-desktop)
 4. [ChatGPT](#chatgpt)
 5. [Codex](#codex)
-6. [GitHub Copilot Web](#github-copilot-web)
-7. [GitHub Copilot CLI](#github-copilot-cli)
-8. [Cursor](#cursor)
-9. [Gemini CLI](#gemini-cli)
-10. [Antigravity](#antigravity)
-11. [OpenCode](#opencode)
-12. [Perplexity Desktop](#perplexity-desktop)
-13. [Cherry Studio](#cherry-studio)
+6. [Cursor](#cursor)
+7. [OpenCode](#opencode)
+8. [Perplexity Desktop](#perplexity-desktop)
+9. [Cherry Studio](#cherry-studio)
 
 ## Lookup Order
 
@@ -93,36 +89,6 @@ Use for:
 - `config.toml` precedence and defaults
 - approval, sandbox, app, CLI, plugin, and MCP config conventions
 
-## GitHub Copilot Web
-
-Preferred sources:
-
-- `https://docs.github.com/en/copilot`
-- `https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot`
-- `https://docs.github.com/en/copilot/concepts/coding-agent/coding-agent`
-- `https://docs.github.com/en/copilot/how-tos/agents/copilot-coding-agent/extending-copilot-coding-agent-with-the-model-context-protocol-mcp`
-
-Use for:
-
-- GitHub.com instructions and repository customization
-- Copilot coding agent/cloud behavior
-- repository/org settings and cloud-managed blind spots
-
-## GitHub Copilot CLI
-
-Preferred sources:
-
-- `https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/configure-copilot-cli`
-- `https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-mcp-servers`
-- `https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/customize-copilot-cli`
-
-Use for:
-
-- `~/.copilot/settings.json`
-- `~/.copilot/mcp-config.json`
-- CLI permissions, trusted folders, URL/path/tool allowlists
-- native GitHub MCP behavior
-
 ## Cursor
 
 Preferred sources:
@@ -147,43 +113,6 @@ Use for:
 - `.cursor/mcp.json` project/global behavior
 - skills, subagents, hooks, CLI config, cloud agents, and `.cursorignore`
 - `~/.cursor/permissions.json` only with medium confidence if docs remain inconsistent
-
-## Gemini CLI
-
-Preferred sources:
-
-- `https://geminicli.com/docs/reference/configuration/`
-- `https://geminicli.com/docs/cli/gemini-md/`
-- `https://raw.githubusercontent.com/google-gemini/gemini-cli/main/docs/cli/tutorials/mcp-setup.md`
-- `https://raw.githubusercontent.com/google-gemini/gemini-cli/main/docs/hooks/reference.md`
-
-Use for:
-
-- `GEMINI.md` behavior
-- settings precedence
-- project vs user settings placement
-- `mcpServers` and hooks in settings files
-
-If first-party docs are hard to fetch, prefer the canonical Gemini CLI repo docs before general web fallback.
-
-## Antigravity
-
-Preferred sources:
-
-- `https://antigravity.google/docs/mcp`
-- `https://antigravity.google/docs/settings`
-- `https://antigravity.google/docs/agent-modes-settings`
-- `https://antigravity.google/docs/faq`
-
-Use for:
-
-- MCP integration and config structure
-- `~/.gemini/antigravity/mcp_config.json`
-- auth, OAuth, and token-file presence checks
-- settings, approval behavior, and non-workspace file access policy
-- notable limits such as worktree support and third-party software restrictions
-
-Treat project-native Antigravity file behavior as lower-confidence unless the current session retrieves direct first-party evidence for it.
 
 ## OpenCode
 

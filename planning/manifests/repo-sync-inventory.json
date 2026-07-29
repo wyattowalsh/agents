@@ -99,42 +99,6 @@
       "secret_handling": "redacted"
     },
     {
-      "path": "${REPO_ROOT}/.github/copilot-instructions.md",
-      "mode": "generated",
-      "location_class": "repo",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/.github/hooks",
-      "mode": "generated",
-      "location_class": "repo",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/.github/instructions",
-      "mode": "generated",
-      "location_class": "repo",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
       "path": "${REPO_ROOT}/.grok/config.toml",
       "mode": "generated",
       "location_class": "repo",
@@ -505,7 +469,7 @@
       "location_class": "repo",
       "source_tier": "symlink-target",
       "owner_change": "agents-c04-openai-harness",
-      "drift_policy": "generated",
+      "drift_policy": "symlink",
       "validation_evidence": [
         "uv run wagents validate"
       ],
@@ -517,30 +481,6 @@
       "location_class": "home",
       "source_tier": "symlink-target",
       "owner_change": "agents-c04-openai-harness",
-      "drift_policy": "symlink",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/instructions/copilot-global.md",
-      "mode": "symlink",
-      "location_class": "repo",
-      "source_tier": "symlink-target",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "canonical",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/instructions/copilot-global.md",
-      "mode": "symlink",
-      "location_class": "home",
-      "source_tier": "symlink-target",
-      "owner_change": "agents-c04-copilot-harness",
       "drift_policy": "symlink",
       "validation_evidence": [
         "uv run wagents validate"
@@ -657,30 +597,6 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/platforms/copilot/agents",
-      "mode": "symlink",
-      "location_class": "repo",
-      "source_tier": "symlink-target",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "canonical",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/platforms/copilot/agents",
-      "mode": "symlink",
-      "location_class": "home",
-      "source_tier": "symlink-target",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "symlink",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
       "path": "${REPO_ROOT}/platforms/opencode/plugins",
       "mode": "canonical",
       "location_class": "repo",
@@ -765,11 +681,11 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "~/.config/.copilot/mcp-config.json",
+      "path": "~/.config/crush/crush.json",
       "mode": "merged",
       "location_class": "home",
       "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-copilot-harness",
+      "owner_change": "agents-c04-experimental-harnesses",
       "drift_policy": "merged",
       "validation_evidence": [
         "uv run wagents validate"
@@ -777,24 +693,12 @@
       "secret_handling": "path-only"
     },
     {
-      "path": "~/.config/copilot-subagents.env",
-      "mode": "generated",
-      "location_class": "home",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "redacted"
-    },
-    {
-      "path": "~/.config/crush/crush.json",
-      "mode": "merged",
+      "path": "~/.config/crush/skills",
+      "mode": "symlinked-entries",
       "location_class": "home",
       "source_tier": "merged-live-config",
       "owner_change": "agents-c04-experimental-harnesses",
-      "drift_policy": "merged",
+      "drift_policy": "symlinked-entries",
       "validation_evidence": [
         "uv run wagents validate"
       ],
@@ -933,42 +837,6 @@
       "secret_handling": "path-only"
     },
     {
-      "path": "~/.copilot/mcp-config.json",
-      "mode": "generated",
-      "location_class": "home",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "redacted"
-    },
-    {
-      "path": "~/.copilot/settings.json",
-      "mode": "merged",
-      "location_class": "home",
-      "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "merged",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "path-only"
-    },
-    {
-      "path": "~/.copilot/skills",
-      "mode": "symlinked-entries",
-      "location_class": "home",
-      "source_tier": "symlink-target",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "symlinked-entries",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
       "path": "~/.cursor/mcp.json",
       "mode": "merged",
       "location_class": "home",
@@ -993,64 +861,35 @@
       "secret_handling": "path-only"
     },
     {
-      "path": "~/.gemini/GEMINI.md",
+      "path": "~/.cursor/rules",
       "mode": "generated",
       "location_class": "home",
       "source_tier": "generated-output",
-      "owner_change": "agents-c04-opencode-gemini-harness",
+      "owner_change": "agents-c04-cursor-harness",
       "drift_policy": "generated",
       "validation_evidence": [
         "uv run wagents validate"
       ],
-      "secret_handling": "not-secret-bearing"
+      "secret_handling": "not-secret-bearing",
+      "notes": [
+        "allowlisted home rules only (cursor-models.mdc); orphans preserved"
+      ]
     },
     {
-      "path": "~/.gemini/antigravity/mcp_config.json",
-      "mode": "merged",
+      "path": "~/.cursor/agents",
+      "mode": "generated",
       "location_class": "home",
-      "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "drift_policy": "merged",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-cursor-harness",
+      "drift_policy": "generated",
       "validation_evidence": [
         "uv run wagents validate"
       ],
-      "secret_handling": "path-only"
-    },
-    {
-      "path": "~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json",
-      "mode": "merged",
-      "location_class": "home",
-      "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "drift_policy": "merged",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "path-only"
-    },
-    {
-      "path": "~/.gemini/settings.json",
-      "mode": "merged",
-      "location_class": "home",
-      "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "drift_policy": "merged",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "path-only"
-    },
-    {
-      "path": "~/.gemini/skills",
-      "mode": "symlinked-entries",
-      "location_class": "home",
-      "source_tier": "symlink-target",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "drift_policy": "symlinked-entries",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
+      "secret_handling": "not-secret-bearing",
+      "notes": [
+        "managed-marker projection; unmarked home agents preserved",
+        "overlay model pin cursor-grok-4.5-high"
+      ]
     },
     {
       "path": "~/.grok/config.toml",

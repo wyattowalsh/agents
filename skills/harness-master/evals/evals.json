@@ -3,13 +3,13 @@
 	"evals": [
 		{
 			"id": "implicit-trigger",
-			"prompt": "Can you review our Cursor, Copilot, and OpenCode setup at both the repo and user level, compare them to the latest official guidance, and tell me what should change before we touch anything?",
+			"prompt": "Can you review our Cursor, Codex, and OpenCode setup at both the repo and user level, compare them to the latest official guidance, and tell me what should change before we touch anything?",
 			"files": ["evals/implicit-trigger.json"],
 			"expected_output": "Recognize the implicit harness-master request, default to dry-run review, audit each selected harness independently, and synthesize findings only after per-harness sections.",
 			"assertions": [
 				"Activates without an explicit slash command.",
 				"Does not edit on the first pass.",
-				"Reviews Cursor, Copilot facets, and OpenCode independently."
+				"Reviews Cursor, Codex, and OpenCode independently."
 			]
 		},
 		{
@@ -65,17 +65,6 @@
 				"Uses `repo-observed` for local ChatGPT MCP when appropriate.",
 				"Reports UI connector state as a blind spot.",
 				"Does not invent local ChatGPT connector paths."
-			]
-		},
-		{
-			"id": "github-copilot-aggregate",
-			"prompt": "/harness-master github-copilot both",
-			"files": ["evals/github-copilot-aggregate.json"],
-			"expected_output": "Expand aggregate `github-copilot` to web and CLI facets and report each canonical harness separately.",
-			"assertions": [
-				"Expands to `github-copilot-web` and `github-copilot-cli`.",
-				"Keeps web and CLI sections separate.",
-				"Does not mix GitHub.com blind spots with CLI file findings."
 			]
 		},
 		{

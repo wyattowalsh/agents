@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "transaction_id": "b0e43d31f2f9443ebb7d9b413c10936d",
+  "artifact_id": "candidate-artifact-33f0f9a9265fa5b8",
+  "normalized_url": "https://github.com/hdeibler/universal-design-principles",
+  "plugin_id": "universal-design-principles@awesome-codex-plugins",
+  "plugin_scope": "user-global-codex",
+  "scope": "isolated-codex-home",
+  "rehearsal_kind": "isolated-plugin-root-detach",
+  "digest_algorithm": "lstat-tree-v1",
+  "digest_ignored_dirs": [
+    ".cache",
+    ".git",
+    ".pytest_cache",
+    "__pycache__"
+  ],
+  "preimage_digest": "e5bf78c920d51f6a9e0cea6594356d627e53c926460571bc7f8598dbaacda312",
+  "rollback_digest": "e5bf78c920d51f6a9e0cea6594356d627e53c926460571bc7f8598dbaacda312",
+  "promoted_final_digest": "d054b0fad195be53de12a6943623155bc3f1099e3e4965c432d854df0541968a",
+  "live_install_unchanged": true,
+  "fresh_absence_process_id": 69296,
+  "restored_use_process_id": 70537,
+  "restored_use_output_sha256": "bcafdbf95409375b91433111c7151194efb0420b658288de3c4959546bc3585e",
+  "process_ids": {
+    "marketplace": 69250,
+    "initial_add": 69288,
+    "initial_inventory": 69291,
+    "remove": 69294,
+    "fresh_absence": 69296,
+    "restore": 69298,
+    "restored_inventory": 69300,
+    "restored_use_initial": 69341,
+    "restored_use_fresh": 70537,
+    "restored_use_discovery": 69341
+  },
+  "launch_evidence": {
+    "marketplace": {
+      "launch_id": "992dc531784d4bae4d93685d1921f17a",
+      "started_at_ns": 1784364557539024000,
+      "process_id": 69250
+    },
+    "initial_add": {
+      "launch_id": "ddcfcc3da93ef0fdcb64b58da145882e",
+      "started_at_ns": 1784364557662337000,
+      "process_id": 69288
+    },
+    "initial_inventory": {
+      "launch_id": "3fffd7d1505d5e8d91bd19ea7009a337",
+      "started_at_ns": 1784364557934246000,
+      "process_id": 69291
+    },
+    "remove": {
+      "launch_id": "bfef9b5e14b3b5827befad46b8aeefcb",
+      "started_at_ns": 1784364558034267000,
+      "process_id": 69294
+    },
+    "fresh_absence": {
+      "launch_id": "6aad8d268d555e3dbe91e2836a46c45e",
+      "started_at_ns": 1784364558167299000,
+      "process_id": 69296
+    },
+    "restore": {
+      "launch_id": "4d5b14c1b600019847a529ddb8cd46c8",
+      "started_at_ns": 1784364558267958000,
+      "process_id": 69298
+    },
+    "restored_inventory": {
+      "launch_id": "81d605f5a2242988ac8cd5c2aac7e760",
+      "started_at_ns": 1784364558455717000,
+      "process_id": 69300
+    },
+    "restored_use_initial": {
+      "launch_id": "2fb32740940bd34445d12b9024688eeb",
+      "started_at_ns": 1784364558863239000,
+      "process_id": 69341
+    },
+    "restored_use_fresh": {
+      "launch_id": "afba73e556e8a5d5ce00dca5a357f8cc",
+      "started_at_ns": 1784364583699356000,
+      "process_id": 70537
+    },
+    "restored_use_discovery": {
+      "launch_id": "2fb32740940bd34445d12b9024688eeb",
+      "started_at_ns": 1784364558863239000,
+      "process_id": 69341
+    }
+  },
+  "commands": [
+    {
+      "phase": "marketplace-add",
+      "argv": [
+        "codex",
+        "plugin",
+        "marketplace",
+        "add",
+        "<marketplace-root>",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 69250,
+      "launch_id": "992dc531784d4bae4d93685d1921f17a",
+      "started_at_ns": 1784364557539024000,
+      "stdout_sha256": "56cc505d92803d59507b06dcf317d715038947b7c8adb371b1c088cf437e67ce",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "initial-add",
+      "argv": [
+        "codex",
+        "plugin",
+        "add",
+        "universal-design-principles@awesome-codex-plugins",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 69288,
+      "launch_id": "ddcfcc3da93ef0fdcb64b58da145882e",
+      "started_at_ns": 1784364557662337000,
+      "stdout_sha256": "b63b359aeb35dca9171be5c0ebcd629188e4a2d63fed06dc2d20095e5b4615de",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "initial-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 69291,
+      "launch_id": "3fffd7d1505d5e8d91bd19ea7009a337",
+      "started_at_ns": 1784364557934246000,
+      "stdout_sha256": "ad8bd1e3f2310d46f2c4fa8cbe66d18561974d0d69c154a5c2f7dc9c7be03a57",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "remove",
+      "argv": [
+        "codex",
+        "plugin",
+        "remove",
+        "universal-design-principles@awesome-codex-plugins",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 69294,
+      "launch_id": "bfef9b5e14b3b5827befad46b8aeefcb",
+      "started_at_ns": 1784364558034267000,
+      "stdout_sha256": "2f4d7bcd5e66975f44f2c67cdb69542835a75ad4c360af82c68c8cab862b82d5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "absence-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 69296,
+      "launch_id": "6aad8d268d555e3dbe91e2836a46c45e",
+      "started_at_ns": 1784364558167299000,
+      "stdout_sha256": "050e2dee988ae4ba4d1d8220591b660829a9ee3f06f52d548acc87522ee90885",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "restore",
+      "argv": [
+        "codex",
+        "plugin",
+        "add",
+        "universal-design-principles@awesome-codex-plugins",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 69298,
+      "launch_id": "4d5b14c1b600019847a529ddb8cd46c8",
+      "started_at_ns": 1784364558267958000,
+      "stdout_sha256": "b63b359aeb35dca9171be5c0ebcd629188e4a2d63fed06dc2d20095e5b4615de",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "restored-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 69300,
+      "launch_id": "81d605f5a2242988ac8cd5c2aac7e760",
+      "started_at_ns": 1784364558455717000,
+      "stdout_sha256": "ad8bd1e3f2310d46f2c4fa8cbe66d18561974d0d69c154a5c2f7dc9c7be03a57",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "restored_probe": {
+    "fixture_id": "candidate-plugin-universal-design-principles-owned-fixture-v2",
+    "probe_kind": "semantic-plugin-isolated-codex-fixture",
+    "assertions": [
+      "source-specific happy path passed",
+      "source-specific failure path passed",
+      "unsafe or mutating path was denied",
+      "fresh process repeated the semantic capability",
+      "isolated one-plugin Codex process recovered source-only skill evidence"
+    ],
+    "output_sha256": "bcafdbf95409375b91433111c7151194efb0420b658288de3c4959546bc3585e",
+    "discovery_output_sha256": "0f75fa94db71bbcdfadd7738f4457c1752d680d4eba73a6b573e516b88883894"
+  }
+}

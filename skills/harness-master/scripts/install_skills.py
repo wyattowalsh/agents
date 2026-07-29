@@ -11,13 +11,10 @@ import sys
 
 DEFAULT_REPO_SOURCE = "github:wyattowalsh/agents"
 SUPPORTED_AGENTS = (
-    "antigravity",
     "claude-code",
     "codex",
     "crush",
     "cursor",
-    "gemini-cli",
-    "github-copilot",
     "grok",
     "opencode",
 )

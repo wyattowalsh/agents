@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agents.w4w.dev/schemas/candidate-plugin-provenance-evidence.schema.json",
+  "title": "Candidate plugin provenance audit evidence",
+  "type": "object",
+  "required": [
+    "version",
+    "generated_at",
+    "lock_path",
+    "lock_sha256",
+    "network_accessed",
+    "plugin_count",
+    "plugins"
+  ],
+  "properties": {
+    "version": {"const": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "lock_path": {"const": "planning/manifests/candidate-corpus-jul2026/plugin-provenance-lock.json"},
+    "lock_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "network_accessed": {"const": false},
+    "plugin_count": {"const": 8},
+    "plugins": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": [
+          "plugin_id",
+          "audited_source_commit_sha",
+          "upstream_git_tree_oid",
+          "source_projection",
+          "approved_content_sha256",
+          "provenance_lock_entry_sha256",
+          "verification_status"
+        ],
+        "properties": {
+          "plugin_id": {"type": "string", "pattern": "^[^@]+@[^@]+$"},
+          "audited_source_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "upstream_git_tree_oid": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "source_projection": {"type": "object"},
+          "approved_content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "provenance_lock_entry_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "verification_status": {"const": "passed"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

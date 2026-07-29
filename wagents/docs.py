@@ -8,11 +8,11 @@ import shutil
 import subprocess
 import time
 from contextlib import contextmanager
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Literal, TypeVar, cast
 
 import typer
-import yaml
 from typer.models import OptionInfo
 
 from wagents import CONTENT_DIR, DOCS_DIR, ROOT
@@ -21,7 +21,11 @@ from wagents import CONTENT_DIR, DOCS_DIR, ROOT
 from wagents.authoring_sync import sync_custom_authoring_from_skills
 from wagents.catalog import collect_edges
 from wagents.docs_catalog import render_catalog_page_artifacts, write_catalog_pages
-from wagents.docs_reports import reports_stale_reasons, write_reports_pages
+from wagents.docs_reports import (
+    reports_stale_reasons,
+    validate_docs_graph_snapshot_date,
+    write_reports_pages,
+)
 from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
 from wagents.parsing import escape_attr, truncate_sentence
 from wagents.rendering import escape_mdx, render_page
@@ -93,6 +97,53 @@ def _count_mcp_servers_from_config() -> int | None:
 def _has_mcp_overview_page() -> bool:
     """Whether docs contains an MCP overview page (generated or hand-maintained)."""
     return (CONTENT_DIR / "mcp" / "index.mdx").exists()
+
+
+def _candidate_runtime_summary() -> dict[str, int]:
+    """Return exact successor-ledger counts for generated runtime claims."""
+
+    path = ROOT / "planning/manifests/candidate-corpus-jul2026/runtime-activation-assurance.json"
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise RuntimeError(f"candidate runtime assurance is unavailable: {error}") from None
+    artifacts = payload.get("artifacts") if isinstance(payload, dict) else None
+    if not isinstance(artifacts, list) or not artifacts:
+        raise RuntimeError("candidate runtime assurance must contain a non-empty artifacts list")
+    ids: set[str] = set()
+    summary = {
+        "source_targets": int(payload.get("source_target_count") or 0),
+        "total": len(artifacts),
+        "accepted": 0,
+        "incomplete": 0,
+        "cli_library_total": 0,
+        "cli_library_accepted": 0,
+        "mcp_total": 0,
+        "mcp_accepted": 0,
+        "plugin_total": 0,
+        "plugin_accepted": 0,
+    }
+    for artifact in artifacts:
+        if not isinstance(artifact, dict):
+            raise RuntimeError("candidate runtime assurance contains a non-object artifact")
+        artifact_id = artifact.get("artifact_id")
+        kind = artifact.get("kind")
+        status = artifact.get("status")
+        if not isinstance(artifact_id, str) or not artifact_id or artifact_id in ids:
+            raise RuntimeError("candidate runtime assurance contains an invalid or duplicate artifact id")
+        if kind not in {"cli", "library", "mcp", "plugin"} or status not in {"accepted", "incomplete"}:
+            raise RuntimeError("candidate runtime assurance contains an invalid kind or status")
+        ids.add(artifact_id)
+        summary[status] += 1
+        bucket = "cli_library" if kind in {"cli", "library"} else str(kind)
+        summary[f"{bucket}_total"] += 1
+        if status == "accepted":
+            summary[f"{bucket}_accepted"] += 1
+    if summary["accepted"] + summary["incomplete"] != summary["total"]:
+        raise RuntimeError("candidate runtime assurance status counts do not close")
+    if payload.get("runtime_artifact_count") != summary["total"]:
+        raise RuntimeError("candidate runtime assurance artifact count does not match its ledger")
+    return summary
 
 
 def _mcp_overview_badge_stale_reason() -> str | None:
@@ -351,31 +402,17 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     parts.append("<table>")
     parts.append(_table_header("Runtime", "Instructions", "Skills", "Tools", "Hooks", "Agents"))
     parts.append("<tbody>")
-    parts.append(_table_row("Codex", "generated", "plugin/Skills CLI", "MCPHub", "generated", "dynamic"))
-    parts.append(
-        _table_row("Claude Code", "native import", "plugin/Skills CLI", "MCP", "generated", "native subagents")
-    )
-    parts.append(
-        _table_row(
-            "OpenCode",
-            "native AGENTS.md",
-            "Skills CLI",
-            "MCPHub + plugins",
-            "generated",
-            "native agents",
+    for agent in SUPPORTED_AGENTS:
+        parts.append(
+            _table_row(
+                agent.label,
+                agent.runtime_instructions,
+                agent.runtime_skills,
+                agent.runtime_tools,
+                agent.runtime_hooks,
+                agent.runtime_agents,
+            )
         )
-    )
-    parts.append(
-        _table_row(
-            "Cursor",
-            "rules + AGENTS.md",
-            "Skills CLI",
-            "MCPHub",
-            "native hooks",
-            "<code>.cursor/agents</code>",
-        )
-    )
-    parts.append(_table_row("Grok Build", "generated", "mirrored skills", "MCPHub", "generated", "delegation"))
     parts.append("</tbody>")
     parts.append("</table>")
     parts.append("</div>")
@@ -510,6 +547,7 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
 
 def write_install_page() -> None:
     """Write the intent-based install landing page."""
+    runtime = _candidate_runtime_summary()
     parts = [
         "---",
         "title: Install",
@@ -539,8 +577,9 @@ def write_install_page() -> None:
         "There is no blanket replay command because credentials, filesystem access, network egress, and lifecycle "
         "hooks require target-specific review.",
         "",
-        "The July 2026 corpus records 289 runtime dispositions and 63 verified CLI, library, MCP, or plugin "
-        "artifacts in `planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json`. Candidate MCP "
+        f"The July 2026 corpus records {runtime['source_targets']} source dispositions and "
+        f"{runtime['total']} CLI, library, MCP, or plugin artifacts in the successor activation ledger. "
+        f"It currently accepts {runtime['accepted']} and keeps {runtime['incomplete']} incomplete. Candidate MCP "
         "servers and broad-hook plugins remain unavailable until explicitly enabled after review.",
         "",
         "## Install One Surface",
@@ -614,6 +653,7 @@ def write_surfaces_pages(nodes: list) -> None:
     )["counts"]
     custom_mcp = int(counts.get("customMcp") or 0)
     external_mcp = int(counts.get("externalMcp") or 0)
+    runtime = _candidate_runtime_summary()
     out_dir = CONTENT_DIR / "surfaces"
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -730,9 +770,12 @@ def write_surfaces_pages(nodes: list) -> None:
         "",
         '<Aside type="note" title="Runtime boundary">',
         "Tools are exposed differently per runtime: native MCP config, MCPHub group/server endpoints, "
-        "CLI wrappers, and plugin manifests. The July 2026 runtime overlay verifies 63/63 artifacts: 29 CLI, "
-        "1 library, 17 MCP, and 16 plugin. Installed or configured does not imply enabled; use the runtime matrix "
-        "and `planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json` for activation truth.",
+        f"CLI wrappers, and plugin manifests. The July 2026 successor activation ledger discovers "
+        f"{runtime['total']} artifacts: {runtime['cli_library_total']} CLI/library, {runtime['mcp_total']} MCP, "
+        f"and {runtime['plugin_total']} plugin. It accepts {runtime['accepted']} with behavior, fresh-process, "
+        f"and rollback evidence; {runtime['incomplete']} remain incomplete. Installed or "
+        "configured does not imply enabled; use `planning/manifests/candidate-corpus-jul2026/"
+        "runtime-activation-assurance.json` for activation truth.",
         "</Aside>",
         "",
     ]
@@ -741,6 +784,7 @@ def write_surfaces_pages(nodes: list) -> None:
 
 def write_runtimes_page() -> None:
     """Write the runtime compatibility overview."""
+    runtime = _candidate_runtime_summary()
     parts = [
         "---",
         "title: Runtimes",
@@ -754,33 +798,28 @@ def write_runtimes_page() -> None:
         "",
         '<Badge text="compatibility truth" variant="note" size="large" />',
         "",
+        '<Aside type="caution" title="Projection capability is not runtime readiness">',
+        "Rows describe repo-owned instruction, skill, tool, hook, and agent projections. They do not assert that "
+        "a local binary is installed, authenticated, or live-smoke validated; use Harness Support for those gates.",
+        "</Aside>",
+        "",
         '<div class="runtime-table-wrapper">',
         "<table>",
         _table_header("Runtime", "Instructions", "Skills", "Tools", "Hooks", "Agents"),
         "<tbody>",
-        _table_row("Antigravity", "generated", "Skills CLI", "MCP projection", "limited", "not primary"),
-        _table_row("Claude Code", "native import", "plugin/Skills CLI", "MCP", "generated", "native subagents"),
-        _table_row("Codex", "AGENTS.md + config", "plugin/Skills CLI", "MCPHub", "generated", "dynamic delegation"),
-        _table_row("Crush", "AGENTS.md", "Skills CLI", "MCP projection", "limited", "not primary"),
-        _table_row(
-            "Cursor",
-            "rules + AGENTS.md",
-            "Skills CLI",
-            "MCPHub",
-            "native hooks",
-            "<code>.cursor/agents</code>",
-        ),
-        _table_row("Gemini CLI", "GEMINI.md", "Skills CLI", "MCP projection", "generated", "not primary"),
-        _table_row(
-            "GitHub Copilot",
-            "generated instructions",
-            "Skills CLI",
-            "MCP projection",
-            "baseline hooks",
-            "Copilot-only agents",
-        ),
-        _table_row("Grok Build", "generated config", "mirrored skills", "MCPHub", "generated", "delegation"),
-        _table_row("OpenCode", "AGENTS.md", "Skills CLI", "MCPHub + plugins", "generated", "native agents"),
+    ]
+    for agent in SUPPORTED_AGENTS:
+        parts.append(
+            _table_row(
+                agent.label,
+                agent.runtime_instructions,
+                agent.runtime_skills,
+                agent.runtime_tools,
+                agent.runtime_hooks,
+                agent.runtime_agents,
+            )
+        )
+    parts.extend([
         "</tbody>",
         "</table>",
         "</div>",
@@ -790,8 +829,19 @@ def write_runtimes_page() -> None:
         "and validation commands.",
         "</Aside>",
         "",
+        '<Aside type="caution" title="Candidate corpus runtime status">',
+        "The July 2026 corpus is fully represented in repo catalogs and reconciled skill surfaces, but literal "
+        f"runtime activation is intentionally narrower. The successor ledger accepts {runtime['accepted']} of "
+        f"{runtime['total']} CLI, library, MCP, and plugin artifacts: {runtime['cli_library_accepted']} of "
+        f"{runtime['cli_library_total']} CLI/library artifacts, {runtime['mcp_accepted']} of "
+        f"{runtime['mcp_total']} MCP artifacts, and {runtime['plugin_accepted']} of "
+        f"{runtime['plugin_total']} plugins have bounded behavior and rollback evidence. The remaining "
+        f"{runtime['incomplete']} stay policy- or credential-gated. This page therefore does not claim universal "
+        "local usability.",
+        "</Aside>",
+        "",
         "<CardGrid>",
-    ]
+    ])
     for agent in SUPPORTED_AGENTS:
         parts.append(_link_card(agent.label, agent.href, agent.description))
     parts.extend([
@@ -1278,10 +1328,7 @@ def write_cli_page() -> None:
     parts.append("| `--copy` | `false` | Copy files instead of symlinking |")
     parts.append("| `-y`, `--yes` | `false` | Skip confirmation prompts |")
     parts.append("")
-    parts.append(
-        "**Supported agents:** `antigravity`, `claude-code`, `codex`, `crush`, "
-        "`cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`"
-    )
+    parts.append("**Supported agents:** `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`")
     parts.append("")
     parts.append('<Aside type="note" title="Grok Build install alias">')
     parts.append(
@@ -1379,7 +1426,7 @@ def write_cli_page() -> None:
     parts.append("wagents skills sync")
     parts.append("")
     parts.append("# Target one harness")
-    parts.append("wagents skills sync --agent github-copilot")
+    parts.append("wagents skills sync --agent codex")
     parts.append("")
     parts.append("# Include verified one-off installed external skills")
     parts.append("wagents skills sync --include-installed")
@@ -1414,13 +1461,6 @@ def write_cli_page() -> None:
         "When a Skills CLI inventory query fails, times out, or emits unusable JSON for a harness "
         "with a known local skill root, dry-run reports may continue from a read-only local "
         "`SKILL.md` scan. The report prints a warning whenever fallback evidence is used."
-    )
-    parts.append("</Aside>")
-    parts.append("")
-    parts.append('<Aside type="caution" title="GitHub Copilot caveat">')
-    parts.append(
-        "GitHub Copilot remains part of config and instruction sync, but the skills inventory reports "
-        "only what the Skills CLI returns. A legitimate `0` installed-skills result stays `0`."
     )
     parts.append("</Aside>")
     parts.append("")
@@ -2318,52 +2358,9 @@ def write_agents_index(nodes: list) -> None:
     parts.append("</CardGrid>")
     parts.append("</div>")
     parts.append("")
-    parts.extend(_agents_index_copilot_only_lines())
-
     out_dir = CONTENT_DIR / "agents"
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "index.mdx").write_text("\n".join(parts))
-
-
-_COPILOT_ONLY_AGENT_NAMES = (
-    "codebase-oracle",
-    "dependency-checker",
-    "git-workflow",
-    "spec-writer",
-    "test-writer",
-)
-_COPILOT_AGENT_REPO_BASE = "https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents"
-
-
-def _load_copilot_agent_description(agent_name: str) -> str:
-    path = ROOT / "platforms" / "copilot" / "agents" / f"{agent_name}.agent.md"
-    if not path.is_file():
-        return f"Copilot CLI agent ({agent_name})."
-    text = path.read_text(encoding="utf-8")
-    if not text.startswith("---"):
-        return f"Copilot CLI agent ({agent_name})."
-    block = text.split("---", 2)[1]
-    data = yaml.safe_load(block)
-    if isinstance(data, dict) and isinstance(data.get("description"), str):
-        return data["description"]
-    return f"Copilot CLI agent ({agent_name})."
-
-
-def _agents_index_copilot_only_lines() -> list[str]:
-    lines = [
-        "## GitHub Copilot-only agents",
-        "",
-        "These agents ship under `platforms/copilot/agents/` for Copilot CLI workflows. "
-        "They are not part of the portable `agents/*.md` bundle.",
-        "",
-        "<CardGrid>",
-    ]
-    for name in _COPILOT_ONLY_AGENT_NAMES:
-        desc = escape_attr(truncate_sentence(_load_copilot_agent_description(name), 160))
-        href = f"{_COPILOT_AGENT_REPO_BASE}/{name}.agent.md"
-        lines.append(f'  <LinkCard title="{escape_attr(name)}" href="{href}" description="{desc}" />')
-    lines.append("</CardGrid>")
-    return lines
 
 
 def write_mcp_index(nodes: list) -> None:
@@ -2972,8 +2969,23 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
     return reasons
 
 
-def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> None:
+def _current_utc_snapshot_date() -> str:
+    """Capture the docs mutation date once at a command boundary."""
+    return datetime.now(UTC).date().isoformat()
+
+
+def _resolve_docs_snapshot_date(value: str | None) -> str:
+    return validate_docs_graph_snapshot_date(value or _current_utc_snapshot_date())
+
+
+def _docs_generate_impl(
+    *,
+    include_drafts: bool,
+    include_installed: bool,
+    snapshot_date: str,
+) -> None:
     """Generate MDX content pages from repo assets."""
+    snapshot_date = validate_docs_graph_snapshot_date(snapshot_date)
     # W3: at start of generate, sync custom authoring from repo skills/ (populates docs/src/authoring/skills/),
     # then emit the public skills catalog JSON index from authoring entries (SSOT).
     sync_custom_authoring_from_skills()
@@ -3064,7 +3076,7 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
     write_catalog_pages(nodes=nodes)
     typer.echo("  Generated catalog/* + architecture/* discovery pages")
 
-    write_reports_pages()
+    write_reports_pages(snapshot_date=snapshot_date)
     typer.echo("  Generated reports/* (MDX + generated-reports/*.json)")
 
     # The generated indexes include the post-generation docs tree. Reports and
@@ -3087,11 +3099,17 @@ def docs_generate(
         "--include-installed/--no-installed",
         help="Include installed skills as external rows unless they already exist under ./skills",
     ),
+    snapshot_date: str | None = typer.Option(
+        None,
+        "--snapshot-date",
+        help="UTC graph-history date (YYYY-MM-DD); defaults to one boundary-time capture",
+    ),
 ):
     """Generate MDX content pages from repo assets."""
     check = _resolve_typer_option(check, default=False)
     include_drafts = _resolve_typer_option(include_drafts, default=False)
     include_installed = _resolve_typer_option(include_installed, default=False)
+    snapshot_date = _resolve_typer_option(snapshot_date, default="")
     if check:
         with _docs_generate_lock():
             reasons = _docs_generate_stale_reasons(
@@ -3105,14 +3123,22 @@ def docs_generate(
             typer.echo("Generated docs artifacts are up to date")
         return
     with _docs_generate_lock():
-        _docs_generate_impl(include_drafts=include_drafts, include_installed=include_installed)
+        _docs_generate_impl(
+            include_drafts=include_drafts,
+            include_installed=include_installed,
+            snapshot_date=_resolve_docs_snapshot_date(snapshot_date),
+        )
 
 
 @docs_app.command("dev")
 def docs_dev():
     """Generate content and start dev server."""
     with _docs_generate_lock():
-        _docs_generate_impl(include_drafts=False, include_installed=False)
+        _docs_generate_impl(
+            include_drafts=False,
+            include_installed=False,
+            snapshot_date=_resolve_docs_snapshot_date(None),
+        )
     typer.echo("Starting dev server...")
     subprocess.run(["pnpm", "dev"], cwd=str(DOCS_DIR))
 
@@ -3126,7 +3152,11 @@ def _clean_docs_build_outputs() -> None:
 def docs_build():
     """Generate content and build static site."""
     with _docs_generate_lock():
-        _docs_generate_impl(include_drafts=False, include_installed=False)
+        _docs_generate_impl(
+            include_drafts=False,
+            include_installed=False,
+            snapshot_date=_resolve_docs_snapshot_date(None),
+        )
     typer.echo("Building...")
     _clean_docs_build_outputs()
     result = subprocess.run(["pnpm", "build"], cwd=str(DOCS_DIR))
@@ -3140,7 +3170,11 @@ def docs_build():
 def docs_preview():
     """Generate, build, and preview the site."""
     with _docs_generate_lock():
-        _docs_generate_impl(include_drafts=False, include_installed=False)
+        _docs_generate_impl(
+            include_drafts=False,
+            include_installed=False,
+            snapshot_date=_resolve_docs_snapshot_date(None),
+        )
     typer.echo("Building...")
     _clean_docs_build_outputs()
     result = subprocess.run(["pnpm", "build"], cwd=str(DOCS_DIR))

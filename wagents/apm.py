@@ -16,9 +16,7 @@ import yaml
 from wagents.hooks.render import (
     render_claude_hooks,
     render_codex_hooks,
-    render_copilot_hooks,
     render_cursor_hooks,
-    render_gemini_hooks,
 )
 from wagents.parsing import parse_frontmatter
 
@@ -164,8 +162,6 @@ def materialize_scoped_rules(repo_root: Path, *, check: bool = False) -> list[Pa
         "global.instructions.md",
         "claude-code.instructions.md",
         "codex.instructions.md",
-        "copilot.instructions.md",
-        "gemini-cli.instructions.md",
         "grok.instructions.md",
         "opencode.instructions.md",
         "opencode-agents-overlay.instructions.md",
@@ -223,8 +219,6 @@ def materialize_instructions(repo_root: Path, *, check: bool = False) -> list[Pa
     overlays: list[tuple[str, str, str]] = [
         ("claude-code-global.md", "claude-code.instructions.md", "**/*"),
         ("codex-global.md", "codex.instructions.md", "**/*"),
-        ("copilot-global.md", "copilot.instructions.md", "**/*"),
-        ("gemini-cli-global.md", "gemini-cli.instructions.md", "**/*"),
         ("grok-global.md", "grok.instructions.md", "**/*"),
         ("opencode-global.md", "opencode.instructions.md", "**/*"),
         ("opencode-agents-overlay.md", "opencode-agents-overlay.instructions.md", "**/*"),
@@ -270,14 +264,6 @@ def _render_cursor_hooks_shape(registry: dict[str, Any], *, repo_root: str = "$C
     return rendered if rendered is not None else {"version": 1, "hooks": {}}
 
 
-def _render_copilot_hooks_shape(registry: dict[str, Any]) -> dict[str, Any]:
-    return render_copilot_hooks(registry, repo_root=".")
-
-
-def _render_gemini_hooks_shape(registry: dict[str, Any]) -> dict[str, Any]:
-    return render_gemini_hooks(registry, repo_root=".")
-
-
 def materialize_hooks(repo_root: Path, *, check: bool = False) -> list[Path]:
     """Emit .apm/hooks/*.json using shapes from hook-registry.json."""
     reg_path = repo_root / "config" / "hook-registry.json"
@@ -312,22 +298,6 @@ def materialize_hooks(repo_root: Path, *, check: bool = False) -> list[Path]:
     if cursor.get("hooks"):
         tgt = dst / "cursor.json"
         content = json.dumps(cursor, indent=2) + "\n"
-        if _write_text_if_changed(tgt, content, check=check):
-            written.append(tgt)
-
-    # Copilot (github-copilot)
-    cop = _render_copilot_hooks_shape(registry)
-    if cop.get("hooks"):
-        tgt = dst / "github-copilot.json"
-        content = json.dumps(cop, indent=2) + "\n"
-        if _write_text_if_changed(tgt, content, check=check):
-            written.append(tgt)
-
-    # Gemini CLI
-    gemini = _render_gemini_hooks_shape(registry)
-    if gemini.get("hooks"):
-        tgt = dst / "gemini-cli.json"
-        content = json.dumps(gemini, indent=2) + "\n"
         if _write_text_if_changed(tgt, content, check=check):
             written.append(tgt)
 
@@ -522,6 +492,7 @@ def refresh_lock_hashes(repo_root: Path, *, check: bool = False) -> dict[str, An
         return {"ok": False, "message": "apm.lock.yaml missing local_deployed_files list", "drifts": []}
 
     new_hashes: dict[str, str] = {}
+    existing_deployed_files: list[str] = []
     drifts: list[str] = []
     old_hashes = data.get("local_deployed_file_hashes") or {}
 
@@ -532,6 +503,7 @@ def refresh_lock_hashes(repo_root: Path, *, check: bool = False) -> dict[str, An
         if not path.is_file():
             drifts.append(f"{rel}: missing on disk")
             continue
+        existing_deployed_files.append(rel)
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
         new_hashes[rel] = f"sha256:{digest}"
         old = old_hashes.get(rel, "")
@@ -543,6 +515,7 @@ def refresh_lock_hashes(repo_root: Path, *, check: bool = False) -> dict[str, An
     if check:
         return {"ok": ok, "drifts": drifts, "lock_path": str(lock_path)}
 
+    data["local_deployed_files"] = existing_deployed_files
     data["local_deployed_file_hashes"] = new_hashes
     data["generated_at"] = datetime.now(UTC).isoformat()
     lock_path.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=False), encoding="utf-8")

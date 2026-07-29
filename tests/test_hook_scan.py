@@ -69,9 +69,8 @@ def test_collect_registry_summary_loads_real_and_counts(hook_collect_mod) -> Non
     assert "managed_wagents_hook_count" in summary
     # Real repo currently has several wagents-managed + shell hooks
     assert summary["managed_wagents_hook_count"] >= 0
-    # github-copilot (and aliases) and codex etc should be present from config/hook-registry.json
     by_h = summary["by_harness"]
-    assert any(k in by_h for k in ("github-copilot", "codex", "claude-code"))
+    assert {"codex", "claude-code"}.issubset(by_h)
 
 
 def test_collect_frontmatter_detects_known_hook_skills(hook_collect_mod) -> None:
@@ -148,9 +147,10 @@ def test_hook_scan_cli_writes_output(hook_scan_mod, tmp_path: Path) -> None:
     assert "registry" in data
 
 
-def test_harness_aliases_present(hook_collect_mod) -> None:
+def test_retired_harness_aliases_absent(hook_collect_mod) -> None:
     collect = hook_collect_mod
     aliases = collect.HARNESS_ALIASES
     assert isinstance(aliases, dict)
-    assert "github-copilot-cli" in aliases
-    assert aliases["github-copilot-cli"] == "github-copilot"
+    assert "github-copilot-cli" not in aliases
+    assert "gemini-cli" not in aliases
+    assert "antigravity" not in aliases

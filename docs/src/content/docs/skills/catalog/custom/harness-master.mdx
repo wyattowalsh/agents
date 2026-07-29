@@ -8,7 +8,7 @@ composed: false
 docs_density: standard
 license: "MIT"
 trust_tier: "repo-owned"
-install_command: "npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode"
+install_command: "npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode"
 metadata.author: "wyattowalsh"
 metadata.version: "1.1.0"
 research_slug: "harness-master"
@@ -23,15 +23,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="harness-master"
   description="Audit harness configs, discover gaps, usage signals, apply approved fixes. Use when tuning Claude, Codex, Copilot, Cursor, Gemini, Grok, OpenCode, Cherry, or LM Studio."
-  installCommand={`npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode`}
+  installCommand={`npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode`}
   installLabel="Install"
   usage="/harness-master [discover|audit|usage|apply|install|resume|list] [harness|all] [project|global|both]"
-  badges={[{ text: "harness-master", variant: "note" }, { text: "3177 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.1.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "harness-master", variant: "note" }, { text: "3116 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.1.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from the repository file `skills/harness-master/SKILL.md` by `wagents docs generate`.
@@ -111,7 +111,7 @@ Audit AI harness configuration quality, usage posture, and ecosystem options, th
 | Source Kind | `repo` |
 | Installability | portable command |
 | Review State | reviewed |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -203,7 +203,7 @@ If the user invokes `/harness-master` with no arguments:
 
 ## Input Normalization
 
-- Supported harnesses: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
+- Supported harnesses: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `cursor`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
 - Supported levels: `project`, `global`, `both`
 - Supported research categories: `config`, `plugin`, `extension`, `mcp`, `skill`, `all`
 - Supported usage windows: positive day counts such as `7`, `14`, `30`, or `days=14`; default to `14` when absent
@@ -213,11 +213,6 @@ If the user invokes `/harness-master` with no arguments:
   - `chatgpt`, `chatgpt-desktop`, `openai-chatgpt` -> `chatgpt`
   - `codex` -> `codex`
   - `cursor`, `cursor-agent`, `cursor-editor`, `cursor-desktop`, `cursor-cli`, `agent-cli`, `cursor-cloud`, `cursor-cloud-agent`, `cursor-background-agent`, `cursor-web` -> `cursor`
-  - `gemini`, `gemini-cli` -> `gemini-cli`
-  - `antigravity`, `google-antigravity` -> `antigravity`
-  - `github-copilot`, `copilot`, `gh-copilot` -> expand to `github-copilot-web` and `github-copilot-cli`
-  - `github-copilot-web`, `copilot-web`, `copilot-cloud`, `copilot-coding-agent` -> `github-copilot-web`
-  - `github-copilot-cli`, `copilot-cli` -> `github-copilot-cli`
   - `grok`, `grok-build`, `grok-cli` -> `grok-build`
   - `opencode`, `open-code` -> `opencode`
   - `perplexity`, `perplexity-desktop`, `perplexity-mac` -> `perplexity-desktop`
@@ -229,7 +224,7 @@ If the user invokes `/harness-master` with no arguments:
   - `both`, `all-levels` -> `both`
 - Split multiple harnesses on commas and whitespace.
 - If the user supplies both `all` and named harnesses, ask which form they want.
-- Deterministic `all` order: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
+- Deterministic `all` order: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `cursor`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
 - Unknown tokens are never guessed. Ask one focused clarification question.
 
 
@@ -363,7 +358,6 @@ Never claim `latest` without evidence from a current source.
 - Surface the authoritative, secondary, generated, and merged config surfaces for the selected level.
 - For `both`, report project/global conflicts before recommending changes.
 - If a harness-specific native surface is not observable from the current session, mark it as a blind spot instead of inventing behavior.
-- Antigravity project-level advice must clearly separate first-party documented global behavior from repo-observed compatibility assumptions.
 
 ## Install Guidance Contract
 
@@ -382,7 +376,7 @@ After changing this skill, run:
 ```bash
 python scripts/check.py
 uv run python scripts/usage_probe.py --repo-root . --harness opencode --level both --days 14 --json
-uv run python scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness github-copilot-web --harness github-copilot-cli --harness cursor --harness gemini-cli --harness antigravity --harness opencode --harness perplexity-desktop --harness cherry-studio --harness lm-studio
+uv run python scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness cursor --harness grok-build --harness opencode --harness perplexity-desktop --harness cherry-studio --harness lm-studio
 ```
 
 Completion criteria:

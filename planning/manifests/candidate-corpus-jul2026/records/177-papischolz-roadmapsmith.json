@@ -13,8 +13,8 @@
     "plugin",
     "skill"
   ],
-  "install_or_integration_decision": "integrated_existing_surface",
-  "reason": "Existing repo catalog surface already covers this source/domain.",
+  "install_or_integration_decision": "integrated_plugin_surface",
+  "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
   "auth_required": true,
   "env_vars_or_credentials": [
     "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -27,6 +27,7 @@
     "planning/manifests/candidate-corpus-jul2026/records/177-papischolz-roadmapsmith.json"
   ],
   "files_modified": [
+    "config/plugin-extension-registry.json",
     "docs/public/generated-registries/skills-catalog-browser-index.json",
     "docs/public/generated-registries/skills-catalog-index.json",
     "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -155,7 +156,7 @@
       "docs/src/authoring/skills/roadmap-update.mdx"
     ],
     "mcp_registry_match": false,
-    "plugin_registry_match": false
+    "plugin_registry_match": true
   },
   "security_packet": {
     "candidate_code_executed": false,
@@ -189,12 +190,12 @@
   ],
   "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "integrated_existing_surface",
-    "reason": "Existing repo catalog surface already covers this source/domain."
+    "decision": "integrated_plugin_surface",
+    "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "terminal_route": "integrated-existing-surface",
+    "terminal_route": "integrated-plugin-surface",
     "required_before_live_execution": "explicit user-owned command and credential setup",
     "scope": "historical-intake-research-only"
   },

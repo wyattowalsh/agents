@@ -1,0 +1,12 @@
+Candidate corpus author validation passed.
+
+The frozen 4,158-path review packet reconciles 293 raw entries to 289 unique normalized targets and 289 unique terminal decisions, including four duplicate groups. All 293 raw records contain the required per-candidate manifest fields. The catalog overlay records 1,424 authoring rows, including 1,266 installable rows, and the selector/binding receipts cover 1,266 selector leaves and 11,394 bindings across nine harnesses.
+
+Docs assurance is complete and idempotent with stable digest e244516b8a23a5d7994e2a178ff13bfc9482db76da39fd6135f250a40a386fdd and no unexpected writes. Runtime truth is not overstated: 65 artifacts are discovered, 54 accepted, and 11 remain explicitly incomplete behind policy or credential gates.
+
+Command: uv run pytest -q tests/test_candidate_corpus.py tests/test_candidate_runtime_activation.py tests/test_candidate_docs_assurance.py tests/test_record_candidate_catalog_closure.py tests/test_record_candidate_final_closure.py
+Result: 131 passed in 14.85s; exit 0.
+Reviewed input digest: 80cb51f613191e4aa29d639c2cd1f8c4f1455f6b825faa4192c28f16767713c4.
+Worktree digest: fd1393c8f3e06c318c4277b064857240aa1a7a6e04f1b4cedb410c67fc8206ea.
+
+No actionable author findings remain.

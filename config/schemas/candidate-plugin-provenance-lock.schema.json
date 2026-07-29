@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agents.w4w.dev/schemas/candidate-plugin-provenance-lock.schema.json",
+  "title": "Candidate plugin provenance lock",
+  "type": "object",
+  "required": ["version", "plugins"],
+  "properties": {
+    "version": {"const": 1},
+    "plugins": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/plugin"}
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sha1": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "relativePath": {
+      "type": "string",
+      "pattern": "^(?:[A-Za-z0-9._@+-]+)(?:/[A-Za-z0-9._@+-]+)*$"
+    },
+    "sourceProjection": {
+      "type": "object",
+      "required": ["mode", "paths"],
+      "properties": {
+        "mode": {"enum": ["all", "include", "exclude"]},
+        "paths": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/relativePath"},
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"mode": {"const": "all"}},
+            "required": ["mode"]
+          },
+          "then": {
+            "properties": {"paths": {"maxItems": 0}}
+          },
+          "else": {
+            "properties": {"paths": {"minItems": 1}}
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "plugin": {
+      "type": "object",
+      "required": [
+        "plugin_id",
+        "registry_id",
+        "normalized_url",
+        "resolved_version",
+        "audited_source_commit_sha",
+        "upstream_subpath",
+        "upstream_git_tree_oid",
+        "source_projection",
+        "marketplace",
+        "marketplace_path",
+        "marketplace_snapshot_kind",
+        "marketplace_commit_sha",
+        "marketplace_git_subpath",
+        "marketplace_git_tree_oid",
+        "approved_content_sha256",
+        "digest_algorithm",
+        "ignored_dirs"
+      ],
+      "properties": {
+        "plugin_id": {"type": "string", "pattern": "^[^@]+@[^@]+$"},
+        "registry_id": {"type": "string", "minLength": 1},
+        "normalized_url": {"type": "string", "pattern": "^https://github\\.com/"},
+        "resolved_version": {"type": "string", "minLength": 1},
+        "audited_source_commit_sha": {"$ref": "#/$defs/sha1"},
+        "upstream_subpath": {
+          "anyOf": [
+            {"const": "."},
+            {"$ref": "#/$defs/relativePath"}
+          ]
+        },
+        "upstream_git_tree_oid": {"$ref": "#/$defs/sha1"},
+        "source_projection": {"$ref": "#/$defs/sourceProjection"},
+        "marketplace": {"type": "string", "minLength": 1},
+        "marketplace_path": {"$ref": "#/$defs/relativePath"},
+        "marketplace_snapshot_kind": {
+          "enum": ["git-checkout", "reviewed-local-projection"]
+        },
+        "marketplace_commit_sha": {"$ref": "#/$defs/sha1"},
+        "marketplace_git_subpath": {"$ref": "#/$defs/relativePath"},
+        "marketplace_git_tree_oid": {"$ref": "#/$defs/sha1"},
+        "approved_content_sha256": {"$ref": "#/$defs/sha256"},
+        "digest_algorithm": {"const": "plugin-content-tree-v1"},
+        "ignored_dirs": {
+          "const": [".git"]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

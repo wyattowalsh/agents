@@ -336,7 +336,6 @@ def _catalog_compatibility_blurb(node: CatalogNode) -> str:
     return (
         "Works with "
         "[Claude Code](https://docs.anthropic.com/en/docs/claude-code), "
-        "[Gemini CLI](https://github.com/google-gemini/gemini-cli), "
         "[OpenCode](https://github.com/anomalyco/opencode), "
         "and other "
         "[agentskills.io](https://agentskills.io)-compatible agents."

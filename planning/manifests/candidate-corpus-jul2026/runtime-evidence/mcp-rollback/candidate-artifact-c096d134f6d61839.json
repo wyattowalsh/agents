@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-c096d134f6d61839",
+  "mcp_server": "mobile-mcp",
+  "transaction_id": "89c3b268b66a42e19ab673d204b40e31",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "2e3d34171c8700d8394bdfa0e1bbae2542c08dab7fdfb3d18b59f5ea3353414d",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "6440f51bf7799116068cd39d8b26d9b366101e1abdf471408dd2275e696f2d78",
+  "isolated_rollback_digest": "6440f51bf7799116068cd39d8b26d9b366101e1abdf471408dd2275e696f2d78",
+  "fresh_absence": {
+    "mcp-server-mobile": null
+  },
+  "fresh_absence_process_id": 21165,
+  "fresh_absence_output_sha256": "aa4eb5a127dd0673e0d5a00058168643c167c105bcb3539f5d379541cf529bed",
+  "restored_use_process_id": 21254,
+  "restored_use_output_sha256": "eb834ce0719ac6ab5b84ba4bc64d668dfa4f15b37d33e226fbaec3512c67e423",
+  "restored_use_launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-mcp-entrypoint-rollback-candidate-artifact-c096d134f6d61839-do4gmgzy/bin/mcp-server-mobile",
+  "restored_use_launch_realpath": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/@mobilenext/mobile-mcp/lib/index.js",
+  "installed_digest": "ee2300815627edf91fe39ffb9127dd9b728fedcdd6d58d23ef581ea8db1f4744",
+  "status": "passed"
+}

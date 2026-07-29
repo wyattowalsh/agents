@@ -51,7 +51,7 @@ class Adapter(PlatformAdapter):
         """Write repo ``mcp.json`` and ``.vscode/mcp.json``."""
         # Repo configs use placeholder env vars, not resolved secrets. Keep
         # generic mcp.json complete while allowing .vscode to suppress servers
-        # owned by native VS Code/Copilot plugins.
+        # owned by native VS Code plugins.
         ctx.write_json(repo_mcp_path(), self.render_mcp(registry, fallbacks={}, harness="repo-mcp"))
         ctx.write_json(vscode_mcp_path(), self.render_mcp(registry, fallbacks={}, harness="vscode"))
 

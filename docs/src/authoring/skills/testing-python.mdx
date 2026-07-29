@@ -9,8 +9,8 @@ status: "inspect-then-install"
 trust_tier: "needs-inspection"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-install_command: "npx skills add jlowin/fastmcp --skill fastmcp-client-cli --skill testing-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+install_command: "npx skills add jlowin/fastmcp --skill fastmcp-client-cli --skill testing-python -y -g -a claude-code codex crush cursor opencode"
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/jlowin/fastmcp"
 notes: "Authoritative FastMCP maintainer skills. `fastmcp-client-cli` invokes MCP tool calls; review scripts before promotion."
 risk_notes: "Authoritative FastMCP maintainer skills. `fastmcp-client-cli` invokes MCP tool calls; review scripts before promotion."

@@ -14,8 +14,8 @@
     "plugin",
     "skill"
   ],
-  "install_or_integration_decision": "integrated_mcp_surface",
-  "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+  "install_or_integration_decision": "integrated_plugin_surface",
+  "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
   "auth_required": true,
   "env_vars_or_credentials": [
     "NPM_TOKEN_AXIOM"
@@ -28,11 +28,9 @@
     "planning/manifests/candidate-corpus-jul2026/records/029-charleswiltgen-axiom.json"
   ],
   "files_modified": [
-    "config/mcp-registry.json",
     "config/plugin-extension-registry.json",
     "docs/public/generated-registries/skills-catalog-browser-index.json",
     "docs/public/generated-registries/skills-catalog-index.json",
-    "mcp/mcphub/mcp_settings.json",
     "planning/manifests/candidate-corpus-jul2026/all-records.json",
     "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
     "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
@@ -152,7 +150,7 @@
     "catalog_matches": [
       "docs/src/authoring/skills/axiom-design.mdx"
     ],
-    "mcp_registry_match": true,
+    "mcp_registry_match": false,
     "plugin_registry_match": true
   },
   "security_packet": {
@@ -187,12 +185,12 @@
   ],
   "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "integrated_mcp_surface",
-    "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface."
+    "decision": "integrated_plugin_surface",
+    "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "terminal_route": "integrated-mcp-surface",
+    "terminal_route": "integrated-plugin-surface",
     "required_before_live_execution": "explicit user-owned command and credential setup",
     "scope": "historical-intake-research-only"
   },

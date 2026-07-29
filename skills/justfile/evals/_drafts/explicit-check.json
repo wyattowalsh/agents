@@ -1,0 +1,13 @@
+{
+  "id": "explicit-check",
+  "prompt": "/justfile check the root justfile for house-style issues",
+  "expected_output": "Check-mode audit using version/list/dump/check without applying just --fmt unless asked.",
+  "files": ["justfile"],
+  "assertions": [
+    "Dispatches to check mode",
+    "Runs just --version and inspect commands before conclusions",
+    "Uses just --check or equivalent non-writing format check when assessing fmt drift",
+    "Reports house-style gaps with severity",
+    "Does not apply just --fmt unless the user explicitly asks"
+  ]
+}

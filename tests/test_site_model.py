@@ -7,8 +7,10 @@ import pytest
 from wagents.catalog import CatalogNode
 from wagents.external_skills import ExternalSkillEntry, parse_external_skill_entries
 from wagents.site_model import (
+    ADDITIONAL_INTEGRATION_SURFACES,
     SKILLS_CLI_NATIVE_AGENT_IDS,
     SUPPORTED_AGENT_IDS,
+    SUPPORTED_AGENTS,
     VISUAL_ASSET_BY_ID,
     build_install_command,
     docs_asset_repo_path,
@@ -33,15 +35,48 @@ def test_install_commands_use_skills_cli_native_agents():
         assert f"--agent {agent_id}" in command
     # Skills CLI has no native grok adapter; Grok uses wagents install -a grok.
     assert "--agent grok" not in command
-    assert "claude-code --agent codex --agent gemini-cli" not in command
+    assert "gemini-cli" not in command
+    assert "github-copilot" not in command
+    assert "antigravity" not in command
     assert set(SKILLS_CLI_NATIVE_AGENT_IDS) == set(SUPPORTED_AGENT_IDS) - {"grok"}
 
 
-def test_normalize_public_install_command_strips_grok_agent_tokens():
+def test_managed_and_additional_surface_taxonomies_are_exact_and_disjoint():
+    assert SUPPORTED_AGENT_IDS == (
+        "claude-code",
+        "codex",
+        "crush",
+        "cursor",
+        "grok",
+        "opencode",
+    )
+    assert SKILLS_CLI_NATIVE_AGENT_IDS == (
+        "claude-code",
+        "codex",
+        "crush",
+        "cursor",
+        "opencode",
+    )
+    assert tuple(surface.id for surface in ADDITIONAL_INTEGRATION_SURFACES) == (
+        "cherry-studio",
+        "claude-desktop",
+        "chatgpt",
+        "lm-studio",
+    )
+    assert {surface.surface_kind for surface in ADDITIONAL_INTEGRATION_SURFACES} == {
+        "connector",
+        "hybrid",
+        "mcp-only",
+    }
+    assert not set(SUPPORTED_AGENT_IDS) & {surface.id for surface in ADDITIONAL_INTEGRATION_SURFACES}
+    assert all(agent.runtime_instructions and agent.runtime_tools for agent in SUPPORTED_AGENTS)
+
+
+def test_normalize_public_install_command_strips_non_public_agent_tokens():
     cases = [
         (
             "npx skills add owner/repo --skill demo -y -g -a antigravity claude-code grok opencode",
-            "npx skills add owner/repo --skill demo -y -g -a antigravity claude-code opencode",
+            "npx skills add owner/repo --skill demo -y -g -a claude-code opencode",
         ),
         (
             "npx skills add owner/repo --skill demo -y -g --agent claude-code --agent grok --agent opencode",
@@ -87,6 +122,8 @@ def test_site_data_derives_counts_from_catalog_nodes():
         "externalMcp": 30,
         "mcpTools": 30,
         "supportedHarnesses": len(SUPPORTED_AGENT_IDS),
+        "skillsCliNativeHarnesses": len(SKILLS_CLI_NATIVE_AGENT_IDS),
+        "additionalIntegrationSurfaces": len(ADDITIONAL_INTEGRATION_SURFACES),
         "bundledAgents": 1,
     }
 
@@ -114,6 +151,8 @@ def test_render_site_data_module_exports_runtime_constants():
 
     assert "export const siteData =" in rendered
     assert "export const supportedAgents = baseSiteData.supportedAgents;" in rendered
+    assert "export const skillsCliNativeAgentIds = baseSiteData.skillsCliNativeAgentIds;" in rendered
+    assert "export const additionalIntegrationSurfaces = baseSiteData.additionalIntegrationSurfaces;" in rendered
     assert "export const installCommands = baseSiteData.installCommands;" in rendered
     assert "export const visualAssets = baseSiteData.visualAssets;" in rendered
     assert "export const externalSkillIndex = skillIndexes.externalSkillIndex;" not in rendered

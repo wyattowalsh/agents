@@ -4,11 +4,9 @@ description: Canonical agent bundle (skills, agents, instructions, mcp) with har
 author: wyattowalsh / agents maintainers
 license: Apache-2.0
 targets:
-  - copilot
   - claude
   - cursor
   - codex
-  - gemini
   - opencode
 includes:
   - .apm/agents/

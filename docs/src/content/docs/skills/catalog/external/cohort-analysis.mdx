@@ -9,9 +9,9 @@ docs_density: standard
 license: "MIT"
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add phuryn/pm-skills --skill cohort-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add phuryn/pm-skills --skill cohort-analysis -y -g -a claude-code codex crush cursor grok opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "cohort-analysis"
 ---
 
@@ -24,15 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="cohort-analysis"
   description="Perform cohort analysis on user engagement data — retention curves, feature adoption trends, and segment-level insights."
-  installCommand={`npx skills add phuryn/pm-skills --skill cohort-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add phuryn/pm-skills --skill cohort-analysis -y -g -a claude-code codex crush cursor grok opencode`}
   installLabel="Install"
   usage="/cohort-analysis"
-  badges={[{ text: "cohort-analysis", variant: "note" }, { text: "373 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "cohort-analysis", variant: "note" }, { text: "364 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/cohort-analysis.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -40,11 +40,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/cohort-ana
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add phuryn/pm-skills --skill cohort-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add phuryn/pm-skills --skill cohort-analysis -y -g -a claude-code codex crush cursor grok opencode
 ```
 
 ## Trust / Audit
@@ -86,7 +86,7 @@ This row integrates `phuryn/pm-skills` as an installable curated external skill 
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -107,13 +107,13 @@ title: "Cohort Analysis"
 source_kind: "curated-external"
 source: "phuryn/pm-skills"
 install_source: "phuryn/pm-skills"
-install_command: "npx skills add phuryn/pm-skills --skill cohort-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add phuryn/pm-skills --skill cohort-analysis -y -g -a claude-code codex crush cursor grok opencode"
 install_skill_name: "cohort-analysis"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/phuryn/pm-skills"
 selector_mode: "named"
 audit_date: "2026-07-07"
@@ -145,7 +145,7 @@ This row integrates `phuryn/pm-skills` as an installable curated external skill 
 - Normalized URL: [https://github.com/phuryn/pm-skills](https://github.com/phuryn/pm-skills)
 - Catalog skill id: `cohort-analysis`
 - Upstream install selector: `cohort-analysis`
-- Install command: `npx skills add phuryn/pm-skills --skill cohort-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Install command: `npx skills add phuryn/pm-skills --skill cohort-analysis -y -g -a claude-code codex crush cursor grok opencode`
 - Inspected commit SHA: `18468a95b427e70e258b51389796367c6f684e7d`
 - License status: `MIT`
 - Source-list evidence: `source-list-found`
@@ -154,8 +154,8 @@ This row integrates `phuryn/pm-skills` as an installable curated external skill 
 ## Local Install Evidence
 
 - Executed command: `npx --yes skills add https://github.com/phuryn/pm-skills --list`
-- Executed command: `npx skills add https://github.com/phuryn/pm-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
-- Executed command: `npx skills add https://github.com/phuryn/pm-skills --skill cohort-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Executed command: `npx skills add https://github.com/phuryn/pm-skills -y -g -a claude-code codex crush cursor opencode`
+- Executed command: `npx skills add https://github.com/phuryn/pm-skills --skill cohort-analysis -y -g -a claude-code codex crush cursor opencode`
 - Installed path: `~/.agents/skills/cohort-analysis`
 - Installed path: `~/.claude/skills/cohort-analysis`
 - Installed path: `~/.config/crush/skills/cohort-analysis`

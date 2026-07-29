@@ -6,37 +6,63 @@
       "id": "claude-code-plugin",
       "harness": "claude-code",
       "kind": "native-plugin-manifest",
-      "source_paths": [".claude-plugin/plugin.json", ".claude-plugin/marketplace.json"],
+      "source_paths": [
+        ".claude-plugin/plugin.json",
+        ".claude-plugin/marketplace.json"
+      ],
       "support_tier": "repo-present-validation-required",
       "owner_change": "agents-c04-claude-harness",
-      "validation_requirements": ["manifest schema", "marketplace fixture", "rollback notes"]
+      "validation_requirements": [
+        "manifest schema",
+        "marketplace fixture",
+        "rollback notes"
+      ]
     },
     {
       "id": "codex-plugin",
       "harness": "codex",
       "kind": "native-plugin-manifest",
-      "source_paths": [".codex-plugin/plugin.json", ".agents/plugins/marketplace.json"],
+      "source_paths": [
+        ".codex-plugin/plugin.json",
+        ".agents/plugins/marketplace.json"
+      ],
       "support_tier": "repo-present-validation-required",
       "owner_change": "agents-c04-openai-harness",
-      "validation_requirements": ["manifest schema", "marketplace fixture", "rollback notes"]
+      "validation_requirements": [
+        "manifest schema",
+        "marketplace fixture",
+        "rollback notes"
+      ]
     },
     {
       "id": "opencode-runtime-plugins",
       "harness": "opencode",
       "kind": "runtime-plugin-array",
-      "source_paths": ["opencode.json", ".opencode-plugin/"],
+      "source_paths": [
+        "opencode.json",
+        ".opencode-plugin/"
+      ],
       "support_tier": "repo-present-validation-required",
       "owner_change": "agents-c04-opencode-gemini-harness",
-      "validation_requirements": ["@latest dist-tag check", "plugin placement fixture", "model-neutral policy fixture"]
+      "validation_requirements": [
+        "@latest dist-tag check",
+        "plugin placement fixture",
+        "model-neutral policy fixture"
+      ]
     },
     {
       "id": "cherry-studio-mcp-import",
       "harness": "cherry-studio",
       "kind": "desktop-mcp-import",
-      "source_paths": ["config/sync-manifest.json"],
+      "source_paths": [
+        "config/sync-manifest.json"
+      ],
       "support_tier": "experimental",
       "owner_change": "agents-c04-experimental-harnesses",
-      "validation_requirements": ["MCP import fixture", "global config rollback fixture"]
+      "validation_requirements": [
+        "MCP import fixture",
+        "global config rollback fixture"
+      ]
     },
     {
       "id": "lm-studio-mcp",
@@ -76,7 +102,9 @@
       "id": "chrome-devtools-upstream-plugin",
       "harness": "multi-harness",
       "kind": "upstream-mcp-skills-plugin",
-      "source_paths": ["https://github.com/ChromeDevTools/chrome-devtools-mcp"],
+      "source_paths": [
+        "https://github.com/ChromeDevTools/chrome-devtools-mcp"
+      ],
       "support_tier": "repo-present-validation-required",
       "owner_change": "agents-c10-external-repo-intake",
       "validation_requirements": [
@@ -90,7 +118,10 @@
       "id": "candidate-nullcost-plugin",
       "harness": "multi-harness",
       "kind": "disabled-native-plugin-candidate",
-      "source_paths": ["https://github.com/johnvouros/nullcost-plugin", "config/mcp-registry.json:nullcost"],
+      "source_paths": [
+        "https://github.com/johnvouros/nullcost-plugin",
+        "config/mcp-registry.json:nullcost"
+      ],
       "support_tier": "experimental",
       "owner_change": "agents-c10-external-repo-intake",
       "validation_requirements": [
@@ -104,7 +135,10 @@
       "id": "candidate-axiom-plugin",
       "harness": "multi-harness",
       "kind": "disabled-native-plugin-candidate",
-      "source_paths": ["https://github.com/CharlesWiltgen/Axiom", "config/mcp-registry.json:axiom-mcp"],
+      "source_paths": [
+        "https://github.com/CharlesWiltgen/Axiom",
+        "config/mcp-registry.json:axiom-mcp"
+      ],
       "support_tier": "experimental",
       "owner_change": "agents-c10-external-repo-intake",
       "validation_requirements": [
@@ -119,7 +153,9 @@
       "id": "candidate-hyperframes-plugin",
       "harness": "multi-harness",
       "kind": "disabled-native-plugin-candidate",
-      "source_paths": ["https://github.com/heygen-com/hyperframes"],
+      "source_paths": [
+        "https://github.com/heygen-com/hyperframes"
+      ],
       "support_tier": "experimental",
       "owner_change": "agents-c10-external-repo-intake",
       "validation_requirements": [
@@ -133,38 +169,50 @@
     {
       "id": "candidate-designer-skill-plugin",
       "harness": "multi-harness",
-      "kind": "installed-native-plugin-candidate",
-      "source_paths": ["https://github.com/Pythoughts-labs/designer-skill", "config/mcp-registry.json:designer-skill-mcp"],
+      "kind": "disabled-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/Pythoughts-labs/designer-skill",
+        "config/mcp-registry.json:designer-skill-mcp"
+      ],
       "support_tier": "experimental",
       "owner_change": "agents-c10-external-repo-intake",
       "validation_requirements": [
-        "audited version recorded",
+        "installed plugin manifest and inventory match audited upstream version 0.14.0",
+        "complete MCP, commands, references, and skill payload present",
         "update notifier disabled for MCP mode",
         "project, browser, and design scan review",
-        "one active MCP owner per harness"
+        "one active MCP owner per harness",
+        "manual activation approval"
       ]
     },
     {
       "id": "candidate-prompt-to-asset-plugin",
       "harness": "multi-harness",
-      "kind": "installed-native-plugin-candidate",
-      "source_paths": ["https://github.com/MohamedAbdallah-14/prompt-to-asset", "config/mcp-registry.json:prompt-to-asset"],
+      "kind": "disabled-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/MohamedAbdallah-14/prompt-to-asset",
+        "config/mcp-registry.json:prompt-to-asset"
+      ],
       "support_tier": "experimental",
       "owner_change": "agents-c10-external-repo-intake",
       "validation_requirements": [
-        "audited version recorded",
+        "manifest-only version 0.1.0 is not treated as a usable plugin",
+        "complete audited plugin payload required before enablement",
         "MCP dry-run default",
         "placeholder-only optional provider auth",
         "explicit provider-spend and output-write approval",
         "copyright, brand, likeness, and provenance review",
-        "one active MCP owner per harness"
+        "one active MCP owner per harness",
+        "manual activation approval"
       ]
     },
     {
       "id": "candidate-opencode-plugin-openspec",
       "harness": "opencode",
       "kind": "disabled-runtime-plugin-candidate",
-      "source_paths": ["https://github.com/Octane0411/opencode-plugin-openspec"],
+      "source_paths": [
+        "https://github.com/Octane0411/opencode-plugin-openspec"
+      ],
       "support_tier": "experimental",
       "owner_change": "agents-c10-external-repo-intake",
       "validation_requirements": [
@@ -172,6 +220,210 @@
         "manual activation approval",
         "OpenSpec workflow overlap review",
         "no automatic plugin array activation"
+      ]
+    },
+    {
+      "id": "candidate-commit-narrator-plugin",
+      "harness": "codex",
+      "kind": "installed-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/commit-narrator"
+      ],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "Codex inventory binds commit-narrator@candidate-corpus-local at audited version 0.1.0",
+        "deterministic staged-diff fixture proves conventional-commit classification without network access",
+        "empty-diff denial fixture",
+        "fresh Codex process discovers the plugin skill",
+        "exact remove and re-add rollback receipt"
+      ]
+    },
+    {
+      "id": "candidate-env-lint-plugin",
+      "harness": "codex",
+      "kind": "installed-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/env-lint"
+      ],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "Codex inventory binds env-lint@candidate-corpus-local at audited version 0.1.0",
+        "owned env-key fixture proves missing, extra, and empty-key classification",
+        "fixture proves secret values never appear in output or receipts",
+        "fresh Codex process discovers the plugin skill",
+        "exact remove and re-add rollback receipt"
+      ]
+    },
+    {
+      "id": "candidate-secret-guard-plugin",
+      "harness": "codex",
+      "kind": "installed-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/secret-guard"
+      ],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "Codex inventory binds secret-guard@candidate-corpus-local at audited version 0.1.0",
+        "synthetic token fixture proves detection and redaction",
+        "clean and allowlisted denial fixtures",
+        "fixture proves raw synthetic token values never appear in output or receipts",
+        "fresh Codex process discovery and exact rollback receipts"
+      ]
+    },
+    {
+      "id": "candidate-hol-guard-plugin",
+      "harness": "codex",
+      "kind": "disabled-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/hashgraph-online/hol-guard-plugin"
+      ],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "installed inventory records hol-guard-plugin@awesome-codex-plugins 0.1.0 as disabled",
+        "hol-guard launcher and MCP initialize must pass in an isolated no-secret sandbox before enablement",
+        "skill instructions and shipped scanner command names must agree",
+        "global absence is proven while disabled",
+        "manual activation approval"
+      ]
+    },
+    {
+      "id": "candidate-universal-design-principles-plugin",
+      "harness": "codex",
+      "kind": "installed-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/HDeibler/universal-design-principles"
+      ],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "Codex inventory binds universal-design-principles@awesome-codex-plugins at audited version 1.0.0",
+        "fresh Codex process discovers all nested principle skills",
+        "owned UI fixture proves accessibility, perception, cognition, and interaction findings",
+        "fixture forbids unapproved filesystem writes",
+        "exact remove and re-add rollback receipt"
+      ]
+    },
+    {
+      "id": "candidate-brooks-lint-plugin",
+      "harness": "codex",
+      "kind": "installed-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/hyhmrright/brooks-lint"
+      ],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "Codex inventory binds brooks-lint@awesome-codex-plugins at audited version 1.4.0",
+        "fresh Codex process discovers the six analysis skills",
+        "owned code fixture emits a severity-labelled Iron Law finding with a source citation",
+        "auto-fix mode remains excluded from the canary",
+        "exact remove and re-add rollback receipt"
+      ]
+    },
+    {
+      "id": "candidate-unslop-plugin",
+      "harness": "codex",
+      "kind": "installed-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/MohamedAbdallah-14/unslop"
+      ],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "Codex inventory binds unslop@awesome-codex-plugins at audited version 0.6.2",
+        "deterministic stdin fixture removes known AI-isms while preserving fenced code byte-for-byte",
+        "sensitive-path refusal fixture",
+        "canary disables API, detector-download, and write modes",
+        "fresh Codex process discovery and exact rollback receipts"
+      ]
+    },
+    {
+      "id": "candidate-papersflow-codex-plugin",
+      "harness": "codex",
+      "kind": "disabled-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/papersflow-ai/papersflow-codex-plugin"
+      ],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "installed inventory records papersflow-codex-plugin@awesome-codex-plugins 1.0.0 as disabled",
+        "unauthenticated MCP initialize proves the OAuth challenge without recording credentials",
+        "positive least-scope OAuth, logout, and revoke receipts are required before enablement",
+        "global absence is proven while disabled",
+        "manual activation approval"
+      ]
+    },
+    {
+      "id": "candidate-roadmapsmith-plugin",
+      "harness": "codex",
+      "kind": "installed-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/PapiScholz/roadmapsmith"
+      ],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "Codex inventory binds roadmapsmith@awesome-codex-plugins to audited upstream plugin version 1.2.2",
+        "fresh Codex process discovers roadmap-init and roadmap-update",
+        "owned temporary repository fixture proves roadmap initialization and update",
+        "invalid repository denial fixture",
+        "exact remove and re-add rollback receipt"
+      ]
+    },
+    {
+      "id": "candidate-zotero-research-tools-plugin",
+      "harness": "codex",
+      "kind": "disabled-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/summer521521/Zotero_Research_plugin"
+      ],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "installed inventory records zotero-research-tools@awesome-codex-plugins 0.1.5 as disabled",
+        "PowerShell launcher platform compatibility must be repaired before enablement on macOS",
+        "owned local Zotero fixture and least-privilege handshake are required",
+        "global absence is proven while disabled",
+        "manual activation approval"
+      ]
+    },
+    {
+      "id": "candidate-remotion-plugin",
+      "harness": "codex",
+      "kind": "disabled-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/tim-osterhus/codex-remotion-plugin"
+      ],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "installed inventory records remotion@awesome-codex-plugins 0.1.0 as disabled",
+        "companion Remotion MCP must use an audited pinned command with no runtime package download",
+        "owned temporary project fixture excludes rendering, publishing, and media downloads",
+        "copyright, brand, likeness, and asset-provenance review",
+        "global absence and exact rollback receipts"
+      ]
+    },
+    {
+      "id": "candidate-codebase-recon-plugin",
+      "harness": "codex",
+      "kind": "installed-native-plugin-candidate",
+      "source_paths": [
+        "https://github.com/yujiachen-y/codebase-recon-skill"
+      ],
+      "support_tier": "experimental",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "Codex inventory binds codebase-recon@awesome-codex-plugins at audited version 1.0.0",
+        "fresh Codex process discovers the codebase-recon skill",
+        "owned synthetic git-history fixture identifies the expected hotspot and bus-factor risk",
+        "canary proves read-only git inspection and no fixture-tree writes",
+        "exact remove and re-add rollback receipt"
       ]
     }
   ],
@@ -189,30 +441,33 @@
           ],
           "repo_mcp_projection": "suppressed"
         },
-        "gemini-cli": {
-          "owner": "extension",
-          "install": [
-            "gemini extensions install --auto-update https://github.com/ChromeDevTools/chrome-devtools-mcp"
-          ],
-          "repo_mcp_projection": "suppressed"
+        "claude-desktop": {
+          "owner": "repo-mcp"
         },
-        "github-copilot-web": {
-          "owner": "plugin",
-          "install": [
-            "Install the source plugin from https://github.com/ChromeDevTools/chrome-devtools-mcp where the VS Code or Copilot surface supports source plugins."
-          ],
-          "repo_mcp_projection": "suppressed-for-vscode"
+        "chatgpt": {
+          "owner": "manual-ui-or-repo-mcp"
         },
-        "github-copilot-cli": {"owner": "repo-mcp"},
-        "claude-desktop": {"owner": "repo-mcp"},
-        "chatgpt": {"owner": "manual-ui-or-repo-mcp"},
-        "codex": {"owner": "repo-mcp"},
-        "opencode": {"owner": "repo-mcp"},
-        "cursor": {"owner": "repo-mcp"},
-        "antigravity": {"owner": "repo-mcp"},
-        "perplexity-desktop": {"owner": "manual-ui-or-repo-mcp"},
-        "cherry-studio": {"owner": "repo-mcp"},
-        "lm-studio": {"owner": "repo-mcp"}
+        "codex": {
+          "owner": "repo-mcp"
+        },
+        "opencode": {
+          "owner": "repo-mcp"
+        },
+        "cursor": {
+          "owner": "repo-mcp"
+        },
+        "crush": {
+          "owner": "repo-mcp"
+        },
+        "perplexity-desktop": {
+          "owner": "manual-ui-or-repo-mcp"
+        },
+        "cherry-studio": {
+          "owner": "repo-mcp"
+        },
+        "lm-studio": {
+          "owner": "repo-mcp"
+        }
       }
     }
   ],

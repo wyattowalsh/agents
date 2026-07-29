@@ -109,56 +109,6 @@
       ]
     },
     {
-      "id": "github-copilot-web",
-      "label": "GitHub Copilot Web and Coding Agent",
-      "brand": "GitHub Copilot",
-      "surface_kind": "web-cloud-agent",
-      "owner_change": "agents-c04-copilot-harness",
-      "support_tier": "repo-present-validation-required",
-      "repo_evidence": [
-        ".github/copilot-instructions.md",
-        ".github/prompts/",
-        ".github/instructions/"
-      ],
-      "projection_surfaces": [
-        "instructions",
-        "agents",
-        "mcp"
-      ],
-      "validation_requirements": [
-        "prompt fixture",
-        "instruction fixture",
-        "no fabricated installed-skill inventory fixture"
-      ],
-      "caveats": [
-        "Installed skills must reflect actual discovery, not generated instruction files."
-      ]
-    },
-    {
-      "id": "github-copilot-cli",
-      "label": "GitHub Copilot CLI",
-      "brand": "GitHub Copilot",
-      "surface_kind": "cli",
-      "owner_change": "agents-c04-copilot-harness",
-      "support_tier": "repo-present-validation-required",
-      "repo_evidence": [
-        "config/sync-manifest.json:Copilot global config",
-        "platforms/copilot/agents"
-      ],
-      "projection_surfaces": [
-        "instructions",
-        "skills",
-        "agents",
-        "mcp",
-        "hooks"
-      ],
-      "validation_requirements": [
-        "CLI config fixture",
-        "MCP fixture",
-        "no fabricated installed-skill inventory fixture"
-      ]
-    },
-    {
       "id": "opencode",
       "label": "OpenCode",
       "brand": "OpenCode",
@@ -187,53 +137,6 @@
         "DCP fixture",
         "credential guard fixture",
         "rollback fixture"
-      ]
-    },
-    {
-      "id": "gemini-cli",
-      "label": "Gemini CLI",
-      "brand": "Gemini",
-      "surface_kind": "cli",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "support_tier": "repo-present-validation-required",
-      "repo_evidence": [
-        "GEMINI.md",
-        ".gemini/",
-        "config/sync-manifest.json:Gemini global settings"
-      ],
-      "projection_surfaces": [
-        "instructions",
-        "skills",
-        "mcp",
-        "plugins"
-      ],
-      "validation_requirements": [
-        "instruction fixture",
-        "skills fixture",
-        "MCP fixture",
-        "OpenSpec wrapper fixture"
-      ]
-    },
-    {
-      "id": "antigravity",
-      "label": "Antigravity",
-      "brand": "Google Antigravity",
-      "surface_kind": "desktop-or-cli-agent",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "support_tier": "repo-present-validation-required",
-      "repo_evidence": [
-        ".antigravity/",
-        "config/sync-manifest.json:Antigravity MCP paths"
-      ],
-      "projection_surfaces": [
-        "instructions",
-        "skills",
-        "mcp"
-      ],
-      "validation_requirements": [
-        "first-party docs ledger",
-        "Gemini-compatibility caveat fixture",
-        "MCP merge fixture"
       ]
     },
     {
@@ -273,7 +176,9 @@
         "rollback fixture"
       ],
       "caveats": [
-        "Repo sync writes only project-local .cursor surfaces; global ~/.cursor and dashboard/team state are not mutated."
+        "Repo sync writes project-local .cursor surfaces; home sync also projects allowlisted rules to ~/.cursor/rules/ (orphans preserved) and managed-marker agents to ~/.cursor/agents/.",
+        "Soft always-on rule .cursor/rules/cursor-models.mdc plus hard hooks cursor-task-model-pin-rewrite (preToolUse Task rewrite, fail-open) and cursor-subagent-model-allowlist (subagentStart) pin cursor-grok-4.5-high.",
+        "IDE model picker owns the parent chat model (Grok 4.5 High); repo sync does not write live state.vscdb."
       ]
     },
     {
@@ -302,7 +207,9 @@
         "optional Cursor CLI smoke when real Cursor agent binary is available"
       ],
       "caveats": [
-        "Project .cursor/cli.json is CLI-only; global ~/.cursor/cli-config.json is user-owned and out of scope."
+        "Project .cursor/cli.json is CLI-only; global ~/.cursor/cli-config.json is user-owned - keep exploreSubagentModel=inherit so Explore inherits the High parent.",
+        "Home sync projects allowlisted rules (~/.cursor/rules/, orphans preserved) and managed-marker agents (~/.cursor/agents/); Task launches must pass model cursor-grok-4.5-high (soft rule + hard Task rewrite + subagentStart allowlist).",
+        "IDE picker owns parent model selection; no live state.vscdb writes from repo sync."
       ]
     },
     {
@@ -329,7 +236,8 @@
       ],
       "caveats": [
         "Cloud Agent MCP setup, secrets, OAuth, and team settings are dashboard-managed and not written by repo sync.",
-        "Cloud Agent hook support is narrower than local Cursor hooks."
+        "Cloud Agent hook support is narrower than local Cursor hooks.",
+        "Local pin layers (cursor-models.mdc + Task rewrite + subagentStart allowlist) apply to local Cursor; Cloud Agent dashboard settings remain out of repo sync."
       ]
     },
     {
@@ -352,7 +260,8 @@
         "cloud dashboard MCP caveat fixture"
       ],
       "caveats": [
-        "Cloud subagents can use project subagent files, but Cloud Agent MCP and secrets come from Cursor dashboard/team settings."
+        "Cloud subagents can use project subagent files, but Cloud Agent MCP and secrets come from Cursor dashboard/team settings.",
+        "Repo overlay pins projected agents to cursor-grok-4.5-high; Cloud dashboard may still override runtime model selection."
       ]
     },
     {
@@ -398,7 +307,8 @@
         "ACP non-mutating plan/print smoke when real Cursor agent binary is available"
       ],
       "caveats": [
-        "ACP runs through the Cursor `agent acp` CLI path; this repo does not create editor, OAuth, or dashboard state."
+        "ACP runs through the Cursor `agent acp` CLI path; this repo does not create editor, OAuth, or dashboard state.",
+        "ACP inherits Cursor CLI/agent model posture; keep exploreSubagentModel=inherit in local CLI config and pass cursor-grok-4.5-high on Task launches."
       ]
     },
     {

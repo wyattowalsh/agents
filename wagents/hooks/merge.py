@@ -3,7 +3,7 @@
 ``strip_generated_hook_entries`` and ``merge_hook_groups`` were previously
 duplicated in ``wagents/platforms/base.py`` and ``scripts/sync_agent_stack.py``.
 Both now import from here so generated-entry detection stays identical for every
-harness (Claude nested groups, Cursor flat entries, Copilot ``bash`` entries).
+harness (Claude nested groups and Cursor flat entries).
 """
 
 from __future__ import annotations
@@ -12,8 +12,8 @@ from typing import Any
 
 HOOK_COMMAND_MARKERS: tuple[str, ...] = ("wagents-hook.py", "run-wagents-hook")
 
-# Claude Code native event names (PascalCase). Lowercase/camelCase rows are Copilot/Cursor
-# projections that must not persist inside ``.claude/settings.json``.
+# Claude Code native event names (PascalCase). Lowercase/camelCase rows are
+# foreign projections that must not persist inside ``.claude/settings.json``.
 CLAUDE_NATIVE_HOOK_EVENTS: frozenset[str] = frozenset({
     "SessionStart",
     "UserPromptSubmit",
@@ -25,21 +25,12 @@ CLAUDE_NATIVE_HOOK_EVENTS: frozenset[str] = frozenset({
     "Stop",
 })
 
-# Copilot-only native event keys that were accidentally merged into Claude settings.
-COPILOT_NATIVE_HOOK_EVENTS: frozenset[str] = frozenset({
-    "sessionStart",
-    "userPromptSubmitted",
-    "preToolUse",
-    "postToolUse",
-    "sessionEnd",
-})
-
 
 def _entry_commands(entry: dict[str, Any]) -> list[str]:
     """Return command strings for an entry in either nested or flat shape.
 
-    Nested (Claude/Codex/Gemini): ``{"matcher"?, "hooks": [{"command"|"bash"}]}``.
-    Flat (Cursor/Copilot): ``{"command"|"bash"}`` directly on the entry.
+    Nested (Claude/Codex): ``{"matcher"?, "hooks": [{"command"}]}``.
+    Flat (Cursor): ``{"command"}`` directly on the entry.
     """
     raw_hooks = entry.get("hooks")
     hook_configs = raw_hooks if isinstance(raw_hooks, list) else [entry]
@@ -119,7 +110,7 @@ def _is_foreign_claude_hook_entry(entry: dict[str, Any]) -> bool:
             command = str(config.get("command") or config.get("bash") or "")
             if "${workspaceFolder}" in command:
                 return True
-            if "--harness cursor" in command or "--harness github-copilot" in command:
+            if "--harness cursor" in command:
                 return True
         return False
     command = str(entry.get("command") or entry.get("bash") or "")
@@ -127,13 +118,11 @@ def _is_foreign_claude_hook_entry(entry: dict[str, Any]) -> bool:
 
 
 def strip_foreign_claude_hook_entries(hooks: dict[str, Any]) -> dict[str, Any]:
-    """Drop Copilot/Cursor hook shapes that were merged into Claude settings by mistake."""
+    """Drop foreign flat hook shapes that were merged into Claude settings."""
     if not isinstance(hooks, dict):
         return {}
     cleaned: dict[str, list[Any]] = {}
     for event, entries in hooks.items():
-        if event in COPILOT_NATIVE_HOOK_EVENTS:
-            continue
         if event not in CLAUDE_NATIVE_HOOK_EVENTS:
             continue
         if not isinstance(entries, list):

@@ -705,8 +705,8 @@ class TestSkillsSync:
 
     def test_sync_reports_zero_install_copilot_truthfully(self, monkeypatch):
         # Physically possible state: skill discovered in claude-code (installed
-        # there), but github-copilot query returned nothing — so the skill is
-        # genuinely missing from github-copilot.
+        # there), but crush query returned nothing — so the skill is
+        # genuinely missing from crush.
         snapshot = InstalledInventorySnapshot(
             rows=(
                 InstalledSkillInventoryRow(
@@ -732,19 +732,19 @@ class TestSkillsSync:
             ),
             queries=(
                 HarnessQueryResult(agent_id="claude-code", ok=True, entries=()),
-                HarnessQueryResult(agent_id="github-copilot", ok=True, entries=()),
+                HarnessQueryResult(agent_id="crush", ok=True, entries=()),
             ),
         )
         monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
         self._patch_sync_inventory(monkeypatch, snapshot)
 
-        result = runner.invoke(app, ["skills", "sync", "--agent", "github-copilot"])
+        result = runner.invoke(app, ["skills", "sync", "--agent", "crush"])
 
         assert result.exit_code == 0
-        assert "[github-copilot]" in result.output
+        assert "[crush]" in result.output
         assert "already-present (0)" in result.output
         assert "missing (1)" in result.output
-        assert "npx skills add github:wyattowalsh/agents --skill repo-skill -y -g -a github-copilot" in result.output
+        assert "npx skills add github:wyattowalsh/agents --skill repo-skill -y -g -a crush" in result.output
 
     def test_targeted_sync_uses_full_cross_harness_inventory(self, monkeypatch):
         """Regression: --agent <id> must compare against the full inventory.

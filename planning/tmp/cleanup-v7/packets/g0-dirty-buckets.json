@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "paths_written": [
+    "planning/tmp/cleanup-v7/dirty-buckets.json"
+  ],
+  "notes": "bucketed 4055 dirty/untracked paths into 22 top-level buckets"
+}

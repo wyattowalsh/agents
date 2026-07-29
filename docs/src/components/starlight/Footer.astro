@@ -1,6 +1,6 @@
 ---
 import Default from '@astrojs/starlight/components/Footer.astro';
-import { repoSource, supportedAgents } from '../../generated-site-data.mjs';
+import { repoSource, skillsCliNativeAgentIds } from '../../generated-site-data.mjs';
 import { skillIdForInstallFooter } from '../../lib/skillInstallFooter';
 
 const { id, sidebar } = Astro.locals.starlightRoute;
@@ -43,7 +43,7 @@ if (category && sidebar) {
 
 // Get skill name for install footer
 const skillName = category === 'skills' ? skillIdForInstallFooter(path) : null;
-const supportedAgentFlags = supportedAgents.map((agent: { id: string }) => `--agent ${agent.id}`).join(' ');
+const supportedAgentFlags = skillsCliNativeAgentIds.map((agentId: string) => `--agent ${agentId}`).join(' ');
 const installCommand = skillName
   ? `npx skills add ${repoSource} --skill ${skillName} -y -g ${supportedAgentFlags}`
   : '';

@@ -1,0 +1,7 @@
+{
+  "status": "noop",
+  "paths_written": [
+    "planning/tmp/cleanup-v7/packets/quarantine-align.json"
+  ],
+  "notes": "NO-OP: register already correct for EXT-085..088 (quarantine-reference, triggers declared in quarantine_triggers, required_review intact). Live collect_quarantine_errors()=0. Catalog index absent for those ids \u2014 left untouched (W6 regen). No MDX invented; register/index not edited."
+}

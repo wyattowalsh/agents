@@ -1,0 +1,13 @@
+{
+  "id": "neg-pure-shell",
+  "prompt": "/justfile write a bash script that backs up a directory to a timestamped tarball",
+  "expected_output": "Refuses justfile framing for pure shell script generation and redirects to shell-scripter.",
+  "files": [],
+  "assertions": [
+    "negative-control: should not trigger justfile authoring for pure shell scripts",
+    "Treats the request as out of scope for justfile authoring",
+    "Redirects to shell-scripter",
+    "Does not author a justfile solely to wrap an unrelated shell script request",
+    "Names the boundary clearly"
+  ]
+}

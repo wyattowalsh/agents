@@ -1,0 +1,68 @@
+---
+title: "cursor-task-model-pin-rewrite"
+description: "Rewrite Cursor Task model launches to cursor-grok-4.5-high via updated_input."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "cursor-task-model-pin-rewrite"
+composed: true
+composed_at: "2026-07-10"
+composed_by: "regenerate-hook-docs-rv-006"
+docs_density: standard
+---
+
+{/* GENERATED from config/hook-registry.json — do not hand-edit */}
+
+import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> <Badge text="cursor" variant="default" />
+
+> Rewrite Cursor Task model launches to cursor-grok-4.5-high via updated_input.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `cursor-task-model-pin-rewrite` |
+| logical_event | `PreToolUse` |
+| matcher | `Task` |
+| command | `{hook_runner} cursor-task-model-pin-rewrite --harness {harness}` |
+| timeout | `5` |
+| mode | `enforce` |
+| harnesses | `[
+  "cursor"
+]` |
+| status_message | Pinning Task model |
+
+<details class="source-disclosure">
+<summary>Full hook config (registry SSOT)</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "cursor-task-model-pin-rewrite",
+  "description": "Rewrite Cursor Task model launches to cursor-grok-4.5-high via updated_input.",
+  "logical_event": "PreToolUse",
+  "logical_policy": "cursor-task-model-pin-rewrite",
+  "mode": "enforce",
+  "status_message": "Pinning Task model",
+  "matcher": "Task",
+  "command": "{hook_runner} cursor-task-model-pin-rewrite --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "cursor"
+  ]
+}
+```
+
+Command placeholders:
+
+- `{hook_runner}` resolves to the fleet dispatcher (`hooks/wagents-hook.py` or harness projection).
+- `{harness}` is the target harness id at render/install time.
+
+</details>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Hooks hub" href="/hooks/" description="Registry overview and harness matrix." />
+  <LinkCard title="CLI hooks" href="/cli/" description="`wagents hooks list|validate`." />
+</CardGrid>

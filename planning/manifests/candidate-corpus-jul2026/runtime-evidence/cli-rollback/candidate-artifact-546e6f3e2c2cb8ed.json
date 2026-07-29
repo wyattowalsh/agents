@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-546e6f3e2c2cb8ed",
+  "normalized_url": "https://github.com/rorkai/app-store-connect-cli-skills",
+  "transaction_id": "5bb7038e06f64617bf52665ba57ac77e",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "507424d7933c6223303540f575c9d2ce95dfa67d553c8b266d05c75d9de8ae20",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "6f5cec8af47f98103eb677529f8727227d08cd60b68354f544740e920d5f341e",
+  "isolated_rollback_digest": "6f5cec8af47f98103eb677529f8727227d08cd60b68354f544740e920d5f341e",
+  "fresh_absence": {
+    "asc": null
+  },
+  "fresh_absence_process_id": 18766,
+  "fresh_absence_output_sha256": "82e6509ddff765110a15b740059edb340776793154283043fce3846857580ec4",
+  "restored_use_process_id": 18917,
+  "restored_use_output_sha256": "85ce41e392fe39a143ff37f000f4fcf181003cafea4c166bbe56d47a64d3db30",
+  "restored_use_launch_paths": [
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-546e6f3e2c2cb8ed-nimrvveo/bin/asc",
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-546e6f3e2c2cb8ed-nimrvveo/bin/asc"
+  ],
+  "restored_use_launch_realpaths": [
+    "/Users/ww/.local/bin/asc",
+    "/Users/ww/.local/bin/asc"
+  ],
+  "restored_executable_map": {
+    "asc": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-546e6f3e2c2cb8ed-nimrvveo/bin/asc",
+      "realpath": "/Users/ww/.local/bin/asc"
+    }
+  },
+  "installed_digest": "2ebbff087cb2453edba75218c56ea5c03ee526f3720a7c84e82f34230b21ff06",
+  "status": "passed"
+}

@@ -1,0 +1,16 @@
+{
+  "skills": [
+    "justfile"
+  ],
+  "query": "/justfile check the root justfile for house-style issues",
+  "files": [
+    "justfile"
+  ],
+  "expected_behavior": [
+    "Dispatches to check mode",
+    "Runs just --version and inspect commands before conclusions",
+    "Uses just --check or equivalent non-writing format check when assessing fmt drift",
+    "Reports house-style gaps with severity",
+    "Does not apply just --fmt unless the user explicitly asks"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-9f65a00b1b57702f",
+  "normalized_url": "https://github.com/ratnaditya-j/csvglow",
+  "transaction_id": "2a904289765a4ce08acc1fa84fd50010",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "e5ed3e91d1afcc5f282646a1cb10befd5491ff2ccd2619e9daa9ca39ed55e1c1",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "76f6af6c39fc408fe40cf7bf6d1ed7261c8fcb2274b0daf6ecf0f2e8d87ad1c0",
+  "isolated_rollback_digest": "76f6af6c39fc408fe40cf7bf6d1ed7261c8fcb2274b0daf6ecf0f2e8d87ad1c0",
+  "fresh_absence": {
+    "csvglow": null
+  },
+  "fresh_absence_process_id": 18489,
+  "fresh_absence_output_sha256": "125982b2d6cdc9c59b2ea6dc3374b4fa8bb167ede6feab14ab6f530158433046",
+  "restored_use_process_id": 18684,
+  "restored_use_output_sha256": "f0077423a250781e2268f8242d47ea34c201753d52d4e4dfc809615abf715756",
+  "restored_use_launch_paths": [
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-9f65a00b1b57702f-npnelzi3/bin/csvglow",
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-9f65a00b1b57702f-npnelzi3/bin/csvglow"
+  ],
+  "restored_use_launch_realpaths": [
+    "/Users/ww/.local/share/uv/tools/csvglow/bin/csvglow",
+    "/Users/ww/.local/share/uv/tools/csvglow/bin/csvglow"
+  ],
+  "restored_executable_map": {
+    "csvglow": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-9f65a00b1b57702f-npnelzi3/bin/csvglow",
+      "realpath": "/Users/ww/.local/share/uv/tools/csvglow/bin/csvglow"
+    }
+  },
+  "installed_digest": "ed9244c6f0df1ec26a766699a28b75f42cebeafd1c0c198edaf971a559bd25a6",
+  "status": "passed"
+}

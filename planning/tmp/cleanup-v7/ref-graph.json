@@ -1,0 +1,217 @@
+{
+  "generated_at": "2026-07-29T07:38:31Z",
+  "exclusions": [
+    "planning/tmp/**",
+    "planning/manifests/external-repo-review-tasks.json",
+    "docs/public/generated-reports/**",
+    "node_modules/**"
+  ],
+  "placeholders": [
+    {
+      "name": "skill-signing-verifier",
+      "tree_exists": true,
+      "tree_path": "skills/skill-signing-verifier/",
+      "authoring_mdx": "docs/src/authoring/skills/skill-signing-verifier.mdx",
+      "authoring_exists": true,
+      "refs": {
+        "live_must_scrub": [
+          {
+            "path": "README.md",
+            "line": 124,
+            "context": "README table row"
+          },
+          {
+            "path": "docs/src/authoring/skills/skill-signing-verifier.mdx",
+            "line": 2,
+            "context": "authoring"
+          },
+          {
+            "path": "skills/skill-signing-verifier/SKILL.md",
+            "line": 2,
+            "context": "skill tree"
+          },
+          {
+            "path": "skills/skill-signing-verifier/evals/evals.json",
+            "line": 2,
+            "context": "skill-local evals"
+          },
+          {
+            "path": "skills/skill-signing-verifier/scripts/check.py",
+            "line": 2,
+            "context": "check script"
+          }
+        ],
+        "generated_w6": [
+          {
+            "path": "docs/public/generated-registries/skills-catalog-index.json",
+            "line": 129635,
+            "context": "catalog index"
+          },
+          {
+            "path": "docs/public/generated-registries/skills-catalog-index.json",
+            "line": 134398,
+            "context": "duplicate lane"
+          }
+        ],
+        "test_fixture_ok": [],
+        "planning_ignore": []
+      },
+      "live_must_scrub_count": 5,
+      "generated_w6_count": 2
+    },
+    {
+      "name": "skill-localization-packager",
+      "tree_exists": true,
+      "tree_path": "skills/skill-localization-packager/",
+      "authoring_mdx": "docs/src/authoring/skills/skill-localization-packager.mdx",
+      "authoring_exists": true,
+      "refs": {
+        "live_must_scrub": [
+          {
+            "path": "README.md",
+            "line": 119,
+            "context": "README table row"
+          },
+          {
+            "path": "docs/src/authoring/skills/skill-localization-packager.mdx",
+            "line": 2,
+            "context": "authoring"
+          },
+          {
+            "path": "skills/skill-localization-packager/SKILL.md",
+            "line": 2,
+            "context": "skill tree"
+          },
+          {
+            "path": "skills/skill-localization-packager/evals/evals.json",
+            "line": 2,
+            "context": "skill-local evals"
+          },
+          {
+            "path": "skills/skill-localization-packager/scripts/check.py",
+            "line": 2,
+            "context": "check script"
+          }
+        ],
+        "generated_w6": [
+          {
+            "path": "docs/public/generated-registries/skills-catalog-index.json",
+            "line": 129290,
+            "context": "catalog index"
+          },
+          {
+            "path": "docs/public/generated-registries/skills-catalog-index.json",
+            "line": 134053,
+            "context": "duplicate lane"
+          }
+        ],
+        "test_fixture_ok": [],
+        "planning_ignore": []
+      },
+      "live_must_scrub_count": 5,
+      "generated_w6_count": 2
+    },
+    {
+      "name": "skill-registry-lock",
+      "tree_exists": true,
+      "tree_path": "skills/skill-registry-lock/",
+      "authoring_mdx": "docs/src/authoring/skills/skill-registry-lock.mdx",
+      "authoring_exists": true,
+      "refs": {
+        "live_must_scrub": [
+          {
+            "path": "README.md",
+            "line": 122,
+            "context": "README table row"
+          },
+          {
+            "path": "docs/src/authoring/skills/skill-registry-lock.mdx",
+            "line": 2,
+            "context": "authoring"
+          },
+          {
+            "path": "skills/skill-registry-lock/SKILL.md",
+            "line": 2,
+            "context": "skill tree"
+          },
+          {
+            "path": "skills/skill-registry-lock/evals/evals.json",
+            "line": 2,
+            "context": "skill-local evals"
+          },
+          {
+            "path": "skills/skill-registry-lock/scripts/check.py",
+            "line": 2,
+            "context": "check script"
+          },
+          {
+            "path": "skills/skill-lifecycle-manager/evals/evals.json",
+            "line": 60,
+            "context": "lifecycle prompt names skill-registry-lock"
+          }
+        ],
+        "generated_w6": [
+          {
+            "path": "docs/public/generated-registries/skills-catalog-index.json",
+            "line": 129497,
+            "context": "catalog index"
+          },
+          {
+            "path": "docs/public/generated-registries/skills-catalog-index.json",
+            "line": 134260,
+            "context": "duplicate lane"
+          }
+        ],
+        "test_fixture_ok": [
+          {
+            "path": "tests/test_installed_inventory.py",
+            "line": 434,
+            "context": "synthetic fixture \u2014 keep OK"
+          },
+          {
+            "path": "tests/test_installed_inventory.py",
+            "line": 438,
+            "context": "fixture name"
+          },
+          {
+            "path": "tests/test_installed_inventory.py",
+            "line": 450,
+            "context": "assert in names"
+          },
+          {
+            "path": "tests/test_installed_inventory.py",
+            "line": 466,
+            "context": "fixture path"
+          },
+          {
+            "path": "tests/test_installed_inventory.py",
+            "line": 469,
+            "context": "fixture content"
+          },
+          {
+            "path": "tests/test_installed_inventory.py",
+            "line": 475,
+            "context": "merged entry"
+          }
+        ],
+        "planning_ignore": []
+      },
+      "live_must_scrub_count": 6,
+      "generated_w6_count": 2,
+      "highlight": "lifecycle eval prompt must be scrubbed in W2a scrub-lifecycle-evals"
+    }
+  ],
+  "summary": {
+    "trees_present": 3,
+    "authoring_present": 3,
+    "live_must_scrub_total": 16,
+    "generated_w6_total": 6,
+    "test_fixture_ok_total": 6,
+    "readme_rows": 3,
+    "lifecycle_eval_hit": true
+  },
+  "notes": [
+    "W2a deletes trees+authoring; README/catalog cleared in W6 only",
+    "tests/test_installed_inventory.py fixture strings may keep skill-registry-lock name"
+  ]
+}

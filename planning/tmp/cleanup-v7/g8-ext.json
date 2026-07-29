@@ -1,0 +1,78 @@
+{
+  "generated_at": "2026-07-29T07:38:31Z",
+  "g8_status": "PARTIAL",
+  "g8_dod_path": "planning/manifests/remove-three-harnesses/g8-dod.md",
+  "w1a_implication": "align quarantine status / index only; no new MDX",
+  "quarantine_collector_live": {
+    "module": "scripts/validate/collectors/quarantine.py",
+    "error_count": 0,
+    "note": "Live collect_quarantine_errors() returns 0; g8-dod listed catalog ids appear stale vs current tree"
+  },
+  "entries": [
+    {
+      "id": "EXT-085",
+      "repo": "ComposioHQ/awesome-codex-skills/tree/master/competitive-ads-extractor",
+      "default_action": "quarantine-reference",
+      "catalog_skill_id": "composiohq-awesome-codex-skills-competitive-ads-extractor",
+      "in_catalog_index": false,
+      "authoring_mdx_path": "docs/src/authoring/skills/composiohq-awesome-codex-skills-competitive-ads-extractor.mdx",
+      "authoring_exists": false,
+      "validate_blocker": false,
+      "notes": "Listed in g8-dod as validate blocker; absent from authoring + skills-catalog-index; register still hard-blocks slug"
+    },
+    {
+      "id": "EXT-086",
+      "repo": "ComposioHQ/awesome-codex-skills/tree/master/video-downloader",
+      "default_action": "quarantine-reference",
+      "catalog_skill_id": "composiohq-awesome-codex-skills-video-downloader",
+      "in_catalog_index": false,
+      "authoring_mdx_path": "docs/src/authoring/skills/composiohq-awesome-codex-skills-video-downloader.mdx",
+      "authoring_exists": false,
+      "validate_blocker": false,
+      "notes": "Same as EXT-085; g8-dod claim stale"
+    },
+    {
+      "id": "EXT-087",
+      "repo": "jihe520/social-push",
+      "default_action": "quarantine-reference",
+      "catalog_skill_id": "jihe520-social-push",
+      "in_catalog_index": false,
+      "authoring_mdx_path": "docs/src/authoring/skills/jihe520-social-push.mdx",
+      "authoring_exists": false,
+      "validate_blocker": false,
+      "notes": "Register present; no authoring/index row"
+    },
+    {
+      "id": "EXT-088",
+      "repo": "klajdikkolaj/upwork-autopilot",
+      "default_action": "quarantine-reference",
+      "catalog_skill_id": "klajdikkolaj-upwork-autopilot",
+      "in_catalog_index": false,
+      "authoring_mdx_path": "docs/src/authoring/skills/klajdikkolaj-upwork-autopilot.mdx",
+      "authoring_exists": false,
+      "validate_blocker": false,
+      "notes": "Register present; no authoring/index row"
+    }
+  ],
+  "blockers_for_w1a": [
+    "Run full `uv run wagents validate` \u2014 quarantine collector alone is green (0); other validate surfaces may still fail",
+    "Update g8-dod quarantine bullet list after validate (g8-receipt-note) \u2014 current EXT catalog ids look stale",
+    "config/sync-manifest.json is dirty (sync-manifest packet)",
+    "Do not invent MDX for EXT-085..088",
+    "Harness leftovers still visible as deleted dirty paths (.antigravity, gemini-cli/copilot APM/hooks); harness-leftovers packet owns cleanup list",
+    "nerdbot surfaces dirty (skills/nerdbot scripts + generated catalog MDX); nerdbot-ignore packet owns ignore/venv path from Gate0"
+  ],
+  "register_path": "planning/manifests/security-quarantine-register.json",
+  "catalog_index_path": "docs/public/generated-registries/skills-catalog-index.json",
+  "harness_leftovers_dirty_sample": [
+    ".antigravity/rules/agents-standards.md (D)",
+    ".apm/hooks/gemini-cli.json (D)",
+    ".apm/hooks/github-copilot.json (D)",
+    "instructions/gemini-cli-global.md (D)",
+    "scripts/mcphub/wrappers/antigravity (D)"
+  ],
+  "nerdbot_dirty_sample": [
+    "docs/src/content/docs/skills/catalog/custom/nerdbot.mdx (M)",
+    "skills/nerdbot/scripts/asset_toolkit/validate_hooks.py (M)"
+  ]
+}

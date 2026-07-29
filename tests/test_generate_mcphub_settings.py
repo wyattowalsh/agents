@@ -146,6 +146,25 @@ def test_render_groups_rejects_duplicate_group_server_names():
         render_groups(registry["mcphub"]["groups"], registry["servers"])
 
 
+@pytest.mark.parametrize(
+    ("entry", "message"),
+    [
+        ({"name": "fetcher", "tools": []}, r"servers\[0\]\.tools must be a nonempty list"),
+        ({"name": "fetcher", "tools": [""]}, r"servers\[0\]\.tools must be a nonempty list"),
+        ({"name": "fetcher", "alias": 1}, r"servers\[0\]\.alias must be a nonempty string"),
+        ({"name": "fetcher", "unexpected": True}, r"servers\[0\] has unsupported fields"),
+    ],
+)
+def test_render_groups_rejects_malformed_group_server_objects(entry, message):
+    registry = minimal_registry_with_harness({
+        "fetcher": {"transport": "stdio", "command": "npx", "args": ["fetcher-mcp"], "enabled": True},
+    })
+    registry["mcphub"]["groups"]["harness"]["servers"] = [entry]
+
+    with pytest.raises(ValueError, match=message):
+        render_groups(registry["mcphub"]["groups"], registry["servers"])
+
+
 def test_validate_settings_rejects_invalid_registry_group_membership():
     registry = minimal_registry_with_harness({
         "fetcher": {"enabled": True},

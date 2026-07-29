@@ -54,62 +54,88 @@ class SupportedAgent:
     label: str
     href: str
     description: str
+    runtime_instructions: str
+    runtime_skills: str
+    runtime_tools: str
+    runtime_hooks: str
+    runtime_agents: str
+
+
+@dataclass(frozen=True)
+class IntegrationSurface:
+    id: str
+    label: str
+    href: str
+    surface_kind: str
+    description: str
 
 
 SUPPORTED_AGENTS: tuple[SupportedAgent, ...] = (
-    SupportedAgent(
-        "antigravity",
-        "Antigravity",
-        "https://antigravity.google/",
-        "Advanced Agentic Coding assistant.",
-    ),
     SupportedAgent(
         "claude-code",
         "Claude Code",
         "https://docs.anthropic.com/en/docs/claude-code",
         "Anthropic's official CLI for Claude.",
+        "native import",
+        "plugin/Skills CLI",
+        "MCP",
+        "generated",
+        "native subagents",
     ),
     SupportedAgent(
         "codex",
         "Codex",
         "https://github.com/openai/codex",
         "Autonomous coding workflows for command-line development.",
+        "generated",
+        "plugin/Skills CLI",
+        "MCPHub",
+        "generated",
+        "dynamic delegation",
     ),
     SupportedAgent(
         "crush",
         "Crush",
-        "https://github.com/crush-ai/crush",
+        "https://github.com/charmbracelet/crush",
         "Autonomous development agent focused on fast terminal workflows.",
+        "AGENTS.md",
+        "Skills CLI",
+        "MCP projection",
+        "limited",
+        "not primary",
     ),
     SupportedAgent(
         "cursor",
         "Cursor",
         "https://cursor.com/",
         "The AI Code Editor.",
-    ),
-    SupportedAgent(
-        "gemini-cli",
-        "Gemini CLI",
-        "https://github.com/google/gemini-cli",
-        "Google's command-line interface for Gemini.",
-    ),
-    SupportedAgent(
-        "github-copilot",
-        "GitHub Copilot",
-        "https://github.com/features/copilot",
-        "Your AI pair programmer, right in your IDE.",
+        "rules + AGENTS.md",
+        "Skills CLI",
+        "MCPHub",
+        "native hooks",
+        ".cursor/agents",
     ),
     SupportedAgent(
         "grok",
         "Grok Build",
         "https://x.ai/cli",
         "xAI's agentic coding CLI with skills, MCP, and Claude Code compatibility.",
+        "generated config",
+        "mirrored skills",
+        "MCPHub",
+        "generated",
+        "delegation",
     ),
     SupportedAgent(
         "opencode",
         "OpenCode",
         "https://github.com/anomalyco/opencode",
         "Native AGENTS.md support plus repo-level OpenCode config and subagents.",
+        "native AGENTS.md",
+        "Skills CLI",
+        "MCPHub + plugins",
+        "generated",
+        "native agents",
     ),
 )
 
@@ -119,6 +145,37 @@ SUPPORTED_AGENT_IDS = tuple(agent.id for agent in SUPPORTED_AGENTS)
 # flags use native CLI agent IDs only; Grok is installed via `wagents install -a grok`
 # (claude-code adapter + mirror into ~/.grok/skills).
 SKILLS_CLI_NATIVE_AGENT_IDS = tuple(agent_id for agent_id in SUPPORTED_AGENT_IDS if agent_id != "grok")
+
+ADDITIONAL_INTEGRATION_SURFACES: tuple[IntegrationSurface, ...] = (
+    IntegrationSurface(
+        "cherry-studio",
+        "Cherry Studio",
+        "https://www.cherry-ai.com/",
+        "mcp-only",
+        "MCPHub registry and generated import pack; not a managed agent family.",
+    ),
+    IntegrationSurface(
+        "claude-desktop",
+        "Claude Desktop",
+        "https://claude.ai/download",
+        "mcp-only",
+        "Managed MCP configuration client; not a managed agent family.",
+    ),
+    IntegrationSurface(
+        "chatgpt",
+        "ChatGPT",
+        "https://chatgpt.com/",
+        "connector",
+        "Remote MCP connector surface; not a managed agent family.",
+    ),
+    IntegrationSurface(
+        "lm-studio",
+        "LM Studio",
+        "https://lmstudio.ai/",
+        "hybrid",
+        "MCP plus managed instruction and agent presets, with an optional skill mirror.",
+    ),
+)
 
 
 def _strip(v: str) -> str:
@@ -356,9 +413,9 @@ def agent_flags(agent_ids: tuple[str, ...] = SKILLS_CLI_NATIVE_AGENT_IDS) -> str
 def normalize_public_install_command(
     command: str,
     *,
-    drop_agents: frozenset[str] = frozenset({"grok"}),
+    drop_agents: frozenset[str] = frozenset({"antigravity", "gemini-cli", "github-copilot", "grok"}),
 ) -> str:
-    """Strip Skills-CLI-invalid agent tokens (default: grok) from published install commands.
+    """Strip unsupported agent tokens from published Skills CLI commands.
 
     Operates only on agent-flag value positions (``-a`` / ``--agent``). Never rewrites
     ``--skill``, source URLs, or non-CLI install strings. Idempotent.
@@ -373,8 +430,13 @@ def normalize_public_install_command(
     try:
         tokens = shlex.split(raw)
     except ValueError:
-        # Conservative: remove only explicit long-form pairs when parse fails.
-        cleaned = re.sub(r"(?:--agent(?:=|\s+)|-a\s+)grok\b", "", raw)
+        # Conservative: remove only explicit agent-flag pairs when parse fails.
+        drop_pattern = "|".join(re.escape(agent) for agent in sorted(drop_agents))
+        cleaned = re.sub(
+            rf"(?:--agent(?:=|\s+)|-a\s+)(?:{drop_pattern})\b",
+            "",
+            raw,
+        )
         return re.sub(r"\s+", " ", cleaned).strip()
 
     drop = set(drop_agents)
@@ -513,6 +575,8 @@ def node_counts(
         **skill_source_counts(skills),
         **mcp_source_counts(nodes, mcp_config_count=mcp_config_count),
         "supportedHarnesses": len(SUPPORTED_AGENTS),
+        "skillsCliNativeHarnesses": len(SKILLS_CLI_NATIVE_AGENT_IDS),
+        "additionalIntegrationSurfaces": len(ADDITIONAL_INTEGRATION_SURFACES),
         "bundledAgents": len([node for node in nodes if node.kind == "agent"]),
     }
     if counts["customMcp"] == 0 and counts["externalMcp"] == 0 and has_mcp_overview:
@@ -532,6 +596,8 @@ def site_data(
     return {
         "repoSource": REPO_SOURCE,
         "supportedAgents": [agent.__dict__ for agent in SUPPORTED_AGENTS],
+        "skillsCliNativeAgentIds": list(SKILLS_CLI_NATIVE_AGENT_IDS),
+        "additionalIntegrationSurfaces": [surface.__dict__ for surface in ADDITIONAL_INTEGRATION_SURFACES],
         "installCommands": {
             "all": build_install_command(all_skills=True),
             "starter": build_install_command(skill="review"),
@@ -559,6 +625,8 @@ def render_site_data_module(data: dict[str, Any]) -> str:
         "export const siteData = baseSiteData;\n"
         "export const repoSource = baseSiteData.repoSource;\n"
         "export const supportedAgents = baseSiteData.supportedAgents;\n"
+        "export const skillsCliNativeAgentIds = baseSiteData.skillsCliNativeAgentIds;\n"
+        "export const additionalIntegrationSurfaces = baseSiteData.additionalIntegrationSurfaces;\n"
         "export const installCommands = baseSiteData.installCommands;\n"
         "export const counts = baseSiteData.counts;\n"
         "export const distributionPaths = baseSiteData.distributionPaths;\n"
@@ -821,9 +889,7 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         fm.get("_skills_installed_agents") if isinstance(fm.get("_skills_installed_agents"), list) else []
     )
     target_agents = (
-        list(SKILLS_CLI_NATIVE_AGENT_IDS)
-        if source_type == "custom"
-        else _as_str_list(fm.get("_skills_target_agents"))
+        list(SKILLS_CLI_NATIVE_AGENT_IDS) if source_type == "custom" else _as_str_list(fm.get("_skills_target_agents"))
     )
     trust_tier = resolve_trust_tier_for_node(node)
     trust_badge, trust_badge_variant = trust_badge_for_tier(trust_tier)

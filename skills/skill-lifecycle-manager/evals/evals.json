@@ -54,17 +54,6 @@
         "Agent does not modify catalog authoring rows",
         "Agent requires wagents validate before any active-ready claim"
       ]
-    },
-    {
-      "id": "internal-skill-stage",
-      "prompt": "/skill-lifecycle-manager skill-registry-lock",
-      "expected_output": "Classifies an internal planned skill as internal or draft based on metadata and missing readiness signals.",
-      "files": [],
-      "assertions": [
-        "Agent reads metadata.internal",
-        "Agent treats missing eval/check signals as readiness context",
-        "Agent does not promote the skill automatically"
-      ]
     }
   ]
 }

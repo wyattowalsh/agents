@@ -1,0 +1,132 @@
+{
+  "ops_dir_exists": false,
+  "moves": [
+    {
+      "from": "scripts/apply_candidate_corpus_promotions.py",
+      "to": "scripts/ops/candidate/apply_candidate_corpus_promotions.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/audit_candidate_deep_sources.py",
+      "to": "scripts/ops/candidate/audit_candidate_deep_sources.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/audit_candidate_source_lists.py",
+      "to": "scripts/ops/candidate/audit_candidate_source_lists.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/generate_candidate_corpus_shards.py",
+      "to": "scripts/ops/candidate/generate_candidate_corpus_shards.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/migrate_candidate_runtime_receipts.py",
+      "to": "scripts/ops/candidate/migrate_candidate_runtime_receipts.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/promote_candidate_bun_runtime.py",
+      "to": "scripts/ops/candidate/promote_candidate_bun_runtime.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/promote_candidate_corpus.py",
+      "to": "scripts/ops/candidate/promote_candidate_corpus.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/promote_candidate_node_runtime.py",
+      "to": "scripts/ops/candidate/promote_candidate_node_runtime.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/record_candidate_auth_assurance.py",
+      "to": "scripts/ops/candidate/record_candidate_auth_assurance.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/record_candidate_catalog_closure.py",
+      "to": "scripts/ops/candidate/record_candidate_catalog_closure.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/record_candidate_final_closure.py",
+      "to": "scripts/ops/candidate/record_candidate_final_closure.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/record_candidate_harness_assurance.py",
+      "to": "scripts/ops/candidate/record_candidate_harness_assurance.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/record_candidate_non_skill_assurance.py",
+      "to": "scripts/ops/candidate/record_candidate_non_skill_assurance.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/record_candidate_runtime_activation.py",
+      "to": "scripts/ops/candidate/record_candidate_runtime_activation.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/rehearse_candidate_cli_rollback.py",
+      "to": "scripts/ops/candidate/rehearse_candidate_cli_rollback.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/rehearse_candidate_mcp_rollback.py",
+      "to": "scripts/ops/candidate/rehearse_candidate_mcp_rollback.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/rehearse_candidate_plugin_rollback.py",
+      "to": "scripts/ops/candidate/rehearse_candidate_plugin_rollback.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/run_candidate_cli_canaries.py",
+      "to": "scripts/ops/candidate/run_candidate_cli_canaries.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/run_candidate_docs_assurance.py",
+      "to": "scripts/ops/candidate/run_candidate_docs_assurance.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/run_candidate_mcp_canaries.py",
+      "to": "scripts/ops/candidate/run_candidate_mcp_canaries.py",
+      "shim_at_old_path": true
+    },
+    {
+      "from": "scripts/run_candidate_plugin_canaries.py",
+      "to": "scripts/ops/candidate/run_candidate_plugin_canaries.py",
+      "shim_at_old_path": true
+    }
+  ],
+  "wrappers_keep_in_place": [
+    "scripts/mcphub/wrappers/candidate-node",
+    "scripts/mcphub/wrappers/candidate-uv-tool"
+  ],
+  "out_of_scope": [
+    "skills/harness-master/scripts/candidate_score.py",
+    "wagents/candidate_auth.py",
+    "wagents/candidate_corpus_reports.py",
+    "wagents/candidate_evidence.py",
+    "wagents/candidate_predicates.py",
+    "wagents/candidate_provenance.py",
+    "wagents/candidate_receipts.py",
+    "wagents/candidate_sandbox.py",
+    "scripts/__pycache__/*candidate*"
+  ],
+  "notes": [
+    "W2a candidate-ops owns moves; keep wrappers",
+    "scripts/ops/ and scripts/ops/candidate/ do not exist yet — create on apply",
+    "21 top-level scripts/*candidate*.py → scripts/ops/candidate/ + thin shims at old paths",
+    "mcphub wrappers match scripts/*candidate* glob but stay under scripts/mcphub/wrappers/ (keep-matrix)",
+    "No files relocated in Gate0 — inventory only"
+  ]
+}

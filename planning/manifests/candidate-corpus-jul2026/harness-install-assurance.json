@@ -1,34 +1,21 @@
 {
   "version": 1,
-  "generated_at": "2026-07-16T02:49:01.290622+00:00",
-  "assurance_kind": "post-install-dry-run",
-  "command": "uv run wagents skills sync --dry-run --format json",
-  "source_sha256": "c0035c9ca6ac122bec73fc920474f9eda66ae53266f55a392768695a7f694cad",
-  "catalog_index_sha256": "402bb338c00ddd2772e67530ff661c99133a5ea5645603bcb116cc6949767365",
-  "promotion_overrides_sha256": "936415cca9c15f07eaed956eb35e7cb4a4f3d7a9e99024414a17752b996c0924",
-  "catalog_entry_count": 1816,
-  "promotion_override_count": 1267,
-  "inventory_count": 1779,
+  "generated_at": "2026-07-29T09:16:26.483856+00:00",
+  "assurance_kind": "post-install-apply",
+  "command": "uv run wagents skills sync --apply --format json",
+  "source_mode": "apply",
+  "source_sha256": "687ba9cb5a2271a9bad91fda79606ad595d9f9cf045b627e6fad036d3b7ee8dd",
+  "catalog_index_sha256": "ad54b8bd92f89fedb09a5654f923753296e6e9b9ae9f927187fe800283487cc4",
+  "promotion_overrides_sha256": "719e47e48399f4ccfeeff16064d260455d83702559d40c30821d4b17a9707456",
+  "catalog_entry_count": 1829,
+  "promotion_override_count": 1266,
+  "inventory_count": 1798,
   "complete": true,
-  "target_harness_count": 9,
+  "target_harness_count": 6,
   "agents": [
     {
-      "agent": "antigravity",
-      "already_present": 1600,
-      "missing": 0,
-      "pin_blocked": 0,
-      "unresolved": 170,
-      "unresolved_reason_counts": {
-        "No lockfile or curated source was found for this installed skill.": 169,
-        "registry syntax and provenance still need verification before automated sync/install; install_command intentionally empty until npx skills add source is verified.": 1
-      },
-      "commands": 0,
-      "inventory_fallback_used": false,
-      "error": false
-    },
-    {
       "agent": "claude-code",
-      "already_present": 1600,
+      "already_present": 1616,
       "missing": 0,
       "pin_blocked": 0,
       "unresolved": 170,
@@ -37,12 +24,12 @@
         "registry syntax and provenance still need verification before automated sync/install; install_command intentionally empty until npx skills add source is verified.": 1
       },
       "commands": 0,
-      "inventory_fallback_used": false,
+      "inventory_fallback_used": true,
       "error": false
     },
     {
       "agent": "codex",
-      "already_present": 1600,
+      "already_present": 1616,
       "missing": 0,
       "pin_blocked": 0,
       "unresolved": 170,
@@ -51,12 +38,12 @@
         "registry syntax and provenance still need verification before automated sync/install; install_command intentionally empty until npx skills add source is verified.": 1
       },
       "commands": 0,
-      "inventory_fallback_used": false,
+      "inventory_fallback_used": true,
       "error": false
     },
     {
       "agent": "crush",
-      "already_present": 1600,
+      "already_present": 1616,
       "missing": 0,
       "pin_blocked": 0,
       "unresolved": 170,
@@ -65,12 +52,12 @@
         "registry syntax and provenance still need verification before automated sync/install; install_command intentionally empty until npx skills add source is verified.": 1
       },
       "commands": 0,
-      "inventory_fallback_used": false,
+      "inventory_fallback_used": true,
       "error": false
     },
     {
       "agent": "cursor",
-      "already_present": 1600,
+      "already_present": 1616,
       "missing": 0,
       "pin_blocked": 0,
       "unresolved": 170,
@@ -79,46 +66,17 @@
         "registry syntax and provenance still need verification before automated sync/install; install_command intentionally empty until npx skills add source is verified.": 1
       },
       "commands": 0,
-      "inventory_fallback_used": false,
-      "error": false
-    },
-    {
-      "agent": "gemini-cli",
-      "already_present": 1600,
-      "missing": 0,
-      "pin_blocked": 0,
-      "unresolved": 170,
-      "unresolved_reason_counts": {
-        "No lockfile or curated source was found for this installed skill.": 169,
-        "registry syntax and provenance still need verification before automated sync/install; install_command intentionally empty until npx skills add source is verified.": 1
-      },
-      "commands": 0,
-      "inventory_fallback_used": false,
-      "error": false
-    },
-    {
-      "agent": "github-copilot",
-      "already_present": 1600,
-      "missing": 0,
-      "pin_blocked": 0,
-      "unresolved": 170,
-      "unresolved_reason_counts": {
-        "No lockfile or curated source was found for this installed skill.": 169,
-        "registry syntax and provenance still need verification before automated sync/install; install_command intentionally empty until npx skills add source is verified.": 1
-      },
-      "commands": 0,
-      "inventory_fallback_used": false,
+      "inventory_fallback_used": true,
       "error": false
     },
     {
       "agent": "grok",
-      "already_present": 1600,
+      "already_present": 1616,
       "missing": 0,
       "pin_blocked": 0,
-      "unresolved": 170,
+      "unresolved": 169,
       "unresolved_reason_counts": {
-        "No lockfile or curated source was found for this installed skill.": 169,
-        "registry syntax and provenance still need verification before automated sync/install; install_command intentionally empty until npx skills add source is verified.": 1
+        "No lockfile or curated source was found for this installed skill.": 169
       },
       "commands": 0,
       "inventory_fallback_used": false,
@@ -126,7 +84,7 @@
     },
     {
       "agent": "opencode",
-      "already_present": 1600,
+      "already_present": 1616,
       "missing": 0,
       "pin_blocked": 0,
       "unresolved": 170,
@@ -135,15 +93,15 @@
         "registry syntax and provenance still need verification before automated sync/install; install_command intentionally empty until npx skills add source is verified.": 1
       },
       "commands": 0,
-      "inventory_fallback_used": false,
+      "inventory_fallback_used": true,
       "error": false
     }
   ],
   "totals": {
-    "already_present": 14400,
+    "already_present": 9696,
     "missing": 0,
     "pin_blocked": 0,
-    "unresolved": 1530,
+    "unresolved": 1019,
     "commands": 0
   },
   "notes": "Unresolved rows are non-syncable inventory traceability rows; completion requires zero missing, pin-blocked, command, and agent-error rows for the desired installable set."

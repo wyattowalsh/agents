@@ -1,0 +1,17 @@
+{
+  "status": "ok",
+  "packet": "harness-leftovers",
+  "wave": "W1a",
+  "paths_written": [
+    ".cursor/rules/gemini-cli.mdc",
+    ".cursor/rules/copilot.mdc"
+  ],
+  "notes": [
+    "Deleted still-present Cursor rule leftovers for removed harnesses gemini-cli and github-copilot.",
+    "Gate0 harness_leftovers_dirty_sample paths were already absent on disk (git D only): .antigravity/rules/agents-standards.md, .apm/hooks/gemini-cli.json, .apm/hooks/github-copilot.json, instructions/gemini-cli-global.md, scripts/mcphub/wrappers/antigravity.",
+    "Also confirmed already-gone (not re-deleted): .antigravity/rules/sync-workflow.md, .apm/hooks/github-copilot.json, wrappers gemini/copilot, GEMINI.md, .gemini/settings.json, instructions/copilot-global.md, .claude/.apm/.github gemini/copilot projections, platforms/copilot/, wagents/platforms/{gemini,antigravity,copilot}.py, harness-master evals for antigravity/github-copilot.",
+    "keep-matrix preserved: Crush gemini-shaped MCP, OpenCode auth plugins, gemini-api authoring/catalog, scripts/mcphub/wrappers/candidate-node and candidate-uv-tool.",
+    "No W1b/W2a, no commits, no home sync, no quarantine/sync-manifest/nerdbot/g8-dod edits.",
+    "Also removed empty leftover dirs: .antigravity (after clearing .DS_Store), .antigravity/rules, .gemini, platforms/copilot/agents, platforms/copilot."
+  ]
+}

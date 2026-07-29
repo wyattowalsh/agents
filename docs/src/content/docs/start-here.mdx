@@ -13,7 +13,7 @@ import { installCommands } from '../../generated-site-data.mjs';
 This is the shortest guided path through the repo. Install the catalog, try one skill, then use OpenSpec when a change needs a durable proposal, task list, and validation trail.
 
 <Aside type="tip" title="What a skill is">
-Skills are portable prompt-and-workflow bundles for coding agents. Install them once, then call them with `/skill-name` inside Claude Code, Gemini CLI, OpenCode, Cursor, GitHub Copilot, Codex, and other [agentskills.io](https://agentskills.io)-compatible agents.
+Skills are portable prompt-and-workflow bundles for coding agents. Install them once, then call them with `/skill-name` inside Claude Code, OpenCode, Cursor, Codex, Crush, Grok Build, and other [agentskills.io](https://agentskills.io)-compatible agents.
 </Aside>
 
 <figure class="visual-panel">
@@ -36,7 +36,7 @@ Skills are portable prompt-and-workflow bundles for coding agents. Install them 
   <LinkCard title="Claude Code Plugin" href="https://code.claude.com/docs/en/plugin-marketplaces" description="Use the native .claude-plugin marketplace when you want Claude Code to install and update the whole repo bundle." />
   <LinkCard title="Codex Plugin" href="https://developers.openai.com/codex/plugins/build" description="Use the native .codex-plugin manifest and repo marketplace when you want Codex to load bundled skills and MCP config." />
   <LinkCard title="OpenCode Project Config" href="https://opencode.ai/" description="Use repo opencode.json for runtime plugins; keep TUI-only plugins in your live tui.json surface." />
-  <LinkCard title="Skills CLI" href="/cli/" description="Use npx skills add for Gemini CLI, Antigravity, Copilot, OpenCode, Cursor, Crush, and other agents." />
+  <LinkCard title="Skills CLI" href="/cli/" description="Use npx skills add for OpenCode, Cursor, Crush, Claude Code, Codex, Grok, and other agents." />
 </CardGrid>
 
 Run `wagents update` or `npx skills update` after upstream changes to refresh recorded sources, and use `wagents skills sync --dry-run` before `--apply` when you want additive cross-harness reconciliation for repo + curated external skills.
@@ -76,7 +76,7 @@ To materialize upstream OpenSpec skills and commands for supported downstream to
 uv run wagents openspec init --apply
 ```
 
-Generated `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.crush`, `.codex`, and `.gemini` OpenSpec artifacts are local/generated unless a specific file is promoted to repo-owned source.
+Generated `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.crush`, and `.codex` OpenSpec artifacts are local/generated unless a specific file is promoted to repo-owned source.
 
 ## 5. Invoke It Inside Your Agent
 

@@ -10,7 +10,7 @@ from wagents.hooks.render import prepare_hooks_for_render
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 REGISTRY_PATH = REPO_ROOT / "config/hook-registry.json"
-HARNESSES = ("cursor", "codex", "claude-code", "github-copilot", "gemini-cli", "grok-build", "opencode")
+HARNESSES = ("cursor", "codex", "claude-code", "grok-build", "opencode")
 
 
 def _pre_tool_count(registry, harness, *, tier):
@@ -29,14 +29,12 @@ def run_assurance(*, tier="bundle"):
             count = 0
             findings.append(str(harness) + ": render failed (" + str(exc) + ")")
         per[harness] = count
-        if count == 0 and harness in {"cursor", "codex", "github-copilot"}:
+        if count == 0 and harness in {"cursor", "codex"}:
             findings.append(str(harness) + ": no PreToolUse hooks rendered under " + tier + " tier")
     if per.get("cursor", 99) > 3:
         findings.append("cursor PreToolUse spawn budget exceeded: " + str(per.get("cursor")) + " > 3")
     if per.get("codex", 99) > 3:
         findings.append("codex PreToolUse spawn budget exceeded: " + str(per.get("codex")) + " > 3")
-    if per.get("github-copilot", 99) > 2:
-        findings.append("github-copilot PreToolUse spawn budget exceeded: " + str(per.get("github-copilot")) + " > 2")
     return {"tier": tier, "pre_tool_use_counts": per, "findings": findings, "ok": not findings}
 
 

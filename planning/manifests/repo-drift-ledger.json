@@ -380,7 +380,7 @@
     },
     {
       "path": "${REPO_ROOT}/instructions/codex-global.md",
-      "expected_mode": "generated",
+      "expected_mode": "symlink",
       "current_state": "generated-live",
       "drift_risk": "medium",
       "owner_change": "agents-c04-openai-harness",
@@ -604,6 +604,15 @@
       "validation_command": "uv run wagents validate"
     },
     {
+      "path": "~/.config/crush/skills",
+      "expected_mode": "symlinked-entries",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-experimental-harnesses",
+      "next_action": "verify-additive-sync",
+      "validation_command": "uv run wagents validate"
+    },
+    {
       "path": "~/.config/opencode/dcp.jsonc",
       "expected_mode": "merged",
       "current_state": "external-live",
@@ -748,6 +757,24 @@
       "validation_command": "uv run wagents hooks validate --harness cursor"
     },
     {
+      "path": "~/.cursor/rules",
+      "expected_mode": "generated",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-cursor-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/.cursor/agents",
+      "expected_mode": "generated",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-cursor-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
+    },
+    {
       "path": "~/.gemini/GEMINI.md",
       "expected_mode": "generated",
       "current_state": "external-live",
@@ -757,7 +784,7 @@
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "~/.gemini/antigravity/mcp_config.json",
+      "path": "~/.gemini/config/mcp_config.json",
       "expected_mode": "merged",
       "current_state": "external-live",
       "drift_risk": "high",
@@ -766,12 +793,21 @@
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json",
-      "expected_mode": "merged",
+      "path": "~/.gemini/config/skills",
+      "expected_mode": "symlinked-entries",
       "current_state": "external-live",
-      "drift_risk": "high",
+      "drift_risk": "medium",
       "owner_change": "agents-c04-opencode-gemini-harness",
-      "next_action": "merge-with-redaction",
+      "next_action": "verify-additive-sync",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/.gemini/antigravity-cli/skills",
+      "expected_mode": "symlinked-entries",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "next_action": "verify-additive-sync",
       "validation_command": "uv run wagents validate"
     },
     {

@@ -246,10 +246,9 @@ def test_image_input_optimizer_config_validates_and_declares_harness_tiers():
     assert ".claude/settings.json" in harnesses["claude-code"]["repo_surfaces"]
     assert harnesses["cursor"]["tier"] == "hook-block"
     assert ".cursor/hooks.json" in harnesses["cursor"]["repo_surfaces"]
-    assert harnesses["gemini-cli"]["tier"] == "hook-block"
-    assert ".gemini/settings.json" in harnesses["gemini-cli"]["repo_surfaces"]
-    assert harnesses["github-copilot-cli"]["tier"] == "hook-block"
-    assert ".github/hooks/policy.json" in harnesses["github-copilot-cli"]["repo_surfaces"]
+    assert "gemini-cli" not in harnesses
+    assert "github-copilot-cli" not in harnesses
+    assert "antigravity" not in harnesses
     assert harnesses["chatgpt"]["tier"] == "instruction-only"
     assert harnesses["grok-build"]["tier"] == "specified-only"
 
@@ -440,11 +439,7 @@ def test_harness_surface_registry_splits_cloud_desktop_cli_and_editor_variants()
         "claude-desktop",
         "chatgpt",
         "codex",
-        "github-copilot-web",
-        "github-copilot-cli",
         "opencode",
-        "gemini-cli",
-        "antigravity",
         "cursor-editor",
         "cursor-cli",
         "cursor-cloud-agent",

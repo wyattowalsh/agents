@@ -5,13 +5,13 @@ title: "Google Maps Scraper"
 source_kind: "curated-external"
 source: "gosom/google-maps-scraper"
 install_source: "gosom/google-maps-scraper@0ef302ecc72a8872d5dac68cbbeab78800f80fdd"
-install_command: "npx skills add gosom/google-maps-scraper@0ef302ecc72a8872d5dac68cbbeab78800f80fdd --skill google-maps-scraper -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add gosom/google-maps-scraper@0ef302ecc72a8872d5dac68cbbeab78800f80fdd --skill google-maps-scraper -y -g -a claude-code codex crush cursor opencode"
 install_skill_name: "google-maps-scraper"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/gosom/google-maps-scraper"
 selector_mode: "named"
 audit_date: "2026-07-17"
@@ -42,7 +42,7 @@ This row integrates `gosom/google-maps-scraper` as an installable curated extern
 - Normalized URL: [https://github.com/gosom/google-maps-scraper](https://github.com/gosom/google-maps-scraper)
 - Catalog skill id: `google-maps-scraper`
 - Upstream install selector: `google-maps-scraper`
-- Install command: `npx skills add gosom/google-maps-scraper@0ef302ecc72a8872d5dac68cbbeab78800f80fdd --skill google-maps-scraper -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Install command: `npx skills add gosom/google-maps-scraper@0ef302ecc72a8872d5dac68cbbeab78800f80fdd --skill google-maps-scraper -y -g -a claude-code codex crush cursor grok opencode`
 - Inspected commit SHA: `0ef302ecc72a8872d5dac68cbbeab78800f80fdd`
 - Pin: install source pinned to audited HEAD (Skills CLI `@` ref verified via `--list`)
 - License status: `MIT`
@@ -67,7 +67,7 @@ Residual risk: skill-loaded agents still see upstream auto-proceed language. Mit
 - List result: 1 skill `google-maps-scraper`
 - Pin probe (2026-07-17): `npx skills add gosom/google-maps-scraper@0ef302ecc72a8872d5dac68cbbeab78800f80fdd --list` → Found 1 skill `google-maps-scraper`
 - Executed command: `uv run wagents skills sync --apply` (catalog-driven multi-harness; exit 0, apply_failures 0)
-- Executed command: `npx skills add gosom/google-maps-scraper --skill google-maps-scraper -y -g -a cursor -a codex -a opencode -a gemini-cli -a github-copilot -a antigravity -a claude-code -a crush`
+- Executed command: `npx skills add gosom/google-maps-scraper --skill google-maps-scraper -y -g -a cursor -a codex -a opencode -a claude-code -a crush`
 - Skills CLI layout (2026-07-17): universal install under `~/.agents/skills/google-maps-scraper`; Claude Code and Crush symlink to that path; Cursor/Codex/OpenCode/Gemini CLI/GitHub Copilot discover via universal agents root (primary per-harness skill dirs may be MISS without failing discovery)
 - Installed path: `~/.agents/skills/google-maps-scraper`
 - Installed path: `~/.claude/skills/google-maps-scraper` (symlink → agents)

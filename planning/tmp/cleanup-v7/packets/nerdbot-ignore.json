@@ -1,0 +1,10 @@
+{
+  "packet": "nerdbot-ignore",
+  "wave": "W1a",
+  "status": "ok",
+  "paths_written": [
+    "skills/nerdbot/.gitignore",
+    "planning/tmp/cleanup-v7/packets/nerdbot-ignore.json"
+  ],
+  "notes": "Gate0: skill-local ignore/venv path. Confirmed skills/nerdbot/.venv exists; root .gitignore already has .venv/ but skills/nerdbot/.gitignore was missing. Created skill-local .gitignore with .venv/, __pycache__/, .ruff_cache/, .DS_Store (matches package.py EXCLUDE patterns). git check-ignore confirms .venv/.ruff_cache/.DS_Store match skill-local rules. Root .gitignore unchanged. No catalog MDX or nerdbot source edits."
+}

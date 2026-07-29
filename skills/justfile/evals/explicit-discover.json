@@ -1,0 +1,16 @@
+{
+  "skills": [
+    "justfile"
+  ],
+  "query": "/justfile discover \u2014 what recipes exist and what does install do?",
+  "files": [
+    "justfile"
+  ],
+  "expected_behavior": [
+    "Dispatches to discover mode",
+    "Uses just --list and/or --dump for inventory",
+    "Uses just --show install (or dump) to explain install",
+    "Does not execute the install recipe while discovering",
+    "Remains read-only for just invocation"
+  ]
+}

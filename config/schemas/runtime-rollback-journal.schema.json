@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agents.w4w.dev/schemas/runtime-rollback-journal.schema.json",
+  "title": "Candidate runtime rollback journal",
+  "type": "object",
+  "required": ["version", "transaction_id", "kind", "status", "artifacts"],
+  "properties": {
+    "version": {"const": 2},
+    "transaction_id": {"type": "string", "minLength": 1},
+    "kind": {"enum": ["cli", "mcp", "plugin"]},
+    "status": {"enum": ["commit-pending", "failed"]},
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["artifact_id", "transaction_id", "status"],
+        "properties": {
+          "artifact_id": {"type": "string", "minLength": 1},
+          "transaction_id": {"type": "string", "minLength": 1},
+          "status": {"enum": ["passed", "failed"]}
+        },
+        "additionalProperties": true
+      }
+    },
+    "receipt_revision_preimage": {"type": "integer", "minimum": 0},
+    "started_at": {"type": "string", "format": "date-time"},
+    "completed_at": {"type": "string", "format": "date-time"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"status": {"const": "commit-pending"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "artifacts": {
+            "minItems": 1,
+            "items": {
+              "properties": {"status": {"const": "passed"}},
+              "required": ["status"]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": true
+}

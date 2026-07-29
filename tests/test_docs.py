@@ -9,6 +9,7 @@ from pathlib import Path
 from wagents.catalog import CatalogNode
 from wagents.docs import (
     CATALOG_BROWSER_THRESHOLD,
+    _candidate_runtime_summary,
     _docs_generate_stale_reasons,
     _mcp_overview_badge_stale_reason,
     docs_generate,
@@ -28,6 +29,17 @@ from wagents.docs import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+def test_candidate_runtime_summary_closes_exact_successor_ledger() -> None:
+    summary = _candidate_runtime_summary()
+
+    assert summary["source_targets"] == 289
+    assert summary["total"] == 65
+    assert summary["accepted"] + summary["incomplete"] == 65
+    assert summary["cli_library_total"] == 31
+    assert summary["mcp_total"] == 17
+    assert summary["plugin_total"] == 17
 
 
 def _make_node(kind, id_suffix="test", **overrides):
@@ -110,6 +122,19 @@ class TestWriteIndexPage:
         assert "Supported Runtimes" in text
         assert "catalog entries" in text
         assert "Installed Skills" not in text
+
+    def test_homepage_runtime_rows_match_the_managed_taxonomy(self, tmp_repo):
+        from wagents.site_model import SUPPORTED_AGENTS
+
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        write_index_page([])
+        text = (content_dir / "index.mdx").read_text()
+        runtime_table = text.split("## Runtime Matrix", 1)[1].split("</table>", 1)[0]
+
+        assert runtime_table.count("<tr>") == len(SUPPORTED_AGENTS) + 1
+        for agent in SUPPORTED_AGENTS:
+            assert runtime_table.count(f"<td>{agent.label}</td>") == 1
 
     def test_skills_index_copy_is_repo_only_without_installed(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -763,10 +788,78 @@ class TestDocsGenerateCommand:
 
         monkeypatch.setattr(docs_module, "_docs_generate_lock", fake_lock)
         monkeypatch.setattr(docs_module, "_docs_generate_stale_reasons", lambda **kwargs: [])
+        monkeypatch.setattr(
+            docs_module,
+            "_current_utc_snapshot_date",
+            lambda: (_ for _ in ()).throw(AssertionError("check mode read the clock")),
+        )
 
         docs_module.docs_generate(check=True, include_drafts=False, include_installed=False)
 
         assert events == ["enter", "exit"]
+
+    def test_generate_passes_explicit_snapshot_date(self, monkeypatch):
+        import wagents.docs as docs_module
+
+        captured = []
+
+        @contextmanager
+        def fake_lock():
+            yield
+
+        monkeypatch.setattr(docs_module, "_docs_generate_lock", fake_lock)
+        monkeypatch.setattr(
+            docs_module,
+            "_docs_generate_impl",
+            lambda **kwargs: captured.append(kwargs),
+        )
+
+        docs_module.docs_generate(
+            check=False,
+            include_drafts=False,
+            include_installed=False,
+            snapshot_date="2026-07-29",
+        )
+
+        assert captured == [
+            {
+                "include_drafts": False,
+                "include_installed": False,
+                "snapshot_date": "2026-07-29",
+            }
+        ]
+
+    def test_generate_captures_default_snapshot_date_once(self, monkeypatch):
+        import wagents.docs as docs_module
+
+        calls = []
+
+        @contextmanager
+        def fake_lock():
+            yield
+
+        monkeypatch.setattr(docs_module, "_docs_generate_lock", fake_lock)
+        monkeypatch.setattr(
+            docs_module,
+            "_current_utc_snapshot_date",
+            lambda: calls.append("clock") or "2026-07-29",
+        )
+        monkeypatch.setattr(
+            docs_module,
+            "_docs_generate_impl",
+            lambda **kwargs: calls.append(kwargs),
+        )
+
+        docs_module.docs_generate(check=False, include_drafts=False, include_installed=False)
+
+        assert calls == [
+            "clock",
+            {
+                "include_drafts": False,
+                "include_installed": False,
+                "snapshot_date": "2026-07-29",
+            },
+        ]
 
     def test_check_releases_generate_lock_when_stale(self, monkeypatch):
         import pytest

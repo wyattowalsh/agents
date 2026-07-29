@@ -1,7 +1,7 @@
 {
 	"dependencies": {
 		"@kilocode/plugin": "7.3.1",
-		"@opencode-ai/plugin": "1.14.41",
+		"@opencode-ai/plugin": "1.17.5",
 		"unique-names-generator": "^4.7.1"
 	},
 	"devDependencies": {

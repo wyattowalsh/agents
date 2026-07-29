@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/mcphub/common.sh
+source "${SCRIPT_DIR}/../common.sh"
+mcphub_load_env
+
+if [[ $# -ne 1 ]]; then
+  printf 'usage: candidate-node <managed-server>\n' >&2
+  exit 64
+fi
+
+server="$1"
+case "$server" in
+  mcp-server-chart)
+    fixed_args=()
+    allow_env=(DISABLED_TOOLS SERVICE_ID VIS_REQUEST_SERVER)
+    ;;
+  axiom-mcp)
+    fixed_args=()
+    allow_env=(AXIOM_MCP_MODE)
+    ;;
+  designer-skill-mcp)
+    fixed_args=()
+    allow_env=(NO_UPDATE_NOTIFIER)
+    ;;
+  mcp-excalidraw-server)
+    fixed_args=()
+    allow_env=(EXCALIDRAW_NO_AUTOSTART)
+    ;;
+  semiotic-mcp)
+    fixed_args=()
+    allow_env=()
+    ;;
+  better-icons)
+    fixed_args=(mcp)
+    allow_env=()
+    ;;
+  mcp-dashboards)
+    fixed_args=(--stdio)
+    allow_env=(MCP_DASHBOARDS_DISABLE_PREVIEW MCP_DASHBOARDS_RETAIN_DAYS)
+    ;;
+  mcp-server-mobile)
+    fixed_args=(--stdio)
+    allow_env=(MOBILEMCP_DISABLE_TELEMETRY)
+    ;;
+  nullcost-plugin)
+    fixed_args=(mcp-server)
+    allow_env=()
+    ;;
+  openspec-mcp)
+    repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd -P)"
+    fixed_args=("$repo_root")
+    allow_env=()
+    ;;
+  p2a)
+    fixed_args=()
+    allow_env=(PROMPT_TO_BUNDLE_DRY_RUN)
+    ;;
+  *)
+    printf 'candidate-node: unsupported managed server: %s\n' "$server" >&2
+    exit 64
+    ;;
+esac
+
+install_root="$HOME/.local/share/wagents/candidate-runtime/npm"
+bin_root="$install_root/node_modules/.bin"
+executable="$bin_root/$server"
+if [[ ! -x "$executable" ]]; then
+  printf 'candidate-node: managed executable is missing: %s\n' "$executable" >&2
+  exit 127
+fi
+
+resolved_root="$(cd "$install_root" && pwd -P)"
+resolved_executable="$(python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$executable")"
+case "$resolved_executable" in
+  "$resolved_root"/*) ;;
+  *)
+    printf 'candidate-node: executable escapes managed root: %s\n' "$resolved_executable" >&2
+    exit 126
+    ;;
+esac
+
+mcphub_exec_clean "${allow_env[@]}" -- "$executable" "${fixed_args[@]}"

@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-8749c7adb4038991",
+  "normalized_url": "https://github.com/tt-a1i/archify",
+  "transaction_id": "e8f81e19b36148b2955e1c7d106e3d89",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "540119950cda0bfe7584241c8928a2a35391a8b437326f6fbc160861fbca5947",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "dea51878021553e94e2bf785900f5640a2d113b9d6360f9c27c1f3c9c8c3b06c",
+  "isolated_rollback_digest": "dea51878021553e94e2bf785900f5640a2d113b9d6360f9c27c1f3c9c8c3b06c",
+  "fresh_absence": {
+    "archify": null
+  },
+  "fresh_absence_process_id": 19440,
+  "fresh_absence_output_sha256": "cb54ed7d44a108cb33bb45b2935e9977980952ef07eb132acfdf762fca9e1882",
+  "restored_use_process_id": 19637,
+  "restored_use_output_sha256": "27d32f2b96816626f9d0c08868a6b3f86237f100682f3ea4f488e3ed6b8c416d",
+  "restored_use_launch_paths": [
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-8749c7adb4038991-0wxfxxda/bin/archify",
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-8749c7adb4038991-0wxfxxda/bin/archify"
+  ],
+  "restored_use_launch_realpaths": [
+    "/Users/ww/.agents/skills/archify/bin/archify.mjs",
+    "/Users/ww/.agents/skills/archify/bin/archify.mjs"
+  ],
+  "restored_executable_map": {
+    "archify": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-8749c7adb4038991-0wxfxxda/bin/archify",
+      "realpath": "/Users/ww/.agents/skills/archify/bin/archify.mjs"
+    }
+  },
+  "installed_digest": "9e639f5b2bfb7cc8c6d629db52fa85199674ba30de4b58c035f01b5f1af8e25d",
+  "status": "passed"
+}

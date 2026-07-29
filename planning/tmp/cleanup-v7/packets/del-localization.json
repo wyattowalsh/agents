@@ -1,0 +1,1 @@
+{"packet":"del-localization","wave":"W2a","status":"ok","paths_written":["planning/tmp/cleanup-v7/packets/del-localization.json"],"notes":["Deleted skills/skill-localization-packager/ (SKILL.md, evals/, scripts/, .DS_Store)","Deleted docs/src/authoring/skills/skill-localization-packager.mdx","Confirmed both trees/authoring gone"]}

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-d426861afca85918",
+  "mcp_server": "mcp-dashboards",
+  "transaction_id": "89c3b268b66a42e19ab673d204b40e31",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "5002e507016526960f173c5ccdacbf6d9eb28899975a4e1658780d9fb9af7589",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "e3a7a006ff478415f0bdcb0ee01479662c8079a2d18468ff6d5aa755086ea279",
+  "isolated_rollback_digest": "e3a7a006ff478415f0bdcb0ee01479662c8079a2d18468ff6d5aa755086ea279",
+  "fresh_absence": {
+    "mcp-dashboards": null
+  },
+  "fresh_absence_process_id": 20828,
+  "fresh_absence_output_sha256": "189607707f98035499ed38ca2e652b53314012d434b4d1ce7043d52599ed976f",
+  "restored_use_process_id": 20918,
+  "restored_use_output_sha256": "c83e63750b4767e8c1b0f58490ae572762b8f292b117565bb6cd4b94c11e710c",
+  "restored_use_launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-mcp-entrypoint-rollback-candidate-artifact-d426861afca85918-xgb8c49f/bin/mcp-dashboards",
+  "restored_use_launch_realpath": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/mcp-dashboards/dist/index.js",
+  "installed_digest": "59524b84444c379762059939bb8b7bfd50e7d7eeb262ae8ba6d3cd3732ea1485",
+  "status": "passed"
+}

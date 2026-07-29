@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-ed5c163507061f9a",
+  "normalized_url": "https://github.com/auriti-labs/geo-optimizer-skill",
+  "transaction_id": "5888398a03d248a6bb2f93b412c4ed34",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "0f4050cda10b72e34ddc939597ee30d9b09aadb3b59e3689e5f901755d82ae93",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "1e2bd26596256c475847fd9d265cddd6e73e798bbf4d83e6effb7f941bef2615",
+  "isolated_rollback_digest": "1e2bd26596256c475847fd9d265cddd6e73e798bbf4d83e6effb7f941bef2615",
+  "fresh_absence": {
+    "geo": null,
+    "geo-mcp": null,
+    "geo-web": null
+  },
+  "fresh_absence_process_id": 16955,
+  "fresh_absence_output_sha256": "84e484dae92755fb9be5a7192650b830f25daffde96d0f108db9ad6b25ce3e52",
+  "restored_use_process_id": 17131,
+  "restored_use_output_sha256": "ca4279bfb8bd86b44273deecebd9605bd3bfb37d15968b3033da2c393cda57aa",
+  "restored_use_launch_paths": [
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-ed5c163507061f9a-le426493/bin/geo",
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-ed5c163507061f9a-le426493/bin/geo"
+  ],
+  "restored_use_launch_realpaths": [
+    "/Users/ww/.local/share/uv/tools/geo-optimizer-skill/bin/geo",
+    "/Users/ww/.local/share/uv/tools/geo-optimizer-skill/bin/geo"
+  ],
+  "restored_executable_map": {
+    "geo": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-ed5c163507061f9a-le426493/bin/geo",
+      "realpath": "/Users/ww/.local/share/uv/tools/geo-optimizer-skill/bin/geo"
+    },
+    "geo-mcp": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-ed5c163507061f9a-le426493/bin/geo-mcp",
+      "realpath": "/Users/ww/.local/share/uv/tools/geo-optimizer-skill/bin/geo-mcp"
+    },
+    "geo-web": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-ed5c163507061f9a-le426493/bin/geo-web",
+      "realpath": "/Users/ww/.local/share/uv/tools/geo-optimizer-skill/bin/geo-web"
+    }
+  },
+  "installed_digest": "92fa3715e41dccd5350f5c2050cc300c7a604ddc1fdcaa8408ed1307eda82be1",
+  "status": "passed"
+}

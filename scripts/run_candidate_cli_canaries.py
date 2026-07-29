@@ -28,12 +28,32 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from wagents.candidate_evidence import (
+    FILESYSTEM_DIGEST_ALGORITHM,
+    RUNTIME_DIGEST_IGNORED_DIRS,
+    filesystem_digest,
+    receipt_metadata,
+)
+from wagents.candidate_receipts import ReceiptStore
+from wagents.candidate_sandbox import (
+    NetworkPolicy,
+    prepare_sandboxed_subprocess,
+    sandbox_environment,
+    selected_javascript_package_roots,
+    selected_macos_runtime_roots,
+)
+from wagents.process_lifecycle import (
+    run_after_process_lifecycle_gate,
+    terminate_process_group,
+)
+
 if TYPE_CHECKING:
     from collections.abc import Callable
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_DIR = ROOT / "planning" / "manifests" / "candidate-corpus-jul2026"
 RECEIPTS = MANIFEST_DIR / "runtime-activation-receipts.json"
+RUNTIME_STATE = Path("~/.local/share/wagents/candidate-runtime").expanduser()
 ACTIVATION_SCRIPT = ROOT / "scripts" / "record_candidate_runtime_activation.py"
 DEFAULT_NODE_PROMOTION_STATE = (
     Path.home()
@@ -46,8 +66,28 @@ DEFAULT_NODE_PROMOTION_STATE = (
 )
 DEFAULT_NODE_RUNTIME_ROOT = Path.home() / ".local" / "share" / "wagents" / "candidate-runtime" / "npm"
 DEFAULT_BUN_RUNTIME_ROOT = Path.home() / ".local" / "share" / "wagents" / "candidate-runtime" / "bun"
-SECRET_SUFFIXES = ("_API_KEY", "_TOKEN", "_SECRET", "_PASSWORD", "_PRIVATE_KEY")
-DIGEST_IGNORED_DIRS = {".cache", ".git", ".pytest_cache", "__pycache__", "node_modules"}
+DEFAULT_UV_TOOLS_ROOT = Path.home() / ".local" / "share" / "uv" / "tools"
+DEFAULT_LOCAL_BIN = Path.home() / ".local" / "bin"
+DEFAULT_CARGO_BIN = Path.home() / ".cargo" / "bin"
+DEFAULT_GO_BIN = Path.home() / "go" / "bin"
+EXECUTABLE_MAP_ENV = "WAGENTS_CANDIDATE_EXECUTABLE_MAP"
+CONTROLLED_SYSTEM_PATH = "/usr/bin:/bin:/usr/sbin:/sbin"
+PROBE_NETWORK_POLICIES: dict[str, NetworkPolicy] = {
+    # Icon search makes one credential-free Iconify query. Seatbelt grants
+    # outbound sockets only; it still denies listening sockets and fixture escapes.
+    "better-icons": "external",
+    # Schema inspection fetches the public Google discovery document without auth.
+    "gws": "external",
+    # Library discovery fetches TanStack's public registry without auth.
+    "tanstack": "external",
+    "openspec-ui": "loopback",
+    "refine": "loopback",
+    "specboard": "loopback",
+    "tot": "loopback",
+}
+SAFE_ENV_KEYS = frozenset({"LANG", "LC_ALL", "LC_CTYPE", "LOGNAME", "PATH", "SHELL", "TMPDIR", "USER"})
+SAFE_ENV_PREFIXES = ("LC_",)
+DIGEST_IGNORED_DIRS = set(RUNTIME_DIGEST_IGNORED_DIRS)
 
 
 @dataclass(frozen=True)
@@ -57,6 +97,7 @@ class ProcessResult:
     stdout: str
     stderr: str
     pid: int
+    candidate_argv: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -66,6 +107,8 @@ class ProbeResult:
     initial_pid: int
     fresh_pid: int
     output_sha256: str
+    launch_paths: tuple[str, ...] = ()
+    launch_realpaths: tuple[str, ...] = ()
 
 
 def activation_module():
@@ -82,17 +125,16 @@ def sanitized_env(extra: dict[str, str] | None = None, *, home: Path | None = No
     env = {
         key: value
         for key, value in os.environ.items()
-        if not key.endswith(SECRET_SUFFIXES) and key not in {"COOKIE", "COOKIES", "AUTHORIZATION"}
+        if key in SAFE_ENV_KEYS or any(key.startswith(prefix) for prefix in SAFE_ENV_PREFIXES)
     }
-    env.update(
-        {
-            "CI": "1",
-            "DO_NOT_TRACK": "1",
-            "NO_COLOR": "1",
-            "NO_UPDATE_NOTIFIER": "1",
-            "npm_config_update_notifier": "false",
-        }
-    )
+    env["PATH"] = CONTROLLED_SYSTEM_PATH
+    env.update({
+        "CI": "1",
+        "DO_NOT_TRACK": "1",
+        "NO_COLOR": "1",
+        "NO_UPDATE_NOTIFIER": "1",
+        "npm_config_update_notifier": "false",
+    })
     if home is not None:
         env["HOME"] = str(home)
         env["XDG_CACHE_HOME"] = str(home / ".cache")
@@ -100,6 +142,51 @@ def sanitized_env(extra: dict[str, str] | None = None, *, home: Path | None = No
         env["XDG_DATA_HOME"] = str(home / ".local" / "share")
     env.update(extra or {})
     return env
+
+
+def _executable_map(env: dict[str, str]) -> dict[str, str]:
+    try:
+        payload = json.loads(env.get(EXECUTABLE_MAP_ENV, "{}"))
+    except json.JSONDecodeError as error:
+        raise RuntimeError(f"candidate executable map is invalid JSON: {error}") from None
+    if not isinstance(payload, dict) or not all(
+        isinstance(key, str) and isinstance(value, str) for key, value in payload.items()
+    ):
+        raise RuntimeError("candidate executable map must be a string mapping")
+    return payload
+
+
+def resolve_probe_argv(argv: list[str], env: dict[str, str]) -> list[str]:
+    """Resolve candidate commands only through the recorded managed executable map."""
+
+    require(bool(argv), "candidate probe received an empty argv")
+    candidate = Path(argv[0])
+    if candidate.is_absolute():
+        launch_path = candidate
+    else:
+        recorded = _executable_map(env).get(argv[0])
+        if recorded is None:
+            raise RuntimeError(f"candidate executable is not recorded: {argv[0]!r}")
+        launch_path = Path(recorded)
+        require(launch_path.is_absolute(), f"recorded candidate executable is not absolute: {recorded!r}")
+    resolved = launch_path.resolve(strict=True)
+    require(resolved.is_file() and os.access(resolved, os.X_OK), f"candidate executable is not runnable: {resolved}")
+    return [str(launch_path), *argv[1:]]
+
+
+def _launch_env(env: dict[str, str]) -> dict[str, str]:
+    return {key: value for key, value in env.items() if key != EXECUTABLE_MAP_ENV}
+
+
+def _prepare_candidate_launch(
+    argv: list[str],
+    *,
+    cwd: Path,
+    env: dict[str, str],
+) -> tuple[list[str], dict[str, str], list[str]]:
+    resolved = resolve_probe_argv(argv, env)
+    wrapped, child_env = prepare_sandboxed_subprocess(resolved, cwd=cwd, env=env)
+    return wrapped, _launch_env(child_env), resolved
 
 
 def run(
@@ -110,22 +197,23 @@ def run(
     input_text: str | None = None,
     timeout: int = 60,
 ) -> ProcessResult:
+    argv, child_env, candidate_argv = _prepare_candidate_launch(argv, cwd=cwd, env=env)
     process = subprocess.Popen(
         argv,
         cwd=cwd,
-        env=env,
+        env=child_env,
         stdin=subprocess.PIPE if input_text is not None else subprocess.DEVNULL,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
+        start_new_session=True,
     )
     try:
         stdout, stderr = process.communicate(input=input_text, timeout=timeout)
     except subprocess.TimeoutExpired:
-        process.kill()
-        stdout, stderr = process.communicate()
+        terminate_process_group(process)
         raise RuntimeError(f"canary timed out: {argv!r}") from None
-    return ProcessResult(tuple(argv), process.returncode, stdout, stderr, process.pid)
+    return ProcessResult(tuple(argv), process.returncode, stdout, stderr, process.pid, tuple(candidate_argv))
 
 
 def free_loopback_port() -> int:
@@ -151,10 +239,11 @@ def run_server(
     assertion: Callable[[int, str], None],
     timeout: int = 30,
 ) -> ProcessResult:
+    argv, child_env, candidate_argv = _prepare_candidate_launch(argv, cwd=cwd, env=env)
     process = subprocess.Popen(
         argv,
         cwd=cwd,
-        env=env,
+        env=child_env,
         stdin=subprocess.DEVNULL,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -178,9 +267,7 @@ def run_server(
             raise RuntimeError(f"server canary timed out: {argv!r}")
         if process.poll() is not None:
             stdout, stderr = process.communicate()
-            raise RuntimeError(
-                f"server exited before readiness ({process.returncode}): {argv!r}\n{stdout}\n{stderr}"
-            )
+            raise RuntimeError(f"server exited before readiness ({process.returncode}): {argv!r}\n{stdout}\n{stderr}")
         assertion(status, body)
     finally:
         if process.poll() is None:
@@ -191,7 +278,7 @@ def run_server(
                 os.killpg(process.pid, signal.SIGKILL)
                 process.wait(timeout=5)
     stdout, stderr = process.communicate()
-    return ProcessResult(tuple(argv), 0, body + "\n" + stdout, stderr, process.pid)
+    return ProcessResult(tuple(argv), 0, body + "\n" + stdout, stderr, process.pid, tuple(candidate_argv))
 
 
 def run_pty(
@@ -202,12 +289,13 @@ def run_pty(
     interactions: tuple[tuple[str, bytes], ...],
     timeout: int = 20,
 ) -> ProcessResult:
+    argv, child_env, candidate_argv = _prepare_candidate_launch(argv, cwd=cwd, env=env)
     master_fd, slave_fd = pty.openpty()
     fcntl.ioctl(slave_fd, termios.TIOCSWINSZ, struct.pack("HHHH", 40, 120, 0, 0))
     process = subprocess.Popen(
         argv,
         cwd=cwd,
-        env=env,
+        env=child_env,
         stdin=slave_fd,
         stdout=slave_fd,
         stderr=slave_fd,
@@ -235,7 +323,8 @@ def run_pty(
             captured = output.decode("utf-8", errors="replace")[-4000:]
             raise RuntimeError(f"PTY canary timed out: {argv!r}\n{captured}")
         if pending:
-            raise RuntimeError(f"PTY canary did not observe prompts: {[item[0] for item in pending]!r}")
+            captured = output.decode("utf-8", errors="replace")[-4000:]
+            raise RuntimeError(f"PTY canary did not observe prompts: {[item[0] for item in pending]!r}\n{captured}")
     finally:
         if process.poll() is None:
             os.killpg(process.pid, signal.SIGTERM)
@@ -246,12 +335,39 @@ def run_pty(
                 process.wait(timeout=5)
         os.close(master_fd)
     text = output.decode("utf-8", errors="replace")
-    return ProcessResult(tuple(argv), int(process.returncode or 0), text, "", process.pid)
+    return ProcessResult(tuple(argv), int(process.returncode or 0), text, "", process.pid, tuple(candidate_argv))
 
 
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise RuntimeError(message)
+
+
+def write_openspec_pw_prerequisite_shims(fixture: Path) -> None:
+    """Expose only the prerequisite checks used by the audited init path."""
+
+    trusted_bin = fixture / "trusted-bin"
+    trusted_bin.mkdir(exist_ok=True)
+    scripts = {
+        "npm": """#!/bin/sh
+if [ \"$#\" -eq 1 ] && [ \"$1\" = \"--version\" ]; then
+  printf '11.10.1\\n'
+  exit 0
+fi
+exit 64
+""",
+        "npx": """#!/bin/sh
+if [ \"$#\" -eq 2 ] && [ \"$1\" = \"openspec\" ] && [ \"$2\" = \"--version\" ]; then
+  printf '1.0.0\\n'
+  exit 0
+fi
+exit 64
+""",
+    }
+    for name, body in scripts.items():
+        target = trusted_bin / name
+        target.write_text(body, encoding="utf-8")
+        target.chmod(0o755)
 
 
 def combined_hash(*values: str) -> str:
@@ -262,17 +378,102 @@ def combined_hash(*values: str) -> str:
     return digest.hexdigest()
 
 
-def repeat_probe(name: str, body: Callable[[Path, dict[str, str]], ProcessResult]) -> ProbeResult:
+def _trusted_runtime_path(fixture: Path) -> tuple[str, tuple[Path, ...]]:
+    trusted_bin = fixture / "trusted-bin"
+    trusted_bin.mkdir()
+    runtime_candidates = {
+        "node": (Path("/opt/homebrew/bin/node"), Path("/usr/local/bin/node"), Path("/usr/bin/node")),
+        "bun": (Path.home() / ".bun" / "bin" / "bun", Path("/opt/homebrew/bin/bun")),
+        "python": (Path(sys.executable),),
+    }
+    roots: list[Path] = [trusted_bin]
+    for name, candidates in runtime_candidates.items():
+        available = [candidate.resolve(strict=True) for candidate in candidates if candidate.exists()]
+        if not available:
+            continue
+        target = available[0]
+        require(target.is_file() and os.access(target, os.X_OK), f"trusted runtime is not executable: {target}")
+        (trusted_bin / name).symlink_to(target)
+        roots.extend(selected_macos_runtime_roots(target))
+        if name == "node":
+            openssl_config = Path("/opt/homebrew/etc/openssl@3")
+            if openssl_config.is_dir():
+                roots.append(openssl_config)
+    return f"{trusted_bin}:{CONTROLLED_SYSTEM_PATH}", tuple(roots)
+
+
+def _candidate_read_roots(executable_map: dict[str, Path]) -> tuple[Path, ...]:
+    roots: set[Path] = set()
+    for executable in executable_map.values():
+        resolved = executable.resolve()
+        roots.update(selected_javascript_package_roots(resolved))
+        roots.update(selected_macos_runtime_roots(resolved))
+        inspector_cli = DEFAULT_NODE_RUNTIME_ROOT / "node_modules/@modelcontextprotocol/inspector/cli/build/cli.js"
+        if resolved == inspector_cli.resolve(strict=False):
+            commander = DEFAULT_NODE_RUNTIME_ROOT / "node_modules/commander"
+            require(commander.is_dir(), "MCP Inspector hoisted commander dependency is missing")
+            roots.add(commander)
+        uv_root = DEFAULT_UV_TOOLS_ROOT.resolve(strict=False)
+        if resolved.is_relative_to(uv_root):
+            relative = resolved.relative_to(uv_root)
+            tool_root = uv_root / relative.parts[0]
+            roots.add(tool_root)
+            tool_python = tool_root / "bin/python"
+            if tool_python.exists():
+                roots.add(tool_python)
+                roots.update(selected_macos_runtime_roots(tool_python.resolve(strict=True)))
+        skill_marker = f"{os.sep}.agents{os.sep}skills{os.sep}"
+        if skill_marker in str(resolved):
+            prefix, suffix = str(resolved).split(skill_marker, 1)
+            skill_name = suffix.split(os.sep, 1)[0]
+            roots.add(Path(prefix) / ".agents" / "skills" / skill_name)
+    return tuple(sorted(roots, key=str))
+
+
+def repeat_probe(
+    name: str,
+    body: Callable[[Path, dict[str, str]], ProcessResult],
+    executable_map: dict[str, Path],
+) -> ProbeResult:
     pids: list[int] = []
     outputs: list[str] = []
+    launch_paths: list[str] = []
+    launch_realpaths: list[str] = []
+    mapped_launch_paths = {str(path): path for path in executable_map.values()}
     for _ in range(2):
         with tempfile.TemporaryDirectory(prefix=f"wagents-{name}-") as raw:
             fixture = Path(raw)
             home = fixture / "home"
             home.mkdir()
-            result = body(fixture, sanitized_env(home=home))
+            temporary = fixture / "tmp"
+            temporary.mkdir()
+            env = sanitized_env(home=home)
+            env["PATH"], runtime_roots = _trusted_runtime_path(fixture)
+            env["TMPDIR"] = str(temporary)
+            env[EXECUTABLE_MAP_ENV] = json.dumps({key: str(value) for key, value in executable_map.items()})
+            network_policy = PROBE_NETWORK_POLICIES.get(name, "none")
+            if network_policy == "external":
+                env["SSL_CERT_FILE"] = "/etc/ssl/cert.pem"
+            env = sandbox_environment(
+                env,
+                read_roots=(*_candidate_read_roots(executable_map), *runtime_roots, fixture),
+                write_roots=(fixture,),
+                network_policy=network_policy,
+                allow_pty=name == "dotagents",
+                allow_file_watch=name == "specboard",
+            )
+            result = body(fixture, env)
             pids.append(result.pid)
             outputs.extend((result.stdout, result.stderr))
+            if executable_map:
+                require(bool(result.candidate_argv), f"{name}: semantic probe omitted candidate launch evidence")
+                launch_path = result.candidate_argv[0]
+                require(
+                    launch_path in mapped_launch_paths,
+                    f"{name}: semantic probe launched outside the recorded executable map: {launch_path}",
+                )
+                launch_paths.append(launch_path)
+                launch_realpaths.append(str(mapped_launch_paths[launch_path].resolve(strict=True)))
     require(pids[0] != pids[1], f"{name}: fresh probe reused a process")
     return ProbeResult(
         fixture_id=f"candidate-cli-{name}-v1",
@@ -280,6 +481,8 @@ def repeat_probe(name: str, body: Callable[[Path, dict[str, str]], ProcessResult
         initial_pid=pids[0],
         fresh_pid=pids[1],
         output_sha256=combined_hash(*outputs),
+        launch_paths=tuple(launch_paths),
+        launch_realpaths=tuple(launch_realpaths),
     )
 
 
@@ -294,7 +497,7 @@ def probe_agentkits(fixture: Path, env: dict[str, str]) -> ProcessResult:
         all(isinstance(item, dict) and (root / "skills" / str(item.get("path", ""))).is_file() for item in entries),
         "agentkits registry contains a missing skill path",
     )
-    require(shutil.which("markit") is not None, "agentkits markit entrypoint is missing")
+    require(probe_executable(env, "markit").is_file(), "agentkits markit entrypoint is missing")
     return result
 
 
@@ -405,16 +608,14 @@ def probe_transpile(fixture: Path, env: dict[str, str]) -> ProcessResult:
 
 
 def probe_agent_reach(fixture: Path, env: dict[str, str]) -> ProcessResult:
-    source = json.dumps(
-        {
-            "id": "x1",
-            "title": "Probe",
-            "user": {"nickname": "owner"},
-            "metrics": {"likes": 1},
-            "images": ["https://example.invalid/a.png"],
-            "unknown": "drop-me",
-        }
-    )
+    source = json.dumps({
+        "id": "x1",
+        "title": "Probe",
+        "user": {"nickname": "owner"},
+        "metrics": {"likes": 1},
+        "images": ["https://example.invalid/a.png"],
+        "unknown": "drop-me",
+    })
     result = run(["agent-reach", "format", "xhs"], cwd=fixture, env=env, input_text=source)
     require(
         result.returncode == 0 and "Probe" in result.stdout and "drop-me" not in result.stdout,
@@ -491,9 +692,7 @@ def probe_newsjack(fixture: Path, env: dict[str, str]) -> ProcessResult:
         encoding="utf-8",
     )
     decisions.write_text(
-        json.dumps(
-            {"decisions": [{"signal_id": "s1", "decision": "reject", "reason": "no_profile_bridge"}]}
-        ),
+        json.dumps({"decisions": [{"signal_id": "s1", "decision": "reject", "reason": "no_profile_bridge"}]}),
         encoding="utf-8",
     )
     env["NEWSJACK_NO_AUTO_UPDATE"] = "1"
@@ -530,7 +729,7 @@ def probe_newsjack(fixture: Path, env: dict[str, str]) -> ProcessResult:
 
 
 def probe_hyperframes(fixture: Path, env: dict[str, str]) -> ProcessResult:
-    executable = Path(shutil.which("hyperframes") or "")
+    executable = probe_executable(env, "hyperframes")
     root = package_root(
         {"package_manager": "npm", "package_name": "hyperframes"},
         executable,
@@ -673,6 +872,7 @@ def probe_openspec_pw(fixture: Path, env: dict[str, str]) -> ProcessResult:
         "# Probe specification\n",
         encoding="utf-8",
     )
+    write_openspec_pw_prerequisite_shims(fixture)
     env["PORT"] = "9"
     result = run(["openspec-pw", "init", "--no-mcp"], cwd=project, env=env, timeout=120)
     expected = [
@@ -740,26 +940,17 @@ def probe_tot(fixture: Path, env: dict[str, str]) -> ProcessResult:
 
 
 def probe_refine(fixture: Path, env: dict[str, str]) -> ProcessResult:
-    executable = Path(shutil.which("refine") or "")
-    node = shutil.which("node")
-    if node is None:
-        raise RuntimeError("Node.js was not found for the Refine relay")
-    root = package_root(
-        {"package_manager": "npm", "package_name": "transitions-refine"},
-        executable,
-    )
-    if root is None:
-        raise RuntimeError("Refine package root was not found")
+    probe_executable(env, "refine")
     port = free_loopback_port()
-    env.update(
-        {
-            "PATH": "/usr/bin:/bin",
-            "REFINE_AUTO": "0",
-            "REFINE_AGENT_CMD": "",
-            "REFINE_AGENT_RECHECK_MS": "600000",
-            "REFINE_RELAY_PORT": str(port),
-        }
-    )
+    page = fixture / "index.html"
+    original_page = "<!doctype html><html><body><main>Probe</main></body></html>\n"
+    page.write_text(original_page, encoding="utf-8")
+    env.update({
+        "REFINE_AUTO": "0",
+        "REFINE_AGENT_CMD": "/usr/bin/false",
+        "REFINE_AGENT_RECHECK_MS": "600000",
+        "REFINE_RELAY_PORT": str(port),
+    })
 
     def assert_health(status: int, body: str) -> None:
         require(status == 200, "Refine health endpoint did not return 200")
@@ -768,13 +959,18 @@ def probe_refine(fixture: Path, env: dict[str, str]) -> ProcessResult:
         denied_status, _ = http_get(f"http://127.0.0.1:{port}/definitely-missing")
         require(denied_status == 404, "Refine did not reject an unknown endpoint")
 
-    return run_server(
-        [node, str(root / "server" / "relay.mjs")],
+    result = run_server(
+        ["refine", "live", "--foreground", "--page", str(page), "--port", str(port)],
         cwd=fixture,
         env=env,
         ready_url=f"http://127.0.0.1:{port}/health",
         assertion=assert_health,
     )
+    require(page.read_text(encoding="utf-8") == original_page, "Refine did not remove its injected page tag")
+    require(not (fixture / ".refine-relay.json").exists(), "Refine left a daemon receipt after foreground cleanup")
+    denied = run(["refine", "unknown-command"], cwd=fixture, env=env)
+    require(denied.returncode != 0 and "Refine" in denied.stdout, "Refine unknown-command denial failed")
+    return result
 
 
 def _write_openspec_fixture(project: Path) -> None:
@@ -852,12 +1048,10 @@ def probe_openspec_ui(fixture: Path, env: dict[str, str]) -> ProcessResult:
     port = free_loopback_port()
     config = fixture / "openspec-ui.json"
     config.write_text(
-        json.dumps(
-            {
-                "sources": [{"name": "probe", "path": str(project / "openspec")}],
-                "port": port,
-            }
-        ),
+        json.dumps({
+            "sources": [{"name": "probe", "path": str(project / "openspec")}],
+            "port": port,
+        }),
         encoding="utf-8",
     )
     env.update({"PORT": str(port), "CORS_ALLOWED_ORIGINS": f"http://127.0.0.1:{port}"})
@@ -942,8 +1136,8 @@ for line in sys.stdin:
 def probe_inspector(fixture: Path, env: dict[str, str]) -> ProcessResult:
     server = fixture / "fixture_mcp.py"
     _write_fixture_mcp_server(server)
-    target = [sys.executable, str(server)]
-    executable = Path(shutil.which("mcp-inspector") or "").resolve()
+    target = [str(Path(sys.executable).resolve(strict=True)), str(server)]
+    executable = probe_executable(env, "mcp-inspector")
     require(executable.is_file(), "MCP Inspector managed executable was not found")
     listed = run(
         ["mcp-inspector", "--cli", *target, "--method", "tools/list"],
@@ -983,8 +1177,8 @@ def probe_inspector(fixture: Path, env: dict[str, str]) -> ProcessResult:
 
 
 def probe_archify(fixture: Path, env: dict[str, str]) -> ProcessResult:
-    executable = Path(shutil.which("archify") or "").resolve()
-    source = executable.parent.parent / "examples" / "web-app.architecture.json"
+    executable = probe_executable(env, "archify")
+    source = executable.resolve(strict=True).parent.parent / "examples" / "web-app.architecture.json"
     output = fixture / "architecture.html"
     validated = run(["archify", "validate", "architecture", str(source), "--json"], cwd=fixture, env=env)
     require(validated.returncode == 0, "archify rejected its audited architecture example")
@@ -1084,27 +1278,7 @@ def source_shas() -> dict[str, str]:
 
 
 def file_digest(paths: list[Path]) -> str:
-    digest = hashlib.sha256()
-    for path in sorted({item.resolve() for item in paths}, key=str):
-        digest.update(str(path).encode())
-        digest.update(b"\0")
-        if path.is_file():
-            digest.update(path.read_bytes())
-        elif path.is_dir():
-            for raw_root, dirs, files in os.walk(path, followlinks=False):
-                dirs[:] = sorted(item for item in dirs if item not in DIGEST_IGNORED_DIRS)
-                root = Path(raw_root)
-                for name in sorted(files):
-                    child = root / name
-                    digest.update(str(child.relative_to(path)).encode())
-                    digest.update(b"\0")
-                    if child.is_symlink():
-                        digest.update(os.readlink(child).encode())
-                    else:
-                        digest.update(child.read_bytes())
-                    digest.update(b"\0")
-        digest.update(b"\0")
-    return digest.hexdigest()
+    return filesystem_digest(paths, ignored_dirs=DIGEST_IGNORED_DIRS)
 
 
 def package_root(seed: dict[str, Any], executable: Path) -> Path | None:
@@ -1125,7 +1299,54 @@ def package_root(seed: dict[str, Any], executable: Path) -> Path | None:
     return None
 
 
-def installed_paths(seed: dict[str, Any]) -> list[Path]:
+def _managed_executable_candidates(seed: dict[str, Any], name: str) -> list[Path]:
+    package_manager = str(seed.get("package_manager") or "")
+    if package_manager == "npm":
+        return [DEFAULT_NODE_RUNTIME_ROOT / "node_modules" / ".bin" / name]
+    if package_manager == "bun":
+        return [DEFAULT_BUN_RUNTIME_ROOT / "node_modules" / ".bin" / name]
+    if package_manager in {"uv-tool", "uv-tool-git"}:
+        return sorted(DEFAULT_UV_TOOLS_ROOT.glob(f"*/bin/{name}"), key=str)
+    if package_manager == "cargo":
+        return [DEFAULT_CARGO_BIN / name]
+    if package_manager == "go":
+        return [DEFAULT_GO_BIN / name, DEFAULT_LOCAL_BIN / name]
+    if package_manager in {"skill-bundled", "standalone"}:
+        return [DEFAULT_LOCAL_BIN / name]
+    return []
+
+
+def resolve_managed_executables(seeds: list[dict[str, Any]]) -> dict[str, Path]:
+    """Resolve exact candidate executables from recorded package-manager roots, never PATH."""
+
+    result: dict[str, Path] = {}
+    for seed in seeds:
+        for raw_name in seed.get("executables", []):
+            name = str(raw_name)
+            candidates = [candidate for candidate in _managed_executable_candidates(seed, name) if candidate.exists()]
+            resolved = {candidate.resolve(strict=True) for candidate in candidates}
+            require(bool(resolved), f"recorded candidate executable is missing: {name!r}")
+            require(
+                len(resolved) == 1,
+                f"recorded candidate executable is ambiguous: {name!r}: {sorted(map(str, resolved))}",
+            )
+            executable = next(iter(resolved))
+            require(
+                executable.is_file() and os.access(executable, os.X_OK),
+                f"recorded candidate executable is not runnable: {executable}",
+            )
+            existing = result.get(name)
+            require(existing is None or existing == executable, f"candidate executable mapping conflicts: {name!r}")
+            result[name] = executable
+    return result
+
+
+def probe_executable(env: dict[str, str], name: str) -> Path:
+    resolved = resolve_probe_argv([name], env)[0]
+    return Path(resolved)
+
+
+def installed_paths(seed: dict[str, Any], executable_map: dict[str, Path]) -> list[Path]:
     result: list[Path] = []
     package_manager = seed.get("package_manager")
     package_name = str(seed.get("package_name") or "")
@@ -1138,13 +1359,13 @@ def installed_paths(seed: dict[str, Any]) -> list[Path]:
         if candidate.is_dir():
             result.append(candidate)
     for executable in seed.get("executables", []):
-        resolved = shutil.which(str(executable))
-        if resolved:
-            executable_path = Path(resolved)
-            result.append(executable_path)
-            root = package_root(seed, executable_path)
-            if root is not None:
-                result.append(root)
+        executable_path = executable_map.get(str(executable))
+        if executable_path is None:
+            continue
+        result.append(executable_path)
+        root = package_root(seed, executable_path)
+        if root is not None:
+            result.append(root)
     for raw in seed.get("paths", []):
         path = Path(str(raw)).expanduser()
         if path.exists():
@@ -1166,19 +1387,19 @@ def installed_version(seed: dict[str, Any], paths: list[Path]) -> str | None:
     return None
 
 
+def read_receipt_document() -> dict[str, Any]:
+    return ReceiptStore(RECEIPTS, RUNTIME_STATE).load()
+
+
 def read_receipts() -> dict[tuple[str, str], dict[str, Any]]:
-    if not RECEIPTS.is_file():
-        return {}
-    rows = json.loads(RECEIPTS.read_text(encoding="utf-8")).get("receipts", [])
+    rows = read_receipt_document().get("receipts", [])
     return {(str(row["artifact_id"]), str(row["phase"])): row for row in rows}
 
 
 def write_receipts(rows: dict[tuple[str, str], dict[str, Any]]) -> None:
-    payload = {
-        "version": 1,
-        "receipts": sorted(rows.values(), key=lambda row: (str(row["artifact_id"]), str(row["phase"]))),
-    }
-    RECEIPTS.write_text(json.dumps(payload, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
+    store = ReceiptStore(RECEIPTS, RUNTIME_STATE)
+    snapshot = store.snapshot(artifact_keys=set(rows))
+    run_after_process_lifecycle_gate(lambda: store.commit(snapshot, artifact_upserts=rows))
 
 
 def main() -> int:
@@ -1194,61 +1415,73 @@ def main() -> int:
     requested = set(args.probe or PROBES)
     node_state_path = args.node_promotion_state
     node_state = (
-        json.loads(node_state_path.expanduser().read_text(encoding="utf-8"))
-        if node_state_path is not None
-        else None
+        json.loads(node_state_path.expanduser().read_text(encoding="utf-8")) if node_state_path is not None else None
     )
     if node_state is not None and node_state.get("preimage_digest") != node_state.get("rollback_digest"):
         raise ValueError("Node promotion state does not prove exact rollback")
     bun_state_path = args.bun_promotion_state
     bun_state = (
-        json.loads(bun_state_path.expanduser().read_text(encoding="utf-8"))
-        if bun_state_path is not None
-        else None
+        json.loads(bun_state_path.expanduser().read_text(encoding="utf-8")) if bun_state_path is not None else None
     )
     if bun_state is not None and bun_state.get("preimage_digest") != bun_state.get("rollback_digest"):
         raise ValueError("Bun promotion state does not prove exact rollback")
-    rows = read_receipts()
-    results: list[dict[str, Any]] = []
+    owned_keys: set[tuple[str, str]] = set()
     for url, specs in sorted(module.runtime_specs().items()):
         for seed in specs:
             probe_name = PROBE_BINDINGS.get((url, str(seed.get("kind"))))
             if probe_name not in requested:
                 continue
             artifact = module.artifact_id(url, seed)
-            paths = installed_paths(seed)
+            owned_keys.update((artifact, phase) for phase in ("identity", "install", "behavior", "fresh_process"))
+            promotion_state = {
+                "npm": node_state,
+                "bun": bun_state,
+            }.get(str(seed.get("package_manager")))
+            if promotion_state is not None:
+                owned_keys.add((artifact, "rollback"))
+    store = ReceiptStore(RECEIPTS, RUNTIME_STATE)
+    snapshot = store.snapshot(artifact_keys=owned_keys)
+    rows = snapshot.artifact_rows
+    updated_keys: set[tuple[str, str]] = set()
+    results: list[dict[str, Any]] = []
+    for url, specs in sorted(module.runtime_specs().items()):
+        active_specs = [seed for seed in specs if PROBE_BINDINGS.get((url, str(seed.get("kind")))) in requested]
+        if not active_specs:
+            continue
+        executable_map = resolve_managed_executables([seed for seed in specs if seed.get("kind") in {"cli", "library"}])
+        for seed in specs:
+            probe_name = PROBE_BINDINGS.get((url, str(seed.get("kind"))))
+            if probe_name not in requested:
+                continue
+            artifact = module.artifact_id(url, seed)
+            paths = installed_paths(seed, executable_map)
             if not paths:
-                results.append(
-                    {
-                        "artifact_id": artifact,
-                        "probe": probe_name,
-                        "status": "failed",
-                        "error": "installed paths missing",
-                    }
-                )
+                results.append({
+                    "artifact_id": artifact,
+                    "probe": probe_name,
+                    "status": "failed",
+                    "error": "installed paths missing",
+                })
                 continue
             actual_version = installed_version(seed, paths)
             if actual_version is not None and actual_version != str(seed.get("version")):
-                results.append(
-                    {
-                        "artifact_id": artifact,
-                        "probe": probe_name,
-                        "status": "failed",
-                        "error": (
-                            f"installed version {actual_version!r} does not match target "
-                            f"{seed.get('version')!r}"
-                        ),
-                    }
-                )
+                results.append({
+                    "artifact_id": artifact,
+                    "probe": probe_name,
+                    "status": "failed",
+                    "error": (f"installed version {actual_version!r} does not match target {seed.get('version')!r}"),
+                })
                 continue
             digest = file_digest(paths)
-            probe = repeat_probe(probe_name, PROBES[probe_name])
+            probe = repeat_probe(probe_name, PROBES[probe_name], executable_map)
             package_id = f"{seed['package_manager']}:{seed['package_name']}"
+            source_commit_sha = str(seed.get("source_commit_sha") or shas[url])
+            resolved_version = str(seed["version"])
             rows[artifact, "identity"] = {
                 "artifact_id": artifact,
                 "phase": "identity",
                 "package_id": package_id,
-                "source_commit_sha": str(seed.get("source_commit_sha") or shas[url]),
+                "source_commit_sha": source_commit_sha,
                 "resolved_version": seed["version"],
                 "integrity": str(seed.get("integrity") or f"installed-sha256:{digest}"),
                 "install_root": str(paths[0].resolve()),
@@ -1299,12 +1532,36 @@ def main() -> int:
                     "promoted_final_status": "passed",
                     "promotion_surface_digest": promotion_state["promoted_surface_digest"],
                 }
+            produced_phases = ["identity", "install", "behavior", "fresh_process"]
+            if promotion_state is not None:
+                produced_phases.append("rollback")
+            for phase in produced_phases:
+                receipt = rows[artifact, phase]
+                receipt.update(
+                    receipt_metadata(
+                        artifact_id=artifact,
+                        phase=phase,
+                        source_commit_sha=source_commit_sha,
+                        package_id=package_id,
+                        resolved_version=resolved_version,
+                        installed_digest=digest,
+                    )
+                )
+                receipt["digest_algorithm"] = FILESYSTEM_DIGEST_ALGORITHM
+                receipt["digest_ignored_dirs"] = sorted(DIGEST_IGNORED_DIRS)
+                updated_keys.add((artifact, phase))
             results.append({"artifact_id": artifact, "probe": probe_name, "status": "passed"})
 
-    if args.apply:
-        write_receipts(rows)
-    print(json.dumps({"ok": all(row["status"] == "passed" for row in results), "results": results}, indent=2))
-    return 0 if all(row["status"] == "passed" for row in results) else 1
+    all_passed = all(row["status"] == "passed" for row in results)
+    if args.apply and all_passed and updated_keys:
+        run_after_process_lifecycle_gate(
+            lambda: store.commit(
+                snapshot,
+                artifact_upserts={key: rows[key] for key in updated_keys},
+            )
+        )
+    print(json.dumps({"ok": all_passed, "results": results}, indent=2))
+    return 0 if all_passed else 1
 
 
 if __name__ == "__main__":

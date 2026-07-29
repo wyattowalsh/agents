@@ -26,15 +26,15 @@ It is the authoritative map for keeping repo sources, project-local mirrors, and
 
 ## What It Controls
 
-- Repo instruction files and their generated platform mirrors (`.github/copilot-instructions.md`, `instructions/*.md`, etc.)
+- Repo instruction files and their generated managed-platform mirrors (`instructions/*.md`, scoped rules, and harness entrypoints)
 - MCP, plugin, and OpenCode/TUI/DCP/ensemble config projections
-- Skill roots (symlinked entries for `~/.codex/skills/`, `~/.copilot/skills/`, `~/.gemini/skills/`)
+- Skill roots and mirrors for the managed agent families
 - Hook files, plannotator hooks, and various bundle manifests
-- Grok, opencode, codex, copilot global and home configs
+- Grok, OpenCode, Codex, Claude Code, Cursor, and Crush repo/home configs
 
 ## Harness Surfaces & Sync Modes
 
-`sync-manifest` feeds sync for nearly every harness listed in `config/harness-surface-registry.json` (Claude Code/Desktop, Codex, GitHub Copilot (web+cli), OpenCode, Gemini CLI, Antigravity, Cursor, Grok Build, Cherry Studio, Crush, Perplexity, etc.).
+`sync-manifest` feeds the exact managed agent families (Claude Code, Codex, Crush, Cursor, Grok Build, and OpenCode) plus separately classified MCP-only or hybrid clients such as Claude Desktop, ChatGPT, Cherry Studio, and LM Studio.
 
 Modes determine behavior:
 - `canonical`: edit only in `${REPO_ROOT}/...`

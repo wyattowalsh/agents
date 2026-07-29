@@ -1,0 +1,10 @@
+{
+  "status": "ok",
+  "paths_written": [
+    "planning/tmp/cleanup-v7/candidates.json"
+  ],
+  "move_count": 21,
+  "wrapper_keep_count": 2,
+  "ops_dir_exists": false,
+  "notes": "W2a candidate-ops owns moves; keep wrappers under scripts/mcphub/wrappers/; Gate0 inventory only"
+}

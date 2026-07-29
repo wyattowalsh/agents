@@ -8,9 +8,9 @@ composed: false
 docs_density: standard
 trust_tier: "needs-inspection"
 curated_status: "inspect-then-install"
-install_command: "npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a claude-code codex crush cursor opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "golang-observability"
 ---
 
@@ -23,7 +23,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="golang-observability"
   description="Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset."
-  installCommand={`npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a claude-code codex crush cursor opencode`}
   installLabel="Install"
   usage="/golang-concurrency"
   badges={[{ text: "golang-observability", variant: "note" }, { text: "21 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
@@ -31,7 +31,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/golang-observability.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -39,11 +39,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/golang-obs
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a claude-code codex crush cursor opencode
 ```
 
 ## Trust / Audit
@@ -80,7 +80,7 @@ A general-purpose agent instruction without a scoped skill contract
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `needs-inspection` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -104,8 +104,8 @@ status: "inspect-then-install"
 trust_tier: "needs-inspection"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-install_command: "npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+install_command: "npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a claude-code codex crush cursor opencode"
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/samber/cc-skills-golang"
 notes: "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset. Keep `golang-google-wire`, `golang-uber-fx`, `golang-uber-dig`, and `golang-samber-do` global-only unless explicitly requested."
 risk_notes: "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset. Keep `golang-google-wire`, `golang-uber-fx`, `golang-uber-dig`, and `golang-samber-do` global-only unless explicitly requested."

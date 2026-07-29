@@ -1,0 +1,16 @@
+{
+  "status": "ok",
+  "gate": "g0",
+  "leaf": "bash-deny",
+  "paths_written": [
+    "planning/tmp/cleanup-v7/bash-deny.json"
+  ],
+  "overlay_path": "config/opencode-agents.json",
+  "summary": {
+    "prompt-optimizer": "deny → deny (none)",
+    "agent-transpiler": "deny → allowlist sync_agent_stack + just sync-opencode (widen-allowlist)",
+    "agent-registry-publisher": "deny → allowlist wagents validate* + docs generate* (widen-allowlist)",
+    "agent-permission-simulator": "deny → deny (none)"
+  },
+  "notes": "All four agents currently permission.bash=deny in config/opencode-agents.json; projections match. Two widen to allowlists per plan; two keep deny."
+}

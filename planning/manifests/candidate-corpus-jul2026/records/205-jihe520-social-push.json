@@ -20,8 +20,6 @@
   "safety_notes": "Social posting automation can create spam, impersonation, credential, account-lockout, and platform policy risk. Do not install or run by default; require user-owned credentials, no committed cookies or sessions, explicit account-owner authorization, and manual review before each post.",
   "attribution_notes": "Preserve attribution to jihe520/social-push; verify license before adapting content.",
   "files_added": [
-    "docs/src/authoring/skills/jihe520-social-push.mdx",
-    "docs/src/content/docs/skills/catalog/external/jihe520-social-push.mdx",
     "planning/manifests/candidate-corpus-jul2026/records/205-jihe520-social-push.json"
   ],
   "files_modified": [

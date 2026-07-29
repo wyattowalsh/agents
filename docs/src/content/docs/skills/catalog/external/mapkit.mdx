@@ -9,9 +9,9 @@ docs_density: standard
 license: "MIT"
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add rshankras/claude-code-apple-skills --skill mapkit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add rshankras/claude-code-apple-skills --skill mapkit -y -g -a claude-code codex crush cursor grok opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "mapkit"
 ---
 
@@ -24,15 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="mapkit"
   description="MapKit and GeoToolbox skills — PlaceDescriptor patterns, geocoding, and cross-service place identifiers with MapKit integration. Use when working with maps, place data, or geocoding."
-  installCommand={`npx skills add rshankras/claude-code-apple-skills --skill mapkit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add rshankras/claude-code-apple-skills --skill mapkit -y -g -a claude-code codex crush cursor grok opencode`}
   installLabel="Install"
   usage="/mapkit"
-  badges={[{ text: "mapkit", variant: "note" }, { text: "372 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "mapkit", variant: "note" }, { text: "363 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/mapkit.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -40,11 +40,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/mapkit.mdx
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add rshankras/claude-code-apple-skills --skill mapkit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add rshankras/claude-code-apple-skills --skill mapkit -y -g -a claude-code codex crush cursor grok opencode
 ```
 
 ## Trust / Audit
@@ -86,7 +86,7 @@ This row integrates `rshankras/claude-code-apple-skills` as an installable curat
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -107,13 +107,13 @@ title: "Mapkit"
 source_kind: "curated-external"
 source: "rshankras/claude-code-apple-skills"
 install_source: "rshankras/claude-code-apple-skills"
-install_command: "npx skills add rshankras/claude-code-apple-skills --skill mapkit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add rshankras/claude-code-apple-skills --skill mapkit -y -g -a claude-code codex crush cursor grok opencode"
 install_skill_name: "mapkit"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/rshankras/claude-code-apple-skills"
 selector_mode: "named"
 audit_date: "2026-07-07"
@@ -145,7 +145,7 @@ This row integrates `rshankras/claude-code-apple-skills` as an installable curat
 - Normalized URL: [https://github.com/rshankras/claude-code-apple-skills](https://github.com/rshankras/claude-code-apple-skills)
 - Catalog skill id: `mapkit`
 - Upstream install selector: `mapkit`
-- Install command: `npx skills add rshankras/claude-code-apple-skills --skill mapkit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Install command: `npx skills add rshankras/claude-code-apple-skills --skill mapkit -y -g -a claude-code codex crush cursor grok opencode`
 - Inspected commit SHA: `1a16fa57e2039a6db2f510b10b64899d91e11c10`
 - License status: `MIT`
 - Source-list evidence: `source-list-found`
@@ -154,8 +154,8 @@ This row integrates `rshankras/claude-code-apple-skills` as an installable curat
 ## Local Install Evidence
 
 - Executed command: `npx --yes skills add https://github.com/rshankras/claude-code-apple-skills --list`
-- Executed command: `npx skills add https://github.com/rshankras/claude-code-apple-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
-- Executed command: `npx skills add https://github.com/rshankras/claude-code-apple-skills --skill mapkit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Executed command: `npx skills add https://github.com/rshankras/claude-code-apple-skills -y -g -a claude-code codex crush cursor opencode`
+- Executed command: `npx skills add https://github.com/rshankras/claude-code-apple-skills --skill mapkit -y -g -a claude-code codex crush cursor opencode`
 - Installed path: `~/.agents/skills/mapkit`
 - Installed path: `~/.claude/skills/mapkit`
 - Installed path: `~/.config/crush/skills/mapkit`

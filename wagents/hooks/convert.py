@@ -9,21 +9,19 @@ existing command string verbatim (they never re-resolve a runner path), so a
 ``claude-code`` -> ``cursor`` -> ``claude-code`` round-trip keeps logical
 events, matchers, and commands stable.
 
-Three projection families:
+Two projection families:
 
-* nested groups: ``codex``, ``claude-code``, ``gemini-cli``
+* nested groups: ``codex``, ``claude-code``
   ``{event: [{matcher?, hooks: [{type, command, ...}]}]}``
 * flat permission entries: ``cursor``
   ``{event: [{command, matcher?, timeout?, failClosed?}]}``
-* flat bash entries: ``github-copilot``
-  ``{event: [{type, bash, cwd, timeoutSec, comment}]}``
 
 **Lossy cross-projection:** Cursor-only logical events from
 ``wagents.hooks.render.CURSOR_EVENT_MAP`` — including ``BeforeReadFile``,
 ``BeforeShellExecution``, ``BeforeMCPExecution``, ``AfterFileEdit``, and
 ``SubagentStart`` — are omitted when converting to ``claude-code``, ``codex``,
-``gemini-cli``, or ``github-copilot`` because those harnesses have no native
-equivalent in their event maps. Use the registry + ``render_*`` helpers for
+``codex`` or ``claude-code`` because those harnesses have no native equivalent
+in their event maps. Use the registry + ``render_*`` helpers for
 authoritative multi-harness projection instead of convert for those events.
 """
 
@@ -35,30 +33,24 @@ from typing import Any
 from wagents.hooks.render import (
     CLAUDE_EVENT_MAP,
     CODEX_EVENT_MAP,
-    COPILOT_EVENT_MAP,
     CURSOR_EVENT_MAP,
     CURSOR_FAIL_CLOSED_EVENTS,
-    GEMINI_EVENT_MAP,
 )
 
 SUPPORTED_HARNESSES: frozenset[str] = frozenset({
     "codex",
     "claude-code",
     "cursor",
-    "github-copilot",
-    "gemini-cli",
 })
 
 _EVENT_MAPS: dict[str, dict[str, str]] = {
     "codex": CODEX_EVENT_MAP,
     "claude-code": CLAUDE_EVENT_MAP,
     "cursor": CURSOR_EVENT_MAP,
-    "github-copilot": COPILOT_EVENT_MAP,
-    "gemini-cli": GEMINI_EVENT_MAP,
 }
 
 # Harnesses whose entries nest a ``hooks`` command group.
-_NESTED_HARNESSES = frozenset({"codex", "claude-code", "gemini-cli"})
+_NESTED_HARNESSES = frozenset({"codex", "claude-code"})
 
 
 @dataclass
@@ -115,9 +107,7 @@ def _specs_from_entry(entry: dict[str, Any], logical: str, source: str) -> list[
             if not command:
                 continue
             timeout = config.get("timeout")
-            seconds = int(timeout) // 1000 if source == "gemini-cli" and timeout else (
-                int(timeout) if timeout else None
-            )
+            seconds = int(timeout) if timeout else None
             specs.append(
                 HookSpec(
                     logical_event=logical,
@@ -128,22 +118,10 @@ def _specs_from_entry(entry: dict[str, Any], logical: str, source: str) -> list[
                 )
             )
         return specs
-    # Flat families: cursor (command) and copilot (bash).
+    # Cursor uses a flat command entry.
     command = _entry_command(entry)
     if not command:
         return []
-    if source == "github-copilot":
-        timeout = entry.get("timeoutSec")
-        return [
-            HookSpec(
-                logical_event=logical,
-                command=command,
-                matcher=matcher_str,
-                timeout=int(timeout) if timeout else None,
-                description=entry.get("comment"),
-            )
-        ]
-    # cursor
     timeout = entry.get("timeout")
     fail_closed = entry.get("failClosed")
     return [
@@ -168,17 +146,11 @@ def _emit_nested(specs: list[HookSpec], target: str) -> dict[str, Any]:
         if target == "codex":
             config["timeout"] = spec.timeout if spec.timeout else 5
             config["statusMessage"] = spec.description or spec.command
-        elif target == "gemini-cli":
-            config["name"] = spec.description or spec.command
-            config["timeout"] = (spec.timeout if spec.timeout else 5) * 1000
-            config["description"] = spec.description or spec.command
         elif spec.timeout:
             config["timeout"] = spec.timeout
         group: dict[str, Any] = {"hooks": [config]}
         if spec.matcher:
             group["matcher"] = spec.matcher
-        if target == "gemini-cli":
-            group["sequential"] = True
         rendered.setdefault(native, []).append(group)
     return {"hooks": rendered}
 
@@ -200,30 +172,12 @@ def _emit_cursor(specs: list[HookSpec]) -> dict[str, Any]:
     return {"version": 1, "hooks": rendered}
 
 
-def _emit_copilot(specs: list[HookSpec]) -> dict[str, Any]:
-    rendered: dict[str, list[dict[str, Any]]] = {}
-    for spec in specs:
-        native = COPILOT_EVENT_MAP.get(spec.logical_event)
-        if not native:
-            continue
-        rendered.setdefault(native, []).append({
-            "type": "command",
-            "bash": spec.command,
-            "cwd": ".",
-            "timeoutSec": spec.timeout if spec.timeout else 5,
-            "comment": spec.description or spec.command,
-        })
-    return {"version": 1, "hooks": rendered}
-
-
 def render_to(specs: list[HookSpec], target: str) -> dict[str, Any]:
     """Render harness-neutral specs into ``target``'s hook-document shape."""
     if target not in SUPPORTED_HARNESSES:
         raise ValueError(f"unsupported target harness {target!r}")
     if target == "cursor":
         return _emit_cursor(specs)
-    if target == "github-copilot":
-        return _emit_copilot(specs)
     return _emit_nested(specs, target)
 
 

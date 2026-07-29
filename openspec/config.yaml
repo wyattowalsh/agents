@@ -4,15 +4,15 @@ context: |
   Purpose: portable AI agent skills, MCP configuration, shared instructions, docs, and downstream harness sync surfaces.
   Primary source-of-truth files: AGENTS.md, instructions/global.md, skills/, agents/, mcp.json, config/, agent-bundle.json, and openspec/.
   Generated public surfaces: README.md from `uv run wagents readme`; docs catalog pages from `uv run wagents docs generate`.
-  Supported downstream agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, and opencode.
-  OpenSpec tool mapping: claude-code=claude, gemini-cli=gemini, github-copilot=github-copilot, opencode=opencode.
+  Supported downstream agents: claude-code, codex, crush, cursor, grok, and opencode.
+  OpenSpec tool mapping: claude-code=claude, opencode=opencode.
   OpenSpec automation should use `uv run wagents openspec ...` wrappers when AI-readable JSON is needed.
   Wrapper-invoked OpenSpec commands set OPENSPEC_TELEMETRY=0 unless the user opts in.
   Repo-managed OpenCode config must remain model-neutral; do not add model selectors or step caps.
   Do not commit generated downstream OpenSpec tool artifacts unless the artifact is explicitly repo-owned.
 rules:
   proposal:
-    - Identify affected asset classes: skills, agents, MCP, instructions, docs, hooks, bundle metadata, or downstream harness config.
+    - "Identify affected asset classes: skills, agents, MCP, instructions, docs, hooks, bundle metadata, or downstream harness config."
     - Explain why OpenSpec is needed for the change instead of a direct trivial edit.
     - List any generated surfaces that must be refreshed after implementation.
   affected-surfaces:

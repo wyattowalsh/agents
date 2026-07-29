@@ -310,7 +310,7 @@ wagents install -y
 For third-party skill sources or curated subsets, use `npx skills add` directly:
 
 ```bash
-npx skills add <source> --skill <name> -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
+npx skills add <source> --skill <name> -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode
 ```
 
 | Option | Default | Description |
@@ -323,7 +323,7 @@ npx skills add <source> --skill <name> -y -g --agent antigravity --agent claude-
 | `--copy` | `false` | Copy files instead of symlinking |
 | `-y`, `--yes` | `false` | Skip confirmation prompts |
 
-**Supported agents:** `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`
+**Supported agents:** `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`
 
 <Aside type="note" title="Grok Build install alias">
 Skills CLI has no native `grok` adapter. `wagents install -a grok` and `wagents skills sync -a grok` install via the `claude-code` adapter, then mirror missing skills into `~/.grok/skills`.
@@ -405,7 +405,7 @@ Build a normalized installed-skill inventory from `npx skills ls -g -a <agent> -
 wagents skills sync
 
 # Target one harness
-wagents skills sync --agent github-copilot
+wagents skills sync --agent codex
 
 # Include verified one-off installed external skills
 wagents skills sync --include-installed
@@ -428,10 +428,6 @@ By default, sync targets repo-owned custom skills plus verified curated external
 
 <Aside type="tip" title="Inventory fallback">
 When a Skills CLI inventory query fails, times out, or emits unusable JSON for a harness with a known local skill root, dry-run reports may continue from a read-only local `SKILL.md` scan. The report prints a warning whenever fallback evidence is used.
-</Aside>
-
-<Aside type="caution" title="GitHub Copilot caveat">
-GitHub Copilot remains part of config and instruction sync, but the skills inventory reports only what the Skills CLI returns. A legitimate `0` installed-skills result stays `0`.
 </Aside>
 
 </details>

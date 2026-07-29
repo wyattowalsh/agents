@@ -22,8 +22,6 @@
   "safety_notes": "Video download automation can violate copyright, DRM, private-content, paywall, and platform ToS boundaries. Prefer transcript or metadata workflows; do not install or run by default unless the operator proves rights to the content and approves the exact source.",
   "attribution_notes": "Preserve attribution to ComposioHQ/awesome-codex-skills; verify license before adapting content.",
   "files_added": [
-    "docs/src/authoring/skills/composiohq-awesome-codex-skills-video-downloader.mdx",
-    "docs/src/content/docs/skills/catalog/external/composiohq-awesome-codex-skills-video-downloader.mdx",
     "planning/manifests/candidate-corpus-jul2026/records/152-composiohq-awesome-codex-skills.json"
   ],
   "files_modified": [

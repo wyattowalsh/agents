@@ -2,6 +2,7 @@
 name: security-auditor
 description: Audit code and configuration for security risks without making changes.
 tools: Read, Grep, Glob
+permissionMode: plan
 ---
 
 ## Role

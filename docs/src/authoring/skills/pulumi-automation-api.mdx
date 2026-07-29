@@ -9,8 +9,8 @@ status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-install_command: "npx skills add pulumi/agent-skills --skill pulumi-best-practices --skill pulumi-component --skill pulumi-automation-api --skill pulumi-esc -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+install_command: "npx skills add pulumi/agent-skills --skill pulumi-best-practices --skill pulumi-component --skill pulumi-automation-api --skill pulumi-esc -y -g -a claude-code codex crush cursor opencode"
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/pulumi/agent-skills"
 notes: "Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets. Distinct from `terraform-skill` and `hashicorp/agent-skills`; cherry-pick only these four slugs from the 14-skill bundle."
 risk_notes: "Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets. Distinct from `terraform-skill` and `hashicorp/agent-skills`; cherry-pick only these four slugs from the 14-skill bundle."

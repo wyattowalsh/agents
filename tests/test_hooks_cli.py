@@ -24,6 +24,39 @@ _VERIFY_SPEC.loader.exec_module(skill_creator_verify)
 runner = CliRunner()
 
 
+def _write_minimal_cursor_pin_hooks(repo_root: Path) -> None:
+    """Install pin-compliant `.cursor/hooks.json` required by validate_hooks for harness all/cursor."""
+    runner_cmd = '"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook"'
+    cursor_dir = repo_root / ".cursor"
+    cursor_dir.mkdir(parents=True, exist_ok=True)
+    (cursor_dir / "hooks.json").write_text(
+        json.dumps(
+            {
+                "version": 1,
+                "hooks": {
+                    "preToolUse": [
+                        {
+                            "command": f"{runner_cmd} cursor-task-model-pin-rewrite --harness cursor",
+                            "matcher": "Task",
+                            "timeout": 5,
+                            "failClosed": False,
+                        }
+                    ],
+                    "subagentStart": [
+                        {
+                            "command": f"{runner_cmd} cursor-subagent-model-allowlist --harness cursor",
+                            "timeout": 5,
+                            "failClosed": False,
+                        }
+                    ],
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
 @pytest.fixture
 def patched_repo(tmp_path, monkeypatch):
     """Create a minimal repo skeleton in tmp_path and monkeypatch all ROOT refs."""
@@ -58,6 +91,7 @@ def patched_repo(tmp_path, monkeypatch):
             dest = tmp_path / rel
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src, dest)
+    _write_minimal_cursor_pin_hooks(tmp_path)
     monkeypatch.setenv("WAGENTS_REPO_ROOT", str(tmp_path))
     return tmp_path
 
@@ -305,18 +339,27 @@ class TestHooksValidate:
 
     def test_cursor_harness_accepts_flat_project_hooks(self, patched_repo):
         cursor_dir = patched_repo / ".cursor"
-        cursor_dir.mkdir()
+        cursor_dir.mkdir(exist_ok=True)
+        runner_cmd = '"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook"'
         (cursor_dir / "hooks.json").write_text(
             json.dumps({
                 "version": 1,
                 "hooks": {
                     "preToolUse": [
                         {
-                            "command": '"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook" demo --harness cursor',
-                            "matcher": "Bash",
+                            "command": f"{runner_cmd} cursor-task-model-pin-rewrite --harness cursor",
+                            "matcher": "Task",
                             "timeout": 5,
+                            "failClosed": False,
                         }
-                    ]
+                    ],
+                    "subagentStart": [
+                        {
+                            "command": f"{runner_cmd} cursor-subagent-model-allowlist --harness cursor",
+                            "timeout": 5,
+                            "failClosed": False,
+                        }
+                    ],
                 },
             }),
             encoding="utf-8",
@@ -329,7 +372,7 @@ class TestHooksValidate:
 
     def test_cursor_harness_rejects_nested_project_hooks(self, patched_repo):
         cursor_dir = patched_repo / ".cursor"
-        cursor_dir.mkdir()
+        cursor_dir.mkdir(exist_ok=True)
         (cursor_dir / "hooks.json").write_text(
             json.dumps({
                 "version": 1,
@@ -358,7 +401,7 @@ class TestHooksValidate:
 
     def test_cursor_harness_rejects_workspacefolder_commands(self, patched_repo):
         cursor_dir = patched_repo / ".cursor"
-        cursor_dir.mkdir()
+        cursor_dir.mkdir(exist_ok=True)
         (cursor_dir / "hooks.json").write_text(
             json.dumps({
                 "version": 1,

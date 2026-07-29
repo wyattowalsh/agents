@@ -9,8 +9,8 @@ status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-install_command: "npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+install_command: "npx skills add redis/agent-skills --skill redis-core -y -g -a claude-code codex crush cursor opencode"
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/redis/agent-skills"
 notes: "Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list."
 risk_notes: "Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list."

@@ -5,9 +5,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/harness"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": false
     },
     "mcphub_group_nlm": {
@@ -15,9 +12,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/nlm"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": false
     },
     "mcphub_server_agent-catalog": {
@@ -25,9 +19,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/agent-catalog"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_antv-chart": {
@@ -35,9 +26,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/antv-chart"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_arxiv": {
@@ -45,9 +33,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/arxiv"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_atom-of-thoughts": {
@@ -55,9 +40,13 @@
       "args": [
         "http://127.0.0.1:46683/mcp/atom-of-thoughts"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
+      "disabled": true
+    },
+    "mcphub_server_axiom-mcp": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/axiom-mcp"
+      ],
       "disabled": true
     },
     "mcphub_server_better-icons": {
@@ -65,9 +54,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/better-icons"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_brave-search": {
@@ -75,9 +61,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/brave-search"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_cascade-thinking": {
@@ -85,9 +68,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/cascade-thinking"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_charted": {
@@ -95,9 +75,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/charted"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_chrome-devtools": {
@@ -105,9 +82,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/chrome-devtools"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_ci-artifacts": {
@@ -115,9 +89,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/ci-artifacts"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_context7": {
@@ -125,9 +96,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/context7"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_crash": {
@@ -135,9 +103,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/crash"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_creative-thinking": {
@@ -145,9 +110,13 @@
       "args": [
         "http://127.0.0.1:46683/mcp/creative-thinking"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
+      "disabled": true
+    },
+    "mcphub_server_csvglow": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/csvglow"
+      ],
       "disabled": true
     },
     "mcphub_server_ddgs": {
@@ -155,9 +124,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/ddgs"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_deep-lucid-3d": {
@@ -165,9 +131,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/deep-lucid-3d"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_deepwiki": {
@@ -175,9 +138,13 @@
       "args": [
         "http://127.0.0.1:46683/mcp/deepwiki"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
+      "disabled": true
+    },
+    "mcphub_server_designer-skill-mcp": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/designer-skill-mcp"
+      ],
       "disabled": true
     },
     "mcphub_server_docling": {
@@ -185,9 +152,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/docling"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_docs-graph": {
@@ -195,9 +159,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/docs-graph"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_docs-index": {
@@ -205,9 +166,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/docs-index"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_duckduckgo-search": {
@@ -215,9 +173,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/duckduckgo-search"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_eval-results": {
@@ -225,9 +180,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/eval-results"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_exa": {
@@ -235,9 +187,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/exa"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_fetch": {
@@ -245,9 +194,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/fetch"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_fetcher": {
@@ -255,9 +201,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/fetcher"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_g-search": {
@@ -265,9 +208,13 @@
       "args": [
         "http://127.0.0.1:46683/mcp/g-search"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
+      "disabled": true
+    },
+    "mcphub_server_geo-mcp": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/geo-mcp"
+      ],
       "disabled": true
     },
     "mcphub_server_gmail": {
@@ -275,9 +222,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/gmail"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_jupyter-mcp-server": {
@@ -285,9 +229,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/jupyter-mcp-server"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_langfuse-mcp": {
@@ -295,9 +236,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/langfuse-mcp"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_linkedin": {
@@ -305,9 +243,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/linkedin"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_llms-txt-explorer": {
@@ -315,9 +250,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/llms-txt-explorer"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_lotus-wisdom-mcp": {
@@ -325,9 +257,13 @@
       "args": [
         "http://127.0.0.1:46683/mcp/lotus-wisdom-mcp"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
+      "disabled": true
+    },
+    "mcphub_server_mcp-dashboards": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/mcp-dashboards"
+      ],
       "disabled": true
     },
     "mcphub_server_mcp-excalidraw": {
@@ -335,9 +271,13 @@
       "args": [
         "http://127.0.0.1:46683/mcp/mcp-excalidraw"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
+      "disabled": true
+    },
+    "mcphub_server_mobile-mcp": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/mobile-mcp"
+      ],
       "disabled": true
     },
     "mcphub_server_notebooklm": {
@@ -345,9 +285,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/notebooklm"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_nullcost": {
@@ -355,9 +292,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/nullcost"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_open-websearch": {
@@ -365,9 +299,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/open-websearch"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_openspec-mcp": {
@@ -375,9 +306,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/openspec-mcp"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_ossinsight": {
@@ -385,9 +313,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/ossinsight"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_package-version-check-mcp": {
@@ -395,9 +320,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/package-version-check-mcp"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_paper-search-mcp": {
@@ -405,9 +327,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/paper-search-mcp"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_papersflow": {
@@ -415,9 +334,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/papersflow"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_penpot": {
@@ -425,9 +341,13 @@
       "args": [
         "http://127.0.0.1:46683/mcp/penpot"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
+      "disabled": true
+    },
+    "mcphub_server_prompt-to-asset": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/prompt-to-asset"
+      ],
       "disabled": true
     },
     "mcphub_server_qsv": {
@@ -435,9 +355,13 @@
       "args": [
         "http://127.0.0.1:46683/mcp/qsv"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
+      "disabled": true
+    },
+    "mcphub_server_reddit-mcp-buddy": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/reddit-mcp-buddy"
+      ],
       "disabled": true
     },
     "mcphub_server_release-provenance": {
@@ -445,9 +369,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/release-provenance"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_remotion-docs": {
@@ -455,9 +376,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/remotion-docs"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_repo-readonly": {
@@ -465,9 +383,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/repo-readonly"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_repomix": {
@@ -475,9 +390,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/repomix"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_scrapling": {
@@ -485,9 +397,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/scrapling"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_semiotic": {
@@ -495,9 +404,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/semiotic"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_sequential-thinking": {
@@ -505,9 +411,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/sequential-thinking"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_shannon-thinking": {
@@ -515,9 +418,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/shannon-thinking"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_skill-catalog": {
@@ -525,9 +425,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/skill-catalog"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_source-url-health": {
@@ -535,9 +432,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/source-url-health"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_structured-thinking": {
@@ -545,9 +439,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/structured-thinking"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_supathings": {
@@ -555,9 +446,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/supathings"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_tavily": {
@@ -565,9 +453,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/tavily"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_template-smoke": {
@@ -575,9 +460,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/template-smoke"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_think-strategies": {
@@ -585,9 +467,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/think-strategies"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_trafilatura": {
@@ -595,9 +474,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/trafilatura"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_wayback": {
@@ -605,9 +481,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/wayback"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_wikipedia": {
@@ -615,9 +488,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/wikipedia"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     },
     "mcphub_server_workflow-status": {
@@ -625,9 +495,6 @@
       "args": [
         "http://127.0.0.1:46683/mcp/workflow-status"
       ],
-      "env": {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-      },
       "disabled": true
     }
   }

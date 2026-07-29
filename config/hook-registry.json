@@ -3,57 +3,6 @@
   "version": 1,
   "hooks": [
     {
-      "id": "session-start",
-      "description": "Report basic session environment and repository state.",
-      "logical_policy": "session-start",
-      "logical_event": "SessionStart",
-      "matcher": "startup|resume|clear",
-      "command": "./hooks/session-start.sh",
-      "timeout": 15,
-      "harnesses": [
-        "github-copilot"
-      ]
-    },
-    {
-      "id": "prompt-log",
-      "description": "Write local prompt audit entries with short retention.",
-      "logical_policy": "prompt-log",
-      "logical_event": "UserPromptSubmit",
-      "command": "./hooks/log-prompt.sh",
-      "timeout": 5,
-      "harnesses": [
-        "github-copilot"
-      ]
-    },
-    {
-      "id": "post-edit-format",
-      "description": "Run best-effort formatter after edits.",
-      "logical_policy": "post-edit-format",
-      "logical_event": "PostToolUse",
-      "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace",
-      "command": "./hooks/auto-format.sh",
-      "timeout": 60,
-      "bundle_group": "copilot-post-edit-quality",
-      "bundle_mode": "context-chain",
-      "harnesses": [
-        "github-copilot"
-      ]
-    },
-    {
-      "id": "post-edit-lint",
-      "description": "Return concise lint/type context after edits.",
-      "logical_policy": "post-edit-lint",
-      "logical_event": "PostToolUse",
-      "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace",
-      "command": "./hooks/lint-check.sh",
-      "timeout": 30,
-      "bundle_group": "copilot-post-edit-quality",
-      "bundle_mode": "context-chain",
-      "harnesses": [
-        "github-copilot"
-      ]
-    },
-    {
       "id": "codex-session-start-context",
       "description": "Report lightweight Codex session and repository context.",
       "status_message": "Gathering Codex session context",
@@ -278,6 +227,33 @@
       ]
     },
     {
+      "id": "cursor-task-model-pin-rewrite",
+      "description": "Rewrite Cursor Task model launches to cursor-grok-4.5-high via updated_input.",
+      "status_message": "Pinning Task model",
+      "mode": "enforce",
+      "logical_policy": "cursor-task-model-pin-rewrite",
+      "logical_event": "PreToolUse",
+      "matcher": "Task",
+      "command": "{hook_runner} cursor-task-model-pin-rewrite --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "cursor"
+      ]
+    },
+    {
+      "id": "cursor-subagent-model-allowlist",
+      "description": "Deny Cursor subagent starts that specify a model outside cursor-grok-4.5-high.",
+      "status_message": "Checking subagent model",
+      "mode": "enforce",
+      "logical_policy": "cursor-subagent-model-allowlist",
+      "logical_event": "SubagentStart",
+      "command": "{hook_runner} cursor-subagent-model-allowlist --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "cursor"
+      ]
+    },
+    {
       "id": "destructive-shell-guard",
       "description": "Block high-risk shell commands.",
       "logical_policy": "destructive-shell-guard",
@@ -290,9 +266,7 @@
       "bundle_group": "fleet-pre-tool-enforce",
       "bundle_mode": "enforce-chain",
       "harnesses": [
-        "github-copilot",
-        "claude-code",
-        "gemini-cli"
+        "claude-code"
       ]
     },
     {
@@ -308,9 +282,7 @@
       "bundle_group": "fleet-pre-tool-enforce",
       "bundle_mode": "enforce-chain",
       "harnesses": [
-        "github-copilot",
-        "claude-code",
-        "gemini-cli"
+        "claude-code"
       ]
     },
     {
@@ -328,9 +300,7 @@
       "harnesses": [
         "codex",
         "claude-code",
-        "cursor",
-        "github-copilot",
-        "gemini-cli"
+        "cursor"
       ]
     },
     {
@@ -347,9 +317,7 @@
       "harnesses": [
         "codex",
         "claude-code",
-        "cursor",
-        "github-copilot",
-        "gemini-cli"
+        "cursor"
       ],
       "bundle_group": "fleet-pre-tool-enforce",
       "bundle_mode": "enforce-chain"
@@ -365,9 +333,7 @@
       "harnesses": [
         "codex",
         "claude-code",
-        "cursor",
-        "github-copilot",
-        "gemini-cli"
+        "cursor"
       ]
     },
     {
@@ -385,9 +351,7 @@
       "harnesses": [
         "codex",
         "claude-code",
-        "cursor",
-        "github-copilot",
-        "gemini-cli"
+        "cursor"
       ]
     },
     {
@@ -405,9 +369,7 @@
       "harnesses": [
         "codex",
         "claude-code",
-        "cursor",
-        "github-copilot",
-        "gemini-cli"
+        "cursor"
       ]
     },
     {
@@ -422,9 +384,7 @@
       "harnesses": [
         "codex",
         "claude-code",
-        "cursor",
-        "github-copilot",
-        "gemini-cli"
+        "cursor"
       ]
     },
     {
@@ -438,9 +398,7 @@
       "harnesses": [
         "codex",
         "claude-code",
-        "cursor",
-        "gemini-cli",
-        "github-copilot"
+        "cursor"
       ]
     },
     {

@@ -11,21 +11,13 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from wagents.site_model import SUPPORTED_AGENT_IDS
+
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "planning" / "manifests" / "candidate-corpus-jul2026" / "harness-install-assurance.json"
 CATALOG_INDEX = ROOT / "docs" / "public" / "generated-registries" / "skills-catalog-index.json"
 PROMOTION_OVERRIDES = OUTPUT.parent / "promotion-overrides.json"
-EXPECTED_AGENTS = (
-    "antigravity",
-    "claude-code",
-    "codex",
-    "crush",
-    "cursor",
-    "gemini-cli",
-    "github-copilot",
-    "grok",
-    "opencode",
-)
+EXPECTED_AGENTS = SUPPORTED_AGENT_IDS
 
 
 def now() -> str:
@@ -42,8 +34,9 @@ def _count(payload: dict[str, Any], field: str) -> int:
 def build_assurance(source: Path) -> dict[str, Any]:
     raw = source.read_bytes()
     report = json.loads(raw)
-    if not isinstance(report, dict) or report.get("mode") != "dry-run" or report.get("ok") is not True:
-        raise ValueError("input must be a successful `wagents skills sync --dry-run --format json` report")
+    if not isinstance(report, dict) or report.get("mode") not in {"dry-run", "apply"} or report.get("ok") is not True:
+        raise ValueError("input must be a successful `wagents skills sync --dry-run|--apply --format json` report")
+    report_mode = str(report["mode"])
     agents = report.get("agents")
     if not isinstance(agents, list):
         raise ValueError("input agents must be a list")
@@ -66,9 +59,9 @@ def build_assurance(source: Path) -> dict[str, Any]:
             "missing": _count(item, "missing"),
             "pin_blocked": _count(item, "pin_blocked") if "pin_blocked" in item else 0,
             "unresolved": _count(item, "unresolved"),
-            "unresolved_reason_counts": dict(sorted(Counter(
-                str(row).rsplit(" — ", 1)[-1] for row in unresolved
-            ).items())),
+            "unresolved_reason_counts": dict(
+                sorted(Counter(str(row).rsplit(" — ", 1)[-1] for row in unresolved).items())
+            ),
             "commands": _count(item, "commands"),
             "inventory_fallback_used": bool(str(item.get("warning") or "")),
             "error": bool(str(item.get("error") or "")),
@@ -87,8 +80,9 @@ def build_assurance(source: Path) -> dict[str, Any]:
     return {
         "version": 1,
         "generated_at": now(),
-        "assurance_kind": "post-install-dry-run",
-        "command": "uv run wagents skills sync --dry-run --format json",
+        "assurance_kind": f"post-install-{report_mode}",
+        "command": f"uv run wagents skills sync --{report_mode} --format json",
+        "source_mode": report_mode,
         "source_sha256": hashlib.sha256(raw).hexdigest(),
         "catalog_index_sha256": hashlib.sha256(catalog_bytes).hexdigest(),
         "promotion_overrides_sha256": hashlib.sha256(overrides_bytes).hexdigest(),

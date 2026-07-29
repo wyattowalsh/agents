@@ -9,9 +9,9 @@ docs_density: standard
 license: "Apache-2.0"
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add huggingface/skills --skill huggingface-datasets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add huggingface/skills --skill huggingface-datasets -y -g -a claude-code codex crush cursor grok opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "huggingface-datasets"
 ---
 
@@ -24,15 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="huggingface-datasets"
   description="Use this skill for Hugging Face Dataset Viewer API workflows that fetch subset/split metadata, paginate rows, search text, apply filters, download parquet URLs, and read size or statistics."
-  installCommand={`npx skills add huggingface/skills --skill huggingface-datasets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add huggingface/skills --skill huggingface-datasets -y -g -a claude-code codex crush cursor grok opencode`}
   installLabel="Install"
   usage="/huggingface-datasets"
-  badges={[{ text: "huggingface-datasets", variant: "note" }, { text: "373 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "huggingface-datasets", variant: "note" }, { text: "364 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/huggingface-datasets.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -40,11 +40,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/huggingfac
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add huggingface/skills --skill huggingface-datasets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add huggingface/skills --skill huggingface-datasets -y -g -a claude-code codex crush cursor grok opencode
 ```
 
 ## Trust / Audit
@@ -86,7 +86,7 @@ This row integrates `huggingface/skills` as an installable curated external skil
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -107,13 +107,13 @@ title: "Huggingface Datasets"
 source_kind: "curated-external"
 source: "huggingface/skills"
 install_source: "huggingface/skills"
-install_command: "npx skills add huggingface/skills --skill huggingface-datasets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add huggingface/skills --skill huggingface-datasets -y -g -a claude-code codex crush cursor grok opencode"
 install_skill_name: "huggingface-datasets"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/huggingface/skills"
 selector_mode: "named"
 audit_date: "2026-07-07"
@@ -145,7 +145,7 @@ This row integrates `huggingface/skills` as an installable curated external skil
 - Normalized URL: [https://github.com/huggingface/skills](https://github.com/huggingface/skills)
 - Catalog skill id: `huggingface-datasets`
 - Upstream install selector: `huggingface-datasets`
-- Install command: `npx skills add huggingface/skills --skill huggingface-datasets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Install command: `npx skills add huggingface/skills --skill huggingface-datasets -y -g -a claude-code codex crush cursor grok opencode`
 - Inspected commit SHA: `2aad4f7a8d2d8360cf65364291489e65370caad8`
 - License status: `Apache-2.0`
 - Source-list evidence: `source-list-found`
@@ -154,8 +154,8 @@ This row integrates `huggingface/skills` as an installable curated external skil
 ## Local Install Evidence
 
 - Executed command: `npx --yes skills add https://github.com/huggingface/skills --list`
-- Executed command: `npx skills add https://github.com/huggingface/skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
-- Executed command: `npx skills add https://github.com/huggingface/skills --skill huggingface-datasets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Executed command: `npx skills add https://github.com/huggingface/skills -y -g -a claude-code codex crush cursor opencode`
+- Executed command: `npx skills add https://github.com/huggingface/skills --skill huggingface-datasets -y -g -a claude-code codex crush cursor opencode`
 - Installed path: `~/.agents/skills/huggingface-datasets`
 - Installed path: `~/.claude/skills/huggingface-datasets`
 - Installed path: `~/.config/crush/skills/huggingface-datasets`

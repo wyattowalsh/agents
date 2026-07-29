@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agents.w4w.dev/schemas/runtime-rollback-failure-marker.schema.json",
+  "title": "Candidate runtime rollback failure marker",
+  "type": "object",
+  "required": [
+    "version",
+    "transaction_id",
+    "status",
+    "error_type",
+    "journal_path",
+    "journal_sha256"
+  ],
+  "properties": {
+    "version": {
+      "const": 2
+    },
+    "transaction_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "const": "failed"
+    },
+    "error_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "journal_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "journal_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

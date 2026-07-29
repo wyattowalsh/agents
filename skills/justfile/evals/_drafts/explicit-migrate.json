@@ -1,0 +1,13 @@
+{
+  "id": "explicit-migrate",
+  "prompt": "/justfile migrate Makefile task targets into a justfile but keep the Makefile until I approve deletion",
+  "expected_output": "Migrate-mode mapping table and justfile draft that converts ## Make help to [doc]/default-list and asks before deleting the Makefile.",
+  "files": ["Makefile"],
+  "assertions": [
+    "Dispatches to migrate mode",
+    "Produces an old-to-new mapping before cutover",
+    "Converts Make ## help to Just [doc] / list rather than keeping Make help",
+    "Writes or proposes justfile before deleting sources",
+    "Asks before deleting the Makefile"
+  ]
+}

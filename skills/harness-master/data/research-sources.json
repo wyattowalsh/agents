@@ -246,8 +246,8 @@
         "extension": "https://open-vsx.org/api/{namespace}/{extension}"
       },
       "evidence_fields": ["namespace", "extension name", "versions", "downloads", "license", "repository", "engines"],
-      "confidence_role": "VS Code-compatible extension discovery for Cursor and Antigravity-style surfaces.",
-      "failure_mode": "Open VSX availability does not prove Cursor/Antigravity runtime compatibility."
+      "confidence_role": "VS Code-compatible extension discovery for editor surfaces.",
+      "failure_mode": "Open VSX availability does not prove runtime compatibility with every editor."
     },
     {
       "id": "docker-hub-oci",

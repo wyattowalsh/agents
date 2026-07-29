@@ -20,11 +20,9 @@ if TYPE_CHECKING:
 _BUILT_IN_ADAPTERS: dict[str, str] = {
     "claude-code": "wagents.platforms.claude",
     "codex": "wagents.platforms.codex",
-    "copilot": "wagents.platforms.copilot",
+    "crush": "wagents.platforms.crush",
     "cursor": "wagents.platforms.cursor",
-    "gemini-cli": "wagents.platforms.gemini",
     "grok": "wagents.platforms.grok",
-    "github-copilot": "wagents.platforms.copilot",
     "lm-studio": "wagents.platforms.lm_studio",
     "opencode": "wagents.platforms.opencode",
     "vscode": "wagents.platforms.vscode",

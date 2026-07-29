@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-16T02:52:03.780559+00:00",
+  "generated_at": "2026-07-29T09:29:04.750141+00:00",
   "status": "no-live-install-commands-emitted",
   "command_count": 0,
   "commands": [],
@@ -4822,27 +4822,6 @@
           "source": "PasqualeVittoriosi/swift-accessibility-skill",
           "install_source": "PasqualeVittoriosi/swift-accessibility-skill",
           "source_url": "https://github.com/PasqualeVittoriosi/swift-accessibility-skill",
-          "status": "install-now-after-trust-gate",
-          "trust_tier": "curated-trust-gated",
-          "sync_kind": "skills-cli",
-          "has_install_command": true
-        }
-      ]
-    },
-    {
-      "packet_id": "N064",
-      "normalized_url": "https://github.com/PleasePrompto/notebooklm-skill",
-      "raw_indexes": [
-        111
-      ],
-      "integration_classification": "installable-existing",
-      "catalog_rows": [
-        {
-          "name": "notebooklm",
-          "path": "docs/src/authoring/skills/notebooklm.mdx",
-          "source": "PleasePrompto/notebooklm-skill",
-          "install_source": "PleasePrompto/notebooklm-skill",
-          "source_url": "https://github.com/PleasePrompto/notebooklm-skill",
           "status": "install-now-after-trust-gate",
           "trust_tier": "curated-trust-gated",
           "sync_kind": "skills-cli",
@@ -14806,6 +14785,27 @@
       ]
     },
     {
+      "packet_id": "N266",
+      "normalized_url": "https://github.com/teng-lin/notebooklm-py",
+      "raw_indexes": [
+        146
+      ],
+      "integration_classification": "installable-existing",
+      "catalog_rows": [
+        {
+          "name": "notebooklm",
+          "path": "docs/src/authoring/skills/notebooklm.mdx",
+          "source": "teng-lin/notebooklm-py",
+          "install_source": "https://github.com/teng-lin/notebooklm-py",
+          "source_url": "https://github.com/teng-lin/notebooklm-py",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ]
+    },
+    {
       "packet_id": "N267",
       "normalized_url": "https://github.com/tim-osterhus/codex-remotion-plugin",
       "raw_indexes": [
@@ -16109,6 +16109,21 @@
       "normalized_url": "https://github.com/Octane0411/opencode-plugin-openspec",
       "raw_indexes": [
         181
+      ],
+      "integration_classification": "integrated-reference",
+      "hard_blocked": false,
+      "terminal_route_requirements": [
+        "preserve attribution and license notes",
+        "keep credentials user-owned",
+        "avoid vendoring or executing candidate code from intake rows",
+        "use repo-native MCP/plugin/tool/catalog surfaces"
+      ]
+    },
+    {
+      "packet_id": "N064",
+      "normalized_url": "https://github.com/PleasePrompto/notebooklm-skill",
+      "raw_indexes": [
+        111
       ],
       "integration_classification": "integrated-reference",
       "hard_blocked": false,
@@ -17960,21 +17975,6 @@
       "normalized_url": "https://github.com/sflueckiger/specboard",
       "raw_indexes": [
         185
-      ],
-      "integration_classification": "integrated-reference",
-      "hard_blocked": false,
-      "terminal_route_requirements": [
-        "preserve attribution and license notes",
-        "keep credentials user-owned",
-        "avoid vendoring or executing candidate code from intake rows",
-        "use repo-native MCP/plugin/tool/catalog surfaces"
-      ]
-    },
-    {
-      "packet_id": "N266",
-      "normalized_url": "https://github.com/teng-lin/notebooklm-py",
-      "raw_indexes": [
-        146
       ],
       "integration_classification": "integrated-reference",
       "hard_blocked": false,

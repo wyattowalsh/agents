@@ -3,6 +3,7 @@ name: code-reviewer
 description: Review changes for correctness, risk, and maintainability without editing
   code.
 tools: Read, Grep, Glob
+permissionMode: plan
 ---
 
 ## Role

@@ -31,8 +31,6 @@ SKILL_SOURCES = (
     "codex",
     "global",
     "claude-code",
-    "gemini-cli",
-    "github-copilot",
     "opencode",
     "plugin",
 )
@@ -135,8 +133,6 @@ def default_skill_roots(
         SkillRoot(home_dir / ".codex" / "skills", "codex", "codex-user"),
         SkillRoot(home_dir / ".agents" / "skills", "global", "external-installed"),
         SkillRoot(home_dir / ".claude" / "skills", "claude-code", "external-installed"),
-        SkillRoot(home_dir / ".gemini" / "skills", "gemini-cli", "external-installed"),
-        SkillRoot(home_dir / ".copilot" / "skills", "github-copilot", "external-installed"),
         SkillRoot(home_dir / ".config" / "opencode" / "skills", "opencode", "external-installed"),
     ])
 
@@ -435,7 +431,7 @@ def _source_matches(actual: str, requested: str) -> bool:
     if requested == "all":
         return True
     if requested == "global":
-        return actual in {"global", "claude-code", "gemini-cli", "github-copilot", "opencode"}
+        return actual in {"global", "claude-code", "opencode"}
     return actual == requested
 
 

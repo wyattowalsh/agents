@@ -28,13 +28,10 @@ OPENSPEC_TELEMETRY_ENV = "OPENSPEC_TELEMETRY"
 OPENSPEC_MIN_NODE_VERSION = (20, 19, 0)
 
 OPENSPEC_TOOL_BY_AGENT: dict[str, str] = {
-    "antigravity": "antigravity",
     "claude-code": "claude",
     "codex": "codex",
     "crush": "crush",
     "cursor": "cursor",
-    "gemini-cli": "gemini",
-    "github-copilot": "github-copilot",
     "opencode": "opencode",
 }
 
@@ -45,10 +42,6 @@ OPENSPEC_GENERATED_PATHS = (
     ".crush/",
     ".cursor/commands/",
     ".cursor/skills/",
-    ".gemini/commands/",
-    ".gemini/skills/",
-    ".github/prompts/",
-    ".github/skills/",
     ".opencode/commands/",
     ".opencode/skills/",
 )

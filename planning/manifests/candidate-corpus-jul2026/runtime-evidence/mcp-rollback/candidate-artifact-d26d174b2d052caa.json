@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-d26d174b2d052caa",
+  "mcp_server": "axiom-mcp",
+  "transaction_id": "89c3b268b66a42e19ab673d204b40e31",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "2490e002b75c7d1a2de71d3778a254f1f4f98f98ad39b374ce20f1569aaaecc9",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "7a29ec33ed6c0bf1ffca4329989ce7706d3ed0d4b8436e2f4f21f3b4bf9aefd2",
+  "isolated_rollback_digest": "7a29ec33ed6c0bf1ffca4329989ce7706d3ed0d4b8436e2f4f21f3b4bf9aefd2",
+  "fresh_absence": {
+    "axiom-mcp": null
+  },
+  "fresh_absence_process_id": 20600,
+  "fresh_absence_output_sha256": "dee134f0c1037ddda002934a2db74b6c7e244d93b907c594e84d1b20b4d8e1fd",
+  "restored_use_process_id": 20690,
+  "restored_use_output_sha256": "9c6540535d7fe309015a68c57ccb4bb74f68cd4964c3372a864338e786dff9ba",
+  "restored_use_launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-mcp-entrypoint-rollback-candidate-artifact-d26d174b2d052caa-3b6ougi4/bin/axiom-mcp",
+  "restored_use_launch_realpath": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/axiom-mcp/dist/index.js",
+  "installed_digest": "5106468261971ca383af3e84bbdf35f314a0857b1812882154c5363f37fbf5b2",
+  "status": "passed"
+}

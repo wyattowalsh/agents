@@ -16,19 +16,17 @@
       "enabled": false
     },
     "antv-chart": {
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "@antv/mcp-server-chart"
+        "mcp-server-chart"
       ],
       "env": {
         "VIS_REQUEST_SERVER": "${VIS_REQUEST_SERVER}",
         "SERVICE_ID": "${SERVICE_ID}",
         "DISABLED_TOOLS": "${ANTV_CHART_DISABLED_TOOLS}"
       },
-      "description": "Disabled external chart-rendering MCP example from antvis/mcp-server-chart; opt in only after local network/rendering review.",
-      "timeout": 600000,
-      "enabled": false
+      "description": "Audited chart-rendering MCP from antvis/mcp-server-chart; only generate_bar_chart is exposed.",
+      "timeout": 600000
     },
     "arxiv": {
       "command": "bash",
@@ -45,16 +43,24 @@
       ],
       "timeout": 600000
     },
-    "better-icons": {
-      "command": "npx",
+    "axiom-mcp": {
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "better-icons",
-        "mcp"
+        "axiom-mcp"
       ],
-      "description": "Disabled external icon lookup MCP example from better-auth/better-icons; opt in per project before writing icon assets.",
-      "timeout": 600000,
-      "enabled": false
+      "env": {
+        "AXIOM_MCP_MODE": "production"
+      },
+      "description": "Managed Axiom Apple-platform catalog MCP; destructive project-generation tools are not exposed.",
+      "timeout": 600000
+    },
+    "better-icons": {
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
+      "args": [
+        "better-icons"
+      ],
+      "description": "Audited icon lookup MCP from better-auth/better-icons; only search_icons is exposed.",
+      "timeout": 600000
     },
     "brave-search": {
       "command": "npx",
@@ -76,15 +82,13 @@
       "timeout": 600000
     },
     "charted": {
-      "command": "uvx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-uv-tool",
       "args": [
-        "--from",
-        "charted[mcp]",
+        "charted",
         "charted-mcp"
       ],
-      "description": "Disabled local chart generation MCP example from marzukia/charted.",
-      "timeout": 600000,
-      "enabled": false
+      "description": "Audited local chart generation MCP from marzukia/charted.",
+      "timeout": 600000
     },
     "chrome-devtools": {
       "command": "bash",
@@ -135,10 +139,19 @@
       "args": [],
       "timeout": 600000
     },
-    "ddgs": {
-      "command": "uvx",
+    "csvglow": {
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-uv-tool",
       "args": [
-        "ddgs-mcp-server==0.5.1"
+        "csvglow",
+        "csvglow"
+      ],
+      "description": "Managed CSVGlow MCP for local CSV-to-dashboard generation; browser opening is not allowed by the tracked canary.",
+      "timeout": 600000
+    },
+    "ddgs": {
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/ddgs-stdio.sh"
       ],
       "timeout": 600000
     },
@@ -153,6 +166,17 @@
     "deepwiki": {
       "type": "streamable-http",
       "url": "https://mcp.deepwiki.com/mcp",
+      "timeout": 600000
+    },
+    "designer-skill-mcp": {
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
+      "args": [
+        "designer-skill-mcp"
+      ],
+      "env": {
+        "NO_UPDATE_NOTIFIER": "1"
+      },
+      "description": "Managed designer-skill MCP with update checks suppressed.",
       "timeout": 600000
     },
     "docling": {
@@ -241,6 +265,15 @@
       ],
       "timeout": 600000
     },
+    "geo-mcp": {
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-uv-tool",
+      "args": [
+        "geo-optimizer-skill",
+        "geo-mcp"
+      ],
+      "description": "Audited GEO optimizer MCP; only local schema validation is exposed.",
+      "timeout": 600000
+    },
     "gmail": {
       "command": "npx",
       "args": [
@@ -263,8 +296,9 @@
       "timeout": 600000
     },
     "langfuse-mcp": {
-      "command": "uvx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-uv-tool",
       "args": [
+        "langfuse-mcp",
         "langfuse-mcp"
       ],
       "env": {
@@ -299,15 +333,39 @@
       ],
       "timeout": 600000
     },
-    "mcp-excalidraw": {
-      "command": "npx",
+    "mcp-dashboards": {
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
+        "mcp-dashboards"
+      ],
+      "env": {
+        "MCP_DASHBOARDS_DISABLE_PREVIEW": "1",
+        "MCP_DASHBOARDS_RETAIN_DAYS": "0"
+      },
+      "description": "Audited dashboard MCP with preview and artifact retention disabled.",
+      "timeout": 600000
+    },
+    "mcp-excalidraw": {
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
+      "args": [
         "mcp-excalidraw-server"
       ],
-      "description": "Disabled local Excalidraw canvas MCP example from yctimlin/mcp_excalidraw.",
-      "timeout": 600000,
-      "enabled": false
+      "env": {
+        "EXCALIDRAW_NO_AUTOSTART": "1"
+      },
+      "description": "Audited local Excalidraw guidance MCP with canvas auto-start disabled.",
+      "timeout": 600000
+    },
+    "mobile-mcp": {
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
+      "args": [
+        "mcp-server-mobile"
+      ],
+      "env": {
+        "MOBILEMCP_DISABLE_TELEMETRY": "1"
+      },
+      "description": "Managed mobile device MCP with telemetry disabled; only read-only device discovery is exposed.",
+      "timeout": 600000
     },
     "notebooklm": {
       "command": "uvx",
@@ -320,15 +378,12 @@
       "timeout": 600000
     },
     "nullcost": {
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "nullcost-plugin@latest",
-        "mcp-server"
+        "nullcost-plugin"
       ],
-      "description": "Disabled external cost-estimation MCP example; opt in only after provider/pricing review.",
-      "timeout": 600000,
-      "enabled": false
+      "description": "Audited cost-estimation MCP; only provider search is exposed.",
+      "timeout": 600000
     },
     "open-websearch": {
       "command": "bash",
@@ -338,15 +393,12 @@
       "timeout": 600000
     },
     "openspec-mcp": {
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "openspec-mcp",
-        "${REPO_ROOT}"
+        "openspec-mcp"
       ],
-      "description": "Disabled external OpenSpec MCP compatibility example; repo-native wagents OpenSpec remains the default.",
-      "timeout": 600000,
-      "enabled": false
+      "description": "Audited OpenSpec MCP compatibility surface; repo-native wagents OpenSpec remains the default.",
+      "timeout": 600000
     },
     "ossinsight": {
       "command": "npx",
@@ -367,8 +419,9 @@
       "timeout": 600000
     },
     "paper-search-mcp": {
-      "command": "uvx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-uv-tool",
       "args": [
+        "paper-search-mcp",
         "paper-search-mcp"
       ],
       "env": {
@@ -377,9 +430,8 @@
         "ZENODO_ACCESS_TOKEN": "${ZENODO_ACCESS_TOKEN}",
         "UNPAYWALL_EMAIL": "${UNPAYWALL_EMAIL}"
       },
-      "description": "Disabled academic paper search MCP example; opt in with provider ToS and credential review.",
-      "timeout": 600000,
-      "enabled": false
+      "description": "Audited academic paper search MCP; provider credentials remain optional and user-owned.",
+      "timeout": 600000
     },
     "papersflow": {
       "type": "streamable-http",
@@ -399,6 +451,17 @@
       },
       "timeout": 600000
     },
+    "prompt-to-asset": {
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
+      "args": [
+        "p2a"
+      ],
+      "env": {
+        "PROMPT_TO_BUNDLE_DRY_RUN": "1"
+      },
+      "description": "Managed Prompt-to-Asset MCP in dry-run mode; only the diagnostic asset_doctor tool is exposed.",
+      "timeout": 600000
+    },
     "qsv": {
       "command": "bash",
       "args": [
@@ -411,6 +474,14 @@
         "QSV_MCP_CHECK_UPDATES_ON_STARTUP": "false",
         "QSV_MCP_OPERATION_TIMEOUT_MS": "600000"
       },
+      "timeout": 600000
+    },
+    "reddit-mcp-buddy": {
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/reddit-mcp-buddy-stdio.sh"
+      ],
+      "description": "Opt-in anonymous Reddit research MCP; excluded from default harness and tunnel groups.",
       "timeout": 600000
     },
     "release-provenance": {
@@ -470,15 +541,12 @@
       "timeout": 600000
     },
     "semiotic": {
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "semiotic",
         "semiotic-mcp"
       ],
-      "description": "Disabled Semiotic visualization MCP example; keep HTTP/cloud modes local opt-in only.",
-      "timeout": 600000,
-      "enabled": false
+      "description": "Audited Semiotic visualization MCP; HTTP and cloud modes remain disabled.",
+      "timeout": 600000
     },
     "sequential-thinking": {
       "command": "npx",
@@ -645,6 +713,103 @@
       ]
     },
     {
+      "id": "6456c27d-bf37-5427-b989-fcbd7874827d",
+      "name": "candidate-corpus",
+      "description": "Audited July 2026 candidate MCPs with one bounded tool per server; credentialed Langfuse and hosted Papersflow remain excluded.",
+      "servers": [
+        {
+          "name": "antv-chart",
+          "tools": [
+            "generate_bar_chart"
+          ]
+        },
+        {
+          "name": "axiom-mcp",
+          "tools": [
+            "axiom_get_catalog"
+          ]
+        },
+        {
+          "name": "better-icons",
+          "tools": [
+            "search_icons"
+          ]
+        },
+        {
+          "name": "charted",
+          "tools": [
+            "list_chart_types"
+          ]
+        },
+        {
+          "name": "csvglow",
+          "tools": [
+            "generate_dashboard"
+          ]
+        },
+        {
+          "name": "designer-skill-mcp",
+          "tools": [
+            "get_preflight_brief"
+          ]
+        },
+        {
+          "name": "geo-mcp",
+          "tools": [
+            "geo_schema_validate"
+          ]
+        },
+        {
+          "name": "mcp-dashboards",
+          "tools": [
+            "render_bar_chart"
+          ]
+        },
+        {
+          "name": "mcp-excalidraw",
+          "tools": [
+            "read_diagram_guide"
+          ]
+        },
+        {
+          "name": "mobile-mcp",
+          "tools": [
+            "mobile_list_available_devices"
+          ]
+        },
+        {
+          "name": "nullcost",
+          "tools": [
+            "search_providers"
+          ]
+        },
+        {
+          "name": "openspec-mcp",
+          "tools": [
+            "openspec_list_changes"
+          ]
+        },
+        {
+          "name": "paper-search-mcp",
+          "tools": [
+            "search_papers"
+          ]
+        },
+        {
+          "name": "prompt-to-asset",
+          "tools": [
+            "asset_doctor"
+          ]
+        },
+        {
+          "name": "semiotic",
+          "tools": [
+            "suggestChart"
+          ]
+        }
+      ]
+    },
+    {
       "id": "20a5db0e-0d1b-53ae-97da-b7cbfca070ca",
       "name": "coding",
       "description": "Coding, dependency lookup, repo inspection, and browser validation workflow.",
@@ -741,6 +906,16 @@
         "creative-thinking",
         "deep-lucid-3d",
         "lotus-wisdom-mcp",
+        {
+          "name": "reddit-mcp-buddy",
+          "tools": [
+            "browse_subreddit",
+            "search_reddit",
+            "get_post_details",
+            "user_analysis",
+            "reddit_explain"
+          ]
+        },
         "shannon-thinking",
         "think-strategies"
       ]
@@ -936,7 +1111,17 @@
             "read_cell"
           ]
         },
-        "qsv"
+        "qsv",
+        {
+          "name": "reddit-mcp-buddy",
+          "tools": [
+            "browse_subreddit",
+            "search_reddit",
+            "get_post_details",
+            "user_analysis",
+            "reddit_explain"
+          ]
+        }
       ]
     },
     {
@@ -993,6 +1178,16 @@
           "name": "scrapling",
           "tools": [
             "get"
+          ]
+        },
+        {
+          "name": "reddit-mcp-buddy",
+          "tools": [
+            "browse_subreddit",
+            "search_reddit",
+            "get_post_details",
+            "user_analysis",
+            "reddit_explain"
           ]
         }
       ]

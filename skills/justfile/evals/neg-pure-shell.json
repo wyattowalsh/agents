@@ -1,0 +1,14 @@
+{
+  "skills": [
+    "justfile"
+  ],
+  "query": "/justfile write a bash script that backs up a directory to a timestamped tarball",
+  "files": [],
+  "expected_behavior": [
+    "negative-control: should not trigger justfile authoring for pure shell scripts",
+    "Treats the request as out of scope for justfile authoring",
+    "Redirects to shell-scripter",
+    "Does not author a justfile solely to wrap an unrelated shell script request",
+    "Names the boundary clearly"
+  ]
+}

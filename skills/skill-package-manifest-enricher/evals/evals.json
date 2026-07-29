@@ -8,7 +8,7 @@
       "files": [],
       "assertions": [
         "Agent runs enrich_manifest.py with --dry-run",
-        "Agent includes eval_case_count and harness_targets",
+        "Agent includes eval_case_count, harness_targets, target status, source label, and source SHA-256",
         "Agent does not create ZIP artifacts"
       ]
     },
@@ -18,7 +18,7 @@
       "expected_output": "Shows enriched field catalog and workflow without writing manifests.",
       "files": [],
       "assertions": [
-        "Agent lists compatibility_notes, eval_case_count, harness_targets, and packaged_at",
+        "Agent lists compatibility_notes, eval_case_count, harness target evidence fields, and packaged_at",
         "Agent explains packaged_at is apply-mode only",
         "Agent does not emit ZIP files"
       ]
@@ -31,6 +31,7 @@
       "assertions": [
         "Agent treats --apply as the write gate",
         "Agent preserves upstream manifest keys",
+        "Agent refreshes only enrichment-owned fields",
         "Agent runs or recommends the validator contract after writing"
       ]
     },
@@ -52,6 +53,7 @@
       "files": [],
       "assertions": [
         "Agent runs enrich_manifest.py before packaging validation",
+        "Agent supplies catalog or sync metadata instead of guessing targets",
         "Agent routes ZIP creation to skill-creator package mode",
         "Agent uses package.py --dry-run for packaging proof"
       ]
@@ -63,7 +65,7 @@
       "files": [],
       "assertions": [
         "Agent runs enrich_manifest.py with --dry-run",
-        "Agent includes eval_case_count and compatibility notes when available",
+        "Agent includes eval_case_count, compatibility notes, and content-bound target evidence when available",
         "Agent does not emit a ZIP"
       ]
     },
@@ -75,7 +77,8 @@
       "assertions": [
         "Agent requires explicit --apply before writing",
         "Agent writes manifest.enriched.json beside packaging output only",
-        "Agent keeps enrichment additive"
+        "Agent preserves unrelated upstream keys",
+        "Agent writes target status, portable source label, and source SHA-256"
       ]
     },
     {
@@ -98,6 +101,41 @@
         "Agent states ZIP creation is out of scope",
         "Agent does not run ad-hoc archive commands",
         "Agent recommends skill-creator packaging dry-run"
+      ]
+    },
+    {
+      "id": "implicit-metadata-enrichment",
+      "prompt": "Before I package this skill, safely enrich its manifest from the catalog and show me the result without changing files.",
+      "expected_output": "Implicit trigger: previews safe, evidence-bound manifest enrichment without writing.",
+      "files": [],
+      "assertions": [
+        "Agent activates skill-package-manifest-enricher",
+        "Agent uses real YAML semantics and the applicable catalog row",
+        "Agent reports target status, portable source label, and source SHA-256",
+        "Agent does not write without explicit --apply"
+      ]
+    },
+    {
+      "id": "unavailable-target-evidence",
+      "prompt": "/skill-package-manifest-enricher --skill-dir ./portable-skill --dry-run with no catalog or sync metadata",
+      "expected_output": "Reports unavailable target evidence and an empty harness target set without guessing.",
+      "files": [],
+      "assertions": [
+        "Agent emits harness_targets_status as unavailable",
+        "Agent emits an empty harness_targets list",
+        "Agent does not substitute a repository-supported harness list",
+        "Agent does not write a sidecar"
+      ]
+    },
+    {
+      "id": "malformed-frontmatter-safe-failure",
+      "prompt": "Apply manifest enrichment to a skill whose SKILL.md has malformed YAML frontmatter.",
+      "expected_output": "Fails before writing and leaves any existing sidecar unchanged.",
+      "files": [],
+      "assertions": [
+        "Agent reports the YAML parse failure",
+        "Agent does not fall back to line-oriented parsing",
+        "Agent leaves the existing manifest byte-for-byte unchanged"
       ]
     }
   ]

@@ -6,15 +6,11 @@
 2. [Claude Desktop](#claude-desktop)
 3. [ChatGPT](#chatgpt)
 4. [Codex](#codex)
-5. [GitHub Copilot Web](#github-copilot-web)
-6. [GitHub Copilot CLI](#github-copilot-cli)
-7. [Cursor](#cursor)
-8. [Gemini CLI](#gemini-cli)
-9. [Antigravity](#antigravity)
-10. [Grok Build](#grok-build)
-11. [OpenCode](#opencode)
-12. [Perplexity Desktop](#perplexity-desktop)
-13. [Cherry Studio](#cherry-studio)
+5. [Cursor](#cursor)
+6. [Grok Build](#grok-build)
+7. [OpenCode](#opencode)
+8. [Perplexity Desktop](#perplexity-desktop)
+9. [Cherry Studio](#cherry-studio)
 
 ## Claude Code
 
@@ -56,27 +52,6 @@ Check:
 - MCP config hygiene if present in `config.toml`
 - whether project config duplicates global config unnecessarily
 
-## GitHub Copilot Web
-
-Check:
-
-- `.github/copilot-instructions.md` freshness and generated-file status
-- `.github/instructions/**` and `.github/hooks/**` coherence
-- `.vscode/mcp.json` quality and project fit
-- Copilot coding agent, repository, and organization settings as blind spots when not locally observable
-- whether built-in GitHub MCP is being duplicated unnecessarily
-
-## GitHub Copilot CLI
-
-Check:
-
-- `~/.copilot/settings.json` trusted folders and permissions
-- `~/.copilot/mcp-config.json` and alternate MCP config path
-- `~/.config/copilot-subagents.env` caps if subagent fan-out is in scope
-- `.github/hooks/*` on project for CLI harness (parity with web facet)
-- CLI flags or local permissions that may bypass intended policy
-- overlap with project `.vscode/mcp.json` and web/coding-agent surfaces
-
 ## Cursor
 
 Check:
@@ -90,30 +65,6 @@ Check:
 - `.cursorignore` coverage for sensitive or noisy paths
 - `~/.cursor/permissions.json` fit for the repo's risk profile, with medium confidence if docs conflict
 - UI-only user/team rules and Cloud Agent settings/secrets/API state as blind spots
-
-## Gemini CLI
-
-Check:
-
-- `GEMINI.md` quality and wrapper behavior
-- `.gemini/settings.json` necessity vs noise
-- project vs global settings split
-- `mcpServers` and `hooks` shape in settings files
-- explicit embedded-hooks surfaces emitted for `.gemini/settings.json` (kind: hooks alongside kind: config)
-- whether the repo relies on generated wrapper content that should instead be changed at a canonical source
-
-## Antigravity
-
-Check:
-
-- `~/.gemini/antigravity/mcp_config.json` structure and auth configuration
-- `command` vs `serverUrl` usage
-- `headers`, OAuth, and disabled tool handling
-- OAuth token file presence/permissions only; never read token values
-- settings and approval behavior where observable
-- terminal auto-execution and non-workspace file access policy
-- worktree support assumptions
-- project-level compatibility with repo wrapper files, clearly labeled as `repo-observed` if not first-party verified
 
 ## Grok Build
 

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-16T02:52:03.352829+00:00",
+  "generated_at": "2026-07-29T09:29:03.021842+00:00",
   "items": [
     {
       "raw_index": 1,
@@ -483,7 +483,7 @@
         "PERPLEXITY_API_KEY"
       ],
       "safety_notes": "No elevated keyword risk detected.",
-      "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+      "evidence_source": "deep-source-audit.json"
     },
     {
       "raw_index": 63,
@@ -1218,7 +1218,7 @@
       "normalized_url": "https://github.com/teng-lin/notebooklm-py",
       "source_name": "teng-lin/notebooklm-py",
       "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+        "NOTEBOOKLM_PROFILE"
       ],
       "safety_notes": "No elevated keyword risk detected.",
       "evidence_source": "deep-source-audit.json"
@@ -1430,7 +1430,6 @@
         "GEMINI_API_KEY",
         "GOOGLE_API_KEY",
         "HF_TOKEN",
-        "HORDE_API_KEY",
         "HUGGINGFACE_API_KEY",
         "IDEOGRAM_API_KEY",
         "LEONARDO_API_KEY",
@@ -1688,6 +1687,18 @@
       "evidence_source": "deep-source-audit.json"
     },
     {
+      "raw_index": 274,
+      "normalized_url": "https://github.com/openags/paper-search-mcp",
+      "source_name": "openags/paper-search-mcp",
+      "env_vars_or_credentials": [
+        "PAPER_SEARCH_MCP_CORE_API_KEY",
+        "SEMANTIC_SCHOLAR_API_KEY",
+        "ZENODO_ACCESS_TOKEN"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
       "raw_index": 277,
       "normalized_url": "https://github.com/epicsagas/llm-transpile",
       "source_name": "epicsagas/llm-transpile",
@@ -1705,6 +1716,16 @@
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
       ],
       "safety_notes": "No elevated keyword risk detected.",
+      "evidence_source": "deep-source-audit.json"
+    },
+    {
+      "raw_index": 279,
+      "normalized_url": "https://github.com/papersflow-ai/papersflow-codex-plugin",
+      "source_name": "papersflow-ai/papersflow-codex-plugin",
+      "env_vars_or_credentials": [
+        "PAPERSFLOW_OAUTH_ACCOUNT"
+      ],
+      "safety_notes": "Executable/tool surface requires script and dependency review.",
       "evidence_source": "deep-source-audit.json"
     },
     {

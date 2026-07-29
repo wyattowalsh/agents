@@ -42,6 +42,13 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_axiom-mcp]
+url = "http://127.0.0.1:46683/mcp/axiom-mcp"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_better-icons]
 url = "http://127.0.0.1:46683/mcp/better-icons"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
@@ -105,6 +112,13 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_csvglow]
+url = "http://127.0.0.1:46683/mcp/csvglow"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_ddgs]
 url = "http://127.0.0.1:46683/mcp/ddgs"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
@@ -121,6 +135,13 @@ enabled = false
 
 [mcp_servers.mcphub_server_deepwiki]
 url = "http://127.0.0.1:46683/mcp/deepwiki"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_designer-skill-mcp]
+url = "http://127.0.0.1:46683/mcp/designer-skill-mcp"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
 startup_timeout_sec = 90
 tool_timeout_sec = 90
@@ -189,6 +210,13 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_geo-mcp]
+url = "http://127.0.0.1:46683/mcp/geo-mcp"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_gmail]
 url = "http://127.0.0.1:46683/mcp/gmail"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
@@ -231,8 +259,22 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_mcp-dashboards]
+url = "http://127.0.0.1:46683/mcp/mcp-dashboards"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_mcp-excalidraw]
 url = "http://127.0.0.1:46683/mcp/mcp-excalidraw"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_mobile-mcp]
+url = "http://127.0.0.1:46683/mcp/mobile-mcp"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
 startup_timeout_sec = 90
 tool_timeout_sec = 90
@@ -301,8 +343,22 @@ startup_timeout_sec = 90
 tool_timeout_sec = 90
 enabled = false
 
+[mcp_servers.mcphub_server_prompt-to-asset]
+url = "http://127.0.0.1:46683/mcp/prompt-to-asset"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
 [mcp_servers.mcphub_server_qsv]
 url = "http://127.0.0.1:46683/mcp/qsv"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_reddit-mcp-buddy]
+url = "http://127.0.0.1:46683/mcp/reddit-mcp-buddy"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
 startup_timeout_sec = 90
 tool_timeout_sec = 90

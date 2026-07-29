@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-13a1976cbb27637e",
+  "normalized_url": "https://github.com/nvidia/skillspector",
+  "transaction_id": "109d7c78e3a64802a4307d7e9c6935bf",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "68e73c444ce97031e802c701eec7537011925d803440821bbe6e8fed6f2e0e9a",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "230d82c0f414bf81b2a0c079f5b952072c59b698781c7207307c4a6d41c858a7",
+  "isolated_rollback_digest": "230d82c0f414bf81b2a0c079f5b952072c59b698781c7207307c4a6d41c858a7",
+  "fresh_absence": {
+    "skillspector": null
+  },
+  "fresh_absence_process_id": 17902,
+  "fresh_absence_output_sha256": "57c51a423071a84d629b974a445a779ea39431acd0735f40d9b2683a5ead7664",
+  "restored_use_process_id": 18177,
+  "restored_use_output_sha256": "ecc04f092c6b763bc0e6a6dca47ca1df25f9414ec7129266b711fb75d458d0b7",
+  "restored_use_launch_paths": [
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-13a1976cbb27637e-z7_3ka11/bin/skillspector",
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-13a1976cbb27637e-z7_3ka11/bin/skillspector"
+  ],
+  "restored_use_launch_realpaths": [
+    "/Users/ww/.local/share/uv/tools/skillspector/bin/skillspector",
+    "/Users/ww/.local/share/uv/tools/skillspector/bin/skillspector"
+  ],
+  "restored_executable_map": {
+    "skillspector": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-13a1976cbb27637e-z7_3ka11/bin/skillspector",
+      "realpath": "/Users/ww/.local/share/uv/tools/skillspector/bin/skillspector"
+    }
+  },
+  "installed_digest": "75dbb695084542a5173d3e7bb9ac987442d5d4d917a3aa5adedcf16d5ae1fa52",
+  "status": "passed"
+}

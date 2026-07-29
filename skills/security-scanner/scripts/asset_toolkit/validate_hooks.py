@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Validate hooks in skills, agents, and settings."""
+"""Validate hooks in skills, agents, and settings.
+
+``wagents hooks validate`` and ``wagents validate`` both share this skill-creator
+module as the hooks validator. Bundled copies under other skills'
+``scripts/asset_toolkit/`` trees are packaging-only; edit this canonical file and
+sync with ``sync_asset_toolkit.py --modules validate_hooks.py --apply``.
+"""
 
 from __future__ import annotations
 
@@ -18,6 +24,15 @@ from asset_toolkit.common import (
     emit_validation_output,
     find_repo_root,
     parse_frontmatter,
+)
+
+SUPPORTED_HARNESSES = {"all", "codex", "claude-code", "cursor"}
+
+# Cursor pin layers (Phase A rewrite + Phase B allowlist) must be present in the
+# projected `.cursor/hooks.json` and stay fail-open (RV-S-008 + RV-S-010).
+CURSOR_REQUIRED_PIN_COMMAND_SUBSTRINGS = (
+    "cursor-task-model-pin-rewrite",
+    "cursor-subagent-model-allowlist",
 )
 
 
@@ -60,23 +75,114 @@ def _validate_hooks(source: str, hooks_dict: dict, add_error) -> None:
                     add_error(source, f"{handler_type} handler in '{event}' has empty prompt")
 
 
-def validate_hooks(repo_root: Path) -> list[dict[str, str]]:
+def _validate_cursor_pin_presence(hooks: dict, add_error) -> None:
+    """Require pin command substrings with explicit failClosed false."""
+    found: dict[str, dict] = {}
+    for entries in hooks.values():
+        if not isinstance(entries, list):
+            continue
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            command = entry.get("command")
+            if not isinstance(command, str) or not command:
+                continue
+            for pin_id in CURSOR_REQUIRED_PIN_COMMAND_SUBSTRINGS:
+                if pin_id in command and pin_id not in found:
+                    found[pin_id] = entry
+
+    for pin_id in CURSOR_REQUIRED_PIN_COMMAND_SUBSTRINGS:
+        entry = found.get(pin_id)
+        if entry is None:
+            add_error(
+                ".cursor/hooks.json",
+                f"missing required Cursor pin hook command containing '{pin_id}'",
+            )
+            continue
+        if entry.get("failClosed") is not False:
+            add_error(
+                ".cursor/hooks.json",
+                f"Cursor pin hook '{pin_id}' must set failClosed to false (pins stay fail-open)",
+            )
+
+
+def _validate_cursor_hooks(repo_root: Path, add_error) -> None:
+    path = repo_root / ".cursor" / "hooks.json"
+    if not path.is_file():
+        add_error(".cursor/hooks.json", "missing required Cursor hooks projection")
+        return
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        add_error(".cursor/hooks.json", f"invalid JSON: {exc}")
+        return
+    hooks = data.get("hooks")
+    if not isinstance(hooks, dict):
+        add_error(".cursor/hooks.json", "hooks must be a mapping")
+        return
+    for event, entries in hooks.items():
+        source = f".cursor/hooks.json:{event}"
+        if not isinstance(entries, list):
+            add_error(source, "entries must be a list")
+            continue
+        for index, entry in enumerate(entries, 1):
+            entry_source = f"{source}[{index}]"
+            if not isinstance(entry, dict):
+                add_error(entry_source, "entry must be a mapping")
+                continue
+            if "hooks" in entry:
+                add_error(entry_source, "Cursor hook entries must be flat and must not contain nested hooks")
+            command = entry.get("command")
+            if not isinstance(command, str) or not command:
+                add_error(entry_source, "Cursor hook entry command is required")
+                continue
+            if "${workspaceFolder}" in command:
+                add_error(entry_source, "Cursor hook commands must use $CURSOR_PROJECT_DIR, not ${workspaceFolder}")
+    _validate_cursor_pin_presence(hooks, add_error)
+
+
+def validate_hooks(repo_root: Path, *, harness: str = "all") -> list[dict[str, str]]:
     errors: list[dict[str, str]] = []
 
     def add_error(source: str, message: str) -> None:
         errors.append({"source": source, "message": message})
 
-    for settings_name in ["settings.json", "settings.local.json"]:
-        settings_file = repo_root / ".claude" / settings_name
-        if not settings_file.exists():
-            continue
-        try:
-            data = json.loads(settings_file.read_text(encoding="utf-8"))
-            hooks_dict = data.get("hooks", {})
-            if hooks_dict:
-                _validate_hooks(settings_name, hooks_dict, add_error)
-        except json.JSONDecodeError as exc:
-            add_error(settings_name, f"invalid JSON: {exc}")
+    if harness not in SUPPORTED_HARNESSES:
+        add_error("harness", f"unsupported harness '{harness}'")
+        return errors
+
+    if harness in {"all", "claude-code"}:
+        for settings_name in ["settings.json", "settings.local.json"]:
+            settings_file = repo_root / ".claude" / settings_name
+            if not settings_file.exists():
+                continue
+            try:
+                data = json.loads(settings_file.read_text(encoding="utf-8"))
+                hooks_dict = data.get("hooks", {})
+                if hooks_dict:
+                    _validate_hooks(settings_name, hooks_dict, add_error)
+                    for event, entries in hooks_dict.items():
+                        if not isinstance(entries, list):
+                            continue
+                        for index, entry in enumerate(entries, 1):
+                            if not isinstance(entry, dict):
+                                continue
+                            entry_source = f"{settings_name}:{event}[{index}]"
+                            if entry.get("bash") or entry.get("timeoutSec"):
+                                add_error(
+                                    entry_source,
+                                    "Claude settings must not contain foreign flat bash hook entries",
+                                )
+                            if "hooks" not in entry and entry.get("command"):
+                                add_error(
+                                    entry_source,
+                                    "Claude settings must use nested hooks groups, not flat command entries",
+                                )
+            except json.JSONDecodeError as exc:
+                add_error(settings_name, f"invalid JSON: {exc}")
+
+    if harness in {"all", "cursor"}:
+        _validate_cursor_hooks(repo_root, add_error)
 
     skills_dir = repo_root / "skills"
     if skills_dir.is_dir():
@@ -110,7 +216,7 @@ def validate_hooks(repo_root: Path) -> list[dict[str, str]]:
         except json.JSONDecodeError as exc:
             add_error("hook-registry.json", f"invalid JSON: {exc}")
         else:
-            supported_harnesses = {"codex", "claude-code", "cursor", "github-copilot", "gemini-cli"}
+            supported_harnesses = SUPPORTED_HARNESSES - {"all"}
             hooks = data.get("hooks", [])
             if not isinstance(hooks, list):
                 add_error("hook-registry.json", "hooks must be a list")
@@ -121,19 +227,22 @@ def validate_hooks(repo_root: Path) -> list[dict[str, str]]:
                         add_error(source, "hook entry must be a mapping")
                         continue
                     hook_dict = cast("dict[str, object]", hook)
+                    harnesses = hook_dict.get("harnesses")
+                    if not isinstance(harnesses, list) or not harnesses:
+                        add_error(source, "harnesses must be a non-empty list")
+                        continue
+                    selected_harnesses = {str(item) for item in harnesses}
+                    if harness != "all" and harness not in selected_harnesses:
+                        continue
+                    unknown = sorted(selected_harnesses - supported_harnesses)
+                    if unknown:
+                        add_error(source, f"unsupported harnesses: {', '.join(unknown)}")
                     hook_id = hook_dict.get("id")
                     if not isinstance(hook_id, str) or not hook_id:
                         add_error(source, "hook id is required")
                     event = hook_dict.get("logical_event")
                     if event not in KNOWN_HOOK_EVENTS:
                         add_error(source, f"unknown logical_event '{event}'")
-                    harnesses = hook_dict.get("harnesses")
-                    if not isinstance(harnesses, list) or not harnesses:
-                        add_error(source, "harnesses must be a non-empty list")
-                    else:
-                        unknown = sorted({str(item) for item in harnesses} - supported_harnesses)
-                        if unknown:
-                            add_error(source, f"unsupported harnesses: {', '.join(unknown)}")
                     command = hook_dict.get("command")
                     hook_runner = "wagents-hook.py"
                     if not isinstance(command, str) or not command:
@@ -152,6 +261,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate skill and agent hooks")
     parser.add_argument("--repo-root", default="", help="Repository root to validate")
     parser.add_argument("--format", choices=["text", "json", "jsonl"], default="text")
+    parser.add_argument("--harness", choices=sorted(SUPPORTED_HARNESSES), default="all", help="Harness filter")
     args = parser.parse_args(argv)
 
     repo_root = Path(args.repo_root).resolve() if args.repo_root else find_repo_root()
@@ -159,7 +269,7 @@ def main(argv: list[str] | None = None) -> int:
         print("Could not find repo root", file=sys.stderr)
         return 1
 
-    errors = validate_hooks(repo_root)
+    errors = validate_hooks(repo_root, harness=args.harness)
     emit_validation_output(
         args.format,
         errors,

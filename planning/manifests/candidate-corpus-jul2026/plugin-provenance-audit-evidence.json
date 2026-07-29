@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "generated_at": "2026-07-29T14:42:52.366047+00:00",
+  "lock_path": "planning/manifests/candidate-corpus-jul2026/plugin-provenance-lock.json",
+  "lock_sha256": "74c5fd91356624c868446c5c011a9e8678ef9e30267aca8363cb2c951e88bde7",
+  "network_accessed": false,
+  "plugin_count": 8,
+  "plugins": [
+    {
+      "plugin_id": "brooks-lint@awesome-codex-plugins",
+      "audited_source_commit_sha": "821487f9249e8838b01e493585afdabefbf3a066",
+      "upstream_git_tree_oid": "a71f43cc8b1a5d1f09ba0ecec66df9dd2a3f5d41",
+      "source_projection": {
+        "mode": "include",
+        "paths": [
+          ".codex-plugin/plugin.json",
+          "LICENSE",
+          "README.md",
+          "SECURITY.md",
+          "assets/logo.svg",
+          "package.json",
+          "skills/_shared/common.md",
+          "skills/_shared/custom-risks-guide.md",
+          "skills/_shared/decay-risks.md",
+          "skills/_shared/remedy-guide.md",
+          "skills/_shared/source-coverage.md",
+          "skills/_shared/test-decay-risks.md",
+          "skills/brooks-audit/SKILL.md",
+          "skills/brooks-audit/architecture-guide.md",
+          "skills/brooks-audit/onboarding-guide.md",
+          "skills/brooks-debt/SKILL.md",
+          "skills/brooks-debt/debt-guide.md",
+          "skills/brooks-health/SKILL.md",
+          "skills/brooks-health/health-guide.md",
+          "skills/brooks-review/SKILL.md",
+          "skills/brooks-review/pr-review-guide.md",
+          "skills/brooks-sweep/SKILL.md",
+          "skills/brooks-sweep/sweep-guide.md",
+          "skills/brooks-test/SKILL.md",
+          "skills/brooks-test/test-guide.md"
+        ]
+      },
+      "approved_content_sha256": "12cbe6d0fdf39fb9a092df328b120794739ee2c3d47b39883e4ef3aa68a23a4e",
+      "provenance_lock_entry_sha256": "2507f1238075b5e3e47ef5d03bb2c4ea9bfd23b4ab9b98bcd26abd1a3a8dff24",
+      "verification_status": "passed"
+    },
+    {
+      "plugin_id": "codebase-recon@awesome-codex-plugins",
+      "audited_source_commit_sha": "c4142812d5419803c74b5ac9e67f0564b89c36da",
+      "upstream_git_tree_oid": "049d123dee294ecf71fdb6511d2a36c886c790e0",
+      "source_projection": {
+        "mode": "include",
+        "paths": [
+          ".agents/plugins/marketplace.json",
+          ".codex-plugin/plugin.json",
+          "LICENSE",
+          "README.md",
+          "skills/codebase-recon/SKILL.md"
+        ]
+      },
+      "approved_content_sha256": "08099faed8c5e71b7cd4a18b230d1ea89bf34e77f7f33c6c071bb18b53d2aac0",
+      "provenance_lock_entry_sha256": "344f12d582bfd49d7a9f427dbf0e263d80b433c8baceb7a5b69a498cb5bd5aed",
+      "verification_status": "passed"
+    },
+    {
+      "plugin_id": "commit-narrator@candidate-corpus-local",
+      "audited_source_commit_sha": "425b2ee91f90ab546ba5e8f43087a3e87f4004e2",
+      "upstream_git_tree_oid": "f4f02be2e848b2f7ade6e74c52560e4f67893d7a",
+      "source_projection": {
+        "mode": "all",
+        "paths": []
+      },
+      "approved_content_sha256": "e93c0bedd3280e9570024dd016001f2eee39ecb8488d7c7ca0a2757aa7ae3d6d",
+      "provenance_lock_entry_sha256": "a8081f9c2775c8dfbc1ffddb0c59089b02d4dd6062c5e800406f77602cd79878",
+      "verification_status": "passed"
+    },
+    {
+      "plugin_id": "env-lint@candidate-corpus-local",
+      "audited_source_commit_sha": "425b2ee91f90ab546ba5e8f43087a3e87f4004e2",
+      "upstream_git_tree_oid": "2d489982b58b112ba44e9d9f09cede885dffb837",
+      "source_projection": {
+        "mode": "all",
+        "paths": []
+      },
+      "approved_content_sha256": "50ac3ddad093410b0e2d1c3eee0a9ea49806c800238f6359d654da688c8daaff",
+      "provenance_lock_entry_sha256": "d0144614ca3e7244582c369bb767b5f2939e41e09dc6054842b23ff14304303f",
+      "verification_status": "passed"
+    },
+    {
+      "plugin_id": "roadmapsmith@awesome-codex-plugins",
+      "audited_source_commit_sha": "0d29db2d23f30e5e0fddf5466913e34bc518562a",
+      "upstream_git_tree_oid": "acbe681b3d2529c955c795e1745d50d05afb26e4",
+      "source_projection": {
+        "mode": "include",
+        "paths": [
+          ".agents/plugins/marketplace.json",
+          ".codex-plugin/plugin.json",
+          ".codexignore",
+          ".github/dependabot.yml",
+          "LICENSE",
+          "README.md",
+          "SECURITY.md",
+          "legacy/assets/palette.png",
+          "legacy/assets/roadmapsmith-logo.png",
+          "package.json",
+          "plugins/roadmapsmith/skills/roadmap-init/SKILL.md",
+          "plugins/roadmapsmith/skills/roadmap-update/SKILL.md"
+        ]
+      },
+      "approved_content_sha256": "90570af54fde73d98a65375ef0c26902564d7338f86fa0cb57588baa38faa95a",
+      "provenance_lock_entry_sha256": "2825f15ed4b3dcff3f854e62aa2f7dfadca0fe1cc15a3c1c14789b6adce0b5e2",
+      "verification_status": "passed"
+    },
+    {
+      "plugin_id": "secret-guard@candidate-corpus-local",
+      "audited_source_commit_sha": "425b2ee91f90ab546ba5e8f43087a3e87f4004e2",
+      "upstream_git_tree_oid": "670f470a1a28749bef761719857ee63397e9c0f6",
+      "source_projection": {
+        "mode": "all",
+        "paths": []
+      },
+      "approved_content_sha256": "ac8f312860d93ac6217164b22cc0aa25304c4e1f6f0a8f247fdcd70af5ab5ba7",
+      "provenance_lock_entry_sha256": "d90c7e995d410154592da9080e1057f6d6260b1c964edfcdcdb3e9f74e59724e",
+      "verification_status": "passed"
+    },
+    {
+      "plugin_id": "universal-design-principles@awesome-codex-plugins",
+      "audited_source_commit_sha": "09b9858fc983fe917b7fedae67a9625d9e6655a6",
+      "upstream_git_tree_oid": "d6cd269fb5dc2edaf5b779afdef1010b1183100f",
+      "source_projection": {
+        "mode": "exclude",
+        "paths": [
+          ".claude-plugin/marketplace.json",
+          ".cursor-plugin/marketplace.json",
+          ".gitattributes",
+          ".gitignore",
+          "ATTRIBUTION.md",
+          "CHANGELOG.md",
+          "CONTRIBUTING.md",
+          "docs/architecture.md",
+          "docs/getting-started.md",
+          "docs/how-skills-trigger.md",
+          "docs/principle-index.md"
+        ]
+      },
+      "approved_content_sha256": "f458bdb4ae8a44ef9646fffca2b92f5378c6473a7d1ef947c805aae4423f643d",
+      "provenance_lock_entry_sha256": "9d854e61d414f514b642154f76d706edb49c7b7ac2ea027fd16a46ca4cadf8e9",
+      "verification_status": "passed"
+    },
+    {
+      "plugin_id": "unslop@awesome-codex-plugins",
+      "audited_source_commit_sha": "5af59d9fcdbd0df7b1a0762be958f78c7805fc09",
+      "upstream_git_tree_oid": "23f2cbb39e2873d662bc8aea971f5d6617899080",
+      "source_projection": {
+        "mode": "exclude",
+        "paths": [
+          ".codex-plugin/assets/unslop-small.svg",
+          ".codex-plugin/assets/unslop.svg"
+        ]
+      },
+      "approved_content_sha256": "f66cf6d3cf87fd7c4b0f1546a703d932759049e66ff1a0bdf6b42f8a485ee4cb",
+      "provenance_lock_entry_sha256": "4906bace9b9835124f58c7c19e86d0ab7e00b2c987a82abb14e647633ac1ee18",
+      "verification_status": "passed"
+    }
+  ]
+}

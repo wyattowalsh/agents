@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generated_at": "2026-07-16T02:45:28.666518+00:00",
+  "generated_at": "2026-07-18T08:59:45.752637+00:00",
   "summary": {
-    "generated_at": "2026-07-16T02:45:28.646776+00:00",
+    "generated_at": "2026-07-18T08:59:45.732863+00:00",
     "raw_count": 293,
     "unique_count": 289,
     "duplicates_deduped": 4,
@@ -10,11 +10,11 @@
       "duplicate_covered": 4,
       "hard_blocked_quarantine": 4,
       "integrated_collection_surface": 4,
-      "integrated_existing_surface": 205,
-      "integrated_mcp_surface": 15,
-      "integrated_native_surface": 31,
-      "integrated_plugin_surface": 2,
-      "integrated_skill_catalog_surface": 27,
+      "integrated_existing_surface": 194,
+      "integrated_mcp_surface": 10,
+      "integrated_native_surface": 29,
+      "integrated_plugin_surface": 18,
+      "integrated_skill_catalog_surface": 29,
       "integrated_tool_surface": 1
     },
     "risk_tiers": {
@@ -25,21 +25,21 @@
     },
     "added_count": 289,
     "catalog_authoring_added_count": 289,
-    "live_install_added_count": 1267,
+    "live_install_added_count": 1266,
     "adapted_count": 0,
-    "terminal_non_install_count": 162,
+    "terminal_non_install_count": 158,
     "skipped_count": 0,
     "terminal_integrated_count": 285,
     "hard_blocked_count": 4,
     "duplicate_covered_count": 4,
-    "auth_required_count": 165,
+    "auth_required_count": 167,
     "decision_count_basis": "raw entries; exact duplicate rows included",
     "unique_decision_count": 289,
     "historical_intake_live_install_added_count": 0,
     "historical_intake_terminal_non_install_count": 289,
     "live_install_count_basis": "final installable overlay rows",
     "terminal_non_install_count_basis": "final catalog rows without install commands",
-    "deep_auth_required_unique_target_count": 162
+    "deep_auth_required_unique_target_count": 164
   },
   "decisions": [
     {
@@ -188,8 +188,8 @@
         61
       ],
       "source_name": "Auriti-Labs/geo-optimizer-skill",
-      "decision": "integrated_mcp_surface",
-      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+      "decision": "integrated_skill_catalog_surface",
+      "reason": "Skill-like source routed through curated catalog install metadata and source-list evidence.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -328,8 +328,8 @@
         29
       ],
       "source_name": "CharlesWiltgen/Axiom",
-      "decision": "integrated_mcp_surface",
-      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1000,8 +1000,8 @@
         168
       ],
       "source_name": "HDeibler/universal-design-principles",
-      "decision": "integrated_native_surface",
-      "reason": "Source routed to a repo-native terminal integration surface.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1281,8 +1281,8 @@
         172
       ],
       "source_name": "MohamedAbdallah-14/prompt-to-asset",
-      "decision": "integrated_mcp_surface",
-      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1305,8 +1305,8 @@
         175
       ],
       "source_name": "MohamedAbdallah-14/unslop",
-      "decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1470,8 +1470,8 @@
         177
       ],
       "source_name": "PapiScholz/roadmapsmith",
-      "decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1516,8 +1516,8 @@
         111
       ],
       "source_name": "PleasePrompto/notebooklm-skill",
-      "decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "decision": "integrated_skill_catalog_surface",
+      "reason": "Skill-like source routed through curated catalog install metadata and source-list evidence.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1539,8 +1539,8 @@
         163
       ],
       "source_name": "Pythoughts-labs/designer-skill",
-      "decision": "integrated_mcp_surface",
-      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -1586,8 +1586,8 @@
         1
       ],
       "source_name": "Ratnaditya-J/csvglow",
-      "decision": "integrated_mcp_surface",
-      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+      "decision": "integrated_existing_surface",
+      "reason": "Existing repo catalog surface already covers this source/domain.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -2957,8 +2957,8 @@
         194
       ],
       "source_name": "hashgraph-online/awesome-codex-plugins",
-      "decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -2982,8 +2982,8 @@
         164
       ],
       "source_name": "hashgraph-online/awesome-codex-plugins",
-      "decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -3007,8 +3007,8 @@
         166
       ],
       "source_name": "hashgraph-online/awesome-codex-plugins",
-      "decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -3032,8 +3032,8 @@
         165
       ],
       "source_name": "hashgraph-online/hol-guard-plugin",
-      "decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -3150,8 +3150,8 @@
         120
       ],
       "source_name": "hyhmrright/brooks-lint",
-      "decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -3358,8 +3358,8 @@
         171
       ],
       "source_name": "johnvouros/nullcost-plugin",
-      "decision": "integrated_mcp_surface",
-      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -4132,8 +4132,8 @@
         279
       ],
       "source_name": "papersflow-ai/papersflow-codex-plugin",
-      "decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -6169,8 +6169,8 @@
         176
       ],
       "source_name": "summer521521/Zotero_Research_plugin",
-      "decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -6217,8 +6217,8 @@
         146
       ],
       "source_name": "teng-lin/notebooklm-py",
-      "decision": "integrated_native_surface",
-      "reason": "Source routed to a repo-native terminal integration surface.",
+      "decision": "integrated_mcp_surface",
+      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",
@@ -6240,8 +6240,8 @@
         174
       ],
       "source_name": "tim-osterhus/codex-remotion-plugin",
-      "decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "executable-surface-review-required",
       "docs_steward_surfaces": [
         "README",
@@ -6659,8 +6659,8 @@
         121
       ],
       "source_name": "yujiachen-y/codebase-recon-skill",
-      "decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "risk_tier": "standard-review",
       "docs_steward_surfaces": [
         "README",

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agents.w4w.dev/schemas/runtime-activation-assurance.schema.json",
+  "title": "Candidate runtime activation assurance",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "valid_until",
+    "receipt_store_sha256",
+    "runtime_artifact_count",
+    "requested_full_usability",
+    "active_blockers"
+  ],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "valid_until": {"type": "string", "format": "date-time"},
+    "receipt_store_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "runtime_artifact_count": {"type": "integer", "minimum": 0},
+    "requested_full_usability": {"type": "boolean"},
+    "active_blockers": {"type": "array"}
+  },
+  "additionalProperties": true
+}

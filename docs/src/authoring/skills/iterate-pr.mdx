@@ -9,8 +9,8 @@ status: "inspect-then-install"
 trust_tier: "needs-inspection"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-install_command: "npx skills add getsentry/skills --skill gha-security-review --skill find-bugs --skill iterate-pr --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+install_command: "npx skills add getsentry/skills --skill gha-security-review --skill find-bugs --skill iterate-pr --skill code-review -y -g -a claude-code codex crush cursor opencode"
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/getsentry/skills"
 notes: "Sentry engineering-process skills beyond curated `skill-scanner`. `gha-security-review` analyzes GitHub Actions workflows for pwn-request patterns."
 risk_notes: "Sentry engineering-process skills beyond curated `skill-scanner`. `gha-security-review` analyzes GitHub Actions workflows for pwn-request patterns."

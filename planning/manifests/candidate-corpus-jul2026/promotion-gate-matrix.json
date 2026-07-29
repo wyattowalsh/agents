@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-16T02:52:03.778971+00:00",
+  "generated_at": "2026-07-29T09:29:04.747173+00:00",
   "summary": {
     "unique_targets": 289,
     "integrated_targets": 289,
@@ -64,8 +64,8 @@
     },
     "source-list evidence": {
       "source-evidence-recorded-for-reference": 158,
-      "source-list-found-existing-installable-catalog": 112,
-      "existing-installable-catalog-row-present": 9,
+      "source-list-found-existing-installable-catalog": 111,
+      "existing-installable-catalog-row-present": 10,
       "quarantine-source-evidence-recorded": 4,
       "existing-catalog-surface-recorded": 6
     },
@@ -240,7 +240,7 @@
         61
       ],
       "integration_classification": "integrated-reference",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-skill-catalog-surface",
       "trust_cleared_installable": false,
       "hard_blocked": false,
       "integrated": true,
@@ -396,7 +396,7 @@
         29
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -1150,7 +1150,7 @@
         168
       ],
       "integration_classification": "integrated-reference",
-      "integration_surface": "integrated-native-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": false,
       "hard_blocked": false,
       "integrated": true,
@@ -1462,7 +1462,7 @@
         172
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -1489,7 +1489,7 @@
         175
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -1671,7 +1671,7 @@
         177
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -1722,24 +1722,24 @@
       "raw_indexes": [
         111
       ],
-      "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
-      "trust_cleared_installable": true,
+      "integration_classification": "integrated-reference",
+      "integration_surface": "integrated-skill-catalog-surface",
+      "trust_cleared_installable": false,
       "hard_blocked": false,
       "integrated": true,
-      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "existing_integration_status": "needs-promotion-review",
       "auth_required": true,
       "gate_statuses": {
-        "source-list evidence": "source-list-found-existing-installable-catalog",
-        "license review": "existing-catalog-row-owns-license-and-attribution",
-        "security review": "existing-catalog-row-owns-executable-surface-review",
-        "attribution review": "existing-catalog-row-owns-attribution",
-        "auth review": "existing-catalog-row-owns-auth-boundaries",
-        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
-        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
-        "live install": "no-new-live-install-command-emitted"
+        "source-list evidence": "source-evidence-recorded-for-reference",
+        "license review": "reference-license-evidence-recorded",
+        "security review": "non-executable-reference-boundary-recorded",
+        "attribution review": "reference-source-attribution-recorded",
+        "auth review": "non-executable-reference-no-auth-use",
+        "docs-steward promotion": "stable-reference-generated-and-indexed",
+        "target-specific validation": "integrated-reference-validated",
+        "live install": "non-installable-reference-no-command"
       },
-      "final_status": "installable-existing",
+      "final_status": "integrated-reference",
       "install_command": ""
     },
     {
@@ -1749,7 +1749,7 @@
         163
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -1801,7 +1801,7 @@
         1
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-existing-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -3337,7 +3337,7 @@
         194
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -3363,7 +3363,7 @@
         164
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -3389,7 +3389,7 @@
         166
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -3415,7 +3415,7 @@
         165
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -3545,7 +3545,7 @@
         120
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -3779,7 +3779,7 @@
         171
       ],
       "integration_classification": "integrated-reference",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": false,
       "hard_blocked": false,
       "integrated": true,
@@ -4616,7 +4616,7 @@
       "hard_blocked": false,
       "integrated": true,
       "existing_integration_status": "covered-by-existing-installable-catalog",
-      "auth_required": false,
+      "auth_required": true,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
         "license review": "existing-catalog-row-owns-license-and-attribution",
@@ -4637,12 +4637,12 @@
         279
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
       "existing_integration_status": "covered-by-existing-installable-catalog",
-      "auth_required": false,
+      "auth_required": true,
       "gate_statuses": {
         "source-list evidence": "source-list-found-existing-installable-catalog",
         "license review": "existing-catalog-row-owns-license-and-attribution",
@@ -6926,7 +6926,7 @@
         176
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -6977,24 +6977,24 @@
       "raw_indexes": [
         146
       ],
-      "integration_classification": "integrated-reference",
-      "integration_surface": "integrated-native-surface",
-      "trust_cleared_installable": false,
+      "integration_classification": "installable-existing",
+      "integration_surface": "integrated-mcp-surface",
+      "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
-      "existing_integration_status": "needs-promotion-review",
+      "existing_integration_status": "covered-by-existing-installable-catalog",
       "auth_required": true,
       "gate_statuses": {
-        "source-list evidence": "source-evidence-recorded-for-reference",
-        "license review": "reference-license-evidence-recorded",
-        "security review": "non-executable-reference-boundary-recorded",
-        "attribution review": "reference-source-attribution-recorded",
-        "auth review": "non-executable-reference-no-auth-use",
-        "docs-steward promotion": "stable-reference-generated-and-indexed",
-        "target-specific validation": "integrated-reference-validated",
-        "live install": "non-installable-reference-no-command"
+        "source-list evidence": "existing-installable-catalog-row-present",
+        "license review": "existing-catalog-row-owns-license-and-attribution",
+        "security review": "existing-catalog-row-owns-executable-surface-review",
+        "attribution review": "existing-catalog-row-owns-attribution",
+        "auth review": "existing-catalog-row-owns-auth-boundaries",
+        "docs-steward promotion": "existing-catalog-row-generated-and-indexed",
+        "target-specific validation": "existing-catalog-row-covered-by-repo-validation",
+        "live install": "no-new-live-install-command-emitted"
       },
-      "final_status": "integrated-reference",
+      "final_status": "installable-existing",
       "install_command": ""
     },
     {
@@ -7004,7 +7004,7 @@
         174
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -7472,7 +7472,7 @@
         121
       ],
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,

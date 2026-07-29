@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=common.sh
+source "${SCRIPT_DIR}/common.sh"
+mcphub_load_env
+
 # Upstream PyPI 1.2.x references Version before the class is defined in
 # version_parser.py, which crashes on Python 3.11+. Patch cached installs once.
 # Remove this wrapper when upstream ships a fixed wheel (see openspec change
@@ -12,7 +17,7 @@ STAMP_VERSION="3"
 export PATH="/opt/homebrew/bin:/usr/local/bin:${HOME}/.local/bin:${PATH:-}"
 
 launcher_help_ok() {
-  uvx --from "${PKG_SPEC}" package-version-check-mcp --help >/dev/null 2>&1
+  mcphub_run_clean GITHUB_PAT -- uvx --from "${PKG_SPEC}" package-version-check-mcp --help >/dev/null 2>&1
 }
 
 patch_version_parser_once() {
@@ -54,7 +59,7 @@ patch_version_parser_once() {
   fi
 
   if [[ "${patched}" -eq 0 ]]; then
-    uvx --from "${PKG_SPEC}" package-version-check-mcp --help >/dev/null 2>&1 || true
+    mcphub_run_clean GITHUB_PAT -- uvx --from "${PKG_SPEC}" package-version-check-mcp --help >/dev/null 2>&1 || true
     while IFS= read -r parser; do
       [[ -f "${parser}" ]] || continue
       if head -n 1 "${parser}" | grep -q 'from __future__ import annotations'; then
@@ -82,4 +87,4 @@ patch_version_parser_once() {
 }
 
 patch_version_parser_once
-exec uvx --from "${PKG_SPEC}" package-version-check-mcp --mode=stdio "$@"
+mcphub_exec_clean GITHUB_PAT -- uvx --from "${PKG_SPEC}" package-version-check-mcp --mode=stdio "$@"

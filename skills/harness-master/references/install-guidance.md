@@ -10,9 +10,8 @@ Surface install commands only when one of these is true:
 
 Do **not** surface install commands for native config problems such as:
 
-- stale `CLAUDE.md`, `GEMINI.md`, or `AGENTS.md`
+- stale `CLAUDE.md` or `AGENTS.md`
 - broken `opencode.json`
-- stale generated `.github/copilot-instructions.md`
 - MCP config drift in native harness files
 
 ## Canonical Surfaced Form
@@ -30,10 +29,8 @@ Repeat `--agent` for multi-harness rollout.
 ```bash
 npx skills add <source> --skill harness-master -y -g --agent claude-code
 npx skills add <source> --skill harness-master -y -g --agent codex
+npx skills add <source> --skill harness-master -y -g --agent crush
 npx skills add <source> --skill harness-master -y -g --agent cursor
-npx skills add <source> --skill harness-master -y -g --agent gemini-cli
-npx skills add <source> --skill harness-master -y -g --agent antigravity
-npx skills add <source> --skill harness-master -y -g --agent github-copilot
 npx skills add <source> --skill harness-master -y -g --agent opencode
 ```
 
@@ -41,12 +38,8 @@ No Skills CLI install command is available for these config-only or UI-managed h
 
 - `claude-desktop`
 - `chatgpt`
-- `github-copilot-web` as distinct from the `github-copilot` install target
-- `github-copilot-cli` as distinct from the `github-copilot` install target
 - `perplexity-desktop`
 - `cherry-studio`
-
-If the user asks to install for `github-copilot-web`, `github-copilot-cli`, or the aggregate `github-copilot`, use the single `--agent github-copilot` target and explain that the skill audits the web and CLI facets separately.
 
 For this repository's published collection, the likely source is:
 

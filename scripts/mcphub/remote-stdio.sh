@@ -13,11 +13,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/common.sh"
 mcphub_load_env
 
-if [[ -z "${MCPHUB_BEARER_TOKEN:-}" ]]; then
-  printf 'MCPHUB_BEARER_TOKEN is required for MCPHub stdio bridge\n' >&2
-  exit 1
-fi
+mcphub_require_token
 
 "${SCRIPT_DIR}/ensure-running.sh"
 
-exec npx -y mcp-remote@latest "$1" --allow-http --transport http-only --silent --header "Authorization: Bearer ${MCPHUB_BEARER_TOKEN}"
+mcphub_exec_clean MCPHUB_BEARER_TOKEN -- \
+  npx -y mcp-remote@0.1.38 "$1" \
+  --allow-http \
+  --transport http-only \
+  --silent \
+  --header 'Authorization:Bearer ${MCPHUB_BEARER_TOKEN}'

@@ -17,6 +17,9 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from wagents.candidate_corpus_reports import generated_reference_materialization_errors
+from wagents.site_model import SUPPORTED_AGENT_IDS
+
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
@@ -33,7 +36,6 @@ EXPECTED_CLASSIFICATION_COUNTS = {
 }
 GENERATED_REFERENCE_CLASSIFICATIONS = {
     "integrated-reference",
-    "integrated-quarantine-reference",
 }
 
 RAW_PACKET_FILE = "raw-research-packets.json"
@@ -142,6 +144,11 @@ def normalized_raw_indexes(value: Any) -> list[int]:
     return sorted(indexes)
 
 
+def integration_target_is_accounted(item: dict[str, Any]) -> bool:
+    """Return whether a target has a durable terminal integration identity."""
+    return bool(item.get("catalog_rows")) or item.get("hard_blocked") is True
+
+
 def integration_target_errors(payload: Any, normalized: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(payload, dict):
@@ -200,7 +207,13 @@ def integration_target_errors(payload: Any, normalized: Any) -> list[str]:
             errors.append(f"hard-blocked target is marked installable: {normalized_url}")
 
         rows = item.get("catalog_rows", [])
-        if not isinstance(rows, list) or not rows:
+        if not isinstance(rows, list):
+            errors.append(f"integration target catalog rows are not a list: {normalized_url}")
+            rows = []
+        if hard_blocked:
+            if rows:
+                errors.append(f"hard-blocked target exposes catalog rows: {normalized_url}")
+        elif not rows:
             errors.append(f"integration target has no catalog rows: {normalized_url}")
             continue
         install_rows = [row for row in rows if isinstance(row, dict) and existing_row_has_install_surface(row)]
@@ -267,6 +280,14 @@ def integration_target_errors(payload: Any, normalized: Any) -> list[str]:
     )
     if generated_reference_count != expected_reference_count:
         errors.append("integration target item generated reference count does not match reference classifications")
+    errors.extend(
+        generated_reference_materialization_errors(
+            payload,
+            root=ROOT,
+            authoring_dir=AUTHORING_DIR,
+            marker="GENERATED-INTEGRATION-TARGET-JUL2026",
+        )
+    )
     return errors
 
 
@@ -459,7 +480,7 @@ def build_raw_packets(context: dict[str, Any]) -> list[dict[str, Any]]:
             "integration_surface": integration_target["integration_surface"],
             "trust_cleared_installable": integration_target["trust_cleared_installable"],
             "hard_blocked": integration_target["hard_blocked"],
-            "integrated": bool(integration_target.get("catalog_rows")),
+            "integrated": integration_target_is_accounted(integration_target),
             "catalog_rows": integration_target["catalog_rows"],
             "existing_integration_status": coverage_item.get("coverage_status", "unknown"),
             "existing_rows": coverage_item.get("existing_rows", []),
@@ -526,7 +547,7 @@ def build_unique_packets(context: dict[str, Any], raw_packets: list[dict[str, An
             "integration_surface": integration_target["integration_surface"],
             "trust_cleared_installable": integration_target["trust_cleared_installable"],
             "hard_blocked": integration_target["hard_blocked"],
-            "integrated": bool(integration_target.get("catalog_rows")),
+            "integrated": integration_target_is_accounted(integration_target),
             "catalog_rows": integration_target["catalog_rows"],
             "existing_integration_status": coverage_item.get("coverage_status", "unknown"),
             "existing_rows": coverage_item.get("existing_rows", []),
@@ -868,8 +889,8 @@ def promotion_gate_summary_text(matrix: dict[str, Any], preview: dict[str, Any])
         f"- Live install commands emitted: {preview['command_count']}",
         "",
         (
-            "Every normalized source has a stable catalog integration; integration classification is independent "
-            "from trust-cleared installability."
+            "Every normalized source has a durable terminal integration identity; integration classification is "
+            "independent from trust-cleared installability."
         ),
         "Quarantine references remain non-installable with active hard blocks.",
     ]
@@ -996,7 +1017,7 @@ def validate_outputs() -> dict[str, Any]:
         for field in target_fields:
             if packet.get(field) != target.get(field):
                 errors.append(f"packet {packet.get('packet_id')} {field} drifted from integration target")
-        if packet.get("integrated") is not bool(target.get("catalog_rows")):
+        if packet.get("integrated") is not integration_target_is_accounted(target):
             errors.append(f"packet {packet.get('packet_id')} integrated state drifted from integration target")
     preview_commands = preview_payload.get("commands", [])
     if not isinstance(preview_commands, list):
@@ -1259,7 +1280,17 @@ def validate_final_state() -> dict[str, Any]:
         if str(override.get("skill_name") or "") not in target_row_names:
             errors.append(f"promoted override row is absent from integration target: {normalized_url}")
     assurance_totals = harness_assurance.get("totals", {}) if isinstance(harness_assurance, dict) else {}
-    if harness_assurance.get("complete") is not True or harness_assurance.get("target_harness_count") != 9:
+    harness_agents = harness_assurance.get("agents", [])
+    observed_harnesses = (
+        {str(agent.get("agent") or "") for agent in harness_agents if isinstance(agent, dict)}
+        if isinstance(harness_agents, list)
+        else set()
+    )
+    if (
+        harness_assurance.get("complete") is not True
+        or harness_assurance.get("target_harness_count") != len(SUPPORTED_AGENT_IDS)
+        or observed_harnesses != set(SUPPORTED_AGENT_IDS)
+    ):
         errors.append("post-install harness assurance is incomplete")
     if any(_safe_count(assurance_totals.get(field)) for field in ("missing", "pin_blocked", "commands")):
         errors.append("post-install harness assurance has remaining install work")

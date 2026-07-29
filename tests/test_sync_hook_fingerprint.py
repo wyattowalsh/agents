@@ -61,9 +61,9 @@ def test_sync_hook_projection_skips_only_when_content_matches(tmp_path: Path):
     dest_path = tmp_path / "policy.json"
     rendered = {"version": 1, "hooks": {"preToolUse": []}}
     _dump_json(dest_path, rendered)
-    fingerprint = hook_render_fingerprint("github-copilot", perf_tier="legacy")
+    fingerprint = hook_render_fingerprint("cursor", perf_tier="legacy")
     record_hook_render_fingerprint(
-        "github-copilot",
+        "cursor",
         fingerprint,
         content_sha256=content_sha256(dest_path.read_bytes()),
         cache_path=cache_path,
@@ -80,7 +80,7 @@ def test_sync_hook_projection_skips_only_when_content_matches(tmp_path: Path):
 
     assert sync_hook_projection(
         write,
-        harness="github-copilot",
+        harness="cursor",
         dest_path=dest_path,
         render_fn=render,
         perf_tier="legacy",
@@ -93,7 +93,7 @@ def test_sync_hook_projection_skips_only_when_content_matches(tmp_path: Path):
 
     assert not sync_hook_projection(
         write,
-        harness="github-copilot",
+        harness="cursor",
         dest_path=dest_path,
         render_fn=render,
         perf_tier="legacy",

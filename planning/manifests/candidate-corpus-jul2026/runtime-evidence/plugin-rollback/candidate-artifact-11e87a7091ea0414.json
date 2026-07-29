@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "transaction_id": "e0765534555c47d18315b90f76234158",
+  "artifact_id": "candidate-artifact-11e87a7091ea0414",
+  "normalized_url": "https://github.com/yujiachen-y/codebase-recon-skill",
+  "plugin_id": "codebase-recon@awesome-codex-plugins",
+  "plugin_scope": "user-global-codex",
+  "scope": "isolated-codex-home",
+  "rehearsal_kind": "isolated-plugin-root-detach",
+  "digest_algorithm": "lstat-tree-v1",
+  "digest_ignored_dirs": [
+    ".cache",
+    ".git",
+    ".pytest_cache",
+    "__pycache__"
+  ],
+  "preimage_digest": "f33e6c9df36674461648f38545a5145cab4a9d01962fa2a31314852b30654fda",
+  "rollback_digest": "f33e6c9df36674461648f38545a5145cab4a9d01962fa2a31314852b30654fda",
+  "promoted_final_digest": "895daf929b217813462fa5c4c0f74d800829166668aae98e077248f73a655a32",
+  "live_install_unchanged": true,
+  "fresh_absence_process_id": 61812,
+  "restored_use_process_id": 61967,
+  "restored_use_output_sha256": "dd4d4047620690c0a637909d25b11e9b16efb7a9fef9decaa74fc3bd2a03b4c1",
+  "process_ids": {
+    "marketplace": 61803,
+    "initial_add": 61805,
+    "initial_inventory": 61808,
+    "remove": 61810,
+    "fresh_absence": 61812,
+    "restore": 61814,
+    "restored_inventory": 61816,
+    "restored_use_initial": 61889,
+    "restored_use_fresh": 61967,
+    "restored_use_discovery": 61974
+  },
+  "launch_evidence": {
+    "marketplace": {
+      "launch_id": "cd0b3dbf55aa96a201e0c1a52338d7da",
+      "started_at_ns": 1784364417488122000,
+      "process_id": 61803
+    },
+    "initial_add": {
+      "launch_id": "a54d788884d4ab61cd68f3565070cadf",
+      "started_at_ns": 1784364417615702000,
+      "process_id": 61805
+    },
+    "initial_inventory": {
+      "launch_id": "89e9421eeefd6d60062fc5eaa848ea0e",
+      "started_at_ns": 1784364417719876000,
+      "process_id": 61808
+    },
+    "remove": {
+      "launch_id": "154fb2e1207bb6631ffd0fc0cee85ebf",
+      "started_at_ns": 1784364417818704000,
+      "process_id": 61810
+    },
+    "fresh_absence": {
+      "launch_id": "a97eb3d7c1dd78cb16d4d82e3d20e5e7",
+      "started_at_ns": 1784364417912519000,
+      "process_id": 61812
+    },
+    "restore": {
+      "launch_id": "43f9e1019fabd8c51a64af470f9e4d94",
+      "started_at_ns": 1784364418012056000,
+      "process_id": 61814
+    },
+    "restored_inventory": {
+      "launch_id": "2ab698199cc57e5766465f76f5a73595",
+      "started_at_ns": 1784364418116081000,
+      "process_id": 61816
+    },
+    "restored_use_initial": {
+      "launch_id": "6c2d3196c762dc7c8736e55ff6de44bd",
+      "started_at_ns": 1784364418887879000,
+      "process_id": 61889
+    },
+    "restored_use_fresh": {
+      "launch_id": "ea7f663068f790784ae9eebb11866f74",
+      "started_at_ns": 1784364419733090000,
+      "process_id": 61967
+    },
+    "restored_use_discovery": {
+      "launch_id": "8b5723a09fd311b022275e2d376ea6cf",
+      "started_at_ns": 1784364419957687000,
+      "process_id": 61974
+    }
+  },
+  "commands": [
+    {
+      "phase": "marketplace-add",
+      "argv": [
+        "codex",
+        "plugin",
+        "marketplace",
+        "add",
+        "<marketplace-root>",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 61803,
+      "launch_id": "cd0b3dbf55aa96a201e0c1a52338d7da",
+      "started_at_ns": 1784364417488122000,
+      "stdout_sha256": "56cc505d92803d59507b06dcf317d715038947b7c8adb371b1c088cf437e67ce",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "initial-add",
+      "argv": [
+        "codex",
+        "plugin",
+        "add",
+        "codebase-recon@awesome-codex-plugins",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 61805,
+      "launch_id": "a54d788884d4ab61cd68f3565070cadf",
+      "started_at_ns": 1784364417615702000,
+      "stdout_sha256": "c6ce39f2e5110976ae889c04646f7e7e5835dc7dc2fbed85090c56beb2da2c5d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "initial-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 61808,
+      "launch_id": "89e9421eeefd6d60062fc5eaa848ea0e",
+      "started_at_ns": 1784364417719876000,
+      "stdout_sha256": "e595ab208a56b5d90f1c2746604692c1b0749f19d7b917ac122fa458d71586b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "remove",
+      "argv": [
+        "codex",
+        "plugin",
+        "remove",
+        "codebase-recon@awesome-codex-plugins",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 61810,
+      "launch_id": "154fb2e1207bb6631ffd0fc0cee85ebf",
+      "started_at_ns": 1784364417818704000,
+      "stdout_sha256": "4870315a32d4c6b25328ff05b85fec5ebc93d1de0da767a0e41aeadeadff70cb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "absence-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 61812,
+      "launch_id": "a97eb3d7c1dd78cb16d4d82e3d20e5e7",
+      "started_at_ns": 1784364417912519000,
+      "stdout_sha256": "050e2dee988ae4ba4d1d8220591b660829a9ee3f06f52d548acc87522ee90885",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "restore",
+      "argv": [
+        "codex",
+        "plugin",
+        "add",
+        "codebase-recon@awesome-codex-plugins",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 61814,
+      "launch_id": "43f9e1019fabd8c51a64af470f9e4d94",
+      "started_at_ns": 1784364418012056000,
+      "stdout_sha256": "c6ce39f2e5110976ae889c04646f7e7e5835dc7dc2fbed85090c56beb2da2c5d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "restored-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 61816,
+      "launch_id": "2ab698199cc57e5766465f76f5a73595",
+      "started_at_ns": 1784364418116081000,
+      "stdout_sha256": "e595ab208a56b5d90f1c2746604692c1b0749f19d7b917ac122fa458d71586b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "restored_probe": {
+    "fixture_id": "candidate-plugin-codebase-recon-owned-fixture-v2",
+    "probe_kind": "semantic-plugin-isolated-codex-fixture",
+    "assertions": [
+      "source-specific happy path passed",
+      "source-specific failure path passed",
+      "unsafe or mutating path was denied",
+      "fresh process repeated the semantic capability",
+      "isolated one-plugin Codex process recovered source-only skill evidence"
+    ],
+    "output_sha256": "dd4d4047620690c0a637909d25b11e9b16efb7a9fef9decaa74fc3bd2a03b4c1",
+    "discovery_output_sha256": "e37aba4e1aa412868f7b54a259244b111e5dd65943de9278cfa684e75d11eaed"
+  }
+}

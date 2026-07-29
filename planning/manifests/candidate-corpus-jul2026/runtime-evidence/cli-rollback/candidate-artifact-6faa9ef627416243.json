@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-6faa9ef627416243",
+  "normalized_url": "https://github.com/panniantong/agent-reach",
+  "transaction_id": "5506dea83fd844a69f9cd383c90099bc",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "0cc9aac4beebffdfac7809ff6caf683bcd037a16310d00fa4e42dd82d5a0cd84",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "23dd19b547e0fe5eac7523867be36d409545e6a9994c855fe53e557e32142e79",
+  "isolated_rollback_digest": "23dd19b547e0fe5eac7523867be36d409545e6a9994c855fe53e557e32142e79",
+  "fresh_absence": {
+    "agent-reach": null
+  },
+  "fresh_absence_process_id": 18256,
+  "fresh_absence_output_sha256": "44297eba2060948e36fc42fc4b0503f6f1bd32fd967ca63f7fd235abb8ddc334",
+  "restored_use_process_id": 18478,
+  "restored_use_output_sha256": "b07e0db93e2faf7d683e762a95167648d93d996767dab0d687be94e340b56a66",
+  "restored_use_launch_paths": [
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-6faa9ef627416243-d35ji91x/bin/agent-reach",
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-6faa9ef627416243-d35ji91x/bin/agent-reach"
+  ],
+  "restored_use_launch_realpaths": [
+    "/Users/ww/.local/share/uv/tools/agent-reach/bin/agent-reach",
+    "/Users/ww/.local/share/uv/tools/agent-reach/bin/agent-reach"
+  ],
+  "restored_executable_map": {
+    "agent-reach": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-6faa9ef627416243-d35ji91x/bin/agent-reach",
+      "realpath": "/Users/ww/.local/share/uv/tools/agent-reach/bin/agent-reach"
+    }
+  },
+  "installed_digest": "cc98daa051b7e80afe197e9440d6c5a004e043b95edc02dd6b3670c021994452",
+  "status": "passed"
+}

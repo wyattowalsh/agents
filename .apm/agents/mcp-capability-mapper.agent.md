@@ -14,7 +14,7 @@ Inventory first-party MCP servers and map capabilities to `config/mcp-registry.j
 
 1. List `mcp/*/server.py` tools and read-only annotations.
 2. Cross-check registry rows in `config/mcp-registry.json` and generated MCPHub settings.
-3. Note harness-safe group membership and duplicate projection risks.
+3. Note harness group membership and duplicate projection risks.
 4. Recommend registry or docs updates via docs-steward when public surfaces shift.
 
 ## Hard Boundary
@@ -24,3 +24,5 @@ Do not edit live MCPHub secrets or `.env.mcphub`. Do not register servers withou
 ## Output Contract
 
 Return capability matrix (server → tools → registry row → docs route), gaps, and validation commands.
+
+OpenSpec MCP changes must include this mapper step per `openspec/schemas/mcp-server-change-tasks.md`. Document bypass rationale in the change `design.md` when mapping is done manually.

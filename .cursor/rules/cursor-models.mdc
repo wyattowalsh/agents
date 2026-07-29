@@ -5,8 +5,23 @@ alwaysApply: true
 
 # Cursor Model Pin
 
-When calling `Task` or launching subagents, set `model` to `cursor-grok-4.5-high` only (or omit `model` so custom-agent frontmatter wins).
+When calling `Task` or launching subagents, **always** set `model` to `cursor-grok-4.5-high`.
 
-Do not pass Claude, GPT, Composer, Terra, or Sol model slugs.
+Do **not**:
 
-Custom agents under `.cursor/agents/` are pinned to `cursor-grok-4.5-high`.
+- Omit `model` on `Task` launches (soft rule — Phase B still allows omit so the High parent can inherit)
+- Pass `inherit`, `cursor-grok-4.5-fast`, `cursor-grok-4.5`, `composer-*`, Claude, GPT, Terra, or Sol slugs
+- Rely on Explore’s faster default — operators SHOULD set CLI `exploreSubagentModel: "inherit"` in user-owned `~/.cursor/cli-config.json` (sync SHALL NOT write `cli-config` or live `state.vscdb`)
+
+Custom agents under `.cursor/agents/` (and managed home agents) are pinned to `cursor-grok-4.5-high`.
+
+## Layer matrix (SSOT)
+
+| Layer | Mechanism | Omit `model` | Wrong/fast model | Hook crash |
+| --- | --- | --- | --- | --- |
+| Soft rule | `.cursor/rules/cursor-models.mdc` | Agents must not omit | Agents must not pass | N/A |
+| Phase A | `preToolUse` Task rewrite | Pins to High via `updated_input` | Rewrites + clears alts | **fail-open** (Task proceeds) |
+| Phase B | `subagentStart` allowlist | Allow (inherit High parent) | Deny if explicit non-High | **fail-open** |
+| Validate/CI | `validate_hooks` + pytest | N/A | N/A | Compensatory: projection **must** exist |
+
+Security Enforce guards (`beforeShellExecution`, etc.) stay **fail-closed** (RV-004). Pin hooks stay **fail-open**.

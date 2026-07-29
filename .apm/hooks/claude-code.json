@@ -5,11 +5,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "./hooks/run-wagents-hook --bundle git-commit-push-guard,image-input-optimizer-guard --harness claude-code --bundle-mode enforce-chain --bundle-timeout 65",
-            "timeout": 65
+            "command": "./hooks/run-wagents-hook --bundle destructive-shell-guard,protected-file-guard,git-commit-push-guard,image-input-optimizer-guard --harness claude-code --bundle-mode enforce-chain --bundle-timeout 75",
+            "timeout": 75
           }
         ],
-        "matcher": "Bash|bash|run_shell_command|shell|terminal|analyze_image|attach_image|screenshot|upload_image|view_image|Read|read"
+        "matcher": "Bash|bash|run_shell_command|Shell|Edit|Write|MultiEdit|edit|create|write_file|replace|shell|terminal|analyze_image|attach_image|screenshot|upload_image|view_image|Read|read"
       },
       {
         "hooks": [

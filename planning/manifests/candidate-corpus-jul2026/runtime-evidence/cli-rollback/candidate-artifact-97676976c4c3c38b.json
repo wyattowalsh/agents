@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-97676976c4c3c38b",
+  "normalized_url": "https://github.com/devenjarvis/lathe",
+  "transaction_id": "3148b5c359a24e8f906eb8cf71e1a089",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "4194c59cddbbbb70f5011e908eaa6714a59f8ba1ab49c4ca31202e71695e7f59",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "2a7db5385fda512990f89aea6545d0a00a5d4b5cbf82b2b4853c65039eae6418",
+  "isolated_rollback_digest": "2a7db5385fda512990f89aea6545d0a00a5d4b5cbf82b2b4853c65039eae6418",
+  "fresh_absence": {
+    "lathe": null
+  },
+  "fresh_absence_process_id": 17175,
+  "fresh_absence_output_sha256": "7c8abbea914c0a7d39b8364c19322b4c11acee75bd32667505100478e0620eac",
+  "restored_use_process_id": 17325,
+  "restored_use_output_sha256": "aedac831437ea63deb7844ba0649ffd77564a7a9506cf873a1521e5c8242f530",
+  "restored_use_launch_paths": [
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-97676976c4c3c38b-3a0019w7/bin/lathe",
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-97676976c4c3c38b-3a0019w7/bin/lathe"
+  ],
+  "restored_use_launch_realpaths": [
+    "/Users/ww/.local/bin/lathe",
+    "/Users/ww/.local/bin/lathe"
+  ],
+  "restored_executable_map": {
+    "lathe": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-97676976c4c3c38b-3a0019w7/bin/lathe",
+      "realpath": "/Users/ww/.local/bin/lathe"
+    }
+  },
+  "installed_digest": "b61e4325a55f293ffdb0353610f9b3f68574bc651cf1d90223310b6914d4d8ff",
+  "status": "passed"
+}

@@ -34,7 +34,6 @@
     "config/mcp-registry.json",
     "docs/public/generated-registries/skills-catalog-browser-index.json",
     "docs/public/generated-registries/skills-catalog-index.json",
-    "mcp/mcphub/mcp_settings.json",
     "planning/manifests/candidate-corpus-jul2026/all-records.json",
     "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
     "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",

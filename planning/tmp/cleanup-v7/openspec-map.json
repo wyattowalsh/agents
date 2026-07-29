@@ -1,0 +1,103 @@
+{
+  "archive14": [
+    {
+      "id": "add-llms-txt-explorer-mcp",
+      "active": true,
+      "path": "openspec/changes/add-llms-txt-explorer-mcp"
+    },
+    {
+      "id": "fleet-hooks-guard-expansion",
+      "active": true,
+      "path": "openspec/changes/fleet-hooks-guard-expansion"
+    },
+    {
+      "id": "fleet-hooks-performance",
+      "active": true,
+      "path": "openspec/changes/fleet-hooks-performance"
+    },
+    {
+      "id": "grill-me-harness-routing",
+      "active": true,
+      "path": "openspec/changes/grill-me-harness-routing"
+    },
+    {
+      "id": "integrate-candidate-corpus-jul2026",
+      "active": true,
+      "path": "openspec/changes/integrate-candidate-corpus-jul2026"
+    },
+    {
+      "id": "integrate-ideas-backlog",
+      "active": true,
+      "path": "openspec/changes/integrate-ideas-backlog"
+    },
+    {
+      "id": "integrate-starlight-plugin-stack",
+      "active": true,
+      "path": "openspec/changes/integrate-starlight-plugin-stack"
+    },
+    {
+      "id": "prefer-grok-tier-t-trivial-offload",
+      "active": true,
+      "path": "openspec/changes/prefer-grok-tier-t-trivial-offload"
+    },
+    {
+      "id": "reconcile-harness-plugins-skills",
+      "active": true,
+      "path": "openspec/changes/reconcile-harness-plugins-skills"
+    },
+    {
+      "id": "remediate-agent-fleet-governance",
+      "active": true,
+      "path": "openspec/changes/remediate-agent-fleet-governance"
+    },
+    {
+      "id": "replace-chrome-devtools-custom-with-external",
+      "active": true,
+      "path": "openspec/changes/replace-chrome-devtools-custom-with-external"
+    },
+    {
+      "id": "replace-ddgs-mcp-adapter",
+      "active": true,
+      "path": "openspec/changes/replace-ddgs-mcp-adapter"
+    },
+    {
+      "id": "replace-package-version-check-mcp",
+      "active": true,
+      "path": "openspec/changes/replace-package-version-check-mcp"
+    },
+    {
+      "id": "skill-portability-decouple",
+      "active": true,
+      "path": "openspec/changes/skill-portability-decouple"
+    }
+  ],
+  "archive14_all_active": true,
+  "remove_gemini_change": {
+    "path": "openspec/changes/remove-gemini-antigravity-copilot",
+    "unchecked_tasks": [
+      "W\u22121 Preflight + OpenSpec (this change)",
+      "W1 Discovery inventories (delete/registry/test/MDX/chrome/keep/runtime)",
+      "W2 SSOT: sync shaped renderer + mcp-registry; hooks; platforms; RTK; docs; router; Crush smoke",
+      "W3 Secondary registries, harness-master, OpenSpec specs, target schemas, candidate corpus binding strip",
+      "W4 Deletes (bridges, wrappers except candidate-*, Gemini/Antigravity/Copilot projections, evals, TRACKED_GLOBS)",
+      "W5 Authoring MDX 4 shards + toolkit validate_hooks + pentest_policy",
+      "W6 Regen: :3141 check \u2192 docs generate \u2192 mcphub \u2192 readme \u2192 reconciliation \u2192 sync \u2192 apm lock",
+      "W7 Test surgery",
+      "W8 Remove only receipt-owned home projections; validate + canaries + semantic final rg"
+    ],
+    "checked_count": 0,
+    "unchecked_count": 9
+  },
+  "g8_dod": {
+    "path": "planning/manifests/remove-three-harnesses/g8-dod.md",
+    "g8_status": "PARTIAL",
+    "validate_clean_checkbox": false
+  },
+  "drift_notes": [
+    "All 14 Archive-14 change dirs remain active under openspec/changes/ (none archived).",
+    "OpenSpec tasks.md for remove-gemini-antigravity-copilot has 0/9 boxes checked (W\u22121 through W8 all unchecked).",
+    "g8-dod.md reports G\u22121\u2013G7 PASS and G8 PARTIAL; only remaining DoD unchecked item is 'Full wagents validate clean' (blocked by unrelated quarantine dirty WIP).",
+    "Drift: gate DoD claims waves largely complete, but OpenSpec tasks.md checkboxes were never updated to match.",
+    "validate_clean_checkbox=false aligns with G8 PARTIAL status."
+  ]
+}

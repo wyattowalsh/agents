@@ -89,18 +89,6 @@ PROJECT_SURFACES: dict[str, list[dict[str, str]]] = {
         {"label": "project cli config", "path": ".cursor/cli.json", "kind": "config", "role": "authoritative"},
         {"label": "cursor ignore", "path": ".cursorignore", "kind": "permissions", "role": "authoritative"},
     ],
-    "gemini-cli": [
-        {"label": "shared instructions", "path": "AGENTS.md", "kind": "instructions", "role": "secondary"},
-        {"label": "gemini entrypoint", "path": "GEMINI.md", "kind": "instructions", "role": "authoritative"},
-        {"label": "project settings", "path": ".gemini/settings.json", "kind": "config", "role": "authoritative"},
-        # explicit hook-labeled surface for settings file (embedded hooks)
-        {
-            "label": "project settings (embedded hooks)",
-            "path": ".gemini/settings.json",
-            "kind": "hooks",
-            "role": "authoritative",
-        },
-    ],
     "grok-build": [
         # hook surfaces per spec: project repo-observed plannotator policy + global ~/.grok/hooks
         {
@@ -109,34 +97,6 @@ PROJECT_SURFACES: dict[str, list[dict[str, str]]] = {
             "kind": "hooks",
             "role": "repo-observed",
         },
-    ],
-    "antigravity": [
-        {"label": "repo wrapper instructions", "path": "AGENTS.md", "kind": "instructions", "role": "repo-observed"},
-        {"label": "repo wrapper entrypoint", "path": "GEMINI.md", "kind": "instructions", "role": "repo-observed"},
-    ],
-    "github-copilot-web": [
-        {"label": "shared instructions", "path": "AGENTS.md", "kind": "instructions", "role": "secondary"},
-        {
-            "label": "copilot instructions",
-            "path": ".github/copilot-instructions.md",
-            "kind": "instructions",
-            "role": "authoritative",
-        },
-        {
-            "label": "copilot generated instructions",
-            "path": ".github/instructions/*",
-            "kind": "instructions",
-            "role": "secondary",
-        },
-        {"label": "copilot hooks", "path": ".github/hooks/*", "kind": "hooks", "role": "secondary"},
-        {"label": "project mcp", "path": ".vscode/mcp.json", "kind": "mcp", "role": "authoritative"},
-        {"label": "project agents", "path": "platforms/copilot/agents/*", "kind": "agents", "role": "secondary"},
-    ],
-    "github-copilot-cli": [
-        {"label": "shared instructions", "path": "AGENTS.md", "kind": "instructions", "role": "secondary"},
-        {"label": "project mcp", "path": ".vscode/mcp.json", "kind": "mcp", "role": "secondary"},
-        # .github/hooks/* (added for parity; also present on github-copilot-web)
-        {"label": "copilot hooks", "path": ".github/hooks/*", "kind": "hooks", "role": "secondary"},
     ],
     "opencode": [
         {"label": "shared instructions", "path": "AGENTS.md", "kind": "instructions", "role": "authoritative"},
@@ -252,67 +212,9 @@ GLOBAL_SURFACES: dict[str, list[dict[str, str]]] = {
         {"label": "compatible global skills", "path": "~/.agents/skills", "kind": "skills", "role": "secondary"},
         {"label": "global subagents", "path": "~/.cursor/agents/*.md", "kind": "agents", "role": "authoritative"},
     ],
-    "gemini-cli": [
-        {"label": "global entrypoint", "path": "~/.gemini/GEMINI.md", "kind": "instructions", "role": "authoritative"},
-        {"label": "global settings", "path": "~/.gemini/settings.json", "kind": "config", "role": "authoritative"},
-        {"label": "installed skills", "path": "~/.gemini/skills", "kind": "skills", "role": "secondary"},
-        # explicit hook-labeled surface for settings file (embedded hooks)
-        {
-            "label": "global settings (embedded hooks)",
-            "path": "~/.gemini/settings.json",
-            "kind": "hooks",
-            "role": "authoritative",
-        },
-    ],
     "grok-build": [
         # hook surfaces per spec: global ~/.grok/hooks/*.json
         {"label": "global grok hooks", "path": "~/.grok/hooks/*.json", "kind": "hooks", "role": "authoritative"},
-    ],
-    "antigravity": [
-        {
-            "label": "antigravity mcp config",
-            "path": "~/.gemini/antigravity/mcp_config.json",
-            "kind": "mcp",
-            "role": "authoritative",
-        },
-        {
-            "label": "antigravity oauth tokens",
-            "path": "~/.gemini/antigravity/mcp_oauth_tokens.json",
-            "kind": "credentials",
-            "role": "secondary",
-        },
-        {
-            "label": "extension antigravity mcp config",
-            "path": "~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json",
-            "kind": "mcp",
-            "role": "secondary",
-        },
-    ],
-    "github-copilot-web": [
-        {
-            "label": "global entrypoint",
-            "path": "~/.copilot/copilot-instructions.md",
-            "kind": "instructions",
-            "role": "authoritative",
-        },
-    ],
-    "github-copilot-cli": [
-        {
-            "label": "global entrypoint",
-            "path": "~/.copilot/copilot-instructions.md",
-            "kind": "instructions",
-            "role": "authoritative",
-        },
-        {"label": "global settings", "path": "~/.copilot/settings.json", "kind": "config", "role": "authoritative"},
-        {
-            "label": "global subagent caps",
-            "path": "~/.config/copilot-subagents.env",
-            "kind": "config",
-            "role": "authoritative",
-        },
-        {"label": "global mcp", "path": "~/.copilot/mcp-config.json", "kind": "mcp", "role": "authoritative"},
-        {"label": "alt global mcp", "path": "~/.config/.copilot/mcp-config.json", "kind": "mcp", "role": "secondary"},
-        {"label": "global agents", "path": "~/.copilot/agents", "kind": "agents", "role": "secondary"},
     ],
     "opencode": [
         {
@@ -430,35 +332,6 @@ BLIND_SPOTS: dict[str, list[tuple[str, str, str]]] = {
             "global",
             "ChatGPT connectors UI",
             "Developer-mode Apps and Connectors settings are UI-managed; local HTTPS connector state is not observable from repo files.",
-        ),
-    ],
-    "antigravity": [
-        (
-            "project",
-            "Native Antigravity project config",
-            "Project-level native Antigravity files are not strongly verified from first-party docs here.",
-        ),
-        (
-            "global",
-            "Antigravity settings UI",
-            "Settings and approval policies may live in the UI and not map to local files.",
-        ),
-        (
-            "global",
-            "Antigravity agent mode settings",
-            "Agent mode policies are documented but may not be file-backed locally.",
-        ),
-        (
-            "global",
-            "Antigravity non-workspace file access",
-            "Non-workspace file access policy may affect secret exposure and can be UI-managed.",
-        ),
-    ],
-    "github-copilot-web": [
-        (
-            "global",
-            "GitHub.com and Copilot coding agent settings",
-            "Repository, organization, and cloud-agent settings may live on GitHub.com rather than local files.",
         ),
     ],
     "perplexity-desktop": [

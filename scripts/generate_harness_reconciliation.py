@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from wagents import ROOT
-from wagents.cli import collect_desired_sync_rows
+from wagents.cli import collect_desired_sync_rows, sync_row_installed_agents
 from wagents.external_skills import read_external_skill_entries
 from wagents.installed_inventory import (
     CLEANUP_ACTION_MANUAL_REVIEW,
@@ -152,13 +152,14 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
 
     desired_names = {row.name for row in desired}
     for row in merged.rows:
+        installed_agents = sync_row_installed_agents(row, merged.rows)
         if row.provenance_status == "read-only-discovered" and not row.target_agents:
-            target_agents = tuple(row.installed_agents)
+            target_agents = installed_agents
         else:
             target_agents = tuple(row.target_agents or all_agents)
         unknown = set(target_agents) & failed_agents
         owner_covered = set(repo_skill_owner_covered_agents(row, target_agents, home=HOME, root=ROOT))
-        missing = set(target_agents) - set(row.installed_agents) - unknown - owner_covered
+        missing = set(target_agents) - set(installed_agents) - unknown - owner_covered
         classification, action, rationale = _skill_disposition(row, all_agents, missing, unknown)
         if owner_covered and row.provenance_status == "repo-owned" and classification == "synced":
             rationale = (
@@ -188,7 +189,7 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
                 "provenance_status": row.provenance_status,
                 "trust_tier": row.trust_tier,
                 "sync_kind": row.sync_kind,
-                "installed_agents": list(row.installed_agents),
+                "installed_agents": list(installed_agents),
                 "target_agents": list(target_agents),
                 "missing_agents": sorted(missing),
                 "owner_covered_agents": sorted(owner_covered),
@@ -339,62 +340,6 @@ def _codex_plugin_rows() -> list[dict[str, Any]]:
     return rows
 
 
-def _gemini_extension_evidence(invalid_disabled: list[str]) -> str:
-    if invalid_disabled:
-        return "Gemini settings contain MCP disabled keys rejected by the CLI; repair before extension validation."
-    return "Extension is locally installed and preserved unless promoted through catalog/registry review."
-
-
-def _gemini_rows() -> list[dict[str, Any]]:
-    settings = _safe_json(HOME / ".gemini" / "settings.json")
-    enabled = set(settings.get("enabledPlugins", []) if isinstance(settings.get("enabledPlugins"), list) else [])
-    mcp_servers = settings.get("mcpServers", {}) if isinstance(settings.get("mcpServers"), dict) else {}
-    invalid_disabled = [name for name, value in mcp_servers.items() if isinstance(value, dict) and "disabled" in value]
-    extension_root = HOME / ".gemini" / "extensions"
-    rows: list[dict[str, Any]] = []
-    if extension_root.is_dir():
-        for path in sorted(extension_root.iterdir()):
-            if not path.is_dir() or path.name.startswith("."):
-                continue
-            skill_count = len(list(path.glob("skills/*/SKILL.md")))
-            command_count = len([item for item in path.glob("commands/*") if item.is_file()])
-            rows.append(
-                {
-                    "asset_type": "extension",
-                    "harness": "gemini-cli",
-                    "name": path.name,
-                    "source": "gemini extension directory",
-                    "source_path": _redact(str(path)),
-                    "installed_state": {
-                        "enabled_in_settings": path.name in enabled,
-                        "skill_count": skill_count,
-                        "command_count": command_count,
-                    },
-                    "classification": "config-repair-needed" if invalid_disabled else "local-only-preserve",
-                    "action": "config-repair-needed" if invalid_disabled else "local-only-preserve",
-                    "owner": "user-local",
-                    "evidence": _gemini_extension_evidence(invalid_disabled),
-                }
-            )
-    if enabled:
-        for name in sorted(enabled):
-            rows.append(
-                {
-                    "asset_type": "plugin",
-                    "harness": "gemini-cli",
-                    "name": name,
-                    "source": "enabledPlugins",
-                    "source_path": "~/.gemini/settings.json",
-                    "installed_state": {"enabled_in_settings": True},
-                    "classification": "config-repair-needed" if invalid_disabled else "local-only-preserve",
-                    "action": "config-repair-needed" if invalid_disabled else "local-only-preserve",
-                    "owner": "user-local",
-                    "evidence": "Gemini enabled plugin entry is local user configuration.",
-                }
-    )
-    return rows
-
-
 def _native_plugins_reported(result: dict[str, Any]) -> bool:
     if not result.get("ok"):
         return False
@@ -481,7 +426,7 @@ def _simple_plugin_rows() -> list[dict[str, Any]]:
             ),
         }
     )
-    for harness in ("cursor", "github-copilot", "crush", "antigravity"):
+    for harness in ("cursor", "crush"):
         rows.append(
             {
                 "asset_type": "plugin",
@@ -506,7 +451,6 @@ def _plugin_rows() -> list[dict[str, Any]]:
     rows = []
     rows.extend(_codex_plugin_rows())
     rows.extend(_opencode_plugin_rows())
-    rows.extend(_gemini_rows())
     rows.extend(_simple_plugin_rows())
     return rows
 
@@ -564,11 +508,9 @@ def _task_files(harness: str, asset_type: str) -> list[str]:
                 "~/.config/opencode/tui.json",
             }
         )
-    if harness == "gemini-cli":
-        files.update({"GEMINI.md", "~/.gemini/settings.json", "~/.gemini/extensions/*"})
     if harness == "grok":
         files.update({"config/grok-config.toml", "~/.grok/config.toml", "~/.grok/skills/*"})
-    if harness in {"cursor", "github-copilot", "crush", "antigravity"}:
+    if harness in {"cursor", "crush"}:
         files.add("config/plugin-extension-registry.json")
     return sorted(files)
 

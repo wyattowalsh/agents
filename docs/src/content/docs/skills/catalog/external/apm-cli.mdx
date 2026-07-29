@@ -10,7 +10,7 @@ trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
 install_command: "pip install apm-cli"
 sync_kind: "external-tool"
-target_agents: ["claude-code", "codex", "cursor", "gemini-cli", "github-copilot", "opencode"]
+target_agents: ["claude-code", "codex", "cursor", "opencode"]
 research_slug: "apm-cli"
 ---
 
@@ -39,7 +39,7 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/apm-cli.md
 
 ## Harness Coverage
 
-Targets verified harnesses: `claude-code`, `codex`, `cursor`, `gemini-cli`, `github-copilot`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `cursor`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
@@ -66,7 +66,7 @@ Entry maintained in authoring SSOT `docs/src/authoring/skills/apm-cli.mdx` and `
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `claude-code`, `codex`, `cursor`, `gemini-cli`, `github-copilot`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `cursor`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -91,7 +91,7 @@ trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 install_command: "pip install apm-cli"
 sync_kind: "external-tool"
-target_agents: [claude-code, codex, cursor, gemini-cli, github-copilot, opencode]
+target_agents: ["claude-code", "codex", "cursor", "opencode"]
 source_url: "https://github.com/microsoft/apm"
 notes: "Remote third-party packages only. This repo bundle: uv tool install wagents --from git+https://github.com/wyattowalsh/agents or apm install wyattowalsh/agents. MCP stays MCPHub/wagents-owned."
 risk_notes: "apm install mutates harness directories; run apm audit and review apm.lock.yaml. Never route repo skills/ through APM."

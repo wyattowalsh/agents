@@ -1,0 +1,13 @@
+{
+  "id": "explicit-empty-gallery",
+  "prompt": "/justfile",
+  "expected_output": "Empty-args gallery listing create/edit/migrate/check/discover modes, write-scoped posture, critical rules summary, and reference index without mutating files.",
+  "files": [],
+  "assertions": [
+    "Recognizes empty /justfile and enters the empty-args handler",
+    "Surfaces create, edit, migrate, check, and discover modes",
+    "States write-scoped permission posture",
+    "Does not invent a mutating default action",
+    "Points at the reference index or critical rules"
+  ]
+}

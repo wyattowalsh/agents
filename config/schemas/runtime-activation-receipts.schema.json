@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agents.w4w.dev/schemas/runtime-activation-receipts.schema.json",
+  "title": "Candidate runtime activation receipts",
+  "type": "object",
+  "required": ["version", "revision", "receipts", "closure_receipts"],
+  "properties": {
+    "version": {"const": 2},
+    "revision": {"type": "integer", "minimum": 0},
+    "receipts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["artifact_id", "phase"],
+        "properties": {
+          "artifact_id": {"type": "string", "minLength": 1},
+          "phase": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "minLength": 1},
+          "store_transaction_id": {"type": "string", "minLength": 1}
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "phase": {"const": "activation"},
+                "status": {"const": "passed"}
+              },
+              "required": ["phase", "status"]
+            },
+            "then": {
+              "required": [
+                "mcp_server",
+                "endpoint",
+                "registry_enabled",
+                "generated_enabled",
+                "live_enabled",
+                "mcphub_reachable",
+                "registry_entry_sha256",
+                "generated_entry_sha256",
+                "live_entry_sha256",
+                "registry_projection_sha256",
+                "generated_projection_sha256",
+                "live_projection_sha256",
+                "configured_tool_names",
+                "configured_tool_names_sha256",
+                "configured_tools_allow_all",
+                "tool_count",
+                "tool_names",
+                "tool_names_sha256",
+                "bearer_auth_used",
+                "mcphub_bearer_key_configured",
+                "unauthenticated_denied",
+                "unauthenticated_status_code",
+                "network_probe_performed",
+                "secret_value_recorded",
+                "source_commit_sha",
+                "input_digest",
+                "predicate_version",
+                "recorded_at"
+              ],
+              "properties": {
+                "registry_enabled": {"const": true},
+                "generated_enabled": {"const": true},
+                "live_enabled": {"const": true},
+                "mcphub_reachable": {"const": true},
+                "configured_tool_names": {
+                  "type": "array",
+                  "items": {"type": "string", "minLength": 1},
+                  "uniqueItems": true
+                },
+                "configured_tools_allow_all": {"type": "boolean"},
+                "tool_count": {"type": "integer", "minimum": 1},
+                "tool_names": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {"type": "string", "minLength": 1},
+                  "uniqueItems": true
+                },
+                "bearer_auth_used": {"const": true},
+                "mcphub_bearer_key_configured": {"const": true},
+                "unauthenticated_denied": {"const": true},
+                "unauthenticated_status_code": {"enum": [401, 403]},
+                "network_probe_performed": {"const": true},
+                "secret_value_recorded": {"const": false}
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "phase": {"const": "identity"},
+                "package_id": {"pattern": "^codex-plugin:"}
+              },
+              "required": ["phase", "package_id"]
+            },
+            "then": {
+              "required": [
+                "audited_source_commit_sha",
+                "installed_package_origin",
+                "provenance_lock_entry_sha256",
+                "approved_content_sha256",
+                "source_content_sha256",
+                "installed_content_sha256",
+                "content_digest_algorithm",
+                "content_digest_ignored_dirs"
+              ],
+              "properties": {
+                "audited_source_commit_sha": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{40}$"
+                },
+                "provenance_lock_entry_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "approved_content_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "source_content_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "installed_content_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "content_digest_algorithm": {
+                  "const": "plugin-content-tree-v1"
+                },
+                "content_digest_ignored_dirs": {
+                  "const": [".git"]
+                },
+                "installed_package_origin": {
+                  "type": "object",
+                  "required": [
+                    "origin_kind",
+                    "origin_digest",
+                    "plugin_id",
+                    "registry_id",
+                    "normalized_url",
+                    "marketplace",
+                    "marketplace_path",
+                    "marketplace_commit_sha",
+                    "marketplace_git_tree_oid",
+                    "audited_source_commit_sha",
+                    "upstream_subpath",
+                    "upstream_git_tree_oid",
+                    "approved_content_sha256",
+                    "source_content_sha256",
+                    "installed_content_sha256",
+                    "digest_algorithm",
+                    "lock_entry_sha256"
+                  ],
+                  "properties": {
+                    "origin_kind": {"const": "codex-plugin-provenance-lock"},
+                    "origin_digest": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "phase": {"const": "install"},
+                "package_id": {"pattern": "^codex-plugin:"}
+              },
+              "required": ["phase", "package_id"]
+            },
+            "then": {
+              "required": [
+                "provenance_lock_entry_sha256",
+                "approved_content_sha256",
+                "installed_content_sha256",
+                "content_digest_algorithm",
+                "content_digest_ignored_dirs",
+                "plugin_inventory_enabled",
+                "plugin_inventory_plugin_id",
+                "plugin_inventory_version"
+              ],
+              "properties": {
+                "provenance_lock_entry_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "approved_content_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "installed_content_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "content_digest_algorithm": {
+                  "const": "plugin-content-tree-v1"
+                },
+                "content_digest_ignored_dirs": {
+                  "const": [".git"]
+                },
+                "plugin_inventory_enabled": {
+                  "const": true
+                },
+                "plugin_inventory_plugin_id": {
+                  "type": "string",
+                  "pattern": "^[^@]+@[^@]+$"
+                },
+                "plugin_inventory_version": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ],
+        "additionalProperties": true
+      }
+    },
+    "closure_receipts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["gate_id"],
+        "properties": {
+          "gate_id": {"type": "string", "minLength": 1},
+          "store_transaction_id": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

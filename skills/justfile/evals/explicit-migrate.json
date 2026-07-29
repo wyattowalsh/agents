@@ -1,0 +1,16 @@
+{
+  "skills": [
+    "justfile"
+  ],
+  "query": "/justfile migrate Makefile task targets into a justfile but keep the Makefile until I approve deletion",
+  "files": [
+    "Makefile"
+  ],
+  "expected_behavior": [
+    "Dispatches to migrate mode",
+    "Produces an old-to-new mapping before cutover",
+    "Converts Make ## help to Just [doc] / list rather than keeping Make help",
+    "Writes or proposes justfile before deleting sources",
+    "Asks before deleting the Makefile"
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "status": "ok",
+  "paths_written": ["planning/tmp/cleanup-v7/write-locks.json"],
+  "notes": "Hotspot→packet ownership from v7 plan conflict matrix + wave packet tables; KEEP entries for keep-matrix surfaces"
+}

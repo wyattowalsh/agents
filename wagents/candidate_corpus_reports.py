@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 from collections import Counter
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 TERMINAL_PROMOTION_WAVE_STATUS = "terminal-integration-wave-plan-generated"
 TERMINAL_PROMOTION_POLICY = (
@@ -16,10 +19,54 @@ TERMINAL_PROMOTION_ASSIGNMENT_RULE = (
     "are reserved for final reconciliation."
 )
 W00_MUTATION_POLICY = "no mutation; use existing catalog rows"
-W99_MUTATION_POLICY = "authoring-only stable quarantine reference; no install"
+W99_MUTATION_POLICY = "manifest-only quarantine record; no authoring or install"
 STANDARD_MUTATION_POLICY = "single integrator only after read-only research packets pass"
 RUNNER_CHECKLIST_HEADING = "## Runner-Owned Validation Checklist"
 RUNNER_RESULTS_HEADING = "## Observed Closeout Results"
+
+
+def generated_reference_materialization_errors(
+    payload: Any,
+    *,
+    root: Path,
+    authoring_dir: Path,
+    marker: str,
+) -> list[str]:
+    """Return errors for declared generated references missing from disk."""
+    if not isinstance(payload, dict):
+        return []
+    items = payload.get("items", [])
+    if not isinstance(items, list):
+        return []
+
+    errors: list[str] = []
+    root = root.resolve()
+    authoring_dir = authoring_dir.resolve()
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        relative_path = str(item.get("generated_reference_path") or "").strip()
+        if not relative_path:
+            continue
+        normalized_url = str(item.get("normalized_url") or "unknown target")
+        path = (root / relative_path).resolve()
+        try:
+            path.relative_to(authoring_dir)
+        except ValueError:
+            errors.append(f"generated reference path escapes authoring directory: {normalized_url}")
+            continue
+        if not path.is_file():
+            errors.append(f"generated reference is not materialized: {relative_path}")
+            continue
+        try:
+            text = path.read_text(encoding="utf-8", errors="replace")
+        except OSError as exc:
+            errors.append(f"generated reference is unreadable: {relative_path}: {exc}")
+            continue
+        if marker not in text:
+            errors.append(f"generated reference lacks marker {marker}: {relative_path}")
+    return errors
+
 
 _REQUIRED_PLAN_FIELDS = (
     "status",

@@ -1,0 +1,13 @@
+{
+  "id": "explicit-edit",
+  "prompt": "/justfile edit justfile — add a [group(\"checks\")] fmt recipe that runs ruff format --check",
+  "expected_output": "Edit-mode inspect-then-write that adds a documented grouped recipe without blind just --fmt on the justfile.",
+  "files": ["justfile"],
+  "assertions": [
+    "Dispatches to edit mode",
+    "Inspects with just --list/--show or by reading the justfile before editing",
+    "Adds a [doc]/[group] recipe consistent with house style",
+    "Does not blind-run just --fmt to rewrite the justfile",
+    "Preserves existing settings unless change is required"
+  ]
+}

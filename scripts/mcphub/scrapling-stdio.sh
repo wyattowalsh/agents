@@ -7,6 +7,10 @@ source "${SCRIPT_DIR}/common.sh"
 
 mcphub_load_env
 
-unset OPENCODE_SERVER_USERNAME OPENCODE_SERVER_PASSWORD
-
-exec uvx --from "${MCPHUB_SCRAPLING_PACKAGE:-scrapling[ai]==0.4.10}" scrapling mcp "$@"
+package="${MCPHUB_SCRAPLING_PACKAGE:-scrapling[ai]==0.4.10}"
+mcphub_exec_clean \
+  SSL_CERT_FILE \
+  SSL_CERT_DIR \
+  REQUESTS_CA_BUNDLE \
+  CURL_CA_BUNDLE \
+  -- uvx --from "${package}" scrapling mcp "$@"

@@ -1,0 +1,12 @@
+{
+  "id": "neg-ci-yaml",
+  "prompt": "/justfile add a GitHub Actions workflow that runs tests on pull requests",
+  "expected_output": "Refuses CI workflow YAML authorship and redirects to devops-engineer.",
+  "files": [],
+  "assertions": [
+    "Treats CI/CD workflow YAML as out of scope",
+    "Redirects to devops-engineer",
+    "Does not create .github/workflows YAML under justfile mode",
+    "May offer a just test recipe only if user reframes away from CI YAML"
+  ]
+}

@@ -299,7 +299,6 @@ def render_grok_mcp_block(registry: dict[str, Any]) -> str:
                 entry = render_mcphub_stdio_server(registry, spec["url"], {}, enabled=bool(spec["enabled"]))
                 lines.append(f"command = {toml_value(entry['command'])}")
                 lines.append(f"args = {toml_value(entry['args'])}")
-                lines.append(f"env = {toml_value(entry['env'])}")
             startup_timeout_sec = int(mcphub_config(registry).get("startup_timeout_sec", 20))
             tool_timeout_sec = int(mcphub_config(registry).get("tool_timeout_sec", 90))
             lines.append(f"startup_timeout_sec = {toml_value(startup_timeout_sec)}")

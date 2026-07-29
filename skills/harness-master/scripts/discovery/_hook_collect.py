@@ -13,17 +13,12 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 HARNESS_ALIASES: dict[str, str] = {
-    "copilot": "github-copilot",
-    "github-copilot-web": "github-copilot",
-    "github-copilot-cli": "github-copilot",
     "claude": "claude-code",
     "claude-desktop": "claude-code",
-    "gemini": "gemini-cli",
     "cursor": "cursor-editor",
     "cursor-editor": "cursor-editor",
     "cursor-agent-web": "cursor-editor",
     "cursor-agent-cli": "cursor-editor",
-    "antigravity": "antigravity",
     "opencode": "opencode",
     "chatgpt": "chatgpt",
 }
@@ -106,7 +101,7 @@ def collect_registry_summary(repo_root: Path) -> dict[str, Any]:
 
 
 def collect_embedded_settings(repo_root: Path) -> dict[str, Any]:
-    """Detect presence of hooks in .claude/*settings*.json and .gemini/settings.json."""
+    """Detect presence of hooks in Claude settings files."""
     claude = False
     paths: list[str] = []
     for name in ("settings.json", "settings.local.json"):
@@ -122,22 +117,8 @@ def collect_embedded_settings(repo_root: Path) -> dict[str, Any]:
             except (json.JSONDecodeError, OSError):
                 pass
 
-    gemini = False
-    gp = repo_root / ".gemini" / "settings.json"
-    if gp.is_file():
-        rel = str(gp.relative_to(repo_root))
-        paths.append(rel)
-        try:
-            gdata = json.loads(gp.read_text(encoding="utf-8"))
-            ghooks = gdata.get("hooks") if isinstance(gdata, dict) else None
-            if isinstance(ghooks, dict) and ghooks:
-                gemini = True
-        except (json.JSONDecodeError, OSError):
-            pass
-
     return {
         "claude": claude,
-        "gemini": gemini,
         "paths": sorted(set(paths)),
     }
 

@@ -73,11 +73,6 @@ def _loads_object(value: Any) -> dict[str, Any]:
 def _detect_harness(payload: dict[str, Any], requested: str) -> str:
     if requested != "auto":
         return requested
-    if "toolName" in payload or "toolArgs" in payload:
-        return "github-copilot"
-    event = str(payload.get("hook_event_name") or "")
-    if event in {"BeforeTool", "AfterTool", "BeforeAgent", "AfterAgent"}:
-        return "gemini-cli"
     return "codex"
 
 
@@ -133,8 +128,6 @@ def _agent_home(harness: str) -> Path:
     folder = {
         "codex": ".codex",
         "claude-code": ".claude",
-        "github-copilot": ".copilot",
-        "gemini-cli": ".gemini",
     }.get(harness, ".agents")
     return Path.home() / folder / "research"
 
@@ -195,8 +188,6 @@ def _emit_json(data: dict[str, Any]) -> int:
 
 def _deny(payload: NormalizedPayload, reason: str, policy_id: str = "policy-deny") -> int:
     _record_decision(payload, policy_id, "deny", reason)
-    if payload.harness == "github-copilot":
-        return _emit_json({"permissionDecision": "deny", "permissionDecisionReason": reason})
     if payload.harness == "codex":
         return _emit_json({
             "hookSpecificOutput": {
@@ -205,8 +196,6 @@ def _deny(payload: NormalizedPayload, reason: str, policy_id: str = "policy-deny
                 "permissionDecisionReason": reason,
             }
         })
-    if payload.harness == "gemini-cli":
-        return _emit_json({"decision": "deny", "reason": reason, "suppressOutput": True})
     print(reason, file=sys.stderr)
     return 2
 
@@ -214,8 +203,6 @@ def _deny(payload: NormalizedPayload, reason: str, policy_id: str = "policy-deny
 def _stop_retry(payload: NormalizedPayload, reason: str) -> int:
     if payload.harness == "codex":
         return _emit_json({"decision": "block", "reason": reason})
-    if payload.harness == "gemini-cli":
-        return _emit_json({"decision": "deny", "reason": reason, "suppressOutput": True})
     print(reason, file=sys.stderr)
     return 2
 

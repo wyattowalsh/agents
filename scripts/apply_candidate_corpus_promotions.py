@@ -22,18 +22,22 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from wagents.candidate_auth import extract_auth_env_names, is_auth_env_name
 from wagents.candidate_corpus_reports import (
     RUNNER_CHECKLIST_HEADING,
     TERMINAL_PROMOTION_ASSIGNMENT_RULE,
     TERMINAL_PROMOTION_POLICY,
     TERMINAL_PROMOTION_WAVE_STATUS,
+    generated_reference_materialization_errors,
     mutation_policy_for_wave,
     preserve_runner_owned_results,
     render_promotion_wave_report,
     validate_promotion_wave_plan,
 )
 from wagents.parsing import parse_frontmatter
+from wagents.site_model import SUPPORTED_AGENT_IDS
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_DIR = ROOT / "planning" / "manifests" / "candidate-corpus-jul2026"
@@ -47,8 +51,25 @@ PROGRESS = MANIFEST_DIR / "full-integration-progress.json"
 STATE_REPORT = MANIFEST_DIR / "full-integration-state.md"
 HARNESS_ASSURANCE = MANIFEST_DIR / "harness-install-assurance.json"
 NON_SKILL_ASSURANCE = MANIFEST_DIR / "non-skill-install-assurance.json"
+RUNTIME_ACTIVATION_ASSURANCE = MANIFEST_DIR / "runtime-activation-assurance.json"
 EXPECTED_RAW_COUNT = 293
 EXPECTED_UNIQUE_COUNT = 289
+EXPECTED_RUNTIME_ARTIFACT_COUNT = 65
+EXPECTED_RUNTIME_KIND_COUNTS = {"cli": 30, "library": 1, "mcp": 17, "plugin": 17}
+SUCCESSOR_ASSURANCE_SCRIPTS = (
+    "record_candidate_catalog_closure.py",
+    "verify_candidate_plugin_provenance.py",
+    "run_candidate_cli_canaries.py",
+    "rehearse_candidate_cli_rollback.py",
+    "run_candidate_mcp_canaries.py",
+    "rehearse_candidate_mcp_rollback.py",
+    "run_candidate_plugin_canaries.py",
+    "rehearse_candidate_plugin_rollback.py",
+    "run_candidate_docs_assurance.py",
+    "record_candidate_final_closure.py",
+    "record_candidate_mcp_activation.py",
+    "record_candidate_runtime_activation.py",
+)
 EXPECTED_CLASSIFICATION_COUNTS = {
     "installable-existing": 121,
     "inspection-existing": 6,
@@ -57,7 +78,6 @@ EXPECTED_CLASSIFICATION_COUNTS = {
 }
 GENERATED_REFERENCE_CLASSIFICATIONS = {
     "integrated-reference",
-    "integrated-quarantine-reference",
 }
 LEGACY_CANDIDATE_MARKER = "GENERATED-CANDIDATE-CORPUS-JUL2026"
 INTEGRATION_TARGET_MARKER = "GENERATED-INTEGRATION-TARGET-JUL2026"
@@ -190,6 +210,11 @@ def normalized_raw_indexes(value: Any) -> list[int]:
     return sorted(indexes)
 
 
+def integration_target_is_accounted(item: dict[str, Any]) -> bool:
+    """Return whether a target has a durable terminal integration identity."""
+    return bool(item.get("catalog_rows")) or item.get("hard_blocked") is True
+
+
 def integration_target_errors(payload: dict[str, Any] | None = None) -> list[str]:
     target_payload = payload if payload is not None else load_integration_targets()
     items = target_payload.get("items", []) if isinstance(target_payload, dict) else []
@@ -225,8 +250,6 @@ def integration_target_errors(payload: dict[str, Any] | None = None) -> list[str
             errors.append("integration targets contain a non-object item")
             continue
         rows = item.get("catalog_rows")
-        if not isinstance(rows, list) or not rows:
-            errors.append(f"integration target has no catalog row: {item.get('normalized_url')}")
         classification = item.get("integration_classification")
         if classification not in EXPECTED_CLASSIFICATION_COUNTS:
             errors.append(f"integration target has invalid classification: {item.get('normalized_url')}")
@@ -258,7 +281,15 @@ def integration_target_errors(payload: dict[str, Any] | None = None) -> list[str
             )
         if hard_blocked and item.get("trust_cleared_installable") is not False:
             errors.append(f"hard-blocked integration target is marked installable: {item.get('normalized_url')}")
-        if isinstance(rows, list) and rows:
+        if not isinstance(rows, list):
+            errors.append(f"integration target catalog rows are not a list: {item.get('normalized_url')}")
+            rows = []
+        if hard_blocked:
+            if rows:
+                errors.append(f"hard-blocked integration target exposes catalog rows: {item.get('normalized_url')}")
+        elif not rows:
+            errors.append(f"integration target has no catalog row: {item.get('normalized_url')}")
+        if rows:
             install_rows = [row for row in rows if isinstance(row, dict) and existing_row_has_install_surface(row)]
             derived_installable = bool(install_rows) and all(existing_row_trust_cleared(row) for row in install_rows)
             if hard_blocked:
@@ -299,6 +330,14 @@ def integration_target_errors(payload: dict[str, Any] | None = None) -> list[str
         errors.append("integration target item generated reference count does not match reference classifications")
     if target_payload.get("generated_reference_count") != generated_reference_count:
         errors.append("integration target generated reference count drifted")
+    errors.extend(
+        generated_reference_materialization_errors(
+            target_payload,
+            root=ROOT,
+            authoring_dir=AUTHORING_DIR,
+            marker=INTEGRATION_TARGET_MARKER,
+        )
+    )
     return errors
 
 
@@ -329,8 +368,22 @@ def harness_assurance_errors(payload: dict[str, Any] | None = None) -> list[str]
     agents = assurance.get("agents", []) if isinstance(assurance, dict) else []
     if assurance.get("complete") is not True:
         errors.append("harness install assurance is not complete")
-    if assurance.get("target_harness_count") != 9 or not isinstance(agents, list) or len(agents) != 9:
-        errors.append("harness install assurance does not cover nine harnesses")
+    expected_harnesses = set(SUPPORTED_AGENT_IDS)
+    observed_harnesses = (
+        {str(agent.get("agent") or "") for agent in agents if isinstance(agent, dict)}
+        if isinstance(agents, list)
+        else set()
+    )
+    if (
+        assurance.get("target_harness_count") != len(SUPPORTED_AGENT_IDS)
+        or not isinstance(agents, list)
+        or len(agents) != len(SUPPORTED_AGENT_IDS)
+        or observed_harnesses != expected_harnesses
+    ):
+        errors.append(
+            "harness install assurance does not exactly cover the supported harnesses: "
+            + ", ".join(SUPPORTED_AGENT_IDS)
+        )
     for field in ("missing", "pin_blocked", "commands"):
         if int_value(totals.get(field)) != 0:
             errors.append(f"harness install assurance has nonzero {field}")
@@ -367,6 +420,85 @@ def load_non_skill_assurance() -> dict[str, Any]:
             "totals": {},
         }
     )
+
+
+def runtime_activation_summary(payload: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Validate and summarize the authoritative successor runtime ledger."""
+    assurance = payload
+    if assurance is None:
+        if not RUNTIME_ACTIVATION_ASSURANCE.is_file():
+            raise ValueError("runtime activation assurance is missing")
+        loaded = load_json(RUNTIME_ACTIVATION_ASSURANCE)
+        assurance = loaded if isinstance(loaded, dict) else {}
+
+    errors: list[str] = []
+    artifacts = assurance.get("artifacts")
+    if not isinstance(artifacts, list):
+        errors.append("artifacts must be a list")
+        artifacts = []
+
+    artifact_ids: set[str] = set()
+    status_counts: Counter[str] = Counter()
+    kind_counts: Counter[str] = Counter()
+    for index, artifact in enumerate(artifacts):
+        if not isinstance(artifact, dict):
+            errors.append(f"artifact {index} is not an object")
+            continue
+        artifact_id = artifact.get("artifact_id")
+        kind = artifact.get("kind")
+        status = artifact.get("status")
+        if not isinstance(artifact_id, str) or not artifact_id or artifact_id in artifact_ids:
+            errors.append(f"artifact {index} has an invalid or duplicate id")
+        else:
+            artifact_ids.add(artifact_id)
+        if kind not in EXPECTED_RUNTIME_KIND_COUNTS:
+            errors.append(f"artifact {index} has invalid kind {kind!r}")
+        else:
+            kind_counts[str(kind)] += 1
+        if status not in {"accepted", "incomplete"}:
+            errors.append(f"artifact {index} has invalid status {status!r}")
+        else:
+            status_counts[str(status)] += 1
+
+    expected_status_counts = {"accepted": status_counts["accepted"], "incomplete": status_counts["incomplete"]}
+    observed_kind_counts = {kind: kind_counts[kind] for kind in EXPECTED_RUNTIME_KIND_COUNTS}
+    totals = assurance.get("totals")
+    if assurance.get("source_target_count") != EXPECTED_UNIQUE_COUNT:
+        errors.append("source target count must be 289")
+    if assurance.get("runtime_artifact_count") != EXPECTED_RUNTIME_ARTIFACT_COUNT:
+        errors.append("runtime artifact count must be 65")
+    if assurance.get("minimum_runtime_artifact_count") != EXPECTED_RUNTIME_ARTIFACT_COUNT:
+        errors.append("minimum runtime artifact count must be 65")
+    if len(artifacts) != EXPECTED_RUNTIME_ARTIFACT_COUNT:
+        errors.append("artifact ledger must contain 65 rows")
+    if observed_kind_counts != EXPECTED_RUNTIME_KIND_COUNTS:
+        errors.append(f"runtime kind counts must be {EXPECTED_RUNTIME_KIND_COUNTS}")
+    if not isinstance(totals, dict) or totals.get("status_counts") != expected_status_counts:
+        errors.append("recorded runtime status counts do not match the artifact ledger")
+    if not isinstance(totals, dict) or totals.get("kind_counts") != EXPECTED_RUNTIME_KIND_COUNTS:
+        errors.append("recorded runtime kind counts do not match the 65-artifact model")
+    requested_full_usability = assurance.get("requested_full_usability")
+    if not isinstance(requested_full_usability, bool):
+        errors.append("requested_full_usability must be boolean")
+    active_blockers = assurance.get("active_blockers")
+    if not isinstance(active_blockers, list):
+        errors.append("active blockers must be a list")
+        active_blockers = []
+    elif len(active_blockers) != status_counts["incomplete"]:
+        errors.append("active blocker count does not match incomplete runtime artifacts")
+    if errors:
+        raise ValueError("runtime activation assurance is invalid:\n- " + "\n- ".join(errors))
+
+    return {
+        "assurance_file": RUNTIME_ACTIVATION_ASSURANCE.name,
+        "source_target_count": EXPECTED_UNIQUE_COUNT,
+        "runtime_artifact_count": EXPECTED_RUNTIME_ARTIFACT_COUNT,
+        "accepted": status_counts["accepted"],
+        "incomplete": status_counts["incomplete"],
+        "kind_counts": observed_kind_counts,
+        "requested_full_usability": requested_full_usability,
+        "active_blocker_count": len(active_blockers),
+    }
 
 
 def non_skill_assurance_errors(payload: dict[str, Any] | None = None) -> list[str]:
@@ -699,16 +831,16 @@ def installed_path_matches_override(raw_path: Any, override: dict[str, Any]) -> 
         Path(os.path.expanduser("~/.codex/skills")),
         Path(os.path.expanduser("~/.config/crush/skills")),
         Path(os.path.expanduser("~/.config/opencode/skills")),
-        Path(os.path.expanduser("~/.copilot/skills")),
         Path(os.path.expanduser("~/.cursor/skills")),
-        Path(os.path.expanduser("~/.gemini/skills")),
         Path(os.path.expanduser("~/.grok/skills")),
     )
     if path.name not in expected_names or not any(path.is_relative_to(root.resolve()) for root in allowed_roots):
         return False
     try:
         frontmatter, _ = parse_frontmatter(skill_md.read_text(encoding="utf-8", errors="replace"))
-    except (OSError, ValueError):
+    except (OSError, ValueError, yaml.YAMLError):
+        return False
+    if not isinstance(frontmatter, dict):
         return False
     return str(frontmatter.get("name") or "") in expected_names
 
@@ -843,6 +975,67 @@ def render_promoted_row(override: dict[str, Any]) -> str:
         ),
     ]
     return "\n".join(frontmatter + body) + "\n"
+
+
+def promoted_row_matches_override(path: Path, override: dict[str, Any]) -> bool:
+    """Return whether an existing enriched row matches promotion identity."""
+    if not path.is_file():
+        return False
+    try:
+        frontmatter, _ = parse_frontmatter(path.read_text(encoding="utf-8", errors="replace"))
+    except (OSError, ValueError, yaml.YAMLError):
+        return False
+    if not isinstance(frontmatter, dict):
+        return False
+
+    expected = {
+        "name": str(override["skill_name"]),
+        "source_kind": "curated-external",
+        "install_command": str(override.get("install_command", "")),
+        "install_skill_name": str(override.get("install_skill_name") or override["skill_name"]),
+        "status": str(override.get("status", TRUST_CLEARED_STATUS)),
+        "trust_tier": str(override.get("trust_tier", TRUST_CLEARED_TIER)),
+        "provenance_status": str(override.get("provenance_status", "verified-install-command")),
+        "sync_kind": str(override.get("sync_kind", "skills-cli")),
+        "source_url": str(override.get("normalized_url", "")),
+        "selector_mode": str(override.get("selector_mode", "named")),
+        "audit_date": str(override.get("audit_date", "2026-07-07")),
+        "audited_head": str(override.get("audited_head", "")),
+        "license": str(override.get("license", "")),
+        "pin_policy": str(override.get("pin_policy", "pin-before-install")),
+        "no_pin_rationale": str(override.get("no_pin_rationale", "")),
+        "source_list_evidence": str(override.get("source_list_evidence", "source-list-found")),
+        "executable_surface": str(override.get("executable_surface", "reviewed")),
+        "credential_behavior": str(override.get("credential_behavior", "")),
+        "network_access": str(override.get("network_access", "")),
+        "file_access": str(override.get("file_access", "")),
+        "live_action_risk": str(override.get("live_action_risk", "")),
+        "risk_category": str(override.get("risk_category", "standard-review")),
+        "promotion_policy": str(override.get("promotion_policy", "")),
+        "provenance_evidence": str(override.get("provenance_evidence", "")),
+    }
+    if any(str(frontmatter.get(field, "")) != value for field, value in expected.items()):
+        return False
+    if normalize_install_source(str(frontmatter.get("source", ""))) != normalize_install_source(
+        str(override.get("source_name", ""))
+    ):
+        return False
+    if normalize_install_source(str(frontmatter.get("install_source", ""))) != normalize_install_source(
+        str(override.get("install_source", ""))
+    ):
+        return False
+    actual_agents = frontmatter.get("target_agents", [])
+    return isinstance(actual_agents, list) and sorted(str(value) for value in actual_agents) == sorted(
+        str(value) for value in override.get("target_agents", [])
+    )
+
+
+def write_promoted_row(path: Path, override: dict[str, Any]) -> bool:
+    """Write a promotion row unless a matching enriched row already exists."""
+    if promoted_row_matches_override(path, override):
+        return False
+    path.write_text(render_promoted_row(override), encoding="utf-8")
+    return True
 
 
 def promoted_summary_row(override: dict[str, Any], previous: dict[str, Any] | None) -> dict[str, Any]:
@@ -1067,7 +1260,7 @@ def reconcile_integration_targets(summary: dict[str, Any], overrides: list[dict[
         item["hard_blocked"] = classification == "integrated-quarantine-reference"
         classification_counts[classification] += 1
         raw_indexes.update(normalized_raw_indexes(item.get("raw_indexes")))
-        integrated_count += int(bool(rows))
+        integrated_count += int(integration_target_is_accounted(item))
 
     payload["generated_at"] = now()
     payload["raw_entries_covered"] = len(raw_indexes)
@@ -1314,6 +1507,14 @@ def enrich_deep_auth_env_names(summary: dict[str, Any], overrides: list[dict[str
     for override in overrides:
         if isinstance(override, dict) and override.get("normalized_url"):
             overrides_by_url[str(override["normalized_url"]).lower()].append(override)
+    non_skill = load_non_skill_assurance()
+    runtime_auth_by_url = {
+        str(item.get("normalized_url") or "").lower(): sorted({
+            str(value) for value in item.get("auth_env_names", []) if isinstance(value, str) and is_auth_env_name(value)
+        })
+        for item in non_skill.get("items", [])
+        if isinstance(item, dict) and item.get("normalized_url")
+    }
 
     named_item_count = 0
     named_value_count = 0
@@ -1321,11 +1522,23 @@ def enrich_deep_auth_env_names(summary: dict[str, Any], overrides: list[dict[str
         if not isinstance(item, dict):
             continue
         auth_review = item.get("auth_review")
-        if not isinstance(auth_review, dict) or not auth_review.get("auth_required"):
+        if not isinstance(auth_review, dict):
             continue
         normalized_url = str(item.get("normalized_url") or "")
         source_name = str(item.get("source_name") or "")
         key = normalized_url.lower()
+        runtime_names = runtime_auth_by_url.get(key, [])
+        if runtime_names:
+            existing_names = {
+                str(value)
+                for value in auth_review.get("env_vars_or_credentials", [])
+                if str(value).strip() and str(value) != AUTH_UNKNOWN_PLACEHOLDER
+            }
+            auth_review["auth_required"] = True
+            auth_review["env_vars_or_credentials"] = sorted(existing_names | set(runtime_names))
+            auth_review["runtime_auth_evidence_source"] = "non-skill-install-assurance.json"
+        if not auth_review.get("auth_required"):
+            continue
         evidence_text: list[str] = []
         evidence_sources: list[str] = []
         for row in rows_by_url.get(key, []):
@@ -1350,9 +1563,11 @@ def enrich_deep_auth_env_names(summary: dict[str, Any], overrides: list[dict[str
         if registry_evidence:
             evidence_text.extend(registry_evidence)
             evidence_sources.append("matched-repo-registry-entry")
-        names = extract_auth_env_names("\n".join(evidence_text))
+        names = sorted(set(extract_auth_env_names("\n".join(evidence_text))) | set(runtime_names))
         if names:
             auth_review["env_vars_or_credentials"] = names
+            if runtime_names:
+                evidence_sources.append("non-skill-install-assurance.json")
             auth_review["env_var_evidence_sources"] = sorted(set(evidence_sources))
             named_item_count += 1
             named_value_count += len(names)
@@ -2043,7 +2258,7 @@ def refresh_promotion_gate_artifacts() -> None:
 def write_overlay_changelog(summary: dict[str, Any], overrides: list[dict[str, Any]]) -> None:
     live_stats = live_install_evidence_stats(overrides)
     non_skill_assurance = load_non_skill_assurance()
-    non_skill_totals = non_skill_assurance.get("totals", {}) if isinstance(non_skill_assurance, dict) else {}
+    runtime = runtime_activation_summary()
     rows = summary.get("rows", []) if isinstance(summary, dict) else []
     promoted_targets = {str(item.get("normalized_url")) for item in overrides if item.get("normalized_url")}
     preview = load_manifest_json("live-install-command-preview.json", {})
@@ -2069,10 +2284,20 @@ def write_overlay_changelog(summary: dict[str, Any], overrides: list[dict[str, A
         ),
         (
             f"- Accounted for {non_skill_assurance.get('unique_target_count', 0)} runtime dispositions and "
-            f"verified {non_skill_totals.get('verified_runtime_artifacts', 0)}/"
-            f"{non_skill_totals.get('runtime_artifacts', 0)} CLI, library, MCP, and plugin artifacts with "
-            "candidate MCPs and broad-hook plugins kept disabled."
+            f"recorded the authoritative {runtime['runtime_artifact_count']}-artifact successor activation ledger: "
+            f"{runtime['accepted']} accepted and {runtime['incomplete']} incomplete."
         ),
+        (
+            "- Bound eight enabled Codex plugins from pinned upstream Git objects through approved marketplace, "
+            "isolated-install, and live-cache content digests."
+        ),
+        (
+            "- Bound rollback acceptance to immutable `commit-pending` journals plus post-CAS success markers; "
+            "failed transactions remain separate immutable failure evidence."
+        ),
+        "- Added successor canary, rollback, catalog, docs, final-closure, and runtime aggregation scripts: "
+        + ", ".join(f"`scripts/{name}`" for name in SUCCESSOR_ASSURANCE_SCRIPTS)
+        + ".",
         (
             "- Preserved source attribution, license evidence, safety boundaries, duplicate coverage, and "
             "explicit terminal routes."
@@ -2159,7 +2384,7 @@ def write_promotion_reports(summary: dict[str, Any], overrides: list[dict[str, A
     harness_assurance = load_harness_assurance()
     harness_totals = harness_assurance.get("totals", {}) if isinstance(harness_assurance, dict) else {}
     non_skill_assurance = load_non_skill_assurance()
-    non_skill_totals = non_skill_assurance.get("totals", {}) if isinstance(non_skill_assurance, dict) else {}
+    runtime = runtime_activation_summary()
     remaining_harness_commands = int_value(harness_totals.get("commands"))
     remaining_harness_missing = int_value(harness_totals.get("missing"))
     terminal_non_install_rows = sum(1 for row in rows if isinstance(row, dict) and not row.get("install_command"))
@@ -2185,11 +2410,10 @@ def write_promotion_reports(summary: dict[str, Any], overrides: list[dict[str, A
         f"- Missing installed `SKILL.md` files: {missing_skill_md}",
         f"- Post-install harness commands remaining: {remaining_harness_commands}",
         f"- Post-install desired rows missing across harnesses: {remaining_harness_missing}",
-        (
-            "- Non-skill runtime artifacts verified: "
-            f"{non_skill_totals.get('verified_runtime_artifacts', 0)}/"
-            f"{non_skill_totals.get('runtime_artifacts', 0)}"
-        ),
+        f"- Successor runtime artifacts discovered: {runtime['runtime_artifact_count']}",
+        f"- Successor runtime artifacts accepted: {runtime['accepted']}",
+        f"- Successor runtime artifacts incomplete: {runtime['incomplete']}",
+        f"- Requested full usability: `{str(runtime['requested_full_usability']).lower()}`",
         (
             "- Non-skill normalized targets accounted for: "
             f"{non_skill_assurance.get('unique_target_count', 0)}/{EXPECTED_UNIQUE_COUNT}"
@@ -2228,8 +2452,9 @@ def write_promotion_reports(summary: dict[str, Any], overrides: list[dict[str, A
         "- Read-only generator and deep-source audit scripts did not execute candidate code.",
         (
             "- The promotion overlay records non-dry-run Skills CLI evidence; `harness-install-assurance.json` "
-            "records the sanitized post-install reconciliation result, and `non-skill-install-assurance.json` "
-            "records CLI, MCP, plugin, library, collection, and quarantine runtime dispositions."
+            "records the sanitized post-install reconciliation result, `non-skill-install-assurance.json` records "
+            "historical package/config dispositions, and `runtime-activation-assurance.json` owns executable "
+            "usability truth."
         ),
         (
             "- Quarantined targets are permanent non-installable references with source-specific risk and license "
@@ -2247,6 +2472,7 @@ def write_promotion_reports(summary: dict[str, Any], overrides: list[dict[str, A
             "the runner owns any observed closeout results."
         ),
         "",
+        *[f"- Successor assurance source: `scripts/{name}`." for name in SUCCESSOR_ASSURANCE_SCRIPTS],
         "- `uv run python scripts/generate_candidate_corpus_shards.py --emit-all --no-network`",
         (
             "- Required closeout: `uv run python scripts/apply_candidate_corpus_promotions.py --check` for "
@@ -2272,8 +2498,11 @@ def write_promotion_reports(summary: dict[str, Any], overrides: list[dict[str, A
             f"- `harness-install-assurance.json` records {remaining_harness_commands} remaining commands after "
             "the authorized reconciliation run."
         ),
-        "- Required closeout: `uv run wagents openspec validate`.",
-        ("- Required closeout: strict OpenSpec validation for `integrate-candidate-corpus-jul2026`."),
+        (
+            "- Required closeout: `uv run wagents openspec status --change "
+            "activate-candidate-corpus-runtime-jul2026 --format json`."
+        ),
+        "- Required closeout: `uv run wagents openspec validate --strict --format json`.",
         "- Required closeout: `git diff --check`.",
     ]
     validation_path = MANIFEST_DIR / "validation-report.md"
@@ -2293,11 +2522,10 @@ def write_promotion_reports(summary: dict[str, Any], overrides: list[dict[str, A
         f"- Missing installed `SKILL.md` files: {missing_skill_md}",
         f"- Post-install harness commands remaining: {remaining_harness_commands}",
         f"- Post-install desired rows missing across harnesses: {remaining_harness_missing}",
-        (
-            "- Non-skill runtime artifacts verified: "
-            f"{non_skill_totals.get('verified_runtime_artifacts', 0)}/"
-            f"{non_skill_totals.get('runtime_artifacts', 0)}"
-        ),
+        f"- Successor runtime artifacts discovered: {runtime['runtime_artifact_count']}",
+        f"- Successor runtime artifacts accepted: {runtime['accepted']}",
+        f"- Successor runtime artifacts incomplete: {runtime['incomplete']}",
+        f"- Requested full usability: `{str(runtime['requested_full_usability']).lower()}`",
         (
             "- Non-skill normalized targets accounted for: "
             f"{non_skill_assurance.get('unique_target_count', 0)}/{EXPECTED_UNIQUE_COUNT}"
@@ -2325,10 +2553,9 @@ def write_promotion_reports(summary: dict[str, Any], overrides: list[dict[str, A
             "candidate code executed: false."
         ),
         (
-            "- Separately authorized runtime overlay: pinned packages and plugins were installed or registered, "
-            f"{non_skill_totals.get('verified_runtime_artifacts', 0)}/"
-            f"{non_skill_totals.get('runtime_artifacts', 0)} artifacts were verified with bounded probes or "
-            "package/config inventory, and unsafe service-starting probes were not run."
+            "- Separately authorized runtime overlay: pinned packages and plugins were installed or registered; "
+            f"the successor ledger accepts {runtime['accepted']}/{runtime['runtime_artifact_count']} artifacts "
+            f"and keeps {runtime['incomplete']} explicit policy or credential blockers fail-closed."
         ),
         "- Generator-owned conservative intake artifacts remain available for traceability.",
         "- No commit made by this script.",
@@ -2383,7 +2610,9 @@ def write_progress_state(summary: dict[str, Any], overrides: list[dict[str, Any]
     classification_counts = Counter(
         str(item.get("integration_classification") or "unintegrated") for item in target_items if isinstance(item, dict)
     )
-    integrated_targets = sum(1 for item in target_items if isinstance(item, dict) and bool(item.get("catalog_rows")))
+    integrated_targets = sum(
+        1 for item in target_items if isinstance(item, dict) and integration_target_is_accounted(item)
+    )
     unintegrated_targets = len(target_items) - integrated_targets
     integrated_quarantine_targets = classification_counts["integrated-quarantine-reference"]
     active_install_blocks = len(hard_block_decisions)
@@ -2407,6 +2636,7 @@ def write_progress_state(summary: dict[str, Any], overrides: list[dict[str, Any]
     non_skill_assurance = load_non_skill_assurance()
     non_skill_errors = non_skill_assurance_errors(non_skill_assurance)
     non_skill_totals = non_skill_assurance.get("totals", {}) if isinstance(non_skill_assurance, dict) else {}
+    runtime = runtime_activation_summary()
     coverage_total = sum(int_value(value) for value in coverage.values()) if isinstance(coverage, dict) else 0
     covered_existing = int_value(
         readiness_summary.get("covered_by_existing_installable_catalog")
@@ -2464,6 +2694,7 @@ def write_progress_state(summary: dict[str, Any], overrides: list[dict[str, Any]
         "installed_paths_verified": missing_skill_md == 0 and verified_skill_md == installed_path_refs,
         "harness_install_assurance": not harness_errors,
         "non_skill_install_assurance": not non_skill_errors,
+        "runtime_activation_model": runtime["runtime_artifact_count"] == EXPECTED_RUNTIME_ARTIFACT_COUNT,
     }
     complete = all(completion_checks.values())
     progress["generated_at"] = now()
@@ -2473,9 +2704,11 @@ def write_progress_state(summary: dict[str, Any], overrides: list[dict[str, Any]
     progress["completion_errors"] = harness_errors + non_skill_errors
     progress["completion_scope"] = (
         "Complete for the July 2026 corpus: every normalized target maps to a permanent catalog integration and "
-        "one runtime disposition; 1267 skill rows are reconciled across nine harnesses and 63/63 non-skill "
-        "artifacts are verified, while candidate MCPs, broad-hook plugins, credentials, and quarantines retain "
-        "their explicit activation gates."
+        f"one runtime disposition; {len(overrides)} skill rows are reconciled across "
+        f"{len(SUPPORTED_AGENT_IDS)} supported harnesses and "
+        f"the successor ledger discovers {runtime['runtime_artifact_count']} runtime artifacts, accepts "
+        f"{runtime['accepted']}, and keeps {runtime['incomplete']} fail-closed. Literal full runtime usability "
+        "remains a separate gate."
         if complete
         else "Pending one or more explicit completion checks; see completion_checks and completion_errors."
     )
@@ -2521,10 +2754,12 @@ def write_progress_state(summary: dict[str, Any], overrides: list[dict[str, Any]
     }
     progress["non_skill_install"] = {
         "complete": not non_skill_errors,
+        "scope": "historical-package-config-inventory",
         "unique_target_count": non_skill_assurance.get("unique_target_count", 0),
         "totals": non_skill_assurance.get("totals", {}),
         "assurance_file": "non-skill-install-assurance.json",
     }
+    progress["runtime_activation"] = runtime
     progress["terminal_decisions"] = {
         "raw_candidates_processed": int_value(progress.get("raw_candidates"), 293),
         "unique_normalized_targets": unique_targets,
@@ -2556,10 +2791,14 @@ def write_progress_state(summary: dict[str, Any], overrides: list[dict[str, Any]
         f"- Installed path references verified: {verified_skill_md}/{installed_path_refs}",
         f"- Missing installed `SKILL.md` files: {missing_skill_md}",
         (
-            "- Non-skill runtime artifacts verified: "
+            "- Historical package/config artifacts accounted for: "
             f"{non_skill_totals.get('verified_runtime_artifacts', 0)}/"
             f"{non_skill_totals.get('runtime_artifacts', 0)}"
         ),
+        f"- Successor runtime artifacts discovered: {runtime['runtime_artifact_count']}",
+        f"- Successor runtime artifacts accepted: {runtime['accepted']}",
+        f"- Successor runtime artifacts incomplete: {runtime['incomplete']}",
+        f"- Requested full usability: `{str(runtime['requested_full_usability']).lower()}`",
         (
             "- Non-skill normalized targets accounted for: "
             f"{non_skill_assurance.get('unique_target_count', 0)}/{EXPECTED_UNIQUE_COUNT}"
@@ -2584,7 +2823,8 @@ def write_progress_state(summary: dict[str, Any], overrides: list[dict[str, Any]
             "`live-install-command-preview.json` remains the no-new-live-install gate artifact. The reviewed "
             "catalog promotion overlay and install evidence are recorded in `promotion-overrides.json`, "
             "`applied-promotion-overrides.json`, `catalog-authoring-summary.json`, "
-            "`harness-install-assurance.json`, `non-skill-install-assurance.json`, and this state report."
+            "`harness-install-assurance.json`, `non-skill-install-assurance.json`, "
+            "`runtime-activation-assurance.json`, and this state report."
         ),
         "",
         (
@@ -2616,11 +2856,9 @@ def write_progress_state(summary: dict[str, Any], overrides: list[dict[str, Any]
             f"- Recorded install evidence rows: {live_installed}.",
             f"- Installed path references verified: {verified_skill_md}/{installed_path_refs}.",
             f"- Missing installed `SKILL.md` files: {missing_skill_md}.",
-            (
-                "- Non-skill runtime artifacts verified: "
-                f"{non_skill_totals.get('verified_runtime_artifacts', 0)}/"
-                f"{non_skill_totals.get('runtime_artifacts', 0)}."
-            ),
+            f"- Successor runtime artifacts discovered: {runtime['runtime_artifact_count']}.",
+            f"- Successor runtime artifacts accepted: {runtime['accepted']}.",
+            f"- Successor runtime artifacts incomplete: {runtime['incomplete']}.",
             "- Final commit hash: no commit made by this script.",
         ]
         final_report_path.write_text(final_report.rstrip() + "\n\n" + "\n".join(overlay) + "\n", encoding="utf-8")
@@ -2700,11 +2938,12 @@ def apply_overrides() -> dict[str, Any]:
         skill_name = str(override["skill_name"])
         normalized_url = str(override["normalized_url"])
         promoted_path = authoring_path_for(skill_name)
-        promoted_path.write_text(render_promoted_row(override), encoding="utf-8")
+        row_written = write_promoted_row(promoted_path, override)
         applied.append({
             "normalized_url": normalized_url,
             "skill_name": skill_name,
             "path": str(promoted_path.relative_to(ROOT)),
+            "row_written": row_written,
         })
 
     removed_references: dict[str, str] = {}
@@ -2807,6 +3046,10 @@ def validate() -> dict[str, Any]:
     errors.extend(validate_override_records(overrides, rows))
     errors.extend(harness_assurance_errors())
     errors.extend(non_skill_assurance_errors())
+    try:
+        runtime_activation_summary()
+    except ValueError as exc:
+        errors.append(str(exc))
     rows_by_key = {
         (row.get("normalized_url"), row.get("name")): row
         for row in rows

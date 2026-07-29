@@ -1,0 +1,13 @@
+{
+  "skills": [
+    "justfile"
+  ],
+  "query": "/justfile write a docker-compose.yml with web, db, and redis services",
+  "files": [],
+  "expected_behavior": [
+    "Treats Docker Compose authorship as out of scope",
+    "Does not create docker-compose.yml via justfile mode",
+    "Names the boundary clearly",
+    "Does not conflate compose services with Just recipes"
+  ]
+}

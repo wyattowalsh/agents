@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-4b801a775c03749e",
+  "normalized_url": "https://github.com/teng-lin/notebooklm-py",
+  "transaction_id": "41b5a4538f704c69b39f37a473c47eee",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "2b5cf71e954a89339ce1d12cad45a1853d02557a801118d923c9035ec1f45f0e",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "35aee044599b19723a2db7a570c2b2d586555d28cbac39c50283ef99afdaad12",
+  "isolated_rollback_digest": "35aee044599b19723a2db7a570c2b2d586555d28cbac39c50283ef99afdaad12",
+  "fresh_absence": {
+    "notebooklm": null
+  },
+  "fresh_absence_process_id": 18986,
+  "fresh_absence_output_sha256": "0522f25a12e82cbc362be9c2559ef0e8cf6fac82de9453bda4e6ef8b65fcd4cf",
+  "restored_use_process_id": 19190,
+  "restored_use_output_sha256": "577ee1167e683b47a57d170aa28d5db8dcfa581996ab74ad75473581a8a18a45",
+  "restored_use_launch_paths": [
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-4b801a775c03749e-69hy8d5z/bin/notebooklm",
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-4b801a775c03749e-69hy8d5z/bin/notebooklm"
+  ],
+  "restored_use_launch_realpaths": [
+    "/Users/ww/.local/share/uv/tools/notebooklm-py/bin/notebooklm",
+    "/Users/ww/.local/share/uv/tools/notebooklm-py/bin/notebooklm"
+  ],
+  "restored_executable_map": {
+    "notebooklm": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-4b801a775c03749e-69hy8d5z/bin/notebooklm",
+      "realpath": "/Users/ww/.local/share/uv/tools/notebooklm-py/bin/notebooklm"
+    }
+  },
+  "installed_digest": "69bdc491ec51b68e23039927b41d24e8b34fa3c9f0041576dd2503bffa5c2349",
+  "status": "passed"
+}

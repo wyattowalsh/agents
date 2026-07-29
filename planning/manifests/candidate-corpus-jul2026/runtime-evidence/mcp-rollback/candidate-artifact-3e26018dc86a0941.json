@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-3e26018dc86a0941",
+  "mcp_server": "nullcost",
+  "transaction_id": "89c3b268b66a42e19ab673d204b40e31",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "5acc0f9dfc51863e3c5f7beda2abd4573f78793aebf539759f44745a0c11b44f",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "ed8a0ad9eaa4533c0a6ee3cbb8e10f969ec65bc96afcc485c218c15995820d4f",
+  "isolated_rollback_digest": "ed8a0ad9eaa4533c0a6ee3cbb8e10f969ec65bc96afcc485c218c15995820d4f",
+  "fresh_absence": {
+    "nullcost-plugin": null
+  },
+  "fresh_absence_process_id": 20733,
+  "fresh_absence_output_sha256": "e0c02ab84b3b3bab0c111a36c2ec7248957184abddc990581f6c29e28ac26bcb",
+  "restored_use_process_id": 20785,
+  "restored_use_output_sha256": "462835a7c952649153058424a0a4fc25be7d4f283f9a7f8ffcc2c1555642429b",
+  "restored_use_launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-mcp-entrypoint-rollback-candidate-artifact-3e26018dc86a0941-ibx6gk5m/bin/nullcost-plugin",
+  "restored_use_launch_realpath": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/nullcost-plugin/bin/nullcost-plugin.mjs",
+  "installed_digest": "5143506818c30a60a728987352bcbe0b0a5c029df471b652855b1741a12aa565",
+  "status": "passed"
+}

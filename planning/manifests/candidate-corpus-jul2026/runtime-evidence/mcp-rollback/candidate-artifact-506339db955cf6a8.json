@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-506339db955cf6a8",
+  "mcp_server": "mcp-excalidraw",
+  "transaction_id": "89c3b268b66a42e19ab673d204b40e31",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "df661073dd8a484a47c845795bdb11c0f97ce9e8b831b76f1dc9416ea92b4251",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "11e908a333f7dbe93e6b155b0ce4e293584c611177e91647c32d9817e1bffd9a",
+  "isolated_rollback_digest": "11e908a333f7dbe93e6b155b0ce4e293584c611177e91647c32d9817e1bffd9a",
+  "fresh_absence": {
+    "mcp-excalidraw-server": null,
+    "excalidraw-canvas": null
+  },
+  "fresh_absence_process_id": 22103,
+  "fresh_absence_output_sha256": "880824146d9c2d55c239fb00196c29f7905c7d26a48de4eb8cd80cae239679b1",
+  "restored_use_process_id": 22158,
+  "restored_use_output_sha256": "9a6279b21137207513ded73ff3a2ea98fd3bd54deba465ef21d212b3d41b0281",
+  "restored_use_launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-mcp-entrypoint-rollback-candidate-artifact-506339db955cf6a8-mwq3agik/bin/mcp-excalidraw-server",
+  "restored_use_launch_realpath": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/mcp-excalidraw-server/dist/bin.js",
+  "installed_digest": "7e593e554416c4880ced88d087f0f69aca877fdf42a9eea5fc9f1ee99d8342ec",
+  "status": "passed"
+}

@@ -8,13 +8,13 @@
 | `Affitor/affiliate-skills` | 57 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `AgriciDaniel/claude-seo` | 114 | `integrated_native_surface` | Source routed to a repo-native terminal integration surface. |
 | `AllThingsSmitty/css-protips` | 141 | `integrated_native_surface` | Source routed to a repo-native terminal integration surface. |
-| `Auriti-Labs/geo-optimizer-skill` | 61 | `integrated_mcp_surface` | Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface. |
+| `Auriti-Labs/geo-optimizer-skill` | 61 | `integrated_skill_catalog_surface` | Skill-like source routed through curated catalog install metadata and source-list evidence. |
 | `AvdLee/Core-Data-Agent-Skill` | 82 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `AvdLee/Swift-Concurrency-Agent-Skill` | 67 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `AvdLee/Swift-Testing-Agent-Skill` | 70 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `BestLemoon/codex-seo` | 169 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `Bhanunamikaze/Agentic-SEO-Skill` | 45 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
-| `CharlesWiltgen/Axiom` | 29 | `integrated_mcp_surface` | Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface. |
+| `CharlesWiltgen/Axiom` | 29 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `CloudAI-X/threejs-skills` | 98 | `integrated_skill_catalog_surface` | Skill-like source routed through curated catalog install metadata and source-list evidence. |
 | `ComposioHQ/awesome-codex-skills` | 149 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `ComposioHQ/awesome-codex-skills` | 128 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
@@ -43,7 +43,7 @@
 | `Eronred/aso-skills` | 12 | `integrated_skill_catalog_surface` | Skill-like source routed through curated catalog install metadata and source-list evidence. |
 | `ForceInjection/awesome-skills` | 178 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `Gabberflast/academic-pptx-skill` | 38 | `integrated_skill_catalog_surface` | Skill-like source routed through curated catalog install metadata and source-list evidence. |
-| `HDeibler/universal-design-principles` | 168 | `integrated_native_surface` | Source routed to a repo-native terminal integration surface. |
+| `HDeibler/universal-design-principles` | 168 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `Haojae/scipilot-figure-skill` | 34 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `Imbad0202/academic-research-skills-codex` | 109 | `integrated_skill_catalog_surface` | Skill-like source routed through curated catalog install metadata and source-list evidence. |
 | `InternScience/Awesome-Scientific-Skills` | 291 | `integrated_collection_surface` | Collection source routed through bounded catalog guidance; wholesale vendoring is avoided. |
@@ -55,20 +55,20 @@
 | `LottieFiles/motion-design-skill` | 55 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `Lumiaqian/openspec-mcp` | 187 | `integrated_mcp_surface` | Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface. |
 | `MinistaJazz/diasporic-intelligence` | 129 | `integrated_native_surface` | Source routed to a repo-native terminal integration surface. |
-| `MohamedAbdallah-14/prompt-to-asset` | 172 | `integrated_mcp_surface` | Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface. |
-| `MohamedAbdallah-14/unslop` | 132, 175 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
+| `MohamedAbdallah-14/prompt-to-asset` | 172 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
+| `MohamedAbdallah-14/unslop` | 132, 175 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `NVIDIA/SkillSpector` | 116 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `NVIDIA/skills` | 93 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `Nutlope/hallmark` | 107 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `Octane0411/opencode-plugin-openspec` | 181 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `Owl-Listener/designer-skills` | 11 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `Panniantong/Agent-Reach` | 157 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
-| `PapiScholz/roadmapsmith` | 177 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
+| `PapiScholz/roadmapsmith` | 177 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `PasqualeVittoriosi/swift-accessibility-skill` | 74 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
-| `PleasePrompto/notebooklm-skill` | 111 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
-| `Pythoughts-labs/designer-skill` | 163 | `integrated_mcp_surface` | Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface. |
+| `PleasePrompto/notebooklm-skill` | 111 | `integrated_skill_catalog_surface` | Skill-like source routed through curated catalog install metadata and source-list evidence. |
+| `Pythoughts-labs/designer-skill` | 163 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `RKiding/Awesome-finance-skills` | 99 | `integrated_collection_surface` | Collection source routed through bounded catalog guidance; wholesale vendoring is avoided. |
-| `Ratnaditya-J/csvglow` | 1 | `integrated_mcp_surface` | Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface. |
+| `Ratnaditya-J/csvglow` | 1 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `Rycen7822/codex-rg-guard` | 195 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `SharpAI/DeepCamera` | 102 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `TanStack/cli` | 17 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
@@ -127,15 +127,15 @@
 | `griffithkk3-del/openspec-reviewed-workflow` | 190 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `growthenginenowoslawski/coldoutboundskills` | 285 | `integrated_skill_catalog_surface` | Skill-like source routed through curated catalog install metadata and source-list evidence. |
 | `hardikpandya/stop-slop` | 117 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
-| `hashgraph-online/awesome-codex-plugins` | 194 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
-| `hashgraph-online/awesome-codex-plugins` | 164 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
-| `hashgraph-online/awesome-codex-plugins` | 166 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
-| `hashgraph-online/hol-guard-plugin` | 165 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
+| `hashgraph-online/awesome-codex-plugins` | 194 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
+| `hashgraph-online/awesome-codex-plugins` | 164 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
+| `hashgraph-online/awesome-codex-plugins` | 166 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
+| `hashgraph-online/hol-guard-plugin` | 165 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `headroomlabs-ai/headroom` | 271 | `integrated_native_surface` | Source routed to a repo-native terminal integration surface. |
 | `heygen-com/hyperframes` | 156 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `himself65/finance-skills` | 103 | `integrated_skill_catalog_surface` | Skill-like source routed through curated catalog install metadata and source-list evidence. |
 | `huggingface/skills` | 115 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
-| `hyhmrright/brooks-lint` | 120 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
+| `hyhmrright/brooks-lint` | 120 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `iannuttall/dotagents` | 275 | `integrated_native_surface` | Source routed to a repo-native terminal integration surface. |
 | `imxv/Pretty-mermaid-skills` | 30 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `itsmostafa/aws-agent-skills` | 26 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
@@ -144,7 +144,7 @@
 | `jazzychad/ios-code-audit` | 85 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `jihe520/social-push` | 205 | `hard_blocked_quarantine` | Read-only source-list evidence found `social-push` plus `agent-browser` automation for posting content to social platforms. Keep hard-blocked without account-owner, ToS, anti-spam, and manual per-post approval. |
 | `jixoai/openspecui` | 182 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
-| `johnvouros/nullcost-plugin` | 171 | `integrated_mcp_surface` | Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface. |
+| `johnvouros/nullcost-plugin` | 171 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `kepano/obsidian-skills` | 139 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `klajdikkolaj/upwork-autopilot` | 280 | `hard_blocked_quarantine` | Read-only source-list evidence found `upwork-application-session`, which can search roles, draft proposals, and submit applications through Chrome CDP. Keep hard-blocked without account-owner, ToS, budget, and manual submission approval. |
 | `ksimback/tech-debt-skill` | 31 | `integrated_skill_catalog_surface` | Skill-like source routed through curated catalog install metadata and source-list evidence. |
@@ -177,7 +177,7 @@
 | `onvoyage-ai/gtm-engineer-skills` | 23 | `integrated_skill_catalog_surface` | Skill-like source routed through curated catalog install metadata and source-list evidence. |
 | `op7418/logo-generator-skill` | 16 | `integrated_skill_catalog_surface` | Skill-like source routed through curated catalog install metadata and source-list evidence. |
 | `openags/paper-search-mcp` | 274 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
-| `papersflow-ai/papersflow-codex-plugin` | 279 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
+| `papersflow-ai/papersflow-codex-plugin` | 279 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `pedronauck/skills` | 240 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `pedronauck/skills` | 241 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `pedronauck/skills` | 289 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
@@ -265,10 +265,10 @@
 | `shaom/infocard-skills` | 159 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `solana-foundation/solana-dev-skill` | 37 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `sudokar/openspec-plus` | 183 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
-| `summer521521/Zotero_Research_plugin` | 176 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
+| `summer521521/Zotero_Research_plugin` | 176 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `supabase/agent-skills` | 94 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
-| `teng-lin/notebooklm-py` | 146 | `integrated_native_surface` | Source routed to a repo-native terminal integration surface. |
-| `tim-osterhus/codex-remotion-plugin` | 174 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
+| `teng-lin/notebooklm-py` | 146 | `integrated_mcp_surface` | Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface. |
+| `tim-osterhus/codex-remotion-plugin` | 174 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `timbroddin/app-store-aso-skill` | 78 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `timescale/pg-aiguide` | 10 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `tjboudreaux/cc-thinking-skills` | 47 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
@@ -286,7 +286,7 @@
 | `wxhou/openspec-playwright` | 186 | `integrated_native_surface` | Source routed to a repo-native terminal integration surface. |
 | `wzyn20051216/solidworks-automation-skill` | 196 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `yctimlin/mcp_excalidraw` | 6 | `integrated_mcp_surface` | Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface. |
-| `yujiachen-y/codebase-recon-skill` | 121 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
+| `yujiachen-y/codebase-recon-skill` | 121 | `integrated_plugin_surface` | Repo plugin registry owns this candidate as a disabled, manual activation surface. |
 | `yuritoledo/openspec-tdd` | 188 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `zarazhangrui/frontend-slides` | 144 | `integrated_existing_surface` | Existing repo catalog surface already covers this source/domain. |
 | `zubair-trabzada/ai-legal-claude` | 15 | `integrated_native_surface` | Source routed to a repo-native terminal integration surface. |

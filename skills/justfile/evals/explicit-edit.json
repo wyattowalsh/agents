@@ -1,0 +1,16 @@
+{
+  "skills": [
+    "justfile"
+  ],
+  "query": "/justfile edit justfile \u2014 add a [group(\"checks\")] fmt recipe that runs ruff format --check",
+  "files": [
+    "justfile"
+  ],
+  "expected_behavior": [
+    "Dispatches to edit mode",
+    "Inspects with just --list/--show or by reading the justfile before editing",
+    "Adds a [doc]/[group] recipe consistent with house style",
+    "Does not blind-run just --fmt to rewrite the justfile",
+    "Preserves existing settings unless change is required"
+  ]
+}

@@ -135,11 +135,11 @@ def test_classify_unresolved_tokens_ask_clarify():
     assert len(res["unresolved"]) >= 1
 
 
-def test_classify_aliases_expand():
+def test_classify_retired_alias_is_unresolved():
     mod = _load()
     res = mod.classify_intent("copilot both")
-    assert "github-copilot-web" in res["harnesses"]
-    assert "github-copilot-cli" in res["harnesses"]
+    assert res["harnesses"] == []
+    assert "copilot" in res["unresolved"]
     assert res["level"] == "both"
 
 

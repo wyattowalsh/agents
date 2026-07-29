@@ -9,9 +9,9 @@ docs_density: standard
 license: "MIT"
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a claude-code codex crush cursor grok opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "depth-estimation"
 ---
 
@@ -24,15 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="depth-estimation"
   description="Real-time depth map privacy transforms using Depth Anything v2 (CoreML + PyTorch)"
-  installCommand={`npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a claude-code codex crush cursor grok opencode`}
   installLabel="Install"
   usage="/depth-estimation"
-  badges={[{ text: "depth-estimation", variant: "note" }, { text: "308 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "depth-estimation", variant: "note" }, { text: "299 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/depth-estimation.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -40,11 +40,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/depth-esti
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a claude-code codex crush cursor grok opencode
 ```
 
 ## Trust / Audit
@@ -86,7 +86,7 @@ This row integrates `SharpAI/DeepCamera` as an installable curated external skil
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -107,13 +107,13 @@ title: "Depth Estimation"
 source_kind: "curated-external"
 source: "SharpAI/DeepCamera"
 install_source: "SharpAI/DeepCamera"
-install_command: "npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a claude-code codex crush cursor grok opencode"
 install_skill_name: "depth-estimation"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/SharpAI/DeepCamera"
 selector_mode: "named"
 audit_date: "2026-07-07"
@@ -145,7 +145,7 @@ This row integrates `SharpAI/DeepCamera` as an installable curated external skil
 - Normalized URL: [https://github.com/SharpAI/DeepCamera](https://github.com/SharpAI/DeepCamera)
 - Catalog skill id: `depth-estimation`
 - Upstream install selector: `depth-estimation`
-- Install command: `npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Install command: `npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a claude-code codex crush cursor grok opencode`
 - Inspected commit SHA: `2264fcb20e54`
 - License status: `MIT`
 - Source-list evidence: `source-list-found`
@@ -155,7 +155,7 @@ This row integrates `SharpAI/DeepCamera` as an installable curated external skil
 
 - Executed command: `npx --yes skills add SharpAI/DeepCamera --list`
 - Executed command: `npx --yes skills add SharpAI/DeepCamera --skill depth-estimation --dry-run`
-- Executed command: `npx --yes skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Executed command: `npx --yes skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a claude-code -a codex -a crush -a cursor -a opencode`
 - Installed path: `~/.agents/skills/depth-estimation`
 - Installed path: `~/.claude/skills/depth-estimation`
 - Installed path: `~/.config/crush/skills/depth-estimation`

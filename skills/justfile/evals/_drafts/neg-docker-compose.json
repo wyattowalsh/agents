@@ -1,0 +1,12 @@
+{
+  "id": "neg-docker-compose",
+  "prompt": "/justfile write a docker-compose.yml with web, db, and redis services",
+  "expected_output": "Refuses Docker Compose authorship and states compose files are out of justfile skill scope.",
+  "files": [],
+  "assertions": [
+    "Treats Docker Compose authorship as out of scope",
+    "Does not create docker-compose.yml via justfile mode",
+    "Names the boundary clearly",
+    "Does not conflate compose services with Just recipes"
+  ]
+}

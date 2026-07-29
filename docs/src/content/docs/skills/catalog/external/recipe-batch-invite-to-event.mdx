@@ -9,9 +9,9 @@ docs_density: standard
 license: "Apache-2.0"
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a claude-code codex crush cursor grok opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "recipe-batch-invite-to-event"
 ---
 
@@ -24,15 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="recipe-batch-invite-to-event"
   description="Add a list of attendees to an existing Google Calendar event and send notifications."
-  installCommand={`npx skills add googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a claude-code codex crush cursor grok opencode`}
   installLabel="Install"
   usage="/recipe-batch-invite-to-event"
-  badges={[{ text: "recipe-batch-invite-to-event", variant: "note" }, { text: "384 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "recipe-batch-invite-to-event", variant: "note" }, { text: "375 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/recipe-batch-invite-to-event.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -40,11 +40,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/recipe-bat
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a claude-code codex crush cursor grok opencode
 ```
 
 ## Trust / Audit
@@ -86,7 +86,7 @@ This row integrates `googleworkspace/cli` as an installable curated external ski
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -107,13 +107,13 @@ title: "Recipe Batch Invite To Event"
 source_kind: "curated-external"
 source: "googleworkspace/cli"
 install_source: "googleworkspace/cli"
-install_command: "npx skills add googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a claude-code codex crush cursor grok opencode"
 install_skill_name: "recipe-batch-invite-to-event"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/googleworkspace/cli"
 selector_mode: "named"
 audit_date: "2026-07-07"
@@ -145,7 +145,7 @@ This row integrates `googleworkspace/cli` as an installable curated external ski
 - Normalized URL: [https://github.com/googleworkspace/cli](https://github.com/googleworkspace/cli)
 - Catalog skill id: `recipe-batch-invite-to-event`
 - Upstream install selector: `recipe-batch-invite-to-event`
-- Install command: `npx skills add googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Install command: `npx skills add googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a claude-code codex crush cursor grok opencode`
 - Inspected commit SHA: `a3768d0e82ad83cca2da97724e46bea4ff0e6dbd`
 - License status: `Apache-2.0`
 - Source-list evidence: `source-list-found`
@@ -154,8 +154,8 @@ This row integrates `googleworkspace/cli` as an installable curated external ski
 ## Local Install Evidence
 
 - Executed command: `npx --yes skills add https://github.com/googleworkspace/cli --list`
-- Executed command: `npx skills add https://github.com/googleworkspace/cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
-- Executed command: `npx skills add https://github.com/googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Executed command: `npx skills add https://github.com/googleworkspace/cli -y -g -a claude-code codex crush cursor opencode`
+- Executed command: `npx skills add https://github.com/googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a claude-code codex crush cursor opencode`
 - Installed path: `~/.agents/skills/recipe-batch-invite-to-event`
 - Installed path: `~/.claude/skills/recipe-batch-invite-to-event`
 - Installed path: `~/.config/crush/skills/recipe-batch-invite-to-event`

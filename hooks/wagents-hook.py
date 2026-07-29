@@ -65,6 +65,12 @@ evaluate_before_mcp_execution = _load_policy_attr("before_mcp_execution", "evalu
 evaluate_destructive_shell = _load_policy_attr("destructive_shell_guard", "evaluate_destructive_shell")
 evaluate_protected_file = _load_policy_attr("protected_file_guard", "evaluate_protected_file")
 subagent_start_context = _load_policy_attr("subagent_start", "subagent_start_context")
+rewrite_task_input = _load_policy_attr("cursor_task_model_pin", "rewrite_task_input")
+is_task_tool = _load_policy_attr("cursor_task_model_pin", "is_task_tool")
+evaluate_subagent_model_allowlist = _load_policy_attr(
+    "cursor_task_model_pin", "evaluate_subagent_model_allowlist"
+)
+CURSOR_PINNED_MODEL = _load_policy_attr("cursor_task_model_pin", "CURSOR_PINNED_MODEL")
 _grok_deny_payload = _load_policy_attr("grok_deny_adapter", "grok_deny_payload")
 
 
@@ -272,6 +278,7 @@ class NormalizedPayload:
     stop_hook_active: bool
     raw: dict[str, Any]
     decision_recorded: bool = False
+    candidate_paths_cache: list[str] | None = None
 
 
 @dataclass
@@ -307,11 +314,6 @@ def _loads_object(value: Any) -> dict[str, Any]:
 def _detect_harness(payload: dict[str, Any], requested: str) -> str:
     if requested != "auto":
         return requested
-    if "toolName" in payload or "toolArgs" in payload:
-        return "github-copilot"
-    event = str(payload.get("hook_event_name") or "")
-    if event in {"BeforeTool", "AfterTool", "BeforeAgent", "AfterAgent"}:
-        return "gemini-cli"
     return "codex"
 
 
@@ -367,8 +369,6 @@ def _agent_home(harness: str) -> Path:
     folder = {
         "codex": ".codex",
         "claude-code": ".claude",
-        "github-copilot": ".copilot",
-        "gemini-cli": ".gemini",
         "cursor": ".cursor",
     }.get(harness, ".agents")
     return Path.home() / folder / "research"
@@ -534,21 +534,15 @@ def _emit_json(data: dict[str, Any]) -> int:
 def _additional_context(
     payload: NormalizedPayload, message: str, policy_id: str = "research-prompt-triage-context"
 ) -> int:
-    if payload.harness == "github-copilot":
-        return 0
     _record_decision(payload, policy_id, "context", message)
     if payload.harness == "cursor":
         return _emit_json({"additional_context": message, "user_message": message})
-    if payload.harness == "gemini-cli":
-        return _emit_json({"hookSpecificOutput": {"additionalContext": message}, "suppressOutput": True})
     event = payload.event or "UserPromptSubmit"
     return _emit_json({"hookSpecificOutput": {"hookEventName": event, "additionalContext": message}})
 
 
 def _deny(payload: NormalizedPayload, reason: str, policy_id: str = "policy-deny") -> int:
     _record_decision(payload, policy_id, "deny", reason)
-    if payload.harness == "github-copilot":
-        return _emit_json({"permissionDecision": "deny", "permissionDecisionReason": reason})
     if payload.harness == "codex":
         return _emit_json({
             "hookSpecificOutput": {
@@ -559,8 +553,6 @@ def _deny(payload: NormalizedPayload, reason: str, policy_id: str = "policy-deny
         })
     if payload.harness == "cursor":
         return _emit_json({"permission": "deny", "user_message": reason, "agent_message": reason})
-    if payload.harness == "gemini-cli":
-        return _emit_json({"decision": "deny", "reason": reason, "suppressOutput": True})
     if payload.harness == "grok-build":
         if _grok_deny_payload is not None:
             return _emit_json(_grok_deny_payload(reason, policy_id=policy_id))
@@ -1168,8 +1160,6 @@ def _stop_retry(payload: NormalizedPayload, reason: str) -> int:
         return _emit_json({"decision": "block", "reason": reason})
     if payload.harness == "cursor":
         return _emit_json({"followup_message": reason, "user_message": reason})
-    if payload.harness == "gemini-cli":
-        return _emit_json({"decision": "deny", "reason": reason, "suppressOutput": True})
     if payload.harness == "opencode":
         return _emit_json({
             "permission": "deny",
@@ -1269,8 +1259,6 @@ def _is_allowed_research_target(target: str, cwd: str) -> bool:
     allowed_roots = [
         Path.home() / ".codex" / "research",
         Path.home() / ".claude" / "research",
-        Path.home() / ".gemini" / "research",
-        Path.home() / ".copilot" / "research",
     ]
     return any(resolved == root or root in resolved.parents for root in allowed_roots)
 
@@ -1394,7 +1382,7 @@ def _candidate_paths(payload: NormalizedPayload) -> list[str]:
     expensive part, so caching it here is pure upside with no correctness
     change since the payload is never mutated after normalization.
     """
-    cached = getattr(payload, "_candidate_paths_cache", None)
+    cached = payload.candidate_paths_cache
     if cached is not None:
         return cached
     paths = []
@@ -1412,7 +1400,7 @@ def _candidate_paths(payload: NormalizedPayload) -> list[str]:
         cleaned = path.strip().strip("'\"")
         if cleaned and cleaned not in deduped:
             deduped.append(cleaned)
-    payload._candidate_paths_cache = deduped
+    payload.candidate_paths_cache = deduped
     return deduped
 
 
@@ -1807,6 +1795,44 @@ def _policy_cursor_subagent_start_context(payload: NormalizedPayload) -> int:
     return _additional_context(payload, message, "cursor-subagent-start-context")
 
 
+def _allow_cursor_task_rewrite(payload: NormalizedPayload, updated_input: dict[str, Any], reason: str) -> int:
+    _record_decision(payload, "cursor-task-model-pin-rewrite", "rewrite", reason)
+    if payload.harness == "cursor":
+        return _emit_json({
+            "permission": "allow",
+            "updated_input": updated_input,
+            "agent_message": reason,
+        })
+    return _emit_json({
+        "hookSpecificOutput": {
+            "hookEventName": "PreToolUse",
+            "permissionDecision": "allow",
+            "permissionDecisionReason": reason,
+            "updatedInput": updated_input,
+        }
+    })
+
+
+def _policy_cursor_task_model_pin_rewrite(payload: NormalizedPayload) -> int:
+    if is_task_tool is None or rewrite_task_input is None:
+        return 0  # fail-open
+    if not is_task_tool(payload.tool_name):
+        return 0
+    updated, changed, reason = rewrite_task_input(payload.tool_input)
+    if not changed:
+        return 0
+    return _allow_cursor_task_rewrite(payload, updated, reason)
+
+
+def _policy_cursor_subagent_model_allowlist(payload: NormalizedPayload) -> int:
+    if evaluate_subagent_model_allowlist is None:
+        return 0  # fail-open until Phase B is intentional; still no crash
+    reason = evaluate_subagent_model_allowlist(payload.tool_input, payload.raw)
+    if reason:
+        return _deny(payload, reason, "cursor-subagent-model-allowlist")
+    return 0
+
+
 def _policy_destructive_shell_guard(payload: NormalizedPayload) -> int:
     if evaluate_destructive_shell is None:
         return _enforce_module_load_failure(payload, 'destructive-shell-guard')
@@ -1846,8 +1872,6 @@ POLICIES = {
     "destructive-shell-guard": _policy_destructive_shell_guard,
     "codex-protected-file-guard": _policy_codex_protected_file_guard,
     "protected-file-guard": _policy_protected_file_guard,
-    "copilot-destructive-shell-guard": _policy_destructive_shell_guard,
-    "copilot-protected-file-guard": _policy_protected_file_guard,
     "codex-permission-request-guard": _policy_codex_permission_request_guard,
     "codex-post-tool-verify-context": _policy_codex_post_tool_verify_context,
     "codex-stop-truth-gate": _policy_codex_stop_truth_gate,
@@ -1862,6 +1886,8 @@ POLICIES = {
     "cursor-before-shell-execution-guard": _policy_cursor_before_shell_execution_guard,
     "cursor-before-mcp-execution-guard": _policy_cursor_before_mcp_execution_guard,
     "cursor-subagent-start-context": _policy_cursor_subagent_start_context,
+    "cursor-task-model-pin-rewrite": _policy_cursor_task_model_pin_rewrite,
+    "cursor-subagent-model-allowlist": _policy_cursor_subagent_model_allowlist,
     "cursor-stop-truth-gate": _policy_codex_stop_truth_gate,
     "git-commit-push-guard": _policy_git_commit_push_guard,
     "research-prompt-triage-context": _policy_prompt_triage,

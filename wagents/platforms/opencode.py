@@ -825,10 +825,6 @@ class Adapter(PlatformAdapter):
                         "type": "local",
                         "command": [entry["command"], *entry["args"]],
                         "enabled": enabled,
-                        "environment": {
-                            # Disk MCP maps keep placeholders (never materialize local secrets).
-                            token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=False)
-                        },
                     }
             return servers
 

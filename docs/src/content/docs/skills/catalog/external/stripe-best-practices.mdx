@@ -9,6 +9,7 @@ docs_density: standard
 trust_tier: "global-only-or-avoid"
 curated_status: "global-only-or-avoid"
 sync_kind: "none"
+target_agents: ["claude-code", "codex", "crush", "cursor", "opencode"]
 research_slug: "stripe-best-practices"
 ---
 
@@ -77,6 +78,7 @@ A general-purpose agent instruction without a scoped skill contract
 | Installability | local inventory only |
 | Review State | curated |
 | Trust Tier | `global-only-or-avoid` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -102,7 +104,7 @@ provenance_status: "explicit-unresolved"
 sync_kind: "none"
 install_command: ""
 source_url: "https://docs.stripe.com"
-target_agents: []
+target_agents: ["claude-code", "codex", "crush", "cursor", "opencode"]
 notes: "registry syntax and provenance still need verification before automated sync/install."
 risk_notes: "registry syntax and provenance still need verification before automated sync/install."
 promotion_policy: "Keep global-only or avoid unless explicitly approved."

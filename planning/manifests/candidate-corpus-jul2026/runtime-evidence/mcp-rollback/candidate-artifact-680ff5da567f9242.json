@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-680ff5da567f9242",
+  "mcp_server": "paper-search-mcp",
+  "transaction_id": "89c3b268b66a42e19ab673d204b40e31",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "50eb3e25acdce5f1344c4b059fb5af9165d78da2db448300fa07699de6166881",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "08710bee0041edb35836e194d488227d3a96ea63131c617f697b676119df92d3",
+  "isolated_rollback_digest": "08710bee0041edb35836e194d488227d3a96ea63131c617f697b676119df92d3",
+  "fresh_absence": {
+    "paper-search-mcp": null
+  },
+  "fresh_absence_process_id": 21642,
+  "fresh_absence_output_sha256": "7c48eec2e1dd3aa739e10319bff47bf46a5fb7e49954e6648a549b2074b9c526",
+  "restored_use_process_id": 21735,
+  "restored_use_output_sha256": "35101431a91bbfb6da781c88464fa0d3fecb82eba131f93d6597aced6c9814b6",
+  "restored_use_launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-mcp-entrypoint-rollback-candidate-artifact-680ff5da567f9242-dhwbnq6j/bin/paper-search-mcp",
+  "restored_use_launch_realpath": "/Users/ww/.local/share/uv/tools/paper-search-mcp/bin/paper-search-mcp",
+  "installed_digest": "7cc901e34b06dbe92cc27281f0ad354becf1dd679066c29a39457afbebe2f8ef",
+  "status": "passed"
+}

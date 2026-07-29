@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-80c307102f02970a",
+  "normalized_url": "https://github.com/toruai/openspec-ui",
+  "transaction_id": "8abdcde70830471c8931945f3eaa2688",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "be00109a20256a93c8717688286d275c4a730de33f17f374283d8113878dcab6",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "8c698d354affc37f0b8c1aabc6e24de69ffef9dd5b11e4aaab443d11781cddbb",
+  "isolated_rollback_digest": "8c698d354affc37f0b8c1aabc6e24de69ffef9dd5b11e4aaab443d11781cddbb",
+  "fresh_absence": {
+    "openspec-ui": null
+  },
+  "fresh_absence_process_id": 19202,
+  "fresh_absence_output_sha256": "b3ef2d5978b1268ebc0dc67bf5f4b14db10d8ffb5ec2bde5b11315761b8389e3",
+  "restored_use_process_id": 19434,
+  "restored_use_output_sha256": "91efdbda15726bf7378cda8bb0fd8618d414939ea8a63c0ba113a86aa5e44738",
+  "restored_use_launch_paths": [
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-80c307102f02970a-b1pwu2vj/bin/openspec-ui",
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-80c307102f02970a-b1pwu2vj/bin/openspec-ui"
+  ],
+  "restored_use_launch_realpaths": [
+    "/Users/ww/.local/bin/openspec-ui",
+    "/Users/ww/.local/bin/openspec-ui"
+  ],
+  "restored_executable_map": {
+    "openspec-ui": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-80c307102f02970a-b1pwu2vj/bin/openspec-ui",
+      "realpath": "/Users/ww/.local/bin/openspec-ui"
+    }
+  },
+  "installed_digest": "a75cb625bdfb6c5a44718e01492b29769fa868db436fd016b746338d110a3e2f",
+  "status": "passed"
+}

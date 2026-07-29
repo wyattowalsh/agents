@@ -22,8 +22,6 @@
   "safety_notes": "Ad-library extraction can cross platform ToS, scraping, privacy, and competitive-intelligence boundaries. Do not install or run by default; require approved public data sources, no private session scraping, explicit operator approval, and documented rate limits before any promotion.",
   "attribution_notes": "Preserve attribution to ComposioHQ/awesome-codex-skills; verify license before adapting content.",
   "files_added": [
-    "docs/src/authoring/skills/composiohq-awesome-codex-skills-competitive-ads-extractor.mdx",
-    "docs/src/content/docs/skills/catalog/external/composiohq-awesome-codex-skills-competitive-ads-extractor.mdx",
     "planning/manifests/candidate-corpus-jul2026/records/134-composiohq-awesome-codex-skills.json"
   ],
   "files_modified": [

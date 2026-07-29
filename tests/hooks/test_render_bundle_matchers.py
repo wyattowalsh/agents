@@ -18,8 +18,7 @@ import pytest
 from wagents.hooks.render import (
     dedupe_logical_policy_across_events,
     render_codex_hooks,
-    render_copilot_hooks,
-    render_cursor_hooks,
+        render_cursor_hooks,
     union_bundle_matchers,
 )
 
@@ -197,21 +196,9 @@ def test_codex_event_dedupe_is_intentionally_disabled_for_permission_flow():
     assert dedupe_logical_policy_across_events(hooks, "codex", perf_tier="bundle") == hooks
 
 
-def test_copilot_bundle_tier_collapses_post_edit_quality_shell_scripts():
-    """T-080f: Copilot render emits the parallel post-edit quality wrapper."""
-    registry = _registry()
-    rendered = render_copilot_hooks(registry, repo_root=".", perf_tier="bundle")
-
-    post_tool = rendered["hooks"]["postToolUse"]
-    commands = [entry["bash"] for entry in post_tool]
-
-    assert commands.count("./hooks/post-edit-quality.sh") == 1
-    assert all("./hooks/auto-format.sh" not in command for command in commands)
-    assert all("./hooks/lint-check.sh" not in command for command in commands)
-
-
 def test_fleet_pre_tool_enforce_mega_bundle_includes_git_commit_push_guard():
     registry = _registry()
-    rendered = render_copilot_hooks(registry, repo_root=".", perf_tier="bundle")
-    cmds = [entry.get("bash", "") for entry in rendered["hooks"]["preToolUse"]]
+    rendered = render_cursor_hooks(registry, perf_tier="bundle")
+    assert rendered is not None
+    cmds = [str(entry.get("command", "")) for entry in rendered["hooks"]["preToolUse"]]
     assert any("git-commit-push-guard" in cmd and "--bundle" in cmd for cmd in cmds)

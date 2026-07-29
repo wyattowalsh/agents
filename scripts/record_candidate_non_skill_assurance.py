@@ -289,15 +289,15 @@ RUNTIME_SPECS: dict[str, list[dict[str, Any]]] = {
         _cli(
             "npm",
             "hyperframes",
-            "0.7.59",
+            "0.7.61",
             ("hyperframes",),
             probe=("hyperframes", "--version"),
-            probe_contains="0.7.59",
+            probe_contains="0.7.61",
             probe_env={"DO_NOT_TRACK": "1", "HYPERFRAMES_NO_TELEMETRY": "1"},
         ),
         _plugin(
             "hyperframes@hyperframes-upstream",
-            "0.7.59",
+            "0.7.61",
             False,
             notes=(
                 "Disabled because its Bash hook intercepts git commit and runs project build, lint, and typecheck "
@@ -314,7 +314,7 @@ RUNTIME_SPECS: dict[str, list[dict[str, Any]]] = {
             executables=("designer-skill-mcp",),
             notes="Version probing is safe; no-argument invocation starts MCP stdio.",
         ),
-        _plugin("designer-skill@awesome-codex-plugins", "0.13.0", True),
+        _plugin("designer-skill@awesome-codex-plugins", "0.14.0", False),
     ],
     "https://github.com/mohamedabdallah-14/prompt-to-asset": [
         _cli(
@@ -357,7 +357,7 @@ RUNTIME_SPECS: dict[str, list[dict[str, Any]]] = {
             ),
             notes="MCP defaults to tracked dry-run mode; provider spend and output writes require explicit approval.",
         ),
-        _plugin("prompt-to-asset@awesome-codex-plugins", "0.1.0", True),
+        _plugin("prompt-to-asset@awesome-codex-plugins", "0.1.0", False),
     ],
     "https://github.com/mohamedabdallah-14/unslop": [
         _cli("uv-tool", "unslop", "0.6.2", ("unslop",), probe=("unslop", "--version"), probe_contains="0.6.2"),
@@ -527,6 +527,7 @@ RUNTIME_SPECS: dict[str, list[dict[str, Any]]] = {
             "papersflow",
             "account-bound",
             "papersflow",
+            auth_env_names=("PAPERSFLOW_OAUTH_ACCOUNT",),
             notes="Hosted OAuth/account surface remains disabled.",
         ),
     ],
@@ -534,7 +535,7 @@ RUNTIME_SPECS: dict[str, list[dict[str, Any]]] = {
         _plugin("zotero-research-tools@awesome-codex-plugins", "0.1.5", False),
     ],
     "https://github.com/tim-osterhus/codex-remotion-plugin": [
-        _plugin("remotion@awesome-codex-plugins", "0.1.0", True),
+        _plugin("remotion@awesome-codex-plugins", "0.1.0", False),
     ],
     "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/env-lint": [
         _plugin("env-lint@candidate-corpus-local", "0.1.0", True),
@@ -555,7 +556,7 @@ RUNTIME_SPECS: dict[str, list[dict[str, Any]]] = {
         _plugin("universal-design-principles@awesome-codex-plugins", "1.0.0", True),
     ],
     "https://github.com/papischolz/roadmapsmith": [
-        _plugin("roadmapsmith@awesome-codex-plugins", "0.12.0", True),
+        _plugin("roadmapsmith@awesome-codex-plugins", "1.2.2", True),
     ],
 }
 

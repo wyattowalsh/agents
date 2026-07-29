@@ -55,7 +55,7 @@ If the user invokes `/harness-master` with no arguments:
 
 ## Input Normalization
 
-- Supported harnesses: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
+- Supported harnesses: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `cursor`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
 - Supported levels: `project`, `global`, `both`
 - Supported research categories: `config`, `plugin`, `extension`, `mcp`, `skill`, `all`
 - Supported usage windows: positive day counts such as `7`, `14`, `30`, or `days=14`; default to `14` when absent
@@ -65,11 +65,6 @@ If the user invokes `/harness-master` with no arguments:
   - `chatgpt`, `chatgpt-desktop`, `openai-chatgpt` -> `chatgpt`
   - `codex` -> `codex`
   - `cursor`, `cursor-agent`, `cursor-editor`, `cursor-desktop`, `cursor-cli`, `agent-cli`, `cursor-cloud`, `cursor-cloud-agent`, `cursor-background-agent`, `cursor-web` -> `cursor`
-  - `gemini`, `gemini-cli` -> `gemini-cli`
-  - `antigravity`, `google-antigravity` -> `antigravity`
-  - `github-copilot`, `copilot`, `gh-copilot` -> expand to `github-copilot-web` and `github-copilot-cli`
-  - `github-copilot-web`, `copilot-web`, `copilot-cloud`, `copilot-coding-agent` -> `github-copilot-web`
-  - `github-copilot-cli`, `copilot-cli` -> `github-copilot-cli`
   - `grok`, `grok-build`, `grok-cli` -> `grok-build`
   - `opencode`, `open-code` -> `opencode`
   - `perplexity`, `perplexity-desktop`, `perplexity-mac` -> `perplexity-desktop`
@@ -81,7 +76,7 @@ If the user invokes `/harness-master` with no arguments:
   - `both`, `all-levels` -> `both`
 - Split multiple harnesses on commas and whitespace.
 - If the user supplies both `all` and named harnesses, ask which form they want.
-- Deterministic `all` order: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
+- Deterministic `all` order: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `cursor`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
 - Unknown tokens are never guessed. Ask one focused clarification question.
 
 
@@ -215,7 +210,6 @@ Never claim `latest` without evidence from a current source.
 - Surface the authoritative, secondary, generated, and merged config surfaces for the selected level.
 - For `both`, report project/global conflicts before recommending changes.
 - If a harness-specific native surface is not observable from the current session, mark it as a blind spot instead of inventing behavior.
-- Antigravity project-level advice must clearly separate first-party documented global behavior from repo-observed compatibility assumptions.
 
 ## Install Guidance Contract
 
@@ -234,7 +228,7 @@ After changing this skill, run:
 ```bash
 python scripts/check.py
 uv run python scripts/usage_probe.py --repo-root . --harness opencode --level both --days 14 --json
-uv run python scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness github-copilot-web --harness github-copilot-cli --harness cursor --harness gemini-cli --harness antigravity --harness opencode --harness perplexity-desktop --harness cherry-studio --harness lm-studio
+uv run python scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness cursor --harness grok-build --harness opencode --harness perplexity-desktop --harness cherry-studio --harness lm-studio
 ```
 
 Completion criteria:

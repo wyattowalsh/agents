@@ -12,7 +12,6 @@ TRACKED_GLOBS = [
     "instructions/*.md",
     "CLAUDE.md",
     "AGENTS.md",
-    "GEMINI.md",
 ]
 ALLOW_SUFFIXES = (".example", ".mcphub.example")
 SKIP_PARTS = {"audit", "probes", "openspec/changes/oss-friendly-codebase-standardization/audit"}

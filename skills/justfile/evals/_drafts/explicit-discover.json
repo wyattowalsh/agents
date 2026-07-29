@@ -1,0 +1,13 @@
+{
+  "id": "explicit-discover",
+  "prompt": "/justfile discover — what recipes exist and what does install do?",
+  "expected_output": "Read-only discover using just --list and just --show install without executing install.",
+  "files": ["justfile"],
+  "assertions": [
+    "Dispatches to discover mode",
+    "Uses just --list and/or --dump for inventory",
+    "Uses just --show install (or dump) to explain install",
+    "Does not execute the install recipe while discovering",
+    "Remains read-only for just invocation"
+  ]
+}

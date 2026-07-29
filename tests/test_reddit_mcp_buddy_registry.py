@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from tests.mcphub_registry_helpers import group_server_names
+from tests.mcphub_registry_helpers import group_server_entry, group_server_names
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_PATH = REPO_ROOT / "config" / "mcp-registry.json"
@@ -18,6 +18,13 @@ REDDIT_WRAPPER_ARG = "".join(
     ("$", "{", "REPO_ROOT", "}/scripts/mcphub/reddit-mcp-buddy-stdio.sh")
 )
 OPT_IN_GROUPS = ("research", "shared-read", "experimental")
+EXPECTED_TOOLS = [
+    "browse_subreddit",
+    "search_reddit",
+    "get_post_details",
+    "user_analysis",
+    "reddit_explain",
+]
 
 
 @pytest.fixture
@@ -33,7 +40,8 @@ def test_reddit_mcp_buddy_server_entry(registry: dict) -> None:
     assert server["enabled"] is True
     assert server["startup_timeout_sec"] == 90
     assert server["timeout_ms"] == 600000
-    assert server["tools_allow_all"] is True
+    assert server["tools"] == EXPECTED_TOOLS
+    assert "tools_allow_all" not in server
     assert server.get("env", {}) == {}
 
 
@@ -44,12 +52,17 @@ def test_reddit_mcp_buddy_wrapper_exists_and_executable() -> None:
     assert "mcphub_load_env" in text
     assert "reddit-mcp-buddy@" in text
     assert "1.1.13" in text
+    assert "MCPHUB_REDDIT_MCP_BUDDY_VERSION" not in text
 
 
 def test_reddit_mcp_buddy_opt_in_groups(registry: dict) -> None:
     groups = registry["mcphub"]["groups"]
     for group_name in OPT_IN_GROUPS:
         assert "reddit-mcp-buddy" in group_server_names(groups[group_name]), group_name
+        assert group_server_entry(groups[group_name], "reddit-mcp-buddy") == {
+            "name": "reddit-mcp-buddy",
+            "tools": EXPECTED_TOOLS,
+        }
 
 
 def test_reddit_mcp_buddy_excluded_from_default_groups(registry: dict) -> None:

@@ -9,9 +9,9 @@ docs_density: standard
 license: "MIT"
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a claude-code codex crush cursor grok opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "complexity-optimizer"
 ---
 
@@ -24,15 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="complexity-optimizer"
   description="Analyze and reduce code complexity with scoped refactoring plans, maintainability review, and local complexity-scanner guidance."
-  installCommand={`npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a claude-code codex crush cursor grok opencode`}
   installLabel="Install"
   usage="/complexity-optimizer"
-  badges={[{ text: "complexity-optimizer", variant: "note" }, { text: "416 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "complexity-optimizer", variant: "note" }, { text: "407 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/complexity-optimizer.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -40,11 +40,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/complexity
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a claude-code codex crush cursor grok opencode
 ```
 
 ## Trust / Audit
@@ -86,7 +86,7 @@ This row integrates `Kappaemme-git/codex-complexity-optimizer` as an installable
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -107,13 +107,13 @@ title: "Complexity Optimizer"
 source_kind: "curated-external"
 source: "Kappaemme-git/codex-complexity-optimizer"
 install_source: "Kappaemme-git/codex-complexity-optimizer"
-install_command: "npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a claude-code codex crush cursor grok opencode"
 install_skill_name: "complexity-optimizer"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/Kappaemme-git/codex-complexity-optimizer"
 selector_mode: "named"
 audit_date: "2026-07-07"
@@ -145,7 +145,7 @@ This row integrates `Kappaemme-git/codex-complexity-optimizer` as an installable
 - Normalized URL: [https://github.com/Kappaemme-git/codex-complexity-optimizer](https://github.com/Kappaemme-git/codex-complexity-optimizer)
 - Catalog skill id: `complexity-optimizer`
 - Upstream install selector: `complexity-optimizer`
-- Install command: `npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Install command: `npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a claude-code codex crush cursor grok opencode`
 - Inspected commit SHA: `6a1f9674d706a06d462296e53a40f668299e8893`
 - License status: `MIT`
 - Source-list evidence: `source-list-found`
@@ -154,13 +154,13 @@ This row integrates `Kappaemme-git/codex-complexity-optimizer` as an installable
 ## Local Install Evidence
 
 - Executed command: `npx --yes skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer --dry-run`
-- Executed command: `npx --yes skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a antigravity`
+- Executed command: `npx --yes skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g`
 - Executed command: `npx --yes skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a claude-code`
 - Executed command: `npx --yes skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a codex`
 - Executed command: `npx --yes skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a crush`
 - Executed command: `npx --yes skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a cursor`
-- Executed command: `npx --yes skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a gemini-cli`
-- Executed command: `npx --yes skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a github-copilot`
+- Executed command: `npx --yes skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g`
+- Executed command: `npx --yes skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g`
 - Executed command: `npx --yes skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a claude-code`
 - Executed command: `npx --yes skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a opencode`
 - Installed path: `~/.agents/skills/complexity-optimizer`

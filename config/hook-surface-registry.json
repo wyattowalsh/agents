@@ -10,13 +10,6 @@
     "Embedded hooks (Claude, Gemini) live inside settings.json surfaces that are typed 'config' in generic surface scans."
   ],
   "harness_aliases": {
-    "github-copilot": ["github-copilot-web", "github-copilot-cli"],
-    "copilot": ["github-copilot-web", "github-copilot-cli"],
-    "gh-copilot": ["github-copilot-web", "github-copilot-cli"],
-    "copilot-web": "github-copilot-web",
-    "copilot-cloud": "github-copilot-web",
-    "copilot-coding-agent": "github-copilot-web",
-    "copilot-cli": "github-copilot-cli",
     "cursor-agent-cli": "cursor-cli",
     "cursor-agent": "cursor-cli",
     "cursor-editor": "cursor-editor",
@@ -32,8 +25,6 @@
     "cursor": "cursor-editor",
     "claude": "claude-code",
     "claude-code": "claude-code",
-    "gemini": "gemini-cli",
-    "gemini-cli": "gemini-cli",
     "grok": "grok-build",
     "grok-build": "grok-build",
     "grok-cli": "grok-build",
@@ -187,89 +178,6 @@
         "config/hook-registry.json (harnesses include 'cursor')",
         "wagents/platforms/cursor.py",
         ".cursor/hooks.json (generated on sync)"
-      ]
-    },
-    {
-      "id": "gemini-cli",
-      "label": "Gemini CLI",
-      "brand": "Gemini",
-      "surface_kind": "cli",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "support_tier": "repo-present-validation-required",
-      "hook_surfaces": [
-        {
-          "level": "project",
-          "label": "embedded hooks",
-          "path": ".gemini/settings.json",
-          "kind": "hooks",
-          "role": "authoritative",
-          "notes": "Hooks embedded inside project .gemini/settings.json (shared surface with MCP, instructions)."
-        },
-        {
-          "level": "global",
-          "label": "embedded hooks",
-          "path": "~/.gemini/settings.json",
-          "kind": "hooks",
-          "role": "authoritative",
-          "notes": "Global hooks embedded in ~/.gemini/settings.json."
-        }
-      ],
-      "blind_spots": [],
-      "repo_evidence": [
-        "skills/harness-master/scripts/discover_surfaces.py",
-        "wagents/platforms/gemini.py",
-        "scripts/sync_agent_stack.py:render_standard_hooks"
-      ]
-    },
-    {
-      "id": "github-copilot-web",
-      "label": "GitHub Copilot Web and Coding Agent",
-      "brand": "GitHub Copilot",
-      "surface_kind": "web-cloud-agent",
-      "owner_change": "agents-c04-copilot-harness",
-      "support_tier": "repo-present-validation-required",
-      "hook_surfaces": [
-        {
-          "level": "project",
-          "label": "copilot hooks",
-          "path": ".github/hooks/*",
-          "kind": "hooks",
-          "role": "secondary",
-          "notes": "Generated hook scaffolding for Copilot; not primary execution surface for web agent."
-        }
-      ],
-      "blind_spots": [
-        {
-          "level": "global",
-          "label": "GitHub.com / Copilot cloud hook policy",
-          "notes": "Repository, org, and cloud coding agent hook/approval policies live on GitHub.com rather than local .github/hooks/*."
-        }
-      ],
-      "repo_evidence": [
-        "skills/harness-master/scripts/discover_surfaces.py",
-        "scripts/sync_agent_stack.py:generate_copilot_hooks"
-      ]
-    },
-    {
-      "id": "github-copilot-cli",
-      "label": "GitHub Copilot CLI",
-      "brand": "GitHub Copilot",
-      "surface_kind": "cli",
-      "owner_change": "agents-c04-copilot-harness",
-      "support_tier": "repo-present-validation-required",
-      "hook_surfaces": [
-        {
-          "level": "project",
-          "label": "copilot hooks",
-          "path": ".github/hooks/*",
-          "kind": "hooks",
-          "role": "secondary"
-        }
-      ],
-      "blind_spots": [],
-      "repo_evidence": [
-        "config/hook-registry.json (harnesses include 'github-copilot')",
-        "wagents/platforms/copilot.py"
       ]
     },
     {

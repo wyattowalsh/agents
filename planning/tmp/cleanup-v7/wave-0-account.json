@@ -1,0 +1,74 @@
+{
+  "wave": "W0",
+  "generated_at": "2026-07-29T07:39:31Z",
+  "status": "DONE",
+  "dispatched": [
+    "g0-dirty-buckets",
+    "g0-g8-ext",
+    "g0-openspec-map",
+    "g0-keep-matrix",
+    "g0-write-locks",
+    "g0-scaffold-gap",
+    "g0-ref-graph",
+    "g0-bash-deny",
+    "g0-candidates"
+  ],
+  "accounted": [
+    "g0-dirty-buckets",
+    "g0-g8-ext",
+    "g0-openspec-map",
+    "g0-keep-matrix",
+    "g0-write-locks",
+    "g0-scaffold-gap",
+    "g0-ref-graph",
+    "g0-bash-deny",
+    "g0-candidates"
+  ],
+  "blocked": [],
+  "counts": {
+    "dispatched": 9,
+    "accounted": 9,
+    "blocked": 0
+  },
+  "accounting_rule_ok": true,
+  "artifacts": [
+    "planning/tmp/cleanup-v7/dirty-buckets.json",
+    "planning/tmp/cleanup-v7/g8-ext.json",
+    "planning/tmp/cleanup-v7/openspec-map.json",
+    "planning/tmp/cleanup-v7/keep-matrix.json",
+    "planning/tmp/cleanup-v7/write-locks.json",
+    "planning/tmp/cleanup-v7/scaffold-gap.json",
+    "planning/tmp/cleanup-v7/ref-graph.json",
+    "planning/tmp/cleanup-v7/bash-deny.json",
+    "planning/tmp/cleanup-v7/candidates.json"
+  ],
+  "packet_receipts": [
+    "planning/tmp/cleanup-v7/packets/g0-dirty-buckets.json",
+    "planning/tmp/cleanup-v7/packets/g0-g8-ext.json",
+    "planning/tmp/cleanup-v7/packets/g0-openspec-map.json",
+    "planning/tmp/cleanup-v7/packets/g0-keep-matrix.json",
+    "planning/tmp/cleanup-v7/packets/g0-write-locks.json",
+    "planning/tmp/cleanup-v7/packets/g0-scaffold-gap.json",
+    "planning/tmp/cleanup-v7/packets/g0-ref-graph.json",
+    "planning/tmp/cleanup-v7/packets/g0-bash-deny.json",
+    "planning/tmp/cleanup-v7/packets/g0-candidates.json"
+  ],
+  "w1a_blockers": [
+    "Full `uv run wagents validate` not yet run in W0 (quarantine collector alone = 0 errors; EXT catalog ids in g8-dod look stale)",
+    "config/sync-manifest.json dirty \u2014 owned by sync-manifest packet",
+    "Harness leftover deleted dirty paths still in tree (.antigravity / gemini-cli / copilot APM+hooks) \u2014 harness-leftovers packet",
+    "nerdbot dirty (skills/nerdbot + generated catalog MDX) \u2014 nerdbot-ignore packet",
+    "g8-dod still PARTIAL; g8-receipt-note after validate attempt",
+    "Path lock: dirty main (~4055 paths); no home sync; no unsolicited worktrees"
+  ],
+  "highlights": {
+    "g8_ext": "EXT-085..088 in register as quarantine-reference; authoring+index rows absent; live quarantine collector 0 errors",
+    "ref_graph": "3 placeholder trees+authoring present; ~16 live_must_scrub; lifecycle eval names skill-registry-lock; test fixtures OK",
+    "keep_matrix": "all four must-keep present (Crush MCP, OC auth plugins, gemini-api, candidate wrappers)",
+    "openspec_map": "archive-14 all active; remove-gemini tasks 0/9 checked vs g8-dod G8 PARTIAL drift"
+  },
+  "notes": [
+    "W0 Gate0 RO only; W1\u2013W7 not started; no commits",
+    "g0-g8-ext and g0-ref-graph finished by orchestrator after parallel collectors; others from RO leaves"
+  ]
+}

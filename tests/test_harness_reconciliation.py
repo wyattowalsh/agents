@@ -24,13 +24,10 @@ TERMINAL_ACTIONS = {
     "config-repair-needed",
 }
 SUPPORTED_SKILL_AGENTS = {
-    "antigravity",
     "claude-code",
     "codex",
     "crush",
     "cursor",
-    "gemini-cli",
-    "github-copilot",
     "grok",
     "opencode",
 }
@@ -124,14 +121,13 @@ def test_harness_reconciliation_covers_plugin_drift_and_config_blockers() -> Non
 
     assert rows["codex", "agents@agents"]["action"] == "cache-refresh-needed"
     assert rows["codex", "agents@agents-cache"]["action"] == "cache-refresh-needed"
-    assert rows["opencode", "opencode-adaptive-thinking@latest"]["action"] == "home-sync-needed"
-    assert rows["opencode", "opencode-claude-auth@latest"]["action"] == "home-sync-needed"
+    assert rows["opencode", "opencode-adaptive-thinking@latest"]["action"] == "synced"
+    assert rows["opencode", "opencode-claude-auth@latest"]["action"] == "synced"
 
-    gemini_extensions = [
-        row for row in manifest["matrix"] if row["harness"] == "gemini-cli" and row["asset_type"] == "extension"
-    ]
-    assert len(gemini_extensions) == 44
-    assert {row["action"] for row in gemini_extensions} == {"config-repair-needed"}
+    assert not any(
+        row["harness"] in {"antigravity", "gemini-cli", "github-copilot"}
+        for row in manifest["matrix"]
+    )
 
 
 def test_harness_reconciliation_records_opencode_plugin_source_surfaces() -> None:

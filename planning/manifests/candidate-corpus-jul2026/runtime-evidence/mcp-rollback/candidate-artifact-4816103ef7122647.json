@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-4816103ef7122647",
+  "mcp_server": "designer-skill-mcp",
+  "transaction_id": "89c3b268b66a42e19ab673d204b40e31",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "94f5dcf8d41961749a8a49d3fb1badb5d4a829fb9476860abf838e5592549c58",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "9cb8eb971144e8545213cdd37c8e9ed45f4646f1ab81411250215b42d22c6681",
+  "isolated_rollback_digest": "9cb8eb971144e8545213cdd37c8e9ed45f4646f1ab81411250215b42d22c6681",
+  "fresh_absence": {
+    "designer-skill-mcp": null
+  },
+  "fresh_absence_process_id": 21782,
+  "fresh_absence_output_sha256": "8ddc9c79835535acba753fcdc2172cbbb7494d098844798fa67bbd010886c643",
+  "restored_use_process_id": 21874,
+  "restored_use_output_sha256": "98002494c0947c16edc5ad7253e9586201f4ae42de9a220a7e6b404087073524",
+  "restored_use_launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-mcp-entrypoint-rollback-candidate-artifact-4816103ef7122647-1gtdxv69/bin/designer-skill-mcp",
+  "restored_use_launch_realpath": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/designer-skill-mcp/dist/index.js",
+  "installed_digest": "478dbf70359d5d4c14525d17d1a8dc53b248cd48749283541e2f4b2ec0d33b71",
+  "status": "passed"
+}

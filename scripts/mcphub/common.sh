@@ -130,10 +130,90 @@ mcphub_wait_healthy() {
 }
 
 mcphub_require_token() {
-  if [[ -z "${MCPHUB_BEARER_TOKEN:-}" || "${MCPHUB_BEARER_TOKEN}" == replace-with-local-* ]]; then
+  if [[ -z "${MCPHUB_BEARER_TOKEN:-}" \
+    || "${MCPHUB_BEARER_TOKEN}" == replace-with-local-* \
+    || "${MCPHUB_BEARER_TOKEN}" == '${MCPHUB_BEARER_TOKEN}' ]]; then
     printf 'MCPHUB_BEARER_TOKEN is required in .env.mcphub or the environment\n' >&2
     return 1
   fi
+}
+
+mcphub_exec_clean() {
+  local -a allowlist=()
+  while [[ $# -gt 0 && "$1" != "--" ]]; do
+    if [[ ! "$1" =~ ^[A-Z_][A-Z0-9_]*$ ]]; then
+      printf 'invalid MCPHub environment allowlist name: %s\n' "$1" >&2
+      return 64
+    fi
+    allowlist+=("$1")
+    shift
+  done
+  if [[ $# -eq 0 || "$1" != "--" ]]; then
+    printf 'usage: mcphub_exec_clean [ENV_VAR ...] -- command [args ...]\n' >&2
+    return 64
+  fi
+  shift
+  if [[ $# -eq 0 ]]; then
+    printf 'mcphub_exec_clean requires a command\n' >&2
+    return 64
+  fi
+
+  local -a clean_env=(
+    "HOME=${HOME:-}"
+    "PATH=${PATH:-/usr/bin:/bin:/usr/sbin:/sbin}"
+    "TMPDIR=${TMPDIR:-/tmp}"
+    "LANG=${LANG:-C}"
+    "LC_ALL=${LC_ALL:-}"
+    "USER=${USER:-}"
+    "LOGNAME=${LOGNAME:-}"
+    "SHELL=${SHELL:-/bin/sh}"
+  )
+  local name value
+  for name in "${allowlist[@]}"; do
+    if value="$(/usr/bin/printenv "${name}")"; then
+      clean_env+=("${name}=${value}")
+    fi
+  done
+  exec /usr/bin/env -i "${clean_env[@]}" "$@"
+}
+
+mcphub_run_clean() {
+  local -a allowlist=()
+  while [[ $# -gt 0 && "$1" != "--" ]]; do
+    if [[ ! "$1" =~ ^[A-Z_][A-Z0-9_]*$ ]]; then
+      printf 'invalid MCPHub environment allowlist name: %s\n' "$1" >&2
+      return 64
+    fi
+    allowlist+=("$1")
+    shift
+  done
+  if [[ $# -eq 0 || "$1" != "--" ]]; then
+    printf 'usage: mcphub_run_clean [ENV_VAR ...] -- command [args ...]\n' >&2
+    return 64
+  fi
+  shift
+  if [[ $# -eq 0 ]]; then
+    printf 'mcphub_run_clean requires a command\n' >&2
+    return 64
+  fi
+
+  local -a clean_env=(
+    "HOME=${HOME:-}"
+    "PATH=${PATH:-/usr/bin:/bin:/usr/sbin:/sbin}"
+    "TMPDIR=${TMPDIR:-/tmp}"
+    "LANG=${LANG:-C}"
+    "LC_ALL=${LC_ALL:-}"
+    "USER=${USER:-}"
+    "LOGNAME=${LOGNAME:-}"
+    "SHELL=${SHELL:-/bin/sh}"
+  )
+  local name value
+  for name in "${allowlist[@]}"; do
+    if value="$(/usr/bin/printenv "${name}")"; then
+      clean_env+=("${name}=${value}")
+    fi
+  done
+  /usr/bin/env -i "${clean_env[@]}" "$@"
 }
 
 mcphub_read_pid_file() {

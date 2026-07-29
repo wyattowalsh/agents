@@ -11,7 +11,7 @@ if command -v git &>/dev/null && git rev-parse --git-dir &>/dev/null 2>&1; then
   [ -z "$MODIFIED" ] && exit 0
 
   # Python syntax check (safe argument passing — no injection)
-  PY=$(echo "$MODIFIED" | grep '\.py$')
+  PY=$(echo "$MODIFIED" | grep '\.py$' | while IFS= read -r f; do [ -f "$f" ] && printf '%s\n' "$f"; done)
   if [ -n "$PY" ]; then
     while IFS= read -r f; do
       [ -f "$f" ] && ! python3 -c "import py_compile, sys; py_compile.compile(sys.argv[1], doraise=True)" "$f" 2>/dev/null && {
@@ -39,7 +39,7 @@ if command -v git &>/dev/null && git rev-parse --git-dir &>/dev/null 2>&1; then
   fi
 
   # Run modified tests only
-  TESTS=$(echo "$MODIFIED" | grep -iE '(test_|_test\.|\.test\.|\.spec\.)' | grep -v '\.ipynb$')
+  TESTS=$(echo "$MODIFIED" | grep -iE '(test_|_test\.|\.test\.|\.spec\.)' | grep -v '\.ipynb$' | while IFS= read -r f; do [ -f "$f" ] && printf '%s\n' "$f"; done)
   if [ -n "$TESTS" ]; then
     if [ -f "pyproject.toml" ] && command -v uv &>/dev/null; then
       uv run pytest $TESTS --tb=short -q 2>&1 | tail -5

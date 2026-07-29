@@ -37,8 +37,6 @@ _DEFAULT_PLATFORMS = (
     "cursor",
     "codex",
     "opencode",
-    "gemini-cli",
-    "github-copilot",
     "grok",
 )
 
@@ -495,14 +493,12 @@ def write_architecture_pages(
         "| Harness | Entry | Bridge / generated source |",
         "| ------- | ----- | ------------------------ |",
         "| Claude Code | `CLAUDE.md` | `@AGENTS.md` → `@instructions/global.md` |",
-        "| Gemini CLI / Antigravity | `GEMINI.md` | `@./AGENTS.md` → `@instructions/global.md` |",
         "| Codex | `AGENTS.md` | `@instructions/global.md`; overlay `instructions/codex-global.md` |",
         "| Crush | `AGENTS.md` | `@instructions/global.md` |",
         "| OpenCode | `AGENTS.md` | `@instructions/global.md`; overlay `instructions/opencode-global.md` |",
         "| Cursor | `AGENTS.md` | `@instructions/global.md` + `.cursor/rules/*.mdc` |",
         "| Grok Build | `AGENTS.md` | `@instructions/global.md`; bridge `instructions/grok-global.md` "
         "(config tomls are policy/MCP, not the instruction entry) |",
-        "| GitHub Copilot | `.github/copilot-instructions.md` | Generated from `instructions/copilot-global.md` |",
         "| Cherry Studio | MCP-only | MCPHub registry; no dedicated instruction bridge |",
         "| LM Studio | presets + optional skills | `instructions/lm-studio-global.md` + home MCP/presets |",
         "",

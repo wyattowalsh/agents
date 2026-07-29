@@ -25,7 +25,7 @@ Templates for discovery reports, install commands, spec sketches, and journal en
 #### High Confidence ({high_count})
 | # | Skill | Source | Installs | Install Command | Fills Gap |
 |---|-------|--------|----------|-----------------|-----------|
-| {n} | {name} | {repo} | {count} | `npx skills add {source} -s {name} -g -y -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode` | {gap} |
+| {n} | {name} | {repo} | {count} | `npx skills add {source} -s {name} -g -y -a claude-code codex crush cursor opencode` | {gap} |
 
 #### Medium Confidence ({medium_count})
 | # | Skill | Source | Installs | Install Command | Fills Gap |
@@ -85,13 +85,13 @@ Hook discovery parity is enforced via `scripts/check_hook_discovery_parity.py` (
 Single skill:
 
 ```bash
-npx skills add {owner}/{repo} -s {skill_name} -g -y -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode
+npx skills add {owner}/{repo} -s {skill_name} -g -y -a claude-code codex crush cursor opencode
 ```
 
 Multiple skills from same repo:
 
 ```bash
-npx skills add {owner}/{repo} -s {skill1} -s {skill2} -g -y -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode
+npx skills add {owner}/{repo} -s {skill1} -s {skill2} -g -y -a claude-code codex crush cursor opencode
 ```
 
 ---

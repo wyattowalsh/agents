@@ -10,9 +10,21 @@
     ],
     "preToolUse": [
       {
-        "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" --bundle cursor-destructive-shell-guard,cursor-protected-file-guard,git-commit-push-guard,image-input-optimizer-guard --harness cursor --bundle-mode enforce-chain --bundle-timeout 75",
-        "matcher": "Bash|bash|run_shell_command|shell|terminal|Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|analyze_image|attach_image|screenshot|upload_image|view_image|Read|read",
-        "timeout": 75,
+        "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" --bundle cursor-destructive-shell-guard,cursor-protected-file-guard --harness cursor --bundle-mode enforce-chain --bundle-timeout 10",
+        "matcher": "Bash|bash|run_shell_command|shell|terminal|Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file",
+        "timeout": 10,
+        "failClosed": true
+      },
+      {
+        "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-task-model-pin-rewrite --harness cursor",
+        "matcher": "Task",
+        "timeout": 5,
+        "failClosed": false
+      },
+      {
+        "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" --bundle git-commit-push-guard,image-input-optimizer-guard --harness cursor --bundle-mode enforce-chain --bundle-timeout 65",
+        "matcher": "Bash|bash|run_shell_command|shell|terminal|analyze_image|attach_image|screenshot|upload_image|view_image|Read|read",
+        "timeout": 65,
         "failClosed": true
       },
       {
@@ -75,6 +87,11 @@
       {
         "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-subagent-start-context --harness cursor",
         "timeout": 5
+      },
+      {
+        "command": "\"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook\" cursor-subagent-model-allowlist --harness cursor",
+        "timeout": 5,
+        "failClosed": false
       }
     ],
     "beforeSubmitPrompt": [

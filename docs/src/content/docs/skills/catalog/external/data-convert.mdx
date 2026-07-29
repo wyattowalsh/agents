@@ -9,9 +9,9 @@ docs_density: standard
 license: "MIT"
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add dathere/qsv --skill data-convert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add dathere/qsv --skill data-convert -y -g -a claude-code codex crush cursor opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "data-convert"
 ---
 
@@ -24,15 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="data-convert"
   description="Convert between CSV, TSV, Excel, JSONL, Parquet, and other tabular formats with qsv. Requires qsv MCP."
-  installCommand={`npx skills add dathere/qsv --skill data-convert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add dathere/qsv --skill data-convert -y -g -a claude-code codex crush cursor opencode`}
   installLabel="Install"
   usage="/data-convert"
-  badges={[{ text: "data-convert", variant: "note" }, { text: "153 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "data-convert", variant: "note" }, { text: "150 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/data-convert.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -40,11 +40,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/data-conve
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add dathere/qsv --skill data-convert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add dathere/qsv --skill data-convert -y -g -a claude-code codex crush cursor opencode
 ```
 
 ## Trust / Audit
@@ -86,7 +86,7 @@ Curated-external skill from [dathere/qsv](https://github.com/dathere/qsv) (relea
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -107,13 +107,13 @@ title: "Data Convert"
 source_kind: "curated-external"
 source: "dathere/qsv"
 install_source: "dathere/qsv"
-install_command: "npx skills add dathere/qsv --skill data-convert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add dathere/qsv --skill data-convert -y -g -a claude-code codex crush cursor opencode"
 install_skill_name: "data-convert"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/dathere/qsv"
 selector_mode: "named"
 audit_date: "2026-07-17"
@@ -149,10 +149,10 @@ This skill expects the **qsv** MCP server (`mcp__qsv__*` tools) from MCPHub grou
 | ----- | ----- |
 | Catalog id | `data-convert` |
 | Upstream selector | `data-convert` |
-| Install command | `npx skills add dathere/qsv --skill data-convert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| Install command | `npx skills add dathere/qsv --skill data-convert -y -g -a claude-code codex crush cursor grok opencode` |
 | Audited HEAD | `6836cade4117d70807bcd1ede362c11909617a16` (21.1.0) |
 | License | MIT |
-| Source-list | Found in `npx skills add … --list` (20 total; fleet installs 15) |
+| Source-list | Found in `npx skills add '…' --list` (20 total; fleet installs 15) |
 
 ## Safety
 

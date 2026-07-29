@@ -48,23 +48,6 @@ def _cursor_doc() -> dict[str, object]:
     }
 
 
-def _copilot_doc() -> dict[str, object]:
-    return {
-        "version": 1,
-        "hooks": {
-            "preToolUse": [
-                {
-                    "type": "command",
-                    "bash": "guard --harness github-copilot",
-                    "cwd": ".",
-                    "timeoutSec": 5,
-                    "comment": "guard",
-                }
-            ]
-        },
-    }
-
-
 def test_cursor_to_claude_drops_cursor_native_events():
     cursor_native = {
         "version": 1,
@@ -101,16 +84,6 @@ def test_claude_to_cursor_is_flat_and_preserves_command():
     assert "type" not in pre
 
 
-def test_claude_to_copilot_uses_bash_key():
-    out = convert_hooks(_claude_doc(), source="claude-code", target="github-copilot")
-    # Copilot only maps PreToolUse/PostToolUse/session events, not Stop.
-    assert set(out["hooks"]) == {"preToolUse"}
-    entry = out["hooks"]["preToolUse"][0]
-    assert entry["bash"] == "guard --harness claude-code"
-    assert entry["cwd"] == "."
-    assert entry["timeoutSec"] == 5
-
-
 def test_cursor_to_claude_nests_command_group():
     out = convert_hooks(_cursor_doc(), source="cursor", target="claude-code")
     pre = out["hooks"]["PreToolUse"][0]
@@ -126,40 +99,6 @@ def test_round_trip_claude_cursor_claude_is_stable():
         target="claude-code",
     )
     assert back == doc
-
-
-def test_round_trip_cursor_copilot_cursor_preserves_pretooluse():
-    doc = _cursor_doc()
-    out = convert_hooks(
-        convert_hooks(doc, source="cursor", target="github-copilot"),
-        source="github-copilot",
-        target="cursor",
-    )
-    # Stop has no Copilot mapping so it drops; PreToolUse command survives.
-    assert out["hooks"]["preToolUse"][0]["command"] == "guard --harness cursor"
-
-
-def test_copilot_normalize_reads_bash_and_timeout():
-    specs = normalize_from(_copilot_doc(), "github-copilot")
-    assert specs == [
-        HookSpec(
-            logical_event="PreToolUse",
-            command="guard --harness github-copilot",
-            matcher=None,
-            timeout=5,
-            description="guard",
-        )
-    ]
-
-
-def test_gemini_target_scales_timeout_and_marks_sequential():
-    specs = [HookSpec(logical_event="PreToolUse", command="g", timeout=5, description="d")]
-    out = render_to(specs, "gemini-cli")
-    group = out["hooks"]["BeforeTool"][0]
-    assert group["sequential"] is True
-    config = group["hooks"][0]
-    assert config["timeout"] == 5000
-    assert config["name"] == "d"
 
 
 def test_codex_target_adds_status_message():

@@ -13,8 +13,7 @@
 			"continue_on_auto_mode": false
 		},
 		"gemini": {
-			"model": "gpt-5.4",
-			"effort_level": "xhigh"
+			"enable_agents": true
 		},
 		"opencode": {
 			"provider_model": "openai/gpt-5.5",

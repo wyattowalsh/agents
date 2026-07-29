@@ -12,9 +12,7 @@ on:
           - cursor
           - claude-code
           - codex
-          - github-copilot
           - opencode
-          - gemini-cli
           - grok
       phase:
         description: Smoke phase to run

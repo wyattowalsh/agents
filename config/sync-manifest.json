@@ -110,10 +110,6 @@
 			"mode": "canonical"
 		},
 		{
-			"path": "${REPO_ROOT}/instructions/copilot-global.md",
-			"mode": "canonical"
-		},
-		{
 			"path": "${REPO_ROOT}/instructions/codex-global.md",
 			"mode": "generated"
 		},
@@ -174,23 +170,7 @@
 			"mode": "symlinked-entries"
 		},
 		{
-			"path": "${REPO_ROOT}/.github/copilot-instructions.md",
-			"mode": "generated"
-		},
-		{
-			"path": "${REPO_ROOT}/.github/instructions",
-			"mode": "generated"
-		},
-		{
-			"path": "${REPO_ROOT}/.github/hooks",
-			"mode": "generated"
-		},
-		{
 			"path": "${REPO_ROOT}/hooks",
-			"mode": "canonical"
-		},
-		{
-			"path": "${REPO_ROOT}/platforms/copilot/agents",
 			"mode": "canonical"
 		},
 		{
@@ -204,26 +184,6 @@
 		{
 			"path": "${REPO_ROOT}/instructions/global.md",
 			"mode": "symlink"
-		},
-		{
-			"path": "${REPO_ROOT}/instructions/copilot-global.md",
-			"mode": "symlink"
-		},
-		{
-			"path": "${REPO_ROOT}/platforms/copilot/agents",
-			"mode": "symlink"
-		},
-		{
-			"path": "~/.copilot/mcp-config.json",
-			"mode": "generated"
-		},
-		{
-			"path": "~/.copilot/settings.json",
-			"mode": "merged"
-		},
-		{
-			"path": "~/.config/copilot-subagents.env",
-			"mode": "generated"
 		},
 		{
 			"path": "~/.codex/config.toml",
@@ -258,27 +218,15 @@
 			"mode": "merged"
 		},
 		{
-			"path": "~/.gemini/settings.json",
-			"mode": "merged"
+			"path": "~/.cursor/agents",
+			"mode": "generated"
 		},
 		{
-			"path": "~/.gemini/GEMINI.md",
+			"path": "~/.cursor/rules",
 			"mode": "generated"
 		},
 		{
 			"path": "~/Library/Application Support/ChatGPT/mcp.json",
-			"mode": "merged"
-		},
-		{
-			"path": "~/.config/.copilot/mcp-config.json",
-			"mode": "merged"
-		},
-		{
-			"path": "~/.gemini/antigravity/mcp_config.json",
-			"mode": "merged"
-		},
-		{
-			"path": "~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json",
 			"mode": "merged"
 		},
 		{
@@ -334,6 +282,10 @@
 			"mode": "merged"
 		},
 		{
+			"path": "~/.config/crush/skills",
+			"mode": "symlinked-entries"
+		},
+		{
 			"path": "~/Library/Application Support/CherryStudio/mcp-import/managed",
 			"mode": "generated"
 		},
@@ -357,17 +309,8 @@
 			"path": "${REPO_ROOT}/instructions/lm-studio-global.md",
 			"mode": "canonical"
 		},
-
 		{
 			"path": "~/.codex/skills",
-			"mode": "symlinked-entries"
-		},
-		{
-			"path": "~/.copilot/skills",
-			"mode": "symlinked-entries"
-		},
-		{
-			"path": "~/.gemini/skills",
 			"mode": "symlinked-entries"
 		},
 		{

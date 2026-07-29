@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import os
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -21,10 +23,34 @@ def registry() -> dict:
 def test_ddgs_server_entry(registry: dict) -> None:
     server = registry["servers"]["ddgs"]
     assert server["transport"] == "stdio"
-    assert server["command"] == "uvx"
-    assert server["args"] == ["--from", "ddgs[mcp]", "ddgs", "mcp"]
+    assert server["command"] == "bash"
+    assert server["args"] == ["${REPO_ROOT}/scripts/mcphub/ddgs-stdio.sh"]  # noqa: RUF027
     assert server["auth_policy"] == "none"
     assert server["enabled"] is True
+
+
+def test_ddgs_wrapper_uses_preinstalled_pinned_tool(tmp_path: Path) -> None:
+    tool_root = tmp_path / "tools"
+    tool_bin = tool_root / "ddgs" / "bin"
+    tool_bin.mkdir(parents=True)
+    python_bin = tool_bin / "python"
+    ddgs_bin = tool_bin / "ddgs"
+    python_bin.write_text("#!/bin/sh\nprintf '9.14.4 1.29.0\\n'\n", encoding="utf-8")
+    ddgs_bin.write_text("#!/bin/sh\nprintf '%s\\n' \"$*\"\n", encoding="utf-8")
+    python_bin.chmod(0o755)
+    ddgs_bin.chmod(0o755)
+
+    result = subprocess.run(
+        [str(REPO_ROOT / "scripts" / "mcphub" / "ddgs-stdio.sh"), "--probe"],
+        cwd=REPO_ROOT,
+        env={**os.environ, "UV_TOOL_DIR": str(tool_root)},
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert result.stdout == "mcp --probe\n"
 
 
 def test_ddgs_follows_duckduckgo_in_harness(registry: dict) -> None:

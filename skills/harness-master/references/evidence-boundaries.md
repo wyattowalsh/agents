@@ -21,7 +21,6 @@ Use exactly one of these tags on every finding:
 ## Alias And Facet Rules
 
 - Alias normalization must preserve evidence boundaries. For example, `cursor-cli` and `cursor-cloud` normalize to `cursor`, but CLI and cloud blind spots still need explicit reporting.
-- Aggregate aliases must expand deterministically. `github-copilot` expands to `github-copilot-web` and `github-copilot-cli`; do not collapse their findings into one mixed section.
 - Desktop-app harnesses such as `claude-desktop`, `chatgpt`, `perplexity-desktop`, and `cherry-studio` can have no install agent name. Report them as config/app surfaces, not Skills CLI targets.
 
 ## Confidence Guidance

@@ -1,0 +1,22 @@
+{
+  "status": "ok",
+  "gate": "g0",
+  "artifact": "keep-matrix.json",
+  "paths_written": [
+    "planning/tmp/cleanup-v7/keep-matrix.json",
+    "planning/tmp/cleanup-v7/packets/g0-keep-matrix.json"
+  ],
+  "must_keep_status": {
+    "crush-gemini-shaped-mcp": "present",
+    "opencode-auth-plugins": "present",
+    "gemini-api": "present",
+    "candidate-mcp-wrappers": "present"
+  },
+  "summary_lines": [
+    "crush-gemini-shaped-mcp: present",
+    "opencode-auth-plugins: present",
+    "gemini-api: present",
+    "candidate-mcp-wrappers: present"
+  ],
+  "constraint": "preserve all; move candidates under ops later, do not delete"
+}

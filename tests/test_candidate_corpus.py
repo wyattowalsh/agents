@@ -23,6 +23,7 @@ from wagents.candidate_corpus_reports import (
     TERMINAL_PROMOTION_WAVE_STATUS,
     W00_MUTATION_POLICY,
     W99_MUTATION_POLICY,
+    generated_reference_materialization_errors,
     preserve_runner_owned_results,
     render_promotion_wave_report,
     validate_promotion_wave_plan,
@@ -276,6 +277,113 @@ def _load_apply_promotions_module():
     return module
 
 
+def _runtime_activation_payload() -> dict:
+    artifacts = [
+        {"artifact_id": f"{kind}-{index:02d}", "kind": kind, "status": "accepted"}
+        for kind, count in {"cli": 30, "library": 1, "mcp": 17, "plugin": 17}.items()
+        for index in range(count)
+    ]
+    for artifact in artifacts[-11:]:
+        artifact["status"] = "incomplete"
+    return {
+        "source_target_count": 289,
+        "runtime_artifact_count": 65,
+        "minimum_runtime_artifact_count": 65,
+        "requested_full_usability": False,
+        "artifacts": artifacts,
+        "totals": {
+            "status_counts": {"accepted": 54, "incomplete": 11},
+            "kind_counts": {"cli": 30, "library": 1, "mcp": 17, "plugin": 17},
+        },
+        "active_blockers": [{"artifact_id": artifact["artifact_id"]} for artifact in artifacts[-11:]],
+    }
+
+
+def test_runtime_activation_summary_enforces_authoritative_65_artifact_model() -> None:
+    apply_promotions = _load_apply_promotions_module()
+
+    summary = apply_promotions.runtime_activation_summary(_runtime_activation_payload())
+
+    assert summary == {
+        "assurance_file": "runtime-activation-assurance.json",
+        "source_target_count": 289,
+        "runtime_artifact_count": 65,
+        "accepted": 54,
+        "incomplete": 11,
+        "kind_counts": {"cli": 30, "library": 1, "mcp": 17, "plugin": 17},
+        "requested_full_usability": False,
+        "active_blocker_count": 11,
+    }
+
+    invalid = copy.deepcopy(_runtime_activation_payload())
+    invalid["runtime_artifact_count"] = 64
+    with pytest.raises(ValueError, match="runtime artifact count must be 65"):
+        apply_promotions.runtime_activation_summary(invalid)
+
+
+def test_successor_assurance_script_inventory_is_complete_and_shared() -> None:
+    generator = _load_generator_module()
+    apply_promotions = _load_apply_promotions_module()
+    expected = (
+        "record_candidate_catalog_closure.py",
+        "verify_candidate_plugin_provenance.py",
+        "run_candidate_cli_canaries.py",
+        "rehearse_candidate_cli_rollback.py",
+        "run_candidate_mcp_canaries.py",
+        "rehearse_candidate_mcp_rollback.py",
+        "run_candidate_plugin_canaries.py",
+        "rehearse_candidate_plugin_rollback.py",
+        "run_candidate_docs_assurance.py",
+        "record_candidate_final_closure.py",
+        "record_candidate_mcp_activation.py",
+        "record_candidate_runtime_activation.py",
+    )
+
+    assert expected == generator.SUCCESSOR_ASSURANCE_SCRIPTS
+    assert expected == apply_promotions.SUCCESSOR_ASSURANCE_SCRIPTS
+    assert generator.successor_assurance_summary_lines() == [
+        "Successor runtime assurance is source-owned by:",
+        "",
+        *[f"- `scripts/{name}`" for name in expected],
+    ]
+
+
+def test_harness_assurance_uses_exact_canonical_supported_agent_set() -> None:
+    apply_promotions = _load_apply_promotions_module()
+    agents = [
+        {
+            "agent": agent,
+            "present": 1,
+            "missing": 0,
+            "pin_blocked": 0,
+            "unresolved": 0,
+            "skipped": 0,
+            "commands": 0,
+        }
+        for agent in apply_promotions.SUPPORTED_AGENT_IDS
+    ]
+    assurance = {
+        "complete": True,
+        "target_harness_count": len(apply_promotions.SUPPORTED_AGENT_IDS),
+        "agents": agents,
+        "totals": {
+            "present": len(agents),
+            "missing": 0,
+            "pin_blocked": 0,
+            "unresolved": 0,
+            "skipped": 0,
+            "commands": 0,
+        },
+    }
+
+    errors = apply_promotions.harness_assurance_errors(assurance)
+
+    assert not any("does not exactly cover" in error for error in errors)
+    assurance["agents"] = [*agents[:-1], dict(agents[0])]
+    errors = apply_promotions.harness_assurance_errors(assurance)
+    assert any("does not exactly cover" in error for error in errors)
+
+
 def test_terminal_route_note_normalizers_preserve_scalar_string_as_one_note() -> None:
     generator = _load_generator_module()
     apply_promotions = _load_apply_promotions_module()
@@ -385,17 +493,19 @@ def test_integration_target_builder_covers_every_real_identity() -> None:
     assert targets["integrated_targets"] == 289
     assert targets["unintegrated_targets"] == 0
     assert targets["raw_entries_covered"] == 293
-    assert targets["generated_reference_count"] == 162
+    assert targets["generated_reference_count"] == 158
     assert targets["classification_counts"] == EXPECTED_INTEGRATION_CLASSIFICATION_COUNTS
     assert {index for item in targets["items"] for index in item["raw_indexes"]} == set(range(1, 294))
     generated_names = {
         item["generated_reference_name"] for item in targets["items"] if item["generated_reference_name"]
     }
-    assert len(generated_names) == 162
+    assert len(generated_names) == 158
     quarantine = [item for item in targets["items"] if item["hard_blocked"]]
     assert len(quarantine) == 4
     assert all(item["integration_classification"] == "integrated-quarantine-reference" for item in quarantine)
-    assert all(item["catalog_rows"][0]["has_install_command"] is False for item in quarantine)
+    assert all(item["catalog_rows"] == [] for item in quarantine)
+    assert all(item["generated_reference_name"] == "" for item in quarantine)
+    assert all(item["generated_reference_path"] == "" for item in quarantine)
     assert apply_promotions.integration_target_errors(targets) == []
 
 
@@ -459,9 +569,9 @@ def test_integration_reference_writer_cleans_legacy_markers_and_public_staging_l
     generated_paths = sorted(catalog_dir.glob("*.mdx"))
     integration_targets = _load_json(manifest_dir / "integration-targets.json")
     assert legacy_path.exists() is False
-    assert summary["rows_written"] == 162
-    assert integration_targets["generated_reference_count"] == 162
-    assert len(generated_paths) == 162
+    assert summary["rows_written"] == 158
+    assert integration_targets["generated_reference_count"] == 158
+    assert len(generated_paths) == 158
     assert not any(path.name.startswith(LEGACY_CANDIDATE_PREFIX) for path in generated_paths)
     for path in generated_paths:
         text = path.read_text(encoding="utf-8")
@@ -489,6 +599,8 @@ def test_auth_matrix_uses_placeholders_only() -> None:
         for item in auth_matrix["items"]
         for value in item["env_vars_or_credentials"]
     )
+    papersflow = next(item for item in auth_matrix["items"] if item["raw_index"] == 279)
+    assert papersflow["env_vars_or_credentials"] == ["PAPERSFLOW_OAUTH_ACCOUNT"]
     for item in auth_matrix["items"]:
         for value in item["env_vars_or_credentials"]:
             assert value == "PLACEHOLDER_ONLY_REVIEW_REQUIRED" or re.fullmatch(r"[A-Z][A-Z0-9_]{2,}", value)
@@ -516,12 +628,13 @@ def test_every_unique_target_has_a_real_integration_identity() -> None:
     assert integration_targets["integrated_targets"] == 289
     assert integration_targets["unintegrated_targets"] == 0
     assert integration_targets["raw_entries_covered"] == 293
-    assert integration_targets["generated_reference_count"] == 162
+    assert integration_targets["generated_reference_count"] == 158
     assert integration_targets["classification_counts"] == EXPECTED_INTEGRATION_CLASSIFICATION_COUNTS
     assert len(integration_targets["items"]) == 289
     assert {index for item in integration_targets["items"] for index in item["raw_indexes"]} == set(range(1, 294))
-    assert all(item["catalog_rows"] for item in integration_targets["items"])
-    assert len(generated_paths) == 162
+    assert all(item["catalog_rows"] or item["hard_blocked"] for item in integration_targets["items"])
+    assert all(not item["catalog_rows"] for item in integration_targets["items"] if item["hard_blocked"])
+    assert len(generated_paths) == 158
     assert not list(CATALOG_DIR.glob(f"{LEGACY_CANDIDATE_PREFIX}*.mdx"))
 
     assert summary["unique_targets"] == 289
@@ -580,10 +693,7 @@ def test_terminal_decision_summary_has_no_legacy_reference_or_skip_decisions() -
 
     assert "reference" + "_only_count" not in summary
     assert summary["historical_intake_terminal_non_install_count"] == summary["unique_count"]
-    assert summary["terminal_non_install_count"] == (
-        EXPECTED_INTEGRATION_CLASSIFICATION_COUNTS["integrated-reference"]
-        + EXPECTED_INTEGRATION_CLASSIFICATION_COUNTS["integrated-quarantine-reference"]
-    )
+    assert summary["terminal_non_install_count"] == EXPECTED_INTEGRATION_CLASSIFICATION_COUNTS["integrated-reference"]
     assert summary["live_install_added_count"] == len(PROMOTED_SKILL_NAMES)
     assert summary["terminal_integrated_count"] + summary["hard_blocked_count"] == summary["unique_count"]
     assert decision_values <= TERMINAL_DECISIONS
@@ -670,11 +780,11 @@ def test_integration_target_catalog_rows_replace_staging_rows() -> None:
         row.get("name"): row for row in catalog_index["externalSkillIndex"] if row.get("name") in PROMOTED_SKILL_NAMES
     }
     generated_references = [item for item in integration_targets["items"] if item["generated_reference_name"]]
-    quarantine_references = [item for item in generated_references if item["hard_blocked"]]
+    quarantine_targets = [item for item in integration_targets["items"] if item["hard_blocked"]]
 
     assert staged_rows == []
-    assert len(generated_references) == 162
-    assert len(quarantine_references) == 4
+    assert len(generated_references) == 158
+    assert len(quarantine_targets) == 4
     assert all(item["generated_reference_name"] in indexed_by_name for item in generated_references)
     for item in generated_references:
         row = indexed_by_name[item["generated_reference_name"]]
@@ -682,11 +792,12 @@ def test_integration_target_catalog_rows_replace_staging_rows() -> None:
         assert row["status"] == item["integration_classification"]
         assert row.get("installCommand", "") == ""
         assert row.get("useCommand", "") == ""
-    for item in quarantine_references:
+    for item in quarantine_targets:
         assert item["integration_classification"] == "integrated-quarantine-reference"
         assert item["trust_cleared_installable"] is False
-        assert item["catalog_rows"][0]["has_install_command"] is False
-        assert indexed_by_name[item["generated_reference_name"]]["trustTier"] == "hard-blocked"
+        assert item["catalog_rows"] == []
+        assert item["generated_reference_name"] == ""
+        assert item["generated_reference_path"] == ""
 
     assert set(promoted_rows) == PROMOTED_SKILL_NAMES
     for skill_name, promoted_row in promoted_rows.items():
@@ -812,14 +923,14 @@ def test_full_integration_progress_and_packet_schema_are_trust_gated() -> None:
     )
     assert progress["promotion_readiness"]["promoted_installable_rows"] == len(PROMOTED_SKILL_NAMES)
     assert progress["promotion_readiness"]["recorded_install_evidence_rows"] == len(PROMOTED_SKILL_NAMES)
-    assert progress["promotion_readiness"]["terminal_non_install_rows"] == 162
+    assert progress["promotion_readiness"]["terminal_non_install_rows"] == 158
     assert progress["terminal_decisions"] == {
         "raw_candidates_processed": 293,
         "unique_normalized_targets": 289,
         "installable_curated_rows": len(PROMOTED_SKILL_NAMES),
         "live_installs_recorded": len(PROMOTED_SKILL_NAMES),
         "new_live_install_commands_emitted": 0,
-        "terminal_non_install_rows": 162,
+        "terminal_non_install_rows": 158,
         "duplicate_raw_groups": 4,
         "conservative_intake_hard_blocks": 4,
         "integrated_targets": 289,
@@ -901,7 +1012,7 @@ def test_promotion_readiness_queue_records_terminal_native_and_hard_block_routes
     assert progress["promotion_readiness"]["ready_for_live_install"] == 0
     assert progress["promotion_readiness"]["promoted_installable_rows"] == len(PROMOTED_SKILL_NAMES)
     assert progress["promotion_readiness"]["recorded_install_evidence_rows"] == len(PROMOTED_SKILL_NAMES)
-    assert progress["promotion_readiness"]["terminal_non_install_rows"] == 162
+    assert progress["promotion_readiness"]["terminal_non_install_rows"] == 158
     assert progress["promotion_readiness"]["promoted_unique_targets"] >= 1
 
     for item in readiness["covered_by_existing_installable_catalog"]:
@@ -1368,7 +1479,7 @@ def test_promotion_gate_matrix_and_install_preview_keep_live_installs_blocked() 
     assert "https://github.com/antonbabenko/terraform-skill" in {
         item["normalized_url"] for item in preview["non_installable_integrated_targets"]
     }
-    assert "Every normalized source has a stable catalog integration" in summary
+    assert "Every normalized source has a durable terminal integration identity" in summary
 
 
 def test_promotion_packet_coverage_cli() -> None:
@@ -1452,24 +1563,30 @@ def test_deep_source_audit_env_names_make_auth_required() -> None:
     assert auth["env_vars_or_credentials"] == ["AZURE_CLIENT_ID"]
 
 
+def test_deep_source_audit_keeps_papersflow_oauth_boundary_when_readme_is_unavailable() -> None:
+    auditor = _load_deep_source_audit_module()
+
+    auth = auditor.detect_auth([], ["package.json"], "papersflow-ai/papersflow-codex-plugin")
+
+    assert auth["auth_required"] is True
+    assert auth["env_vars_or_credentials"] == ["PAPERSFLOW_OAUTH_ACCOUNT"]
+
+
 def test_harness_install_assurance_is_complete_and_cross_harness() -> None:
     assurance = _load_json(MANIFEST_DIR / "harness-install-assurance.json")
     catalog = _load_json(ROOT / "docs/public/generated-registries/skills-catalog-index.json")
 
     assert assurance["complete"] is True
     assert assurance["catalog_entry_count"] == len(catalog["allSkillIndex"])
-    assert assurance["target_harness_count"] == 9
+    assert assurance["target_harness_count"] == 6
     assert assurance["totals"]["missing"] == 0
     assert assurance["totals"]["pin_blocked"] == 0
     assert assurance["totals"]["commands"] == 0
     assert {item["agent"] for item in assurance["agents"]} == {
-        "antigravity",
         "claude-code",
         "codex",
         "crush",
         "cursor",
-        "gemini-cli",
-        "github-copilot",
         "grok",
         "opencode",
     }
@@ -1490,17 +1607,35 @@ def test_non_skill_install_assurance_covers_every_normalized_target() -> None:
 
 def test_non_skill_install_assurance_keeps_candidate_mcps_disabled_and_pinned() -> None:
     registry = _load_json(ROOT / "config/mcp-registry.json")["servers"]
+    receipts = _load_json(MANIFEST_DIR / "runtime-activation-receipts.json")["receipts"]
+    resolved_versions = {
+        (row.get("package_id"), row.get("resolved_version"))
+        for row in receipts
+        if isinstance(row, dict) and row.get("package_id") and row.get("resolved_version")
+    }
     expected = {
-        "axiom-mcp": ["-y", "axiom-mcp@27.0.0-beta.22"],
-        "csvglow": ["--from", "csvglow==0.1.0", "csvglow", "--mcp"],
-        "designer-skill-mcp": ["-y", "designer-skill-mcp@0.14.0"],
-        "geo-mcp": ["--from", "geo-optimizer-skill[mcp]==4.15.0", "geo-mcp"],
-        "prompt-to-asset": ["-y", "prompt-to-asset@0.5.1"],
+        "axiom-mcp": ("candidate-node", ["axiom-mcp"], "npm:axiom-mcp", "27.0.0-beta.22"),
+        "csvglow": ("candidate-uv-tool", ["csvglow", "csvglow"], "uv-tool:csvglow", "0.1.0"),
+        "designer-skill-mcp": (
+            "candidate-node",
+            ["designer-skill-mcp"],
+            "npm:designer-skill-mcp",
+            "0.14.0",
+        ),
+        "geo-mcp": (
+            "candidate-uv-tool",
+            ["geo-optimizer-skill", "geo-mcp"],
+            "uv-tool:geo-optimizer-skill",
+            "4.15.0",
+        ),
+        "prompt-to-asset": ("candidate-node", ["p2a"], "npm:prompt-to-asset", "0.5.1"),
     }
 
-    for name, args in expected.items():
+    for name, (wrapper, args, package_id, version) in expected.items():
         assert registry[name]["enabled"] is False
+        assert Path(registry[name]["command"]).name == wrapper
         assert registry[name]["args"] == args
+        assert (package_id, version) in resolved_versions
     assert registry["prompt-to-asset"]["env"]["PROMPT_TO_BUNDLE_DRY_RUN"]["value"] == "1"
 
 
@@ -1518,6 +1653,12 @@ def test_non_skill_install_assurance_is_secret_free_and_quarantine_safe() -> Non
         if row["runtime_disposition"] == "hard-quarantined":
             assert row["artifacts"] == []
             assert row["activation_state"] == "quarantined"
+    papersflow = next(
+        row
+        for row in assurance["items"]
+        if row["normalized_url"] == "https://github.com/papersflow-ai/papersflow-codex-plugin"
+    )
+    assert papersflow["auth_env_names"] == ["PAPERSFLOW_OAUTH_ACCOUNT"]
 
 
 def test_final_records_and_progress_bind_non_skill_assurance() -> None:
@@ -2220,6 +2361,66 @@ def test_integration_validators_bind_generated_references_to_classification_and_
         assert any("reference classification lacks generated reference identity" in error for error in errors)
         assert any("existing classification exposes generated reference identity" in error for error in errors)
         assert any("does not match exactly one catalog row" in error for error in errors)
+
+
+def test_generated_reference_materialization_requires_file_and_marker(tmp_path: Path) -> None:
+    authoring_dir = tmp_path / "docs" / "src" / "authoring" / "skills"
+    authoring_dir.mkdir(parents=True)
+    relative_path = "docs/src/authoring/skills/example.mdx"
+    payload = {
+        "items": [
+            {
+                "normalized_url": "https://example.test/source",
+                "generated_reference_path": relative_path,
+            }
+        ]
+    }
+
+    errors = generated_reference_materialization_errors(
+        payload,
+        root=tmp_path,
+        authoring_dir=authoring_dir,
+        marker=INTEGRATION_ENTRY_MARKER,
+    )
+    assert errors == [f"generated reference is not materialized: {relative_path}"]
+
+    path = tmp_path / relative_path
+    path.write_text("missing marker\n", encoding="utf-8")
+    errors = generated_reference_materialization_errors(
+        payload,
+        root=tmp_path,
+        authoring_dir=authoring_dir,
+        marker=INTEGRATION_ENTRY_MARKER,
+    )
+    assert errors == [f"generated reference lacks marker {INTEGRATION_ENTRY_MARKER}: {relative_path}"]
+
+    path.write_text(f"<!-- {INTEGRATION_ENTRY_MARKER} -->\n", encoding="utf-8")
+    assert not generated_reference_materialization_errors(
+        payload,
+        root=tmp_path,
+        authoring_dir=authoring_dir,
+        marker=INTEGRATION_ENTRY_MARKER,
+    )
+
+
+def test_promoted_row_preserves_matching_enriched_authoring(tmp_path: Path) -> None:
+    apply_promotions = _load_apply_promotions_module()
+    override = copy.deepcopy(PROMOTION_OVERRIDES[0])
+    path = tmp_path / "row.mdx"
+    path.write_text(apply_promotions.render_promoted_row(override) + "\nEnriched body.\n", encoding="utf-8")
+    before = path.read_bytes()
+
+    assert apply_promotions.write_promoted_row(path, override) is False
+    assert path.read_bytes() == before
+
+    stale = copy.deepcopy(override)
+    stale["audited_head"] = "different"
+    assert apply_promotions.write_promoted_row(path, stale) is True
+    assert path.read_bytes() != before
+
+    path.write_text("---\ninvalid: [\n---\n", encoding="utf-8")
+    assert apply_promotions.write_promoted_row(path, override) is True
+    assert path.read_text(encoding="utf-8").startswith("---\nname:")
 
 
 def test_promotion_gate_matrix_blocks_inspection_required_existing_rows() -> None:

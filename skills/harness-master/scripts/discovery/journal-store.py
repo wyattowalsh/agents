@@ -35,18 +35,18 @@ def get_agent_dir(skill_name: str) -> Path:
     """Get the base directory for a skill based on the active agent.
 
     For discovery (harness-master journals), default root is ~/.agents/harness-master/discovery/
-    (respects GEMINI/COPILOT/CODEX envs by placing under their dotdir/harness-master/discovery).
+    (respects CODEX_CLI by placing journals under the Codex state directory).
     """
     # Special-case discovery journals per consolidation move
     if "discover" in (skill_name or "") or "harness-master" in (skill_name or ""):
         agent = os.environ.get("AGENT_NAME", "").lower()
-        for cli, folder in [("GEMINI_CLI", ".gemini"), ("COPILOT_CLI", ".copilot"), ("CODEX_CLI", ".codex")]:
+        for cli, folder in [("CODEX_CLI", ".codex")]:
             if os.environ.get(cli) == "1" or folder.strip(".") in agent:
                 return Path.home() / folder / "harness-master" / "discovery"
         return Path.home() / ".agents" / "harness-master" / "discovery"
 
     agent = os.environ.get("AGENT_NAME", "").lower()
-    for cli, folder in [("GEMINI_CLI", ".gemini"), ("COPILOT_CLI", ".copilot"), ("CODEX_CLI", ".codex")]:
+    for cli, folder in [("CODEX_CLI", ".codex")]:
         if os.environ.get(cli) == "1" or folder.strip(".") in agent:
             return Path.home() / folder / skill_name
     return Path.home() / ".claude" / skill_name

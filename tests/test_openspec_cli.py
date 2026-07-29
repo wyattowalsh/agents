@@ -28,9 +28,9 @@ def test_parse_node_version_and_support():
 
 
 def test_select_openspec_tools_deduplicates_repo_agents_and_raw_tools():
-    assert select_openspec_tools(agents=["claude-code", "gemini-cli"], tools=["opencode", "claude"]) == (
+    assert select_openspec_tools(agents=["claude-code", "codex"], tools=["opencode", "claude"]) == (
         "claude",
-        "gemini",
+        "codex",
         "opencode",
     )
 
@@ -50,8 +50,10 @@ def test_openspec_init_dry_run_defaults_to_supported_repo_tools(tmp_repo):
 
     assert result.exit_code == 0, result.output
     assert "npx -y @fission-ai/openspec@latest init --tools" in result.output
-    assert "claude,codex,crush,cursor,gemini,github-copilot,opencode,antigravity" not in result.output
-    assert "antigravity,claude,codex,crush,cursor,gemini,github-copilot,opencode" in result.output
+    assert "antigravity" not in result.output
+    assert "gemini" not in result.output
+    assert "github-copilot" not in result.output
+    assert "claude,codex,crush,cursor,opencode" in result.output
     assert "--profile core" in result.output
 
 

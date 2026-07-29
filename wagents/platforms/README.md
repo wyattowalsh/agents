@@ -12,9 +12,7 @@ wagents/platforms/
 ├── base.py          # Abstract base + shared utilities
 ├── claude.py        # Claude Code: settings.json merge, hooks, desktop MCP
 ├── codex.py         # Codex: TOML config merge (placeholder)
-├── copilot.py       # GitHub Copilot: settings, MCP, rules (placeholder)
 ├── cursor.py        # Cursor: standard client MCP JSON merge
-├── gemini.py        # Gemini CLI: settings + antigravity MCP (placeholder)
 ├── grok.py          # Grok Build CLI adapter
 ├── opencode.py      # OpenCode: complex JSON merge, providers, plugins
 └── vscode.py        # VSCode: repo-local standard MCP JSON

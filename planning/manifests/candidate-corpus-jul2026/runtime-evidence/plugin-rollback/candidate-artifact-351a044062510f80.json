@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "transaction_id": "e277e733896a4c74926e504766c19d68",
+  "artifact_id": "candidate-artifact-351a044062510f80",
+  "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/commit-narrator",
+  "plugin_id": "commit-narrator@candidate-corpus-local",
+  "plugin_scope": "user-global-codex",
+  "scope": "isolated-codex-home",
+  "rehearsal_kind": "isolated-plugin-root-detach",
+  "digest_algorithm": "lstat-tree-v1",
+  "digest_ignored_dirs": [
+    ".cache",
+    ".git",
+    ".pytest_cache",
+    "__pycache__"
+  ],
+  "preimage_digest": "ec787dc1c4c38e51172bff193b1800ae490bbfc67179dab07e005605f784a493",
+  "rollback_digest": "ec787dc1c4c38e51172bff193b1800ae490bbfc67179dab07e005605f784a493",
+  "promoted_final_digest": "d379645341ce0c617c23330137f5993f31a8e5c2ee9b56071c924bbde0d2caa6",
+  "live_install_unchanged": true,
+  "fresh_absence_process_id": 62681,
+  "restored_use_process_id": 62764,
+  "restored_use_output_sha256": "9022bec8772f2500c3dfe5a7017eaa318a0231345221159164c7353e5f8ce44e",
+  "process_ids": {
+    "marketplace": 62610,
+    "initial_add": 62649,
+    "initial_inventory": 62657,
+    "remove": 62669,
+    "fresh_absence": 62681,
+    "restore": 62684,
+    "restored_inventory": 62686,
+    "restored_use_initial": 62708,
+    "restored_use_fresh": 62764,
+    "restored_use_discovery": 62769
+  },
+  "launch_evidence": {
+    "marketplace": {
+      "launch_id": "48ba158c638a9afd65da85c85993db83",
+      "started_at_ns": 1784364430838685000,
+      "process_id": 62610
+    },
+    "initial_add": {
+      "launch_id": "e87f6653c7bb1566bfaea88d70220f57",
+      "started_at_ns": 1784364430938148000,
+      "process_id": 62649
+    },
+    "initial_inventory": {
+      "launch_id": "f0bf2a8037ab967cba13faf03c03a37f",
+      "started_at_ns": 1784364431034969000,
+      "process_id": 62657
+    },
+    "remove": {
+      "launch_id": "5973830765ab2487b471692c62280ea6",
+      "started_at_ns": 1784364431126199000,
+      "process_id": 62669
+    },
+    "fresh_absence": {
+      "launch_id": "28266433b1f2e41e31837f13ec0d0418",
+      "started_at_ns": 1784364431242381000,
+      "process_id": 62681
+    },
+    "restore": {
+      "launch_id": "ec4f40711847776d7dd06d69093d2e9c",
+      "started_at_ns": 1784364431337183000,
+      "process_id": 62684
+    },
+    "restored_inventory": {
+      "launch_id": "3244334b52ad7cab7de71f3b9320a51e",
+      "started_at_ns": 1784364431435658000,
+      "process_id": 62686
+    },
+    "restored_use_initial": {
+      "launch_id": "b2c774d56f6382aeeb00a8bdf4e849a4",
+      "started_at_ns": 1784364431557830000,
+      "process_id": 62708
+    },
+    "restored_use_fresh": {
+      "launch_id": "282f0a045a7fd4cc55687ac93bd68dc5",
+      "started_at_ns": 1784364431832092000,
+      "process_id": 62764
+    },
+    "restored_use_discovery": {
+      "launch_id": "4d751caa67ded687a3486728c1a68375",
+      "started_at_ns": 1784364432100451000,
+      "process_id": 62769
+    }
+  },
+  "commands": [
+    {
+      "phase": "marketplace-add",
+      "argv": [
+        "codex",
+        "plugin",
+        "marketplace",
+        "add",
+        "<marketplace-root>",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 62610,
+      "launch_id": "48ba158c638a9afd65da85c85993db83",
+      "started_at_ns": 1784364430838685000,
+      "stdout_sha256": "005d6f8e0f309df3257f6e3b5b10e8de56900d4b97450de3f1bf35d713e740dc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "initial-add",
+      "argv": [
+        "codex",
+        "plugin",
+        "add",
+        "commit-narrator@candidate-corpus-local",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 62649,
+      "launch_id": "e87f6653c7bb1566bfaea88d70220f57",
+      "started_at_ns": 1784364430938148000,
+      "stdout_sha256": "db99c0a05b109ae8c7b794c4cdc691a272c7b28feb896181e59f682ee320a36c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "initial-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 62657,
+      "launch_id": "f0bf2a8037ab967cba13faf03c03a37f",
+      "started_at_ns": 1784364431034969000,
+      "stdout_sha256": "703cee58e89580844de207ae620f95aee0f4e257739ef02546760454d77b6f09",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "remove",
+      "argv": [
+        "codex",
+        "plugin",
+        "remove",
+        "commit-narrator@candidate-corpus-local",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 62669,
+      "launch_id": "5973830765ab2487b471692c62280ea6",
+      "started_at_ns": 1784364431126199000,
+      "stdout_sha256": "b6679387f9986f25098e8271d76ab6800eaf5c0a497cd0cb82a734dc9e63e55f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "absence-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 62681,
+      "launch_id": "28266433b1f2e41e31837f13ec0d0418",
+      "started_at_ns": 1784364431242381000,
+      "stdout_sha256": "050e2dee988ae4ba4d1d8220591b660829a9ee3f06f52d548acc87522ee90885",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "restore",
+      "argv": [
+        "codex",
+        "plugin",
+        "add",
+        "commit-narrator@candidate-corpus-local",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 62684,
+      "launch_id": "ec4f40711847776d7dd06d69093d2e9c",
+      "started_at_ns": 1784364431337183000,
+      "stdout_sha256": "db99c0a05b109ae8c7b794c4cdc691a272c7b28feb896181e59f682ee320a36c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "restored-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 62686,
+      "launch_id": "3244334b52ad7cab7de71f3b9320a51e",
+      "started_at_ns": 1784364431435658000,
+      "stdout_sha256": "703cee58e89580844de207ae620f95aee0f4e257739ef02546760454d77b6f09",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "restored_probe": {
+    "fixture_id": "candidate-plugin-commit-narrator-owned-fixture-v2",
+    "probe_kind": "semantic-plugin-isolated-codex-fixture",
+    "assertions": [
+      "source-specific happy path passed",
+      "source-specific failure path passed",
+      "unsafe or mutating path was denied",
+      "fresh process repeated the semantic capability",
+      "isolated one-plugin Codex process recovered source-only skill evidence"
+    ],
+    "output_sha256": "9022bec8772f2500c3dfe5a7017eaa318a0231345221159164c7353e5f8ce44e",
+    "discovery_output_sha256": "2b32849f7bab491e6b47ecca1b329663ec9eae53acfa849d1e2616a5fd111708"
+  }
+}

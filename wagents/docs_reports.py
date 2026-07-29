@@ -416,8 +416,15 @@ def render_docs_link_check_mdx(data: dict[str, Any]) -> str:
 _GRAPH_SNAPSHOT_HISTORY_WINDOW = 90
 
 
-def _docs_graph_snapshot_today() -> str:
-    return date.today().isoformat()
+def validate_docs_graph_snapshot_date(snapshot_date: str) -> str:
+    """Return a canonical UTC calendar date for graph-history mutation."""
+    try:
+        parsed = date.fromisoformat(snapshot_date)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("snapshot date must use YYYY-MM-DD") from exc
+    if parsed.isoformat() != snapshot_date:
+        raise ValueError("snapshot date must use YYYY-MM-DD")
+    return snapshot_date
 
 
 def _docs_graph_snapshot_history_entry(insights: dict[str, Any], snapshot_date: str) -> dict[str, Any]:
@@ -464,29 +471,67 @@ def _merge_docs_graph_snapshot_history(existing_history: Any, entry: dict[str, A
     return history[-_GRAPH_SNAPSHOT_HISTORY_WINDOW:]
 
 
-def _expected_docs_graph_snapshot_payload(existing_payload: Any | None = None) -> dict[str, Any]:
+def _normalized_docs_graph_snapshot_history(existing_history: Any) -> list[dict[str, Any]]:
+    if not isinstance(existing_history, list):
+        return []
+    by_date: dict[str, dict[str, Any]] = {}
+    for item in existing_history:
+        normalized = _normalize_docs_graph_snapshot_history_entry(item)
+        if normalized is not None:
+            by_date[normalized["date"]] = normalized
+    return [by_date[key] for key in sorted(by_date)][-_GRAPH_SNAPSHOT_HISTORY_WINDOW:]
+
+
+def _expected_docs_graph_snapshot_payload(
+    existing_payload: Any | None = None,
+    *,
+    snapshot_date: str | None = None,
+) -> dict[str, Any]:
+    """Compute expected graph state without reading the clock or writing files.
+
+    Check mode omits ``snapshot_date`` and preserves normalized committed
+    history. Mutation supplies one boundary-resolved date and replaces that
+    date's history row with the current metrics.
+    """
     insights = collect_site_graph_insights()
-    today = _docs_graph_snapshot_today()
     existing_history = existing_payload.get("history") if isinstance(existing_payload, dict) else []
+    history = _normalized_docs_graph_snapshot_history(existing_history)
+    if snapshot_date is not None:
+        history = _merge_docs_graph_snapshot_history(
+            history,
+            _docs_graph_snapshot_history_entry(
+                insights,
+                validate_docs_graph_snapshot_date(snapshot_date),
+            ),
+        )
     return {
         "latest": insights,
-        "history": _merge_docs_graph_snapshot_history(
-            existing_history,
-            _docs_graph_snapshot_history_entry(insights, today),
-        ),
+        "history": history,
     }
 
 
-def collect_docs_graph_snapshot() -> dict[str, Any]:
-    """Snapshot today's graph metrics and append to a rolling trend history."""
+def _read_docs_graph_snapshot_payload() -> dict[str, Any] | None:
     json_path = REPORTS_JSON_DIR / "docs-graph-snapshot.json"
-    prior_payload = None
     if json_path.exists():
         try:
-            prior_payload = json.loads(json_path.read_text(encoding="utf-8"))
+            payload = json.loads(json_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
-            prior_payload = None
-    return _expected_docs_graph_snapshot_payload(prior_payload)
+            return None
+        return payload if isinstance(payload, dict) else None
+    return None
+
+
+def collect_docs_graph_snapshot(snapshot_date: str) -> dict[str, Any]:
+    """Snapshot graph metrics for an explicit date and update rolling history."""
+    return _expected_docs_graph_snapshot_payload(
+        _read_docs_graph_snapshot_payload(),
+        snapshot_date=snapshot_date,
+    )
+
+
+def collect_docs_graph_snapshot_for_check() -> dict[str, Any]:
+    """Compute current graph metrics while preserving committed history."""
+    return _expected_docs_graph_snapshot_payload(_read_docs_graph_snapshot_payload())
 
 
 def render_docs_graph_snapshot_mdx(data: dict[str, Any]) -> str:
@@ -631,7 +676,7 @@ REPORT_SPECS: tuple[ReportSpec, ...] = (
         slug="docs-graph-snapshot",
         title="Docs Graph Snapshot",
         description="Trend of page count, internal links, and orphan pages over time",
-        collect=collect_docs_graph_snapshot,
+        collect=collect_docs_graph_snapshot_for_check,
         render_mdx=render_docs_graph_snapshot_mdx,
         historical=True,
     ),
@@ -645,8 +690,12 @@ REPORT_SPECS: tuple[ReportSpec, ...] = (
 )
 
 
-def _write_report(spec: ReportSpec) -> dict[str, Any]:
-    data = spec.collect()
+def _write_report(spec: ReportSpec, *, snapshot_date: str) -> dict[str, Any]:
+    data = (
+        collect_docs_graph_snapshot(snapshot_date)
+        if spec.slug == "docs-graph-snapshot"
+        else spec.collect()
+    )
     mdx = spec.render_mdx(data)
     REPORTS_CONTENT_DIR.mkdir(parents=True, exist_ok=True)
     REPORTS_JSON_DIR.mkdir(parents=True, exist_ok=True)
@@ -681,7 +730,7 @@ def write_reports_index_page() -> None:
     (REPORTS_CONTENT_DIR / "index.mdx").write_text("\n".join(parts), encoding="utf-8")
 
 
-def write_reports_pages() -> None:
+def write_reports_pages(*, snapshot_date: str) -> None:
     """Generate every registered report's MDX + JSON output, plus the reports index.
 
     Runs two full passes. Several collectors depend on the reports tree itself
@@ -693,9 +742,10 @@ def write_reports_pages() -> None:
     pass recomputes every report against the now-complete, stable page set,
     which is the fixed point `--check` compares future runs against.
     """
+    validate_docs_graph_snapshot_date(snapshot_date)
     for _ in range(2):
         for spec in REPORT_SPECS:
-            _write_report(spec)
+            _write_report(spec, snapshot_date=snapshot_date)
         write_reports_index_page()
 
 

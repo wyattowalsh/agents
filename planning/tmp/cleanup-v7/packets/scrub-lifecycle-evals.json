@@ -1,0 +1,16 @@
+{
+  "packet": "scrub-lifecycle-evals",
+  "wave": "W2a",
+  "status": "ok",
+  "paths_written": [
+    "skills/skill-lifecycle-manager/evals/evals.json",
+    "planning/tmp/cleanup-v7/packets/scrub-lifecycle-evals.json"
+  ],
+  "what_changed": "Removed eval id internal-skill-stage whose prompt named deleted placeholder skill-registry-lock. Kept five coherent evals (lifecycle-single-skill, lifecycle-repo-summary, empty-stage-definitions, deprecated-signal, negative-auto-promotion). No replacement placeholder invented.",
+  "removed_eval_ids": [
+    "internal-skill-stage"
+  ],
+  "evals_before": 6,
+  "evals_after": 5,
+  "notes": "Exclusive write to evals.json plus this packet receipt. Removal cleaner than renaming to skill-creator (already covered by lifecycle-single-skill)."
+}

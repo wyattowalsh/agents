@@ -8,9 +8,9 @@ composed: false
 docs_density: standard
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a claude-code codex crush cursor opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "troubleshooting"
 ---
 
@@ -23,7 +23,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="troubleshooting"
   description="Use when auditing Chrome DevTools MCP setup failures: initialization, connection, page listing, navigation, missing tools, or wrong Chrome profile."
-  installCommand={`npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a claude-code codex crush cursor opencode`}
   installLabel="Install"
   usage="/chrome-devtools"
   badges={[{ text: "troubleshooting", variant: "note" }, { text: "201 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
@@ -31,7 +31,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/troubleshooting.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -39,11 +39,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/troublesho
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a claude-code codex crush cursor opencode
 ```
 
 ## Trust / Audit
@@ -66,7 +66,7 @@ Entry maintained in authoring SSOT `docs/src/authoring/skills/troubleshooting.md
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -89,9 +89,9 @@ install_source: "ChromeDevTools/chrome-devtools-mcp"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
-install_command: "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a claude-code codex crush cursor opencode"
 sync_kind: "skills-cli"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/ChromeDevTools/chrome-devtools-mcp"
 notes: "Official Google `troubleshooting` skill for Chrome DevTools MCP setup and connection failures only—not general application debugging."
 risk_notes: "Setup troubleshooting may inspect local MCP configuration; do not mutate harness config without explicit user approval."

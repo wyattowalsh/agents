@@ -9,9 +9,9 @@ docs_density: standard
 license: "MIT"
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a claude-code codex crush cursor grok opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "critical-reasoning"
 ---
 
@@ -24,15 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="critical-reasoning"
   description="Apply critical rationalist epistemology (Popper, Deutsch) to evaluate reasoning, identify errors, and refine understanding."
-  installCommand={`npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a claude-code codex crush cursor grok opencode`}
   installLabel="Install"
   usage="/critical-reasoning"
-  badges={[{ text: "critical-reasoning", variant: "note" }, { text: "314 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "critical-reasoning", variant: "note" }, { text: "305 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/critical-reasoning.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -40,11 +40,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/critical-r
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a claude-code codex crush cursor grok opencode
 ```
 
 ## Trust / Audit
@@ -86,7 +86,7 @@ This row integrates `andrewgleave/skills` as an installable curated external ski
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -107,13 +107,13 @@ title: "Critical Reasoning"
 source_kind: "curated-external"
 source: "andrewgleave/skills"
 install_source: "andrewgleave/skills"
-install_command: "npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a claude-code codex crush cursor grok opencode"
 install_skill_name: "critical-reasoning"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces"
 selector_mode: "named"
 audit_date: "2026-07-07"
@@ -145,7 +145,7 @@ This row integrates `andrewgleave/skills` as an installable curated external ski
 - Normalized URL: [https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces](https://github.com/andrewgleave/skills/tree/main/writing-for-interfaces)
 - Catalog skill id: `critical-reasoning`
 - Upstream install selector: `critical-reasoning`
-- Install command: `npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Install command: `npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a claude-code codex crush cursor grok opencode`
 - Inspected commit SHA: `d6c72b885a19`
 - License status: `MIT`
 - Source-list evidence: `source-list-found`
@@ -155,7 +155,7 @@ This row integrates `andrewgleave/skills` as an installable curated external ski
 
 - Executed command: `npx --yes skills add andrewgleave/skills --list`
 - Executed command: `npx --yes skills add andrewgleave/skills --skill critical-reasoning --dry-run`
-- Executed command: `npx --yes skills add andrewgleave/skills --skill critical-reasoning -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Executed command: `npx --yes skills add andrewgleave/skills --skill critical-reasoning -y -g -a claude-code -a codex -a crush -a cursor -a opencode`
 - Installed path: `~/.agents/skills/critical-reasoning`
 - Installed path: `~/.claude/skills/critical-reasoning`
 - Installed path: `~/.config/crush/skills/critical-reasoning`

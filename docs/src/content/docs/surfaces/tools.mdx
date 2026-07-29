@@ -7,7 +7,7 @@ import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
 
 Tools are the executable and connected capabilities that support agent work. In this repo, that means MCP servers, the `wagents` CLI, Skills CLI install paths, and runtime plugin manifests.
 
-<p><strong>Current scope:</strong> 16 first-party MCP package(s), 61 registry-managed server entries, plus CLI and plugin distribution surfaces.</p>
+<p><strong>Current scope:</strong> 16 first-party MCP package(s), 69 registry-managed server entries, plus CLI and plugin distribution surfaces.</p>
 
 <CardGrid>
   <LinkCard title="MCP Overview" href="/mcp/" description="Configured MCP servers, MCPHub groups, and client sync coverage." />
@@ -17,5 +17,5 @@ Tools are the executable and connected capabilities that support agent work. In 
 </CardGrid>
 
 <Aside type="note" title="Runtime boundary">
-Tools are exposed differently per runtime: native MCP config, MCPHub group/server endpoints, CLI wrappers, and plugin manifests. The July 2026 runtime overlay verifies 63/63 artifacts: 29 CLI, 1 library, 17 MCP, and 16 plugin. Installed or configured does not imply enabled; use the runtime matrix and `planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json` for activation truth.
+Tools are exposed differently per runtime: native MCP config, MCPHub group/server endpoints, CLI wrappers, and plugin manifests. The July 2026 successor activation ledger discovers 65 artifacts: 31 CLI/library, 17 MCP, and 17 plugin. It accepts 20 with behavior, fresh-process, and rollback evidence; 45 remain incomplete. Installed or configured does not imply enabled; use `planning/manifests/candidate-corpus-jul2026/runtime-activation-assurance.json` for activation truth.
 </Aside>

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-526f681e64e25763",
+  "normalized_url": "https://github.com/marzukia/charted",
+  "transaction_id": "61951cdbed884e448a7d7092ccc71399",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "9364360c522b4eb8e30e61d7f676f5cb02860036267421657d68e6f0926501cd",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "12963e895aac945a4c094568753a0612ffa4237ca95ed62b1a99227e12ba89da",
+  "isolated_rollback_digest": "12963e895aac945a4c094568753a0612ffa4237ca95ed62b1a99227e12ba89da",
+  "fresh_absence": {
+    "charted": null,
+    "charted-mcp": null
+  },
+  "fresh_absence_process_id": 17490,
+  "fresh_absence_output_sha256": "7612940da99fa88077b16849ec257bb9dac11662f0f4bdfab1e2b9a774589c9a",
+  "restored_use_process_id": 17697,
+  "restored_use_output_sha256": "d1fae49b1b28d8dcd80b28f8f1738c7aedf13e64693ae7bc8d9be70b11336dfc",
+  "restored_use_launch_paths": [
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-526f681e64e25763-2tt9oo0l/bin/charted",
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-526f681e64e25763-2tt9oo0l/bin/charted"
+  ],
+  "restored_use_launch_realpaths": [
+    "/Users/ww/.local/share/uv/tools/charted/bin/charted",
+    "/Users/ww/.local/share/uv/tools/charted/bin/charted"
+  ],
+  "restored_executable_map": {
+    "charted": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-526f681e64e25763-2tt9oo0l/bin/charted",
+      "realpath": "/Users/ww/.local/share/uv/tools/charted/bin/charted"
+    },
+    "charted-mcp": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-526f681e64e25763-2tt9oo0l/bin/charted-mcp",
+      "realpath": "/Users/ww/.local/share/uv/tools/charted/bin/charted-mcp"
+    }
+  },
+  "installed_digest": "286e71c7704e3182f7150549567defa5711a786cb4925e06995503b025477ba4",
+  "status": "passed"
+}

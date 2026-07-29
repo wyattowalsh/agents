@@ -4,9 +4,6 @@ Targets merge/render paths that are directly exercised from wagents/platforms/*
 and scripts/sync_agent_stack.py for the listed harnesses.
 
 Covers (at minimum per task):
-- Copilot CLI config merge (merge_copilot_config) — preserves arbitrary user keys,
-  applies policy model/trusted/allowed defaults, normalizes key casing.
-- Gemini MCP render (render_gemini_mcp) — structure smoke test for rendered servers.
 - Config transaction registry alignment — harness-fixture-support validation_commands
   reference runnable test modules/files (cross-check with config-transaction-registry
   fixture concepts for merged surfaces).
@@ -18,11 +15,6 @@ import json
 import re
 from pathlib import Path
 
-from scripts.sync_agent_stack import (
-    SyncContext,
-    merge_copilot_config,
-    render_gemini_mcp,
-)
 from wagents.platforms import opencode as opencode_platform
 from wagents.platforms.cursor import Adapter as CursorAdapter
 
@@ -53,96 +45,6 @@ def _cursor_hook_command(rendered: dict, hook_id: str) -> str:
 
 def load_manifest(path: str) -> dict:
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
-
-
-def test_merge_copilot_config_preserves_user_keys_applies_policy_defaults(tmp_path: Path, monkeypatch) -> None:
-    """merge_copilot_config must preserve unrelated user-owned keys while overlaying policy defaults.
-
-    This exercises the cli-config-fixture path for github-copilot-cli (and copilot surfaces).
-    """
-    config_path = tmp_path / ".copilot" / "settings.json"
-    config_path.parent.mkdir(parents=True, exist_ok=True)
-
-    user_config = {
-        "model": "user-chosen",
-        "myCustomUserKey": "preserve-this",
-        "nestedUserObject": {"a": 1, "b": [2]},
-        "trustedFolders": ["/Users/me/project"],
-        "someOtherSetting": True,
-        "allowed_urls": ["https://user.example.com"],
-    }
-    config_path.write_text(json.dumps(user_config) + "\n", encoding="utf-8")
-
-    monkeypatch.setattr("scripts.sync_agent_stack.COPILOT_SETTINGS_PATH", config_path)
-
-    policy = {
-        "model_defaults": {
-            "copilot": {
-                "model": "gpt-policy",
-                "effort_level": "high",
-                "continue_on_auto_mode": True,
-            }
-        },
-        "trusted_roots": ["/policy/root"],
-        "docs_domains": ["policy.example.com"],
-    }
-
-    ctx = SyncContext(apply=True)
-    merge_copilot_config(ctx, policy)
-
-    rendered = json.loads(config_path.read_text(encoding="utf-8"))
-
-    # policy applied
-    assert rendered["model"] == "gpt-policy"
-    assert rendered["effortLevel"] == "high"
-    assert rendered["continueOnAutoMode"] is True
-    assert "/policy/root" in rendered["trustedFolders"]
-    assert "https://policy.example.com" in rendered["allowedUrls"]
-
-    # user keys preserved (arbitrary + original sets merged)
-    assert rendered["myCustomUserKey"] == "preserve-this"
-    assert rendered["nestedUserObject"] == {"a": 1, "b": [2]}
-    assert rendered["someOtherSetting"] is True
-    assert "/Users/me/project" in rendered["trustedFolders"]
-    assert "https://user.example.com" in rendered["allowedUrls"]
-
-    # casing normalized, no snake kept
-    assert "allowed_urls" not in rendered
-    assert "trusted_folders" not in rendered
-
-    assert any("write" in c.lower() or "update" in c.lower() for c in ctx.changes)
-
-
-def test_render_gemini_mcp_structure_smoke() -> None:
-    """render_gemini_mcp produces expected dict structure for mcpServers projection.
-
-    Exercises the mcp-fixture path for gemini-cli (and gemini surfaces).
-    """
-    registry = {
-        "servers": {
-            "example-stdio": {
-                "command": "uvx",
-                "args": ["example-mcp", "--stdio"],
-                "enabled": True,
-                "env": {"EX": {"env_var": "EX"}},
-            },
-            "example-other": {
-                "command": "node",
-                "args": ["server.js"],
-                "enabled": True,
-            },
-        }
-    }
-
-    rendered = render_gemini_mcp(registry, {"EX": "localval"})
-
-    assert isinstance(rendered, dict)
-    assert "example-stdio" in rendered
-    stdio = rendered["example-stdio"]
-    assert stdio.get("type") in ("stdio", None) or "command" in stdio  # shape tolerant
-    # args rendered (list or wrapped depending on path)
-    assert "example-stdio" in str(rendered) or rendered["example-stdio"]
-    assert "example-other" in rendered
 
 
 def test_config_transaction_registry_alignment_manifest_validation_commands_match_runnable_tests() -> None:
@@ -359,8 +261,6 @@ def test_cursor_harness_fixture_manifest_records_all_surfaces_executable() -> No
 def test_harness_plan_fixtures_covers_promoted_merge_paths() -> None:
     """Smoke that the module itself defines the required executable tests for promotion."""
     src = (ROOT / "tests" / "test_harness_plan_fixtures.py").read_text(encoding="utf-8")
-    assert "test_merge_copilot_config_preserves_user_keys_applies_policy_defaults" in src
-    assert "test_render_gemini_mcp_structure_smoke" in src
     assert "test_cursor_adapter_render_surfaces_smoke" in src
     assert "test_cursor_bugbot_render_documents_admin_api_out_of_scope" in src
     assert "test_cursor_cloud_agent_repo_evidence_surfaces_exist" in src

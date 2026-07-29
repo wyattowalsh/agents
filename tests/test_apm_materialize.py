@@ -19,7 +19,7 @@ from wagents.apm import (
     materialize_scoped_rules,
 )
 from wagents.hooks import render as hook_render
-from wagents.hooks.render import render_codex_hooks, render_copilot_hooks, render_cursor_hooks
+from wagents.hooks.render import render_codex_hooks, render_cursor_hooks
 
 
 def _write_agent(tmp: Path, name: str, description: str, tools: str = "") -> Path:
@@ -65,7 +65,7 @@ def _write_hook_registry(tmp: Path) -> Path:
                 "logical_event": "SessionStart",
                 "command": "echo start",
                 "timeout": 5,
-                "harnesses": ["codex", "claude-code", "cursor", "github-copilot", "gemini-cli"],
+                "harnesses": ["codex", "claude-code", "cursor"],
             },
             {
                 "id": "pre",
@@ -73,7 +73,7 @@ def _write_hook_registry(tmp: Path) -> Path:
                 "command": "python3 {repo_root}/hooks/check.py --harness {harness}",
                 "matcher": "Write",
                 "timeout": 5,
-                "harnesses": ["cursor", "gemini-cli"],
+                "harnesses": ["cursor", "codex"],
             },
         ],
     }
@@ -169,7 +169,6 @@ def test_materialize_instructions_global_and_overlays(tmp_path: Path):
     materialize_instructions(tmp_path)
     apm_i = tmp_path / ".apm" / "instructions"
     assert (apm_i / "global.instructions.md").exists()
-    assert (apm_i / "copilot.instructions.md").exists()
     assert (apm_i / "claude-code.instructions.md").exists()
     gtext = (apm_i / "global.instructions.md").read_text()
     assert "applyTo: '**/*'" in gtext
@@ -185,8 +184,6 @@ def test_materialize_hooks_emits_shapes(tmp_path: Path):
     assert "codex.json" in names
     assert "claude-code.json" in names
     assert "cursor.json" in names
-    assert "github-copilot.json" in names
-    assert "gemini-cli.json" in names
     codex = json.loads((apm_h / "codex.json").read_text())
     assert "SessionStart" in codex["hooks"]
     claude = json.loads((apm_h / "claude-code.json").read_text())
@@ -195,10 +192,6 @@ def test_materialize_hooks_emits_shapes(tmp_path: Path):
     assert cur.get("version") == 1
     assert "${workspaceFolder}" not in json.dumps(cur)
     assert "$CURSOR_PROJECT_DIR/hooks/run-wagents-hook" in json.dumps(cur)
-    cop = json.loads((apm_h / "github-copilot.json").read_text())
-    assert "hooks" in cop
-    gemini = json.loads((apm_h / "gemini-cli.json").read_text())
-    assert "BeforeTool" in gemini["hooks"]
 
 
 def test_materialize_hooks_bundle_tier_matches_shared_renderers(tmp_path: Path, monkeypatch):
@@ -257,7 +250,7 @@ def test_materialize_hooks_bundle_tier_matches_shared_renderers(tmp_path: Path, 
                 "command": "./hooks/auto-format.sh",
                 "timeout": 60,
                 "bundle_group": "copilot-post-edit-quality",
-                "harnesses": ["github-copilot"],
+                "harnesses": ["cursor"],
             },
             {
                 "id": "post-edit-lint",
@@ -266,7 +259,7 @@ def test_materialize_hooks_bundle_tier_matches_shared_renderers(tmp_path: Path, 
                 "command": "./hooks/lint-check.sh",
                 "timeout": 30,
                 "bundle_group": "copilot-post-edit-quality",
-                "harnesses": ["github-copilot"],
+                "harnesses": ["cursor"],
             },
         ],
     }
@@ -286,11 +279,6 @@ def test_materialize_hooks_bundle_tier_matches_shared_renderers(tmp_path: Path, 
     assert json.loads((apm_h / "cursor.json").read_text()) == render_cursor_hooks(
         registry,
         repo_root="$CURSOR_PROJECT_DIR",
-        perf_tier="bundle",
-    )
-    assert json.loads((apm_h / "github-copilot.json").read_text()) == render_copilot_hooks(
-        registry,
-        repo_root=".",
         perf_tier="bundle",
     )
 
@@ -512,6 +500,35 @@ def test_refresh_lock_hashes_updates_stale_entries(tmp_path: Path):
     assert result["ok"] is True
     updated = yaml.safe_load((tmp_path / "apm.lock.yaml").read_text(encoding="utf-8"))
     assert updated["local_deployed_file_hashes"][deployed] != stale_hash
+
+
+def test_refresh_lock_hashes_prunes_missing_deployed_files_on_apply(tmp_path: Path):
+    from wagents.apm import refresh_lock_hashes
+
+    present = ".opencode/agents/reviewer.md"
+    present_path = tmp_path / present
+    present_path.parent.mkdir(parents=True)
+    present_path.write_text("managed agent\n", encoding="utf-8")
+    missing = ".github/copilot-instructions.md"
+    lock = {
+        "lockfile_version": "1",
+        "generated_at": "2026-01-01T00:00:00+00:00",
+        "dependencies": [],
+        "local_deployed_files": [present, missing],
+        "local_deployed_file_hashes": {
+            present: "sha256:" + ("0" * 64),
+            missing: "sha256:" + ("1" * 64),
+        },
+    }
+    (tmp_path / "apm.lock.yaml").write_text(yaml.safe_dump(lock, sort_keys=False), encoding="utf-8")
+
+    result = refresh_lock_hashes(tmp_path)
+
+    assert result["ok"] is True
+    assert f"{missing}: missing on disk" in result["drifts"]
+    updated = yaml.safe_load((tmp_path / "apm.lock.yaml").read_text(encoding="utf-8"))
+    assert updated["local_deployed_files"] == [present]
+    assert set(updated["local_deployed_file_hashes"]) == {present}
 
 
 def test_refresh_lock_hashes_check_detects_drift(tmp_path: Path):

@@ -22,7 +22,7 @@ SYNC_HOOK_HASH_PATH = Path.home() / ".cache" / "wagents" / "sync-hook-hash.json"
 # changes (not just registry content) so a stale cache entry from before the
 # logic change can never cause `sync_agent_stack.py --check`/`--apply` to
 # skip a re-render that would now produce different output.
-RENDER_FINGERPRINT_VERSION = 2
+RENDER_FINGERPRINT_VERSION = 4
 
 
 def _registry_cache_key(path: Path) -> tuple[str, int, int]:

@@ -9,8 +9,8 @@ status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-install_command: "npx skills add wshobson/agents --skill openapi-spec-generation --skill uv-package-manager --skill changelog-automation --skill debugging-strategies -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+install_command: "npx skills add wshobson/agents --skill openapi-spec-generation --skill uv-package-manager --skill changelog-automation --skill debugging-strategies -y -g -a claude-code codex crush cursor opencode"
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/wshobson/agents"
 notes: "`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies. `changelog-automation` may suggest git/release commands; review generated recipes before running them."
 risk_notes: "`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies. `changelog-automation` may suggest git/release commands; review generated recipes before running them."

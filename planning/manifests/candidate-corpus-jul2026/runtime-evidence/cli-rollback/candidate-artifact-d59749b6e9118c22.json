@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-d59749b6e9118c22",
+  "normalized_url": "https://github.com/epicsagas/llm-transpile",
+  "transaction_id": "a54080fe8dea4a01a0c9df84d344ed60",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "c721438c0ead2f7072f1b444b3d5b09d31c36332ea5df0bfe2aa46f3ab14c9f7",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "de4e3e602f8d331aa999de647fb5f792e5c8c9a41cf37635f62a2fe6d6a18141",
+  "isolated_rollback_digest": "de4e3e602f8d331aa999de647fb5f792e5c8c9a41cf37635f62a2fe6d6a18141",
+  "fresh_absence": {
+    "transpile": null
+  },
+  "fresh_absence_process_id": 17331,
+  "fresh_absence_output_sha256": "a8b954a5d5b72497763edfbf51ae6fe54fcd342ed4c1dd447eb60091a2a7912e",
+  "restored_use_process_id": 17481,
+  "restored_use_output_sha256": "457184de28c5040b34c40482b120e48a9b60d5d3294d975917bd262c88049f5a",
+  "restored_use_launch_paths": [
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-d59749b6e9118c22-wqka8ka3/bin/transpile",
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-d59749b6e9118c22-wqka8ka3/bin/transpile"
+  ],
+  "restored_use_launch_realpaths": [
+    "/Users/ww/.cargo/bin/transpile",
+    "/Users/ww/.cargo/bin/transpile"
+  ],
+  "restored_executable_map": {
+    "transpile": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-d59749b6e9118c22-wqka8ka3/bin/transpile",
+      "realpath": "/Users/ww/.cargo/bin/transpile"
+    }
+  },
+  "installed_digest": "9b32ad0604834a7c83b7ff4fb70fd231e2475144c4c1ddcb6a48bdefae396a63",
+  "status": "passed"
+}

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-c0211767a6721d29",
+  "mcp_server": "csvglow",
+  "transaction_id": "89c3b268b66a42e19ab673d204b40e31",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "e5ed3e91d1afcc5f282646a1cb10befd5491ff2ccd2619e9daa9ca39ed55e1c1",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "76f6af6c39fc408fe40cf7bf6d1ed7261c8fcb2274b0daf6ecf0f2e8d87ad1c0",
+  "isolated_rollback_digest": "76f6af6c39fc408fe40cf7bf6d1ed7261c8fcb2274b0daf6ecf0f2e8d87ad1c0",
+  "fresh_absence": {
+    "csvglow": null
+  },
+  "fresh_absence_process_id": 21924,
+  "fresh_absence_output_sha256": "125982b2d6cdc9c59b2ea6dc3374b4fa8bb167ede6feab14ab6f530158433046",
+  "restored_use_process_id": 22016,
+  "restored_use_output_sha256": "fe732d41e433553a8fd5068c979f8dee4078411fbfe83ef2097dc40dc4b19f10",
+  "restored_use_launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-mcp-entrypoint-rollback-candidate-artifact-c0211767a6721d29-512v9lrb/bin/csvglow",
+  "restored_use_launch_realpath": "/Users/ww/.local/share/uv/tools/csvglow/bin/csvglow",
+  "installed_digest": "ccf3ac5e1453f61cdf7845b847c097509784a3c6b9329eb547006443e54df722",
+  "status": "passed"
+}

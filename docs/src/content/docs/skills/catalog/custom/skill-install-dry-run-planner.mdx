@@ -8,7 +8,7 @@ composed: false
 docs_density: standard
 license: "MIT"
 trust_tier: "repo-owned"
-install_command: "npx skills add github:wyattowalsh/agents --skill skill-install-dry-run-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode"
+install_command: "npx skills add github:wyattowalsh/agents --skill skill-install-dry-run-planner -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode"
 metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "skill-install-dry-run-planner"
@@ -23,7 +23,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="skill-install-dry-run-planner"
   description="Plan cross-harness skills sync dry-run steps before any live install. Use when reconciling harness skill inventory. NOT for --apply or npx installs."
-  installCommand={`npx skills add github:wyattowalsh/agents --skill skill-install-dry-run-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode`}
+  installCommand={`npx skills add github:wyattowalsh/agents --skill skill-install-dry-run-planner -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode`}
   installLabel="Install"
   usage="/skill-install-dry-run-planner [--harness &lt;name&gt;] [--format json]"
   badges={[{ text: "skill-install-dry-run-planner", variant: "note" }, { text: "208 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
@@ -31,7 +31,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from the repository file `skills/skill-install-dry-run-planner/SKILL.md` by `wagents docs generate`.
@@ -67,7 +67,7 @@ Produce a maintainer plan from skills-sync dry-run evidence.
 | Source Kind | `repo` |
 | Installability | portable command |
 | Review State | reviewed |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |

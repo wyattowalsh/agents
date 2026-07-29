@@ -9,8 +9,8 @@ status: "inspect-then-install"
 trust_tier: "needs-inspection"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-install_command: "npx skills add neondatabase/agent-skills --skill neon-postgres --skill neon-postgres-branches --skill neon-postgres-egress-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+install_command: "npx skills add neondatabase/agent-skills --skill neon-postgres --skill neon-postgres-branches --skill neon-postgres-egress-optimizer -y -g -a claude-code codex crush cursor opencode"
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/neondatabase/agent-skills"
 notes: "Official Neon Postgres skills. Prefer this source over generic community Neon skills; audit hooks and network behavior before promoting to install-now."
 risk_notes: "Official Neon Postgres skills. Prefer this source over generic community Neon skills; audit hooks and network behavior before promoting to install-now."

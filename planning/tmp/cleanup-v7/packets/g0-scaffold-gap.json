@@ -1,0 +1,34 @@
+{
+  "status": "ok",
+  "paths_written": [
+    "planning/tmp/cleanup-v7/scaffold-gap.json",
+    "planning/tmp/cleanup-v7/packets/g0-scaffold-gap.json"
+  ],
+  "summary": [
+    {
+      "name": "prompt-optimizer",
+      "tbd_count": 1,
+      "scaffold_assert_count": 0,
+      "readme_row_present": true
+    },
+    {
+      "name": "agent-transpiler",
+      "tbd_count": 2,
+      "scaffold_assert_count": 0,
+      "readme_row_present": true
+    },
+    {
+      "name": "agent-registry-publisher",
+      "tbd_count": 1,
+      "scaffold_assert_count": 1,
+      "readme_row_present": true
+    },
+    {
+      "name": "agent-permission-simulator",
+      "tbd_count": 2,
+      "scaffold_assert_count": 1,
+      "readme_row_present": true
+    }
+  ],
+  "notes": "Gate0 scaffold-gap inventory for four advisor agents; tbd_lines are body-only (post-frontmatter); description field retained as frontmatter snippet; scaffold_eval_asserts match assertions mentioning scaffold|planned|incomplete"
+}

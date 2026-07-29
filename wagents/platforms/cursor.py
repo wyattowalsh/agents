@@ -27,7 +27,9 @@ from wagents.platforms.base import (
 
 CURSOR_HOME_MCP_PATH = HOME / ".cursor" / "mcp.json"
 CURSOR_HOME_HOOKS_PATH = HOME / ".cursor" / "hooks.json"
+CURSOR_HOME_AGENTS_DIR = HOME / ".cursor" / "agents"
 CURSOR_MANAGED_AGENT_MARKER = "<!-- Managed by wagents. Source: agents/"
+CURSOR_DEFAULT_MODEL = "cursor-grok-4.5-high"
 
 
 def cursor_project_dir() -> Path:
@@ -121,7 +123,7 @@ def _render_cursor_agent(path: Path, overlay: dict[str, Any]) -> str:
     data: dict[str, Any] = {
         "name": name,
         "description": str(overlay.get("description") or frontmatter.get("description") or ""),
-        "model": str(overlay.get("model", "inherit")),
+        "model": CURSOR_DEFAULT_MODEL,
         "readonly": bool(overlay["readonly"]),
     }
     if "is_background" in overlay:
@@ -222,7 +224,7 @@ class Adapter(PlatformAdapter):
         ]
 
     def home_config_paths(self) -> list[Path]:
-        return [CURSOR_HOME_MCP_PATH, CURSOR_HOME_HOOKS_PATH]
+        return [CURSOR_HOME_MCP_PATH, CURSOR_HOME_HOOKS_PATH, CURSOR_HOME_AGENTS_DIR]
 
     def sync_repo(
         self,
@@ -269,6 +271,9 @@ class Adapter(PlatformAdapter):
                 managed_registry_server_names(registry, self.name),
             )
             ctx.write_json(CURSOR_HOME_MCP_PATH, data)
+
+        # Managed-marker projection only — never wipe unmarked user agents.
+        _sync_generated_text_directory(ctx, CURSOR_HOME_AGENTS_DIR, _render_cursor_agents())
 
         rendered_global = render_cursor_global_hooks()
         if rendered_global is None:

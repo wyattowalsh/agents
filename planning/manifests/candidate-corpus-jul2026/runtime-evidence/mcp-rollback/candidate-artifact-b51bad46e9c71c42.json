@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-b51bad46e9c71c42",
+  "mcp_server": "openspec-mcp",
+  "transaction_id": "89c3b268b66a42e19ab673d204b40e31",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "408d03988a536879e8441153c35e3b6d8852f7a455fa8e810e7c346c3f20fc40",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "43dd9eda8d8c5f5926e012d45f4a1d913691cbd62e26a1553b65dfd4736af987",
+  "isolated_rollback_digest": "43dd9eda8d8c5f5926e012d45f4a1d913691cbd62e26a1553b65dfd4736af987",
+  "fresh_absence": {
+    "openspec-mcp": null
+  },
+  "fresh_absence_process_id": 20924,
+  "fresh_absence_output_sha256": "7b4b2712f0606855dea834b13f1b80ae11ba5f4b7c039133f10340d98af8c470",
+  "restored_use_process_id": 21014,
+  "restored_use_output_sha256": "531b5334c25877cdf75b5089d31307aa6b34bf7ad06ec7c90ae2f95b65053336",
+  "restored_use_launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-mcp-entrypoint-rollback-candidate-artifact-b51bad46e9c71c42-b_crpio4/bin/openspec-mcp",
+  "restored_use_launch_realpath": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/openspec-mcp/dist/index.js",
+  "installed_digest": "a91b2bd95433fcf71c1121c41a54bcf15b7b20528c5e5c2d937b720187208566",
+  "status": "passed"
+}

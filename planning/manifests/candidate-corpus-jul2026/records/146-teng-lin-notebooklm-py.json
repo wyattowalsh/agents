@@ -13,22 +13,22 @@
     "library",
     "skill"
   ],
-  "install_or_integration_decision": "integrated_native_surface",
-  "reason": "Source routed to a repo-native terminal integration surface.",
+  "install_or_integration_decision": "integrated_mcp_surface",
+  "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
   "auth_required": true,
   "env_vars_or_credentials": [
-    "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+    "NOTEBOOKLM_PROFILE"
   ],
   "safety_notes": "No elevated keyword risk detected.",
   "attribution_notes": "Preserve attribution to teng-lin/notebooklm-py; verify license before adapting content.",
   "files_added": [
-    "docs/src/authoring/skills/teng-lin-notebooklm-py.mdx",
-    "docs/src/content/docs/skills/catalog/external/teng-lin-notebooklm-py.mdx",
     "planning/manifests/candidate-corpus-jul2026/records/146-teng-lin-notebooklm-py.json"
   ],
   "files_modified": [
+    "config/mcp-registry.json",
     "docs/public/generated-registries/skills-catalog-browser-index.json",
     "docs/public/generated-registries/skills-catalog-index.json",
+    "mcp/mcphub/mcp_settings.json",
     "planning/manifests/candidate-corpus-jul2026/all-records.json",
     "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
     "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
@@ -45,7 +45,7 @@
     "uv run python scripts/promote_candidate_corpus.py --final-check"
   ],
   "skipped_reason": "",
-  "reviewer_notes": "Deep source audit completed at ref main. Final repo-native route integrated_native_surface is recorded; no Skills CLI row applies.",
+  "reviewer_notes": "Deep source audit completed at ref main. Final repo-native route integrated_mcp_surface is recorded; no Skills CLI row applies.",
   "raw_index": 146,
   "normalized_index": "https://github.com/teng-lin/notebooklm-py",
   "duplicate_group": [],
@@ -160,8 +160,11 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [],
-    "mcp_registry_match": false,
+    "catalog_matches": [
+      "docs/src/authoring/skills/notebooklm.mdx",
+      "docs/src/authoring/skills/teng-lin-notebooklm-py.mdx"
+    ],
+    "mcp_registry_match": true,
     "plugin_registry_match": false
   },
   "security_packet": {
@@ -177,7 +180,7 @@
   "compliance_packet": {
     "auth_required": true,
     "env_vars_or_credentials": [
-      "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+      "NOTEBOOKLM_PROFILE"
     ],
     "evidence_source": "deep-source-audit.json"
   },
@@ -196,12 +199,12 @@
   ],
   "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "integrated_native_surface",
-    "reason": "Source routed to a repo-native terminal integration surface."
+    "decision": "integrated_mcp_surface",
+    "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "terminal_route": "integrated-native-surface",
+    "terminal_route": "integrated-mcp-surface",
     "required_before_live_execution": "explicit user-owned command and credential setup",
     "scope": "historical-intake-research-only"
   },
@@ -216,7 +219,7 @@
   "intake_docs_steward_status": "packet-generated",
   "final_integration": {
     "status": "terminal-repo-native-decision",
-    "mutation_applied": false,
+    "mutation_applied": true,
     "catalog_rows": 0,
     "harness_assurance": "harness-install-assurance.json",
     "non_skill_assurance": "non-skill-install-assurance.json",

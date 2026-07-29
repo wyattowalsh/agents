@@ -15,21 +15,16 @@ from wagents import ROOT
 from wagents.context import get_repo_root_optional
 
 CONFIG_RELATIVE_PATH = Path("config") / "rtk-integration.json"
-RTK_REQUIRED_INIT_FLAGS = ("--agent", "--auto-patch", "--codex", "--copilot", "--dry-run", "--gemini", "--opencode")
+RTK_REQUIRED_INIT_FLAGS = ("--agent", "--auto-patch", "--codex", "--dry-run", "--opencode")
 RTK_SYNC_APPLY_TIMEOUT_SECONDS = 120
 SHARED_RTK_INCLUDE_GLOBS = (
     "instructions/*.md",
     "AGENTS.md",
-    "GEMINI.md",
     "CLAUDE.md",
-    ".github/copilot-instructions.md",
-    ".github/instructions/*.instructions.md",
 )
 RTK_INCLUDE_PATTERN = re.compile(r"@RTK\.md\b")
 STACK_TO_RTK_PLATFORM_ALIASES = {
     "grok": "grok-build",
-    "copilot": "github-copilot",
-    "github-copilot-cli": "github-copilot",
 }
 STACK_SYNC_PLATFORM_SKIP = frozenset({"repo-core", "shared", "vscode"})
 

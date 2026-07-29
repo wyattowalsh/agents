@@ -109,24 +109,40 @@ Native and runtime plugins are documented through the harness config docs and th
 
 ### July 2026 candidate plugin activation
 
-The candidate-corpus runtime overlay verifies 16 native plugin artifacts. Their
+The candidate-corpus runtime overlay tracks 17 native plugin artifacts. Their
 portable skill fallbacks are reconciled independently across nine supported
 harnesses; native plugin activation is recorded in
 `config/plugin-extension-registry.json` and must not be inferred from skill
 installation.
 
-Active reviewed Codex plugin surfaces are `brooks-lint`, `codebase-recon`,
-`commit-narrator`, `designer-skill`, `env-lint`, `prompt-to-asset`, `remotion`,
-`roadmapsmith`, `secret-guard`, `universal-design-principles`, and `unslop`.
-`axiom` and `hyperframes` are installed but disabled because their native
-bundles contribute broad lifecycle hooks. `hol-guard-plugin`,
-`papersflow-codex-plugin`, and `zotero-research-tools` also remain disabled at
-their reviewed security or account boundary. Enabling any disabled plugin is a
-separate activation decision; `wagents skills sync` does not make it active.
+Eight reviewed Codex plugins are enabled and fixture-tested: `brooks-lint`,
+`codebase-recon`, `commit-narrator`, `env-lint`, `roadmapsmith`, `secret-guard`,
+`universal-design-principles`, and `unslop`. The runtime receipts bind each
+plugin to its installed version and content digest, exercise named behavior in
+a fresh process, prove read-only or denial boundaries, and rehearse
+remove/absence/re-add rollback in an isolated `CODEX_HOME`. Run
+`scripts/run_candidate_plugin_canaries.py` and
+`scripts/rehearse_candidate_plugin_rollback.py` to reproduce those gates.
+
+Eight other Codex plugins remain installed but disabled: `axiom`,
+`designer-skill`, `hol-guard-plugin`, `hyperframes`,
+`papersflow-codex-plugin`, `prompt-to-asset`, `remotion`, and
+`zotero-research-tools`. `opencode-plugin-openspec` is registered but remains
+disabled and uninstalled. These boundaries cover broad lifecycle hooks,
+overlapping workflow ownership, account-scoped behavior, or manual activation
+policy. Enabling any of them is a separate reviewed decision; `wagents skills
+sync` does not make a native plugin active.
+
+The successor activation ledger currently accepts 54 of 65 CLI, library, MCP,
+and plugin artifacts. The remaining 11 are the nine disabled plugins above plus
+the credential-gated Langfuse and Papersflow MCP artifacts. Consequently,
+`requested_full_usability` remains false even though repo integration and skill
+reconciliation are complete.
 
 Per-target package pins, resolved paths, smoke-test method, auth variable names,
 and activation state are recorded in
-`planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json`.
+`planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json`
+and `runtime-activation-assurance.json`.
 
 ## Skill Documentation
 

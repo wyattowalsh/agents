@@ -14,7 +14,7 @@ docs_density: standard
 
 import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-<Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> <Badge text="github-copilot" variant="default" />
+<Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> <Badge text="claude-code" variant="default" />
 
 > Block edits to protected paths and secret-bearing files.
 
@@ -29,7 +29,7 @@ import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 | timeout | `5` |
 | mode | `enforce` |
 | harnesses | `[
-  "github-copilot"
+  "claude-code"
 ]` |
 | bundle_group | `fleet-pre-tool-enforce` |
 | bundle_mode | `enforce-chain` |
@@ -52,7 +52,7 @@ import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
   "bundle_group": "fleet-pre-tool-enforce",
   "bundle_mode": "enforce-chain",
   "harnesses": [
-    "github-copilot"
+    "claude-code"
   ]
 }
 ```

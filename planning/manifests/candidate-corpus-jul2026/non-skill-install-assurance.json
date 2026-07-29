@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "generated_at": "2026-07-16T02:51:56.174599+00:00",
+  "generated_at": "2026-07-29T09:20:56.433107+00:00",
   "assurance_kind": "candidate-non-skill-live-install",
   "complete": true,
   "unique_target_count": 289,
   "source_fingerprints": {
-    "integration_decisions": "d08b45fd02a9ad3b3df0b8cb5f74cb751d48d8103456e838eda7e074a18a55d4",
-    "mcp_registry": "453d02e512fead2b3e9efd64dee07bac1eb62f0a160cd9fcb6ecd8ec6f67d585",
-    "plugin_registry": "fa4c2fc9430a93edd50aefbf999744338bbf8b697f171068c466b2d5046a7730",
-    "tooling_policy": "5361f4948a53df1cc510dd829fb1c864339e8b1808906be1eecaf258ece5adee"
+    "integration_decisions": "e04eec6051dda23cc3c3bf27b7579c40efcf984df69f6009353eb92a63b968f2",
+    "mcp_registry": "e7e8790897da9662e049d380d8e75e2d70656aff7836f51aa0e3bf7d8e949e16",
+    "plugin_registry": "b220ee850c38965cee1ea8ee0a96ad028a2fa85e09c6378d0bd4a46e282145a4",
+    "tooling_policy": "0d556d96b6c0928834ce5f2fd92dfd676dcf7622443d1681f484a3a12757cc9e"
   },
   "items": [
     {
@@ -22,7 +22,7 @@
         "library",
         "skill"
       ],
-      "decision": "integrated_mcp_surface",
+      "decision": "integrated_existing_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "installed-mixed-runtime",
       "artifacts": [
@@ -203,7 +203,7 @@
           ],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/mcp-excalidraw-server/dist/bin.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/mcp-excalidraw-server/dist/bin.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -276,7 +276,7 @@
           "config_surfaces": [],
           "notes": "Never probe refine with --help or --version because those flags default to live mode.",
           "resolved_paths": [
-            "~/.local/lib/node_modules/transitions-refine/bin/cli.mjs"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/transitions-refine/bin/cli.mjs"
           ],
           "path_exists": true,
           "smoke_status": "passed",
@@ -519,7 +519,7 @@
           "config_surfaces": [],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/@tanstack/cli/dist/bin.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/@tanstack/cli/dist/bin.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -606,7 +606,7 @@
           "config_surfaces": [],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/@plannotator/tot/dist/cli.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/@plannotator/tot/dist/cli.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -736,7 +736,7 @@
           "config_surfaces": [],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/better-icons/dist/index.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/better-icons/dist/index.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -764,7 +764,7 @@
           ],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/better-icons/dist/index.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/better-icons/dist/index.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -858,7 +858,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_mcp_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "installed-mixed-runtime",
       "artifacts": [
@@ -880,7 +880,7 @@
           ],
           "notes": "No --help or --version probe is safe; every invocation starts MCP stdio.",
           "resolved_paths": [
-            "~/.local/lib/node_modules/axiom-mcp/dist/index.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/axiom-mcp/dist/index.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -1496,7 +1496,7 @@
           "config_surfaces": [],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/newsjack/bin/newsjack"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/newsjack/bin/newsjack"
           ],
           "path_exists": true,
           "smoke_status": "passed",
@@ -1595,7 +1595,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_mcp_surface",
+      "decision": "integrated_skill_catalog_surface",
       "integration_classification": "integrated-reference",
       "runtime_disposition": "installed-mixed-runtime",
       "artifacts": [
@@ -1728,7 +1728,7 @@
           "config_surfaces": [],
           "notes": "The npm gitHead differs from current public main; registry integrity is retained as provenance evidence.",
           "resolved_paths": [
-            "~/.local/lib/node_modules/@opendirectory.dev/skills/dist/index.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/@opendirectory.dev/skills/dist/index.js"
           ],
           "path_exists": true,
           "smoke_status": "passed",
@@ -2740,8 +2740,8 @@
         "library",
         "skill"
       ],
-      "decision": "integrated_existing_surface",
-      "integration_classification": "installable-existing",
+      "decision": "integrated_skill_catalog_surface",
+      "integration_classification": "integrated-reference",
       "runtime_disposition": "integrated-non-executable-surface",
       "artifacts": [],
       "config_surfaces": [],
@@ -2913,7 +2913,7 @@
           "config_surfaces": [],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/deslop-cli/dist/cli.mjs"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/deslop-cli/dist/cli.mjs"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -2962,7 +2962,7 @@
           "config_surfaces": [],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/react-doctor/bin/react-doctor.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/react-doctor/bin/react-doctor.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -3013,7 +3013,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_existing_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "registered-plugin",
       "artifacts": [
@@ -3059,7 +3059,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_existing_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "registered-plugin",
       "artifacts": [
@@ -3323,7 +3323,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_existing_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "installed-mixed-runtime",
       "artifacts": [
@@ -3698,8 +3698,8 @@
         "library",
         "skill"
       ],
-      "decision": "integrated_native_surface",
-      "integration_classification": "integrated-reference",
+      "decision": "integrated_mcp_surface",
+      "integration_classification": "installable-existing",
       "runtime_disposition": "installed-cli",
       "artifacts": [
         {
@@ -3918,7 +3918,7 @@
           ],
           "notes": "Device and simulator automation remains disabled pending target, signing, privacy, and destructive-action review.",
           "resolved_paths": [
-            "~/.local/lib/node_modules/@mobilenext/mobile-mcp/lib/index.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/@mobilenext/mobile-mcp/lib/index.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -3968,7 +3968,7 @@
           "config_surfaces": [],
           "notes": "Installed as an inspection client, never configured as an MCP server.",
           "resolved_paths": [
-            "~/.local/lib/node_modules/@modelcontextprotocol/inspector/cli/build/cli.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/@modelcontextprotocol/inspector/cli/build/cli.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -4006,7 +4006,7 @@
           "kind": "cli",
           "package_manager": "npm",
           "package_name": "hyperframes",
-          "version": "0.7.59",
+          "version": "0.7.61",
           "executables": [
             "hyperframes"
           ],
@@ -4017,7 +4017,7 @@
           "config_surfaces": [],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/hyperframes/dist/cli.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/hyperframes/bin/hyperframes.mjs"
           ],
           "path_exists": true,
           "smoke_status": "passed",
@@ -4031,7 +4031,7 @@
           "kind": "plugin",
           "package_manager": "codex-plugin",
           "package_name": "hyperframes@hyperframes-upstream",
-          "version": "0.7.59",
+          "version": "0.7.61",
           "executables": [],
           "mcp_server": "",
           "plugin_id": "hyperframes@hyperframes-upstream",
@@ -4205,7 +4205,7 @@
           ],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/@antv/mcp-server-chart/build/index.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/@antv/mcp-server-chart/build/index.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -4264,7 +4264,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_mcp_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "installed-mixed-runtime",
       "artifacts": [
@@ -4286,7 +4286,7 @@
           ],
           "notes": "Version probing is safe; no-argument invocation starts MCP stdio.",
           "resolved_paths": [
-            "~/.local/lib/node_modules/designer-skill-mcp/dist/index.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/designer-skill-mcp/dist/index.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -4300,11 +4300,11 @@
           "kind": "plugin",
           "package_manager": "codex-plugin",
           "package_name": "designer-skill@awesome-codex-plugins",
-          "version": "0.13.0",
+          "version": "0.14.0",
           "executables": [],
           "mcp_server": "",
           "plugin_id": "designer-skill@awesome-codex-plugins",
-          "plugin_enabled": true,
+          "plugin_enabled": false,
           "auth_env_names": [],
           "config_surfaces": [
             "config/plugin-extension-registry.json"
@@ -4341,7 +4341,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_existing_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "registered-plugin",
       "artifacts": [
@@ -4387,7 +4387,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_existing_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "registered-disabled-plugin",
       "artifacts": [
@@ -4434,7 +4434,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_existing_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "registered-plugin",
       "artifacts": [
@@ -4502,7 +4502,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_native_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "integrated-reference",
       "runtime_disposition": "registered-plugin",
       "artifacts": [
@@ -4635,7 +4635,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_mcp_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "integrated-reference",
       "runtime_disposition": "configured-disabled-mcp",
       "artifacts": [
@@ -4657,7 +4657,7 @@
           ],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/nullcost-plugin/bin/nullcost-plugin.mjs"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/nullcost-plugin/bin/nullcost-plugin.mjs"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -4691,7 +4691,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_mcp_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "installed-mixed-runtime",
       "artifacts": [
@@ -4711,7 +4711,7 @@
           "config_surfaces": [],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/prompt-to-asset/dist/index.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/prompt-to-asset/dist/index.js"
           ],
           "path_exists": true,
           "smoke_status": "passed",
@@ -4763,7 +4763,7 @@
           ],
           "notes": "MCP defaults to tracked dry-run mode; provider spend and output writes require explicit approval.",
           "resolved_paths": [
-            "~/.local/lib/node_modules/prompt-to-asset/dist/index.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/prompt-to-asset/dist/index.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -4781,7 +4781,7 @@
           "executables": [],
           "mcp_server": "",
           "plugin_id": "prompt-to-asset@awesome-codex-plugins",
-          "plugin_enabled": true,
+          "plugin_enabled": false,
           "auth_env_names": [],
           "config_surfaces": [
             "config/plugin-extension-registry.json"
@@ -4864,9 +4864,9 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_existing_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
-      "runtime_disposition": "registered-plugin",
+      "runtime_disposition": "registered-disabled-plugin",
       "artifacts": [
         {
           "kind": "plugin",
@@ -4876,7 +4876,7 @@
           "executables": [],
           "mcp_server": "",
           "plugin_id": "remotion@awesome-codex-plugins",
-          "plugin_enabled": true,
+          "plugin_enabled": false,
           "auth_env_names": [],
           "config_surfaces": [
             "config/plugin-extension-registry.json"
@@ -4911,7 +4911,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_existing_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "registered-disabled-plugin",
       "artifacts": [
@@ -4959,7 +4959,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_existing_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "registered-plugin",
       "artifacts": [
@@ -4967,7 +4967,7 @@
           "kind": "plugin",
           "package_manager": "codex-plugin",
           "package_name": "roadmapsmith@awesome-codex-plugins",
-          "version": "0.12.0",
+          "version": "1.2.2",
           "executables": [],
           "mcp_server": "",
           "plugin_id": "roadmapsmith@awesome-codex-plugins",
@@ -5066,7 +5066,7 @@
           "config_surfaces": [],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/ralphy-spec/bin/ralphy-spec.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/ralphy-spec/bin/ralphy-spec.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -5135,7 +5135,7 @@
           "config_surfaces": [],
           "notes": "Native watcher and SQLite lifecycle scripts were allowlisted; optional node-llama-cpp postinstall remained blocked.",
           "resolved_paths": [
-            "~/.local/lib/node_modules/openspecui/dist/cli.mjs"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/openspecui/dist/cli.mjs"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -5246,7 +5246,7 @@
           "config_surfaces": [],
           "notes": "",
           "resolved_paths": [
-            "~/.bun/install/global/node_modules/@sflueckiger/specboard/cli.ts"
+            "~/.local/share/wagents/candidate-runtime/bun/node_modules/@sflueckiger/specboard/dist/cli.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -5292,7 +5292,7 @@
           "config_surfaces": [],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/openspec-playwright/bin/openspec-pw.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/openspec-playwright/bin/openspec-pw.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -5486,7 +5486,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_existing_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "registered-plugin",
       "artifacts": [
@@ -7149,7 +7149,7 @@
           "config_surfaces": [],
           "notes": "",
           "resolved_paths": [
-            "~/.bun/install/global/node_modules/@iannuttall/dotagents/dist/cli.js"
+            "~/.local/share/wagents/candidate-runtime/bun/node_modules/@iannuttall/dotagents/dist/cli.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -7268,7 +7268,7 @@
         "plugin",
         "skill"
       ],
-      "decision": "integrated_existing_surface",
+      "decision": "integrated_plugin_surface",
       "integration_classification": "installable-existing",
       "runtime_disposition": "installed-mixed-runtime",
       "artifacts": [
@@ -7304,7 +7304,9 @@
           "mcp_server": "papersflow",
           "plugin_id": "",
           "plugin_enabled": null,
-          "auth_env_names": [],
+          "auth_env_names": [
+            "PAPERSFLOW_OAUTH_ACCOUNT"
+          ],
           "config_surfaces": [
             "config/mcp-registry.json:papersflow",
             "mcp/mcphub/mcp_settings.json"
@@ -7326,7 +7328,9 @@
         "mcp/mcphub/mcp_settings.json"
       ],
       "activation_state": "verified",
-      "auth_env_names": [],
+      "auth_env_names": [
+        "PAPERSFLOW_OAUTH_ACCOUNT"
+      ],
       "blocker": "",
       "reason": "Audited runtime artifacts are installed or registered with their recorded activation boundary."
     },
@@ -7462,7 +7466,7 @@
           ],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/mcp-dashboards/dist/index.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/mcp-dashboards/dist/index.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -7599,8 +7603,8 @@
           ],
           "notes": "",
           "resolved_paths": [
-            "~/.local/lib/node_modules/semiotic/ai/cli.js",
-            "~/.local/lib/node_modules/semiotic/ai/dist/mcp-server.js"
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/semiotic/ai/cli.js",
+            "~/.local/share/wagents/candidate-runtime/npm/node_modules/semiotic/ai/dist/mcp-server.js"
           ],
           "path_exists": true,
           "smoke_status": "path-or-config-verified",
@@ -7729,8 +7733,8 @@
       "installed-mixed-runtime": 10,
       "integrated-non-executable-surface": 213,
       "not-applicable-skill-only": 20,
-      "registered-disabled-plugin": 2,
-      "registered-plugin": 8
+      "registered-disabled-plugin": 3,
+      "registered-plugin": 7
     },
     "artifact_kind_counts": {
       "cli": 29,

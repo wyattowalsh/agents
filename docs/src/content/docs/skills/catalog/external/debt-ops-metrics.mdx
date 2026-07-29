@@ -9,9 +9,9 @@ docs_density: standard
 license: "MIT"
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a claude-code codex crush cursor grok opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "debt-ops-metrics"
 ---
 
@@ -24,15 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="debt-ops-metrics"
   description="Summarize technical-debt metrics from existing local debt registry data without initializing or mutating registries."
-  installCommand={`npx skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a claude-code codex crush cursor grok opencode`}
   installLabel="Install"
   usage="/debt-ops-metrics"
-  badges={[{ text: "debt-ops-metrics", variant: "note" }, { text: "303 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "debt-ops-metrics", variant: "note" }, { text: "294 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/debt-ops-metrics.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -40,11 +40,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/debt-ops-m
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a claude-code codex crush cursor grok opencode
 ```
 
 ## Trust / Audit
@@ -86,7 +86,7 @@ This row integrates `bcanfield/agentic-tech-debt` as an installable curated exte
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -107,13 +107,13 @@ title: "Debt Ops Metrics"
 source_kind: "curated-external"
 source: "bcanfield/agentic-tech-debt"
 install_source: "bcanfield/agentic-tech-debt"
-install_command: "npx skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a claude-code codex crush cursor grok opencode"
 install_skill_name: "debt-ops-metrics"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/bcanfield/agentic-tech-debt"
 selector_mode: "named"
 audit_date: "2026-07-07"
@@ -145,7 +145,7 @@ This row integrates `bcanfield/agentic-tech-debt` as an installable curated exte
 - Normalized URL: [https://github.com/bcanfield/agentic-tech-debt](https://github.com/bcanfield/agentic-tech-debt)
 - Catalog skill id: `debt-ops-metrics`
 - Upstream install selector: `debt-ops-metrics`
-- Install command: `npx skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Install command: `npx skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a claude-code codex crush cursor grok opencode`
 - Inspected commit SHA: `2c931cd26af3f9a3dac3a138ae2a59ab4df67dff`
 - License status: `MIT`
 - Source-list evidence: `source-list-found`
@@ -154,7 +154,7 @@ This row integrates `bcanfield/agentic-tech-debt` as an installable curated exte
 ## Local Install Evidence
 
 - Executed command: `npx --yes skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics --dry-run`
-- Executed command: `npx --yes skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a antigravity -a claude-code -a codex -a crush -a cursor -a gemini-cli -a github-copilot -a opencode`
+- Executed command: `npx --yes skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a claude-code -a codex -a crush -a cursor -a opencode`
 - Installed path: `~/.agents/skills/debt-ops-metrics`
 - Installed path: `~/.claude/skills/debt-ops-metrics`
 - Installed path: `~/.config/crush/skills/debt-ops-metrics`

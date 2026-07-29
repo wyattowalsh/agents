@@ -1,8 +1,8 @@
 ---
 name: planner
 description: Create a codebase-grounded implementation plan before coding.
-tools: all
-permissionMode: default
+tools: Read, Grep, Glob
+permissionMode: plan
 ---
 
 ## Role

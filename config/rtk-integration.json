@@ -83,49 +83,6 @@
       ],
       "notes": "No shell hook surface; use global Codex RTK awareness only, never shared-corpus @RTK.md includes."
     },
-    "gemini-cli": {
-      "tier": "A",
-      "mode": "full-hook",
-      "init": [
-        "rtk init -g --gemini --auto-patch"
-      ],
-      "show": [
-        "rtk init --show"
-      ],
-      "expected_show_any": [
-        "Hook:",
-        "RTK.md"
-      ],
-      "notes": "RTK writes Gemini hook and settings surfaces outside repo."
-    },
-    "antigravity": {
-      "tier": "D",
-      "mode": "rules-or-agent-target",
-      "init": [
-        "rtk init -g --agent antigravity --auto-patch"
-      ],
-      "show": [
-        "rtk init --show"
-      ],
-      "expected_show_any": [
-        "RTK"
-      ],
-      "notes": "Verify live Antigravity behavior before treating this as a full hook tier."
-    },
-    "github-copilot": {
-      "tier": "C",
-      "mode": "deny-suggest",
-      "init": [
-        "rtk init -g --copilot --auto-patch"
-      ],
-      "show": [
-        "rtk init --show"
-      ],
-      "expected_show_any": [
-        "RTK"
-      ],
-      "notes": "Copilot CLI may deny with suggestion rather than rewrite automatically."
-    },
     "grok-build": {
       "tier": "custom",
       "mode": "repo-shim",

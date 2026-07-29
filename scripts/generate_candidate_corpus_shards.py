@@ -43,6 +43,20 @@ EXPECTED_UNIQUE_COUNT = 289
 MICRO_WAVE_SIZE = 49
 MAX_WORKERS = 12
 UNRESOLVED_INSPECTED_SHA = "unresolved-inaccessible-source"
+SUCCESSOR_ASSURANCE_SCRIPTS = (
+    "record_candidate_catalog_closure.py",
+    "verify_candidate_plugin_provenance.py",
+    "run_candidate_cli_canaries.py",
+    "rehearse_candidate_cli_rollback.py",
+    "run_candidate_mcp_canaries.py",
+    "rehearse_candidate_mcp_rollback.py",
+    "run_candidate_plugin_canaries.py",
+    "rehearse_candidate_plugin_rollback.py",
+    "run_candidate_docs_assurance.py",
+    "record_candidate_final_closure.py",
+    "record_candidate_mcp_activation.py",
+    "record_candidate_runtime_activation.py",
+)
 CANONICAL_URL_OVERRIDES = {
     "https://github.com/NVIDIA/skills-": {
         "normalized_url": "https://github.com/NVIDIA/skills",
@@ -1073,10 +1087,12 @@ def build_integration_targets(
         classifications[classification] += 1
         raw_indexes = group["raw_indexes"]
         covered_raw_indexes.update(raw_indexes)
-        generated_reference = classification in {"integrated-reference", "integrated-quarantine-reference"}
+        generated_reference = classification == "integrated-reference"
         reference_name = stable_names[normalized_url] if generated_reference else ""
         reference_path = f"docs/src/authoring/skills/{reference_name}.mdx" if generated_reference else ""
-        catalog_rows = list(coverage_item.get("existing_rows", []))
+        catalog_rows = (
+            [] if classification == "integrated-quarantine-reference" else list(coverage_item.get("existing_rows", []))
+        )
         if generated_reference:
             catalog_rows = [
                 {
@@ -2601,6 +2617,15 @@ def write_matrices(
     return stats
 
 
+def successor_assurance_summary_lines() -> list[str]:
+    """Render the source scripts that own successor runtime assurance."""
+    return [
+        "Successor runtime assurance is source-owned by:",
+        "",
+        *[f"- `scripts/{name}`" for name in SUCCESSOR_ASSURANCE_SCRIPTS],
+    ]
+
+
 def write_reports(
     stats: dict[str, Any],
     decisions: list[dict[str, Any]],
@@ -2738,10 +2763,10 @@ def write_reports(
         "- `uv run wagents docs lint`",
         "- `uv run wagents docs build`",
         (
-            "- `OPENSPEC_TELEMETRY=0 npx -y @fission-ai/openspec@latest "
-            "validate integrate-candidate-corpus-jul2026 --strict --json`"
+            "- `uv run wagents openspec status --change "
+            "activate-candidate-corpus-runtime-jul2026 --format json`"
         ),
-        "- `uv run wagents openspec validate`",
+        "- `uv run wagents openspec validate --strict --format json`",
     ]
     validation_path = MANIFEST_DIR / "validation-report.md"
     existing_validation = validation_path.read_text(encoding="utf-8") if validation_path.exists() else ""
@@ -2877,16 +2902,27 @@ def write_reports(
         "source-driven regeneration; generated pages are never hand-edited."
     )
     docs_summary.append("")
+    docs_summary.extend(successor_assurance_summary_lines())
+    docs_summary.append("")
     docs_summary.append(
         "Full integration tracking lives in `existing-integration-coverage.json`, `promotion-wave-plan.json`, "
         "`research-task-graph.json`, `research-packet-schema.json`, `raw-research-packets.json`, "
         "`unique-target-research-packets.json`, `promotion-gate-matrix.json`, "
         "`live-install-command-preview.json`, `github-metadata-audit.json`, `promotion-readiness-queue.json`, "
         "`subagent-wave-queue.json`, `safe-wave-source-list-evidence.json`, `harness-install-assurance.json`, "
-        "`non-skill-install-assurance.json`, `auth-matrix.json`, `compliance-auth-matrix.json`, "
-        "`full-integration-progress.json`, and `full-integration-state.md`. Runtime configuration and public "
-        "documentation are tracked through `config/mcp-registry.json`, `config/plugin-extension-registry.json`, "
-        "`docs/ai-tools/mcphub.md`, and the generated tools, install, MCP registry, and catalog pages."
+        "`non-skill-install-assurance.json`, `runtime-activation-receipts.json`, "
+        "`runtime-activation-assurance.json`, `plugin-provenance-lock.json`, "
+        "`plugin-provenance-audit-evidence.json`, `docs-closure-evidence.json`, `review-closure-evidence.json`, "
+        "`auth-matrix.json`, `compliance-auth-matrix.json`, `full-integration-progress.json`, and "
+        "`full-integration-state.md`. Runtime configuration and public documentation are tracked through "
+        "`config/mcp-registry.json`, `config/plugin-extension-registry.json`, `docs/ai-tools/mcphub.md`, and the "
+        "generated tools, install, MCP registry, and catalog pages."
+    )
+    docs_summary.append(
+        "Runtime rollback evidence is governed by `runtime-rollback-journal.schema.json`, "
+        "`runtime-rollback-commit-marker.schema.json`, and `runtime-rollback-failure-marker.schema.json`: "
+        "a successful journal remains `commit-pending` until an immutable post-CAS passed marker binds its "
+        "exact artifact set and receipt-store transaction."
     )
     (MANIFEST_DIR / "docs-steward-surface-summary.md").write_text("\n".join(docs_summary) + "\n", encoding="utf-8")
     lines = [

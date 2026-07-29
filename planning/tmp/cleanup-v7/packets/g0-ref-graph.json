@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "paths_written": [
+    "planning/tmp/cleanup-v7/ref-graph.json"
+  ],
+  "notes": "3 trees+authoring live; 16 live_must_scrub; lifecycle eval hit; test fixtures OK to keep"
+}

@@ -8,9 +8,9 @@ composed: false
 docs_density: standard
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a claude-code codex crush cursor opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "plannotator-review"
 ---
 
@@ -23,7 +23,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="plannotator-review"
   description="Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.ai/install."
-  installCommand={`npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a claude-code codex crush cursor opencode`}
   installLabel="Install"
   usage="/plannotator-review"
   badges={[{ text: "plannotator-review", variant: "note" }, { text: "45 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
@@ -31,7 +31,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/plannotator-review.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -39,11 +39,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/plannotato
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a claude-code codex crush cursor opencode
 ```
 
 ## Trust / Audit
@@ -80,7 +80,7 @@ Terminal diff review inside agent; GitHub PR review flows; other visual diff or 
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -105,8 +105,8 @@ status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-install_command: "npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+install_command: "npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a claude-code codex crush cursor opencode"
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 notes: "Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.ai/install.sh | bash` or `uv run wagents grok plannotator install` for the `plannotator` CLI binary. Grok uses skills plus repo-synced hooks in `config/grok-plannotator-hooks.json`; there is no Grok npm plugin equivalent to OpenCode's `@plannotator/opencode`."
 risk_notes: "Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.ai/install.sh | bash` or `uv run wagents grok plannotator install` for the `plannotator` CLI binary. Grok uses skills plus repo-synced hooks in `config/grok-plannotator-hooks.json`; there is no Grok npm plugin equivalent to OpenCode's `@plannotator/opencode`."
 promotion_policy: "Install only after trust gate; audit again before repo promotion."

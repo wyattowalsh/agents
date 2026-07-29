@@ -1,0 +1,34 @@
+{
+  "packet": "sync-manifest",
+  "wave": "W1a",
+  "status": "ok",
+  "paths_written": [
+    "planning/tmp/cleanup-v7/packets/sync-manifest.json"
+  ],
+  "paths_inspected": [
+    "config/sync-manifest.json",
+    "planning/tmp/cleanup-v7/write-locks.json",
+    "planning/tmp/cleanup-v7/keep-matrix.json",
+    "planning/tmp/cleanup-v7/g8-ext.json",
+    "planning/manifests/remove-three-harnesses/dirty-map.md",
+    "planning/manifests/remove-three-harnesses/g1-inventories.md"
+  ],
+  "manifest_edit": "none",
+  "removed_harness_refs_remaining": [],
+  "preserved": {
+    "crush_home": [
+      "~/.config/crush/crush.json",
+      "~/.config/crush/skills"
+    ],
+    "opencode_home_and_repo": [
+      "${REPO_ROOT}/opencode.json",
+      "~/.config/opencode/opencode.json"
+    ],
+    "kept_out_of_sync_manifest_by_design": [
+      "opencode auth plugins (live in opencode.json)",
+      "gemini-api (authoring/catalog)",
+      "scripts/mcphub/wrappers/candidate-*"
+    ]
+  },
+  "notes": "Working-tree config/sync-manifest.json already aligned for three-harness removal: no path/mode entries for gemini-cli, antigravity, or github-copilot / Copilot projections (no matches for gemini|copilot|antigravity|GEMINI.md|platforms/{gemini,copilot,antigravity}|~/.gemini|~/.copilot|.antigravity|.github/copilot*). Crush home paths, Cursor/Codex/OpenCode/Grok/LM Studio/Cherry/Claude surfaces remain. No further edit required this packet; receipt only. Shell/git-diff verification blocked by cursor-before-shell-execution-guard fail-closed; verification via ripgrep path inventory + keep-matrix cross-check."
+}

@@ -9,9 +9,9 @@ docs_density: standard
 license: "NOASSERTION (Other)"
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add https://github.com/NVIDIA/skills --skill tao-train-depth-anything-v2 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode"
+install_command: "npx skills add https://github.com/NVIDIA/skills --skill tao-train-depth-anything-v2 -y -g -a claude-code codex crush cursor opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "tao-train-depth-anything-v2"
 ---
 
@@ -27,12 +27,12 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   installCommand={`npx skills add https://github.com/NVIDIA/skills --skill tao-train-depth-anything-v2 -y -g`}
   installLabel="Install"
   usage="/tao-train-depth-anything-v2"
-  badges={[{ text: "tao-train-depth-anything-v2", variant: "note" }, { text: "452 words", variant: "default" }, { text: "NOASSERTION (Other)", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "tao-train-depth-anything-v2", variant: "note" }, { text: "443 words", variant: "default" }, { text: "NOASSERTION (Other)", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/tao-train-depth-anything-v2.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -40,7 +40,7 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/tao-train-
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
@@ -86,7 +86,7 @@ This row integrates `NVIDIA/skills` as an installable curated external skill aft
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -107,13 +107,13 @@ title: "Tao Train Depth Anything V2"
 source_kind: "curated-external"
 source: "NVIDIA/skills"
 install_source: "https://github.com/NVIDIA/skills"
-install_command: "npx skills add https://github.com/NVIDIA/skills --skill tao-train-depth-anything-v2 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode"
+install_command: "npx skills add https://github.com/NVIDIA/skills --skill tao-train-depth-anything-v2 -y -g -a claude-code codex crush cursor opencode"
 install_skill_name: "tao-train-depth-anything-v2"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/NVIDIA/skills"
 selector_mode: "named"
 audit_date: "2026-07-08"
@@ -145,7 +145,7 @@ This row integrates `NVIDIA/skills` as an installable curated external skill aft
 - Normalized URL: [https://github.com/NVIDIA/skills](https://github.com/NVIDIA/skills)
 - Catalog skill id: `tao-train-depth-anything-v2`
 - Upstream install selector: `tao-train-depth-anything-v2`
-- Install command: `npx skills add https://github.com/NVIDIA/skills --skill tao-train-depth-anything-v2 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Install command: `npx skills add https://github.com/NVIDIA/skills --skill tao-train-depth-anything-v2 -y -g -a claude-code codex crush cursor opencode`
 - Inspected commit SHA: `153b14bfcb63386a00a5ec187d2208ac0ba52ea2`
 - License status: `NOASSERTION (Other)`
 - Source-list evidence: `source-list-found`
@@ -154,9 +154,9 @@ This row integrates `NVIDIA/skills` as an installable curated external skill aft
 ## Local Install Evidence
 
 - Executed command: `npx --yes skills add https://github.com/NVIDIA/skills --list`
-- Executed command: `npx skills add https://github.com/NVIDIA/skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode # failed: Skills CLI reported invalid agent grok; Grok is covered by repo Claude Code mirror/discovery route`
-- Executed command: `npx skills add https://github.com/NVIDIA/skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
-- Executed command: `npx skills add https://github.com/NVIDIA/skills --help # unexpectedly performed project-local all-skill install; recorded as local install evidence`
+- Executed command: `npx skills add https://github.com/NVIDIA/skills -y -g -a claude-code codex crush cursor grok opencode '#' failed: Skills CLI reported invalid agent 'grok;' Grok is covered by repo Claude Code mirror/discovery route`
+- Executed command: `npx skills add https://github.com/NVIDIA/skills -y -g -a claude-code codex crush cursor opencode`
+- Executed command: `npx skills add https://github.com/NVIDIA/skills --help '#' unexpectedly performed project-local all-skill 'install;' recorded as local install evidence`
 - Installed path: `~/.agents/skills/tao-train-depth-anything-v2`
 - Installed path: `~/.claude/skills/tao-train-depth-anything-v2`
 - Installed path: `~/.config/crush/skills/tao-train-depth-anything-v2`

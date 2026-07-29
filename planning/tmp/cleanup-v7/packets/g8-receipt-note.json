@@ -1,0 +1,21 @@
+{
+  "packet": "g8-receipt-note",
+  "wave": "W1a",
+  "status": "ok",
+  "paths_written": [
+    "planning/manifests/remove-three-harnesses/g8-dod.md",
+    "planning/tmp/cleanup-v7/packets/g8-receipt-note.json"
+  ],
+  "validate_evidence": {
+    "log": "planning/tmp/cleanup-v7/w1a-validate.log",
+    "exit_code": 0,
+    "tail": "All validations passed"
+  },
+  "g8_status": "PASS",
+  "notes": [
+    "Updated g8-dod Gate G8 from PARTIAL → PASS citing w1a-validate.log.",
+    "Cleared stale EXT-085…088 quarantine blocker notes; DoD validate checkbox checked.",
+    "No invent MDX; quarantine not weakened.",
+    "Accounting retry after prior Cursor worker-host hook/shell failures."
+  ]
+}

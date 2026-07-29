@@ -74,39 +74,6 @@
       "promotion_blocker": "Executable adapter + validate fixtures present; promote to validated after CI matrix green."
     },
     {
-      "harness_id": "github-copilot-web",
-      "owner_change": "agents-c04-copilot-harness",
-      "current_support_tier": "repo-present-validation-required",
-      "fixture_status": "fixture-plan-only",
-      "fixture_classes": [
-        "prompt-fixture",
-        "instruction-fixture",
-        "no-fabricated-installed-skill-inventory-fixture"
-      ],
-      "validation_commands": [
-        "uv run wagents validate"
-      ],
-      "rollback_coverage": "not-applicable",
-      "promotion_blocker": "Requires web/coding-agent fixture evidence and proof that installed-skill inventory is discovered, not inferred."
-    },
-    {
-      "harness_id": "github-copilot-cli",
-      "owner_change": "agents-c04-copilot-harness",
-      "current_support_tier": "repo-present-validation-required",
-      "fixture_status": "fixture-executable",
-      "fixture_classes": [
-        "cli-config-fixture",
-        "mcp-fixture",
-        "no-fabricated-installed-skill-inventory-fixture"
-      ],
-      "validation_commands": [
-        "uv run wagents validate",
-        "uv run pytest tests/test_harness_plan_fixtures.py -q -k 'copilot or merge_copilot'"
-      ],
-      "rollback_coverage": "present",
-      "promotion_blocker": "Requires CLI config, MCP, and installed-skill inventory fixtures before validated support claims."
-    },
-    {
       "harness_id": "opencode",
       "owner_change": "agents-c04-opencode-gemini-harness",
       "current_support_tier": "repo-present-validation-required",
@@ -125,41 +92,6 @@
       ],
       "rollback_coverage": "present",
       "promotion_blocker": "Executable adapter + validate fixtures present; promote to validated after CI matrix green."
-    },
-    {
-      "harness_id": "gemini-cli",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "current_support_tier": "repo-present-validation-required",
-      "fixture_status": "fixture-executable",
-      "fixture_classes": [
-        "instruction-fixture",
-        "skills-fixture",
-        "mcp-fixture",
-        "openspec-wrapper-fixture"
-      ],
-      "validation_commands": [
-        "uv run wagents validate",
-        "uv run wagents openspec validate",
-        "uv run pytest tests/test_harness_plan_fixtures.py -q -k 'gemini or render_gemini'"
-      ],
-      "rollback_coverage": "present",
-      "promotion_blocker": "Requires Gemini CLI instruction, skills, MCP, and OpenSpec wrapper fixtures before validated support claims."
-    },
-    {
-      "harness_id": "antigravity",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "current_support_tier": "repo-present-validation-required",
-      "fixture_status": "docs-ledger-required",
-      "fixture_classes": [
-        "first-party-docs-ledger",
-        "gemini-compatibility-caveat-fixture",
-        "mcp-merge-fixture"
-      ],
-      "validation_commands": [
-        "uv run wagents validate"
-      ],
-      "rollback_coverage": "planned",
-      "promotion_blocker": "Requires first-party Antigravity evidence and separate MCP merge fixtures before validated support claims."
     },
     {
       "harness_id": "cursor-editor",
@@ -330,17 +262,19 @@
       "harness_id": "crush",
       "owner_change": "agents-c04-experimental-harnesses",
       "current_support_tier": "repo-present-validation-required",
-      "fixture_status": "fixture-plan-only",
+      "fixture_status": "fixture-executable",
       "fixture_classes": [
-        "retain-vs-experimental-decision",
-        "config-fixture",
-        "skills-fixture"
+        "adapter-dispatch-fixture",
+        "harness-specific-mcp-fixture",
+        "additive-skills-bridge-fixture",
+        "installed-inventory-fixture"
       ],
       "validation_commands": [
+        "uv run pytest -q tests/test_sync_agent_stack.py tests/test_installed_inventory.py -k 'crush'",
         "uv run wagents validate"
       ],
       "rollback_coverage": "planned",
-      "promotion_blocker": "Requires an explicit retain-vs-experimental decision plus config and skills fixtures before validated support claims."
+      "promotion_blocker": "Repository projection and additive conflict-preservation fixtures are validated; a live Crush binary is still required for runtime-validated support."
     },
     {
       "harness_id": "grok-build",

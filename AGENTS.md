@@ -142,7 +142,7 @@ OpenSpec is the repository spec/change workflow for non-trivial changes to publi
 - **Tracked source:** Keep durable project state in `openspec/config.yaml`, `openspec/specs/`, `openspec/changes/`, and project-local schemas under `openspec/schemas/`.
 - **AI-readable wrappers:** Prefer `uv run wagents openspec status --change <name> --format json`, `uv run wagents openspec instructions <artifact> --change <name> --format json`, and `uv run wagents openspec validate` for agent automation.
 - **Downstream setup:** Use `uv run wagents openspec init --apply` or `uv run wagents openspec update --apply` to materialize local OpenSpec skills/commands for supported tools.
-- **Generated artifacts:** Do not commit generated `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.crush`, `.codex`, or `.gemini` OpenSpec artifacts unless a specific artifact is explicitly promoted to repo-owned source.
+- **Generated artifacts:** Do not commit generated `.claude`, `.cursor`, `.opencode`, `.agent`, `.crush`, or `.codex` OpenSpec artifacts unless a specific artifact is explicitly promoted to repo-owned source.
 - **Telemetry:** Repo wrapper commands set `OPENSPEC_TELEMETRY=0` for automation unless the user opts in.
 
 ## 2.3 OpenCode DCP Config
@@ -157,9 +157,9 @@ For repo-managed harness configs, keep the `chrome-devtools` server on the MCPHu
 
 - `bash ${REPO_ROOT}/scripts/mcphub/chrome-devtools-browser-url.sh`
 
-This is the shared default for managed surfaces in this repository across Codex, Cursor, GitHub Copilot CLI, Antigravity, OpenCode, Cherry Studio, LM Studio, and other MCP-only harnesses that consume the normalized MCP registry. The wrapper starts or reuses a separate visible Chrome on `127.0.0.1:9333` with long-lived profile `~/.cache/chrome-devtools-mcp-login`, then runs `chrome-devtools-mcp --browserUrl http://127.0.0.1:9333`. Keep Chrome launch ownership in the wrapper so the MCP package does not launch Chrome with automation flags such as `--enable-automation`, `--disable-sync`, `--use-mock-keychain`, or `--remote-debugging-pipe`. The managed config also sets `CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS=1` and `CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS=1` where the target config format supports fixed environment values.
+This is the shared default for managed surfaces in this repository across Codex, Cursor, OpenCode, Cherry Studio, LM Studio, and other MCP-only harnesses that consume the normalized MCP registry. The wrapper starts or reuses a separate visible Chrome on `127.0.0.1:9333` with long-lived profile `~/.cache/chrome-devtools-mcp-login`, then runs `chrome-devtools-mcp --browserUrl http://127.0.0.1:9333`. Keep Chrome launch ownership in the wrapper so the MCP package does not launch Chrome with automation flags such as `--enable-automation`, `--disable-sync`, `--use-mock-keychain`, or `--remote-debugging-pipe`. The managed config also sets `CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS=1` and `CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS=1` where the target config format supports fixed environment values.
 
-Chrome DevTools has a one-owner-per-harness rule. Claude Code uses the upstream `ChromeDevTools/chrome-devtools-mcp` plugin when installed, Gemini CLI uses the upstream extension when installed, and VS Code/GitHub Copilot plugin-capable surfaces use the upstream source plugin where supported. Those plugin/extension owners suppress duplicate standalone `chrome-devtools` MCP projection for their harness-specific config. Repo MCP remains the fallback owner for MCP-only or UI-only harnesses.
+Chrome DevTools has a one-owner-per-harness rule. Claude Code uses the upstream `ChromeDevTools/chrome-devtools-mcp` plugin when installed. That plugin owner suppresses duplicate standalone `chrome-devtools` MCP projection for Claude Code; repo MCP remains the fallback owner for MCP-only or UI-only harnesses.
 
 When a specific harness needs a different local attached-browser override, document that override in the platform-specific instruction layer instead of weakening the shared repo default. Current Chrome remote-debugging-port guidance requires a non-default user data directory when launching such a browser.
 
@@ -306,7 +306,7 @@ wagents install                              # All skills → all agents (global
 wagents install -y                           # All skills → all agents (no prompts)
 wagents install review skill-creator  # Specific skills → all agents
 wagents install -a claude-code               # All skills → Claude only
-wagents install -a cursor -a github-copilot  # All skills → Cursor + Copilot
+wagents install -a cursor -a opencode  # All skills → Cursor + OpenCode
 wagents install --list                       # List available skills
 wagents install --local                      # Project-local install
 wagents update                               # Refresh installed skills from recorded sources
@@ -348,13 +348,11 @@ Docs-facing authority follows the same pattern: keep repo policy and workflow tr
 | ------- | ---- | ------ | ----------------- |
 | `instructions/global.md` | Canonical cross-platform instructions | Hand-authored SSOT | Entrypoint for bridges that support `@` imports |
 | `instructions/*-global.md` | Platform overlays | Hand-authored; `@./instructions/global.md` where supported | `scripts/sync_agent_stack.py` for generated mirrors |
-| `.claude/rules/*.md` | Claude Code scoped rules (global + platform + path rules) | Hand-authored copies composed for Claude's rule loader | Not generated; edit here, then run `sync_agent_stack.py --targets repo` for Copilot projection |
-| `.github/instructions/*.instructions.md` | GitHub Copilot scoped rules | Generated from `.claude/rules/*.md` | `uv run python scripts/sync_agent_stack.py --apply --targets repo` |
-| `.github/copilot-instructions.md` | Copilot home instructions | Generated from `instructions/copilot-global.md` | Same sync command |
-| `.cursor/rules/*.mdc` | Cursor scoped rules | Hand-authored (independent from `.claude/rules/`) | Copied to `~/.cursor/rules/` on home sync |
+| `.claude/rules/*.md` | Claude Code scoped rules (global + platform + path rules) | Hand-authored copies composed for Claude's rule loader | Not generated |
+| `.cursor/rules/*.mdc` | Cursor scoped rules (incl. always-on `cursor-models.mdc` pin) | Hand-authored (independent from `.claude/rules/`) | Home sync allowlists `cursor-models.mdc` to `~/.cursor/rules/` (orphans preserved); managed-marker agents to `~/.cursor/agents/` |
 | `.apm/instructions/*.instructions.md` | Microsoft APM instruction primitives | Generated from `instructions/` + path-scoped `.claude/rules/` | `uv run wagents apm materialize` |
 
-Claude's `.claude/rules/` tree intentionally duplicates `instructions/global.md` and platform overlays without `@` imports because Claude composes scoped rules natively. Keep path-scoped rules (`agents/*.md`, `skills/*/SKILL.md`, `docs/**`, `**/*.py`, etc.) synchronized when editing shared policy. Cursor rules use a separate `.mdc` schema and content set; do not assume parity with `.claude/rules/`.
+Claude's `.claude/rules/` tree intentionally duplicates `instructions/global.md` and platform overlays without `@` imports because Claude composes scoped rules natively. Keep path-scoped rules (`agents/*.md`, `skills/*/SKILL.md`, `docs/**`, `**/*.py`, etc.) synchronized when editing shared policy. Cursor rules use a separate `.mdc` schema and content set; do not assume parity with `.claude/rules/`. Cursor model pin: canonical slug `cursor-grok-4.5-high` — always pass Task `model`; soft rule `.cursor/rules/cursor-models.mdc` (home-sync allowlisted; quotes layer matrix SSOT) plus hard Task rewrite and subagentStart allowlist (Phase B allows omit; soft rule bans omit). Operators SHOULD set user-owned local CLI `exploreSubagentModel=inherit`; IDE picker owns the parent model; sync SHALL NOT write `cli-config` or live `state.vscdb`.
 
 Everything situational uses **skills as context loaders** — Claude sees skill descriptions at startup and auto-invokes relevant ones on demand:
 
@@ -403,8 +401,8 @@ Token posture spans eight **layers**. Each layer has one primary owner; do not s
 
 ```bash
 uv run wagents rtk doctor --format json
-uv run wagents rtk sync --dry-run --platforms claude-code,cursor,opencode,codex,gemini-cli,github-copilot
-RTK_TELEMETRY_DISABLED=1 uv run wagents rtk sync --apply --platforms claude-code,cursor,opencode,codex,gemini-cli,github-copilot
+uv run wagents rtk sync --dry-run --platforms claude-code,cursor,opencode,codex
+RTK_TELEMETRY_DISABLED=1 uv run wagents rtk sync --apply --platforms claude-code,cursor,opencode,codex
 uv run wagents rtk gain --graph
 ```
 
@@ -434,18 +432,13 @@ Full maintainer hub: docs site `/harness-config/token-efficacy/` (generated from
 | ------------------ | -------------------------------------------------------------- | ---------------------------------------------------------------- |
 | Claude Code        | `CLAUDE.md` → `@AGENTS.md` → `@instructions/global.md`       | `instructions/claude-code-global.md` is compatibility only       |
 | Claude Code plugin | `.claude-plugin/marketplace.json` → repo root plugin           | `.claude-plugin/plugin.json`                                     |
-| Gemini CLI         | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md`       | `GEMINI.md`                                                      |
-| Antigravity        | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md`       | `GEMINI.md`                                                      |
 | Codex              | `AGENTS.md` → `@instructions/global.md`                        | `instructions/codex-global.md` generated for global Codex config |
 | Codex plugin       | `.agents/plugins/marketplace.json` → repo root plugin          | `.codex-plugin/plugin.json`                                      |
 | Crush              | `AGENTS.md` → `@instructions/global.md`                        | `AGENTS.md`                                                      |
 | OpenCode           | `AGENTS.md` → `@instructions/global.md`                        | `instructions/opencode-global.md` for global OpenCode config     |
-| Cursor             | `AGENTS.md` → `@instructions/global.md`                        | `AGENTS.md`                                                      |
+| Cursor             | `AGENTS.md` → `@instructions/global.md`                        | `AGENTS.md`; pin `cursor-grok-4.5-high` (always pass Task `model`); home sync allowlists `cursor-models.mdc`; operators SHOULD set user-owned CLI `exploreSubagentModel=inherit`; IDE picker owns parent model; sync SHALL NOT write `cli-config`/`state.vscdb` |
 | Grok Build         | `AGENTS.md` → `@instructions/global.md`                        | `instructions/grok-global.md`, `config/grok-config.toml`, `~/.grok/config.toml`, `.grok/config.toml`; MCP via sync; `/grok-delegate` for cross-harness native CLI task graphs and Tier-T trivial offload; pre-flight `bash skills/grok-delegate/scripts/preflight.sh`; extended harness diagnostics `uv run wagents grok doctor --format json`; Plannotator via CLI + skills + `config/grok-plannotator-hooks.json` (not OpenCode plugin); `wagents grok plannotator install` |
-| GitHub Copilot     | Generated `.github/copilot-instructions.md` + repo `AGENTS.md` | Generated from `instructions/copilot-global.md`                  |
 | Cherry Studio      | MCP registry via MCPHub (MCP-only harness)                     | `config/mcp-registry.json`; no dedicated instruction bridge    |
 | LM Studio          | MCP + presets (instructions/agents); skills mirror **default none** | `wagents/platforms/lm_studio.py`, `instructions/lm-studio-global.md`; home via pointer or `~/.lmstudio` (`mcp.json`, `config-presets/wagents-*.preset.json`, optional `skills/` via `WAGENTS_LM_STUDIO_SKILLS`); no hooks; Skills CLI has no native adapter; local LLM provider for Codex/OpenCode is separate (`tooling-policy.json`) |
 
 Grok Build discovers skills from `~/.grok/skills/`, repo `.grok/skills/`, and `~/.claude/skills/`. The Skills CLI has no native `grok` adapter; `wagents skills sync` installs Grok-targeted curated skills via the Claude Code adapter and mirrors them into `~/.grok/skills`. Codex and OpenCode parents delegate Grok task-graph nodes via `/grok-delegate` (native `grok -p`, `-r`, worktrees only). Plannotator on Grok uses `wagents grok plannotator install` (CLI + core skills + optional hooks synced from `config/grok-plannotator-hooks.json`); there is no Grok npm plugin like OpenCode's `@plannotator/opencode`.
-
-GitHub Copilot stays in harness config and instruction sync, but installed-skill inventory should report only what the Skills CLI actually discovers. Do not fabricate skill rows from Copilot instruction or config files when the CLI reports zero installs.

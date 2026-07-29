@@ -118,10 +118,10 @@ def test_render_mcp_remote_stdio_uses_placeholders(monkeypatch) -> None:
     assert not entry["command"].startswith("${")
     assert Path(entry["command"]).is_absolute()
     assert entry["args"][0].startswith("http://127.0.0.1:46683/mcp")
-    assert entry["env"]["MCPHUB_BEARER_TOKEN"] == "${MCPHUB_BEARER_TOKEN}"
+    assert "env" not in entry
     monkeypatch.setenv("MCPHUB_BEARER_TOKEN", "sk-secret-token")
     rendered2 = adapter.render_mcp(_mcphub_registry(), {})["mcpServers"]
-    assert rendered2["mcphub_group_harness"]["env"]["MCPHUB_BEARER_TOKEN"] == "${MCPHUB_BEARER_TOKEN}"
+    assert "env" not in rendered2["mcphub_group_harness"]
 
 
 def test_render_instruction_and_agent_presets() -> None:

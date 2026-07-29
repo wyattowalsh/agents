@@ -1,0 +1,21 @@
+---
+description: Path-scoped rule: justfile.md
+globs:
+  - "justfile"
+  - "Justfile"
+  - "**/justfile"
+  - "**/Justfile"
+  - "**/*.just"
+  - "**/*.justfile"
+  - "**/.justfile"
+---
+
+# Justfile path rule
+
+When creating, editing, migrating, checking, or discovering Just recipes / justfiles, use `/justfile`.
+
+- **Own:** new justfiles, recipe/module edits, Makefile→just or npm→just migration, house-style lint/check, recipe discovery (`just --list` / `--show` / `--dump`).
+- **Hygiene-only** (naming, layout notes, thin shell/Makefile pointers without Just authoring): `shell-conventions`.
+- **Do not** use `shell-scripter` for Just authoring; that skill owns shell scripts and Make file-timestamp builds, not justfiles.
+
+Inspect `just --version` before relying on mid-2026 attributes. Prefer `/justfile` over ad-hoc Just edits when this path rule fires.

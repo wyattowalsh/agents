@@ -21,8 +21,8 @@ Every card here corresponds to one tracked `skills/<name>/SKILL.md` file.
 </Aside>
 
 <div class="stats-bar">
-  <span class="stat stat-skill">69 Custom Skills</span>
-  <span class="stat stat-installed">62 User-Invocable</span>
+  <span class="stat stat-skill">70 Custom Skills</span>
+  <span class="stat stat-installed">63 User-Invocable</span>
   <span class="stat stat-agent">7 Convention Skills</span>
 </div>
 
@@ -37,7 +37,7 @@ Every card here corresponds to one tracked `skills/<name>/SKILL.md` file.
   <LinkCard title="Workflow & Utility" href="/skills/catalog/custom/orchestrator/" description="Coordinate work, review or simplify code, git flow, releases, or local file tasks." />
 </CardGrid>
 
-## User-Invocable Skills (62)
+## User-Invocable Skills (63)
 
 <Badge text="Manual invocation" variant="tip" /> Call these when you want a specialist on demand. They appear in the autocomplete menu.
 
@@ -67,6 +67,7 @@ Every card here corresponds to one tracked `skills/<name>/SKILL.md` file.
   <LinkCard title="i18n-localization" href="/skills/catalog/custom/i18n-localization/" description="Plan and review localization changes across app, docs, and web surfaces." />
   <LinkCard title="incident-response-engineer" href="/skills/catalog/custom/incident-response-engineer/" description="Operational incident response for triage, containment, communications, recovery, and postmortems. Use when coordinating outages or service degradation." />
   <LinkCard title="infrastructure-coder" href="/skills/catalog/custom/infrastructure-coder/" description="Infrastructure-as-Code: Terraform, Kubernetes, Docker. Generate, review, cost-compare, security-scan. Use for IaC work." />
+  <LinkCard title="justfile" href="/skills/catalog/custom/justfile/" description="Create, edit, migrate, check, and inspect just/justfile runners." />
   <LinkCard title="learn" href="/skills/catalog/custom/learn/" description="Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights." />
   <LinkCard title="mcp-creator" href="/skills/catalog/custom/mcp-creator/" description="Build MCP servers with FastMCP v3. Research, scaffold, implement, test, deploy. Use when creating MCP servers or integrating APIs via MCP." />
   <LinkCard title="mcphub-operator" href="/skills/catalog/custom/mcphub-operator/" description="Operate MCPHub groups, endpoints, compression, and CLI from repo registry. Use for hub preflight, group picking, tunnel vs local exposure. NOT harness sync." />
@@ -132,10 +133,10 @@ You can also install specific skills rather than the full collection:
 
 ```bash
 # Install a single skill globally
-npx skills add github:wyattowalsh/agents --skill review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
+npx skills add github:wyattowalsh/agents --skill review -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode
 
 # Install multiple specific skills
-npx skills add github:wyattowalsh/agents --skill review --skill wargame -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
+npx skills add github:wyattowalsh/agents --skill review --skill wargame -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode
 
 # Install to a specific agent only
 npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent claude-code

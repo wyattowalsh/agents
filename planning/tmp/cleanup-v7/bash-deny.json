@@ -1,0 +1,41 @@
+{
+  "agents": [
+    {
+      "name": "prompt-optimizer",
+      "current_bash": "deny",
+      "plan_target": "deny",
+      "proposed_bash": "deny",
+      "delta": "none"
+    },
+    {
+      "name": "agent-transpiler",
+      "current_bash": "deny",
+      "plan_target": "allowlist",
+      "proposed_bash": {
+        "*": "ask",
+        "uv run python scripts/sync_agent_stack.py *": "allow",
+        "just sync-opencode": "allow"
+      },
+      "delta": "widen-allowlist"
+    },
+    {
+      "name": "agent-registry-publisher",
+      "current_bash": "deny",
+      "plan_target": "allowlist",
+      "proposed_bash": {
+        "*": "ask",
+        "uv run wagents validate*": "allow",
+        "uv run wagents docs generate*": "allow"
+      },
+      "delta": "widen-allowlist"
+    },
+    {
+      "name": "agent-permission-simulator",
+      "current_bash": "deny",
+      "plan_target": "deny",
+      "proposed_bash": "deny",
+      "delta": "none"
+    }
+  ],
+  "overlay_path": "config/opencode-agents.json"
+}

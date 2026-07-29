@@ -51,9 +51,3 @@ def test_bundle_groups_include_mode_and_are_contiguous():
 def test_image_optimizer_matcher_is_not_catch_all():
     image = next(hook for hook in _hooks() if hook.get("id") == "image-input-optimizer-guard")
     assert image.get("matcher") != ".*"
-
-
-def test_copilot_post_edit_rows_share_bundle_group():
-    post_edit = [hook for hook in _hooks() if hook.get("id") in {"post-edit-format", "post-edit-lint"}]
-    assert len(post_edit) == 2
-    assert post_edit[0].get("bundle_group") == post_edit[1].get("bundle_group") == "copilot-post-edit-quality"

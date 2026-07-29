@@ -9,9 +9,9 @@ docs_density: standard
 license: "MIT"
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode"
+install_command: "npx skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a claude-code codex crush cursor opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "drawio-skill"
 ---
 
@@ -24,15 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="drawio-skill"
   description="Create editable .drawio diagrams (architecture, UML, ERD, C4, BPMN, network) and export PNG/SVG/PDF with draw.io desktop CLI."
-  installCommand={`npx skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`}
+  installCommand={`npx skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a claude-code codex crush cursor opencode`}
   installLabel="Install"
   usage="/drawio-skill"
-  badges={[{ text: "drawio-skill", variant: "note" }, { text: "628 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "drawio-skill", variant: "note" }, { text: "622 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/drawio-skill.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -40,11 +40,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/drawio-ski
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode
+npx skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a claude-code codex crush cursor opencode
 ```
 
 ## Trust / Audit
@@ -87,7 +87,7 @@ This row integrates [Agents365-ai/drawio-skill](https://github.com/Agents365-ai/
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -108,13 +108,13 @@ title: "Draw.io Skill"
 source_kind: "curated-external"
 source: "Agents365-ai/drawio-skill"
 install_source: "Agents365-ai/drawio-skill"
-install_command: "npx skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode"
+install_command: "npx skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a claude-code codex crush cursor opencode"
 install_skill_name: "drawio-skill"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/Agents365-ai/drawio-skill"
 selector_mode: "named"
 audit_date: "2026-07-17"
@@ -146,7 +146,7 @@ This row integrates [Agents365-ai/drawio-skill](https://github.com/Agents365-ai/
 - Normalized URL: [https://github.com/Agents365-ai/drawio-skill](https://github.com/Agents365-ai/drawio-skill)
 - Catalog skill id: `drawio-skill`
 - Upstream install selector: `drawio-skill`
-- Install command: `npx skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Install command: `npx skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a claude-code codex crush cursor opencode`
 - Inspected commit SHA: `9f52925770334e9bd2794e40a7fa64c234e9f545`
 - Upstream version: `1.34.0`
 - License status: `MIT`
@@ -159,7 +159,7 @@ This row integrates [Agents365-ai/drawio-skill](https://github.com/Agents365-ai/
 
 - Executed command: `npx --yes skills add Agents365-ai/drawio-skill --list` (1 skill: `drawio-skill`)
 - Executed command (CLI-valid agent list; no `-a grok`):  
-  `npx --yes skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+  `npx --yes skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a claude-code codex crush cursor opencode`
 - Skills.sh risk assessment: Gen Safe, Socket 0 alerts, Snyk Low Risk.
 - Roots created/updated by Skills CLI:
   - `~/.agents/skills/drawio-skill` (canonical install root)

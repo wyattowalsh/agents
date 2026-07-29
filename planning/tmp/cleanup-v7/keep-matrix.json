@@ -1,0 +1,59 @@
+{
+  "must_keep": [
+    {
+      "id": "crush-gemini-shaped-mcp",
+      "status": "present",
+      "evidence": [
+        "config/mcp-registry.json",
+        "scripts/sync_agent_stack.py",
+        "wagents/platforms/crush.py",
+        "scripts/mcphub/wrappers/crush",
+        "config/harness-surface-registry.json",
+        "openspec/changes/remove-gemini-antigravity-copilot/specs/downstream-tooling/spec.md"
+      ],
+      "notes": "Crush remains on gemini-shaped flat MCP via render_flat_mcp(..., harness='crush') with type stdio (successor to render_gemini_shaped_mcp). Registry lists crush under chrome-devtools repo_mcp ownership and stdio_bridge clients; home projection merges into ~/.config/crush/crush.json mcp."
+    },
+    {
+      "id": "opencode-auth-plugins",
+      "status": "present",
+      "plugins": [
+        "opencode-gemini-auth@latest",
+        "opencode-antigravity-auth@latest",
+        "opencode-claude-auth@latest"
+      ],
+      "evidence": [
+        "opencode.json",
+        ".opencode/PLUGINS.md",
+        "instructions/opencode-global.md",
+        "planning/manifests/opencode-plugin-install-manifest.md",
+        "planning/manifests/harness-reconciliation.json"
+      ],
+      "notes": "All three auth plugins listed in repo opencode.json plugin array (antigravity+gemini near top; claude-auth later)."
+    },
+    {
+      "id": "gemini-api",
+      "status": "present",
+      "evidence": [
+        "docs/src/authoring/skills/gemini-api.mdx",
+        "docs/public/generated-registries/skills-catalog-index.json",
+        "docs/src/content/docs/skills/catalog/external/gemini-api.mdx",
+        "docs/src/skill-research/gemini-api.md"
+      ],
+      "notes": "Authoring SSOT row name=gemini-api (curated-external, google/skills); present in generated catalog index and external catalog page."
+    },
+    {
+      "id": "candidate-mcp-wrappers",
+      "status": "present",
+      "paths": [
+        "scripts/mcphub/wrappers/candidate-node",
+        "scripts/mcphub/wrappers/candidate-uv-tool"
+      ],
+      "evidence": [
+        "scripts/mcphub/wrappers/candidate-node",
+        "scripts/mcphub/wrappers/candidate-uv-tool"
+      ],
+      "notes": "Only candidate-* wrappers under scripts/mcphub/wrappers/; preserve and move under ops later \u2014 do not delete."
+    }
+  ],
+  "constraint": "preserve all; move candidates under ops later, do not delete"
+}

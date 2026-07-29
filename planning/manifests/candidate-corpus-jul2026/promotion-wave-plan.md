@@ -62,10 +62,10 @@
 ### W05 cloud-iac-devops-security-mcp-plugins
 
 - Objective: Cloud, IaC, DevOps, security, MCP, plugins, and CLIs.
-- Unique targets: 5
-- Raw entries: 6
-- Coverage: covered-by-existing-inspection-required=1, needs-promotion-review=4
-- Risk tiers: standard-review=5
+- Unique targets: 4
+- Raw entries: 5
+- Coverage: covered-by-existing-inspection-required=1, needs-promotion-review=3
+- Risk tiers: standard-review=4
 - Promotion policy: Terminal routing is generated from read-only evidence; live execution stays user-owned and hard-blocked rows remain non-installable.
 - Mutation policy: single integrator only after read-only research packets pass
 
@@ -82,10 +82,10 @@
 ### W07 seo-aso-gtm-sales-marketing-product-content
 
 - Objective: SEO, ASO, GEO, GTM, sales, marketing, product, and content.
-- Unique targets: 15
-- Raw entries: 15
-- Coverage: needs-promotion-review=15
-- Risk tiers: standard-review=15
+- Unique targets: 16
+- Raw entries: 16
+- Coverage: needs-promotion-review=16
+- Risk tiers: standard-review=16
 - Promotion policy: Terminal routing is generated from read-only evidence; live execution stays user-owned and hard-blocked rows remain non-installable.
 - Mutation policy: single integrator only after read-only research packets pass
 
@@ -107,5 +107,5 @@
 - Coverage: needs-promotion-review=4
 - Risk tiers: quarantine=4
 - Promotion policy: Terminal routing is generated from read-only evidence; live execution stays user-owned and hard-blocked rows remain non-installable.
-- Mutation policy: authoring-only stable quarantine reference; no install
+- Mutation policy: manifest-only quarantine record; no authoring or install
 

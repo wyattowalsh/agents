@@ -128,6 +128,68 @@ def test_render_cursor_hooks_fail_opens_catch_all_image_optimizer():
     }
 
 
+def test_render_cursor_hooks_fail_opens_task_model_pin_rewrite():
+    rendered = render_cursor_hooks({
+        "hooks": [
+            {
+                "id": "cursor-task-model-pin-rewrite",
+                "logical_event": "PreToolUse",
+                "matcher": "Task",
+                "mode": "enforce",
+                "command": "{hook_runner} cursor-task-model-pin-rewrite --harness {harness}",
+                "timeout": 5,
+                "harnesses": ["cursor"],
+            }
+        ]
+    })
+    assert rendered is not None
+    entry = rendered["hooks"]["preToolUse"][0]
+    assert "cursor-task-model-pin-rewrite" in entry["command"]
+    assert entry["failClosed"] is False
+
+
+def test_render_cursor_hooks_fail_opens_subagent_model_allowlist():
+    rendered = render_cursor_hooks({
+        "hooks": [
+            {
+                "id": "cursor-subagent-start-context",
+                "logical_event": "SubagentStart",
+                "mode": "context",
+                "command": "{hook_runner} cursor-subagent-start-context --harness {harness}",
+                "timeout": 5,
+                "harnesses": ["cursor"],
+            },
+            {
+                "id": "cursor-subagent-model-allowlist",
+                "logical_event": "SubagentStart",
+                "mode": "enforce",
+                "command": "{hook_runner} cursor-subagent-model-allowlist --harness {harness}",
+                "timeout": 5,
+                "harnesses": ["cursor"],
+            },
+        ]
+    })
+    assert rendered is not None
+    entries = rendered["hooks"]["subagentStart"]
+    context = next(e for e in entries if "cursor-subagent-start-context" in e["command"])
+    allowlist = next(e for e in entries if "cursor-subagent-model-allowlist" in e["command"])
+    assert "failClosed" not in context
+    assert allowlist["failClosed"] is False
+
+
+def test_real_registry_cursor_pin_hooks_are_fail_open():
+    rendered = render_cursor_hooks(_real_registry())
+    assert rendered is not None
+    pre = rendered["hooks"]["preToolUse"]
+    phase_a = next(e for e in pre if "cursor-task-model-pin-rewrite" in e["command"])
+    assert phase_a["failClosed"] is False
+    sub = rendered["hooks"]["subagentStart"]
+    context = next(e for e in sub if "cursor-subagent-start-context" in e["command"])
+    allowlist = next(e for e in sub if "cursor-subagent-model-allowlist" in e["command"])
+    assert "failClosed" not in context
+    assert allowlist["failClosed"] is False
+
+
 def test_render_cursor_hooks_excludes_other_harnesses():
     rendered = render_cursor_hooks(_registry())
     assert rendered is not None
@@ -155,10 +217,9 @@ def test_adapter_render_hooks_uses_cursor_project_dir_by_default():
     assert "$CURSOR_PROJECT_DIR/hooks/run-wagents-hook" in flattened
 
 
-def test_repo_cursor_hooks_json_is_flat_if_present():
+def test_repo_cursor_hooks_json_is_flat():
     path = REPO_ROOT / ".cursor" / "hooks.json"
-    if not path.exists():
-        return
+    assert path.exists(), f"missing live Cursor hooks projection: {path}"
     data = json.loads(path.read_text(encoding="utf-8"))
     for event, entries in data.get("hooks", {}).items():
         for entry in entries:
@@ -193,19 +254,31 @@ def test_real_registry_cursor_native_enforce_events_are_fail_closed():
         entry = events[native][0]
         assert entry.get("failClosed") is True, f"{native} should be fail-closed"
         assert "matcher" not in entry
-    # Context-tier native events never carry failClosed.
-    for native in ("afterFileEdit", "subagentStart"):
-        assert "failClosed" not in events[native][0]
+    # Context-tier native events never carry failClosed (first subagentStart entry).
+    assert "failClosed" not in events["afterFileEdit"][0]
+    assert "failClosed" not in events["subagentStart"][0]
 
 
 def test_repo_cursor_hooks_json_contains_native_events():
     path = REPO_ROOT / ".cursor" / "hooks.json"
-    if not path.exists():
-        return
+    assert path.exists(), f"missing live Cursor hooks projection: {path}"
     data = json.loads(path.read_text(encoding="utf-8"))
     events = data.get("hooks", {})
     for native in ("beforeReadFile", "beforeShellExecution", "beforeMCPExecution", "afterFileEdit", "subagentStart"):
         assert native in events
+
+
+def test_repo_cursor_hooks_json_contains_pin_hooks_fail_open():
+    path = REPO_ROOT / ".cursor" / "hooks.json"
+    assert path.exists(), f"missing live Cursor hooks projection: {path}"
+    data = json.loads(path.read_text(encoding="utf-8"))
+    hooks = data.get("hooks", {})
+    pre = hooks.get("preToolUse", [])
+    phase_a = next(e for e in pre if "cursor-task-model-pin-rewrite" in e.get("command", ""))
+    assert phase_a["failClosed"] is False
+    sub = hooks.get("subagentStart", [])
+    allowlist = next(e for e in sub if "cursor-subagent-model-allowlist" in e.get("command", ""))
+    assert allowlist["failClosed"] is False
 
 
 def test_render_cursor_global_hooks_is_flat_plannotator_shape(monkeypatch, tmp_path):

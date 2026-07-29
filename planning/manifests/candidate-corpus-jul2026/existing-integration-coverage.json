@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-16T02:45:28.497286+00:00",
+  "generated_at": "2026-07-18T08:59:45.616879+00:00",
   "summary": {
     "covered-by-existing-inspection-required": 6,
     "covered-by-existing-installable-catalog": 121,
@@ -13,7 +13,7 @@
       "raw_indexes": [
         1
       ],
-      "intake_decision": "integrated_mcp_surface",
+      "intake_decision": "integrated_existing_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -2101,7 +2101,7 @@
       "raw_indexes": [
         29
       ],
-      "intake_decision": "integrated_mcp_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -3979,7 +3979,7 @@
       "raw_indexes": [
         61
       ],
-      "intake_decision": "integrated_mcp_surface",
+      "intake_decision": "integrated_skill_catalog_surface",
       "coverage_status": "needs-promotion-review",
       "existing_rows": [],
       "recommended_next_action": "Use the terminal candidate-corpus routing decision; do not install or vendor candidate code."
@@ -12970,22 +12970,10 @@
       "raw_indexes": [
         111
       ],
-      "intake_decision": "integrated_existing_surface",
-      "coverage_status": "covered-by-existing-installable-catalog",
-      "existing_rows": [
-        {
-          "name": "notebooklm",
-          "path": "docs/src/authoring/skills/notebooklm.mdx",
-          "source": "PleasePrompto/notebooklm-skill",
-          "install_source": "PleasePrompto/notebooklm-skill",
-          "source_url": "https://github.com/PleasePrompto/notebooklm-skill",
-          "status": "install-now-after-trust-gate",
-          "trust_tier": "curated-trust-gated",
-          "sync_kind": "skills-cli",
-          "has_install_command": true
-        }
-      ],
-      "recommended_next_action": "Treat as already integrated through trusted curated catalog row; do not duplicate."
+      "intake_decision": "integrated_skill_catalog_surface",
+      "coverage_status": "needs-promotion-review",
+      "existing_rows": [],
+      "recommended_next_action": "Use the terminal candidate-corpus routing decision; do not install or vendor candidate code."
     },
     {
       "normalized_url": "https://github.com/earthtojake/text-to-cad",
@@ -13692,7 +13680,7 @@
       "raw_indexes": [
         120
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -13803,7 +13791,7 @@
       "raw_indexes": [
         121
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -13949,7 +13937,7 @@
         132,
         175
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -16244,10 +16232,22 @@
       "raw_indexes": [
         146
       ],
-      "intake_decision": "integrated_native_surface",
-      "coverage_status": "needs-promotion-review",
-      "existing_rows": [],
-      "recommended_next_action": "Use the terminal candidate-corpus routing decision; do not install or vendor candidate code."
+      "intake_decision": "integrated_mcp_surface",
+      "coverage_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "notebooklm",
+          "path": "docs/src/authoring/skills/notebooklm.mdx",
+          "source": "teng-lin/notebooklm-py",
+          "install_source": "https://github.com/teng-lin/notebooklm-py",
+          "source_url": "https://github.com/teng-lin/notebooklm-py",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "recommended_next_action": "Treat as already integrated through trusted curated catalog row; do not duplicate."
     },
     {
       "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/raffle-winner-picker",
@@ -17472,7 +17472,7 @@
       "raw_indexes": [
         163
       ],
-      "intake_decision": "integrated_mcp_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -17495,7 +17495,7 @@
       "raw_indexes": [
         164
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -17518,7 +17518,7 @@
       "raw_indexes": [
         165
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -17541,7 +17541,7 @@
       "raw_indexes": [
         166
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -17587,7 +17587,7 @@
       "raw_indexes": [
         168
       ],
-      "intake_decision": "integrated_native_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "needs-promotion-review",
       "existing_rows": [],
       "recommended_next_action": "Use the terminal candidate-corpus routing decision; do not install or vendor candidate code."
@@ -17808,7 +17808,7 @@
       "raw_indexes": [
         171
       ],
-      "intake_decision": "integrated_mcp_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "needs-promotion-review",
       "existing_rows": [],
       "recommended_next_action": "Use the terminal candidate-corpus routing decision; do not install or vendor candidate code."
@@ -17819,7 +17819,7 @@
       "raw_indexes": [
         172
       ],
-      "intake_decision": "integrated_mcp_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -18052,7 +18052,7 @@
       "raw_indexes": [
         174
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -18075,7 +18075,7 @@
       "raw_indexes": [
         176
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -18098,7 +18098,7 @@
       "raw_indexes": [
         177
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -18511,7 +18511,7 @@
       "raw_indexes": [
         194
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {
@@ -20370,7 +20370,7 @@
       "raw_indexes": [
         279
       ],
-      "intake_decision": "integrated_existing_surface",
+      "intake_decision": "integrated_plugin_surface",
       "coverage_status": "covered-by-existing-installable-catalog",
       "existing_rows": [
         {

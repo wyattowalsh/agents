@@ -10,7 +10,7 @@ trust_tier: "curated-trust-gated"
 provenance_status: "pentest-hybrid-inventory"
 sync_kind: "skills-cli"
 install_command: "npx skills add yaklang/hack-skills --skill sqli-sql-injection --list"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/yaklang/hack-skills"
 notes: "Primary canonical repo for pentest hybrid signal dedup. Install per-skill on demand via pentest lookup_external_slug.py; do not bulk vendor."
 risk_notes: "Offensive-security workflows; operator must hold signed ROE. Some skills cover exploitation techniques — planning-only via repo pentest skill."

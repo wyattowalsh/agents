@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "transaction_id": "ed25a136e0764415af0edd4947b362c0",
+  "artifact_id": "candidate-artifact-2e2f420fd50d9625",
+  "normalized_url": "https://github.com/papischolz/roadmapsmith",
+  "plugin_id": "roadmapsmith@awesome-codex-plugins",
+  "plugin_scope": "user-global-codex",
+  "scope": "isolated-codex-home",
+  "rehearsal_kind": "isolated-plugin-root-detach",
+  "digest_algorithm": "lstat-tree-v1",
+  "digest_ignored_dirs": [
+    ".cache",
+    ".git",
+    ".pytest_cache",
+    "__pycache__"
+  ],
+  "preimage_digest": "c9402b0655b160d155bccd7c7752a5411a468108b3ae0c18755de7cb9562f2cf",
+  "rollback_digest": "c9402b0655b160d155bccd7c7752a5411a468108b3ae0c18755de7cb9562f2cf",
+  "promoted_final_digest": "1b949c2637fb1d58369963f1f4975817f1e43aaa32d4fb35dff040616a798cbb",
+  "live_install_unchanged": true,
+  "fresh_absence_process_id": 64126,
+  "restored_use_process_id": 67327,
+  "restored_use_output_sha256": "b34364a6a7e117452194827ed562b3d276e50bc384e522e7d7a7e2017be23147",
+  "process_ids": {
+    "marketplace": 64117,
+    "initial_add": 64119,
+    "initial_inventory": 64121,
+    "remove": 64123,
+    "fresh_absence": 64126,
+    "restore": 64128,
+    "restored_inventory": 64166,
+    "restored_use_initial": 65217,
+    "restored_use_fresh": 67327,
+    "restored_use_discovery": 68008
+  },
+  "launch_evidence": {
+    "marketplace": {
+      "launch_id": "5bfbdf4a99c500671d3c89d958e80195",
+      "started_at_ns": 1784364461716597000,
+      "process_id": 64117
+    },
+    "initial_add": {
+      "launch_id": "e889f77c1e833327e37b1630b32afa1f",
+      "started_at_ns": 1784364461839651000,
+      "process_id": 64119
+    },
+    "initial_inventory": {
+      "launch_id": "ffe4499c3c254d4c84eceea54d8ef891",
+      "started_at_ns": 1784364461953526000,
+      "process_id": 64121
+    },
+    "remove": {
+      "launch_id": "89868a8a76a202776c02740f90194ed5",
+      "started_at_ns": 1784364462054135000,
+      "process_id": 64123
+    },
+    "fresh_absence": {
+      "launch_id": "7f38eed79ca8400ea86894ae5441355f",
+      "started_at_ns": 1784364462148321000,
+      "process_id": 64126
+    },
+    "restore": {
+      "launch_id": "f0d3327eb97a0c95bbd82f3c5ba6bc7a",
+      "started_at_ns": 1784364462258642000,
+      "process_id": 64128
+    },
+    "restored_inventory": {
+      "launch_id": "68979a315d1f45575a73476c23ec27e9",
+      "started_at_ns": 1784364462373725000,
+      "process_id": 64166
+    },
+    "restored_use_initial": {
+      "launch_id": "c183d3c71769d7d2e3462c974493fdc2",
+      "started_at_ns": 1784364484034539000,
+      "process_id": 65217
+    },
+    "restored_use_fresh": {
+      "launch_id": "f5e0349c6dc7bdb08856d3c94e13affb",
+      "started_at_ns": 1784364526662717000,
+      "process_id": 67327
+    },
+    "restored_use_discovery": {
+      "launch_id": "e38c168eca3b1f726b9b5835d8e53d4d",
+      "started_at_ns": 1784364537647304000,
+      "process_id": 68008
+    }
+  },
+  "commands": [
+    {
+      "phase": "marketplace-add",
+      "argv": [
+        "codex",
+        "plugin",
+        "marketplace",
+        "add",
+        "<marketplace-root>",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 64117,
+      "launch_id": "5bfbdf4a99c500671d3c89d958e80195",
+      "started_at_ns": 1784364461716597000,
+      "stdout_sha256": "56cc505d92803d59507b06dcf317d715038947b7c8adb371b1c088cf437e67ce",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "initial-add",
+      "argv": [
+        "codex",
+        "plugin",
+        "add",
+        "roadmapsmith@awesome-codex-plugins",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 64119,
+      "launch_id": "e889f77c1e833327e37b1630b32afa1f",
+      "started_at_ns": 1784364461839651000,
+      "stdout_sha256": "08dba7701c3d0af070877df68cafbc431c10a2eecaddc864939b5cabf659da6d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "initial-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 64121,
+      "launch_id": "ffe4499c3c254d4c84eceea54d8ef891",
+      "started_at_ns": 1784364461953526000,
+      "stdout_sha256": "0b53d8162b2094e40e5b04a0cab403bce574d8bc5ca435cc17d66d6d27d09c6c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "remove",
+      "argv": [
+        "codex",
+        "plugin",
+        "remove",
+        "roadmapsmith@awesome-codex-plugins",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 64123,
+      "launch_id": "89868a8a76a202776c02740f90194ed5",
+      "started_at_ns": 1784364462054135000,
+      "stdout_sha256": "203e217a1863f3d6e77a67f4dea0dea1ff3abe86a7f0eba8f68279292bb6c441",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "absence-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 64126,
+      "launch_id": "7f38eed79ca8400ea86894ae5441355f",
+      "started_at_ns": 1784364462148321000,
+      "stdout_sha256": "050e2dee988ae4ba4d1d8220591b660829a9ee3f06f52d548acc87522ee90885",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "restore",
+      "argv": [
+        "codex",
+        "plugin",
+        "add",
+        "roadmapsmith@awesome-codex-plugins",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 64128,
+      "launch_id": "f0d3327eb97a0c95bbd82f3c5ba6bc7a",
+      "started_at_ns": 1784364462258642000,
+      "stdout_sha256": "08dba7701c3d0af070877df68cafbc431c10a2eecaddc864939b5cabf659da6d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "restored-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 64166,
+      "launch_id": "68979a315d1f45575a73476c23ec27e9",
+      "started_at_ns": 1784364462373725000,
+      "stdout_sha256": "0b53d8162b2094e40e5b04a0cab403bce574d8bc5ca435cc17d66d6d27d09c6c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "restored_probe": {
+    "fixture_id": "candidate-plugin-roadmapsmith-owned-fixture-v2",
+    "probe_kind": "semantic-plugin-isolated-codex-fixture",
+    "assertions": [
+      "source-specific happy path passed",
+      "source-specific failure path passed",
+      "unsafe or mutating path was denied",
+      "fresh process repeated the semantic capability",
+      "isolated one-plugin Codex process recovered source-only skill evidence"
+    ],
+    "output_sha256": "b34364a6a7e117452194827ed562b3d276e50bc384e522e7d7a7e2017be23147",
+    "discovery_output_sha256": "205ab0fed35c52af4d94e0d4fccf1cd67ded3cbe45e9d512ca14cf002f2a75cc"
+  }
+}

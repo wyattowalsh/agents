@@ -35,7 +35,7 @@ HOOK_PERF_TIERS: tuple[str, ...] = ("legacy", "g1", "bundle", "worker")
 BUNDLE_PERF_TIERS: frozenset[str] = frozenset({"bundle", "worker"})
 DEFAULT_HARNESS_HOOK_TIMEOUT = 120
 TOOLING_POLICY_PATH = get_repo_root() / "config" / "tooling-policy.json"
-COPILOT_POST_EDIT_SHELL = "./hooks/post-edit-quality.sh"
+POST_EDIT_SHELL = "./hooks/post-edit-quality.sh"
 CODEX_UNSUPPORTED_MATCHER_TOKENS: tuple[str, ...] = ("(?=", "(?!", "(?<=", "(?<!")
 
 # When the same logical_policy would render on both events in a pair, drop the
@@ -102,7 +102,7 @@ def union_bundle_matchers(members: list[dict[str, Any]]) -> str | None:
 def _shell_bundle_command(members: list[dict[str, Any]]) -> str | None:
     commands = [str(member.get("command") or "") for member in members]
     if len(members) == 2 and all(cmd.endswith("auto-format.sh") or cmd.endswith("lint-check.sh") for cmd in commands):
-        return COPILOT_POST_EDIT_SHELL
+        return POST_EDIT_SHELL
     if all(cmd.startswith("./hooks/") for cmd in commands):
         return commands[0]
     return None
@@ -288,6 +288,7 @@ CURSOR_FAIL_CLOSED_EVENTS: frozenset[str] = frozenset({
     "beforeShellExecution",
     "beforeMCPExecution",
     "beforeReadFile",
+    "subagentStart",
 })
 
 # Hook ids that must stay fail-open on Cursor regardless of matcher shape. This
@@ -295,10 +296,13 @@ CURSOR_FAIL_CLOSED_EVENTS: frozenset[str] = frozenset({
 # "too disruptive to fail closed"), but G1 narrows some catch-all matchers for
 # spawn-count wins without changing their intended fail-open crash behavior.
 # Recorded explicitly so narrowing a matcher never silently flips failClosed.
-CURSOR_FAIL_OPEN_HOOK_IDS: frozenset[str] = frozenset({"image-input-optimizer-guard"})
+CURSOR_FAIL_OPEN_HOOK_IDS: frozenset[str] = frozenset({
+    "image-input-optimizer-guard",
+    "cursor-task-model-pin-rewrite",
+    "cursor-subagent-model-allowlist",
+})
 
-# Logical event -> native event name for the nested-group harnesses. Codex and
-# Claude keep PascalCase native names; Gemini uses its own surface.
+# Logical event -> native event name for the nested-group harnesses.
 CODEX_EVENT_MAP: dict[str, str] = {
     "SessionStart": "SessionStart",
     "UserPromptSubmit": "UserPromptSubmit",
@@ -321,23 +325,6 @@ CLAUDE_EVENT_MAP: dict[str, str] = {
     "SubagentStart": "SubagentStart",
     "SubagentStop": "SubagentStop",
     "Stop": "Stop",
-}
-
-GEMINI_EVENT_MAP: dict[str, str] = {
-    "SessionStart": "sessionStart",
-    "UserPromptSubmit": "BeforeAgent",
-    "PreToolUse": "BeforeTool",
-    "PostToolUse": "AfterTool",
-    "SessionEnd": "sessionEnd",
-    "Stop": "AfterAgent",
-}
-
-COPILOT_EVENT_MAP: dict[str, str] = {
-    "SessionStart": "sessionStart",
-    "UserPromptSubmit": "userPromptSubmitted",
-    "PreToolUse": "preToolUse",
-    "PostToolUse": "postToolUse",
-    "SessionEnd": "sessionEnd",
 }
 
 
@@ -577,51 +564,3 @@ def render_claude_hooks(
             group["matcher"] = hook["matcher"]
         rendered.setdefault(event, []).append(group)
     return {"hooks": rendered}
-
-
-def render_gemini_hooks(
-    hook_registry: dict[str, Any],
-    *,
-    repo_root: str,
-    perf_tier: str | None = None,
-) -> dict[str, Any]:
-    """Render Gemini CLI's nested-group hook shape (single source for sync + APM)."""
-    rendered: dict[str, list[dict[str, Any]]] = {}
-    for hook in prepare_hooks_for_render(hook_registry, "gemini-cli", perf_tier=perf_tier):
-        event = GEMINI_EVENT_MAP.get(str(hook.get("logical_event")))
-        if not event:
-            continue
-        config: dict[str, Any] = {
-            "type": "command",
-            "command": render_hook_command(hook, "gemini-cli", repo_root=repo_root),
-            "name": hook["id"],
-            "timeout": int(hook.get("timeout", 5)) * 1000,
-            "description": hook.get("description", hook["id"]),
-        }
-        group: dict[str, Any] = {"hooks": [config], "sequential": True}
-        if hook.get("matcher"):
-            group["matcher"] = hook["matcher"]
-        rendered.setdefault(event, []).append(group)
-    return {"hooks": rendered}
-
-
-def render_copilot_hooks(
-    hook_registry: dict[str, Any],
-    *,
-    repo_root: str,
-    perf_tier: str | None = None,
-) -> dict[str, Any]:
-    """Render GitHub Copilot's flat ``bash`` hook shape (single source for sync + APM)."""
-    rendered: dict[str, list[dict[str, Any]]] = {}
-    for hook in prepare_hooks_for_render(hook_registry, "github-copilot", perf_tier=perf_tier):
-        event = COPILOT_EVENT_MAP.get(str(hook.get("logical_event")))
-        if not event:
-            continue
-        rendered.setdefault(event, []).append({
-            "type": "command",
-            "bash": render_hook_command(hook, "github-copilot", repo_root=repo_root),
-            "cwd": ".",
-            "timeoutSec": int(hook.get("timeout", 5)),
-            "comment": hook.get("description", hook["id"]),
-        })
-    return {"version": int(hook_registry.get("version", 1)), "hooks": rendered}

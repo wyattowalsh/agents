@@ -25,9 +25,7 @@ HARNESS_SUPPORT = {
     "claude-code": {"portable-core", "runtime-specific", "hooks"},
     "cursor": {"portable-core", "runtime-specific"},
     "codex": {"portable-core"},
-    "github-copilot": {"portable-core", "runtime-specific"},
     "opencode": {"portable-core"},
-    "gemini-cli": {"portable-core"},
     "grok": {"portable-core", "runtime-specific"},
 }
 

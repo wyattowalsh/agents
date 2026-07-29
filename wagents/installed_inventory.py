@@ -78,13 +78,10 @@ DOCS_STATUS_PRIORITY = {
 }
 
 AGENT_LABEL_TO_ID = {
-    "Antigravity": "antigravity",
     "Claude Code": "claude-code",
     "Codex": "codex",
     "Crush": "crush",
     "Cursor": "cursor",
-    "Gemini CLI": "gemini-cli",
-    "GitHub Copilot": "github-copilot",
     "Grok Build": "grok",
     "OpenCode": "opencode",
 }
@@ -117,7 +114,6 @@ GROK_SKILL_SCAN_SOURCES: tuple[tuple[Path, str], ...] = (
 )
 
 LOCAL_SKILL_ROOT_FALLBACKS: dict[str, tuple[tuple[Path, str], ...]] = {
-    "antigravity": ((Path(".agents") / "skills", "Antigravity"),),
     "claude-code": ((Path(".claude") / "skills", "Claude Code"),),
     "codex": (
         (Path(".codex") / "skills", "Codex"),
@@ -131,14 +127,6 @@ LOCAL_SKILL_ROOT_FALLBACKS: dict[str, tuple[tuple[Path, str], ...]] = {
         (Path(".cursor") / "skills", "Cursor"),
         (Path(".agents") / "skills", "Cursor"),
     ),
-    "gemini-cli": (
-        (Path(".gemini") / "skills", "Gemini CLI"),
-        (Path(".agents") / "skills", "Gemini CLI"),
-    ),
-    "github-copilot": (
-        (Path(".copilot") / "skills", "GitHub Copilot"),
-        (Path(".agents") / "skills", "GitHub Copilot"),
-    ),
     "opencode": (
         (Path(".config") / "opencode" / "skills", "OpenCode"),
         (Path(".agents") / "skills", "OpenCode"),
@@ -151,8 +139,6 @@ SKILL_EXPOSURE_ROOTS: tuple[tuple[str, Path, str, str], ...] = (
     ("codex", Path(".codex") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
     ("opencode", Path(".config") / "opencode" / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
     ("crush", Path(".config") / "crush" / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
-    ("gemini-cli", Path(".gemini") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
-    ("github-copilot", Path(".copilot") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
     ("grok", Path(".grok") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
     ("cursor", Path(".cursor") / "skills", EXPOSURE_OWNER_SKILLS_CLI, "global"),
 )

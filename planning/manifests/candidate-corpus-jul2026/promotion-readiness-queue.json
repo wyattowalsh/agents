@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-16T02:52:03.623549+00:00",
+  "generated_at": "2026-07-29T09:29:03.784845+00:00",
   "status": "terminal-integration-reconciled",
   "summary": {
     "unique_targets": 289,
@@ -12452,33 +12452,6 @@
     },
     {
       "packet_id": "",
-      "normalized_url": "https://github.com/PleasePrompto/notebooklm-skill",
-      "source_name": "PleasePrompto/notebooklm-skill",
-      "raw_indexes": [
-        111
-      ],
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "terminal_status": "covered-by-existing-installable-catalog",
-      "live_install_eligible": false,
-      "repo_mutation_eligible": false,
-      "install_command": "",
-      "existing_rows": [
-        {
-          "name": "notebooklm",
-          "path": "docs/src/authoring/skills/notebooklm.mdx",
-          "source": "PleasePrompto/notebooklm-skill",
-          "install_source": "PleasePrompto/notebooklm-skill",
-          "source_url": "https://github.com/PleasePrompto/notebooklm-skill",
-          "status": "install-now-after-trust-gate",
-          "trust_tier": "curated-trust-gated",
-          "sync_kind": "skills-cli",
-          "has_install_command": true
-        }
-      ],
-      "terminal_route_requirements": []
-    },
-    {
-      "packet_id": "",
       "normalized_url": "https://github.com/earthtojake/text-to-cad",
       "source_name": "earthtojake/text-to-cad",
       "raw_indexes": [
@@ -15521,6 +15494,33 @@
           "source": "phuryn/pm-skills",
           "install_source": "phuryn/pm-skills",
           "source_url": "https://github.com/phuryn/pm-skills",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
+      "terminal_route_requirements": []
+    },
+    {
+      "packet_id": "",
+      "normalized_url": "https://github.com/teng-lin/notebooklm-py",
+      "source_name": "teng-lin/notebooklm-py",
+      "raw_indexes": [
+        146
+      ],
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "terminal_status": "covered-by-existing-installable-catalog",
+      "live_install_eligible": false,
+      "repo_mutation_eligible": false,
+      "install_command": "",
+      "existing_rows": [
+        {
+          "name": "notebooklm",
+          "path": "docs/src/authoring/skills/notebooklm.mdx",
+          "source": "teng-lin/notebooklm-py",
+          "install_source": "https://github.com/teng-lin/notebooklm-py",
+          "source_url": "https://github.com/teng-lin/notebooklm-py",
           "status": "install-now-after-trust-gate",
           "trust_tier": "curated-trust-gated",
           "sync_kind": "skills-cli",
@@ -19459,7 +19459,7 @@
         61
       ],
       "existing_integration_status": "needs-promotion-review",
-      "terminal_status": "integrated-mcp-surface",
+      "terminal_status": "integrated-skill-catalog-surface",
       "live_install_eligible": false,
       "repo_mutation_eligible": false,
       "install_command": "",
@@ -19945,6 +19945,26 @@
     },
     {
       "packet_id": "",
+      "normalized_url": "https://github.com/PleasePrompto/notebooklm-skill",
+      "source_name": "PleasePrompto/notebooklm-skill",
+      "raw_indexes": [
+        111
+      ],
+      "existing_integration_status": "needs-promotion-review",
+      "terminal_status": "integrated-skill-catalog-surface",
+      "live_install_eligible": false,
+      "repo_mutation_eligible": false,
+      "install_command": "",
+      "existing_rows": [],
+      "terminal_route_requirements": [
+        "preserve attribution and license notes",
+        "keep credentials user-owned",
+        "avoid vendoring or executing candidate code from intake rows",
+        "use repo-native MCP/plugin/tool/catalog surfaces"
+      ]
+    },
+    {
+      "packet_id": "",
       "normalized_url": "https://github.com/AgriciDaniel/claude-seo",
       "source_name": "AgriciDaniel/claude-seo",
       "raw_indexes": [
@@ -20380,26 +20400,6 @@
     },
     {
       "packet_id": "",
-      "normalized_url": "https://github.com/teng-lin/notebooklm-py",
-      "source_name": "teng-lin/notebooklm-py",
-      "raw_indexes": [
-        146
-      ],
-      "existing_integration_status": "needs-promotion-review",
-      "terminal_status": "integrated-native-surface",
-      "live_install_eligible": false,
-      "repo_mutation_eligible": false,
-      "install_command": "",
-      "existing_rows": [],
-      "terminal_route_requirements": [
-        "preserve attribution and license notes",
-        "keep credentials user-owned",
-        "avoid vendoring or executing candidate code from intake rows",
-        "use repo-native MCP/plugin/tool/catalog surfaces"
-      ]
-    },
-    {
-      "packet_id": "",
       "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/raffle-winner-picker",
       "source_name": "ComposioHQ/awesome-codex-skills",
       "raw_indexes": [
@@ -20586,7 +20586,7 @@
         168
       ],
       "existing_integration_status": "needs-promotion-review",
-      "terminal_status": "integrated-native-surface",
+      "terminal_status": "integrated-plugin-surface",
       "live_install_eligible": false,
       "repo_mutation_eligible": false,
       "install_command": "",
@@ -20626,7 +20626,7 @@
         171
       ],
       "existing_integration_status": "needs-promotion-review",
-      "terminal_status": "integrated-mcp-surface",
+      "terminal_status": "integrated-plugin-surface",
       "live_install_eligible": false,
       "repo_mutation_eligible": false,
       "install_command": "",

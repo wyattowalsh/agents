@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-16T02:52:03.170177+00:00",
+  "generated_at": "2026-07-29T09:29:02.581885+00:00",
   "records": [
     {
       "raw_url": "https://github.com/Ratnaditya-J/csvglow",
@@ -16,8 +16,8 @@
         "library",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_mcp_surface",
-      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+      "install_or_integration_decision": "integrated_existing_surface",
+      "reason": "Existing repo catalog surface already covers this source/domain.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -30,10 +30,8 @@
         "planning/manifests/candidate-corpus-jul2026/records/001-ratnaditya-j-csvglow.json"
       ],
       "files_modified": [
-        "config/mcp-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
-        "mcp/mcphub/mcp_settings.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
         "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
         "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
@@ -164,7 +162,7 @@
         "catalog_matches": [
           "docs/src/authoring/skills/csvglow.mdx"
         ],
-        "mcp_registry_match": true,
+        "mcp_registry_match": false,
         "plugin_registry_match": false
       },
       "security_packet": {
@@ -199,12 +197,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_mcp_surface",
-        "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface."
+        "decision": "integrated_existing_surface",
+        "reason": "Existing repo catalog surface already covers this source/domain."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-mcp-surface",
+        "terminal_route": "integrated-existing-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -6412,8 +6410,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_mcp_surface",
-      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "NPM_TOKEN_AXIOM"
@@ -6426,11 +6424,9 @@
         "planning/manifests/candidate-corpus-jul2026/records/029-charleswiltgen-axiom.json"
       ],
       "files_modified": [
-        "config/mcp-registry.json",
         "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
-        "mcp/mcphub/mcp_settings.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
         "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
         "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
@@ -6550,7 +6546,7 @@
         "catalog_matches": [
           "docs/src/authoring/skills/axiom-design.mdx"
         ],
-        "mcp_registry_match": true,
+        "mcp_registry_match": false,
         "plugin_registry_match": true
       },
       "security_packet": {
@@ -6585,12 +6581,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_mcp_surface",
-        "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-mcp-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -13576,8 +13572,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_mcp_surface",
-      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+      "install_or_integration_decision": "integrated_skill_catalog_surface",
+      "reason": "Skill-like source routed through curated catalog install metadata and source-list evidence.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "ANTHROPIC_API_KEY",
@@ -13594,10 +13590,8 @@
         "planning/manifests/candidate-corpus-jul2026/records/061-auriti-labs-geo-optimizer-skill.json"
       ],
       "files_modified": [
-        "config/mcp-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
-        "mcp/mcphub/mcp_settings.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
         "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
         "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
@@ -13614,7 +13608,7 @@
         "uv run python scripts/promote_candidate_corpus.py --final-check"
       ],
       "skipped_reason": "",
-      "reviewer_notes": "Deep source audit completed at ref main. Final repo-native route integrated_mcp_surface is recorded; no Skills CLI row applies.",
+      "reviewer_notes": "Deep source audit completed at ref main. Final repo-native route integrated_skill_catalog_surface is recorded; no Skills CLI row applies.",
       "raw_index": 61,
       "normalized_index": "https://github.com/Auriti-Labs/geo-optimizer-skill",
       "duplicate_group": [],
@@ -13736,7 +13730,7 @@
       ],
       "overlap_packet": {
         "catalog_matches": [],
-        "mcp_registry_match": true,
+        "mcp_registry_match": false,
         "plugin_registry_match": false
       },
       "security_packet": {
@@ -13758,7 +13752,7 @@
           "OPENAI_API_KEY",
           "PERPLEXITY_API_KEY"
         ],
-        "evidence_source": "deep-source-audit.json + reviewed local integration artifacts"
+        "evidence_source": "deep-source-audit.json"
       },
       "docs_steward_surfaces": [
         "README",
@@ -13775,12 +13769,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_mcp_surface",
-        "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface."
+        "decision": "integrated_skill_catalog_surface",
+        "reason": "Skill-like source routed through curated catalog install metadata and source-list evidence."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-mcp-surface",
+        "terminal_route": "integrated-skill-catalog-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -13796,7 +13790,7 @@
       "intake_docs_steward_status": "packet-generated",
       "final_integration": {
         "status": "terminal-repo-native-decision",
-        "mutation_applied": true,
+        "mutation_applied": false,
         "catalog_rows": 0,
         "harness_assurance": "harness-install-assurance.json",
         "non_skill_assurance": "non-skill-install-assurance.json",
@@ -25896,8 +25890,8 @@
         "library",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "install_or_integration_decision": "integrated_skill_catalog_surface",
+      "reason": "Skill-like source routed through curated catalog install metadata and source-list evidence.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -25905,8 +25899,8 @@
       "safety_notes": "No elevated keyword risk detected.",
       "attribution_notes": "Preserve attribution to PleasePrompto/notebooklm-skill; verify license before adapting content.",
       "files_added": [
-        "docs/src/authoring/skills/notebooklm.mdx",
-        "docs/src/content/docs/skills/catalog/external/notebooklm.mdx",
+        "docs/src/authoring/skills/pleaseprompto-notebooklm-skill.mdx",
+        "docs/src/content/docs/skills/catalog/external/pleaseprompto-notebooklm-skill.mdx",
         "planning/manifests/candidate-corpus-jul2026/records/111-pleaseprompto-notebooklm-skill.json"
       ],
       "files_modified": [
@@ -25928,7 +25922,7 @@
         "uv run python scripts/promote_candidate_corpus.py --final-check"
       ],
       "skipped_reason": "",
-      "reviewer_notes": "Deep source audit completed at ref master. Reviewed promotion overlay applied 1 catalog row(s) and verified 1 live-install evidence row(s).",
+      "reviewer_notes": "Deep source audit completed at ref master. Final repo-native route integrated_skill_catalog_surface is recorded; no Skills CLI row applies.",
       "raw_index": 111,
       "normalized_index": "https://github.com/PleasePrompto/notebooklm-skill",
       "duplicate_group": [],
@@ -25937,7 +25931,7 @@
       "canonical_source": "https://github.com/PleasePrompto/notebooklm-skill",
       "risk_tier": "standard-review",
       "risk_keywords": [],
-      "support_tier": "curated-installable-final",
+      "support_tier": "repo-native-terminal-final",
       "phase_status": {
         "source_capture": "completed",
         "deep_research": "completed-deep-source-audit",
@@ -26028,9 +26022,7 @@
         }
       ],
       "overlap_packet": {
-        "catalog_matches": [
-          "docs/src/authoring/skills/notebooklm.mdx"
-        ],
+        "catalog_matches": [],
         "mcp_registry_match": false,
         "plugin_registry_match": false
       },
@@ -26066,12 +26058,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_existing_surface",
-        "reason": "Existing repo catalog surface already covers this source/domain."
+        "decision": "integrated_skill_catalog_surface",
+        "reason": "Skill-like source routed through curated catalog install metadata and source-list evidence."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-existing-surface",
+        "terminal_route": "integrated-skill-catalog-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -26082,9 +26074,9 @@
       "intake_support_tier": "discovery-only",
       "intake_docs_steward_status": "packet-generated",
       "final_integration": {
-        "status": "installable-curated-external",
-        "mutation_applied": true,
-        "catalog_rows": 1,
+        "status": "terminal-repo-native-decision",
+        "mutation_applied": false,
+        "catalog_rows": 0,
         "harness_assurance": "harness-install-assurance.json",
         "non_skill_assurance": "non-skill-install-assurance.json",
         "runtime_disposition": "integrated-non-executable-surface"
@@ -27968,8 +27960,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -27998,6 +27990,7 @@
         "planning/manifests/candidate-corpus-jul2026/records/120-hyhmrright-brooks-lint.json"
       ],
       "files_modified": [
+        "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -28149,7 +28142,7 @@
           "docs/src/authoring/skills/release.mdx"
         ],
         "mcp_registry_match": false,
-        "plugin_registry_match": false
+        "plugin_registry_match": true
       },
       "security_packet": {
         "candidate_code_executed": false,
@@ -28183,12 +28176,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_existing_surface",
-        "reason": "Existing repo catalog surface already covers this source/domain."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-existing-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -28223,8 +28216,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": false,
       "env_vars_or_credentials": [],
       "safety_notes": "No elevated keyword risk detected.",
@@ -28235,6 +28228,7 @@
         "planning/manifests/candidate-corpus-jul2026/records/121-yujiachen-y-codebase-recon-skill.json"
       ],
       "files_modified": [
+        "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -28357,7 +28351,7 @@
           "docs/src/authoring/skills/codebase-recon.mdx"
         ],
         "mcp_registry_match": false,
-        "plugin_registry_match": false
+        "plugin_registry_match": true
       },
       "security_packet": {
         "candidate_code_executed": false,
@@ -28389,12 +28383,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_existing_surface",
-        "reason": "Existing repo catalog surface already covers this source/domain."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-existing-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -30666,8 +30660,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -30686,6 +30680,7 @@
         "planning/manifests/candidate-corpus-jul2026/records/132-mohamedabdallah-14-unslop.json"
       ],
       "files_modified": [
+        "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -30831,7 +30826,7 @@
           "docs/src/authoring/skills/unslop.mdx"
         ],
         "mcp_registry_match": false,
-        "plugin_registry_match": false
+        "plugin_registry_match": true
       },
       "security_packet": {
         "candidate_code_executed": false,
@@ -30865,12 +30860,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_existing_surface",
-        "reason": "Existing repo catalog surface already covers this source/domain."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-existing-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -31142,8 +31137,6 @@
       "safety_notes": "Ad-library extraction can cross platform ToS, scraping, privacy, and competitive-intelligence boundaries. Do not install or run by default; require approved public data sources, no private session scraping, explicit operator approval, and documented rate limits before any promotion.",
       "attribution_notes": "Preserve attribution to ComposioHQ/awesome-codex-skills; verify license before adapting content.",
       "files_added": [
-        "docs/src/authoring/skills/composiohq-awesome-codex-skills-competitive-ads-extractor.mdx",
-        "docs/src/content/docs/skills/catalog/external/composiohq-awesome-codex-skills-competitive-ads-extractor.mdx",
         "planning/manifests/candidate-corpus-jul2026/records/134-composiohq-awesome-codex-skills.json"
       ],
       "files_modified": [
@@ -34297,22 +34290,22 @@
         "library",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_native_surface",
-      "reason": "Source routed to a repo-native terminal integration surface.",
+      "install_or_integration_decision": "integrated_mcp_surface",
+      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
       "auth_required": true,
       "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+        "NOTEBOOKLM_PROFILE"
       ],
       "safety_notes": "No elevated keyword risk detected.",
       "attribution_notes": "Preserve attribution to teng-lin/notebooklm-py; verify license before adapting content.",
       "files_added": [
-        "docs/src/authoring/skills/teng-lin-notebooklm-py.mdx",
-        "docs/src/content/docs/skills/catalog/external/teng-lin-notebooklm-py.mdx",
         "planning/manifests/candidate-corpus-jul2026/records/146-teng-lin-notebooklm-py.json"
       ],
       "files_modified": [
+        "config/mcp-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
+        "mcp/mcphub/mcp_settings.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
         "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
         "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
@@ -34329,7 +34322,7 @@
         "uv run python scripts/promote_candidate_corpus.py --final-check"
       ],
       "skipped_reason": "",
-      "reviewer_notes": "Deep source audit completed at ref main. Final repo-native route integrated_native_surface is recorded; no Skills CLI row applies.",
+      "reviewer_notes": "Deep source audit completed at ref main. Final repo-native route integrated_mcp_surface is recorded; no Skills CLI row applies.",
       "raw_index": 146,
       "normalized_index": "https://github.com/teng-lin/notebooklm-py",
       "duplicate_group": [],
@@ -34444,8 +34437,11 @@
         }
       ],
       "overlap_packet": {
-        "catalog_matches": [],
-        "mcp_registry_match": false,
+        "catalog_matches": [
+          "docs/src/authoring/skills/notebooklm.mdx",
+          "docs/src/authoring/skills/teng-lin-notebooklm-py.mdx"
+        ],
+        "mcp_registry_match": true,
         "plugin_registry_match": false
       },
       "security_packet": {
@@ -34461,7 +34457,7 @@
       "compliance_packet": {
         "auth_required": true,
         "env_vars_or_credentials": [
-          "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+          "NOTEBOOKLM_PROFILE"
         ],
         "evidence_source": "deep-source-audit.json"
       },
@@ -34480,12 +34476,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_native_surface",
-        "reason": "Source routed to a repo-native terminal integration surface."
+        "decision": "integrated_mcp_surface",
+        "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-native-surface",
+        "terminal_route": "integrated-mcp-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -34500,7 +34496,7 @@
       "intake_docs_steward_status": "packet-generated",
       "final_integration": {
         "status": "terminal-repo-native-decision",
-        "mutation_applied": false,
+        "mutation_applied": true,
         "catalog_rows": 0,
         "harness_assurance": "harness-install-assurance.json",
         "non_skill_assurance": "non-skill-install-assurance.json",
@@ -35661,8 +35657,6 @@
       "safety_notes": "Video download automation can violate copyright, DRM, private-content, paywall, and platform ToS boundaries. Prefer transcript or metadata workflows; do not install or run by default unless the operator proves rights to the content and approves the exact source.",
       "attribution_notes": "Preserve attribution to ComposioHQ/awesome-codex-skills; verify license before adapting content.",
       "files_added": [
-        "docs/src/authoring/skills/composiohq-awesome-codex-skills-video-downloader.mdx",
-        "docs/src/content/docs/skills/catalog/external/composiohq-awesome-codex-skills-video-downloader.mdx",
         "planning/manifests/candidate-corpus-jul2026/records/152-composiohq-awesome-codex-skills.json"
       ],
       "files_modified": [
@@ -36097,7 +36091,6 @@
         "config/mcp-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
-        "mcp/mcphub/mcp_settings.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
         "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
         "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
@@ -38328,8 +38321,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_mcp_surface",
-      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -38342,11 +38335,9 @@
         "planning/manifests/candidate-corpus-jul2026/records/163-pythoughts-labs-designer-skill.json"
       ],
       "files_modified": [
-        "config/mcp-registry.json",
         "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
-        "mcp/mcphub/mcp_settings.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
         "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
         "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
@@ -38484,7 +38475,7 @@
         "catalog_matches": [
           "docs/src/authoring/skills/raster-logo-svg.mdx"
         ],
-        "mcp_registry_match": true,
+        "mcp_registry_match": false,
         "plugin_registry_match": true
       },
       "security_packet": {
@@ -38519,12 +38510,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_mcp_surface",
-        "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-mcp-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -38561,8 +38552,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": false,
       "env_vars_or_credentials": [],
       "safety_notes": "Executable/tool surface requires script and dependency review.",
@@ -38573,6 +38564,7 @@
         "planning/manifests/candidate-corpus-jul2026/records/164-hashgraph-online-awesome-codex-plugins.json"
       ],
       "files_modified": [
+        "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -38710,7 +38702,7 @@
           "docs/src/authoring/skills/secret-guard.mdx"
         ],
         "mcp_registry_match": false,
-        "plugin_registry_match": false
+        "plugin_registry_match": true
       },
       "security_packet": {
         "candidate_code_executed": false,
@@ -38744,12 +38736,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_existing_surface",
-        "reason": "Existing repo catalog surface already covers this source/domain."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-existing-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -38783,8 +38775,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": false,
       "env_vars_or_credentials": [],
       "safety_notes": "Executable/tool surface requires script and dependency review.",
@@ -38795,6 +38787,7 @@
         "planning/manifests/candidate-corpus-jul2026/records/165-hashgraph-online-hol-guard-plugin.json"
       ],
       "files_modified": [
+        "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -38917,7 +38910,7 @@
           "docs/src/authoring/skills/hol-guard.mdx"
         ],
         "mcp_registry_match": false,
-        "plugin_registry_match": false
+        "plugin_registry_match": true
       },
       "security_packet": {
         "candidate_code_executed": false,
@@ -38951,12 +38944,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_existing_surface",
-        "reason": "Existing repo catalog surface already covers this source/domain."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-existing-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -38990,8 +38983,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -39004,6 +38997,7 @@
         "planning/manifests/candidate-corpus-jul2026/records/166-hashgraph-online-awesome-codex-plugins.json"
       ],
       "files_modified": [
+        "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -39141,7 +39135,7 @@
           "docs/src/authoring/skills/secret-guard.mdx"
         ],
         "mcp_registry_match": false,
-        "plugin_registry_match": false
+        "plugin_registry_match": true
       },
       "security_packet": {
         "candidate_code_executed": false,
@@ -39177,12 +39171,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_existing_surface",
-        "reason": "Existing repo catalog surface already covers this source/domain."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-existing-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -39432,8 +39426,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_native_surface",
-      "reason": "Source routed to a repo-native terminal integration surface.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -39446,6 +39440,7 @@
         "planning/manifests/candidate-corpus-jul2026/records/168-hdeibler-universal-design-principles.json"
       ],
       "files_modified": [
+        "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -39464,7 +39459,7 @@
         "uv run python scripts/promote_candidate_corpus.py --final-check"
       ],
       "skipped_reason": "",
-      "reviewer_notes": "Deep source audit completed at ref main. Final repo-native route integrated_native_surface is recorded; no Skills CLI row applies.",
+      "reviewer_notes": "Deep source audit completed at ref main. Final repo-native route integrated_plugin_surface is recorded; no Skills CLI row applies.",
       "raw_index": 168,
       "normalized_index": "https://github.com/HDeibler/universal-design-principles",
       "duplicate_group": [],
@@ -39575,7 +39570,7 @@
       "overlap_packet": {
         "catalog_matches": [],
         "mcp_registry_match": false,
-        "plugin_registry_match": false
+        "plugin_registry_match": true
       },
       "security_packet": {
         "candidate_code_executed": false,
@@ -39609,12 +39604,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_native_surface",
-        "reason": "Source routed to a repo-native terminal integration surface."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-native-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -39628,7 +39623,7 @@
       "intake_docs_steward_status": "packet-generated",
       "final_integration": {
         "status": "terminal-repo-native-decision",
-        "mutation_applied": false,
+        "mutation_applied": true,
         "catalog_rows": 0,
         "harness_assurance": "harness-install-assurance.json",
         "non_skill_assurance": "non-skill-install-assurance.json",
@@ -39934,7 +39929,6 @@
         "config/mcp-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
-        "mcp/mcphub/mcp_settings.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
         "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
         "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
@@ -40148,8 +40142,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_mcp_surface",
-      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -40162,11 +40156,9 @@
         "planning/manifests/candidate-corpus-jul2026/records/171-johnvouros-nullcost-plugin.json"
       ],
       "files_modified": [
-        "config/mcp-registry.json",
         "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
-        "mcp/mcphub/mcp_settings.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
         "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
         "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
@@ -40183,7 +40175,7 @@
         "uv run python scripts/promote_candidate_corpus.py --final-check"
       ],
       "skipped_reason": "",
-      "reviewer_notes": "Deep source audit completed at ref main. Final repo-native route integrated_mcp_surface is recorded; no Skills CLI row applies.",
+      "reviewer_notes": "Deep source audit completed at ref main. Final repo-native route integrated_plugin_surface is recorded; no Skills CLI row applies.",
       "raw_index": 171,
       "normalized_index": "https://github.com/johnvouros/nullcost-plugin",
       "duplicate_group": [],
@@ -40292,7 +40284,7 @@
       ],
       "overlap_packet": {
         "catalog_matches": [],
-        "mcp_registry_match": true,
+        "mcp_registry_match": false,
         "plugin_registry_match": true
       },
       "security_packet": {
@@ -40329,12 +40321,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_mcp_surface",
-        "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-mcp-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -40373,8 +40365,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_mcp_surface",
-      "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "BFL_API_KEY",
@@ -40385,7 +40377,6 @@
         "GEMINI_API_KEY",
         "GOOGLE_API_KEY",
         "HF_TOKEN",
-        "HORDE_API_KEY",
         "HUGGINGFACE_API_KEY",
         "IDEOGRAM_API_KEY",
         "LEONARDO_API_KEY",
@@ -40431,11 +40422,9 @@
         "planning/manifests/candidate-corpus-jul2026/records/172-mohamedabdallah-14-prompt-to-asset.json"
       ],
       "files_modified": [
-        "config/mcp-registry.json",
         "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
-        "mcp/mcphub/mcp_settings.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
         "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
         "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
@@ -40588,7 +40577,7 @@
           "docs/src/authoring/skills/ui-mockup-prompt.mdx",
           "docs/src/authoring/skills/vectorize.mdx"
         ],
-        "mcp_registry_match": true,
+        "mcp_registry_match": false,
         "plugin_registry_match": true
       },
       "security_packet": {
@@ -40612,7 +40601,6 @@
           "GEMINI_API_KEY",
           "GOOGLE_API_KEY",
           "HF_TOKEN",
-          "HORDE_API_KEY",
           "HUGGINGFACE_API_KEY",
           "IDEOGRAM_API_KEY",
           "LEONARDO_API_KEY",
@@ -40643,12 +40631,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_mcp_surface",
-        "reason": "Repo MCP registry owns this candidate as a disabled, placeholder-only manual activation surface."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-mcp-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -40938,8 +40926,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": false,
       "env_vars_or_credentials": [],
       "safety_notes": "Executable/tool surface requires script and dependency review.",
@@ -40950,6 +40938,7 @@
         "planning/manifests/candidate-corpus-jul2026/records/174-tim-osterhus-codex-remotion-plugin.json"
       ],
       "files_modified": [
+        "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -41072,7 +41061,7 @@
           "docs/src/authoring/skills/remotion-video-builder.mdx"
         ],
         "mcp_registry_match": false,
-        "plugin_registry_match": false
+        "plugin_registry_match": true
       },
       "security_packet": {
         "candidate_code_executed": false,
@@ -41106,12 +41095,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_existing_surface",
-        "reason": "Existing repo catalog surface already covers this source/domain."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-existing-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -41129,7 +41118,7 @@
         "catalog_rows": 1,
         "harness_assurance": "harness-install-assurance.json",
         "non_skill_assurance": "non-skill-install-assurance.json",
-        "runtime_disposition": "registered-plugin"
+        "runtime_disposition": "registered-disabled-plugin"
       }
     },
     {
@@ -41167,6 +41156,7 @@
         "planning/manifests/candidate-corpus-jul2026/records/175-mohamedabdallah-14-unslop.json"
       ],
       "files_modified": [
+        "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -41312,7 +41302,7 @@
           "docs/src/authoring/skills/unslop.mdx"
         ],
         "mcp_registry_match": false,
-        "plugin_registry_match": false
+        "plugin_registry_match": true
       },
       "security_packet": {
         "candidate_code_executed": false,
@@ -41387,8 +41377,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "ZOTERO_DB_PATH"
@@ -41401,6 +41391,7 @@
         "planning/manifests/candidate-corpus-jul2026/records/176-summer521521-zotero-research-plugin.json"
       ],
       "files_modified": [
+        "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -41523,7 +41514,7 @@
           "docs/src/authoring/skills/zotero-research.mdx"
         ],
         "mcp_registry_match": false,
-        "plugin_registry_match": false
+        "plugin_registry_match": true
       },
       "security_packet": {
         "candidate_code_executed": false,
@@ -41559,12 +41550,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_existing_surface",
-        "reason": "Existing repo catalog surface already covers this source/domain."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-existing-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -41600,8 +41591,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -41614,6 +41605,7 @@
         "planning/manifests/candidate-corpus-jul2026/records/177-papischolz-roadmapsmith.json"
       ],
       "files_modified": [
+        "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -41742,7 +41734,7 @@
           "docs/src/authoring/skills/roadmap-update.mdx"
         ],
         "mcp_registry_match": false,
-        "plugin_registry_match": false
+        "plugin_registry_match": true
       },
       "security_packet": {
         "candidate_code_executed": false,
@@ -41776,12 +41768,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_existing_surface",
-        "reason": "Existing repo catalog surface already covers this source/domain."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-existing-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -43758,7 +43750,6 @@
         "config/mcp-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
-        "mcp/mcphub/mcp_settings.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
         "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
         "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
@@ -45195,8 +45186,8 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
       "auth_required": true,
       "env_vars_or_credentials": [
         "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -45209,6 +45200,7 @@
         "planning/manifests/candidate-corpus-jul2026/records/194-hashgraph-online-awesome-codex-plugins.json"
       ],
       "files_modified": [
+        "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -45346,7 +45338,7 @@
           "docs/src/authoring/skills/secret-guard.mdx"
         ],
         "mcp_registry_match": false,
-        "plugin_registry_match": false
+        "plugin_registry_match": true
       },
       "security_packet": {
         "candidate_code_executed": false,
@@ -45382,12 +45374,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_existing_surface",
-        "reason": "Existing repo catalog surface already covers this source/domain."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-existing-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -47774,8 +47766,6 @@
       "safety_notes": "Social posting automation can create spam, impersonation, credential, account-lockout, and platform policy risk. Do not install or run by default; require user-owned credentials, no committed cookies or sessions, explicit account-owner authorization, and manual review before each post.",
       "attribution_notes": "Preserve attribution to jihe520/social-push; verify license before adapting content.",
       "files_added": [
-        "docs/src/authoring/skills/jihe520-social-push.mdx",
-        "docs/src/content/docs/skills/catalog/external/jihe520-social-push.mdx",
         "planning/manifests/candidate-corpus-jul2026/records/205-jihe520-social-push.json"
       ],
       "files_modified": [
@@ -61995,8 +61985,12 @@
       ],
       "install_or_integration_decision": "integrated_existing_surface",
       "reason": "Existing repo catalog surface already covers this source/domain.",
-      "auth_required": false,
-      "env_vars_or_credentials": [],
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PAPER_SEARCH_MCP_CORE_API_KEY",
+        "SEMANTIC_SCHOLAR_API_KEY",
+        "ZENODO_ACCESS_TOKEN"
+      ],
       "safety_notes": "Executable/tool surface requires script and dependency review.",
       "attribution_notes": "Preserve attribution to openags/paper-search-mcp; verify license before adapting content.",
       "files_added": [
@@ -62145,8 +62139,12 @@
         "license_name": "MIT License"
       },
       "compliance_packet": {
-        "auth_required": false,
-        "env_vars_or_credentials": [],
+        "auth_required": true,
+        "env_vars_or_credentials": [
+          "PAPER_SEARCH_MCP_CORE_API_KEY",
+          "SEMANTIC_SCHOLAR_API_KEY",
+          "ZENODO_ACCESS_TOKEN"
+        ],
         "evidence_source": "deep-source-audit.json"
       },
       "docs_steward_surfaces": [
@@ -63038,10 +63036,12 @@
         "plugin",
         "skill"
       ],
-      "install_or_integration_decision": "integrated_existing_surface",
-      "reason": "Existing repo catalog surface already covers this source/domain.",
-      "auth_required": false,
-      "env_vars_or_credentials": [],
+      "install_or_integration_decision": "integrated_plugin_surface",
+      "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface.",
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PAPERSFLOW_OAUTH_ACCOUNT"
+      ],
       "safety_notes": "Executable/tool surface requires script and dependency review.",
       "attribution_notes": "Preserve attribution to papersflow-ai/papersflow-codex-plugin; verify license before adapting content.",
       "files_added": [
@@ -63056,6 +63056,7 @@
         "planning/manifests/candidate-corpus-jul2026/records/279-papersflow-ai-papersflow-codex-plugin.json"
       ],
       "files_modified": [
+        "config/plugin-extension-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
@@ -63181,7 +63182,7 @@
           "docs/src/authoring/skills/research-briefing.mdx"
         ],
         "mcp_registry_match": false,
-        "plugin_registry_match": false
+        "plugin_registry_match": true
       },
       "security_packet": {
         "candidate_code_executed": false,
@@ -63194,8 +63195,10 @@
         "license_name": "MIT License"
       },
       "compliance_packet": {
-        "auth_required": false,
-        "env_vars_or_credentials": [],
+        "auth_required": true,
+        "env_vars_or_credentials": [
+          "PAPERSFLOW_OAUTH_ACCOUNT"
+        ],
         "evidence_source": "deep-source-audit.json"
       },
       "docs_steward_surfaces": [
@@ -63215,12 +63218,12 @@
       ],
       "docs_steward_status": "final-overlay-reconciled",
       "decision_packet": {
-        "decision": "integrated_existing_surface",
-        "reason": "Existing repo catalog surface already covers this source/domain."
+        "decision": "integrated_plugin_surface",
+        "reason": "Repo plugin registry owns this candidate as a disabled, manual activation surface."
       },
       "integration_packet": {
         "mutation_allowed": false,
-        "terminal_route": "integrated-existing-surface",
+        "terminal_route": "integrated-plugin-surface",
         "required_before_live_execution": "explicit user-owned command and credential setup",
         "scope": "historical-intake-research-only"
       },
@@ -63265,8 +63268,6 @@
       "safety_notes": "Marketplace application automation can violate platform ToS, spend connects, misrepresent the user, or submit irreversible outreach. Do not install or run by default; require user-owned credentials, connect-budget limits, manual approval before every proposal, and final success evidence.",
       "attribution_notes": "Preserve attribution to klajdikkolaj/upwork-autopilot; verify license before adapting content.",
       "files_added": [
-        "docs/src/authoring/skills/klajdikkolaj-upwork-autopilot.mdx",
-        "docs/src/content/docs/skills/catalog/external/klajdikkolaj-upwork-autopilot.mdx",
         "planning/manifests/candidate-corpus-jul2026/records/280-klajdikkolaj-upwork-autopilot.json"
       ],
       "files_modified": [
@@ -64509,7 +64510,6 @@
         "config/mcp-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
-        "mcp/mcphub/mcp_settings.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
         "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
         "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",
@@ -64960,7 +64960,6 @@
         "config/mcp-registry.json",
         "docs/public/generated-registries/skills-catalog-browser-index.json",
         "docs/public/generated-registries/skills-catalog-index.json",
-        "mcp/mcphub/mcp_settings.json",
         "planning/manifests/candidate-corpus-jul2026/all-records.json",
         "planning/manifests/candidate-corpus-jul2026/catalog-authoring-summary.json",
         "planning/manifests/candidate-corpus-jul2026/compliance-auth-matrix.json",

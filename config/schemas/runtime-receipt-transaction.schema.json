@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agents.w4w.dev/schemas/runtime-receipt-transaction.schema.json",
+  "title": "Candidate runtime receipt transaction",
+  "type": "object",
+  "required": [
+    "transaction_id",
+    "status",
+    "preimage_revision",
+    "owned_artifact_keys",
+    "owned_closure_keys"
+  ],
+  "properties": {
+    "transaction_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["running", "passed", "failed", "conflicted"]},
+    "preimage_revision": {"type": "integer", "minimum": 0},
+    "post_revision": {"type": "integer", "minimum": 0},
+    "owned_artifact_keys": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {"type": "string", "minLength": 1},
+          {"type": "string", "minLength": 1}
+        ],
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "owned_closure_keys": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    }
+  },
+  "additionalProperties": true
+}

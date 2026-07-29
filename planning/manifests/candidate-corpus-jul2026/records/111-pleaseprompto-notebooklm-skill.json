@@ -10,8 +10,8 @@
     "library",
     "skill"
   ],
-  "install_or_integration_decision": "integrated_existing_surface",
-  "reason": "Existing repo catalog surface already covers this source/domain.",
+  "install_or_integration_decision": "integrated_skill_catalog_surface",
+  "reason": "Skill-like source routed through curated catalog install metadata and source-list evidence.",
   "auth_required": true,
   "env_vars_or_credentials": [
     "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
@@ -19,8 +19,8 @@
   "safety_notes": "No elevated keyword risk detected.",
   "attribution_notes": "Preserve attribution to PleasePrompto/notebooklm-skill; verify license before adapting content.",
   "files_added": [
-    "docs/src/authoring/skills/notebooklm.mdx",
-    "docs/src/content/docs/skills/catalog/external/notebooklm.mdx",
+    "docs/src/authoring/skills/pleaseprompto-notebooklm-skill.mdx",
+    "docs/src/content/docs/skills/catalog/external/pleaseprompto-notebooklm-skill.mdx",
     "planning/manifests/candidate-corpus-jul2026/records/111-pleaseprompto-notebooklm-skill.json"
   ],
   "files_modified": [
@@ -42,7 +42,7 @@
     "uv run python scripts/promote_candidate_corpus.py --final-check"
   ],
   "skipped_reason": "",
-  "reviewer_notes": "Deep source audit completed at ref master. Reviewed promotion overlay applied 1 catalog row(s) and verified 1 live-install evidence row(s).",
+  "reviewer_notes": "Deep source audit completed at ref master. Final repo-native route integrated_skill_catalog_surface is recorded; no Skills CLI row applies.",
   "raw_index": 111,
   "normalized_index": "https://github.com/PleasePrompto/notebooklm-skill",
   "duplicate_group": [],
@@ -51,7 +51,7 @@
   "canonical_source": "https://github.com/PleasePrompto/notebooklm-skill",
   "risk_tier": "standard-review",
   "risk_keywords": [],
-  "support_tier": "curated-installable-final",
+  "support_tier": "repo-native-terminal-final",
   "phase_status": {
     "source_capture": "completed",
     "deep_research": "completed-deep-source-audit",
@@ -142,9 +142,7 @@
     }
   ],
   "overlap_packet": {
-    "catalog_matches": [
-      "docs/src/authoring/skills/notebooklm.mdx"
-    ],
+    "catalog_matches": [],
     "mcp_registry_match": false,
     "plugin_registry_match": false
   },
@@ -180,12 +178,12 @@
   ],
   "docs_steward_status": "final-overlay-reconciled",
   "decision_packet": {
-    "decision": "integrated_existing_surface",
-    "reason": "Existing repo catalog surface already covers this source/domain."
+    "decision": "integrated_skill_catalog_surface",
+    "reason": "Skill-like source routed through curated catalog install metadata and source-list evidence."
   },
   "integration_packet": {
     "mutation_allowed": false,
-    "terminal_route": "integrated-existing-surface",
+    "terminal_route": "integrated-skill-catalog-surface",
     "required_before_live_execution": "explicit user-owned command and credential setup",
     "scope": "historical-intake-research-only"
   },
@@ -196,9 +194,9 @@
   "intake_support_tier": "discovery-only",
   "intake_docs_steward_status": "packet-generated",
   "final_integration": {
-    "status": "installable-curated-external",
-    "mutation_applied": true,
-    "catalog_rows": 1,
+    "status": "terminal-repo-native-decision",
+    "mutation_applied": false,
+    "catalog_rows": 0,
     "harness_assurance": "harness-install-assurance.json",
     "non_skill_assurance": "non-skill-install-assurance.json",
     "runtime_disposition": "integrated-non-executable-surface"

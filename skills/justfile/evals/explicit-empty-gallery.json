@@ -1,0 +1,14 @@
+{
+  "skills": [
+    "justfile"
+  ],
+  "query": "/justfile",
+  "files": [],
+  "expected_behavior": [
+    "Recognizes empty /justfile and enters the empty-args handler",
+    "Surfaces create, edit, migrate, check, and discover modes",
+    "States write-scoped permission posture",
+    "Does not invent a mutating default action",
+    "Points at the reference index or critical rules"
+  ]
+}

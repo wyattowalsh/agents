@@ -1,0 +1,15 @@
+{
+  "skills": [
+    "justfile"
+  ],
+  "query": "/justfile migrate this Makefile so .c files rebuild when headers change using pattern rules and mtimes",
+  "files": [
+    "Makefile"
+  ],
+  "expected_behavior": [
+    "Recognizes Make file-timestamp / pattern-rule build semantics",
+    "Refuses full Just replacement for mtime-accurate C builds",
+    "Points to when-not-just guidance or equivalent boundary",
+    "Does not claim Just is a drop-in Make replacement for pattern rules"
+  ]
+}

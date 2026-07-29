@@ -9,9 +9,9 @@ docs_density: standard
 license: "MIT"
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a claude-code codex crush cursor grok opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "app-intents"
 ---
 
@@ -24,15 +24,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="app-intents"
   description="Design, implement, and review App Intents, Shortcuts integration, parameter summaries, entity queries, snippets, and Apple Intelligence actions."
-  installCommand={`npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a claude-code codex crush cursor grok opencode`}
   installLabel="Install"
   usage="/app-intents"
-  badges={[{ text: "app-intents", variant: "note" }, { text: "421 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
+  badges={[{ text: "app-intents", variant: "note" }, { text: "412 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Curated", variant: "note" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/app-intents.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -40,11 +40,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/app-intent
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a claude-code codex crush cursor grok opencode
 ```
 
 ## Trust / Audit
@@ -86,7 +86,7 @@ This row integrates `n0an/App-Intents-Agent-Skill` as an installable curated ext
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -107,13 +107,13 @@ title: "App Intents"
 source_kind: "curated-external"
 source: "n0an/App-Intents-Agent-Skill"
 install_source: "n0an/App-Intents-Agent-Skill"
-install_command: "npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a claude-code codex crush cursor grok opencode"
 install_skill_name: "app-intents"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/n0an/App-Intents-Agent-Skill"
 selector_mode: "named"
 audit_date: "2026-07-07"
@@ -145,7 +145,7 @@ This row integrates `n0an/App-Intents-Agent-Skill` as an installable curated ext
 - Normalized URL: [https://github.com/n0an/App-Intents-Agent-Skill](https://github.com/n0an/App-Intents-Agent-Skill)
 - Catalog skill id: `app-intents`
 - Upstream install selector: `app-intents`
-- Install command: `npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+- Install command: `npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a claude-code codex crush cursor grok opencode`
 - Inspected commit SHA: `67cfdc1068b77b3df06d8858a7606b293f5d2b66`
 - License status: `MIT`
 - Source-list evidence: `source-list-found`
@@ -154,13 +154,13 @@ This row integrates `n0an/App-Intents-Agent-Skill` as an installable curated ext
 ## Local Install Evidence
 
 - Executed command: `npx --yes skills add n0an/App-Intents-Agent-Skill --skill app-intents --dry-run`
-- Executed command: `npx --yes skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a antigravity`
+- Executed command: `npx --yes skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g`
 - Executed command: `npx --yes skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a claude-code`
 - Executed command: `npx --yes skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a codex`
 - Executed command: `npx --yes skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a crush`
 - Executed command: `npx --yes skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a cursor`
-- Executed command: `npx --yes skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a gemini-cli`
-- Executed command: `npx --yes skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a github-copilot`
+- Executed command: `npx --yes skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g`
+- Executed command: `npx --yes skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g`
 - Executed command: `npx --yes skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a claude-code`
 - Executed command: `npx --yes skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a opencode`
 - Installed path: `~/.agents/skills/app-intents`

@@ -72,7 +72,20 @@ Codex harness uses the Python dispatcher (`wagents-hook.py`) for richer policy +
 
 ## Cursor-specific
 
-Cursor uses the Python dispatcher (`wagents-hook.py`) plus its own native lifecycle events (`beforeReadFile`, `beforeShellExecution`, `beforeMCPExecution`, `afterFileEdit`, `subagentStart`). Enforce-tier native events are rendered fail-closed.
+Cursor uses the Python dispatcher (`wagents-hook.py`) plus its own native lifecycle events (`beforeReadFile`, `beforeShellExecution`, `beforeMCPExecution`, `afterFileEdit`, `subagentStart`). Enforce-tier pre-execution guards are rendered fail-closed, except explicit fail-open pin hooks (`failClosed: false` on `cursor-task-model-pin-rewrite` and `cursor-subagent-model-allowlist`).
+
+### Cursor Grok 4.5 High pin — layer matrix (SSOT)
+
+Canonical slug: `cursor-grok-4.5-high`. Soft rule (agents must not omit `model`) differs from Phase B (omit allowed so the High parent inherits). Operators SHOULD set user-owned `~/.cursor/cli-config.json` `exploreSubagentModel: "inherit"` and the IDE picker to Grok 4.5 High; sync SHALL NOT write `cli-config` or live `state.vscdb`.
+
+| Layer | Mechanism | Omit `model` | Wrong/fast model | Hook crash |
+| --- | --- | --- | --- | --- |
+| Soft rule | `.cursor/rules/cursor-models.mdc` | Agents must not omit | Agents must not pass | N/A |
+| Phase A | `preToolUse` Task rewrite | Pins to High via `updated_input` | Rewrites + clears alts | **fail-open** (Task proceeds) |
+| Phase B | `subagentStart` allowlist | Allow (inherit High parent) | Deny if explicit non-High | **fail-open** |
+| Validate/CI | `validate_hooks` + pytest | N/A | N/A | Compensatory: projection **must** exist |
+
+Security Enforce guards stay **fail-closed** (RV-004). Do not harden pin hooks to fail-closed.
 
 <CardGrid>
   <Card title="cursor-session-start-context">
@@ -106,6 +119,12 @@ Cursor uses the Python dispatcher (`wagents-hook.py`) plus its own native lifecy
   </Card>
   <Card title="cursor-subagent-start-context">
     <Badge text="SubagentStart" variant="success" /> <Badge text="context" variant="tip" /> Inject repo conventions + session context when a subagent starts.
+  </Card>
+  <Card title="cursor-task-model-pin-rewrite">
+    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> <Badge text="fail-open" variant="note" /> Rewrite Task launches to `cursor-grok-4.5-high` via `updated_input` (`failClosed: false`).
+  </Card>
+  <Card title="cursor-subagent-model-allowlist">
+    <Badge text="SubagentStart" variant="caution" /> <Badge text="enforce" variant="tip" /> <Badge text="fail-open" variant="note" /> Deny explicit non-High subagent models; omit/inherit stays allowed (`failClosed: false`).
   </Card>
 </CardGrid>
 
@@ -154,7 +173,7 @@ Activated by research prompts. Span **codex, claude-code, cursor, github-copilot
 
 - GitHub Copilot direct `.sh` handlers under `./hooks/`.
 - Codex, Cursor + multi-harness policies use `hooks/wagents-hook.py <policy-id> --harness <name>`. Payload normalization, state, ledger, and degraded modes live here.
-- Cursor native events (`beforeReadFile`, `beforeShellExecution`, `beforeMCPExecution`, `afterFileEdit`, `subagentStart`) are rendered into the flat `.cursor/hooks.json` shape; enforce-tier guards are fail-closed.
+- Cursor native events (`beforeReadFile`, `beforeShellExecution`, `beforeMCPExecution`, `afterFileEdit`, `subagentStart`) are rendered into the flat `.cursor/hooks.json` shape; enforce-tier pre-execution guards are fail-closed except the Task rewrite and subagent allowlist pin hooks (`failClosed: false`).
 - Decision logic is being migrated into pure modules under `wagents/hooks/policies/` (e.g. `git_commit_push_guard`, `before_read_file_guard`, `before_mcp_execution`, `subagent_start`, `grok_deny_adapter`) so the dispatcher stays thin and unit-testable.
 - Grok consumes the dispatcher-backed fleet via a deny adapter (`render_grok_hooks` → `~/.grok/hooks/wagents-fleet.json`); OpenCode bridges enforce-tier PreToolUse guards through `platforms/opencode/plugins/wagents-hook-bridge.ts`.
 - Research policies also delegate to `skills/research/scripts/research_hook.py` for the full state machine and stop verifier.

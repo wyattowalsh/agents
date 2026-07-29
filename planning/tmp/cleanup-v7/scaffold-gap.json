@@ -1,0 +1,82 @@
+{
+  "agents": [
+    {
+      "name": "prompt-optimizer",
+      "path": "agents/prompt-optimizer.md",
+      "description": "Scaffold for prompt/token optimization reviews on agent and skill bodies (planned).",
+      "tbd_lines": [
+        {
+          "line": 13,
+          "text": "Later-tier scaffold for reviewing standing-context cost of agent prompts and skill bodies."
+        }
+      ],
+      "tbd_count": 1,
+      "evals_path": "evals/agents/prompt-optimizer/evals.json",
+      "scaffold_eval_asserts": [],
+      "readme_row_present": true
+    },
+    {
+      "name": "agent-transpiler",
+      "path": "agents/agent-transpiler.md",
+      "description": "Scaffold for transpiling portable agent frontmatter across harness projections (planned).",
+      "tbd_lines": [
+        {
+          "line": 12,
+          "text": "Later-tier scaffold for translating portable `agents/*.md` into harness-specific projections."
+        },
+        {
+          "line": 17,
+          "text": "2. Map documented optional fields to target harness schema (TBD automation)."
+        }
+      ],
+      "tbd_count": 2,
+      "evals_path": "evals/agents/agent-transpiler/evals.json",
+      "scaffold_eval_asserts": [],
+      "readme_row_present": true
+    },
+    {
+      "name": "agent-registry-publisher",
+      "path": "agents/agent-registry-publisher.md",
+      "description": "Scaffold for publishing agent catalog registry artifacts (planned).",
+      "tbd_lines": [
+        {
+          "line": 13,
+          "text": "Later-tier scaffold for publishing machine-readable agent registry bundles to docs and MCP catalog surfaces."
+        }
+      ],
+      "tbd_count": 1,
+      "evals_path": "evals/agents/agent-registry-publisher/evals.json",
+      "scaffold_eval_asserts": [
+        {
+          "id_or_index": "explicit-publish-plan:0",
+          "text": "Agent treats publication as planned/scaffold workflow."
+        }
+      ],
+      "readme_row_present": true
+    },
+    {
+      "name": "agent-permission-simulator",
+      "path": "agents/agent-permission-simulator.md",
+      "description": "Scaffold for simulating agent permission decisions against sample tool calls (planned).",
+      "tbd_lines": [
+        {
+          "line": 12,
+          "text": "Later-tier scaffold for dry-run permission evaluation on representative tool invocations."
+        },
+        {
+          "line": 17,
+          "text": "2. Evaluate sample bash/edit/webfetch/task patterns against allow/ask/deny rules (TBD engine)."
+        }
+      ],
+      "tbd_count": 2,
+      "evals_path": "evals/agents/agent-permission-simulator/evals.json",
+      "scaffold_eval_asserts": [
+        {
+          "id_or_index": "explicit-simulate:2",
+          "text": "Agent labels scaffold limitations when engine is not implemented."
+        }
+      ],
+      "readme_row_present": true
+    }
+  ]
+}

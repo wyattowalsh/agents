@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 GROUP_SERVER_FIELDS = ("name", "alias", "tools", "prompts", "resources")
 
@@ -67,6 +67,24 @@ def validate_group_server_entries(
     seen: set[str] = set()
     for index, server in enumerate(servers):
         path = f"{source_prefix}.{group_name}.servers[{index}]"
+        if isinstance(server, dict):
+            server_entry = cast("dict[str, Any]", server)
+            unknown_fields = sorted(set(server_entry) - set(GROUP_SERVER_FIELDS))
+            if unknown_fields:
+                errors.append(f"{path} has unsupported fields: {unknown_fields}")
+            alias = server_entry.get("alias")
+            if alias is not None and (not isinstance(alias, str) or not alias):
+                errors.append(f"{path}.alias must be a nonempty string")
+            for field in ("tools", "prompts", "resources"):
+                if field not in server_entry:
+                    continue
+                values = server_entry[field]
+                if (
+                    not isinstance(values, list)
+                    or not values
+                    or any(not isinstance(value, str) or not value for value in values)
+                ):
+                    errors.append(f"{path}.{field} must be a nonempty list of nonempty strings")
         name = group_server_name(server)
         if name is None:
             errors.append(f"{path} must be a server name string or object with string name")

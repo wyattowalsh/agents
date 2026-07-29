@@ -13,7 +13,6 @@ from scripts.sync_agent_stack import (
     generate_project_opencode_config,
     merge_cherry_studio_config,
     merge_codex_config,
-    merge_copilot_config,
     merge_opencode_config,
     merge_server_maps,
     merge_server_root_config,
@@ -23,15 +22,12 @@ from scripts.sync_agent_stack import (
     render_codex_config,
     render_codex_hooks,
     render_codex_mcp_block,
-    render_copilot_hooks,
-    render_copilot_mcp,
-    render_gemini_mcp,
+    render_flat_mcp,
     render_opencode_mcp,
     render_repo_mcp,
     render_standard_hooks,
     strip_managed_opencode_mcphub_entries,
     sync_codex_entrypoint,
-    sync_copilot_subagent_env,
     sync_generated_json_directory,
     sync_opencode_notifier_config,
     sync_repo_targets,
@@ -271,7 +267,7 @@ def test_repo_mcphub_projects_harness_to_managed_harnesses():
     assert all(codex_payload["mcp_servers"][name]["enabled"] is False for name in prefixed_server_names)
 
     claude = render_client_mcp(registry, {}, "claude-desktop")["mcpServers"]
-    assert list(claude) == ["mcphub_group_harness", *prefixed_server_names]
+    assert list(claude) == ["mcphub_group_harness", "mcphub_group_nlm", *prefixed_server_names]
     assert claude["mcphub_group_harness"]["disabled"] is False
     assert all(claude[name]["disabled"] is True for name in prefixed_server_names)
 
@@ -348,9 +344,9 @@ def test_repo_workflow_groups_and_bounded_clients():
         assert set(group_server_names(group_config)).issubset(enabled_servers), group_name
     expected_client = {
         "included_endpoint_kinds": ["group", "server"],
-        "included_groups": ["harness"],
+        "included_groups": ["harness", "nlm"],
         "enabled_endpoint_kinds": ["group"],
-        "enabled_groups": ["harness"],
+        "enabled_groups": ["harness", "nlm"],
         "enable_server_endpoints": True,
     }
     for name in ("default", "codex", "grok", "opencode"):
@@ -535,8 +531,7 @@ def test_chrome_devtools_renderers_use_attached_browser_launcher():
 
     rendered_text = json.dumps({
         "repo": render_repo_mcp(registry),
-        "copilot": render_copilot_mcp(registry, {}),
-        "gemini": render_gemini_mcp(registry, {}),
+        "crush": render_flat_mcp(registry, {}, "crush"),
         "opencode": render_opencode_mcp(registry, {}),
         "codex": render_codex_mcp_block(registry),
     })
@@ -569,27 +564,24 @@ def test_docling_renderers_use_upstream_stdio_launch_shape():
     }
 
     repo = render_repo_mcp(registry)["mcpServers"]["docling"]
-    copilot = render_copilot_mcp(registry, {})["mcpServers"]["docling"]
-    gemini = render_gemini_mcp(registry, {})["docling"]
+    crush = render_flat_mcp(registry, {}, "crush")["docling"]
     opencode = render_opencode_mcp(registry, {})["docling"]
     codex = render_codex_mcp_block(registry)
 
     expected_args = ["--from", "docling-mcp", "docling-mcp-server", "--transport", "stdio"]
     assert repo["args"] == expected_args
-    assert copilot["args"] == expected_args
-    assert gemini["args"] == expected_args
+    assert crush["args"] == expected_args
     assert opencode["command"] == ["uvx", *expected_args]
     assert 'args = ["--from", "docling-mcp", "docling-mcp-server", "--transport", "stdio"]' in codex
     assert "docling-mcp==" not in json.dumps({
         "repo": repo,
-        "copilot": copilot,
-        "gemini": gemini,
+        "crush": crush,
         "opencode": opencode,
         "codex": codex,
     })
 
 
-def test_standard_hook_renderers_use_harness_specific_events():
+def test_standard_hook_renderers_use_supported_harness_events():
     hook_registry = {
         "version": 1,
         "hooks": [
@@ -602,21 +594,20 @@ def test_standard_hook_renderers_use_harness_specific_events():
                 ),
                 "timeout": 5,
                 "description": "Block research writes.",
-                "harnesses": ["codex", "gemini-cli"],
+                "harnesses": ["codex", "claude-code"],
             }
         ],
     }
 
     codex = render_codex_hooks(hook_registry)
-    gemini = sync_agent_stack.render_standard_hooks(hook_registry, "gemini-cli")
+    claude = sync_agent_stack.render_standard_hooks(hook_registry, "claude-code")
 
     assert "PreToolUse" in codex["hooks"]
     assert "--harness codex" in codex["hooks"]["PreToolUse"][0]["hooks"][0]["command"]
     assert codex["hooks"]["PreToolUse"][0]["hooks"][0]["timeout"] == 5
     assert codex["hooks"]["PreToolUse"][0]["hooks"][0]["statusMessage"] == "Block research writes."
-    assert "BeforeTool" in gemini["hooks"]
-    assert "--harness gemini-cli" in gemini["hooks"]["BeforeTool"][0]["hooks"][0]["command"]
-    assert "PreToolUse" not in gemini["hooks"]
+    assert "PreToolUse" in claude["hooks"]
+    assert "--harness claude-code" in claude["hooks"]["PreToolUse"][0]["hooks"][0]["command"]
 
 
 def test_image_optimizer_hook_command_uses_portable_runner_placeholder():
@@ -636,8 +627,6 @@ def test_image_optimizer_hook_projects_to_all_declared_repo_surfaces():
         "codex": sync_agent_stack.REPO_ROOT / ".codex" / "hooks.json",
         "claude-code": sync_agent_stack.REPO_ROOT / ".claude" / "settings.json",
         "cursor": sync_agent_stack.REPO_ROOT / ".cursor" / "hooks.json",
-        "github-copilot": sync_agent_stack.REPO_ROOT / ".github" / "hooks" / "policy.json",
-        "gemini-cli": sync_agent_stack.REPO_ROOT / ".gemini" / "settings.json",
     }
 
     assert set(hook["harnesses"]) == set(expected)
@@ -648,8 +637,6 @@ def test_image_optimizer_hook_projects_to_all_declared_repo_surfaces():
 
     for harness in expected:
         path = sync_agent_stack.REPO_ROOT / ".apm" / "hooks" / f"{harness}.json"
-        if harness == "github-copilot":
-            path = sync_agent_stack.REPO_ROOT / ".apm" / "hooks" / "github-copilot.json"
         assert path.exists(), f"missing APM hook bundle for {harness}"
         assert f"image-input-optimizer-guard --harness {harness}" in path.read_text(encoding="utf-8")
 
@@ -891,34 +878,29 @@ def test_hook_registry_renders_research_hooks_for_supported_harnesses():
                 ),
                 "timeout": 5,
                 "description": "Block research writes.",
-                "harnesses": ["codex", "claude-code", "github-copilot", "gemini-cli"],
+                "harnesses": ["codex", "claude-code"],
             },
             {
                 "id": "research-stop-verifier",
                 "logical_event": "Stop",
                 "command": "python3 {repo_root}/hooks/wagents-hook.py research-stop-verifier --harness {harness}",
                 "timeout": 30,
-                "harnesses": ["codex", "gemini-cli"],
+                "harnesses": ["codex"],
             },
         ],
     }
 
     codex = render_standard_hooks(registry, "codex")
-    gemini = render_standard_hooks(registry, "gemini-cli")
-    copilot = render_copilot_hooks(registry)
+    claude = render_standard_hooks(registry, "claude-code")
 
     codex_command = codex["hooks"]["PreToolUse"][0]["hooks"][0]["command"]
-    gemini_command = gemini["hooks"]["BeforeTool"][0]["hooks"][0]["command"]
-    copilot_command = copilot["hooks"]["preToolUse"][0]["bash"]
+    claude_command = claude["hooks"]["PreToolUse"][0]["hooks"][0]["command"]
 
     assert "research-readonly-write-guard --harness codex" in codex_command
     assert str(sync_agent_stack.REPO_ROOT) in codex_command
-    assert "research-readonly-write-guard --harness gemini-cli" in gemini_command
-    assert gemini["hooks"]["BeforeTool"][0]["hooks"][0]["timeout"] == 5000
-    assert "research-readonly-write-guard --harness github-copilot" in copilot_command
-    assert "./hooks/wagents-hook.py" in copilot_command
+    assert "research-readonly-write-guard --harness claude-code" in claude_command
+    assert claude["hooks"]["PreToolUse"][0]["hooks"][0]["timeout"] == 5000
     assert "Stop" in codex["hooks"]
-    assert "AfterAgent" in gemini["hooks"]
 
 
 def test_render_codex_config_enables_hooks_feature():
@@ -1650,9 +1632,6 @@ def test_sync_repo_targets_delegates_vscode_and_opencode_adapters(tmp_path, monk
     monkeypatch.setattr(sync_agent_stack, "MCP_REGISTRY_PATH", registry_path)
     monkeypatch.setattr(sync_agent_stack, "HOOK_REGISTRY_PATH", hook_path)
     monkeypatch.setattr(sync_agent_stack, "generate_codex_global_instructions", lambda ctx: None)
-    monkeypatch.setattr(sync_agent_stack, "generate_copilot_repo_instructions", lambda ctx: None)
-    monkeypatch.setattr(sync_agent_stack, "generate_copilot_rule_instructions", lambda ctx: None)
-    monkeypatch.setattr(sync_agent_stack, "generate_copilot_hooks", lambda ctx, hook_registry: None)
     monkeypatch.setattr(
         sync_agent_stack,
         "sync_platform_repo_target",
@@ -1668,7 +1647,7 @@ def test_sync_repo_targets_delegates_vscode_and_opencode_adapters(tmp_path, monk
 
     assert json.loads(registry_path.read_text(encoding="utf-8")) == registry
     assert json.loads(hook_path.read_text(encoding="utf-8")) == hook_registry
-    assert called == ["vscode", "cursor", "codex", "claude-code", "gemini-cli", "opencode", "grok"]
+    assert called == ["vscode", "cursor", "codex", "claude-code", "opencode", "grok"]
 
 
 def test_vscode_adapter_render_mcp_preserves_env_placeholders(monkeypatch):
@@ -2677,72 +2656,6 @@ enabled = true
     assert 'env_vars = ["BRAVE_API_KEY"]' in repo_config
 
 
-def test_merge_copilot_config_preserves_camel_case_settings_keys(tmp_path, monkeypatch):
-    config_path = tmp_path / "config.json"
-    config_path.write_text(
-        json.dumps({
-            "trustedFolders": ["/Users/ww"],
-            "model": "old-model",
-            "effortLevel": "medium",
-            "allowed_urls": ["https://docs.github.com"],
-        })
-        + "\n",
-        encoding="utf-8",
-    )
-    monkeypatch.setattr(sync_agent_stack, "COPILOT_SETTINGS_PATH", config_path)
-    policy = {
-        "trusted_roots": ["/Users/ww/dev/projects"],
-        "docs_domains": ["docs.github.com", "modelcontextprotocol.io"],
-        "model_defaults": {
-            "copilot": {
-                "model": "gpt-5.4",
-                "effort_level": "high",
-                "continue_on_auto_mode": False,
-            }
-        },
-    }
-
-    ctx = SyncContext(apply=True)
-    merge_copilot_config(ctx, policy)
-
-    rendered = json.loads(config_path.read_text(encoding="utf-8"))
-    assert rendered["trustedFolders"] == ["/Users/ww", "/Users/ww/dev/projects"]
-    assert "trusted_folders" not in rendered
-    assert "allowed_urls" not in rendered
-    assert rendered["allowedUrls"] == ["https://docs.github.com", "https://modelcontextprotocol.io"]
-    assert rendered["model"] == "gpt-5.4"
-    assert rendered["effortLevel"] == "high"
-    assert rendered["continueOnAutoMode"] is False
-
-
-def test_merge_copilot_config_creates_missing_settings_file(tmp_path, monkeypatch):
-    config_path = tmp_path / "settings.json"
-    monkeypatch.setattr(sync_agent_stack, "COPILOT_SETTINGS_PATH", config_path)
-    policy = {
-        "trusted_roots": ["/Users/ww/dev/projects"],
-        "docs_domains": ["docs.github.com", "modelcontextprotocol.io"],
-        "model_defaults": {
-            "copilot": {
-                "model": "gpt-5.4",
-                "effort_level": "high",
-                "continue_on_auto_mode": False,
-            }
-        },
-    }
-
-    ctx = SyncContext(apply=True)
-    merge_copilot_config(ctx, policy)
-
-    rendered = json.loads(config_path.read_text(encoding="utf-8"))
-    assert rendered == {
-        "model": "gpt-5.4",
-        "effortLevel": "high",
-        "continueOnAutoMode": False,
-        "trustedFolders": ["/Users/ww/dev/projects"],
-        "allowedUrls": ["https://docs.github.com", "https://modelcontextprotocol.io"],
-    }
-
-
 def test_load_json_raises_for_missing_required_file(tmp_path):
     missing = tmp_path / "missing.json"
 
@@ -2760,45 +2673,6 @@ def test_merge_claude_settings_creates_missing_settings_file(tmp_path, monkeypat
     rendered = json.loads(settings_path.read_text(encoding="utf-8"))
     assert rendered["permissions"]["allow"] == ["WebFetch(domain:docs.example.com)"]
     assert rendered["hooks"] == {}
-
-
-def test_sync_copilot_subagent_env_writes_bounded_limits(tmp_path, monkeypatch):
-    env_path = tmp_path / "copilot-subagents.env"
-    monkeypatch.setattr(sync_agent_stack, "COPILOT_SUBAGENTS_ENV_PATH", env_path)
-    policy = {
-        "model_defaults": {
-            "copilot": {
-                "subagent_limits": {
-                    "max_concurrent": 2,
-                    "max_depth": 1,
-                }
-            }
-        }
-    }
-
-    ctx = SyncContext(apply=True)
-    sync_copilot_subagent_env(ctx, policy)
-
-    assert env_path.read_text(encoding="utf-8") == (
-        "# Managed by wagents sync (scripts/sync_agent_stack.py).\n"
-        'export COPILOT_SUBAGENT_MAX_CONCURRENT="2"\n'
-        'export COPILOT_SUBAGENT_MAX_DEPTH="1"\n'
-    )
-
-
-def test_sync_copilot_subagent_env_unsets_limits_when_unbounded(tmp_path, monkeypatch):
-    env_path = tmp_path / "copilot-subagents.env"
-    monkeypatch.setattr(sync_agent_stack, "COPILOT_SUBAGENTS_ENV_PATH", env_path)
-    policy = {"model_defaults": {"copilot": {"model": "gpt-5.4"}}}
-
-    ctx = SyncContext(apply=True)
-    sync_copilot_subagent_env(ctx, policy)
-
-    assert env_path.read_text(encoding="utf-8") == (
-        "# Managed by wagents sync (scripts/sync_agent_stack.py).\n"
-        "unset COPILOT_SUBAGENT_MAX_CONCURRENT\n"
-        "unset COPILOT_SUBAGENT_MAX_DEPTH\n"
-    )
 
 
 def test_sync_codex_entrypoint_targets_codex_global_bridge(tmp_path, monkeypatch):

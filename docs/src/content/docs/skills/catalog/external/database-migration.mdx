@@ -8,9 +8,9 @@ composed: false
 docs_density: standard
 trust_tier: "needs-inspection"
 curated_status: "inspect-then-install"
-install_command: "npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a claude-code codex crush cursor opencode"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "database-migration"
 ---
 
@@ -23,7 +23,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 <SkillPageHeader
   name="database-migration"
   description="Curated third-party skill source. Run /review source before repo promotion."
-  installCommand={`npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  installCommand={`npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a claude-code codex crush cursor opencode`}
   installLabel="Install"
   usage="/python-testing-patterns"
   badges={[{ text: "database-migration", variant: "note" }, { text: "10 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
@@ -31,7 +31,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/database-migration.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -39,11 +39,11 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/database-m
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a claude-code codex crush cursor opencode
 ```
 
 ## Trust / Audit
@@ -80,7 +80,7 @@ Other backend/k8s/devops patterns from catalog (e.g. nodejs-backend, k8s-*, terr
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `needs-inspection` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -104,8 +104,8 @@ status: "inspect-then-install"
 trust_tier: "needs-inspection"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-install_command: "npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+install_command: "npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a claude-code codex crush cursor opencode"
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/wshobson/agents"
 notes: "Curated third-party skill source. Run /review source before repo promotion."
 risk_notes: "Curated third-party skill source. Run /review source before repo promotion."

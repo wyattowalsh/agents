@@ -8,9 +8,9 @@ install_source: "ChromeDevTools/chrome-devtools-mcp"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
-install_command: "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a claude-code codex crush cursor opencode"
 sync_kind: "skills-cli"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/ChromeDevTools/chrome-devtools-mcp"
 notes: "Official Google `memory-leak-debugging` skill for heap snapshots, retainer traces, and optional memlab workflows via Chrome DevTools MCP."
 risk_notes: "Heap snapshots are sensitive and large; memlab requires explicit user approval before running auxiliary commands."

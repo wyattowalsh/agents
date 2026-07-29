@@ -6308,8 +6308,9 @@
         "credential_policy": "Tracked docs use placeholders only; real credentials stay user-owned and local.",
         "env_var_evidence_sources": [
           "docs/src/authoring/skills/auriti-labs-geo-optimizer-skill.mdx",
-          "matched-repo-registry-entry"
-        ]
+          "non-skill-install-assurance.json"
+        ],
+        "runtime_auth_evidence_source": "non-skill-install-assurance.json"
       },
       "idiosyncrasies": [],
       "candidate_code_executed": false,
@@ -15462,9 +15463,14 @@
       "auth_review": {
         "auth_required": true,
         "env_vars_or_credentials": [
-          "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+          "NOTEBOOKLM_PROFILE"
         ],
-        "credential_policy": "Tracked docs use placeholders only; real credentials stay user-owned and local."
+        "credential_policy": "Tracked docs use placeholders only; real credentials stay user-owned and local.",
+        "env_var_evidence_sources": [
+          "docs/src/authoring/skills/notebooklm.mdx",
+          "installed-skill:notebooklm",
+          "matched-repo-registry-entry"
+        ]
       },
       "idiosyncrasies": [],
       "candidate_code_executed": false,
@@ -17923,8 +17929,10 @@
         "credential_policy": "Tracked docs use placeholders only; real credentials stay user-owned and local.",
         "env_var_evidence_sources": [
           "docs/src/authoring/skills/avivsinai-langfuse-mcp.mdx",
-          "matched-repo-registry-entry"
-        ]
+          "matched-repo-registry-entry",
+          "non-skill-install-assurance.json"
+        ],
+        "runtime_auth_evidence_source": "non-skill-install-assurance.json"
       },
       "idiosyncrasies": [],
       "candidate_code_executed": false,
@@ -18187,7 +18195,6 @@
           "GEMINI_API_KEY",
           "GOOGLE_API_KEY",
           "HF_TOKEN",
-          "HORDE_API_KEY",
           "HUGGINGFACE_API_KEY",
           "IDEOGRAM_API_KEY",
           "LEONARDO_API_KEY",
@@ -18229,8 +18236,9 @@
           "installed-skill:transparent-bg",
           "installed-skill:ui-mockup-prompt",
           "installed-skill:vectorize",
-          "matched-repo-registry-entry"
-        ]
+          "non-skill-install-assurance.json"
+        ],
+        "runtime_auth_evidence_source": "non-skill-install-assurance.json"
       },
       "idiosyncrasies": [],
       "candidate_code_executed": false,
@@ -25455,9 +25463,19 @@
         "requires_manual_review": false
       },
       "auth_review": {
-        "auth_required": false,
-        "env_vars_or_credentials": [],
-        "credential_policy": "Tracked docs use placeholders only; real credentials stay user-owned and local."
+        "auth_required": true,
+        "env_vars_or_credentials": [
+          "PAPER_SEARCH_MCP_CORE_API_KEY",
+          "SEMANTIC_SCHOLAR_API_KEY",
+          "ZENODO_ACCESS_TOKEN"
+        ],
+        "credential_policy": "Tracked docs use placeholders only; real credentials stay user-owned and local.",
+        "runtime_auth_evidence_source": "non-skill-install-assurance.json",
+        "env_var_evidence_sources": [
+          "docs/src/authoring/skills/paper-search.mdx",
+          "installed-skill:paper-search",
+          "non-skill-install-assurance.json"
+        ]
       },
       "idiosyncrasies": [],
       "candidate_code_executed": false,
@@ -25990,9 +26008,23 @@
         "requires_manual_review": false
       },
       "auth_review": {
-        "auth_required": false,
-        "env_vars_or_credentials": [],
-        "credential_policy": "Tracked docs use placeholders only; real credentials stay user-owned and local."
+        "auth_required": true,
+        "env_vars_or_credentials": [
+          "PAPERSFLOW_OAUTH_ACCOUNT"
+        ],
+        "credential_policy": "Tracked docs use placeholders only; real credentials stay user-owned and local.",
+        "runtime_auth_evidence_source": "non-skill-install-assurance.json",
+        "env_var_evidence_sources": [
+          "docs/src/authoring/skills/citation-verifier.mdx",
+          "docs/src/authoring/skills/comparative-synthesis.mdx",
+          "docs/src/authoring/skills/deepscan-monitor.mdx",
+          "docs/src/authoring/skills/research-briefing.mdx",
+          "installed-skill:citation-verifier",
+          "installed-skill:comparative-synthesis",
+          "installed-skill:deepscan-monitor",
+          "installed-skill:research-briefing",
+          "non-skill-install-assurance.json"
+        ]
       },
       "idiosyncrasies": [],
       "candidate_code_executed": false,
@@ -27066,7 +27098,7 @@
       "reviewer_notes": "Deep source audit used GitHub API reads only; no candidate code was executed."
     }
   ],
-  "auth_env_name_evidence_target_count": 21,
-  "auth_env_name_evidence_value_count": 144,
+  "auth_env_name_evidence_target_count": 23,
+  "auth_env_name_evidence_value_count": 147,
   "auth_env_name_evidence_method": "Name-only scan of reviewed catalog MDX, installed SKILL.md files, and matched repo registry entries; credential values were not extracted or persisted."
 }

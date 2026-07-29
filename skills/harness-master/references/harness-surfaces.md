@@ -7,15 +7,11 @@
 3. [Claude Desktop](#claude-desktop)
 4. [ChatGPT](#chatgpt)
 5. [Codex](#codex)
-6. [GitHub Copilot Web](#github-copilot-web)
-7. [GitHub Copilot CLI](#github-copilot-cli)
-8. [Cursor](#cursor)
-9. [Gemini CLI](#gemini-cli)
-10. [Antigravity](#antigravity)
-11. [Grok Build](#grok-build)
-12. [OpenCode](#opencode)
-13. [Perplexity Desktop](#perplexity-desktop)
-14. [Cherry Studio](#cherry-studio)
+6. [Cursor](#cursor)
+7. [Grok Build](#grok-build)
+8. [OpenCode](#opencode)
+9. [Perplexity Desktop](#perplexity-desktop)
+10. [Cherry Studio](#cherry-studio)
 
 ## Legend
 
@@ -76,37 +72,6 @@ Install agent name: N/A (desktop/web app config only)
 
 Install agent name: `codex`
 
-## GitHub Copilot Web
-
-| Scope | Surface | Role | Notes |
-|-------|---------|------|-------|
-| project | `.github/copilot-instructions.md` | authoritative | Generated in this repo; prefer canonical source when drift exists |
-| project | `.github/instructions/**` | secondary | Additional generated guidance |
-| project | `.github/hooks/**` | secondary | Generated hook scaffolding |
-| project | `.vscode/mcp.json` | authoritative when present | Project MCP config used by Copilot surfaces that honor VS Code MCP |
-| project | `platforms/copilot/agents/**` | secondary | Repo-managed auxiliary agent surfaces |
-| project | `AGENTS.md` | secondary | Shared repo guidance |
-| global | `~/.copilot/copilot-instructions.md` | secondary | Global instructions may affect local Copilot tools; GitHub.com settings remain separate |
-| global | GitHub.com repository/org/Copilot coding agent settings | blind-spot | Web/cloud settings are not observable from local files by default |
-
-Install agent name: `github-copilot`
-
-## GitHub Copilot CLI
-
-| Scope | Surface | Role | Notes |
-|-------|---------|------|-------|
-| project | `AGENTS.md` | secondary | Shared repo guidance |
-| project | `.vscode/mcp.json` | secondary | Project MCP may be relevant when CLI uses VS Code/Copilot context |
-| project | `.github/hooks/*` | secondary | Copilot hooks (also on web facet; discover now includes on CLI harness) |
-| global | `~/.copilot/copilot-instructions.md` | authoritative | Global instructions |
-| global | `~/.copilot/settings.json` | authoritative when present | CLI trusted folders and permissions |
-| global | `~/.config/copilot-subagents.env` | authoritative when sourced | Global subagent fan-out caps |
-| global | `~/.copilot/mcp-config.json` | authoritative when present | Global CLI MCP config |
-| global | `~/.config/.copilot/mcp-config.json` | secondary | Alternate global MCP path |
-| global | `~/.copilot/agents` | secondary | Installed/linked agents |
-
-Install agent name: `github-copilot`
-
 ## Cursor
 
 | Scope | Surface | Role | Notes |
@@ -134,36 +99,6 @@ Install agent name: `github-copilot`
 | global | Team/Enterprise hooks | blind-spot | Admin-distributed hooks may not be local files |
 
 Install agent name: `cursor`
-
-## Gemini CLI
-
-| Scope | Surface | Role | Notes |
-|-------|---------|------|-------|
-| project | `GEMINI.md` | authoritative | Repo-local entrypoint |
-| project | `AGENTS.md` | secondary | Shared guidance imported or referenced by wrapper files |
-| project | `.gemini/settings.json` | authoritative when present | Project settings, MCP servers, and hooks |
-| project | `.gemini/settings.json` (embedded hooks) | authoritative | Explicit hooks-labeled surface (hooks are embedded inside the settings JSON; discover emits separate `kind: hooks` entry) |
-| global | `~/.gemini/GEMINI.md` | authoritative | Global entrypoint |
-| global | `~/.gemini/settings.json` | authoritative | Global settings, MCP servers, and hooks |
-| global | `~/.gemini/settings.json` (embedded hooks) | authoritative | Explicit hooks-labeled surface for embedded hooks |
-| global | `~/.gemini/skills` | secondary | Installed skill location |
-
-Install agent name: `gemini-cli`
-
-## Antigravity
-
-| Scope | Surface | Role | Notes |
-|-------|---------|------|-------|
-| project | `GEMINI.md` | repo-observed | This repo treats Antigravity as a Gemini-style wrapper |
-| project | `AGENTS.md` | repo-observed | Shared repo guidance |
-| project | Native Antigravity project config | blind-spot | Not strongly verified from first-party docs in this plan |
-| global | `~/.gemini/antigravity/mcp_config.json` | authoritative | First-party documented MCP config |
-| global | `~/.gemini/antigravity/mcp_oauth_tokens.json` | secondary | Presence/permissions only; never read token values |
-| global | `~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json` | secondary | Repo-observed extension path |
-| global | Antigravity settings UI | blind-spot | First-party documented, not always file-backed locally |
-| global | Antigravity agent mode settings | blind-spot | Approval/auto-exec/non-workspace file policies may live in the UI |
-
-Install agent name: `antigravity`
 
 ## Grok Build
 

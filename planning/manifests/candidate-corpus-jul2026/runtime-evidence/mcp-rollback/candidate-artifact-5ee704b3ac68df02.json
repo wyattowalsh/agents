@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-5ee704b3ac68df02",
+  "mcp_server": "geo-mcp",
+  "transaction_id": "89c3b268b66a42e19ab673d204b40e31",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "04e37dba58c762527a43cc8b84f716c82bb268cc218e8f04095c6a27bac092a8",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "6367ce1c10b29e3a1218f342886016b3a53f698236925871bcfaae6dfa0d774b",
+  "isolated_rollback_digest": "6367ce1c10b29e3a1218f342886016b3a53f698236925871bcfaae6dfa0d774b",
+  "fresh_absence": {
+    "geo-mcp": null
+  },
+  "fresh_absence_process_id": 20364,
+  "fresh_absence_output_sha256": "c22074445ada5327d7b77f900903404934bb1d2fdcde5151db2fc7d33b2a30ca",
+  "restored_use_process_id": 20456,
+  "restored_use_output_sha256": "9bfd0db333f7f9607906fe16aaea973fe3f394f097e07d21241d25860a575780",
+  "restored_use_launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-mcp-entrypoint-rollback-candidate-artifact-5ee704b3ac68df02-qe5twk2j/bin/geo-mcp",
+  "restored_use_launch_realpath": "/Users/ww/.local/share/uv/tools/geo-optimizer-skill/bin/geo-mcp",
+  "installed_digest": "0290416b0ecf1f5d1feea5d1b23bfa807bd7b05206e4c7d52b31e90bcb5568e3",
+  "status": "passed"
+}

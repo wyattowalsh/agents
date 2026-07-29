@@ -37,15 +37,3 @@ import { Card, CardGrid, LinkCard, Badge } from '@astrojs/starlight/components';
   <LinkCard title="triage-lead" href="/agents/triage-lead/" description="Classify incoming work by severity, harness surface, and ownership; route to specialist agents." />
 </CardGrid>
 </div>
-
-## GitHub Copilot-only agents
-
-These agents ship under `platforms/copilot/agents/` for Copilot CLI workflows. They are not part of the portable `agents/*.md` bundle.
-
-<CardGrid>
-  <LinkCard title="codebase-oracle" href="https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents/codebase-oracle.agent.md" description="Use for quick, precise codebase Q&amp;A: &quot;Where is X?&quot;, &quot;How does Y work?&quot;, &quot;What depends on Z?&quot; Fast, narrow-scope answers with file:line refs." />
-  <LinkCard title="dependency-checker" href="https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents/dependency-checker.agent.md" description="Use when you need to audit dependencies for security vulnerabilities, outdated packages, license compliance, supply chain risks, or upgrade planning." />
-  <LinkCard title="git-workflow" href="https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents/git-workflow.agent.md" description="Use when you need to commit changes, create branches, open PRs, tag releases, or manage the git workflow." />
-  <LinkCard title="spec-writer" href="https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents/spec-writer.agent.md" description="Use to create PRDs, technical specs, architecture design docs, RFCs, or structured proposals." />
-  <LinkCard title="test-writer" href="https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents/test-writer.agent.md" description="Use to generate comprehensive test suites for existing code." />
-</CardGrid>

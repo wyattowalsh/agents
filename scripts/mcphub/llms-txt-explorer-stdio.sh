@@ -7,6 +7,4 @@ source "${SCRIPT_DIR}/common.sh"
 
 mcphub_load_env
 
-unset OPENCODE_SERVER_USERNAME OPENCODE_SERVER_PASSWORD
-
-exec npx -y @thedaviddias/mcp-llms-txt-explorer@0.2.0
+mcphub_exec_clean -- npx -y @thedaviddias/mcp-llms-txt-explorer@0.2.0

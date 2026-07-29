@@ -1,15 +1,15 @@
 {
   "most_linked_pages": [
     {
-      "backlinks": 1616,
+      "backlinks": 1910,
       "slug": "/cli"
     },
     {
-      "backlinks": 1548,
+      "backlinks": 1840,
       "slug": "/skills/catalog"
     },
     {
-      "backlinks": 40,
+      "backlinks": 42,
       "slug": "/hooks"
     },
     {
@@ -64,6 +64,6 @@
   "note": "Counts static absolute-path markdown and MDX/HTML href links only (paths like /foo/); relative links, generated sidebars, and client-created links are not resolved.",
   "orphan_count": 0,
   "orphan_pages": [],
-  "total_internal_links": 3910,
-  "total_pages": 1997
+  "total_internal_links": 4499,
+  "total_pages": 2291
 }

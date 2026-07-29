@@ -5,13 +5,13 @@ title: "Tao Train Metric Learning Recognition"
 source_kind: "curated-external"
 source: "NVIDIA/skills"
 install_source: "https://github.com/NVIDIA/skills"
-install_command: "npx skills add https://github.com/NVIDIA/skills --skill tao-train-metric-learning-recognition -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode"
+install_command: "npx skills add https://github.com/NVIDIA/skills --skill tao-train-metric-learning-recognition -y -g -a claude-code codex crush cursor opencode"
 install_skill_name: "tao-train-metric-learning-recognition"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/NVIDIA/skills"
 selector_mode: "named"
 audit_date: "2026-07-08"
@@ -43,7 +43,7 @@ This row integrates `NVIDIA/skills` as an installable curated external skill aft
 - Normalized URL: [https://github.com/NVIDIA/skills](https://github.com/NVIDIA/skills)
 - Catalog skill id: `tao-train-metric-learning-recognition`
 - Upstream install selector: `tao-train-metric-learning-recognition`
-- Install command: `npx skills add https://github.com/NVIDIA/skills --skill tao-train-metric-learning-recognition -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- Install command: `npx skills add https://github.com/NVIDIA/skills --skill tao-train-metric-learning-recognition -y -g -a claude-code codex crush cursor opencode`
 - Inspected commit SHA: `153b14bfcb63386a00a5ec187d2208ac0ba52ea2`
 - License status: `NOASSERTION (Other)`
 - Source-list evidence: `source-list-found`
@@ -52,9 +52,9 @@ This row integrates `NVIDIA/skills` as an installable curated external skill aft
 ## Local Install Evidence
 
 - Executed command: `npx --yes skills add https://github.com/NVIDIA/skills --list`
-- Executed command: `npx skills add https://github.com/NVIDIA/skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode # failed: Skills CLI reported invalid agent grok; Grok is covered by repo Claude Code mirror/discovery route`
-- Executed command: `npx skills add https://github.com/NVIDIA/skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
-- Executed command: `npx skills add https://github.com/NVIDIA/skills --help # unexpectedly performed project-local all-skill install; recorded as local install evidence`
+- Executed command: `npx skills add https://github.com/NVIDIA/skills -y -g -a claude-code codex crush cursor grok opencode '#' failed: Skills CLI reported invalid agent 'grok;' Grok is covered by repo Claude Code mirror/discovery route`
+- Executed command: `npx skills add https://github.com/NVIDIA/skills -y -g -a claude-code codex crush cursor opencode`
+- Executed command: `npx skills add https://github.com/NVIDIA/skills --help '#' unexpectedly performed project-local all-skill 'install;' recorded as local install evidence`
 - Installed path: `~/.agents/skills/tao-train-metric-learning-recognition`
 - Installed path: `~/.claude/skills/tao-train-metric-learning-recognition`
 - Installed path: `~/.config/crush/skills/tao-train-metric-learning-recognition`

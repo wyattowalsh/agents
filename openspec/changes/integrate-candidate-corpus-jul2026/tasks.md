@@ -43,7 +43,7 @@
 - [x] Promote or adapt only targets whose completed packets pass all gates.
 - [x] Record read-only deep source audit evidence for every normalized target
   without executing candidate code.
-- [x] Record 1267 promoted installable curated-external rows and live local
+- [x] Record 1266 promoted installable curated-external rows and live local
   install evidence across supported harness roots.
 - [x] Retire the pre-reconciliation 174 terminal candidate rows after stable
   ownership records and installable overlays are materialized.

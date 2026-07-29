@@ -1,0 +1,76 @@
+---
+name: "jetson-flash-image"
+description: "Install the official NVIDIA jetson-flash-image agent skill from the verified NVIDIA skills catalog with placeholder-only credential boundaries."
+title: "Jetson Flash Image"
+source_kind: "curated-external"
+source: "NVIDIA/skills"
+install_source: "https://github.com/NVIDIA/skills"
+install_command: "npx skills add https://github.com/NVIDIA/skills --skill jetson-flash-image -y -g -a claude-code codex crush cursor opencode"
+install_skill_name: "jetson-flash-image"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+sync_kind: "skills-cli"
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
+source_url: "https://github.com/NVIDIA/skills"
+selector_mode: "named"
+audit_date: "2026-07-08"
+audited_head: "153b14bfcb63386a00a5ec187d2208ac0ba52ea2"
+license: "NOASSERTION (Other)"
+pin_policy: "pin-before-install"
+no_pin_rationale: "The Skills CLI source selector does not pin by commit in this harness command; the audited NVIDIA/skills HEAD is recorded for drift review before future promotion updates."
+source_list_evidence: "source-list-found"
+executable_surface: "Prompt/reference skill install only; individual NVIDIA skills may guide Docker, GPU, cloud, Kubernetes, Slurm, hardware, healthcare, or platform operations only after explicit user intent."
+credential_behavior: "Use placeholder env vars only in docs; real NVIDIA_API_KEY, NGC_API_KEY, NVCF credentials, cloud credentials, registry tokens, and hardware access details remain user-owned and uncommitted."
+network_access: "Installed skill text may describe NVIDIA services, NGC registries, package downloads, APIs, or clusters; do not make network calls unless the user explicitly invokes a workflow and supplies local credentials."
+file_access: "Installed skills may read or edit user-selected project files and may describe local datasets, logs, containers, or generated artifacts; do not access private data without explicit task scope."
+live_action_risk: "NVIDIA workflows can affect GPUs, containers, cloud resources, clusters, robots, medical-adjacent data, synthetic datasets, and external services. Require dry-runs where available and explicit confirmation for destructive or cost-bearing actions."
+risk_category: "nvidia-official-gpu-cloud-skill-review"
+dedupe_notes: "Raw indexes covered: 93"
+notes: "Install the official NVIDIA jetson-flash-image agent skill from the verified NVIDIA skills catalog with placeholder-only credential boundaries."
+risk_notes: "NVIDIA workflows can affect GPUs, containers, cloud resources, clusters, robots, medical-adjacent data, synthetic datasets, and external services. Require dry-runs where available and explicit confirmation for destructive or cost-bearing actions."
+promotion_policy: "Installable curated row is allowed for the official NVIDIA catalog after read-only source-list evidence, canonical upstream resolution, audited HEAD, license attribution, auth boundary documentation, and local harness install evidence; re-run review before adapting upstream content beyond the skill entry."
+provenance_evidence: "Read-only `npx --yes skills add https://github.com/NVIDIA/skills --list` evidence found 229 official NVIDIA skill selectors. GitHub metadata resolved NVIDIA/skills at audited HEAD 153b14bfcb63386a00a5ec187d2208ac0ba52ea2 with license label NOASSERTION (Other)."
+---
+
+# Jetson Flash Image
+
+This row integrates `NVIDIA/skills` as an installable curated external skill after source, license, security, attribution, and harness review.
+
+## Reviewed Integration
+
+- Raw indexes covered: 93
+- Normalized URL: [https://github.com/NVIDIA/skills](https://github.com/NVIDIA/skills)
+- Catalog skill id: `jetson-flash-image`
+- Upstream install selector: `jetson-flash-image`
+- Install command: `npx skills add https://github.com/NVIDIA/skills --skill jetson-flash-image -y -g -a claude-code codex crush cursor opencode`
+- Inspected commit SHA: `153b14bfcb63386a00a5ec187d2208ac0ba52ea2`
+- License status: `NOASSERTION (Other)`
+- Source-list evidence: `source-list-found`
+- Live local install recorded: `true`
+
+## Local Install Evidence
+
+- Executed command: `npx --yes skills add https://github.com/NVIDIA/skills --list`
+- Executed command: `npx skills add https://github.com/NVIDIA/skills -y -g -a claude-code codex crush cursor grok opencode '#' failed: Skills CLI reported invalid agent 'grok;' Grok is covered by repo Claude Code mirror/discovery route`
+- Executed command: `npx skills add https://github.com/NVIDIA/skills -y -g -a claude-code codex crush cursor opencode`
+- Executed command: `npx skills add https://github.com/NVIDIA/skills --help '#' unexpectedly performed project-local all-skill 'install;' recorded as local install evidence`
+- Installed path: `~/.agents/skills/jetson-flash-image`
+- Installed path: `~/.claude/skills/jetson-flash-image`
+- Installed path: `~/.config/crush/skills/jetson-flash-image`
+- Installed path: `/Users/ww/dev/projects/agents/.agents/skills/jetson-flash-image`
+- Install evidence note: Read-only source-list evidence found 229 NVIDIA skill selectors. The successful global all-skill Skills CLI command installed all 229 selectors into ~/.agents/skills for Antigravity, Codex, Cursor, Gemini CLI, GitHub Copilot, and OpenCode, with symlinks for Claude Code and Crush. The Skills CLI rejected a native grok adapter; this repo covers Grok through the Claude Code skill mirror/discovery route. A project-local all-skill install also populated the gitignored .agents/skills tree.
+
+## Safety Notes
+
+- Credential behavior: Use placeholder env vars only in docs; real NVIDIA_API_KEY, NGC_API_KEY, NVCF credentials, cloud credentials, registry tokens, and hardware access details remain user-owned and uncommitted.
+- Network access: Installed skill text may describe NVIDIA services, NGC registries, package downloads, APIs, or clusters; do not make network calls unless the user explicitly invokes a workflow and supplies local credentials.
+- File access: Installed skills may read or edit user-selected project files and may describe local datasets, logs, containers, or generated artifacts; do not access private data without explicit task scope.
+- Live action risk: NVIDIA workflows can affect GPUs, containers, cloud resources, clusters, robots, medical-adjacent data, synthetic datasets, and external services. Require dry-runs where available and explicit confirmation for destructive or cost-bearing actions.
+- MCP, background services, and external binaries remain opt-in; do not auto-start them from this catalog row.
+- Secrets, tokens, private keys, connection strings, cookies, OAuth grants, and account IDs must not be committed.
+
+## Docs-Steward Notes
+
+- This row is the installable catalog record for the matching reviewed external source.
+- Auth, install, validation, attribution, and promotion evidence remain visible in the corpus integration manifests.

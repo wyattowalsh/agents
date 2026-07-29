@@ -12,6 +12,11 @@ mcphub_load_env
 # REDDIT_USER_AGENT, REDDIT_BUDDY_NO_CACHE.
 # Anonymous mode works with no credentials (lower rate limits).
 
-unset OPENCODE_SERVER_USERNAME OPENCODE_SERVER_PASSWORD
-
-exec npx -y "reddit-mcp-buddy@${MCPHUB_REDDIT_MCP_BUDDY_VERSION:-1.1.13}"
+mcphub_exec_clean \
+  REDDIT_CLIENT_ID \
+  REDDIT_CLIENT_SECRET \
+  REDDIT_USERNAME \
+  REDDIT_PASSWORD \
+  REDDIT_USER_AGENT \
+  REDDIT_BUDDY_NO_CACHE \
+  -- npx -y reddit-mcp-buddy@1.1.13

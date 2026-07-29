@@ -81,7 +81,7 @@ Steps:
    - Investigate: < 100 installs but fills a None-coverage gap
 8. Sort: High tier first (by install count desc), then Medium, then Investigate.
 9. Build full install command for each candidate:
-   npx skills add <source> -s <name> -g -y -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode
+   npx skills add <source> -s <name> -g -y -a claude-code codex crush cursor opencode
 
 Output format (JSON to stdout):
 {
@@ -91,7 +91,7 @@ Output format (JSON to stdout):
       "source": "addyosmani/web-quality-skills",
       "installs": 6000,
       "url": "https://skills.sh/addyosmani/web-quality-skills/web-quality-audit",
-      "install_command": "npx skills add addyosmani/web-quality-skills -s web-quality-audit -g -y -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "install_command": "npx skills add addyosmani/web-quality-skills -s web-quality-audit -g -y -a claude-code codex crush cursor opencode",
       "fills_gap": "Web Quality",
       "gap_priority": 45,
       "confidence": "high"
@@ -141,7 +141,7 @@ Steps:
    - installable: has a SKILL.md file (verified or strongly implied by repo structure)
    - concept: blog post, discussion, or repo without SKILL.md format
 5. For installable leads, construct an install hint:
-   npx skills add <owner/repo> -s <skill-name> -g -y -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode
+   npx skills add <owner/repo> -s <skill-name> -g -y -a claude-code codex crush cursor opencode
 6. Deduplicate against existing skills from the gap report.
 7. Flag any lead that may partially overlap with an existing skill (note as "alternative to X").
 
@@ -155,7 +155,7 @@ Output format (JSON to stdout):
       "domain": "Language Conventions",
       "description": "Rust best practices, idioms, and error handling patterns",
       "installable": true,
-      "install_hint": "npx skills add example/rust-skills -s rust-conventions -g -y -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "install_hint": "npx skills add example/rust-skills -s rust-conventions -g -y -a claude-code codex crush cursor opencode",
       "gap_priority": 5,
       "overlap_note": null
     }

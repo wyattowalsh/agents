@@ -1,0 +1,43 @@
+{
+  "wave": "W1a",
+  "generated_at": "2026-07-29T10:37:00Z",
+  "status": "DONE",
+  "dispatched": [
+    "quarantine-align",
+    "sync-manifest",
+    "harness-leftovers",
+    "nerdbot-ignore",
+    "g8-receipt-note"
+  ],
+  "accounted": [
+    "quarantine-align",
+    "sync-manifest",
+    "harness-leftovers",
+    "nerdbot-ignore",
+    "g8-receipt-note"
+  ],
+  "blocked": [],
+  "counts": {
+    "dispatched": 5,
+    "accounted": 5,
+    "blocked": 0
+  },
+  "accounting_rule_ok": true,
+  "packet_receipts": [
+    "planning/tmp/cleanup-v7/packets/quarantine-align.json",
+    "planning/tmp/cleanup-v7/packets/sync-manifest.json",
+    "planning/tmp/cleanup-v7/packets/harness-leftovers.json",
+    "planning/tmp/cleanup-v7/packets/nerdbot-ignore.json",
+    "planning/tmp/cleanup-v7/packets/g8-receipt-note.json"
+  ],
+  "validate": {
+    "command": "uv run wagents validate",
+    "exit_code": 0,
+    "log": "planning/tmp/cleanup-v7/w1a-validate.log"
+  },
+  "g8": "PASS",
+  "notes": [
+    "Substantive W1a writers landed earlier; accounting + g8-receipt-note completed on retry after hook/shell failures.",
+    "dispatched==accounted==5"
+  ]
+}

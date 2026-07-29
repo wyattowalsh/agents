@@ -20,12 +20,6 @@ The repository SHALL maintain a deterministic mapping from repo-supported agent 
 - **THEN** the rollout command SHALL enumerate the current Skills CLI target IDs with observed local skill roots instead of using `--all`
 - **AND** repo-managed sync MAY continue to target only the repository-supported agent set.
 
-#### Scenario: Mapping split GitHub Copilot facets
-
-- **WHEN** a user requests installation for GitHub Copilot web, CLI, or aggregate Copilot surfaces
-- **THEN** the repository SHALL use the single `github-copilot` Skills CLI target for install/sync
-- **AND** documentation or reports SHALL keep web and CLI audit facets separate when discussing observable surfaces and blind spots.
-
 ### Requirement: JSON Interfaces Are Preferred For Automation
 
 Automation SHALL consume OpenSpec JSON commands instead of scraping markdown or terminal UI output.
@@ -270,4 +264,3 @@ Chrome DevTools workflows SHALL warn users away from committing runtime artifact
 - **WHEN** a promoted Chrome DevTools skill instructs the user to generate browser debugging artifacts
 - **THEN** it SHALL include guidance to keep those artifacts local unless the user explicitly asks to save or share them
 - **AND** generated runtime artifact paths SHALL NOT be added to committed source by default.
-

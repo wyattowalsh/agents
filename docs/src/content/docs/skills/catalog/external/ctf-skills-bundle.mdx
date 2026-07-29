@@ -10,7 +10,7 @@ trust_tier: "curated-trust-gated"
 curated_status: "catalog-reference"
 install_command: "npx skills add ljagiello/ctf-skills --skill solve-challenge --list"
 sync_kind: "skills-cli"
-target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 research_slug: "ctf-skills-bundle"
 ---
 
@@ -31,7 +31,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/ctf-skills-bundle.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
@@ -39,7 +39,7 @@ This page is generated from authoring SSOT `docs/src/authoring/skills/ctf-skills
 
 ## Harness Coverage
 
-Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+Targets verified harnesses: `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode`.
 
 **Portable multi-harness install command:**
 ```bash
@@ -66,7 +66,7 @@ Entry maintained in authoring SSOT `docs/src/authoring/skills/ctf-skills-bundle.
 | Installability | portable command |
 | Review State | curated |
 | Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -91,7 +91,7 @@ trust_tier: "curated-trust-gated"
 provenance_status: "pentest-hybrid-inventory"
 sync_kind: "skills-cli"
 install_command: "npx skills add ljagiello/ctf-skills --skill solve-challenge --list"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/ljagiello/ctf-skills"
 notes: "Repo-level bundle reference for pentest hybrid index; per-skill ctf-* catalog rows exist separately."
 risk_notes: "CTF/lab offensive workflows only; separate installer may invoke package managers — dry-run before apply."

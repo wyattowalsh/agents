@@ -40,15 +40,15 @@ def test_project_scanner_skips_virtualenv_prefixes(tmp_path: Path) -> None:
     (tmp_path / "pyproject.toml").write_text('[project]\nname = "demo"\ndependencies = []\n')
     (tmp_path / "src").mkdir()
     (tmp_path / "src" / "app.py").write_text("def app() -> str:\n    return 'ok'\n")
-    (tmp_path / ".venv-copilot" / "lib").mkdir(parents=True)
-    (tmp_path / ".venv-copilot" / "lib" / "vendor.py").write_text("def vendor():\n    return None\n")
+    (tmp_path / ".venv-vendor" / "lib").mkdir(parents=True)
+    (tmp_path / ".venv-vendor" / "lib" / "vendor.py").write_text("def vendor():\n    return None\n")
 
     scanner = load_script("project-scanner.py")
     result = scanner.scan(tmp_path)
     paths = {entry["path"] for entry in result["files"]}
 
     assert "src/app.py" in paths
-    assert not any(path.startswith(".venv-copilot/") for path in paths)
+    assert not any(path.startswith(".venv-vendor/") for path in paths)
 
 
 def run_script(
@@ -299,8 +299,6 @@ def test_read_only_review_agents_do_not_allow_bash() -> None:
     for rel in [
         "agents/code-reviewer.md",
         "agents/security-auditor.md",
-        "platforms/copilot/agents/code-reviewer.agent.md",
-        "platforms/copilot/agents/security-auditor.agent.md",
     ]:
         text = (ROOT / rel).read_text()
         frontmatter = text.split("---", 2)[1]

@@ -3,12 +3,12 @@ const baseSiteData = {
   "counts": {
     "bundledAgents": 20,
     "customMcp": 16,
-    "customSkills": 69,
-    "externalMcp": 61,
-    "externalSkills": 1468,
-    "mcpTools": 77,
-    "skills": 1537,
-    "supportedHarnesses": 9
+    "customSkills": 70,
+    "externalMcp": 69,
+    "externalSkills": 1759,
+    "mcpTools": 85,
+    "skills": 1829,
+    "supportedHarnesses": 6
   },
   "distributionPaths": [
     {
@@ -47,6 +47,20 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
+          "199-biotechnologies-claude-deep-research-skill"
+        ],
+        "source": "199-biotechnologies/claude-deep-research-skill"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "2kdarki-codex-mem"
+        ],
+        "source": "2kDarki/codex-mem"
+      },
+      {
+        "count": 1,
+        "skills": [
           "appstore-review"
         ],
         "source": "3paws-ai/mobile-ai-skills"
@@ -71,6 +85,27 @@ const baseSiteData = {
           "drawio-skill"
         ],
         "source": "Agents365-ai/drawio-skill"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "agricidaniel-claude-seo"
+        ],
+        "source": "AgriciDaniel/claude-seo"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "allthingssmitty-css-protips"
+        ],
+        "source": "AllThingsSmitty/css-protips"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "auriti-labs-geo-optimizer-skill"
+        ],
+        "source": "Auriti-Labs/geo-optimizer-skill"
       },
       {
         "count": 1,
@@ -136,9 +171,34 @@ const baseSiteData = {
         "source": "ChromeDevTools/chrome-devtools-mcp"
       },
       {
-        "count": 2,
+        "count": 1,
+        "skills": [
+          "cloudai-x-threejs-skills"
+        ],
+        "source": "CloudAI-X/threejs-skills"
+      },
+      {
+        "count": 20,
         "skills": [
           "canvas-design",
+          "composiohq-awesome-codex-skills-changelog-generator",
+          "composiohq-awesome-codex-skills-content-research-writer",
+          "composiohq-awesome-codex-skills-datadog-logs",
+          "composiohq-awesome-codex-skills-developer-growth-analysis",
+          "composiohq-awesome-codex-skills-domain-name-brainstormer",
+          "composiohq-awesome-codex-skills-email-draft-polish",
+          "composiohq-awesome-codex-skills-file-organizer",
+          "composiohq-awesome-codex-skills-gh-address-comments",
+          "composiohq-awesome-codex-skills-gh-fix-ci",
+          "composiohq-awesome-codex-skills-image-enhancer",
+          "composiohq-awesome-codex-skills-internal-comms",
+          "composiohq-awesome-codex-skills-langsmith-fetch",
+          "composiohq-awesome-codex-skills-lead-research-assistant",
+          "composiohq-awesome-codex-skills-mcp-builder",
+          "composiohq-awesome-codex-skills-notion-knowledge-capture",
+          "composiohq-awesome-codex-skills-paperjsx",
+          "composiohq-awesome-codex-skills-raffle-winner-picker",
+          "composiohq-awesome-codex-skills-spreadsheet-formula-helper",
           "slack-gif-creator"
         ],
         "source": "ComposioHQ/awesome-codex-skills"
@@ -175,6 +235,13 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
+          "eronred-aso-skills"
+        ],
+        "source": "Eronred/aso-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
           "openspec-assistant"
         ],
         "source": "ForceInjection/awesome-skills"
@@ -182,9 +249,44 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
+          "gabberflast-academic-pptx-skill"
+        ],
+        "source": "Gabberflast/academic-pptx-skill"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "hdeibler-universal-design-principles"
+        ],
+        "source": "HDeibler/universal-design-principles"
+      },
+      {
+        "count": 1,
+        "skills": [
           "scipilot-figure-skill"
         ],
         "source": "Haojae/scipilot-figure-skill"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "imbad0202-academic-research-skills-codex"
+        ],
+        "source": "Imbad0202/academic-research-skills-codex"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "internscience-awesome-scientific-skills"
+        ],
+        "source": "InternScience/Awesome-Scientific-Skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "jakubantalik-transitions-dev"
+        ],
+        "source": "Jakubantalik/transitions.dev"
       },
       {
         "count": 2,
@@ -204,9 +306,37 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
+          "kulaxyz-token-diet"
+        ],
+        "source": "Kulaxyz/token-diet"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "kyurish-mcp-dashboards"
+        ],
+        "source": "KyuRish/mcp-dashboards"
+      },
+      {
+        "count": 1,
+        "skills": [
           "motion-design"
         ],
         "source": "LottieFiles/motion-design-skill"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "lumiaqian-openspec-mcp"
+        ],
+        "source": "Lumiaqian/openspec-mcp"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "ministajazz-diasporic-intelligence"
+        ],
+        "source": "MinistaJazz/diasporic-intelligence"
       },
       {
         "count": 13,
@@ -266,8 +396,155 @@ const baseSiteData = {
         "source": "NVIDIA/SkillSpector"
       },
       {
-        "count": 82,
+        "count": 229,
         "skills": [
+          "accelerated-computing-cudf",
+          "aiq-deploy",
+          "aiq-research",
+          "amc-run-sample-calibration",
+          "amc-run-video-calibration",
+          "amc-setup-calibration-stack",
+          "cudaq-guide",
+          "cufolio",
+          "cuopt-developer",
+          "cuopt-install",
+          "cuopt-multi-objective-exploration",
+          "cuopt-numerical-optimization-api",
+          "cuopt-numerical-optimization-formulation",
+          "cuopt-routing-api-python",
+          "cuopt-server-api-python",
+          "cupynumeric-hdf5",
+          "cupynumeric-install",
+          "cupynumeric-migration-readiness",
+          "cupynumeric-parallel-data-load",
+          "dali-dynamic-mode",
+          "data-designer",
+          "deepstream-dev",
+          "deepstream-generate-pipeline",
+          "deepstream-import-vision-model",
+          "deepstream-profile-pipeline",
+          "deepstream-sop",
+          "dicom-metadata-extract",
+          "dicom-series-preflight",
+          "dicom-series-to-volume",
+          "digital-health-clinical-asr-build",
+          "digital-health-clinical-asr-eval",
+          "digital-health-clinical-asr-finetune",
+          "digital-health-clinical-asr-setup",
+          "dynamo-interconnect-check",
+          "dynamo-recipe-runner",
+          "dynamo-router-starter",
+          "dynamo-troubleshoot",
+          "earth2studio-create-datasource",
+          "earth2studio-create-diagnostic",
+          "earth2studio-create-prognostic",
+          "earth2studio-data-fetch",
+          "earth2studio-deterministic-forecast",
+          "earth2studio-discover",
+          "earth2studio-install",
+          "holoscan-install-conda",
+          "holoscan-install-container",
+          "holoscan-install-debian",
+          "holoscan-install-source",
+          "holoscan-install-wheel",
+          "holoscan-setup",
+          "hsb-app",
+          "hsb-flash",
+          "hsb-setup",
+          "hsb-test",
+          "jetson-build-source",
+          "jetson-customize-camera",
+          "jetson-customize-clocks",
+          "jetson-customize-fan",
+          "jetson-customize-mgbe",
+          "jetson-customize-nvpmodel",
+          "jetson-customize-pcie",
+          "jetson-customize-pinmux",
+          "jetson-customize-uphy",
+          "jetson-customize-usb",
+          "jetson-derive-carrier",
+          "jetson-diagnostic",
+          "jetson-download-bsp",
+          "jetson-flash-image",
+          "jetson-generate-kb",
+          "jetson-headless-mode",
+          "jetson-inference-mem-tune",
+          "jetson-init-image",
+          "jetson-init-source",
+          "jetson-init-target",
+          "jetson-link-docs",
+          "jetson-llm-benchmark",
+          "jetson-llm-serve",
+          "jetson-memory-audit",
+          "jetson-optimize-memory",
+          "jetson-package",
+          "jetson-print-bsp-info",
+          "jetson-print-device-info",
+          "jetson-promote-image",
+          "jetson-quick-start",
+          "jetson-set-target",
+          "jetson-speculative-decoding",
+          "jetson-validate-image",
+          "launch-nemo-rl",
+          "mcore-create-issue",
+          "mcore-linting-and-formatting",
+          "mcore-run-on-slurm",
+          "mcore-split-pr",
+          "mcore-testing",
+          "nemo-automodel-distributed-training",
+          "nemo-automodel-launcher-config",
+          "nemo-automodel-model-onboarding",
+          "nemo-automodel-recipe-development",
+          "nemo-data-designer-plugin",
+          "nemo-evaluator-plugin",
+          "nemo-mbridge-mlm-bridge-training",
+          "nemo-mbridge-multi-node-slurm",
+          "nemo-mbridge-perf-activation-recompute",
+          "nemo-mbridge-perf-cpu-offloading",
+          "nemo-mbridge-perf-cuda-graphs",
+          "nemo-mbridge-perf-expert-parallel-overlap",
+          "nemo-mbridge-perf-hierarchical-context-parallel",
+          "nemo-mbridge-perf-megatron-fsdp",
+          "nemo-mbridge-perf-memory-tuning",
+          "nemo-mbridge-perf-moe-comm-overlap",
+          "nemo-mbridge-perf-moe-dispatcher-selection",
+          "nemo-mbridge-perf-moe-hardware-configs",
+          "nemo-mbridge-perf-moe-long-context",
+          "nemo-mbridge-perf-moe-optimization-workflow",
+          "nemo-mbridge-perf-moe-vlm-training",
+          "nemo-mbridge-perf-parallelism-strategies",
+          "nemo-mbridge-perf-sequence-packing",
+          "nemo-mbridge-perf-tp-dp-comm-overlap",
+          "nemo-mbridge-recipe-recommender",
+          "nemo-mbridge-resiliency",
+          "nemo-retriever",
+          "nemo-rl-auto-research",
+          "nemo-rl-brev-etiquette",
+          "nemo-rl-docs",
+          "nemo-rl-session-memory",
+          "nemoclaw-user-guide",
+          "nemotron-customize",
+          "nemotron-policy-generator",
+          "nemotron-retrieval-recipes",
+          "nemotron-speech",
+          "nv-generate-ct-rflow",
+          "nv-generate-mr",
+          "nv-generate-mr-brain",
+          "nv-generate-mr-brain-finetune",
+          "nv-generate-vae-finetune",
+          "nv-reason-cxr",
+          "nv-segment-ct",
+          "nv-segment-ct-finetune",
+          "nv-segment-ctmr",
+          "omniverse-cad-to-simready",
+          "omniverse-realtime-viewer",
+          "omniverse-usd-performance-tuning",
+          "physical-ai-defect-image-generation",
+          "physical-ai-infrastructure-setup-and-resilient-scaling",
+          "physical-ai-neural-reconstruction",
+          "physical-ai-people-attribute-search",
+          "physical-ai-video-data-augmentation",
+          "physicsnemo-discover",
           "rag-blueprint",
           "rag-eval",
           "rag-perf",
@@ -359,6 +636,13 @@ const baseSiteData = {
           "hallmark"
         ],
         "source": "Nutlope/hallmark"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "octane0411-opencode-plugin-openspec"
+        ],
+        "source": "Octane0411/opencode-plugin-openspec"
       },
       {
         "count": 93,
@@ -495,6 +779,13 @@ const baseSiteData = {
           "vitest"
         ],
         "source": "PaulRBerg/agent-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "pleaseprompto-notebooklm-skill"
+        ],
+        "source": "PleasePrompto/notebooklm-skill"
       },
       {
         "count": 1,
@@ -780,6 +1071,13 @@ const baseSiteData = {
         "source": "aaron-he-zhu/aaron-marketing-skills"
       },
       {
+        "count": 1,
+        "skills": [
+          "actionbook-rust-skills"
+        ],
+        "source": "actionbook/rust-skills"
+      },
+      {
         "count": 4,
         "skills": [
           "best-practices",
@@ -788,6 +1086,27 @@ const baseSiteData = {
           "web-quality-audit"
         ],
         "source": "addyosmani/web-quality-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "agi-now-buffett-skills"
+        ],
+        "source": "agi-now/buffett-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "aitytech-agentkits-marketing"
+        ],
+        "source": "aitytech/agentkits-marketing"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "aiwithremy-claude-skills-llm-council"
+        ],
+        "source": "aiwithremy/claude-skills-llm-council"
       },
       {
         "count": 5,
@@ -824,6 +1143,20 @@ const baseSiteData = {
         "source": "antonbabenko/terraform-skill"
       },
       {
+        "count": 1,
+        "skills": [
+          "antvis-mcp-server-chart"
+        ],
+        "source": "antvis/mcp-server-chart"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "apify-agent-skills"
+        ],
+        "source": "apify/agent-skills"
+      },
+      {
         "count": 11,
         "skills": [
           "apollo-client",
@@ -846,6 +1179,13 @@ const baseSiteData = {
           "swiftui-design-principles"
         ],
         "source": "arjitj2/swiftui-design-principles"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "ast-grep-agent-skill"
+        ],
+        "source": "ast-grep/agent-skill"
       },
       {
         "count": 6,
@@ -881,6 +1221,13 @@ const baseSiteData = {
         "source": "avdlee/swiftui-agent-skill"
       },
       {
+        "count": 1,
+        "skills": [
+          "avivsinai-langfuse-mcp"
+        ],
+        "source": "avivsinai/langfuse-mcp"
+      },
+      {
         "count": 2,
         "skills": [
           "aws-iam",
@@ -913,6 +1260,13 @@ const baseSiteData = {
           "debt-ops-review"
         ],
         "source": "bcanfield/agentic-tech-debt"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "bentossell-visualise"
+        ],
+        "source": "bentossell/visualise"
       },
       {
         "count": 1,
@@ -1082,6 +1436,13 @@ const baseSiteData = {
         "source": "dadederk/iOS-Accessibility-Agent-Skill"
       },
       {
+        "count": 1,
+        "skills": [
+          "daetojemax-figma-to-swiftui-skill"
+        ],
+        "source": "daetojemax/figma-to-swiftui-skill"
+      },
+      {
         "count": 3,
         "skills": [
           "otel-collector",
@@ -1126,6 +1487,13 @@ const baseSiteData = {
         "source": "dbt-labs/dbt-agent-skills"
       },
       {
+        "count": 1,
+        "skills": [
+          "deanpeters-product-manager-skills"
+        ],
+        "source": "deanpeters/Product-Manager-Skills"
+      },
+      {
         "count": 3,
         "skills": [
           "tanstack-query-best-practices",
@@ -1142,6 +1510,13 @@ const baseSiteData = {
         "source": "denoland/skills"
       },
       {
+        "count": 1,
+        "skills": [
+          "devcxl-opencode-spec"
+        ],
+        "source": "devcxl/opencode-spec"
+      },
+      {
         "count": 7,
         "skills": [
           "lathe",
@@ -1153,6 +1528,13 @@ const baseSiteData = {
           "lathe-work"
         ],
         "source": "devenjarvis/lathe"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "dgreenheck-webgpu-claude-skill"
+        ],
+        "source": "dgreenheck/webgpu-claude-skill"
       },
       {
         "count": 1,
@@ -1283,6 +1665,13 @@ const baseSiteData = {
         "source": "elvisun/newsjack"
       },
       {
+        "count": 1,
+        "skills": [
+          "epicsagas-llm-transpile"
+        ],
+        "source": "epicsagas/llm-transpile"
+      },
+      {
         "count": 9,
         "skills": [
           "autoresearch",
@@ -1313,6 +1702,20 @@ const baseSiteData = {
           "upgrading-expo"
         ],
         "source": "expo/skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "fastknifes-openflow"
+        ],
+        "source": "fastknifes/openflow"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "fayazara-macos-app-skills"
+        ],
+        "source": "fayazara/macos-app-skills"
       },
       {
         "count": 3,
@@ -1349,6 +1752,13 @@ const baseSiteData = {
           "yahoo-finance2"
         ],
         "source": "gadicc/yahoo-finance2"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "geekjourneyx-claude-design-card"
+        ],
+        "source": "geekjourneyx/claude-design-card"
       },
       {
         "count": 3,
@@ -1527,6 +1937,13 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
+          "growthenginenowoslawski-coldoutboundskills"
+        ],
+        "source": "growthenginenowoslawski/coldoutboundskills"
+      },
+      {
+        "count": 1,
+        "skills": [
           "stop-slop"
         ],
         "source": "hardikpandya/stop-slop"
@@ -1559,6 +1976,13 @@ const baseSiteData = {
         "source": "hashicorp/agent-skills"
       },
       {
+        "count": 1,
+        "skills": [
+          "headroomlabs-ai-headroom"
+        ],
+        "source": "headroomlabs-ai/headroom"
+      },
+      {
         "count": 20,
         "skills": [
           "embedded-captions",
@@ -1583,6 +2007,13 @@ const baseSiteData = {
           "website-to-video"
         ],
         "source": "heygen-com/hyperframes"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "himself65-finance-skills"
+        ],
+        "source": "himself65/finance-skills"
       },
       {
         "count": 20,
@@ -1631,6 +2062,13 @@ const baseSiteData = {
           "release"
         ],
         "source": "hyhmrright/brooks-lint"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "iannuttall-dotagents"
+        ],
+        "source": "iannuttall/dotagents"
       },
       {
         "count": 1,
@@ -1690,6 +2128,13 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
+          "jakubkrehel-make-interfaces-feel-better"
+        ],
+        "source": "jakubkrehel/make-interfaces-feel-better"
+      },
+      {
+        "count": 1,
+        "skills": [
           "ios-code-audit"
         ],
         "source": "jazzychad/ios-code-audit"
@@ -1726,12 +2171,26 @@ const baseSiteData = {
         "source": "jlowin/fastmcp"
       },
       {
+        "count": 1,
+        "skills": [
+          "johnvouros-nullcost-plugin"
+        ],
+        "source": "johnvouros/nullcost-plugin"
+      },
+      {
         "count": 2,
         "skills": [
           "obsidian-cli",
           "obsidian-markdown"
         ],
         "source": "kepano/obsidian-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "ksimback-tech-debt-skill"
+        ],
+        "source": "ksimback/tech-debt-skill"
       },
       {
         "count": 12,
@@ -1768,6 +2227,20 @@ const baseSiteData = {
         "source": "langfuse/skills"
       },
       {
+        "count": 1,
+        "skills": [
+          "lawve-ai-awesome-legal-skills"
+        ],
+        "source": "lawve-ai/awesome-legal-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "lishix520-academic-paper-skills"
+        ],
+        "source": "lishix520/academic-paper-skills"
+      },
+      {
         "count": 12,
         "skills": [
           "ctf-ai-ml",
@@ -1802,6 +2275,13 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
+          "markdown-viewer-skills"
+        ],
+        "source": "markdown-viewer/skills"
+      },
+      {
+        "count": 1,
+        "skills": [
           "charted"
         ],
         "source": "marzukia/charted"
@@ -1818,12 +2298,26 @@ const baseSiteData = {
         "source": "mattpocock/skills"
       },
       {
+        "count": 1,
+        "skills": [
+          "mbertani-opsx-feature-dev"
+        ],
+        "source": "mbertani/opsx-feature-dev"
+      },
+      {
         "count": 2,
         "skills": [
           "chatgpt-app-builder",
           "mcp-builder"
         ],
         "source": "mcp-use/skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "meleantonio-awesome-econ-ai-stuff"
+        ],
+        "source": "meleantonio/awesome-econ-ai-stuff"
       },
       {
         "count": 1,
@@ -1872,6 +2366,13 @@ const baseSiteData = {
           "playwright-cli"
         ],
         "source": "microsoft/playwright-cli"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "millionco-react-doctor"
+        ],
+        "source": "millionco/react-doctor"
       },
       {
         "count": 48,
@@ -1930,9 +2431,44 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
+          "mirkobozzetto-espresso"
+        ],
+        "source": "mirkobozzetto/espresso"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "mobile-next-mobile-mcp"
+        ],
+        "source": "mobile-next/mobile-mcp"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "modelcontextprotocol-inspector"
+        ],
+        "source": "modelcontextprotocol/inspector"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "mrtooher-fable-mode"
+        ],
+        "source": "mrtooher/fable-mode"
+      },
+      {
+        "count": 1,
+        "skills": [
           "acs-pentest-skills"
         ],
         "source": "mukul975/Anthropic-Cybersecurity-Skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "multica-ai-andrej-karpathy-skills"
+        ],
+        "source": "multica-ai/andrej-karpathy-skills"
       },
       {
         "count": 1,
@@ -1961,6 +2497,13 @@ const baseSiteData = {
           "widgets"
         ],
         "source": "n0an/Widgets-Agent-Skill"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "ndpvt-web-latex-document-skill"
+        ],
+        "source": "ndpvt-web/latex-document-skill"
       },
       {
         "count": 6,
@@ -2006,6 +2549,13 @@ const baseSiteData = {
         "source": "nrwl/nx-ai-agents-config"
       },
       {
+        "count": 1,
+        "skills": [
+          "nteract-semiotic"
+        ],
+        "source": "nteract/semiotic"
+      },
+      {
         "count": 6,
         "skills": [
           "brainstorming",
@@ -2016,6 +2566,20 @@ const baseSiteData = {
           "writing-plans"
         ],
         "source": "obra/superpowers"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "onvoyage-ai-gtm-engineer-skills"
+        ],
+        "source": "onvoyage-ai/gtm-engineer-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "op7418-logo-generator-skill"
+        ],
+        "source": "op7418/logo-generator-skill"
       },
       {
         "count": 1,
@@ -2046,11 +2610,79 @@ const baseSiteData = {
         "source": "papersflow-ai/papersflow-codex-plugin"
       },
       {
-        "count": 3,
+        "count": 71,
         "skills": [
           "agent-md-refactor",
           "architecture-diagram",
-          "golang-pro"
+          "golang-pro",
+          "pedronauck-skills-skills-community-adversarial-review",
+          "pedronauck-skills-skills-community-ai-sdk",
+          "pedronauck-skills-skills-community-better-auth-best-practices",
+          "pedronauck-skills-skills-community-better-auth-organi-7042b67b15",
+          "pedronauck-skills-skills-community-building-components",
+          "pedronauck-skills-skills-community-crafting-effective-readmes",
+          "pedronauck-skills-skills-community-creating-spec",
+          "pedronauck-skills-skills-community-design-spec-extraction",
+          "pedronauck-skills-skills-community-devops-engineer",
+          "pedronauck-skills-skills-community-drizzle-orm",
+          "pedronauck-skills-skills-community-drizzle-postgres",
+          "pedronauck-skills-skills-community-electron-builder",
+          "pedronauck-skills-skills-community-electron-dev",
+          "pedronauck-skills-skills-community-electron-release",
+          "pedronauck-skills-skills-community-es-toolkit",
+          "pedronauck-skills-skills-community-executing-plans",
+          "pedronauck-skills-skills-community-find-rules",
+          "pedronauck-skills-skills-community-find-skills",
+          "pedronauck-skills-skills-community-fixing-motion-performance",
+          "pedronauck-skills-skills-community-helm-chart-scaffolding",
+          "pedronauck-skills-skills-community-hetzner-server",
+          "pedronauck-skills-skills-community-kubernetes-specialist",
+          "pedronauck-skills-skills-community-mermaid-diagrams",
+          "pedronauck-skills-skills-community-motion",
+          "pedronauck-skills-skills-community-motion-react",
+          "pedronauck-skills-skills-community-obsidian-bases",
+          "pedronauck-skills-skills-community-obsidian-cli",
+          "pedronauck-skills-skills-community-obsidian-markdown",
+          "pedronauck-skills-skills-community-remotion-best-practices",
+          "pedronauck-skills-skills-community-requirements-clarity",
+          "pedronauck-skills-skills-community-ship-learn-next",
+          "pedronauck-skills-skills-community-tauri-v2",
+          "pedronauck-skills-skills-community-terraform-style-guide",
+          "pedronauck-skills-skills-community-workflow",
+          "pedronauck-skills-skills-community-wrangler",
+          "pedronauck-skills-skills-curated-brainstorming",
+          "pedronauck-skills-skills-curated-documentation-writer",
+          "pedronauck-skills-skills-curated-exa-web-search-free",
+          "pedronauck-skills-skills-curated-extreme-software-optimization",
+          "pedronauck-skills-skills-curated-game-changing-features",
+          "pedronauck-skills-skills-curated-hono",
+          "pedronauck-skills-skills-curated-lesson-learned",
+          "pedronauck-skills-skills-curated-next-best-practices",
+          "pedronauck-skills-skills-curated-shadcn",
+          "pedronauck-skills-skills-curated-systematic-debugging",
+          "pedronauck-skills-skills-curated-tui-design",
+          "pedronauck-skills-skills-curated-vercel-composition-patterns",
+          "pedronauck-skills-skills-curated-vercel-react-best-practices",
+          "pedronauck-skills-skills-curated-vitest",
+          "pedronauck-skills-skills-curated-zod",
+          "pedronauck-skills-skills-curated-zustand",
+          "pedronauck-skills-skills-marketing-alex-hormozi-pitch",
+          "pedronauck-skills-skills-marketing-brand-storytelling",
+          "pedronauck-skills-skills-marketing-content-research-writer",
+          "pedronauck-skills-skills-marketing-copywriting",
+          "pedronauck-skills-skills-marketing-fundraising",
+          "pedronauck-skills-skills-marketing-google-ads",
+          "pedronauck-skills-skills-marketing-hormozi-ad-factory",
+          "pedronauck-skills-skills-marketing-humanizer",
+          "pedronauck-skills-skills-marketing-pitch-deck",
+          "pedronauck-skills-skills-marketing-pitch-deck-visuals",
+          "pedronauck-skills-skills-marketing-pitch-gen",
+          "pedronauck-skills-skills-marketing-pptx-creator",
+          "pedronauck-skills-skills-marketing-professional-communication",
+          "pedronauck-skills-skills-marketing-sales-methodology-implementer",
+          "pedronauck-skills-skills-marketing-startup-validator",
+          "pedronauck-skills-skills-marketing-viz",
+          "pedronauck-skills-skills-marketing-writing-clearly-and-concisely"
         ],
         "source": "pedronauck/skills"
       },
@@ -2141,6 +2773,13 @@ const baseSiteData = {
           "html"
         ],
         "source": "plannotator/effective-html"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "plannotator-tot"
+        ],
+        "source": "plannotator/tot"
       },
       {
         "count": 6,
@@ -2979,7 +3618,7 @@ const baseSiteData = {
         "status": "inspect-then-install"
       },
       {
-        "count": 1267,
+        "count": 1414,
         "skills": [
           "00-ke-hoach-mkt",
           "00-marketing-plan-global",
@@ -3032,6 +3671,7 @@ const baseSiteData = {
           "a11y-debugging",
           "ab-test-analysis",
           "ab-testing",
+          "accelerated-computing-cudf",
           "accessibility-audit",
           "accessibility-test-plan",
           "ad-account-auditor",
@@ -3047,7 +3687,12 @@ const baseSiteData = {
           "agent-reach",
           "agents-sdk",
           "ai-seo",
+          "aiq-deploy",
+          "aiq-research",
           "alliances",
+          "amc-run-sample-calibration",
+          "amc-run-video-calibration",
+          "amc-setup-calibration-stack",
           "american-airlines",
           "amex-travel",
           "analytics",
@@ -3244,12 +3889,27 @@ const baseSiteData = {
           "csv-query",
           "csv-wrangling",
           "csvglow",
+          "cudaq-guide",
+          "cufolio",
+          "cuopt-developer",
+          "cuopt-install",
+          "cuopt-multi-objective-exploration",
+          "cuopt-numerical-optimization-api",
+          "cuopt-numerical-optimization-formulation",
+          "cuopt-routing-api-python",
+          "cuopt-server-api-python",
+          "cupynumeric-hdf5",
+          "cupynumeric-install",
+          "cupynumeric-migration-readiness",
+          "cupynumeric-parallel-data-load",
           "customer-journey-map",
+          "dali-dynamic-mode",
           "dark-mode-design",
           "dark-social-attributor",
           "data-clean",
           "data-convert",
           "data-describe",
+          "data-designer",
           "data-join",
           "data-processor",
           "data-profile",
@@ -3264,6 +3924,11 @@ const baseSiteData = {
           "deck-generator",
           "deep-research-workflow",
           "deepscan-monitor",
+          "deepstream-dev",
+          "deepstream-generate-pipeline",
+          "deepstream-import-vision-model",
+          "deepstream-profile-pipeline",
+          "deepstream-sop",
           "define-hypothesis",
           "define-jtbd-canvas",
           "define-opportunity-tree",
@@ -3301,6 +3966,13 @@ const baseSiteData = {
           "develop-solution-brief",
           "develop-spike-summary",
           "diary-study-plan",
+          "dicom-metadata-extract",
+          "dicom-series-preflight",
+          "dicom-series-to-volume",
+          "digital-health-clinical-asr-build",
+          "digital-health-clinical-asr-eval",
+          "digital-health-clinical-asr-finetune",
+          "digital-health-clinical-asr-setup",
           "discover-competitive-analysis",
           "discover-interview-synthesis",
           "discover-journey-map",
@@ -3320,8 +3992,19 @@ const baseSiteData = {
           "dx-roaster",
           "dxf",
           "dynamic-content-personalizer",
+          "dynamo-interconnect-check",
+          "dynamo-recipe-runner",
+          "dynamo-router-starter",
+          "dynamo-troubleshoot",
           "dynamodb",
           "early-access-designer",
+          "earth2studio-create-datasource",
+          "earth2studio-create-diagnostic",
+          "earth2studio-create-prognostic",
+          "earth2studio-data-fetch",
+          "earth2studio-deterministic-forecast",
+          "earth2studio-discover",
+          "earth2studio-install",
           "ec2",
           "ecs",
           "editorial-card-screenshot",
@@ -3472,7 +4155,17 @@ const baseSiteData = {
           "hf-mem",
           "hicks-law",
           "hol-guard",
+          "holoscan-install-conda",
+          "holoscan-install-container",
+          "holoscan-install-debian",
+          "holoscan-install-source",
+          "holoscan-install-wheel",
+          "holoscan-setup",
           "hotel-chains",
+          "hsb-app",
+          "hsb-flash",
+          "hsb-setup",
+          "hsb-test",
           "html",
           "huggingface-best",
           "huggingface-community-evals",
@@ -3524,6 +4217,39 @@ const baseSiteData = {
           "iterate-pivot-decision",
           "iterate-refinement-notes",
           "iterate-retrospective",
+          "jetson-build-source",
+          "jetson-customize-camera",
+          "jetson-customize-clocks",
+          "jetson-customize-fan",
+          "jetson-customize-mgbe",
+          "jetson-customize-nvpmodel",
+          "jetson-customize-pcie",
+          "jetson-customize-pinmux",
+          "jetson-customize-uphy",
+          "jetson-customize-usb",
+          "jetson-derive-carrier",
+          "jetson-diagnostic",
+          "jetson-download-bsp",
+          "jetson-flash-image",
+          "jetson-generate-kb",
+          "jetson-headless-mode",
+          "jetson-inference-mem-tune",
+          "jetson-init-image",
+          "jetson-init-source",
+          "jetson-init-target",
+          "jetson-link-docs",
+          "jetson-llm-benchmark",
+          "jetson-llm-serve",
+          "jetson-memory-audit",
+          "jetson-optimize-memory",
+          "jetson-package",
+          "jetson-print-bsp-info",
+          "jetson-print-device-info",
+          "jetson-promote-image",
+          "jetson-quick-start",
+          "jetson-set-target",
+          "jetson-speculative-decoding",
+          "jetson-validate-image",
           "job-stories",
           "jobs-to-be-done",
           "journalist-fit-check",
@@ -3558,6 +4284,7 @@ const baseSiteData = {
           "launch-day-conductor",
           "launch-feedback-synthesizer",
           "launch-monitor",
+          "launch-nemo-rl",
           "launch-readiness-auditor",
           "launch-registry",
           "launch-retro-analyzer",
@@ -3592,6 +4319,11 @@ const baseSiteData = {
           "market-sizing",
           "marketing-ideas",
           "marketing-psychology",
+          "mcore-create-issue",
+          "mcore-linting-and-formatting",
+          "mcore-run-on-slurm",
+          "mcore-split-pr",
+          "mcore-testing",
           "meanest-editor",
           "measure-dashboard-requirements",
           "measure-experiment-design",
@@ -3630,6 +4362,42 @@ const baseSiteData = {
           "narrative-resonance-monitor",
           "navigation-patterns",
           "navvy",
+          "nemo-automodel-distributed-training",
+          "nemo-automodel-launcher-config",
+          "nemo-automodel-model-onboarding",
+          "nemo-automodel-recipe-development",
+          "nemo-data-designer-plugin",
+          "nemo-evaluator-plugin",
+          "nemo-mbridge-mlm-bridge-training",
+          "nemo-mbridge-multi-node-slurm",
+          "nemo-mbridge-perf-activation-recompute",
+          "nemo-mbridge-perf-cpu-offloading",
+          "nemo-mbridge-perf-cuda-graphs",
+          "nemo-mbridge-perf-expert-parallel-overlap",
+          "nemo-mbridge-perf-hierarchical-context-parallel",
+          "nemo-mbridge-perf-megatron-fsdp",
+          "nemo-mbridge-perf-memory-tuning",
+          "nemo-mbridge-perf-moe-comm-overlap",
+          "nemo-mbridge-perf-moe-dispatcher-selection",
+          "nemo-mbridge-perf-moe-hardware-configs",
+          "nemo-mbridge-perf-moe-long-context",
+          "nemo-mbridge-perf-moe-optimization-workflow",
+          "nemo-mbridge-perf-moe-vlm-training",
+          "nemo-mbridge-perf-parallelism-strategies",
+          "nemo-mbridge-perf-sequence-packing",
+          "nemo-mbridge-perf-tp-dp-comm-overlap",
+          "nemo-mbridge-recipe-recommender",
+          "nemo-mbridge-resiliency",
+          "nemo-retriever",
+          "nemo-rl-auto-research",
+          "nemo-rl-brev-etiquette",
+          "nemo-rl-docs",
+          "nemo-rl-session-memory",
+          "nemoclaw-user-guide",
+          "nemotron-customize",
+          "nemotron-policy-generator",
+          "nemotron-retrieval-recipes",
+          "nemotron-speech",
           "new-skill",
           "news-search",
           "newsjack-detector",
@@ -3649,6 +4417,15 @@ const baseSiteData = {
           "notebooklm",
           "novel-writing",
           "npm-downloads-to-leads",
+          "nv-generate-ct-rflow",
+          "nv-generate-mr",
+          "nv-generate-mr-brain",
+          "nv-generate-mr-brain-finetune",
+          "nv-generate-vae-finetune",
+          "nv-reason-cxr",
+          "nv-segment-ct",
+          "nv-segment-ct-finetune",
+          "nv-segment-ctmr",
           "nx-workspace-patterns",
           "observability-edot-dotnet-instrument",
           "observability-edot-dotnet-migrate",
@@ -3668,6 +4445,9 @@ const baseSiteData = {
           "offer-claims-registry",
           "offsite-signal-analyzer",
           "og-image",
+          "omniverse-cad-to-simready",
+          "omniverse-realtime-viewer",
+          "omniverse-usd-performance-tuning",
           "on-call-handoff-patterns",
           "on-page-seo-auditor",
           "onboarding",
@@ -3725,6 +4505,12 @@ const baseSiteData = {
           "persona-team-lead",
           "personal-assistant",
           "pestle-analysis",
+          "physical-ai-defect-image-generation",
+          "physical-ai-infrastructure-setup-and-resilient-scaling",
+          "physical-ai-neural-reconstruction",
+          "physical-ai-people-attribute-search",
+          "physical-ai-video-data-augmentation",
+          "physicsnemo-discover",
           "pitch-narrative-builder",
           "placement-exclusion-manager",
           "plan-trip",
@@ -4252,8 +5038,152 @@ const baseSiteData = {
         "status": "install-now-after-trust-gate"
       },
       {
-        "count": 15,
+        "count": 159,
         "skills": [
+          "199-biotechnologies-claude-deep-research-skill",
+          "2kdarki-codex-mem",
+          "actionbook-rust-skills",
+          "agi-now-buffett-skills",
+          "agricidaniel-claude-seo",
+          "aitytech-agentkits-marketing",
+          "aiwithremy-claude-skills-llm-council",
+          "allthingssmitty-css-protips",
+          "antvis-mcp-server-chart",
+          "apify-agent-skills",
+          "ast-grep-agent-skill",
+          "auriti-labs-geo-optimizer-skill",
+          "avivsinai-langfuse-mcp",
+          "bentossell-visualise",
+          "cloudai-x-threejs-skills",
+          "composiohq-awesome-codex-skills-changelog-generator",
+          "composiohq-awesome-codex-skills-content-research-writer",
+          "composiohq-awesome-codex-skills-datadog-logs",
+          "composiohq-awesome-codex-skills-developer-growth-analysis",
+          "composiohq-awesome-codex-skills-domain-name-brainstormer",
+          "composiohq-awesome-codex-skills-email-draft-polish",
+          "composiohq-awesome-codex-skills-file-organizer",
+          "composiohq-awesome-codex-skills-gh-address-comments",
+          "composiohq-awesome-codex-skills-gh-fix-ci",
+          "composiohq-awesome-codex-skills-image-enhancer",
+          "composiohq-awesome-codex-skills-internal-comms",
+          "composiohq-awesome-codex-skills-langsmith-fetch",
+          "composiohq-awesome-codex-skills-lead-research-assistant",
+          "composiohq-awesome-codex-skills-mcp-builder",
+          "composiohq-awesome-codex-skills-notion-knowledge-capture",
+          "composiohq-awesome-codex-skills-paperjsx",
+          "composiohq-awesome-codex-skills-raffle-winner-picker",
+          "composiohq-awesome-codex-skills-spreadsheet-formula-helper",
+          "daetojemax-figma-to-swiftui-skill",
+          "deanpeters-product-manager-skills",
+          "devcxl-opencode-spec",
+          "dgreenheck-webgpu-claude-skill",
+          "epicsagas-llm-transpile",
+          "eronred-aso-skills",
+          "fastknifes-openflow",
+          "fayazara-macos-app-skills",
+          "gabberflast-academic-pptx-skill",
+          "geekjourneyx-claude-design-card",
+          "growthenginenowoslawski-coldoutboundskills",
+          "hdeibler-universal-design-principles",
+          "headroomlabs-ai-headroom",
+          "himself65-finance-skills",
+          "iannuttall-dotagents",
+          "imbad0202-academic-research-skills-codex",
+          "internscience-awesome-scientific-skills",
+          "jakubantalik-transitions-dev",
+          "jakubkrehel-make-interfaces-feel-better",
+          "johnvouros-nullcost-plugin",
+          "ksimback-tech-debt-skill",
+          "kulaxyz-token-diet",
+          "kyurish-mcp-dashboards",
+          "lawve-ai-awesome-legal-skills",
+          "lishix520-academic-paper-skills",
+          "lumiaqian-openspec-mcp",
+          "markdown-viewer-skills",
+          "mbertani-opsx-feature-dev",
+          "meleantonio-awesome-econ-ai-stuff",
+          "millionco-react-doctor",
+          "ministajazz-diasporic-intelligence",
+          "mirkobozzetto-espresso",
+          "mobile-next-mobile-mcp",
+          "modelcontextprotocol-inspector",
+          "mrtooher-fable-mode",
+          "multica-ai-andrej-karpathy-skills",
+          "ndpvt-web-latex-document-skill",
+          "nteract-semiotic",
+          "octane0411-opencode-plugin-openspec",
+          "onvoyage-ai-gtm-engineer-skills",
+          "op7418-logo-generator-skill",
+          "pedronauck-skills-skills-community-adversarial-review",
+          "pedronauck-skills-skills-community-ai-sdk",
+          "pedronauck-skills-skills-community-better-auth-best-practices",
+          "pedronauck-skills-skills-community-better-auth-organi-7042b67b15",
+          "pedronauck-skills-skills-community-building-components",
+          "pedronauck-skills-skills-community-crafting-effective-readmes",
+          "pedronauck-skills-skills-community-creating-spec",
+          "pedronauck-skills-skills-community-design-spec-extraction",
+          "pedronauck-skills-skills-community-devops-engineer",
+          "pedronauck-skills-skills-community-drizzle-orm",
+          "pedronauck-skills-skills-community-drizzle-postgres",
+          "pedronauck-skills-skills-community-electron-builder",
+          "pedronauck-skills-skills-community-electron-dev",
+          "pedronauck-skills-skills-community-electron-release",
+          "pedronauck-skills-skills-community-es-toolkit",
+          "pedronauck-skills-skills-community-executing-plans",
+          "pedronauck-skills-skills-community-find-rules",
+          "pedronauck-skills-skills-community-find-skills",
+          "pedronauck-skills-skills-community-fixing-motion-performance",
+          "pedronauck-skills-skills-community-helm-chart-scaffolding",
+          "pedronauck-skills-skills-community-hetzner-server",
+          "pedronauck-skills-skills-community-kubernetes-specialist",
+          "pedronauck-skills-skills-community-mermaid-diagrams",
+          "pedronauck-skills-skills-community-motion",
+          "pedronauck-skills-skills-community-motion-react",
+          "pedronauck-skills-skills-community-obsidian-bases",
+          "pedronauck-skills-skills-community-obsidian-cli",
+          "pedronauck-skills-skills-community-obsidian-markdown",
+          "pedronauck-skills-skills-community-remotion-best-practices",
+          "pedronauck-skills-skills-community-requirements-clarity",
+          "pedronauck-skills-skills-community-ship-learn-next",
+          "pedronauck-skills-skills-community-tauri-v2",
+          "pedronauck-skills-skills-community-terraform-style-guide",
+          "pedronauck-skills-skills-community-workflow",
+          "pedronauck-skills-skills-community-wrangler",
+          "pedronauck-skills-skills-curated-brainstorming",
+          "pedronauck-skills-skills-curated-documentation-writer",
+          "pedronauck-skills-skills-curated-exa-web-search-free",
+          "pedronauck-skills-skills-curated-extreme-software-optimization",
+          "pedronauck-skills-skills-curated-game-changing-features",
+          "pedronauck-skills-skills-curated-hono",
+          "pedronauck-skills-skills-curated-lesson-learned",
+          "pedronauck-skills-skills-curated-next-best-practices",
+          "pedronauck-skills-skills-curated-shadcn",
+          "pedronauck-skills-skills-curated-systematic-debugging",
+          "pedronauck-skills-skills-curated-tui-design",
+          "pedronauck-skills-skills-curated-vercel-composition-patterns",
+          "pedronauck-skills-skills-curated-vercel-react-best-practices",
+          "pedronauck-skills-skills-curated-vitest",
+          "pedronauck-skills-skills-curated-zod",
+          "pedronauck-skills-skills-curated-zustand",
+          "pedronauck-skills-skills-marketing-alex-hormozi-pitch",
+          "pedronauck-skills-skills-marketing-brand-storytelling",
+          "pedronauck-skills-skills-marketing-content-research-writer",
+          "pedronauck-skills-skills-marketing-copywriting",
+          "pedronauck-skills-skills-marketing-fundraising",
+          "pedronauck-skills-skills-marketing-google-ads",
+          "pedronauck-skills-skills-marketing-hormozi-ad-factory",
+          "pedronauck-skills-skills-marketing-humanizer",
+          "pedronauck-skills-skills-marketing-pitch-deck",
+          "pedronauck-skills-skills-marketing-pitch-deck-visuals",
+          "pedronauck-skills-skills-marketing-pitch-gen",
+          "pedronauck-skills-skills-marketing-pptx-creator",
+          "pedronauck-skills-skills-marketing-professional-communication",
+          "pedronauck-skills-skills-marketing-sales-methodology-implementer",
+          "pedronauck-skills-skills-marketing-startup-validator",
+          "pedronauck-skills-skills-marketing-viz",
+          "pedronauck-skills-skills-marketing-writing-clearly-and-concisely",
+          "plannotator-tot",
+          "pleaseprompto-notebooklm-skill",
           "ramziddin-solid-skills",
           "rkiding-awesome-finance-skills",
           "rohunvora-x-research-skill",
@@ -4325,293 +5255,297 @@ const baseSiteData = {
     }
   ],
   "installCommands": {
-    "all": "npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
-    "starter": "npx skills add github:wyattowalsh/agents --skill review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode"
+    "all": "npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
+    "starter": "npx skills add github:wyattowalsh/agents --skill review -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode"
   },
   "repoSource": "github:wyattowalsh/agents",
   "skillInstallScripts": {
-    "customAll": "npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+    "customAll": "npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
     "customIndividual": [
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill add-badges -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill add-badges -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "add-badges"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill agent-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill agent-conventions -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "agent-conventions"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill agent-runtime-governance -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill agent-runtime-governance -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "agent-runtime-governance"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill api-designer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill api-designer -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "api-designer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill changelog-writer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill changelog-writer -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "changelog-writer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill cross-agent-install-smoke -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill cross-agent-install-smoke -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "cross-agent-install-smoke"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill data-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill data-pipeline-architect -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "data-pipeline-architect"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill data-wizard -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill data-wizard -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "data-wizard"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill database-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill database-architect -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "database-architect"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill design -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill design -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "design"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill devops-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill devops-engineer -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "devops-engineer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill docling-graph -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill docling-graph -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "docling-graph"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill docs-steward -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill docs-steward -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "docs-steward"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill draw-thing -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill draw-thing -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "draw-thing"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill email-whiz -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill email-whiz -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "email-whiz"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill event-driven-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill event-driven-architect -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "event-driven-architect"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill ffmpeg -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill ffmpeg -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "ffmpeg"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "files-buddy"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill git-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill git-workflow -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "git-workflow"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill grok-delegate -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill grok-delegate -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "grok-delegate"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "harness-master"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill host-panel -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill host-panel -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "host-panel"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill i18n-localization -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill i18n-localization -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "i18n-localization"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill incident-response-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill incident-response-engineer -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "incident-response-engineer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill infrastructure-coder -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill infrastructure-coder -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "infrastructure-coder"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill javascript-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill javascript-conventions -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "javascript-conventions"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill learn -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill justfile -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
+        "name": "justfile"
+      },
+      {
+        "command": "npx skills add github:wyattowalsh/agents --skill learn -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "learn"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill mcp-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill mcp-creator -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "mcp-creator"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill mcphub-operator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill mcphub-operator -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "mcphub-operator"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill namer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill namer -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "namer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill nerdbot -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill nerdbot -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "nerdbot"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill new-project -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill new-project -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "new-project"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill observability-advisor -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill observability-advisor -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "observability-advisor"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill opencode-ensemble -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill opencode-ensemble -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "opencode-ensemble"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill openspec-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill openspec-workflow -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "openspec-workflow"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "orchestrator"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill pentest -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill pentest -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "pentest"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill performance-profiler -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill performance-profiler -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "performance-profiler"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill prompt-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill prompt-engineer -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "prompt-engineer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill python-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill python-conventions -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "python-conventions"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill reasoning-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill reasoning-router -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "reasoning-router"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill release-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill release-pipeline-architect -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "release-pipeline-architect"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill research -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill research -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "research"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill review -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "review"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill schema-evolution-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill schema-evolution-planner -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "schema-evolution-planner"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill security-scanner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill security-scanner -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "security-scanner"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill shell-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill shell-conventions -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "shell-conventions"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill shell-scripter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill shell-scripter -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "shell-scripter"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-bundle-curator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-bundle-curator -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-bundle-curator"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-compat-matrix -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-compat-matrix -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-compat-matrix"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-creator -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-creator"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-eval-scaffolder -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-eval-scaffolder -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-eval-scaffolder"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-install-dry-run-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-install-dry-run-planner -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-install-dry-run-planner"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-lifecycle-manager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-lifecycle-manager -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-lifecycle-manager"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-localization-packager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-localization-packager -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-localization-packager"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-package-manifest-enricher -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-package-manifest-enricher -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-package-manifest-enricher"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-quality-dashboard -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-quality-dashboard -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-quality-dashboard"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-registry-lock -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-registry-lock -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-registry-lock"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-router -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-router"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-signing-verifier -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-signing-verifier -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-signing-verifier"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-tag-taxonomist -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-tag-taxonomist -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-tag-taxonomist"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-token-budget-linter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-token-budget-linter -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-token-budget-linter"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-trace-debugger -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-trace-debugger -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "skill-trace-debugger"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill tech-debt-analyzer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill tech-debt-analyzer -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "tech-debt-analyzer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill test-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill test-architect -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "test-architect"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill things-manager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill things-manager -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "things-manager"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill trafilatura -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill trafilatura -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "trafilatura"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill wargame -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill wargame -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "wargame"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill yt-dlp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill yt-dlp -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
         "name": "yt-dlp"
       }
     ],
     "externalCommands": [
       {
-        "command": "npx skills add 3paws-ai/mobile-ai-skills --skill appstore-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add 3paws-ai/mobile-ai-skills --skill appstore-review -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "appstore-review"
         ],
@@ -4621,7 +5555,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Aas-ee/open-webSearch@3094fa558fce35a8373e45ed5a6c43362e206906 --skill open-websearch -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Aas-ee/open-webSearch@3094fa558fce35a8373e45ed5a6c43362e206906 --skill open-websearch -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "open-websearch"
         ],
@@ -4631,7 +5565,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Affitor/affiliate-skills --skill affiliate-check -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Affitor/affiliate-skills --skill affiliate-check -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "affiliate-check"
         ],
@@ -4641,7 +5575,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add Agents365-ai/drawio-skill --skill drawio-skill -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "drawio-skill"
         ],
@@ -4651,7 +5585,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add AvdLee/Core-Data-Agent-Skill --skill core-data-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add AvdLee/Core-Data-Agent-Skill --skill core-data-expert -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "core-data-expert"
         ],
@@ -4661,7 +5595,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add AvdLee/Swift-Testing-Agent-Skill --skill swift-testing-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add AvdLee/Swift-Testing-Agent-Skill --skill swift-testing-expert -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swift-testing-expert"
         ],
@@ -4671,7 +5605,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-backlinks -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-backlinks -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-backlinks"
         ],
@@ -4681,7 +5615,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-competitor-pages -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-competitor-pages -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-competitor-pages"
         ],
@@ -4691,7 +5625,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-content -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-content -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-content"
         ],
@@ -4701,7 +5635,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-dataforseo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-dataforseo -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-dataforseo"
         ],
@@ -4711,7 +5645,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-geo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-geo -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-geo"
         ],
@@ -4721,7 +5655,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-google -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-google -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-google"
         ],
@@ -4731,7 +5665,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-hreflang -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-hreflang -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-hreflang"
         ],
@@ -4741,7 +5675,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-image-gen -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-image-gen -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-image-gen"
         ],
@@ -4751,7 +5685,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-images -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-images -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-images"
         ],
@@ -4761,7 +5695,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-local -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-local -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-local"
         ],
@@ -4771,7 +5705,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-maps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-maps -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-maps"
         ],
@@ -4781,7 +5715,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-page -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-page -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-page"
         ],
@@ -4791,7 +5725,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-plan -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-plan -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-plan"
         ],
@@ -4801,7 +5735,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-programmatic -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-programmatic -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-programmatic"
         ],
@@ -4811,7 +5745,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-schema -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-schema -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-schema"
         ],
@@ -4821,7 +5755,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-sitemap -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-sitemap -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-sitemap"
         ],
@@ -4831,7 +5765,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add BestLemoon/codex-seo --skill seo-technical -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add BestLemoon/codex-seo --skill seo-technical -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-technical"
         ],
@@ -4841,7 +5775,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Bhanunamikaze/Agentic-SEO-Skill --skill seo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Bhanunamikaze/Agentic-SEO-Skill --skill seo -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo"
         ],
@@ -4851,7 +5785,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add CharlesWiltgen/Axiom --skill axiom-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add CharlesWiltgen/Axiom --skill axiom-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "axiom-design"
         ],
@@ -4861,7 +5795,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add github:ChromeDevTools/chrome-devtools-mcp@a90378adf3226e8b27a05cdcfdd801c199acaa93 --skill chrome-devtools --skill chrome-devtools-cli --skill a11y-debugging --skill debug-optimize-lcp --skill memory-leak-debugging --skill troubleshooting -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "a11y-debugging",
           "chrome-devtools",
@@ -4876,7 +5810,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ComposioHQ/awesome-codex-skills --skill canvas-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ComposioHQ/awesome-codex-skills --skill canvas-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "canvas-design"
         ],
@@ -4886,7 +5820,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ComposioHQ/awesome-codex-skills --skill slack-gif-creator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ComposioHQ/awesome-codex-skills --skill slack-gif-creator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "slack-gif-creator"
         ],
@@ -4896,7 +5830,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill app-store-changelog -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill app-store-changelog -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "app-store-changelog"
         ],
@@ -4906,7 +5840,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill bug-hunt-swarm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill bug-hunt-swarm -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "bug-hunt-swarm"
         ],
@@ -4916,7 +5850,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill github -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill github -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "github"
         ],
@@ -4926,7 +5860,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill ios-debugger-agent -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill ios-debugger-agent -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ios-debugger-agent"
         ],
@@ -4936,7 +5870,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill macos-menubar-tuist-app -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill macos-menubar-tuist-app -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "macos-menubar-tuist-app"
         ],
@@ -4946,7 +5880,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill macos-spm-app-packaging -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill macos-spm-app-packaging -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "macos-spm-app-packaging"
         ],
@@ -4956,7 +5890,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill orchestrate-batch-refactor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill orchestrate-batch-refactor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "orchestrate-batch-refactor"
         ],
@@ -4966,7 +5900,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill project-skill-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill project-skill-audit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "project-skill-audit"
         ],
@@ -4976,7 +5910,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill react-component-performance -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill react-component-performance -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "react-component-performance"
         ],
@@ -4986,7 +5920,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill review-and-simplify-changes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill review-and-simplify-changes -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "review-and-simplify-changes"
         ],
@@ -4996,7 +5930,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill review-swarm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill review-swarm -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "review-swarm"
         ],
@@ -5006,7 +5940,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill swift-concurrency-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill swift-concurrency-expert -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swift-concurrency-expert"
         ],
@@ -5016,7 +5950,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill swiftui-liquid-glass -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill swiftui-liquid-glass -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swiftui-liquid-glass"
         ],
@@ -5026,7 +5960,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill swiftui-performance-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill swiftui-performance-audit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swiftui-performance-audit"
         ],
@@ -5036,7 +5970,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill swiftui-ui-patterns -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill swiftui-ui-patterns -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swiftui-ui-patterns"
         ],
@@ -5046,7 +5980,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Dimillian/Skills --skill swiftui-view-refactor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Dimillian/Skills --skill swiftui-view-refactor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swiftui-view-refactor"
         ],
@@ -5056,7 +5990,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Erikote04/Swift-API-Design-Guidelines-Agent-Skill --skill swift-api-design-guidelines-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Erikote04/Swift-API-Design-Guidelines-Agent-Skill --skill swift-api-design-guidelines-skill -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swift-api-design-guidelines-skill"
         ],
@@ -5066,7 +6000,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ForceInjection/awesome-skills --skill openspec-assistant -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ForceInjection/awesome-skills --skill openspec-assistant -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-assistant"
         ],
@@ -5076,7 +6010,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Haojae/scipilot-figure-skill --skill scipilot-figure-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Haojae/scipilot-figure-skill --skill scipilot-figure-skill -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "scipilot-figure-skill"
         ],
@@ -5086,7 +6020,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add JeffLi1993/seo-audit-skill --skill seo-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add JeffLi1993/seo-audit-skill --skill seo-audit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-audit"
         ],
@@ -5096,7 +6030,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add JeffLi1993/seo-audit-skill --skill seo-audit-full -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add JeffLi1993/seo-audit-skill --skill seo-audit-full -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-audit-full"
         ],
@@ -5106,7 +6040,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Kappaemme-git/codex-complexity-optimizer --skill complexity-optimizer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "complexity-optimizer"
         ],
@@ -5116,7 +6050,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add LottieFiles/motion-design-skill --skill motion-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add LottieFiles/motion-design-skill --skill motion-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "motion-design"
         ],
@@ -5126,7 +6060,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill app-icon -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill app-icon -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "app-icon"
         ],
@@ -5136,7 +6070,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill asset-enhancer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill asset-enhancer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asset-enhancer"
         ],
@@ -5146,7 +6080,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill asset-validation-debug -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill asset-validation-debug -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asset-validation-debug"
         ],
@@ -5156,7 +6090,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill brand-consistency -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill brand-consistency -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brand-consistency"
         ],
@@ -5166,7 +6100,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill favicon -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill favicon -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "favicon"
         ],
@@ -5176,7 +6110,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill illustration -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill illustration -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "illustration"
         ],
@@ -5186,7 +6120,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill logo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill logo -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "logo"
         ],
@@ -5196,7 +6130,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill og-image -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill og-image -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "og-image"
         ],
@@ -5206,7 +6140,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill svg-authoring -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill svg-authoring -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "svg-authoring"
         ],
@@ -5216,7 +6150,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill t2i-prompt-dialect -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill t2i-prompt-dialect -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "t2i-prompt-dialect"
         ],
@@ -5226,7 +6160,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill transparent-bg -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill transparent-bg -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "transparent-bg"
         ],
@@ -5236,7 +6170,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill ui-mockup-prompt -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill ui-mockup-prompt -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ui-mockup-prompt"
         ],
@@ -5246,7 +6180,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill vectorize -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/prompt-to-asset --skill vectorize -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "vectorize"
         ],
@@ -5256,7 +6190,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/unslop --skill unslop -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/unslop --skill unslop -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "unslop"
         ],
@@ -5266,7 +6200,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/unslop --skill unslop-commit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "unslop-commit"
         ],
@@ -5276,7 +6210,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/unslop --skill unslop-help -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/unslop --skill unslop-help -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "unslop-help"
         ],
@@ -5286,7 +6220,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add MohamedAbdallah-14/unslop --skill unslop-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add MohamedAbdallah-14/unslop --skill unslop-review -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "unslop-review"
         ],
@@ -5296,7 +6230,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill chef-assistant -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill chef-assistant -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "chef-assistant"
         ],
@@ -5306,7 +6240,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill code-formatter -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill code-formatter -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "code-formatter"
         ],
@@ -5316,7 +6250,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill code-reviewer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill code-reviewer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "code-reviewer"
         ],
@@ -5326,7 +6260,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill config-reader -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill config-reader -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "config-reader"
         ],
@@ -5336,7 +6270,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill creative-writing-coach -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill creative-writing-coach -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "creative-writing-coach"
         ],
@@ -5346,7 +6280,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill data-processor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill data-processor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "data-processor"
         ],
@@ -5356,7 +6290,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill deploy-service -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill deploy-service -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "deploy-service"
         ],
@@ -5366,7 +6300,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill file-indexer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill file-indexer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "file-indexer"
         ],
@@ -5376,7 +6310,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill file-organizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill file-organizer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "file-organizer"
         ],
@@ -5386,7 +6320,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill friendly-greeter -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill friendly-greeter -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "friendly-greeter"
         ],
@@ -5396,7 +6330,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill general-assistant -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill general-assistant -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "general-assistant"
         ],
@@ -5406,7 +6340,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill helpful-formatter -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill helpful-formatter -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "helpful-formatter"
         ],
@@ -5416,7 +6350,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill jp-compliance-reporter -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill jp-compliance-reporter -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "jp-compliance-reporter"
         ],
@@ -5426,7 +6360,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill markdown-formatter -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill markdown-formatter -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "markdown-formatter"
         ],
@@ -5436,7 +6370,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill onboarding-guide -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill onboarding-guide -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "onboarding-guide"
         ],
@@ -5446,7 +6380,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill over-privileged-helper -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill over-privileged-helper -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "over-privileged-helper"
         ],
@@ -5456,7 +6390,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill personal-assistant -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill personal-assistant -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "personal-assistant"
         ],
@@ -5466,7 +6400,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill report-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill report-generator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "report-generator"
         ],
@@ -5476,7 +6410,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill safe-greeting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill safe-greeting -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "safe-greeting"
         ],
@@ -5486,7 +6420,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill terraform-deployer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill terraform-deployer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "terraform-deployer"
         ],
@@ -5496,7 +6430,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill text-summarizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill text-summarizer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "text-summarizer"
         ],
@@ -5506,7 +6440,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add NVIDIA/SkillSpector --skill underdeclared-agent -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add NVIDIA/SkillSpector --skill underdeclared-agent -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "underdeclared-agent"
         ],
@@ -5516,7 +6450,1477 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill rag-blueprint -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill accelerated-computing-cudf -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "accelerated-computing-cudf"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill aiq-deploy -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "aiq-deploy"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill aiq-research -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "aiq-research"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill amc-run-sample-calibration -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "amc-run-sample-calibration"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill amc-run-video-calibration -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "amc-run-video-calibration"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill amc-setup-calibration-stack -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "amc-setup-calibration-stack"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill cudaq-guide -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "cudaq-guide"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill cufolio -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "cufolio"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill cuopt-developer -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "cuopt-developer"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill cuopt-install -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "cuopt-install"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill cuopt-multi-objective-exploration -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "cuopt-multi-objective-exploration"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill cuopt-numerical-optimization-api -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "cuopt-numerical-optimization-api"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill cuopt-numerical-optimization-formulation -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "cuopt-numerical-optimization-formulation"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill cuopt-routing-api-python -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "cuopt-routing-api-python"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill cuopt-server-api-python -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "cuopt-server-api-python"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill cupynumeric-hdf5 -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "cupynumeric-hdf5"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill cupynumeric-install -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "cupynumeric-install"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill cupynumeric-migration-readiness -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "cupynumeric-migration-readiness"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill cupynumeric-parallel-data-load -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "cupynumeric-parallel-data-load"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill dali-dynamic-mode -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "dali-dynamic-mode"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill data-designer -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "data-designer"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill deepstream-dev -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "deepstream-dev"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill deepstream-generate-pipeline -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "deepstream-generate-pipeline"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill deepstream-import-vision-model -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "deepstream-import-vision-model"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill deepstream-profile-pipeline -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "deepstream-profile-pipeline"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill deepstream-sop -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "deepstream-sop"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill dicom-metadata-extract -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "dicom-metadata-extract"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill dicom-series-preflight -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "dicom-series-preflight"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill dicom-series-to-volume -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "dicom-series-to-volume"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill digital-health-clinical-asr-build -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "digital-health-clinical-asr-build"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill digital-health-clinical-asr-eval -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "digital-health-clinical-asr-eval"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill digital-health-clinical-asr-finetune -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "digital-health-clinical-asr-finetune"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill digital-health-clinical-asr-setup -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "digital-health-clinical-asr-setup"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill dynamo-interconnect-check -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "dynamo-interconnect-check"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill dynamo-recipe-runner -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "dynamo-recipe-runner"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill dynamo-router-starter -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "dynamo-router-starter"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill dynamo-troubleshoot -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "dynamo-troubleshoot"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill earth2studio-create-datasource -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "earth2studio-create-datasource"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill earth2studio-create-diagnostic -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "earth2studio-create-diagnostic"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill earth2studio-create-prognostic -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "earth2studio-create-prognostic"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill earth2studio-data-fetch -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "earth2studio-data-fetch"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill earth2studio-deterministic-forecast -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "earth2studio-deterministic-forecast"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill earth2studio-discover -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "earth2studio-discover"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill earth2studio-install -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "earth2studio-install"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill holoscan-install-conda -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "holoscan-install-conda"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill holoscan-install-container -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "holoscan-install-container"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill holoscan-install-debian -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "holoscan-install-debian"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill holoscan-install-source -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "holoscan-install-source"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill holoscan-install-wheel -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "holoscan-install-wheel"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill holoscan-setup -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "holoscan-setup"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill hsb-app -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "hsb-app"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill hsb-flash -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "hsb-flash"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill hsb-setup -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "hsb-setup"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill hsb-test -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "hsb-test"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-build-source -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-build-source"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-customize-camera -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-customize-camera"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-customize-clocks -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-customize-clocks"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-customize-fan -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-customize-fan"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-customize-mgbe -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-customize-mgbe"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-customize-nvpmodel -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-customize-nvpmodel"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-customize-pcie -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-customize-pcie"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-customize-pinmux -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-customize-pinmux"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-customize-uphy -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-customize-uphy"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-customize-usb -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-customize-usb"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-derive-carrier -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-derive-carrier"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-diagnostic -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-diagnostic"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-download-bsp -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-download-bsp"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-flash-image -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-flash-image"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-generate-kb -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-generate-kb"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-headless-mode -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-headless-mode"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-inference-mem-tune -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-inference-mem-tune"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-init-image -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-init-image"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-init-source -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-init-source"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-init-target -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-init-target"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-link-docs -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-link-docs"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-llm-benchmark -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-llm-benchmark"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-llm-serve -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-llm-serve"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-memory-audit -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-memory-audit"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-optimize-memory -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-optimize-memory"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-package -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-package"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-print-bsp-info -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-print-bsp-info"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-print-device-info -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-print-device-info"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-promote-image -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-promote-image"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-quick-start -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-quick-start"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-set-target -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-set-target"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-speculative-decoding -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-speculative-decoding"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill jetson-validate-image -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "jetson-validate-image"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill launch-nemo-rl -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "launch-nemo-rl"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill mcore-create-issue -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "mcore-create-issue"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill mcore-linting-and-formatting -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "mcore-linting-and-formatting"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill mcore-run-on-slurm -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "mcore-run-on-slurm"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill mcore-split-pr -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "mcore-split-pr"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill mcore-testing -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "mcore-testing"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-automodel-distributed-training -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-automodel-distributed-training"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-automodel-launcher-config -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-automodel-launcher-config"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-automodel-model-onboarding -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-automodel-model-onboarding"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-automodel-recipe-development -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-automodel-recipe-development"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-data-designer-plugin -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-data-designer-plugin"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-evaluator-plugin -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-evaluator-plugin"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-mlm-bridge-training -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-mlm-bridge-training"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-multi-node-slurm -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-multi-node-slurm"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-activation-recompute -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-activation-recompute"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-cpu-offloading -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-cpu-offloading"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-cuda-graphs -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-cuda-graphs"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-expert-parallel-overlap -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-expert-parallel-overlap"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-hierarchical-context-parallel -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-hierarchical-context-parallel"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-megatron-fsdp -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-megatron-fsdp"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-memory-tuning -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-memory-tuning"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-moe-comm-overlap -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-moe-comm-overlap"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-moe-dispatcher-selection -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-moe-dispatcher-selection"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-moe-hardware-configs -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-moe-hardware-configs"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-moe-long-context -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-moe-long-context"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-moe-optimization-workflow -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-moe-optimization-workflow"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-moe-vlm-training -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-moe-vlm-training"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-parallelism-strategies -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-parallelism-strategies"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-sequence-packing -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-sequence-packing"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-perf-tp-dp-comm-overlap -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-perf-tp-dp-comm-overlap"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-recipe-recommender -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-recipe-recommender"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-mbridge-resiliency -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-mbridge-resiliency"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-retriever -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-retriever"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-rl-auto-research -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-rl-auto-research"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-rl-brev-etiquette -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-rl-brev-etiquette"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-rl-docs -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-rl-docs"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemo-rl-session-memory -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemo-rl-session-memory"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemoclaw-user-guide -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemoclaw-user-guide"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemotron-customize -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemotron-customize"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemotron-policy-generator -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemotron-policy-generator"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemotron-retrieval-recipes -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemotron-retrieval-recipes"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nemotron-speech -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nemotron-speech"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nv-generate-ct-rflow -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nv-generate-ct-rflow"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nv-generate-mr -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nv-generate-mr"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nv-generate-mr-brain -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nv-generate-mr-brain"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nv-generate-mr-brain-finetune -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nv-generate-mr-brain-finetune"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nv-generate-vae-finetune -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nv-generate-vae-finetune"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nv-reason-cxr -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nv-reason-cxr"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nv-segment-ct -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nv-segment-ct"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nv-segment-ct-finetune -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nv-segment-ct-finetune"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill nv-segment-ctmr -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "nv-segment-ctmr"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill omniverse-cad-to-simready -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "omniverse-cad-to-simready"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill omniverse-realtime-viewer -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "omniverse-realtime-viewer"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill omniverse-usd-performance-tuning -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "omniverse-usd-performance-tuning"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill physical-ai-defect-image-generation -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "physical-ai-defect-image-generation"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill physical-ai-infrastructure-setup-and-resilient-scaling -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "physical-ai-infrastructure-setup-and-resilient-scaling"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill physical-ai-neural-reconstruction -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "physical-ai-neural-reconstruction"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill physical-ai-people-attribute-search -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "physical-ai-people-attribute-search"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill physical-ai-video-data-augmentation -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "physical-ai-video-data-augmentation"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill physicsnemo-discover -y -g -a claude-code codex crush cursor opencode",
+        "skills": [
+          "physicsnemo-discover"
+        ],
+        "source": "NVIDIA/skills",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill rag-blueprint -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "rag-blueprint"
         ],
@@ -5526,7 +7930,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill rag-eval -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill rag-eval -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "rag-eval"
         ],
@@ -5536,7 +7940,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill rag-perf -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill rag-perf -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "rag-perf"
         ],
@@ -5546,7 +7950,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill skill-card-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill skill-card-generator -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "skill-card-generator"
         ],
@@ -5556,7 +7960,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-analyze-changenet-rca -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-analyze-changenet-rca -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-analyze-changenet-rca"
         ],
@@ -5566,7 +7970,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-analyze-gaps-visual-changenet -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-analyze-gaps-visual-changenet -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-analyze-gaps-visual-changenet"
         ],
@@ -5576,7 +7980,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-analyze-gaps-vlm-bcq -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-analyze-gaps-vlm-bcq -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-analyze-gaps-vlm-bcq"
         ],
@@ -5586,7 +7990,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-convert-dataset-format -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-convert-dataset-format -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-convert-dataset-format"
         ],
@@ -5596,7 +8000,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-finetune-clip -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-finetune-clip -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-finetune-clip"
         ],
@@ -5606,7 +8010,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-finetune-cosmos-embed -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-finetune-cosmos-embed -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-finetune-cosmos-embed"
         ],
@@ -5616,7 +8020,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-finetune-cosmos-reason -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-finetune-cosmos-reason -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-finetune-cosmos-reason"
         ],
@@ -5626,7 +8030,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-finetune-huggingface-model -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-finetune-huggingface-model -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-finetune-huggingface-model"
         ],
@@ -5636,7 +8040,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-generate-image-grounding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-generate-image-grounding -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-generate-image-grounding"
         ],
@@ -5646,7 +8050,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-generate-referring-expressions -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-generate-referring-expressions -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-generate-referring-expressions"
         ],
@@ -5656,7 +8060,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-generate-video-reasoning-annotations -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-generate-video-reasoning-annotations -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-generate-video-reasoning-annotations"
         ],
@@ -5666,7 +8070,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-launch-workflow -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-launch-workflow -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-launch-workflow"
         ],
@@ -5676,7 +8080,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-list-capabilities -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-list-capabilities -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-list-capabilities"
         ],
@@ -5686,7 +8090,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-mine-aoi-images -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-mine-aoi-images -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-mine-aoi-images"
         ],
@@ -5696,7 +8100,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-port-huggingface-model -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-port-huggingface-model -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-port-huggingface-model"
         ],
@@ -5706,7 +8110,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-route-visual-changenet-samples -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-route-visual-changenet-samples -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-route-visual-changenet-samples"
         ],
@@ -5716,7 +8120,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-automl -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-automl -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-run-automl"
         ],
@@ -5726,7 +8130,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-automl-deft-pipeline -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-automl-deft-pipeline -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-run-automl-deft-pipeline"
         ],
@@ -5736,7 +8140,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-deft-aoi -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-deft-aoi -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-run-deft-aoi"
         ],
@@ -5746,7 +8150,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-inference-service -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-inference-service -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-run-inference-service"
         ],
@@ -5756,7 +8160,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-on-brev -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-on-brev -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-run-on-brev"
         ],
@@ -5766,7 +8170,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-on-kubernetes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-on-kubernetes -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-run-on-kubernetes"
         ],
@@ -5776,7 +8180,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-on-local-docker -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-on-local-docker -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-run-on-local-docker"
         ],
@@ -5786,7 +8190,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-on-slurm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-on-slurm -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-run-on-slurm"
         ],
@@ -5796,7 +8200,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-platform -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-run-platform -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-run-platform"
         ],
@@ -5806,7 +8210,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-setup-nvidia-gpu-host -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-setup-nvidia-gpu-host -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-setup-nvidia-gpu-host"
         ],
@@ -5816,7 +8220,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-action-recognition -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-action-recognition -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-action-recognition"
         ],
@@ -5826,7 +8230,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-bevfusion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-bevfusion -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-bevfusion"
         ],
@@ -5836,7 +8240,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-centerpose -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-centerpose -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-centerpose"
         ],
@@ -5846,7 +8250,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-deformable-detr -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-deformable-detr -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-deformable-detr"
         ],
@@ -5856,7 +8260,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-depth-anything-v2 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-depth-anything-v2 -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-depth-anything-v2"
         ],
@@ -5866,7 +8270,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-dino -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-dino -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-dino"
         ],
@@ -5876,7 +8280,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-fast-foundation-stereo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-fast-foundation-stereo -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-fast-foundation-stereo"
         ],
@@ -5886,7 +8290,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-foundation-stereo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-foundation-stereo -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-foundation-stereo"
         ],
@@ -5896,7 +8300,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-grounding-dino -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-grounding-dino -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-grounding-dino"
         ],
@@ -5906,7 +8310,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-image-classification -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-image-classification -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-image-classification"
         ],
@@ -5916,7 +8320,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-mask-auto-encoder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-mask-auto-encoder -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-mask-auto-encoder"
         ],
@@ -5926,7 +8330,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-mask-auto-label -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-mask-auto-label -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-mask-auto-label"
         ],
@@ -5936,7 +8340,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-mask-grounding-dino -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-mask-grounding-dino -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-mask-grounding-dino"
         ],
@@ -5946,7 +8350,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-mask2former -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-mask2former -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-mask2former"
         ],
@@ -5956,7 +8360,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-metric-learning-recognition -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-metric-learning-recognition -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-metric-learning-recognition"
         ],
@@ -5966,7 +8370,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-nvdinov2 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-nvdinov2 -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-nvdinov2"
         ],
@@ -5976,7 +8380,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-nvpanoptix3d -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-nvpanoptix3d -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-nvpanoptix3d"
         ],
@@ -5986,7 +8390,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-ocdnet -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-ocdnet -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-ocdnet"
         ],
@@ -5996,7 +8400,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-ocrnet -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-ocrnet -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-ocrnet"
         ],
@@ -6006,7 +8410,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-oneformer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-oneformer -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-oneformer"
         ],
@@ -6016,7 +8420,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-optical-inspection -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-optical-inspection -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-optical-inspection"
         ],
@@ -6026,7 +8430,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-pointpillars -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-pointpillars -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-pointpillars"
         ],
@@ -6036,7 +8440,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-pose-classification -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-pose-classification -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-pose-classification"
         ],
@@ -6046,7 +8450,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-reid -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-reid -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-reid"
         ],
@@ -6056,7 +8460,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-rtdetr -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-rtdetr -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-rtdetr"
         ],
@@ -6066,7 +8470,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-segformer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-segformer -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-segformer"
         ],
@@ -6076,7 +8480,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-single-step -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-single-step -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-single-step"
         ],
@@ -6086,7 +8490,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-sparse4d -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-sparse4d -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-sparse4d"
         ],
@@ -6096,7 +8500,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-visual-changenet -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-train-visual-changenet -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-train-visual-changenet"
         ],
@@ -6106,7 +8510,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-validate-dataset-format -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tao-validate-dataset-format -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tao-validate-dataset-format"
         ],
@@ -6116,7 +8520,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-adding-cutile-kernel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-adding-cutile-kernel -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tilegym-adding-cutile-kernel"
         ],
@@ -6126,7 +8530,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-converting-cutile-to-julia -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-converting-cutile-to-julia -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tilegym-converting-cutile-to-julia"
         ],
@@ -6136,7 +8540,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-converting-cutile-to-triton -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-converting-cutile-to-triton -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tilegym-converting-cutile-to-triton"
         ],
@@ -6146,7 +8550,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-cutile-autotuning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-cutile-autotuning -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tilegym-cutile-autotuning"
         ],
@@ -6156,7 +8560,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-cutile-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-cutile-python -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tilegym-cutile-python"
         ],
@@ -6166,7 +8570,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-improve-cutile-kernel-perf -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-improve-cutile-kernel-perf -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tilegym-improve-cutile-kernel-perf"
         ],
@@ -6176,7 +8580,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-monkey-patch-kernels-to-transformers -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill tilegym-monkey-patch-kernels-to-transformers -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tilegym-monkey-patch-kernels-to-transformers"
         ],
@@ -6186,7 +8590,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-ask-video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-ask-video -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-ask-video"
         ],
@@ -6196,7 +8600,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-dense-captioning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-dense-captioning -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-deploy-dense-captioning"
         ],
@@ -6206,7 +8610,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-detection-tracking-2d -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-detection-tracking-2d -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-deploy-detection-tracking-2d"
         ],
@@ -6216,7 +8620,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-detection-tracking-3d -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-detection-tracking-3d -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-deploy-detection-tracking-3d"
         ],
@@ -6226,7 +8630,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-profile -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-profile -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-deploy-profile"
         ],
@@ -6236,7 +8640,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-video-embedding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-deploy-video-embedding -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-deploy-video-embedding"
         ],
@@ -6246,7 +8650,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-generate-video-calibration -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-generate-video-calibration -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-generate-video-calibration"
         ],
@@ -6256,7 +8660,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-generate-video-report -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-generate-video-report -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-generate-video-report"
         ],
@@ -6266,7 +8670,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-manage-alerts -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-manage-alerts -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-manage-alerts"
         ],
@@ -6276,7 +8680,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-manage-video-io-storage -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-manage-video-io-storage -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-manage-video-io-storage"
         ],
@@ -6286,7 +8690,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-query-analytics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-query-analytics -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-query-analytics"
         ],
@@ -6296,7 +8700,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-search-archive -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-search-archive -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-search-archive"
         ],
@@ -6306,7 +8710,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-setup-behavior-analytics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-setup-behavior-analytics -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-setup-behavior-analytics"
         ],
@@ -6316,7 +8720,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-setup-video-analytics-api -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-setup-video-analytics-api -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-setup-video-analytics-api"
         ],
@@ -6326,7 +8730,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-summarize-video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/NVIDIA/skills --skill vss-summarize-video -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vss-summarize-video"
         ],
@@ -6336,7 +8740,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Nutlope/hallmark --skill hallmark -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Nutlope/hallmark --skill hallmark -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hallmark"
         ],
@@ -6346,7 +8750,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill a-b-test-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill a-b-test-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "a-b-test-design"
         ],
@@ -6356,7 +8760,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill accessibility-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill accessibility-audit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "accessibility-audit"
         ],
@@ -6366,7 +8770,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill accessibility-test-plan -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill accessibility-test-plan -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "accessibility-test-plan"
         ],
@@ -6376,7 +8780,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill aesthetic-usability -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill aesthetic-usability -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "aesthetic-usability"
         ],
@@ -6386,7 +8790,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill affinity-diagram -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill affinity-diagram -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "affinity-diagram"
         ],
@@ -6396,7 +8800,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill animation-principles -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill animation-principles -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "animation-principles"
         ],
@@ -6406,7 +8810,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill business-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill business-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "business-design"
         ],
@@ -6416,7 +8820,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill card-sort-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill card-sort-analysis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "card-sort-analysis"
         ],
@@ -6426,7 +8830,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill case-study -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill case-study -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "case-study"
         ],
@@ -6436,7 +8840,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill click-test-plan -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill click-test-plan -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "click-test-plan"
         ],
@@ -6446,7 +8850,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill color-system -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill color-system -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "color-system"
         ],
@@ -6456,7 +8860,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill competitive-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill competitive-analysis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "competitive-analysis"
         ],
@@ -6466,7 +8870,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill component-spec -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill component-spec -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "component-spec"
         ],
@@ -6476,7 +8880,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill critique-affordance -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill critique-affordance -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "critique-affordance"
         ],
@@ -6486,7 +8890,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill critique-brand-consistency -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill critique-brand-consistency -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "critique-brand-consistency"
         ],
@@ -6496,7 +8900,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill critique-color -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill critique-color -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "critique-color"
         ],
@@ -6506,7 +8910,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill critique-composition -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill critique-composition -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "critique-composition"
         ],
@@ -6516,7 +8920,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill critique-information-density -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill critique-information-density -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "critique-information-density"
         ],
@@ -6526,7 +8930,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill critique-typography -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill critique-typography -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "critique-typography"
         ],
@@ -6536,7 +8940,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill critique-visual-hierarchy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill critique-visual-hierarchy -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "critique-visual-hierarchy"
         ],
@@ -6546,7 +8950,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill dark-mode-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill dark-mode-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "dark-mode-design"
         ],
@@ -6556,7 +8960,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill data-visualization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill data-visualization -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "data-visualization"
         ],
@@ -6566,7 +8970,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-brief -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-brief -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-brief"
         ],
@@ -6576,7 +8980,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-critique -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-critique -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-critique"
         ],
@@ -6586,7 +8990,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-debt-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-debt-audit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-debt-audit"
         ],
@@ -6596,7 +9000,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-impact-reporting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-impact-reporting -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-impact-reporting"
         ],
@@ -6606,7 +9010,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-negotiation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-negotiation -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-negotiation"
         ],
@@ -6616,7 +9020,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-principles -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-principles -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-principles"
         ],
@@ -6626,7 +9030,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-qa-checklist -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-qa-checklist -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-qa-checklist"
         ],
@@ -6636,7 +9040,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-rationale -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-rationale -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-rationale"
         ],
@@ -6646,7 +9050,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-review-process -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-review-process -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-review-process"
         ],
@@ -6656,7 +9060,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-sprint-plan -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-sprint-plan -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-sprint-plan"
         ],
@@ -6666,7 +9070,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-system-adoption -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-system-adoption -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-system-adoption"
         ],
@@ -6676,7 +9080,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-system-governance -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-system-governance -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-system-governance"
         ],
@@ -6686,7 +9090,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-token -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-token -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-token"
         ],
@@ -6696,7 +9100,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill design-token-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill design-token-audit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-token-audit"
         ],
@@ -6706,7 +9110,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill diary-study-plan -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill diary-study-plan -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "diary-study-plan"
         ],
@@ -6716,7 +9120,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill documentation-template -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill documentation-template -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "documentation-template"
         ],
@@ -6726,7 +9130,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill doherty-threshold -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill doherty-threshold -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "doherty-threshold"
         ],
@@ -6736,7 +9140,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill empathy-map -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill empathy-map -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "empathy-map"
         ],
@@ -6746,7 +9150,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill error-handling-ux -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill error-handling-ux -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "error-handling-ux"
         ],
@@ -6756,7 +9160,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill experience-map -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill experience-map -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "experience-map"
         ],
@@ -6766,7 +9170,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill feedback-patterns -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill feedback-patterns -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "feedback-patterns"
         ],
@@ -6776,7 +9180,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill fitts-law -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill fitts-law -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "fitts-law"
         ],
@@ -6786,7 +9190,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill form-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill form-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "form-design"
         ],
@@ -6796,7 +9200,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill gesture-patterns -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill gesture-patterns -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gesture-patterns"
         ],
@@ -6806,7 +9210,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill handoff-spec -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill handoff-spec -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "handoff-spec"
         ],
@@ -6816,7 +9220,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill heuristic-evaluation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill heuristic-evaluation -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "heuristic-evaluation"
         ],
@@ -6826,7 +9230,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill hicks-law -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill hicks-law -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hicks-law"
         ],
@@ -6836,7 +9240,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill icon-system -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill icon-system -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "icon-system"
         ],
@@ -6846,7 +9250,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill illustration-style -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill illustration-style -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "illustration-style"
         ],
@@ -6856,7 +9260,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill information-architecture -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill information-architecture -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "information-architecture"
         ],
@@ -6866,7 +9270,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill interfaces-that-feel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill interfaces-that-feel -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "interfaces-that-feel"
         ],
@@ -6876,7 +9280,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill jobs-to-be-done -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill jobs-to-be-done -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "jobs-to-be-done"
         ],
@@ -6886,7 +9290,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill journey-map -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill journey-map -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "journey-map"
         ],
@@ -6896,7 +9300,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill law-of-common-region -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill law-of-common-region -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "law-of-common-region"
         ],
@@ -6906,7 +9310,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill law-of-proximity -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill law-of-proximity -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "law-of-proximity"
         ],
@@ -6916,7 +9320,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill layout-grid -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill layout-grid -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "layout-grid"
         ],
@@ -6926,7 +9330,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill loading-states -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill loading-states -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "loading-states"
         ],
@@ -6936,7 +9340,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill localization-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill localization-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "localization-design"
         ],
@@ -6946,7 +9350,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill metrics-definition -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill metrics-definition -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "metrics-definition"
         ],
@@ -6956,7 +9360,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill micro-interaction-spec -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill micro-interaction-spec -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "micro-interaction-spec"
         ],
@@ -6966,7 +9370,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill millers-law -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill millers-law -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "millers-law"
         ],
@@ -6976,7 +9380,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill motion-system -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill motion-system -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "motion-system"
         ],
@@ -6986,7 +9390,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill naming-convention -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill naming-convention -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "naming-convention"
         ],
@@ -6996,7 +9400,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill navigation-patterns -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill navigation-patterns -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "navigation-patterns"
         ],
@@ -7006,7 +9410,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill north-star-vision -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill north-star-vision -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "north-star-vision"
         ],
@@ -7016,7 +9420,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill onboarding-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill onboarding-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "onboarding-design"
         ],
@@ -7026,7 +9430,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill opportunity-framework -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill opportunity-framework -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "opportunity-framework"
         ],
@@ -7036,7 +9440,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill pattern-library -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill pattern-library -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pattern-library"
         ],
@@ -7046,7 +9450,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill presentation-deck -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill presentation-deck -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "presentation-deck"
         ],
@@ -7056,7 +9460,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill prototype-strategy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill prototype-strategy -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "prototype-strategy"
         ],
@@ -7066,7 +9470,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill readable-measure -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill readable-measure -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "readable-measure"
         ],
@@ -7076,7 +9480,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill research-repository -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill research-repository -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "research-repository"
         ],
@@ -7086,7 +9490,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill responsive-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill responsive-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "responsive-design"
         ],
@@ -7096,7 +9500,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill search-ux -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill search-ux -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "search-ux"
         ],
@@ -7106,7 +9510,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill service-blueprint -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill service-blueprint -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "service-blueprint"
         ],
@@ -7116,7 +9520,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill spacing-system -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill spacing-system -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "spacing-system"
         ],
@@ -7126,7 +9530,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill stakeholder-alignment -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill stakeholder-alignment -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "stakeholder-alignment"
         ],
@@ -7136,7 +9540,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill state-machine -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill state-machine -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "state-machine"
         ],
@@ -7146,7 +9550,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill survey-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill survey-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "survey-design"
         ],
@@ -7156,7 +9560,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill team-workflow -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill team-workflow -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "team-workflow"
         ],
@@ -7166,7 +9570,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill test-scenario -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill test-scenario -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "test-scenario"
         ],
@@ -7176,7 +9580,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill theming-system -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill theming-system -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "theming-system"
         ],
@@ -7186,7 +9590,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill typography-scale -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill typography-scale -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "typography-scale"
         ],
@@ -7196,7 +9600,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill usability-test-plan -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill usability-test-plan -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "usability-test-plan"
         ],
@@ -7206,7 +9610,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill user-flow-diagram -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill user-flow-diagram -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "user-flow-diagram"
         ],
@@ -7216,7 +9620,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill user-persona -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill user-persona -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "user-persona"
         ],
@@ -7226,7 +9630,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill ux-writing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill ux-writing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ux-writing"
         ],
@@ -7236,7 +9640,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill version-control-strategy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill version-control-strategy -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "version-control-strategy"
         ],
@@ -7246,7 +9650,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill visual-hierarchy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill visual-hierarchy -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "visual-hierarchy"
         ],
@@ -7256,7 +9660,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill von-restorff-effect -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill von-restorff-effect -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "von-restorff-effect"
         ],
@@ -7266,7 +9670,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Owl-Listener/designer-skills --skill wireframe-spec -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Owl-Listener/designer-skills --skill wireframe-spec -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "wireframe-spec"
         ],
@@ -7286,7 +9690,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Panniantong/Agent-Reach --skill agent-reach -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Panniantong/Agent-Reach --skill agent-reach -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "agent-reach"
         ],
@@ -7296,7 +9700,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add PapiScholz/roadmapsmith --skill roadmap-update -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add PapiScholz/roadmapsmith --skill roadmap-update -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "roadmap-update"
         ],
@@ -7306,7 +9710,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add PasqualeVittoriosi/swift-accessibility-skill --skill swift-accessibility-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add PasqualeVittoriosi/swift-accessibility-skill --skill swift-accessibility-skill -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swift-accessibility-skill"
         ],
@@ -7316,7 +9720,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "cli-just"
         ],
@@ -7326,7 +9730,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill vitest --skill commit --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill vitest --skill commit --skill code-review -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "commit",
           "vitest"
@@ -7337,7 +9741,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Pythoughts-labs/designer-skill --skill raster-logo-svg -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Pythoughts-labs/designer-skill --skill raster-logo-svg -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "raster-logo-svg"
         ],
@@ -7347,7 +9751,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Ratnaditya-J/csvglow --skill csvglow -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Ratnaditya-J/csvglow --skill csvglow -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "csvglow"
         ],
@@ -7357,7 +9761,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Rycen7822/codex-rg-guard --skill rg-budget-search -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Rycen7822/codex-rg-guard --skill rg-budget-search -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "rg-budget-search"
         ],
@@ -7367,7 +9771,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add SharpAI/DeepCamera --skill depth-estimation -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "depth-estimation"
         ],
@@ -7377,7 +9781,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add TanStack/cli --skill add-addons-existing-app -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add TanStack/cli --skill add-addons-existing-app -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "add-addons-existing-app"
         ],
@@ -7387,7 +9791,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add TanStack/cli --skill choose-ecosystem-integrations -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add TanStack/cli --skill choose-ecosystem-integrations -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "choose-ecosystem-integrations"
         ],
@@ -7397,7 +9801,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add TanStack/cli --skill create-app-scaffold -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add TanStack/cli --skill create-app-scaffold -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "create-app-scaffold"
         ],
@@ -7407,7 +9811,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add TanStack/cli --skill maintain-custom-addons-dev-watch -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add TanStack/cli --skill maintain-custom-addons-dev-watch -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "maintain-custom-addons-dev-watch"
         ],
@@ -7417,7 +9821,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add TanStack/cli --skill query-docs-library-metadata -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add TanStack/cli --skill query-docs-library-metadata -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "query-docs-library-metadata"
         ],
@@ -7427,7 +9831,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill app-store-review-arbitrage -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill app-store-review-arbitrage -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "app-store-review-arbitrage"
         ],
@@ -7437,7 +9841,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill blog-cover-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill blog-cover-generator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "blog-cover-generator"
         ],
@@ -7447,7 +9851,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill brand-alchemy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill brand-alchemy -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brand-alchemy"
         ],
@@ -7457,7 +9861,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill claude-md-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill claude-md-generator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "claude-md-generator"
         ],
@@ -7467,7 +9871,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill cold-email-verifier -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill cold-email-verifier -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cold-email-verifier"
         ],
@@ -7477,7 +9881,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill company-radar -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill company-radar -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "company-radar"
         ],
@@ -7487,7 +9891,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill competitor-pr-finder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill competitor-pr-finder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "competitor-pr-finder"
         ],
@@ -7497,7 +9901,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill cook-the-blog -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill cook-the-blog -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cook-the-blog"
         ],
@@ -7507,7 +9911,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill dependency-update-bot -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill dependency-update-bot -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "dependency-update-bot"
         ],
@@ -7517,7 +9921,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill docs-from-code -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill docs-from-code -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "docs-from-code"
         ],
@@ -7527,7 +9931,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill domain-expired-opportunity-finder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill domain-expired-opportunity-finder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "domain-expired-opportunity-finder"
         ],
@@ -7537,7 +9941,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill dx-roaster -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill dx-roaster -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "dx-roaster"
         ],
@@ -7547,7 +9951,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill email-newsletter -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill email-newsletter -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "email-newsletter"
         ],
@@ -7557,7 +9961,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill explain-this-pr -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill explain-this-pr -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "explain-this-pr"
         ],
@@ -7567,7 +9971,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill geo-gap-fixer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill geo-gap-fixer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "geo-gap-fixer"
         ],
@@ -7577,7 +9981,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill gh-issue-to-demand-signal -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill gh-issue-to-demand-signal -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gh-issue-to-demand-signal"
         ],
@@ -7587,7 +9991,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill github-discussion-to-devrel-content -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill github-discussion-to-devrel-content -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "github-discussion-to-devrel-content"
         ],
@@ -7597,7 +10001,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill graphic-case-study -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill graphic-case-study -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "graphic-case-study"
         ],
@@ -7607,7 +10011,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill graphic-chart -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill graphic-chart -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "graphic-chart"
         ],
@@ -7617,7 +10021,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill graphic-ebook -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill graphic-ebook -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "graphic-ebook"
         ],
@@ -7627,7 +10031,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill graphic-gif -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill graphic-gif -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "graphic-gif"
         ],
@@ -7637,7 +10041,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill graphic-slide-deck -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill graphic-slide-deck -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "graphic-slide-deck"
         ],
@@ -7647,7 +10051,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill hackernews-intel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill hackernews-intel -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hackernews-intel"
         ],
@@ -7657,7 +10061,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill human-tone -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill human-tone -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "human-tone"
         ],
@@ -7667,7 +10071,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill hyperframes-product-launch-video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill hyperframes-product-launch-video -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hyperframes-product-launch-video"
         ],
@@ -7677,7 +10081,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill kill-the-standup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill kill-the-standup -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "kill-the-standup"
         ],
@@ -7687,7 +10091,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill linkedin-job-post-to-buyer-pain-map -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill linkedin-job-post-to-buyer-pain-map -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "linkedin-job-post-to-buyer-pain-map"
         ],
@@ -7697,7 +10101,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill linkedin-post-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill linkedin-post-generator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "linkedin-post-generator"
         ],
@@ -7707,7 +10111,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill llms-txt-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill llms-txt-generator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "llms-txt-generator"
         ],
@@ -7717,7 +10121,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill map-your-market -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill map-your-market -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "map-your-market"
         ],
@@ -7727,7 +10131,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill meeting-brief-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill meeting-brief-generator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "meeting-brief-generator"
         ],
@@ -7737,7 +10141,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill meta-ads-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill meta-ads-expert -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "meta-ads-expert"
         ],
@@ -7747,7 +10151,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill meta-tribe-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill meta-tribe-skill -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "meta-tribe-skill"
         ],
@@ -7757,7 +10161,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill newsletter-digest -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill newsletter-digest -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "newsletter-digest"
         ],
@@ -7767,7 +10171,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill noise-to-linkedin-carousel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill noise-to-linkedin-carousel -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "noise-to-linkedin-carousel"
         ],
@@ -7777,7 +10181,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill noise2blog -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill noise2blog -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "noise2blog"
         ],
@@ -7787,7 +10191,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill npm-downloads-to-leads -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill npm-downloads-to-leads -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "npm-downloads-to-leads"
         ],
@@ -7797,7 +10201,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill oss-launch-kit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill oss-launch-kit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "oss-launch-kit"
         ],
@@ -7807,7 +10211,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill outreach-sequence-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill outreach-sequence-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "outreach-sequence-builder"
         ],
@@ -7817,7 +10221,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill podcast-transcript-fetcher -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill podcast-transcript-fetcher -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "podcast-transcript-fetcher"
         ],
@@ -7827,7 +10231,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill position-me -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill position-me -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "position-me"
         ],
@@ -7837,7 +10241,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill pr-description-writer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill pr-description-writer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pr-description-writer"
         ],
@@ -7847,7 +10251,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill pricing-finder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill pricing-finder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pricing-finder"
         ],
@@ -7857,7 +10261,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill pricing-page-psychology-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill pricing-page-psychology-audit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pricing-page-psychology-audit"
         ],
@@ -7867,7 +10271,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill product-update-logger -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill product-update-logger -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "product-update-logger"
         ],
@@ -7877,7 +10281,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill producthunt-launch-kit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill producthunt-launch-kit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "producthunt-launch-kit"
         ],
@@ -7887,7 +10291,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill reddit-icp-monitor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill reddit-icp-monitor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "reddit-icp-monitor"
         ],
@@ -7897,7 +10301,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill reddit-post-engine -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill reddit-post-engine -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "reddit-post-engine"
         ],
@@ -7907,7 +10311,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill schema-markup-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill schema-markup-generator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "schema-markup-generator"
         ],
@@ -7917,7 +10321,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill sdk-adoption-tracker -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill sdk-adoption-tracker -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "sdk-adoption-tracker"
         ],
@@ -7927,7 +10331,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill seo-keyword-research -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill seo-keyword-research -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-keyword-research"
         ],
@@ -7937,7 +10341,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill show-hn-writer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill show-hn-writer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "show-hn-writer"
         ],
@@ -7947,7 +10351,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill store-listing-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill store-listing-optimizer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "store-listing-optimizer"
         ],
@@ -7957,7 +10361,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill tweet-thread-from-blog -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill tweet-thread-from-blog -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tweet-thread-from-blog"
         ],
@@ -7967,7 +10371,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill vc-curated-match -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill vc-curated-match -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "vc-curated-match"
         ],
@@ -7977,7 +10381,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill vc-finder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill vc-finder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "vc-finder"
         ],
@@ -7987,7 +10391,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill vid-motion-graphics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill vid-motion-graphics -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "vid-motion-graphics"
         ],
@@ -7997,7 +10401,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill vid-product-launch -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill vid-product-launch -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "vid-product-launch"
         ],
@@ -8007,7 +10411,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill vid-sizzle-reel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill vid-sizzle-reel -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "vid-sizzle-reel"
         ],
@@ -8017,7 +10421,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill where-your-customer-lives -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill where-your-customer-lives -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "where-your-customer-lives"
         ],
@@ -8027,7 +10431,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Varnan-Tech/opendirectory --skill yc-jobs-scraper -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Varnan-Tech/opendirectory --skill yc-jobs-scraper -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "yc-jobs-scraper"
         ],
@@ -8037,7 +10441,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Weizhena/Deep-Research-skills --skill research -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Weizhena/Deep-Research-skills --skill research -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "deep-research-workflow"
         ],
@@ -8047,7 +10451,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Weizhena/Deep-Research-skills --skill research-add-fields -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Weizhena/Deep-Research-skills --skill research-add-fields -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "research-add-fields"
         ],
@@ -8057,7 +10461,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Weizhena/Deep-Research-skills --skill research-add-items -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Weizhena/Deep-Research-skills --skill research-add-items -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "research-add-items"
         ],
@@ -8067,7 +10471,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Weizhena/Deep-Research-skills --skill research-deep -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Weizhena/Deep-Research-skills --skill research-deep -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "research-deep"
         ],
@@ -8077,7 +10481,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add Weizhena/Deep-Research-skills --skill research-report -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add Weizhena/Deep-Research-skills --skill research-report -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "research-report"
         ],
@@ -8087,7 +10491,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add WordPress/agent-skills --skill wpds -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add WordPress/agent-skills --skill wpds -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "wpds"
         ],
@@ -8097,7 +10501,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill ad-account-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill ad-account-auditor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ad-account-auditor"
         ],
@@ -8107,7 +10511,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill ad-creative-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill ad-creative-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ad-creative-builder"
         ],
@@ -8117,7 +10521,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill ad-test-designer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill ad-test-designer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ad-test-designer"
         ],
@@ -8127,7 +10531,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill advocacy-program-designer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill advocacy-program-designer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "advocacy-program-designer"
         ],
@@ -8137,7 +10541,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill attribution-reconciler -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill attribution-reconciler -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "attribution-reconciler"
         ],
@@ -8147,7 +10551,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill audience-belief-mapper -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill audience-belief-mapper -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "audience-belief-mapper"
         ],
@@ -8157,7 +10561,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill audience-mapper -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill audience-mapper -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "audience-mapper"
         ],
@@ -8167,7 +10571,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill audience-segment-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill audience-segment-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "audience-segment-builder"
         ],
@@ -8177,7 +10581,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill bid-strategy-planner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill bid-strategy-planner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "bid-strategy-planner"
         ],
@@ -8187,7 +10591,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill brand-language-codifier -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill brand-language-codifier -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brand-language-codifier"
         ],
@@ -8197,7 +10601,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill brief-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill brief-generator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brief-generator"
         ],
@@ -8207,7 +10611,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill budget-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill budget-optimizer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "budget-optimizer"
         ],
@@ -8217,7 +10621,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill budget-pacing-monitor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill budget-pacing-monitor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "budget-pacing-monitor"
         ],
@@ -8227,7 +10631,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill campaign-architect -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill campaign-architect -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "campaign-architect"
         ],
@@ -8237,7 +10641,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill campaign-planner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill campaign-planner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "campaign-planner"
         ],
@@ -8247,7 +10651,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill category-narrative-mapper -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill category-narrative-mapper -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "category-narrative-mapper"
         ],
@@ -8257,7 +10661,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill channel-portfolio-planner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill channel-portfolio-planner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "channel-portfolio-planner"
         ],
@@ -8267,7 +10671,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill channel-registry -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill channel-registry -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "channel-registry"
         ],
@@ -8277,7 +10681,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill cold-outbound-sequencer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill cold-outbound-sequencer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cold-outbound-sequencer"
         ],
@@ -8287,7 +10691,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill community-launch-runner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill community-launch-runner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "community-launch-runner"
         ],
@@ -8297,7 +10701,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill competitor-tracker -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill competitor-tracker -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "competitor-tracker"
         ],
@@ -8307,7 +10711,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill consent-registry -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill consent-registry -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "consent-registry"
         ],
@@ -8317,7 +10721,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill content-amplifier -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill content-amplifier -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "content-amplifier"
         ],
@@ -8327,7 +10731,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill content-gap-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill content-gap-analysis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "content-gap-analysis"
         ],
@@ -8337,7 +10741,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill content-quality-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill content-quality-auditor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "content-quality-auditor"
         ],
@@ -8347,7 +10751,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill content-reviewer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill content-reviewer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "content-reviewer"
         ],
@@ -8357,7 +10761,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill content-writer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill content-writer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "content-writer"
         ],
@@ -8367,7 +10771,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill contract-helper -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill contract-helper -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "contract-helper"
         ],
@@ -8377,7 +10781,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill conversion-signal-qa -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill conversion-signal-qa -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "conversion-signal-qa"
         ],
@@ -8387,7 +10791,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill conversion-value-mapper -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill conversion-value-mapper -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "conversion-value-mapper"
         ],
@@ -8397,7 +10801,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill creator-registry -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill creator-registry -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "creator-registry"
         ],
@@ -8407,7 +10811,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill crisis-response-planner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill crisis-response-planner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "crisis-response-planner"
         ],
@@ -8417,7 +10821,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill dark-social-attributor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill dark-social-attributor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "dark-social-attributor"
         ],
@@ -8427,7 +10831,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill deliverability-qa -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill deliverability-qa -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "deliverability-qa"
         ],
@@ -8437,7 +10841,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill domain-authority-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill domain-authority-auditor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "domain-authority-auditor"
         ],
@@ -8447,7 +10851,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill dynamic-content-personalizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill dynamic-content-personalizer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "dynamic-content-personalizer"
         ],
@@ -8457,7 +10861,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill early-access-designer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill early-access-designer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "early-access-designer"
         ],
@@ -8467,7 +10871,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill email-creative-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill email-creative-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "email-creative-builder"
         ],
@@ -8477,7 +10881,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill email-quality-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill email-quality-auditor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "email-quality-auditor"
         ],
@@ -8487,7 +10891,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill email-render-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill email-render-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "email-render-builder"
         ],
@@ -8497,7 +10901,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill email-sequence-designer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill email-sequence-designer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "email-sequence-designer"
         ],
@@ -8507,7 +10911,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill engagement-inbox-manager -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill engagement-inbox-manager -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "engagement-inbox-manager"
         ],
@@ -8517,7 +10921,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill entity-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill entity-optimizer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "entity-optimizer"
         ],
@@ -8527,7 +10931,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill fatigue-frequency-manager -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill fatigue-frequency-manager -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "fatigue-frequency-manager"
         ],
@@ -8537,7 +10941,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill fit-scorer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill fit-scorer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "fit-scorer"
         ],
@@ -8547,7 +10951,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill geo-content-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill geo-content-optimizer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "geo-content-optimizer"
         ],
@@ -8557,7 +10961,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill inbox-placement-monitor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill inbox-placement-monitor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "inbox-placement-monitor"
         ],
@@ -8567,7 +10971,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill influencer-discovery -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill influencer-discovery -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "influencer-discovery"
         ],
@@ -8577,7 +10981,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill keyword-research -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill keyword-research -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "keyword-research"
         ],
@@ -8587,7 +10991,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill landing-experience-checker -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill landing-experience-checker -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "landing-experience-checker"
         ],
@@ -8597,7 +11001,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill landing-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill landing-optimizer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "landing-optimizer"
         ],
@@ -8607,7 +11011,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-asset-packager -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-asset-packager -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "launch-asset-packager"
         ],
@@ -8617,7 +11021,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-day-conductor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-day-conductor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "launch-day-conductor"
         ],
@@ -8627,7 +11031,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-feedback-synthesizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-feedback-synthesizer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "launch-feedback-synthesizer"
         ],
@@ -8637,7 +11041,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-monitor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-monitor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "launch-monitor"
         ],
@@ -8647,7 +11051,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-readiness-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-readiness-auditor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "launch-readiness-auditor"
         ],
@@ -8657,7 +11061,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-registry -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-registry -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "launch-registry"
         ],
@@ -8667,7 +11071,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-retro-analyzer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-retro-analyzer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "launch-retro-analyzer"
         ],
@@ -8677,7 +11081,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-tier-planner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-tier-planner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "launch-tier-planner"
         ],
@@ -8687,7 +11091,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-window-planner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill launch-window-planner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "launch-window-planner"
         ],
@@ -8697,7 +11101,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill list-growth-designer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill list-growth-designer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "list-growth-designer"
         ],
@@ -8707,7 +11111,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill list-hygiene-monitor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill list-hygiene-monitor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "list-hygiene-monitor"
         ],
@@ -8717,7 +11121,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill list-segment-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill list-segment-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "list-segment-builder"
         ],
@@ -8727,7 +11131,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill memory-management -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill memory-management -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "memory-management"
         ],
@@ -8737,7 +11141,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill message-house-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill message-house-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "message-house-builder"
         ],
@@ -8747,7 +11151,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill message-system-architect -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill message-system-architect -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "message-system-architect"
         ],
@@ -8757,7 +11161,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill message-test-designer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill message-test-designer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "message-test-designer"
         ],
@@ -8767,7 +11171,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill momentum-planner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill momentum-planner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "momentum-planner"
         ],
@@ -8777,7 +11181,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-baseline-mapper -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-baseline-mapper -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "narrative-baseline-mapper"
         ],
@@ -8787,7 +11191,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-cascade-planner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-cascade-planner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "narrative-cascade-planner"
         ],
@@ -8797,7 +11201,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-drift-monitor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-drift-monitor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "narrative-drift-monitor"
         ],
@@ -8807,7 +11211,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-enablement-kit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-enablement-kit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "narrative-enablement-kit"
         ],
@@ -8817,7 +11221,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-quality-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-quality-auditor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "narrative-quality-auditor"
         ],
@@ -8827,7 +11231,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-registry -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-registry -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "narrative-registry"
         ],
@@ -8837,7 +11241,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-resonance-monitor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill narrative-resonance-monitor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "narrative-resonance-monitor"
         ],
@@ -8847,7 +11251,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill newsletter-monetization-planner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill newsletter-monetization-planner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "newsletter-monetization-planner"
         ],
@@ -8857,7 +11261,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill offer-claims-registry -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill offer-claims-registry -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "offer-claims-registry"
         ],
@@ -8867,7 +11271,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill offsite-signal-analyzer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill offsite-signal-analyzer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "offsite-signal-analyzer"
         ],
@@ -8877,7 +11281,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill on-page-seo-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill on-page-seo-auditor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "on-page-seo-auditor"
         ],
@@ -8887,7 +11291,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill outreach-manager -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill outreach-manager -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "outreach-manager"
         ],
@@ -8897,7 +11301,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill page-play-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill page-play-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "page-play-builder"
         ],
@@ -8907,7 +11311,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill paid-measurement-loop -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill paid-measurement-loop -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "paid-measurement-loop"
         ],
@@ -8917,7 +11321,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill participation-warmup-planner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill participation-warmup-planner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "participation-warmup-planner"
         ],
@@ -8927,7 +11331,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill performance-analyzer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill performance-analyzer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "performance-analyzer"
         ],
@@ -8937,7 +11341,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill performance-monitor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill performance-monitor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "performance-monitor"
         ],
@@ -8947,7 +11351,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill pitch-narrative-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill pitch-narrative-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pitch-narrative-builder"
         ],
@@ -8957,7 +11361,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill placement-exclusion-manager -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill placement-exclusion-manager -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "placement-exclusion-manager"
         ],
@@ -8967,7 +11371,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill platform-norm-profiler -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill platform-norm-profiler -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "platform-norm-profiler"
         ],
@@ -8977,7 +11381,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill positioning-mapper -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill positioning-mapper -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "positioning-mapper"
         ],
@@ -8987,7 +11391,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill positioning-truth-tracer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill positioning-truth-tracer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "positioning-truth-tracer"
         ],
@@ -8997,7 +11401,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill preference-frequency-manager -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill preference-frequency-manager -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "preference-frequency-manager"
         ],
@@ -9007,7 +11411,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill press-media-relations -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill press-media-relations -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "press-media-relations"
         ],
@@ -9017,7 +11421,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill pricing-packaging-planner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill pricing-packaging-planner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pricing-packaging-planner"
         ],
@@ -9027,7 +11431,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill product-feed-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill product-feed-optimizer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "product-feed-optimizer"
         ],
@@ -9037,7 +11441,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill proof-point-packager -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill proof-point-packager -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "proof-point-packager"
         ],
@@ -9047,7 +11451,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill rank-tracker -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill rank-tracker -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "rank-tracker"
         ],
@@ -9057,7 +11461,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill reactivation-specialist -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill reactivation-specialist -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "reactivation-specialist"
         ],
@@ -9067,7 +11471,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill roi-calculator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill roi-calculator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "roi-calculator"
         ],
@@ -9077,7 +11481,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill sales-enablement-kit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill sales-enablement-kit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "sales-enablement-kit"
         ],
@@ -9087,7 +11491,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill search-term-miner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill search-term-miner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "search-term-miner"
         ],
@@ -9097,7 +11501,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill send-experiment-designer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill send-experiment-designer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "send-experiment-designer"
         ],
@@ -9107,7 +11511,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill serp-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill serp-analysis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "serp-analysis"
         ],
@@ -9117,7 +11521,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill serp-markup-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill serp-markup-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "serp-markup-builder"
         ],
@@ -9127,7 +11531,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill share-of-voice-tracker -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill share-of-voice-tracker -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "share-of-voice-tracker"
         ],
@@ -9137,7 +11541,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill short-video-scripter -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill short-video-scripter -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "short-video-scripter"
         ],
@@ -9147,7 +11551,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill site-structure-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill site-structure-optimizer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "site-structure-optimizer"
         ],
@@ -9157,7 +11561,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill social-calendar-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill social-calendar-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "social-calendar-builder"
         ],
@@ -9167,7 +11571,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill social-creative-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill social-creative-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "social-creative-builder"
         ],
@@ -9177,7 +11581,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill social-measurement-loop -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill social-measurement-loop -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "social-measurement-loop"
         ],
@@ -9187,7 +11591,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill social-pulse-monitor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill social-pulse-monitor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "social-pulse-monitor"
         ],
@@ -9197,7 +11601,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill social-quality-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill social-quality-auditor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "social-quality-auditor"
         ],
@@ -9207,7 +11611,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill social-selling-planner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill social-selling-planner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "social-selling-planner"
         ],
@@ -9217,7 +11621,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill story-bank-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill story-bank-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "story-bank-builder"
         ],
@@ -9227,7 +11631,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill strategic-narrative-designer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill strategic-narrative-designer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "strategic-narrative-designer"
         ],
@@ -9237,7 +11641,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill subject-line-lab -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill subject-line-lab -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "subject-line-lab"
         ],
@@ -9247,7 +11651,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill technical-seo-checker -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill technical-seo-checker -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "technical-seo-checker"
         ],
@@ -9257,7 +11661,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill trend-spotter -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill trend-spotter -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "trend-spotter"
         ],
@@ -9267,7 +11671,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill voice-dossier-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aaron-he-zhu/aaron-marketing-skills --skill voice-dossier-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "voice-dossier-builder"
         ],
@@ -9277,7 +11681,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "best-practices",
           "core-web-vitals",
@@ -9290,7 +11694,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add andrewgleave/skills --skill 5-steps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add andrewgleave/skills --skill 5-steps -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "5-steps"
         ],
@@ -9300,7 +11704,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add andrewgleave/skills --skill cleanse -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add andrewgleave/skills --skill cleanse -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cleanse"
         ],
@@ -9310,7 +11714,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add andrewgleave/skills --skill critical-reasoning -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "critical-reasoning"
         ],
@@ -9320,7 +11724,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add andrewgleave/skills --skill navvy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add andrewgleave/skills --skill navvy -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "navvy"
         ],
@@ -9330,7 +11734,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add andrewgleave/skills --skill writing-for-interfaces -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add andrewgleave/skills --skill writing-for-interfaces -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "writing-for-interfaces"
         ],
@@ -9340,7 +11744,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add antfu/skills --skill vite --skill slidev -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add antfu/skills --skill vite --skill slidev -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "slidev",
           "vite"
@@ -9351,7 +11755,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add antfu/skills --skill vue -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add antfu/skills --skill vue -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vue"
         ],
@@ -9361,7 +11765,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add antonbabenko/terraform-skill --skill terraform-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add antonbabenko/terraform-skill --skill terraform-skill -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "terraform-skill"
         ],
@@ -9371,7 +11775,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add apollographql/skills --skill apollo-client --skill rover --skill apollo-connectors -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add apollographql/skills --skill apollo-client --skill rover --skill apollo-connectors -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "apollo-client",
           "apollo-connectors",
@@ -9383,7 +11787,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add apollographql/skills --skill apollo-mcp-server --skill apollo-router --skill apollo-ios -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add apollographql/skills --skill apollo-mcp-server --skill apollo-router --skill apollo-ios -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "apollo-ios",
           "apollo-mcp-server",
@@ -9395,7 +11799,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add apollographql/skills --skill graphql-schema --skill apollo-federation --skill rust-best-practices --skill graphql-operations --skill apollo-server -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add apollographql/skills --skill graphql-schema --skill apollo-federation --skill rust-best-practices --skill graphql-operations --skill apollo-server -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "apollo-federation",
           "apollo-server",
@@ -9409,7 +11813,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add arjitj2/swiftui-design-principles --skill swiftui-design-principles -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add arjitj2/swiftui-design-principles --skill swiftui-design-principles -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swiftui-design-principles"
         ],
@@ -9419,7 +11823,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add avalonreset/seo-dungeon --skill seo-cluster -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add avalonreset/seo-dungeon --skill seo-cluster -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-cluster"
         ],
@@ -9429,7 +11833,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add avalonreset/seo-dungeon --skill seo-content-brief -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add avalonreset/seo-dungeon --skill seo-content-brief -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-content-brief"
         ],
@@ -9439,7 +11843,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add avalonreset/seo-dungeon --skill seo-drift -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add avalonreset/seo-dungeon --skill seo-drift -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-drift"
         ],
@@ -9449,7 +11853,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add avalonreset/seo-dungeon --skill seo-ecommerce -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add avalonreset/seo-dungeon --skill seo-ecommerce -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-ecommerce"
         ],
@@ -9459,7 +11863,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add avalonreset/seo-dungeon --skill seo-flow -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add avalonreset/seo-dungeon --skill seo-flow -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-flow"
         ],
@@ -9469,7 +11873,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add avalonreset/seo-dungeon --skill seo-sxo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add avalonreset/seo-dungeon --skill seo-sxo -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seo-sxo"
         ],
@@ -9479,7 +11883,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add avansaber/tailtest-codex --skill tailtest -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add avansaber/tailtest-codex --skill tailtest -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tailtest"
         ],
@@ -9489,7 +11893,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add avdlee/swift-concurrency-agent-skill --skill swift-concurrency -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add avdlee/swift-concurrency-agent-skill --skill swift-concurrency -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "swift-concurrency"
         ],
@@ -9499,7 +11903,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add avdlee/swiftui-agent-skill --skill swiftui-expert-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add avdlee/swiftui-agent-skill --skill swiftui-expert-skill -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "swiftui-expert-skill"
         ],
@@ -9509,7 +11913,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add aws/agent-toolkit-for-aws --skill aws-iam --skill aws-serverless -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add aws/agent-toolkit-for-aws --skill aws-iam --skill aws-serverless -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "aws-iam",
           "aws-serverless"
@@ -9520,7 +11924,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add backnotprop/plannotator/apps/skills --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add backnotprop/plannotator/apps/skills --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "plannotator-compound",
           "plannotator-setup-goal",
@@ -9532,7 +11936,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "plannotator-annotate",
           "plannotator-last",
@@ -9544,7 +11948,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add bcanfield/agentic-tech-debt --skill debt-ops-metrics -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "debt-ops-metrics"
         ],
@@ -9554,7 +11958,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add bcanfield/agentic-tech-debt --skill debt-ops-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add bcanfield/agentic-tech-debt --skill debt-ops-review -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "debt-ops-review"
         ],
@@ -9564,7 +11968,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add better-auth/better-icons --skill better-icons -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add better-auth/better-icons --skill better-icons -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "better-icons"
         ],
@@ -9574,7 +11978,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add better-auth/skills --skill better-auth-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add better-auth/skills --skill better-auth-best-practices -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "better-auth-best-practices"
         ],
@@ -9584,7 +11988,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add biomejs/biome --skill biome-developer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add biomejs/biome --skill biome-developer -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "biome-developer"
         ],
@@ -9594,7 +11998,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add bocato/swift-testing-agent-skill --skill swift-testing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add bocato/swift-testing-agent-skill --skill swift-testing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swift-testing"
         ],
@@ -9604,7 +12008,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add boristane/agent-skills --skill logging-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add boristane/agent-skills --skill logging-best-practices -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "logging-best-practices"
         ],
@@ -9614,7 +12018,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill alliances -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill alliances -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "alliances"
         ],
@@ -9624,7 +12028,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill american-airlines -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill american-airlines -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "american-airlines"
         ],
@@ -9634,7 +12038,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill amex-travel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill amex-travel -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "amex-travel"
         ],
@@ -9644,7 +12048,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill atlas-obscura -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill atlas-obscura -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "atlas-obscura"
         ],
@@ -9654,7 +12058,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill award-calendar -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill award-calendar -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "award-calendar"
         ],
@@ -9664,7 +12068,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill award-holds -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill award-holds -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "award-holds"
         ],
@@ -9674,7 +12078,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill award-sweet-spots -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill award-sweet-spots -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "award-sweet-spots"
         ],
@@ -9684,7 +12088,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill awardwallet -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill awardwallet -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "awardwallet"
         ],
@@ -9694,7 +12098,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill bilt -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill bilt -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "bilt"
         ],
@@ -9704,7 +12108,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill booking-guidance -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill booking-guidance -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "booking-guidance"
         ],
@@ -9714,7 +12118,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill cabin-codes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill cabin-codes -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cabin-codes"
         ],
@@ -9724,7 +12128,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill chase-travel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill chase-travel -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "chase-travel"
         ],
@@ -9734,7 +12138,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill compare-flights -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill compare-flights -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "compare-flights"
         ],
@@ -9744,7 +12148,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill compare-hotels -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill compare-hotels -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "compare-hotels"
         ],
@@ -9754,7 +12158,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill deutsche-bahn -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill deutsche-bahn -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "deutsche-bahn"
         ],
@@ -9764,7 +12168,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill duffel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill duffel -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "duffel"
         ],
@@ -9774,7 +12178,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill fallback-and-resilience -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill fallback-and-resilience -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "fallback-and-resilience"
         ],
@@ -9784,7 +12188,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill flight-search-strategy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill flight-search-strategy -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "flight-search-strategy"
         ],
@@ -9794,7 +12198,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill google-flights -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill google-flights -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "google-flights"
         ],
@@ -9804,7 +12208,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill hotel-chains -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill hotel-chains -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hotel-chains"
         ],
@@ -9814,7 +12218,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill ignav -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill ignav -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ignav"
         ],
@@ -9824,7 +12228,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill lessons-learned -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill lessons-learned -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "lessons-learned"
         ],
@@ -9834,7 +12238,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill partner-awards -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill partner-awards -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "partner-awards"
         ],
@@ -9844,7 +12248,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill plan-trip -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill plan-trip -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "plan-trip"
         ],
@@ -9854,7 +12258,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill points-valuations -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill points-valuations -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "points-valuations"
         ],
@@ -9864,7 +12268,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill premium-hotels -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill premium-hotels -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "premium-hotels"
         ],
@@ -9874,7 +12278,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill rapidapi -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill rapidapi -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "rapidapi"
         ],
@@ -9884,7 +12288,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill round-the-world -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill round-the-world -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "round-the-world"
         ],
@@ -9894,7 +12298,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill scandinavia-transit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill scandinavia-transit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "scandinavia-transit"
         ],
@@ -9904,7 +12308,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill seatmaps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill seatmaps -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seatmaps"
         ],
@@ -9914,7 +12318,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill seats-aero -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill seats-aero -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "seats-aero"
         ],
@@ -9924,7 +12328,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill serpapi -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill serpapi -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "serpapi"
         ],
@@ -9934,7 +12338,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill southwest -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill southwest -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "southwest"
         ],
@@ -9944,7 +12348,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill status-match -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill status-match -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "status-match"
         ],
@@ -9954,7 +12358,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill stopovers -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill stopovers -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "stopovers"
         ],
@@ -9964,7 +12368,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill ticketsatwork -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill ticketsatwork -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ticketsatwork"
         ],
@@ -9974,7 +12378,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill transfer-bonuses -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill transfer-bonuses -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "transfer-bonuses"
         ],
@@ -9984,7 +12388,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill transfer-partners -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill transfer-partners -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "transfer-partners"
         ],
@@ -9994,7 +12398,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill trip-calculator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill trip-calculator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "trip-calculator"
         ],
@@ -10004,7 +12408,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill trip-planner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill trip-planner -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "trip-planner"
         ],
@@ -10014,7 +12418,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill tripadvisor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill tripadvisor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tripadvisor"
         ],
@@ -10024,7 +12428,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill wheretocredit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill wheretocredit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "wheretocredit"
         ],
@@ -10034,7 +12438,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add borski/travel-hacking-toolkit --skill wikipedia-airports -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add borski/travel-hacking-toolkit --skill wikipedia-airports -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "wikipedia-airports"
         ],
@@ -10044,7 +12448,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add clickhouse/agent-skills --skill clickhouse-best-practices --skill clickhouse-architecture-advisor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add clickhouse/agent-skills --skill clickhouse-best-practices --skill clickhouse-architecture-advisor -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "clickhouse-architecture-advisor",
           "clickhouse-best-practices"
@@ -10055,7 +12459,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "agents-sdk",
           "cloudflare",
@@ -10069,7 +12473,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add conorluddy/ios-simulator-skill --skill ios-simulator-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add conorluddy/ios-simulator-skill --skill ios-simulator-skill -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ios-simulator-skill"
         ],
@@ -10079,7 +12483,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add coreyhaines31/marketingskills --skill ai-seo --skill schema --skill product-marketing --skill ab-testing --skill signup --skill onboarding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add coreyhaines31/marketingskills --skill ai-seo --skill schema --skill product-marketing --skill ab-testing --skill signup --skill onboarding -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "ab-testing",
           "ai-seo",
@@ -10094,7 +12498,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add coreyhaines31/marketingskills --skill seo-audit --skill copywriting --skill cro --skill marketing-psychology --skill content-strategy --skill analytics --skill programmatic-seo --skill cold-email --skill emails --skill ads -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add coreyhaines31/marketingskills --skill seo-audit --skill copywriting --skill cro --skill marketing-psychology --skill content-strategy --skill analytics --skill programmatic-seo --skill cold-email --skill emails --skill ads -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "ads",
           "analytics",
@@ -10112,7 +12516,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add coreyhaines31/marketingskills --skill site-architecture --skill marketing-ideas --skill competitor-profiling --skill revops --skill churn-prevention --skill paywalls --skill launch --skill video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add coreyhaines31/marketingskills --skill site-architecture --skill marketing-ideas --skill competitor-profiling --skill revops --skill churn-prevention --skill paywalls --skill launch --skill video -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "churn-prevention",
           "competitor-profiling",
@@ -10129,7 +12533,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add crewaiinc/skills --skill getting-started -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add crewaiinc/skills --skill getting-started -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "getting-started"
         ],
@@ -10139,7 +12543,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add currents-dev/playwright-best-practices-skill --skill playwright-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add currents-dev/playwright-best-practices-skill --skill playwright-best-practices -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "playwright-best-practices"
         ],
@@ -10149,7 +12553,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dadederk/iOS-Accessibility-Agent-Skill --skill ios-accessibility -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dadederk/iOS-Accessibility-Agent-Skill --skill ios-accessibility -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ios-accessibility"
         ],
@@ -10159,7 +12563,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "otel-collector",
           "otel-instrumentation",
@@ -10171,7 +12575,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add data-goblin/power-bi-agentic-development --skill pbi-report-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add data-goblin/power-bi-agentic-development --skill pbi-report-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pbi-report-design"
         ],
@@ -10181,7 +12585,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill bls-query -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill bls-query -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "bls-query"
         ],
@@ -10191,7 +12595,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill csv-query -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill csv-query -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "csv-query"
         ],
@@ -10201,7 +12605,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill csv-wrangling -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill csv-wrangling -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "csv-wrangling"
         ],
@@ -10211,7 +12615,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill data-clean -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill data-clean -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "data-clean"
         ],
@@ -10221,7 +12625,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill data-convert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill data-convert -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "data-convert"
         ],
@@ -10231,7 +12635,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill data-describe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill data-describe -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "data-describe"
         ],
@@ -10241,7 +12645,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill data-join -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill data-join -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "data-join"
         ],
@@ -10251,7 +12655,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill data-profile -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill data-profile -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "data-profile"
         ],
@@ -10261,7 +12665,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill data-quality -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill data-quality -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "data-quality"
         ],
@@ -10271,7 +12675,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill data-validate -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill data-validate -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "data-validate"
         ],
@@ -10281,7 +12685,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill data-viz -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill data-viz -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "data-viz"
         ],
@@ -10291,7 +12695,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill genai-disclaimer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill genai-disclaimer -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "genai-disclaimer"
         ],
@@ -10301,7 +12705,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill infer-ontology -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill infer-ontology -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "infer-ontology"
         ],
@@ -10311,7 +12715,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill qsv-performance -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill qsv-performance -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "qsv-performance"
         ],
@@ -10321,7 +12725,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dathere/qsv --skill reproducible-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dathere/qsv --skill reproducible-analysis -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "reproducible-analysis"
         ],
@@ -10331,7 +12735,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add dbt-labs/dbt-agent-skills --skill fetching-dbt-docs -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "fetching-dbt-docs"
         ],
@@ -10341,7 +12745,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add deckardger/tanstack-agent-skills --skill tanstack-query-best-practices --skill tanstack-start-best-practices --skill tanstack-router-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add deckardger/tanstack-agent-skills --skill tanstack-query-best-practices --skill tanstack-start-best-practices --skill tanstack-router-best-practices -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "tanstack-query-best-practices",
           "tanstack-router-best-practices",
@@ -10353,7 +12757,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add denoland/skills --skill deno-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add denoland/skills --skill deno-expert -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "deno-expert"
         ],
@@ -10363,7 +12767,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add devenjarvis/lathe --skill lathe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add devenjarvis/lathe --skill lathe -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "lathe"
         ],
@@ -10373,7 +12777,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add devenjarvis/lathe --skill lathe-ask -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add devenjarvis/lathe --skill lathe-ask -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "lathe-ask"
         ],
@@ -10383,7 +12787,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add devenjarvis/lathe --skill lathe-extend -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add devenjarvis/lathe --skill lathe-extend -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "lathe-extend"
         ],
@@ -10393,7 +12797,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add devenjarvis/lathe --skill lathe-tag -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add devenjarvis/lathe --skill lathe-tag -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "lathe-tag"
         ],
@@ -10403,7 +12807,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add devenjarvis/lathe --skill lathe-verify -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add devenjarvis/lathe --skill lathe-verify -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "lathe-verify"
         ],
@@ -10413,7 +12817,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add devenjarvis/lathe --skill lathe-voice -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add devenjarvis/lathe --skill lathe-voice -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "lathe-voice"
         ],
@@ -10423,7 +12827,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add devenjarvis/lathe --skill lathe-work -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add devenjarvis/lathe --skill lathe-work -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "lathe-work"
         ],
@@ -10433,7 +12837,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add duckdb/duckdb-skills --skill attach-db -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add duckdb/duckdb-skills --skill attach-db -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "attach-db"
         ],
@@ -10443,7 +12847,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add duckdb/duckdb-skills --skill convert-file -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add duckdb/duckdb-skills --skill convert-file -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "convert-file"
         ],
@@ -10453,7 +12857,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add duckdb/duckdb-skills --skill duckdb-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add duckdb/duckdb-skills --skill duckdb-docs -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "duckdb-docs"
         ],
@@ -10463,7 +12867,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add duckdb/duckdb-skills --skill install-duckdb -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add duckdb/duckdb-skills --skill install-duckdb -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "install-duckdb"
         ],
@@ -10473,7 +12877,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add duckdb/duckdb-skills --skill query -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add duckdb/duckdb-skills --skill query -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "query"
         ],
@@ -10483,7 +12887,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add duckdb/duckdb-skills --skill read-file -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add duckdb/duckdb-skills --skill read-file -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "read-file"
         ],
@@ -10493,7 +12897,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add duckdb/duckdb-skills --skill read-memories -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add duckdb/duckdb-skills --skill read-memories -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "read-memories"
         ],
@@ -10503,7 +12907,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add duckdb/duckdb-skills --skill s3-explore -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add duckdb/duckdb-skills --skill s3-explore -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "s3-explore"
         ],
@@ -10513,7 +12917,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add duckdb/duckdb-skills --skill spatial -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add duckdb/duckdb-skills --skill spatial -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "spatial"
         ],
@@ -10523,7 +12927,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add earthtojake/text-to-cad --skill bambu-labs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add earthtojake/text-to-cad --skill bambu-labs -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "bambu-labs"
         ],
@@ -10533,7 +12937,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add earthtojake/text-to-cad --skill cad -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add earthtojake/text-to-cad --skill cad -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cad"
         ],
@@ -10543,7 +12947,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add earthtojake/text-to-cad --skill cad-viewer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add earthtojake/text-to-cad --skill cad-viewer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cad-viewer"
         ],
@@ -10553,7 +12957,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add earthtojake/text-to-cad --skill dxf -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add earthtojake/text-to-cad --skill dxf -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "dxf"
         ],
@@ -10563,7 +12967,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add earthtojake/text-to-cad --skill gcode -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add earthtojake/text-to-cad --skill gcode -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gcode"
         ],
@@ -10573,7 +12977,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add earthtojake/text-to-cad --skill implicit-cad -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add earthtojake/text-to-cad --skill implicit-cad -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "implicit-cad"
         ],
@@ -10583,7 +12987,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add earthtojake/text-to-cad --skill sdf -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add earthtojake/text-to-cad --skill sdf -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "sdf"
         ],
@@ -10593,7 +12997,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add earthtojake/text-to-cad --skill sendcutsend -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add earthtojake/text-to-cad --skill sendcutsend -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "sendcutsend"
         ],
@@ -10603,7 +13007,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add earthtojake/text-to-cad --skill srdf -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add earthtojake/text-to-cad --skill srdf -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "srdf"
         ],
@@ -10613,7 +13017,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add earthtojake/text-to-cad --skill step-parts -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add earthtojake/text-to-cad --skill step-parts -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "step-parts"
         ],
@@ -10623,7 +13027,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add earthtojake/text-to-cad --skill urdf -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add earthtojake/text-to-cad --skill urdf -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "urdf"
         ],
@@ -10633,7 +13037,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add efremidze/swift-architecture-skill --skill swift-architecture-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add efremidze/swift-architecture-skill --skill swift-architecture-skill -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swift-architecture-skill"
         ],
@@ -10643,7 +13047,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ejirocodes/agent-skills --skill svelte5-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ejirocodes/agent-skills --skill svelte5-best-practices -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "svelte5-best-practices"
         ],
@@ -10653,7 +13057,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill cloud-access-management -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill cloud-access-management -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cloud-access-management"
         ],
@@ -10663,7 +13067,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill cloud-create-project -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill cloud-create-project -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cloud-create-project"
         ],
@@ -10673,7 +13077,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill cloud-manage-project -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill cloud-manage-project -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cloud-manage-project"
         ],
@@ -10683,7 +13087,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill cloud-network-security -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill cloud-network-security -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cloud-network-security"
         ],
@@ -10693,7 +13097,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill cloud-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill cloud-setup -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cloud-setup"
         ],
@@ -10703,7 +13107,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill elasticsearch-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill elasticsearch-audit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "elasticsearch-audit"
         ],
@@ -10713,7 +13117,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill elasticsearch-authn -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill elasticsearch-authn -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "elasticsearch-authn"
         ],
@@ -10723,7 +13127,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill elasticsearch-authz -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill elasticsearch-authz -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "elasticsearch-authz"
         ],
@@ -10733,7 +13137,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill elasticsearch-esql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill elasticsearch-esql -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "elasticsearch-esql"
         ],
@@ -10743,7 +13147,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill elasticsearch-file-ingest -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill elasticsearch-file-ingest -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "elasticsearch-file-ingest"
         ],
@@ -10753,7 +13157,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill elasticsearch-onboarding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill elasticsearch-onboarding -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "elasticsearch-onboarding"
         ],
@@ -10763,7 +13167,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill elasticsearch-security-troubleshooting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill elasticsearch-security-troubleshooting -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "elasticsearch-security-troubleshooting"
         ],
@@ -10773,7 +13177,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill kibana-agent-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill kibana-agent-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "kibana-agent-builder"
         ],
@@ -10783,7 +13187,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill kibana-alerting-rules -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill kibana-alerting-rules -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "kibana-alerting-rules"
         ],
@@ -10793,7 +13197,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill kibana-anomaly-detection -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill kibana-anomaly-detection -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "kibana-anomaly-detection"
         ],
@@ -10803,7 +13207,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill kibana-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill kibana-audit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "kibana-audit"
         ],
@@ -10813,7 +13217,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill kibana-connectors -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill kibana-connectors -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "kibana-connectors"
         ],
@@ -10823,7 +13227,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill kibana-dashboards -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill kibana-dashboards -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "kibana-dashboards"
         ],
@@ -10833,7 +13237,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill kibana-streams -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill kibana-streams -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "kibana-streams"
         ],
@@ -10843,7 +13247,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill kibana-vega -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill kibana-vega -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "kibana-vega"
         ],
@@ -10853,7 +13257,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill observability-edot-dotnet-instrument -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill observability-edot-dotnet-instrument -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "observability-edot-dotnet-instrument"
         ],
@@ -10863,7 +13267,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill observability-edot-dotnet-migrate -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill observability-edot-dotnet-migrate -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "observability-edot-dotnet-migrate"
         ],
@@ -10873,7 +13277,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill observability-edot-java-instrument -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill observability-edot-java-instrument -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "observability-edot-java-instrument"
         ],
@@ -10883,7 +13287,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill observability-edot-java-migrate -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill observability-edot-java-migrate -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "observability-edot-java-migrate"
         ],
@@ -10893,7 +13297,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill observability-edot-python-instrument -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill observability-edot-python-instrument -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "observability-edot-python-instrument"
         ],
@@ -10903,7 +13307,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill observability-edot-python-migrate -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill observability-edot-python-migrate -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "observability-edot-python-migrate"
         ],
@@ -10913,7 +13317,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill observability-k8s-investigation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill observability-k8s-investigation -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "observability-k8s-investigation"
         ],
@@ -10923,7 +13327,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill observability-llm-obs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill observability-llm-obs -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "observability-llm-obs"
         ],
@@ -10933,7 +13337,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill observability-logs-search -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill observability-logs-search -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "observability-logs-search"
         ],
@@ -10943,7 +13347,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill observability-manage-slos -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill observability-manage-slos -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "observability-manage-slos"
         ],
@@ -10953,7 +13357,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill observability-service-health -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill observability-service-health -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "observability-service-health"
         ],
@@ -10963,7 +13367,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill security-alert-triage -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill security-alert-triage -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "security-alert-triage"
         ],
@@ -10973,7 +13377,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill security-case-management -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill security-case-management -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "security-case-management"
         ],
@@ -10983,7 +13387,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill security-detection-rule-management -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill security-detection-rule-management -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "security-detection-rule-management"
         ],
@@ -10993,7 +13397,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elastic/agent-skills --skill security-generate-security-sample-data -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elastic/agent-skills --skill security-generate-security-sample-data -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "security-generate-security-sample-data"
         ],
@@ -11013,7 +13417,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill angle-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill angle-generator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "angle-generator"
         ],
@@ -11023,7 +13427,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill coverage-tracker -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill coverage-tracker -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "coverage-tracker"
         ],
@@ -11033,7 +13437,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill coverage-tracker-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill coverage-tracker-setup -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "coverage-tracker-setup"
         ],
@@ -11043,7 +13447,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill crisis-holding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill crisis-holding -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "crisis-holding"
         ],
@@ -11053,7 +13457,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill fact-check -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill fact-check -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "fact-check"
         ],
@@ -11063,7 +13467,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill find-journalists -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill find-journalists -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "find-journalists"
         ],
@@ -11073,7 +13477,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill headline-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill headline-generator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "headline-generator"
         ],
@@ -11083,7 +13487,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill journalist-fit-check -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill journalist-fit-check -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "journalist-fit-check"
         ],
@@ -11093,7 +13497,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill meanest-editor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill meanest-editor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "meanest-editor"
         ],
@@ -11103,7 +13507,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill news-search -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill news-search -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "news-search"
         ],
@@ -11113,7 +13517,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill newsjack-detector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill newsjack-detector -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "newsjack-detector"
         ],
@@ -11123,7 +13527,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill newsjack-monitor-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill newsjack-monitor-setup -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "newsjack-monitor-setup"
         ],
@@ -11133,7 +13537,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill newsjack-triage -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill newsjack-triage -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "newsjack-triage"
         ],
@@ -11143,7 +13547,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill newsworthiness-check -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill newsworthiness-check -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "newsworthiness-check"
         ],
@@ -11153,7 +13557,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill pr-calendar -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill pr-calendar -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pr-calendar"
         ],
@@ -11163,7 +13567,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill pr-strategist -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill pr-strategist -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pr-strategist"
         ],
@@ -11173,7 +13577,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill press-clip -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill press-clip -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "press-clip"
         ],
@@ -11183,7 +13587,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill reactive-comment -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill reactive-comment -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "reactive-comment"
         ],
@@ -11193,7 +13597,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill relevance-coarse-filter -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill relevance-coarse-filter -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "relevance-coarse-filter"
         ],
@@ -11203,7 +13607,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill story-origin-check -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill story-origin-check -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "story-origin-check"
         ],
@@ -11213,7 +13617,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add elvisun/newsjack --skill voice-extractor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add elvisun/newsjack --skill voice-extractor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "voice-extractor"
         ],
@@ -11223,7 +13627,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ericosiu/ai-marketing-skills --skill autoresearch -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ericosiu/ai-marketing-skills --skill autoresearch -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "autoresearch"
         ],
@@ -11233,7 +13637,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ericosiu/ai-marketing-skills --skill closed-loop-analytics-upgrade -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ericosiu/ai-marketing-skills --skill closed-loop-analytics-upgrade -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "closed-loop-analytics-upgrade"
         ],
@@ -11243,7 +13647,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ericosiu/ai-marketing-skills --skill cold-outbound-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ericosiu/ai-marketing-skills --skill cold-outbound-optimizer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cold-outbound-optimizer"
         ],
@@ -11253,7 +13657,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ericosiu/ai-marketing-skills --skill deck-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ericosiu/ai-marketing-skills --skill deck-generator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "deck-generator"
         ],
@@ -11263,7 +13667,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ericosiu/ai-marketing-skills --skill expert-panel -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ericosiu/ai-marketing-skills --skill expert-panel -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "expert-panel"
         ],
@@ -11273,7 +13677,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ericosiu/ai-marketing-skills --skill finance-ops -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ericosiu/ai-marketing-skills --skill finance-ops -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "finance-ops"
         ],
@@ -11283,7 +13687,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ericosiu/ai-marketing-skills --skill podcast-pipeline -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ericosiu/ai-marketing-skills --skill podcast-pipeline -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "podcast-pipeline"
         ],
@@ -11293,7 +13697,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ericosiu/ai-marketing-skills --skill x-longform-post -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ericosiu/ai-marketing-skills --skill x-longform-post -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "x-longform-post"
         ],
@@ -11303,7 +13707,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ericosiu/ai-marketing-skills --skill yt-competitive-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ericosiu/ai-marketing-skills --skill yt-competitive-analysis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "yt-competitive-analysis"
         ],
@@ -11313,7 +13717,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add eugeniughelbur/obsidian-second-brain --skill obsidian-second-brain -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add eugeniughelbur/obsidian-second-brain --skill obsidian-second-brain -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "obsidian-second-brain"
         ],
@@ -11323,7 +13727,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add expo/skills --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add expo/skills --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "expo-cicd-workflows",
           "expo-deployment",
@@ -11336,7 +13740,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add firebase/agent-skills --skill firebase-auth-basics --skill firebase-app-hosting-basics --skill firebase-ai-logic-basics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add firebase/agent-skills --skill firebase-auth-basics --skill firebase-app-hosting-basics --skill firebase-ai-logic-basics -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "firebase-ai-logic-basics",
           "firebase-app-hosting-basics",
@@ -11348,7 +13752,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add flutter/skills --skill flutter-apply-architecture-best-practices --skill flutter-build-responsive-layout --skill flutter-add-widget-test --skill flutter-setup-declarative-routing --skill flutter-fix-layout-issues --skill flutter-add-integration-test --skill flutter-setup-localization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add flutter/skills --skill flutter-apply-architecture-best-practices --skill flutter-build-responsive-layout --skill flutter-add-widget-test --skill flutter-setup-declarative-routing --skill flutter-fix-layout-issues --skill flutter-add-integration-test --skill flutter-setup-localization -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "flutter-add-integration-test",
           "flutter-add-widget-test",
@@ -11364,7 +13768,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add gadicc/yahoo-finance2 --skill yahoo-finance2 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add gadicc/yahoo-finance2 --skill yahoo-finance2 -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "yahoo-finance2"
         ],
@@ -11374,7 +13778,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "sentry-fix-issues",
           "sentry-sdk-setup",
@@ -11386,7 +13790,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add getsentry/skills --skill gha-security-review --skill find-bugs --skill iterate-pr --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add getsentry/skills --skill gha-security-review --skill find-bugs --skill iterate-pr --skill code-review -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "code-review",
           "find-bugs",
@@ -11399,7 +13803,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add getsentry/skills --skill skill-scanner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add getsentry/skills --skill skill-scanner -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "skill-scanner"
         ],
@@ -11409,7 +13813,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "agent-governance",
           "agent-owasp-compliance",
@@ -11422,7 +13826,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add github/awesome-copilot --skill eval-driven-dev --skill mcp-security-audit --skill threat-model-analyst --skill create-implementation-plan -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add github/awesome-copilot --skill eval-driven-dev --skill mcp-security-audit --skill threat-model-analyst --skill create-implementation-plan -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "create-implementation-plan",
           "eval-driven-dev",
@@ -11435,7 +13839,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add github/awesome-copilot --skill excalidraw-diagram-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add github/awesome-copilot --skill excalidraw-diagram-generator -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "excalidraw-diagram-generator"
         ],
@@ -11445,7 +13849,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "arize-evaluator",
           "arize-instrumentation",
@@ -11459,7 +13863,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add github/awesome-copilot --skill rust-mcp-server-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add github/awesome-copilot --skill rust-mcp-server-generator -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "rust-mcp-server-generator"
         ],
@@ -11469,7 +13873,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add github/awesome-copilot --skill sql-code-review --skill secret-scanning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add github/awesome-copilot --skill sql-code-review --skill secret-scanning -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "secret-scanning",
           "sql-code-review"
@@ -11480,7 +13884,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add github/awesome-copilot --skill sql-optimization --skill multi-stage-dockerfile -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add github/awesome-copilot --skill sql-optimization --skill multi-stage-dockerfile -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "multi-stage-dockerfile",
           "sql-optimization"
@@ -11491,7 +13895,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add giuseppe-trisciuoglio/developer-kit --skill drizzle-orm-patterns -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add giuseppe-trisciuoglio/developer-kit --skill drizzle-orm-patterns -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "drizzle-orm-patterns"
         ],
@@ -11501,7 +13905,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add google/skills --skill gemini-api -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add google/skills --skill gemini-api -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "gemini-api"
         ],
@@ -11511,7 +13915,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-admin-reports -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-admin-reports -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-admin-reports"
         ],
@@ -11521,7 +13925,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-calendar -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-calendar -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-calendar"
         ],
@@ -11531,7 +13935,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-calendar-agenda -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-calendar-agenda -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-calendar-agenda"
         ],
@@ -11541,7 +13945,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-calendar-insert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-calendar-insert -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-calendar-insert"
         ],
@@ -11551,7 +13955,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-chat -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-chat -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-chat"
         ],
@@ -11561,7 +13965,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-chat-send -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-chat-send -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-chat-send"
         ],
@@ -11571,7 +13975,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-classroom -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-classroom -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-classroom"
         ],
@@ -11581,7 +13985,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-docs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-docs -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-docs"
         ],
@@ -11591,7 +13995,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-docs-write -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-docs-write -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-docs-write"
         ],
@@ -11601,7 +14005,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-drive -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-drive -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-drive"
         ],
@@ -11611,7 +14015,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-drive-upload -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-drive-upload -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-drive-upload"
         ],
@@ -11621,7 +14025,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-events -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-events -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-events"
         ],
@@ -11631,7 +14035,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-events-renew -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-events-renew -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-events-renew"
         ],
@@ -11641,7 +14045,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-events-subscribe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-events-subscribe -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-events-subscribe"
         ],
@@ -11651,7 +14055,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-forms -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-forms -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-forms"
         ],
@@ -11661,7 +14065,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-gmail -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-gmail -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-gmail"
         ],
@@ -11671,7 +14075,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-gmail-forward -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-gmail-forward -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-gmail-forward"
         ],
@@ -11681,7 +14085,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-gmail-read -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-gmail-read -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-gmail-read"
         ],
@@ -11691,7 +14095,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-gmail-reply -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-gmail-reply -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-gmail-reply"
         ],
@@ -11701,7 +14105,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-gmail-reply-all -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-gmail-reply-all -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-gmail-reply-all"
         ],
@@ -11711,7 +14115,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-gmail-send -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-gmail-send -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-gmail-send"
         ],
@@ -11721,7 +14125,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-gmail-triage -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-gmail-triage -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-gmail-triage"
         ],
@@ -11731,7 +14135,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-gmail-watch -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-gmail-watch -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-gmail-watch"
         ],
@@ -11741,7 +14145,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-keep -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-keep -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-keep"
         ],
@@ -11751,7 +14155,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-meet -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-meet -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-meet"
         ],
@@ -11761,7 +14165,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-modelarmor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-modelarmor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-modelarmor"
         ],
@@ -11771,7 +14175,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-modelarmor-create-template -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-modelarmor-create-template -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-modelarmor-create-template"
         ],
@@ -11781,7 +14185,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-modelarmor-sanitize-prompt -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-modelarmor-sanitize-prompt -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-modelarmor-sanitize-prompt"
         ],
@@ -11791,7 +14195,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-modelarmor-sanitize-response -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-modelarmor-sanitize-response -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-modelarmor-sanitize-response"
         ],
@@ -11801,7 +14205,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-people -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-people -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-people"
         ],
@@ -11811,7 +14215,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-script -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-script -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-script"
         ],
@@ -11821,7 +14225,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-script-push -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-script-push -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-script-push"
         ],
@@ -11831,7 +14235,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-shared -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-shared -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-shared"
         ],
@@ -11841,7 +14245,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-sheets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-sheets -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-sheets"
         ],
@@ -11851,7 +14255,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-sheets-append -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-sheets-append -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-sheets-append"
         ],
@@ -11861,7 +14265,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-sheets-read -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-sheets-read -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-sheets-read"
         ],
@@ -11871,7 +14275,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-slides -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-slides -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-slides"
         ],
@@ -11881,7 +14285,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-tasks -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-tasks -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-tasks"
         ],
@@ -11891,7 +14295,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-workflow -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-workflow -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-workflow"
         ],
@@ -11901,7 +14305,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-workflow-email-to-task -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-workflow-email-to-task -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-workflow-email-to-task"
         ],
@@ -11911,7 +14315,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-workflow-file-announce -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-workflow-file-announce -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-workflow-file-announce"
         ],
@@ -11921,7 +14325,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-workflow-meeting-prep -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-workflow-meeting-prep -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-workflow-meeting-prep"
         ],
@@ -11931,7 +14335,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-workflow-standup-report -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-workflow-standup-report -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-workflow-standup-report"
         ],
@@ -11941,7 +14345,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill gws-workflow-weekly-digest -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill gws-workflow-weekly-digest -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gws-workflow-weekly-digest"
         ],
@@ -11951,7 +14355,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill persona-content-creator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill persona-content-creator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "persona-content-creator"
         ],
@@ -11961,7 +14365,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill persona-customer-support -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill persona-customer-support -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "persona-customer-support"
         ],
@@ -11971,7 +14375,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill persona-event-coordinator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill persona-event-coordinator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "persona-event-coordinator"
         ],
@@ -11981,7 +14385,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill persona-exec-assistant -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill persona-exec-assistant -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "persona-exec-assistant"
         ],
@@ -11991,7 +14395,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill persona-hr-coordinator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill persona-hr-coordinator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "persona-hr-coordinator"
         ],
@@ -12001,7 +14405,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill persona-it-admin -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill persona-it-admin -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "persona-it-admin"
         ],
@@ -12011,7 +14415,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill persona-project-manager -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill persona-project-manager -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "persona-project-manager"
         ],
@@ -12021,7 +14425,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill persona-researcher -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill persona-researcher -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "persona-researcher"
         ],
@@ -12031,7 +14435,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill persona-sales-ops -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill persona-sales-ops -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "persona-sales-ops"
         ],
@@ -12041,7 +14445,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill persona-team-lead -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill persona-team-lead -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "persona-team-lead"
         ],
@@ -12051,7 +14455,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-backup-sheet-as-csv -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-backup-sheet-as-csv -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-backup-sheet-as-csv"
         ],
@@ -12061,7 +14465,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-batch-invite-to-event -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-batch-invite-to-event"
         ],
@@ -12071,7 +14475,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-block-focus-time -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-block-focus-time -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-block-focus-time"
         ],
@@ -12081,7 +14485,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-bulk-download-folder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-bulk-download-folder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-bulk-download-folder"
         ],
@@ -12091,7 +14495,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-collect-form-responses -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-collect-form-responses -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-collect-form-responses"
         ],
@@ -12101,7 +14505,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-compare-sheet-tabs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-compare-sheet-tabs -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-compare-sheet-tabs"
         ],
@@ -12111,7 +14515,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-copy-sheet-for-new-month -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-copy-sheet-for-new-month -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-copy-sheet-for-new-month"
         ],
@@ -12121,7 +14525,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-create-classroom-course -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-create-classroom-course -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-create-classroom-course"
         ],
@@ -12131,7 +14535,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-create-doc-from-template -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-create-doc-from-template -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-create-doc-from-template"
         ],
@@ -12141,7 +14545,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-create-events-from-sheet -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-create-events-from-sheet -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-create-events-from-sheet"
         ],
@@ -12151,7 +14555,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-create-expense-tracker -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-create-expense-tracker -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-create-expense-tracker"
         ],
@@ -12161,7 +14565,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-create-feedback-form -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-create-feedback-form -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-create-feedback-form"
         ],
@@ -12171,7 +14575,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-create-gmail-filter -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-create-gmail-filter -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-create-gmail-filter"
         ],
@@ -12181,7 +14585,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-create-meet-space -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-create-meet-space -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-create-meet-space"
         ],
@@ -12191,7 +14595,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-create-presentation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-create-presentation -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-create-presentation"
         ],
@@ -12201,7 +14605,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-create-shared-drive -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-create-shared-drive -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-create-shared-drive"
         ],
@@ -12211,7 +14615,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-create-task-list -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-create-task-list -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-create-task-list"
         ],
@@ -12221,7 +14625,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-create-vacation-responder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-create-vacation-responder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-create-vacation-responder"
         ],
@@ -12231,7 +14635,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-draft-email-from-doc -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-draft-email-from-doc -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-draft-email-from-doc"
         ],
@@ -12241,7 +14645,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-email-drive-link -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-email-drive-link -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-email-drive-link"
         ],
@@ -12251,7 +14655,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-find-free-time -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-find-free-time -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-find-free-time"
         ],
@@ -12261,7 +14665,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-find-large-files -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-find-large-files -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-find-large-files"
         ],
@@ -12271,7 +14675,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-forward-labeled-emails -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-forward-labeled-emails -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-forward-labeled-emails"
         ],
@@ -12281,7 +14685,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-generate-report-from-sheet -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-generate-report-from-sheet -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-generate-report-from-sheet"
         ],
@@ -12291,7 +14695,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-label-and-archive-emails -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-label-and-archive-emails -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-label-and-archive-emails"
         ],
@@ -12301,7 +14705,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-log-deal-update -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-log-deal-update -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-log-deal-update"
         ],
@@ -12311,7 +14715,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-organize-drive-folder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-organize-drive-folder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-organize-drive-folder"
         ],
@@ -12321,7 +14725,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-plan-weekly-schedule -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-plan-weekly-schedule -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-plan-weekly-schedule"
         ],
@@ -12331,7 +14735,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-post-mortem-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-post-mortem-setup -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-post-mortem-setup"
         ],
@@ -12341,7 +14745,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-reschedule-meeting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-reschedule-meeting -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-reschedule-meeting"
         ],
@@ -12351,7 +14755,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-review-meet-participants -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-review-meet-participants -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-review-meet-participants"
         ],
@@ -12361,7 +14765,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-review-overdue-tasks -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-review-overdue-tasks -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-review-overdue-tasks"
         ],
@@ -12371,7 +14775,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-save-email-attachments -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-save-email-attachments -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-save-email-attachments"
         ],
@@ -12381,7 +14785,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-save-email-to-doc -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-save-email-to-doc -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-save-email-to-doc"
         ],
@@ -12391,7 +14795,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-schedule-recurring-event -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-schedule-recurring-event -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-schedule-recurring-event"
         ],
@@ -12401,7 +14805,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-send-team-announcement -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-send-team-announcement -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-send-team-announcement"
         ],
@@ -12411,7 +14815,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-share-doc-and-notify -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-share-doc-and-notify -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-share-doc-and-notify"
         ],
@@ -12421,7 +14825,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-share-event-materials -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-share-event-materials -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-share-event-materials"
         ],
@@ -12431,7 +14835,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-share-folder-with-team -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-share-folder-with-team -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-share-folder-with-team"
         ],
@@ -12441,7 +14845,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-sync-contacts-to-sheet -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-sync-contacts-to-sheet -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-sync-contacts-to-sheet"
         ],
@@ -12451,7 +14855,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add googleworkspace/cli --skill recipe-watch-drive-changes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add googleworkspace/cli --skill recipe-watch-drive-changes -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "recipe-watch-drive-changes"
         ],
@@ -12461,7 +14865,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add gosom/google-maps-scraper@0ef302ecc72a8872d5dac68cbbeab78800f80fdd --skill google-maps-scraper -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add gosom/google-maps-scraper@0ef302ecc72a8872d5dac68cbbeab78800f80fdd --skill google-maps-scraper -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "google-maps-scraper"
         ],
@@ -12471,7 +14875,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add griffithkk3-del/openspec-reviewed-workflow --skill openspec-review-proposal -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add griffithkk3-del/openspec-reviewed-workflow --skill openspec-review-proposal -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-review-proposal"
         ],
@@ -12481,7 +14885,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hardikpandya/stop-slop --skill stop-slop -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hardikpandya/stop-slop --skill stop-slop -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "stop-slop"
         ],
@@ -12491,7 +14895,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hashgraph-online/awesome-codex-plugins --skill commit-narrator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hashgraph-online/awesome-codex-plugins --skill commit-narrator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "commit-narrator"
         ],
@@ -12501,7 +14905,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hashgraph-online/awesome-codex-plugins --skill env-lint -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hashgraph-online/awesome-codex-plugins --skill env-lint -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "env-lint"
         ],
@@ -12511,7 +14915,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hashgraph-online/awesome-codex-plugins --skill secret-guard -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hashgraph-online/awesome-codex-plugins --skill secret-guard -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "secret-guard"
         ],
@@ -12521,7 +14925,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hashgraph-online/hol-guard-plugin --skill hol-guard -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hashgraph-online/hol-guard-plugin --skill hol-guard -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hol-guard"
         ],
@@ -12531,7 +14935,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform-search-import --skill aws-ami-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform-search-import --skill aws-ami-builder -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "aws-ami-builder",
           "terraform-search-import",
@@ -12543,7 +14947,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add hashicorp/agent-skills --skill terraform-style-guide --skill terraform-test -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hashicorp/agent-skills --skill terraform-style-guide --skill terraform-test -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "terraform-style-guide",
           "terraform-test"
@@ -12554,7 +14958,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill embedded-captions -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill embedded-captions -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "embedded-captions"
         ],
@@ -12564,7 +14968,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill faceless-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill faceless-explainer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "faceless-explainer"
         ],
@@ -12574,7 +14978,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill figma -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill figma -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "figma"
         ],
@@ -12584,7 +14988,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill general-video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill general-video -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "general-video"
         ],
@@ -12594,7 +14998,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill hyperframes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill hyperframes -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hyperframes"
         ],
@@ -12604,7 +15008,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill hyperframes-animation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill hyperframes-animation -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hyperframes-animation"
         ],
@@ -12614,7 +15018,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill hyperframes-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill hyperframes-cli -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hyperframes-cli"
         ],
@@ -12624,7 +15028,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill hyperframes-core -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill hyperframes-core -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hyperframes-core"
         ],
@@ -12634,7 +15038,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill hyperframes-creative -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill hyperframes-creative -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hyperframes-creative"
         ],
@@ -12644,7 +15048,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill hyperframes-keyframes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill hyperframes-keyframes -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hyperframes-keyframes"
         ],
@@ -12654,7 +15058,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill hyperframes-registry -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill hyperframes-registry -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hyperframes-registry"
         ],
@@ -12664,7 +15068,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill media-use -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill media-use -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "media-use"
         ],
@@ -12674,7 +15078,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill motion-graphics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill motion-graphics -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "motion-graphics"
         ],
@@ -12684,7 +15088,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill music-to-video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill music-to-video -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "music-to-video"
         ],
@@ -12694,7 +15098,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill pr-to-video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill pr-to-video -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pr-to-video"
         ],
@@ -12704,7 +15108,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill product-launch-video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill product-launch-video -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "product-launch-video"
         ],
@@ -12714,7 +15118,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill remotion-to-hyperframes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill remotion-to-hyperframes -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "remotion-to-hyperframes"
         ],
@@ -12724,7 +15128,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill slideshow -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill slideshow -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "slideshow"
         ],
@@ -12734,7 +15138,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill talking-head-recut -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill talking-head-recut -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "talking-head-recut"
         ],
@@ -12744,7 +15148,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add heygen-com/hyperframes --skill website-to-video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add heygen-com/hyperframes --skill website-to-video -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "website-to-video"
         ],
@@ -12754,7 +15158,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill hf-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill hf-cli -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hf-cli"
         ],
@@ -12764,7 +15168,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill hf-mem -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill hf-mem -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "hf-mem"
         ],
@@ -12774,7 +15178,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-best -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-best -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-best"
         ],
@@ -12784,7 +15188,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-community-evals -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-community-evals -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-community-evals"
         ],
@@ -12794,7 +15198,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-datasets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-datasets -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-datasets"
         ],
@@ -12804,7 +15208,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-gradio -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-gradio -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-gradio"
         ],
@@ -12814,7 +15218,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-llm-trainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-llm-trainer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-llm-trainer"
         ],
@@ -12824,7 +15228,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-local-models -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-local-models -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-local-models"
         ],
@@ -12834,7 +15238,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-lora-space-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-lora-space-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-lora-space-builder"
         ],
@@ -12844,7 +15248,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-paper-publisher -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-paper-publisher -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-paper-publisher"
         ],
@@ -12854,7 +15258,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-papers -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-papers -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-papers"
         ],
@@ -12864,7 +15268,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-spaces -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-spaces -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-spaces"
         ],
@@ -12874,7 +15278,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-tool-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-tool-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-tool-builder"
         ],
@@ -12884,7 +15288,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-trackio -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-trackio -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-trackio"
         ],
@@ -12894,7 +15298,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-vision-trainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-vision-trainer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-vision-trainer"
         ],
@@ -12904,7 +15308,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill huggingface-zerogpu -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill huggingface-zerogpu -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "huggingface-zerogpu"
         ],
@@ -12914,7 +15318,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill train-sentence-transformers -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill train-sentence-transformers -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "train-sentence-transformers"
         ],
@@ -12924,7 +15328,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill transformers-js -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill transformers-js -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "transformers-js"
         ],
@@ -12934,7 +15338,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add huggingface/skills --skill trl-training -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add huggingface/skills --skill trl-training -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "trl-training"
         ],
@@ -12944,7 +15348,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hyf0/vue-skills --skill vue-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hyf0/vue-skills --skill vue-best-practices -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vue-best-practices"
         ],
@@ -12954,7 +15358,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-audit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brooks-audit"
         ],
@@ -12964,7 +15368,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-debt -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-debt -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brooks-debt"
         ],
@@ -12974,7 +15378,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-harness -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-harness -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brooks-harness"
         ],
@@ -12984,7 +15388,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-health -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-health -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brooks-health"
         ],
@@ -12994,7 +15398,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-review -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brooks-review"
         ],
@@ -13004,7 +15408,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-sweep -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-sweep -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brooks-sweep"
         ],
@@ -13014,7 +15418,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-test -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hyhmrright/brooks-lint --skill brooks-test -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brooks-test"
         ],
@@ -13024,7 +15428,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hyhmrright/brooks-lint --skill new-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hyhmrright/brooks-lint --skill new-skill -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "new-skill"
         ],
@@ -13034,7 +15438,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add hyhmrright/brooks-lint --skill release -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add hyhmrright/brooks-lint --skill release -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "release"
         ],
@@ -13044,7 +15448,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add imxv/Pretty-mermaid-skills --skill pretty-mermaid -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add imxv/Pretty-mermaid-skills --skill pretty-mermaid -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pretty-mermaid"
         ],
@@ -13054,7 +15458,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add inngest/inngest-skills --skill inngest-setup --skill inngest-durable-functions --skill inngest-events --skill inngest-steps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add inngest/inngest-skills --skill inngest-setup --skill inngest-durable-functions --skill inngest-events --skill inngest-steps -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "inngest-durable-functions",
           "inngest-events",
@@ -13067,7 +15471,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill api-gateway -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill api-gateway -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "api-gateway"
         ],
@@ -13077,7 +15481,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill bedrock -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill bedrock -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "bedrock"
         ],
@@ -13087,7 +15491,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill cloudformation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill cloudformation -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cloudformation"
         ],
@@ -13097,7 +15501,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill cloudwatch -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill cloudwatch -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cloudwatch"
         ],
@@ -13107,7 +15511,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill cognito -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill cognito -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cognito"
         ],
@@ -13117,7 +15521,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill dynamodb -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill dynamodb -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "dynamodb"
         ],
@@ -13127,7 +15531,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill ec2 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill ec2 -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ec2"
         ],
@@ -13137,7 +15541,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill ecs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill ecs -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ecs"
         ],
@@ -13147,7 +15551,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill eks -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill eks -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "eks"
         ],
@@ -13157,7 +15561,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill eventbridge -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill eventbridge -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "eventbridge"
         ],
@@ -13167,7 +15571,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill iam -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill iam -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "iam"
         ],
@@ -13177,7 +15581,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill lambda -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill lambda -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "lambda"
         ],
@@ -13187,7 +15591,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill rds -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill rds -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "rds"
         ],
@@ -13197,7 +15601,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill s3 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill s3 -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "s3"
         ],
@@ -13207,7 +15611,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill secrets-manager -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill secrets-manager -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "secrets-manager"
         ],
@@ -13217,7 +15621,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill sns -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill sns -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "sns"
         ],
@@ -13227,7 +15631,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill sqs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill sqs -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "sqs"
         ],
@@ -13237,7 +15641,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill step-functions -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add itsmostafa/aws-agent-skills --skill step-functions -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "step-functions"
         ],
@@ -13247,7 +15651,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ivan-magda/swift-security-skill --skill swift-security-expert -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swift-security-expert"
         ],
@@ -13257,7 +15661,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add jazzychad/ios-code-audit --skill ios-code-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add jazzychad/ios-code-audit --skill ios-code-audit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ios-code-audit"
         ],
@@ -13267,7 +15671,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add jeffallan/claude-skills --skill kubernetes-specialist -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add jeffallan/claude-skills --skill kubernetes-specialist -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "kubernetes-specialist"
         ],
@@ -13277,7 +15681,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add jixoai/openspecui --skill openspec-apply-change -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add jixoai/openspecui --skill openspec-apply-change -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-apply-change"
         ],
@@ -13287,7 +15691,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add jixoai/openspecui --skill openspec-archive-change -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add jixoai/openspecui --skill openspec-archive-change -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-archive-change"
         ],
@@ -13297,7 +15701,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add jixoai/openspecui --skill openspec-bulk-archive-change -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add jixoai/openspecui --skill openspec-bulk-archive-change -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-bulk-archive-change"
         ],
@@ -13307,7 +15711,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add jixoai/openspecui --skill openspec-continue-change -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add jixoai/openspecui --skill openspec-continue-change -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-continue-change"
         ],
@@ -13317,7 +15721,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add jixoai/openspecui --skill openspec-explore -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add jixoai/openspecui --skill openspec-explore -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-explore"
         ],
@@ -13327,7 +15731,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add jixoai/openspecui --skill openspec-ff-change -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add jixoai/openspecui --skill openspec-ff-change -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-ff-change"
         ],
@@ -13337,7 +15741,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add jixoai/openspecui --skill openspec-new-change -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add jixoai/openspecui --skill openspec-new-change -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-new-change"
         ],
@@ -13347,7 +15751,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add jixoai/openspecui --skill openspec-onboard -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add jixoai/openspecui --skill openspec-onboard -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-onboard"
         ],
@@ -13357,7 +15761,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add jixoai/openspecui --skill openspec-sync-specs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add jixoai/openspecui --skill openspec-sync-specs -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-sync-specs"
         ],
@@ -13367,7 +15771,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add jixoai/openspecui --skill openspec-verify-change -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add jixoai/openspecui --skill openspec-verify-change -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-verify-change"
         ],
@@ -13377,7 +15781,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add jlowin/fastmcp --skill fastmcp-client-cli --skill testing-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add jlowin/fastmcp --skill fastmcp-client-cli --skill testing-python -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "fastmcp-client-cli",
           "testing-python"
@@ -13388,7 +15792,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add kepano/obsidian-skills --skill obsidian-markdown --skill obsidian-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add kepano/obsidian-skills --skill obsidian-markdown --skill obsidian-cli -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "obsidian-cli",
           "obsidian-markdown"
@@ -13399,7 +15803,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag --skill deep-agents-core --skill deep-agents-memory --skill deep-agents-orchestration --skill langchain-middleware --skill langchain-dependencies --skill managed-deep-agents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag --skill deep-agents-core --skill deep-agents-memory --skill deep-agents-orchestration --skill langchain-middleware --skill langchain-dependencies --skill managed-deep-agents -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "deep-agents-core",
           "deep-agents-memory",
@@ -13420,7 +15824,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add langchain-ai/langsmith-skills --skill langsmith-evaluator --skill langsmith-dataset --skill langsmith-trace -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add langchain-ai/langsmith-skills --skill langsmith-evaluator --skill langsmith-dataset --skill langsmith-trace -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "langsmith-dataset",
           "langsmith-evaluator",
@@ -13432,7 +15836,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add langfuse/skills --skill langfuse -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add langfuse/skills --skill langfuse -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "langfuse"
         ],
@@ -13442,7 +15846,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "ctf-ai-ml",
           "ctf-crypto",
@@ -13472,7 +15876,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add louisedesadeleer/clipify --skill clipify -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add louisedesadeleer/clipify --skill clipify -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "clipify"
         ],
@@ -13482,7 +15886,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add makenotion/skills --skill notion-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add makenotion/skills --skill notion-cli -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "notion-cli"
         ],
@@ -13492,7 +15896,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add marzukia/charted --skill charted -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add marzukia/charted --skill charted -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "charted"
         ],
@@ -13502,7 +15906,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add mattpocock/skills --skill grill-me --skill tdd --skill to-prd --skill improve-codebase-architecture -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add mattpocock/skills --skill grill-me --skill tdd --skill to-prd --skill improve-codebase-architecture -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "grill-me",
           "improve-codebase-architecture",
@@ -13515,7 +15919,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add mattpocock/skills --skill obsidian-vault -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add mattpocock/skills --skill obsidian-vault -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "obsidian-vault"
         ],
@@ -13525,7 +15929,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add mcp-use/skills --skill mcp-builder --skill chatgpt-app-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add mcp-use/skills --skill mcp-builder --skill chatgpt-app-builder -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "chatgpt-app-builder",
           "mcp-builder"
@@ -13536,7 +15940,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add meodai/skill.color-expert --skill color-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add meodai/skill.color-expert --skill color-expert -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "color-expert"
         ],
@@ -13546,7 +15950,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add mhaviv/Swift-FocusEngine-Agent-Skill --skill swift-focusengine-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add mhaviv/Swift-FocusEngine-Agent-Skill --skill swift-focusengine-pro -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swift-focusengine-pro"
         ],
@@ -13556,7 +15960,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add michalparkola/tapestry-skills --skill article-extractor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add michalparkola/tapestry-skills --skill article-extractor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "article-extractor"
         ],
@@ -13566,7 +15970,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add michalparkola/tapestry-skills --skill learn-this -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add michalparkola/tapestry-skills --skill learn-this -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "learn-this"
         ],
@@ -13576,7 +15980,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add michalparkola/tapestry-skills --skill scrum-sage -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add michalparkola/tapestry-skills --skill scrum-sage -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "scrum-sage"
         ],
@@ -13586,7 +15990,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add michalparkola/tapestry-skills --skill session-log -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add michalparkola/tapestry-skills --skill session-log -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "session-log"
         ],
@@ -13596,7 +16000,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add michalparkola/tapestry-skills --skill ship-learn-next -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add michalparkola/tapestry-skills --skill ship-learn-next -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ship-learn-next"
         ],
@@ -13606,7 +16010,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add michalparkola/tapestry-skills --skill unblock-action -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add michalparkola/tapestry-skills --skill unblock-action -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "unblock-action"
         ],
@@ -13616,7 +16020,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add michalparkola/tapestry-skills --skill youtube-transcript -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add michalparkola/tapestry-skills --skill youtube-transcript -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "youtube-transcript"
         ],
@@ -13636,7 +16040,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "playwright-cli"
         ],
@@ -13646,7 +16050,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 00-ke-hoach-mkt -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 00-ke-hoach-mkt -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "00-ke-hoach-mkt"
         ],
@@ -13656,7 +16060,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 00-marketing-plan-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 00-marketing-plan-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "00-marketing-plan-global"
         ],
@@ -13666,7 +16070,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 01-content-calendar-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 01-content-calendar-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "01-content-calendar-global"
         ],
@@ -13676,7 +16080,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 01-lich-noi-dung -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 01-lich-noi-dung -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "01-lich-noi-dung"
         ],
@@ -13686,7 +16090,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 02-brief-chien-dich -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 02-brief-chien-dich -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "02-brief-chien-dich"
         ],
@@ -13696,7 +16100,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 02-campaign-brief-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 02-campaign-brief-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "02-campaign-brief-global"
         ],
@@ -13706,7 +16110,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 03-danh-gia-hieu-suat -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 03-danh-gia-hieu-suat -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "03-danh-gia-hieu-suat"
         ],
@@ -13716,7 +16120,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 03-performance-eval-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 03-performance-eval-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "03-performance-eval-global"
         ],
@@ -13726,7 +16130,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 04-script-video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 04-script-video -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "04-script-video"
         ],
@@ -13736,7 +16140,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 04-script-video-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 04-script-video-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "04-script-video-global"
         ],
@@ -13746,7 +16150,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 05-ad-copy-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 05-ad-copy-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "05-ad-copy-global"
         ],
@@ -13756,7 +16160,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 05-copy-quang-cao -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 05-copy-quang-cao -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "05-copy-quang-cao"
         ],
@@ -13766,7 +16170,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 06-brief-ugc-egc -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 06-brief-ugc-egc -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "06-brief-ugc-egc"
         ],
@@ -13776,7 +16180,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 06-ugc-egc-brief-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 06-ugc-egc-brief-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "06-ugc-egc-brief-global"
         ],
@@ -13786,7 +16190,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 07-bao-cao-marketing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 07-bao-cao-marketing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "07-bao-cao-marketing"
         ],
@@ -13796,7 +16200,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 07-marketing-report-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 07-marketing-report-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "07-marketing-report-global"
         ],
@@ -13806,7 +16210,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 08-competitor-research-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 08-competitor-research-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "08-competitor-research-global"
         ],
@@ -13816,7 +16220,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 08-nghien-cuu-doi-thu -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 08-nghien-cuu-doi-thu -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "08-nghien-cuu-doi-thu"
         ],
@@ -13826,7 +16230,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 09-customer-insight-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 09-customer-insight-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "09-customer-insight-global"
         ],
@@ -13836,7 +16240,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 09-insight-khach-hang -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 09-insight-khach-hang -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "09-insight-khach-hang"
         ],
@@ -13846,7 +16250,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 10-reverse-kpi-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 10-reverse-kpi-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "10-reverse-kpi-global"
         ],
@@ -13856,7 +16260,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 10-tinh-kpi-nguoc -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 10-tinh-kpi-nguoc -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "10-tinh-kpi-nguoc"
         ],
@@ -13866,7 +16270,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 11-channel-setup-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 11-channel-setup-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "11-channel-setup-global"
         ],
@@ -13876,7 +16280,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 11-thiet-lap-kenh -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 11-thiet-lap-kenh -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "11-thiet-lap-kenh"
         ],
@@ -13886,7 +16290,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 12-brief-landing-page -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 12-brief-landing-page -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "12-brief-landing-page"
         ],
@@ -13896,7 +16300,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 12-landing-page-brief-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 12-landing-page-brief-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "12-landing-page-brief-global"
         ],
@@ -13906,7 +16310,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 13-data-analysis-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 13-data-analysis-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "13-data-analysis-global"
         ],
@@ -13916,7 +16320,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 13-phan-tich-du-lieu -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 13-phan-tich-du-lieu -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "13-phan-tich-du-lieu"
         ],
@@ -13926,7 +16330,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 14-email-marketing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 14-email-marketing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "14-email-marketing"
         ],
@@ -13936,7 +16340,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 14-email-marketing-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 14-email-marketing-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "14-email-marketing-global"
         ],
@@ -13946,7 +16350,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 15-social-listening -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 15-social-listening -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "15-social-listening"
         ],
@@ -13956,7 +16360,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 15-social-listening-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 15-social-listening-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "15-social-listening-global"
         ],
@@ -13966,7 +16370,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 16-marketing-psychology -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 16-marketing-psychology -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "16-marketing-psychology"
         ],
@@ -13976,7 +16380,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 16-marketing-psychology-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 16-marketing-psychology-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "16-marketing-psychology-global"
         ],
@@ -13986,7 +16390,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 17-pricing-strategy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 17-pricing-strategy -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "17-pricing-strategy"
         ],
@@ -13996,7 +16400,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 17-pricing-strategy-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 17-pricing-strategy-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "17-pricing-strategy-global"
         ],
@@ -14006,7 +16410,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 18-referral-program -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 18-referral-program -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "18-referral-program"
         ],
@@ -14016,7 +16420,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 18-referral-program-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 18-referral-program-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "18-referral-program-global"
         ],
@@ -14026,7 +16430,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 19-ab-test-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 19-ab-test-setup -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "19-ab-test-setup"
         ],
@@ -14036,7 +16440,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 19-ab-test-setup-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 19-ab-test-setup-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "19-ab-test-setup-global"
         ],
@@ -14046,7 +16450,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 20-brief-client-intake -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 20-brief-client-intake -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "20-brief-client-intake"
         ],
@@ -14056,7 +16460,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 20-client-intake-brief-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 20-client-intake-brief-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "20-client-intake-brief-global"
         ],
@@ -14066,7 +16470,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 21-ads-audit-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 21-ads-audit-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "21-ads-audit-global"
         ],
@@ -14076,7 +16480,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 21-audit-ads-performance -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 21-audit-ads-performance -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "21-audit-ads-performance"
         ],
@@ -14086,7 +16490,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 30-design-master-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 30-design-master-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "30-design-master-global"
         ],
@@ -14096,7 +16500,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill 30-thiet-ke-master -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill 30-thiet-ke-master -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "30-thiet-ke-master"
         ],
@@ -14106,7 +16510,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill product-marketing-context -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill product-marketing-context -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "product-marketing-context"
         ],
@@ -14116,7 +16520,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add minhnv0807/ai-business-skills --skill product-marketing-context-global -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add minhnv0807/ai-business-skills --skill product-marketing-context-global -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "product-marketing-context-global"
         ],
@@ -14136,7 +16540,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add n0an/App-Intents-Agent-Skill --skill app-intents -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "app-intents"
         ],
@@ -14146,7 +16550,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add n0an/Background-Execution-Agent-Skill --skill background-execution -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add n0an/Background-Execution-Agent-Skill --skill background-execution -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "background-execution"
         ],
@@ -14156,7 +16560,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add n0an/Swift-FormatStyle-Agent-Skill --skill swift-format-style -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add n0an/Swift-FormatStyle-Agent-Skill --skill swift-format-style -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swift-format-style"
         ],
@@ -14166,7 +16570,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add n0an/Widgets-Agent-Skill --skill widgets -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add n0an/Widgets-Agent-Skill --skill widgets -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "widgets"
         ],
@@ -14176,7 +16580,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add neondatabase/agent-skills --skill neon-functions --skill neon-ai-gateway --skill claimable-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add neondatabase/agent-skills --skill neon-functions --skill neon-ai-gateway --skill claimable-postgres -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "claimable-postgres",
           "neon-ai-gateway",
@@ -14188,7 +16592,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add neondatabase/agent-skills --skill neon-postgres --skill neon-postgres-branches --skill neon-postgres-egress-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add neondatabase/agent-skills --skill neon-postgres --skill neon-postgres-branches --skill neon-postgres-egress-optimizer -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "neon-postgres",
           "neon-postgres-branches",
@@ -14200,7 +16604,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add netlify/context-and-tools --skill netlify-deploy --skill netlify-functions --skill netlify-edge-functions -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add netlify/context-and-tools --skill netlify-deploy --skill netlify-functions --skill netlify-edge-functions -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "netlify-deploy",
           "netlify-edge-functions",
@@ -14212,7 +16616,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add nicobailon/visual-explainer --skill visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add nicobailon/visual-explainer --skill visual-explainer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "visual-explainer"
         ],
@@ -14222,7 +16626,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ningzimu/codex-ppt-skill --skill codex-ppt -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add ningzimu/codex-ppt-skill --skill codex-ppt -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "codex-ppt"
         ],
@@ -14232,7 +16636,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add nrwl/nx-ai-agents-config --skill nx-generate --skill link-workspace-packages -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add nrwl/nx-ai-agents-config --skill nx-generate --skill link-workspace-packages -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "link-workspace-packages",
           "nx-generate"
@@ -14243,7 +16647,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "brainstorming",
           "executing-plans",
@@ -14258,7 +16662,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add openags/paper-search-mcp --skill paper-search -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add openags/paper-search-mcp --skill paper-search -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "paper-search"
         ],
@@ -14268,7 +16672,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "chatgpt-apps",
           "cli-creator",
@@ -14282,7 +16686,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add papersflow-ai/papersflow-codex-plugin --skill citation-verifier -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add papersflow-ai/papersflow-codex-plugin --skill citation-verifier -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "citation-verifier"
         ],
@@ -14292,7 +16696,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add papersflow-ai/papersflow-codex-plugin --skill comparative-synthesis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add papersflow-ai/papersflow-codex-plugin --skill comparative-synthesis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "comparative-synthesis"
         ],
@@ -14302,7 +16706,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add papersflow-ai/papersflow-codex-plugin --skill deepscan-monitor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add papersflow-ai/papersflow-codex-plugin --skill deepscan-monitor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "deepscan-monitor"
         ],
@@ -14312,7 +16716,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add papersflow-ai/papersflow-codex-plugin --skill research-briefing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add papersflow-ai/papersflow-codex-plugin --skill research-briefing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "research-briefing"
         ],
@@ -14322,7 +16726,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add pedronauck/skills --skill agent-md-refactor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add pedronauck/skills --skill agent-md-refactor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "agent-md-refactor"
         ],
@@ -14332,7 +16736,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add pedronauck/skills --skill architecture-diagram -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add pedronauck/skills --skill architecture-diagram -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "architecture-diagram"
         ],
@@ -14342,7 +16746,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add pedronauck/skills --skill golang-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add pedronauck/skills --skill golang-pro -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "golang-pro"
         ],
@@ -14352,7 +16756,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill ab-test-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill ab-test-analysis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ab-test-analysis"
         ],
@@ -14362,7 +16766,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill analyze-feature-requests -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill analyze-feature-requests -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "analyze-feature-requests"
         ],
@@ -14372,7 +16776,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill ansoff-matrix -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill ansoff-matrix -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ansoff-matrix"
         ],
@@ -14382,7 +16786,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill beachhead-segment -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill beachhead-segment -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "beachhead-segment"
         ],
@@ -14392,7 +16796,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill brainstorm-experiments-existing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill brainstorm-experiments-existing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brainstorm-experiments-existing"
         ],
@@ -14402,7 +16806,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill brainstorm-experiments-new -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill brainstorm-experiments-new -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brainstorm-experiments-new"
         ],
@@ -14412,7 +16816,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill brainstorm-ideas-existing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill brainstorm-ideas-existing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brainstorm-ideas-existing"
         ],
@@ -14422,7 +16826,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill brainstorm-ideas-new -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill brainstorm-ideas-new -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brainstorm-ideas-new"
         ],
@@ -14432,7 +16836,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill brainstorm-okrs -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill brainstorm-okrs -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "brainstorm-okrs"
         ],
@@ -14442,7 +16846,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill business-model -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill business-model -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "business-model"
         ],
@@ -14452,7 +16856,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill cohort-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill cohort-analysis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "cohort-analysis"
         ],
@@ -14462,7 +16866,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill competitive-battlecard -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill competitive-battlecard -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "competitive-battlecard"
         ],
@@ -14472,7 +16876,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill competitor-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill competitor-analysis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "competitor-analysis"
         ],
@@ -14482,7 +16886,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill create-prd -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill create-prd -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "create-prd"
         ],
@@ -14492,7 +16896,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill customer-journey-map -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill customer-journey-map -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "customer-journey-map"
         ],
@@ -14502,7 +16906,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill draft-nda -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill draft-nda -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "draft-nda"
         ],
@@ -14512,7 +16916,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill dummy-dataset -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill dummy-dataset -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "dummy-dataset"
         ],
@@ -14522,7 +16926,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill grammar-check -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill grammar-check -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "grammar-check"
         ],
@@ -14532,7 +16936,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill growth-loops -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill growth-loops -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "growth-loops"
         ],
@@ -14542,7 +16946,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill gtm-motions -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill gtm-motions -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gtm-motions"
         ],
@@ -14552,7 +16956,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill gtm-strategy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill gtm-strategy -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "gtm-strategy"
         ],
@@ -14562,7 +16966,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill ideal-customer-profile -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill ideal-customer-profile -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ideal-customer-profile"
         ],
@@ -14572,7 +16976,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill identify-assumptions-existing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill identify-assumptions-existing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "identify-assumptions-existing"
         ],
@@ -14582,7 +16986,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill identify-assumptions-new -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill identify-assumptions-new -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "identify-assumptions-new"
         ],
@@ -14592,7 +16996,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill intended-vs-implemented -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill intended-vs-implemented -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "intended-vs-implemented"
         ],
@@ -14602,7 +17006,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill interview-script -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill interview-script -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "interview-script"
         ],
@@ -14612,7 +17016,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill job-stories -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill job-stories -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "job-stories"
         ],
@@ -14622,7 +17026,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill lean-canvas -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill lean-canvas -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "lean-canvas"
         ],
@@ -14632,7 +17036,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill market-segments -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill market-segments -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "market-segments"
         ],
@@ -14642,7 +17046,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill market-sizing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill market-sizing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "market-sizing"
         ],
@@ -14652,7 +17056,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill metrics-dashboard -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill metrics-dashboard -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "metrics-dashboard"
         ],
@@ -14662,7 +17066,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill monetization-strategy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill monetization-strategy -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "monetization-strategy"
         ],
@@ -14672,7 +17076,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill north-star-metric -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill north-star-metric -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "north-star-metric"
         ],
@@ -14682,7 +17086,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill opportunity-solution-tree -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill opportunity-solution-tree -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "opportunity-solution-tree"
         ],
@@ -14692,7 +17096,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill outcome-roadmap -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill outcome-roadmap -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "outcome-roadmap"
         ],
@@ -14702,7 +17106,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill pestle-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill pestle-analysis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pestle-analysis"
         ],
@@ -14712,7 +17116,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill porters-five-forces -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill porters-five-forces -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "porters-five-forces"
         ],
@@ -14722,7 +17126,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill positioning-ideas -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill positioning-ideas -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "positioning-ideas"
         ],
@@ -14732,7 +17136,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill pre-mortem -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill pre-mortem -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pre-mortem"
         ],
@@ -14742,7 +17146,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill pricing-strategy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill pricing-strategy -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "pricing-strategy"
         ],
@@ -14752,7 +17156,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill prioritization-frameworks -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill prioritization-frameworks -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "prioritization-frameworks"
         ],
@@ -14762,7 +17166,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill prioritize-assumptions -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill prioritize-assumptions -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "prioritize-assumptions"
         ],
@@ -14772,7 +17176,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill prioritize-features -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill prioritize-features -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "prioritize-features"
         ],
@@ -14782,7 +17186,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill privacy-policy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill privacy-policy -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "privacy-policy"
         ],
@@ -14792,7 +17196,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill product-name -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill product-name -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "product-name"
         ],
@@ -14802,7 +17206,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill product-strategy -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill product-strategy -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "product-strategy"
         ],
@@ -14812,7 +17216,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill product-vision -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill product-vision -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "product-vision"
         ],
@@ -14822,7 +17226,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill release-notes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill release-notes -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "release-notes"
         ],
@@ -14832,7 +17236,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill retro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill retro -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "retro"
         ],
@@ -14842,7 +17246,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill review-resume -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill review-resume -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "review-resume"
         ],
@@ -14852,7 +17256,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill sentiment-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill sentiment-analysis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "sentiment-analysis"
         ],
@@ -14862,7 +17266,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill shipping-artifacts -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill shipping-artifacts -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "shipping-artifacts"
         ],
@@ -14872,7 +17276,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill sprint-plan -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill sprint-plan -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "sprint-plan"
         ],
@@ -14882,7 +17286,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill sql-queries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill sql-queries -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "sql-queries"
         ],
@@ -14892,7 +17296,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill stakeholder-map -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill stakeholder-map -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "stakeholder-map"
         ],
@@ -14902,7 +17306,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill startup-canvas -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill startup-canvas -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "startup-canvas"
         ],
@@ -14912,7 +17316,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill strategy-red-team -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill strategy-red-team -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "strategy-red-team"
         ],
@@ -14922,7 +17326,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill summarize-interview -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill summarize-interview -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "summarize-interview"
         ],
@@ -14932,7 +17336,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill summarize-meeting -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill summarize-meeting -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "summarize-meeting"
         ],
@@ -14942,7 +17346,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill swot-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill swot-analysis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swot-analysis"
         ],
@@ -14952,7 +17356,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill test-scenarios -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill test-scenarios -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "test-scenarios"
         ],
@@ -14962,7 +17366,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill user-personas -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill user-personas -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "user-personas"
         ],
@@ -14972,7 +17376,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill user-segmentation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill user-segmentation -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "user-segmentation"
         ],
@@ -14982,7 +17386,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill user-stories -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill user-stories -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "user-stories"
         ],
@@ -14992,7 +17396,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill value-prop-statements -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill value-prop-statements -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "value-prop-statements"
         ],
@@ -15002,7 +17406,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill value-proposition -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill value-proposition -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "value-proposition"
         ],
@@ -15012,7 +17416,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add phuryn/pm-skills --skill wwas -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add phuryn/pm-skills --skill wwas -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "wwas"
         ],
@@ -15022,7 +17426,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add planetscale/database-skills --skill postgres --skill mysql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add planetscale/database-skills --skill postgres --skill mysql -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "mysql",
           "postgres"
@@ -15033,7 +17437,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add plannotator/effective-html --skill html -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add plannotator/effective-html --skill html -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "html"
         ],
@@ -15043,7 +17447,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add prisma/skills --skill prisma-client-api --skill prisma-cli --skill prisma-upgrade-v7 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add prisma/skills --skill prisma-client-api --skill prisma-cli --skill prisma-upgrade-v7 -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "prisma-cli",
           "prisma-client-api",
@@ -15055,7 +17459,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add prisma/skills --skill prisma-compute --skill prisma-database-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add prisma/skills --skill prisma-compute --skill prisma-database-setup -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "prisma-compute",
           "prisma-database-setup"
@@ -15066,7 +17470,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add prisma/skills --skill prisma-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add prisma/skills --skill prisma-postgres -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "prisma-postgres"
         ],
@@ -15076,7 +17480,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill define-hypothesis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill define-hypothesis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "define-hypothesis"
         ],
@@ -15086,7 +17490,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill define-jtbd-canvas -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill define-jtbd-canvas -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "define-jtbd-canvas"
         ],
@@ -15096,7 +17500,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill define-opportunity-tree -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill define-opportunity-tree -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "define-opportunity-tree"
         ],
@@ -15106,7 +17510,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill define-prioritization-framework -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill define-prioritization-framework -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "define-prioritization-framework"
         ],
@@ -15116,7 +17520,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill define-problem-statement -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill define-problem-statement -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "define-problem-statement"
         ],
@@ -15126,7 +17530,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill deliver-acceptance-criteria -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill deliver-acceptance-criteria -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "deliver-acceptance-criteria"
         ],
@@ -15136,7 +17540,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill deliver-edge-cases -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill deliver-edge-cases -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "deliver-edge-cases"
         ],
@@ -15146,7 +17550,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill deliver-launch-checklist -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill deliver-launch-checklist -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "deliver-launch-checklist"
         ],
@@ -15156,7 +17560,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill deliver-prd -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill deliver-prd -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "deliver-prd"
         ],
@@ -15166,7 +17570,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill deliver-release-notes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill deliver-release-notes -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "deliver-release-notes"
         ],
@@ -15176,7 +17580,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill deliver-user-stories -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill deliver-user-stories -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "deliver-user-stories"
         ],
@@ -15186,7 +17590,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill develop-adr -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill develop-adr -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "develop-adr"
         ],
@@ -15196,7 +17600,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill develop-design-rationale -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill develop-design-rationale -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "develop-design-rationale"
         ],
@@ -15206,7 +17610,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill develop-solution-brief -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill develop-solution-brief -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "develop-solution-brief"
         ],
@@ -15216,7 +17620,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill develop-spike-summary -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill develop-spike-summary -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "develop-spike-summary"
         ],
@@ -15226,7 +17630,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill discover-competitive-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill discover-competitive-analysis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "discover-competitive-analysis"
         ],
@@ -15236,7 +17640,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill discover-interview-synthesis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill discover-interview-synthesis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "discover-interview-synthesis"
         ],
@@ -15246,7 +17650,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill discover-journey-map -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill discover-journey-map -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "discover-journey-map"
         ],
@@ -15256,7 +17660,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill discover-market-sizing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill discover-market-sizing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "discover-market-sizing"
         ],
@@ -15266,7 +17670,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill discover-stakeholder-summary -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill discover-stakeholder-summary -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "discover-stakeholder-summary"
         ],
@@ -15276,7 +17680,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-build-risk-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-build-risk-review -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "foundation-build-risk-review"
         ],
@@ -15286,7 +17690,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-lean-canvas -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-lean-canvas -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "foundation-lean-canvas"
         ],
@@ -15296,7 +17700,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-meeting-agenda -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-meeting-agenda -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "foundation-meeting-agenda"
         ],
@@ -15306,7 +17710,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-meeting-brief -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-meeting-brief -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "foundation-meeting-brief"
         ],
@@ -15316,7 +17720,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-meeting-recap -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-meeting-recap -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "foundation-meeting-recap"
         ],
@@ -15326,7 +17730,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-meeting-synthesize -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-meeting-synthesize -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "foundation-meeting-synthesize"
         ],
@@ -15336,7 +17740,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-okr-writer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-okr-writer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "foundation-okr-writer"
         ],
@@ -15346,7 +17750,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-persona -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-persona -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "foundation-persona"
         ],
@@ -15356,7 +17760,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-prioritized-action-plan -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-prioritized-action-plan -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "foundation-prioritized-action-plan"
         ],
@@ -15366,7 +17770,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-stakeholder-briefings -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-stakeholder-briefings -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "foundation-stakeholder-briefings"
         ],
@@ -15376,7 +17780,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-stakeholder-update -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill foundation-stakeholder-update -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "foundation-stakeholder-update"
         ],
@@ -15386,7 +17790,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill iterate-lessons-log -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill iterate-lessons-log -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "iterate-lessons-log"
         ],
@@ -15396,7 +17800,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill iterate-pivot-decision -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill iterate-pivot-decision -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "iterate-pivot-decision"
         ],
@@ -15406,7 +17810,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill iterate-refinement-notes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill iterate-refinement-notes -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "iterate-refinement-notes"
         ],
@@ -15416,7 +17820,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill iterate-retrospective -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill iterate-retrospective -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "iterate-retrospective"
         ],
@@ -15426,7 +17830,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill measure-dashboard-requirements -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill measure-dashboard-requirements -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "measure-dashboard-requirements"
         ],
@@ -15436,7 +17840,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill measure-experiment-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill measure-experiment-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "measure-experiment-design"
         ],
@@ -15446,7 +17850,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill measure-experiment-results -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill measure-experiment-results -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "measure-experiment-results"
         ],
@@ -15456,7 +17860,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill measure-instrumentation-spec -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill measure-instrumentation-spec -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "measure-instrumentation-spec"
         ],
@@ -15466,7 +17870,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill measure-okr-grader -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill measure-okr-grader -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "measure-okr-grader"
         ],
@@ -15476,7 +17880,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill measure-survey-analysis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill measure-survey-analysis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "measure-survey-analysis"
         ],
@@ -15486,7 +17890,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-brief -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-brief -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-design-sprint-brief"
         ],
@@ -15496,7 +17900,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-decide-and-storyboard -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-decide-and-storyboard -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-design-sprint-decide-and-storyboard"
         ],
@@ -15506,7 +17910,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-map-and-target -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-map-and-target -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-design-sprint-map-and-target"
         ],
@@ -15516,7 +17920,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-prototype-plan -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-prototype-plan -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-design-sprint-prototype-plan"
         ],
@@ -15526,7 +17930,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-readiness -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-readiness -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-design-sprint-readiness"
         ],
@@ -15536,7 +17940,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-sketch -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-sketch -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-design-sprint-sketch"
         ],
@@ -15546,7 +17950,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-test-and-score -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-design-sprint-test-and-score -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-design-sprint-test-and-score"
         ],
@@ -15556,7 +17960,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-approach-options -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-approach-options -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-foundation-sprint-approach-options"
         ],
@@ -15566,7 +17970,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-basics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-basics -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-foundation-sprint-basics"
         ],
@@ -15576,7 +17980,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-brief -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-brief -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-foundation-sprint-brief"
         ],
@@ -15586,7 +17990,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-differentiation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-differentiation -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-foundation-sprint-differentiation"
         ],
@@ -15596,7 +18000,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-founding-hypothesis -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-founding-hypothesis -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-foundation-sprint-founding-hypothesis"
         ],
@@ -15606,7 +18010,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-magic-lenses -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-magic-lenses -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-foundation-sprint-magic-lenses"
         ],
@@ -15616,7 +18020,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-readiness -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-foundation-sprint-readiness -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-foundation-sprint-readiness"
         ],
@@ -15626,7 +18030,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill tool-note-and-vote -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill tool-note-and-vote -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "tool-note-and-vote"
         ],
@@ -15636,7 +18040,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill utility-mermaid-diagrams -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill utility-mermaid-diagrams -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "utility-mermaid-diagrams"
         ],
@@ -15646,7 +18050,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-changelog-curator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-changelog-curator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "utility-pm-changelog-curator"
         ],
@@ -15656,7 +18060,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-critic -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-critic -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "utility-pm-critic"
         ],
@@ -15666,7 +18070,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-release-conductor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-release-conductor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "utility-pm-release-conductor"
         ],
@@ -15676,7 +18080,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-skill-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-skill-auditor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "utility-pm-skill-auditor"
         ],
@@ -15686,7 +18090,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-skill-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-skill-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "utility-pm-skill-builder"
         ],
@@ -15696,7 +18100,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-skill-iterate -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-skill-iterate -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "utility-pm-skill-iterate"
         ],
@@ -15706,7 +18110,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-skill-validate -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-skill-validate -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "utility-pm-skill-validate"
         ],
@@ -15716,7 +18120,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-workflow-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-workflow-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "utility-pm-workflow-builder"
         ],
@@ -15726,7 +18130,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-workflow-orchestrator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill utility-pm-workflow-orchestrator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "utility-pm-workflow-orchestrator"
         ],
@@ -15736,7 +18140,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill utility-slideshow-creator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill utility-slideshow-creator -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "utility-slideshow-creator"
         ],
@@ -15746,7 +18150,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add product-on-purpose/pm-skills --skill utility-update-pm-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add product-on-purpose/pm-skills --skill utility-update-pm-skills -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "utility-update-pm-skills"
         ],
@@ -15756,7 +18160,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add pulumi/agent-skills --skill pulumi-best-practices --skill pulumi-component --skill pulumi-automation-api --skill pulumi-esc -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add pulumi/agent-skills --skill pulumi-best-practices --skill pulumi-component --skill pulumi-automation-api --skill pulumi-esc -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "pulumi-automation-api",
           "pulumi-best-practices",
@@ -15769,7 +18173,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill logfire-instrumentation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill logfire-instrumentation -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "building-pydantic-ai-agents",
           "logfire-instrumentation"
@@ -15780,7 +18184,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add pydantic/skills --skill pydantic-ai-harness -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add pydantic/skills --skill pydantic-ai-harness -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "pydantic-ai-harness"
         ],
@@ -15790,7 +18194,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add railwayapp/railway-skills --skill use-railway -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add railwayapp/railway-skills --skill use-railway -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "use-railway"
         ],
@@ -15800,7 +18204,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add redis/agent-skills --skill redis-core -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "redis-core"
         ],
@@ -15810,7 +18214,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add redis/agent-skills --skill redis-security --skill redis-clustering --skill redis-observability -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add redis/agent-skills --skill redis-security --skill redis-clustering --skill redis-observability -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "redis-clustering",
           "redis-observability",
@@ -15822,7 +18226,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add redis/agent-skills --skill redis-vector-search --skill redis-semantic-cache -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add redis/agent-skills --skill redis-vector-search --skill redis-semantic-cache -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "redis-semantic-cache",
           "redis-vector-search"
@@ -15833,7 +18237,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add remotion-dev/skills --skill remotion-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add remotion-dev/skills --skill remotion-best-practices -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "remotion-best-practices"
         ],
@@ -15843,7 +18247,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add render-oss/skills --skill render-deploy --skill render-blueprints --skill render-debug -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add render-oss/skills --skill render-deploy --skill render-blueprints --skill render-debug -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "render-blueprints",
           "render-debug",
@@ -15855,7 +18259,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rgmez/apple-accessibility-skills --skill appkit-accessibility-auditor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "appkit-accessibility-auditor"
         ],
@@ -15865,7 +18269,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rgmez/apple-accessibility-skills --skill swiftui-accessibility-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rgmez/apple-accessibility-skills --skill swiftui-accessibility-auditor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swiftui-accessibility-auditor"
         ],
@@ -15875,7 +18279,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rgmez/apple-accessibility-skills --skill uikit-accessibility-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rgmez/apple-accessibility-skills --skill uikit-accessibility-auditor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "uikit-accessibility-auditor"
         ],
@@ -15885,7 +18289,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-app-create-ui -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-app-create-ui -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-app-create-ui"
         ],
@@ -15895,7 +18299,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-apple-ads -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-apple-ads -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-apple-ads"
         ],
@@ -15905,7 +18309,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-aso-audit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-aso-audit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-aso-audit"
         ],
@@ -15915,7 +18319,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-build-lifecycle -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-build-lifecycle -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-build-lifecycle"
         ],
@@ -15925,7 +18329,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-cli-usage -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-cli-usage -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-cli-usage"
         ],
@@ -15935,7 +18339,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-crash-triage -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-crash-triage -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-crash-triage"
         ],
@@ -15945,7 +18349,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-id-resolver -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-id-resolver -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-id-resolver"
         ],
@@ -15955,7 +18359,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-localize-metadata -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-localize-metadata -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-localize-metadata"
         ],
@@ -15965,7 +18369,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-metadata-sync -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-metadata-sync -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-metadata-sync"
         ],
@@ -15975,7 +18379,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-notarization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-notarization -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-notarization"
         ],
@@ -15985,7 +18389,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-ppp-pricing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-ppp-pricing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-ppp-pricing"
         ],
@@ -15995,7 +18399,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-release-flow -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-release-flow -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-release-flow"
         ],
@@ -16005,7 +18409,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-revenuecat-catalog-sync -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-revenuecat-catalog-sync -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-revenuecat-catalog-sync"
         ],
@@ -16015,7 +18419,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-screenshot-resize -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-screenshot-resize -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-screenshot-resize"
         ],
@@ -16025,7 +18429,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-shots-pipeline -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-shots-pipeline -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-shots-pipeline"
         ],
@@ -16035,7 +18439,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-signing-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-signing-setup -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-signing-setup"
         ],
@@ -16045,7 +18449,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-submission-health -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-submission-health -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-submission-health"
         ],
@@ -16055,7 +18459,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-subscription-localization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-subscription-localization -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-subscription-localization"
         ],
@@ -16065,7 +18469,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-testflight-orchestration -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-testflight-orchestration -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-testflight-orchestration"
         ],
@@ -16075,7 +18479,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-wall-submit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-wall-submit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-wall-submit"
         ],
@@ -16085,7 +18489,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-whats-new-writer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-whats-new-writer -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-whats-new-writer"
         ],
@@ -16095,7 +18499,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-workflow -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-workflow -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-workflow"
         ],
@@ -16105,7 +18509,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-xcode-build -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rorkai/app-store-connect-cli-skills --skill asc-xcode-build -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "asc-xcode-build"
         ],
@@ -16115,7 +18519,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill app-store -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill app-store -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "app-store"
         ],
@@ -16125,7 +18529,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill apple-intelligence -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill apple-intelligence -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "apple-intelligence"
         ],
@@ -16135,7 +18539,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill core-ml -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill core-ml -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "core-ml"
         ],
@@ -16145,7 +18549,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill foundation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill foundation -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "foundation"
         ],
@@ -16155,7 +18559,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill generators -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill generators -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "generators"
         ],
@@ -16165,7 +18569,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill growth -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill growth -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "growth"
         ],
@@ -16175,7 +18579,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill ios-development -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill ios-development -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "ios-development"
         ],
@@ -16185,7 +18589,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill legal -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill legal -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "legal"
         ],
@@ -16195,7 +18599,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill macos-development -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill macos-development -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "macos-development"
         ],
@@ -16205,7 +18609,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill mapkit -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill mapkit -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "mapkit"
         ],
@@ -16215,7 +18619,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill monetization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill monetization -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "monetization"
         ],
@@ -16225,7 +18629,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill product-development -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill product-development -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "product-development"
         ],
@@ -16235,7 +18639,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill release-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill release-review -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "release-review"
         ],
@@ -16245,7 +18649,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill security -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill security -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "security"
         ],
@@ -16255,7 +18659,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill shared -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill shared -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "shared"
         ],
@@ -16265,7 +18669,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill swift-development -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill swift-development -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swift-development"
         ],
@@ -16275,7 +18679,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill swiftdata -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill swiftdata -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swiftdata"
         ],
@@ -16285,7 +18689,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill swiftui -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill swiftui -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swiftui"
         ],
@@ -16295,7 +18699,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill testing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill testing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "testing"
         ],
@@ -16305,7 +18709,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add rshankras/claude-code-apple-skills --skill visionos -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add rshankras/claude-code-apple-skills --skill visionos -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "visionos"
         ],
@@ -16315,7 +18719,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "golang-benchmark",
           "golang-cli",
@@ -16345,7 +18749,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add shaom/infocard-skills --skill editorial-card-screenshot -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add shaom/infocard-skills --skill editorial-card-screenshot -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "editorial-card-screenshot"
         ],
@@ -16355,7 +18759,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add shopify/shopify-ai-toolkit --skill shopify-dev --skill shopify-liquid --skill shopify-storefront-graphql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add shopify/shopify-ai-toolkit --skill shopify-dev --skill shopify-liquid --skill shopify-storefront-graphql -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "shopify-dev",
           "shopify-liquid",
@@ -16367,7 +18771,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add sickn33/antigravity-awesome-skills --skill docker-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add sickn33/antigravity-awesome-skills --skill docker-expert -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "docker-expert"
         ],
@@ -16377,7 +18781,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add solana-foundation/solana-dev-skill --skill solana-dev -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add solana-foundation/solana-dev-skill --skill solana-dev -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "solana-dev"
         ],
@@ -16387,7 +18791,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "upgrade-stripe"
         ],
@@ -16397,7 +18801,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add sudokar/openspec-plus --skill openspec-plus-apply -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add sudokar/openspec-plus --skill openspec-plus-apply -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-plus-apply"
         ],
@@ -16407,7 +18811,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add sudokar/openspec-plus --skill openspec-plus-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add sudokar/openspec-plus --skill openspec-plus-design -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-plus-design"
         ],
@@ -16417,7 +18821,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add sudokar/openspec-plus --skill openspec-plus-proposal -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add sudokar/openspec-plus --skill openspec-plus-proposal -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-plus-proposal"
         ],
@@ -16427,7 +18831,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add sudokar/openspec-plus --skill openspec-plus-spec -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add sudokar/openspec-plus --skill openspec-plus-spec -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-plus-spec"
         ],
@@ -16437,7 +18841,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add sudokar/openspec-plus --skill openspec-plus-tasks -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add sudokar/openspec-plus --skill openspec-plus-tasks -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-plus-tasks"
         ],
@@ -16447,7 +18851,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add sudokar/openspec-plus --skill openspec-plus-tdd -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add sudokar/openspec-plus --skill openspec-plus-tdd -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "openspec-plus-tdd"
         ],
@@ -16457,7 +18861,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add summer521521/Zotero_Research_plugin --skill zotero-research -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add summer521521/Zotero_Research_plugin --skill zotero-research -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "zotero-research"
         ],
@@ -16467,7 +18871,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add supabase/agent-skills --skill supabase -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add supabase/agent-skills --skill supabase -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "supabase"
         ],
@@ -16477,7 +18881,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "supabase-postgres-best-practices"
         ],
@@ -16487,7 +18891,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add temporalio/skill-temporal-developer --skill temporal-developer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add temporalio/skill-temporal-developer --skill temporal-developer -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "temporal-developer"
         ],
@@ -16497,7 +18901,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add https://github.com/teng-lin/notebooklm-py --skill notebooklm -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add https://github.com/teng-lin/notebooklm-py --skill notebooklm -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "notebooklm"
         ],
@@ -16507,7 +18911,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tim-osterhus/codex-remotion-plugin --skill remotion-video-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tim-osterhus/codex-remotion-plugin --skill remotion-video-builder -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "remotion-video-builder"
         ],
@@ -16517,7 +18921,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add timbroddin/app-store-aso-skill --skill app-store-aso -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add timbroddin/app-store-aso-skill --skill app-store-aso -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "app-store-aso"
         ],
@@ -16527,7 +18931,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add timescale/pg-aiguide --skill design-postgres-tables -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add timescale/pg-aiguide --skill design-postgres-tables -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "design-postgres-tables"
         ],
@@ -16537,7 +18941,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-archetypes -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-archetypes -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-archetypes"
         ],
@@ -16547,7 +18951,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-bayesian -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-bayesian -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-bayesian"
         ],
@@ -16557,7 +18961,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-bounded-rationality -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-bounded-rationality -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-bounded-rationality"
         ],
@@ -16567,7 +18971,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-circle-of-competence -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-circle-of-competence -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-circle-of-competence"
         ],
@@ -16577,7 +18981,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-cynefin -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-cynefin -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-cynefin"
         ],
@@ -16587,7 +18991,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-debiasing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-debiasing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-debiasing"
         ],
@@ -16597,7 +19001,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-dual-process -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-dual-process -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-dual-process"
         ],
@@ -16607,7 +19011,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-effectuation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-effectuation -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-effectuation"
         ],
@@ -16617,7 +19021,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-feedback-loops -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-feedback-loops -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-feedback-loops"
         ],
@@ -16627,7 +19031,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-fermi-estimation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-fermi-estimation -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-fermi-estimation"
         ],
@@ -16637,7 +19041,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-first-principles -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-first-principles -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-first-principles"
         ],
@@ -16647,7 +19051,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-five-whys-plus -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-five-whys-plus -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-five-whys-plus"
         ],
@@ -16657,7 +19061,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-inversion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-inversion -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-inversion"
         ],
@@ -16667,7 +19071,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-jobs-to-be-done -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-jobs-to-be-done -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-jobs-to-be-done"
         ],
@@ -16677,7 +19081,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-kepner-tregoe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-kepner-tregoe -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-kepner-tregoe"
         ],
@@ -16687,7 +19091,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-leverage-points -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-leverage-points -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-leverage-points"
         ],
@@ -16697,7 +19101,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-lindy-effect -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-lindy-effect -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-lindy-effect"
         ],
@@ -16707,7 +19111,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-map-territory -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-map-territory -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-map-territory"
         ],
@@ -16717,7 +19121,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-margin-of-safety -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-margin-of-safety -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-margin-of-safety"
         ],
@@ -16727,7 +19131,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-model-combination -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-model-combination -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-model-combination"
         ],
@@ -16737,7 +19141,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-model-router -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-model-router -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-model-router"
         ],
@@ -16747,7 +19151,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-model-selection -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-model-selection -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-model-selection"
         ],
@@ -16757,7 +19161,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-occams-razor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-occams-razor -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-occams-razor"
         ],
@@ -16767,7 +19171,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-ooda -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-ooda -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-ooda"
         ],
@@ -16777,7 +19181,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-opportunity-cost -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-opportunity-cost -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-opportunity-cost"
         ],
@@ -16787,7 +19191,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-pre-mortem -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-pre-mortem -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-pre-mortem"
         ],
@@ -16797,7 +19201,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-probabilistic -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-probabilistic -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-probabilistic"
         ],
@@ -16807,7 +19211,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-red-team -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-red-team -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-red-team"
         ],
@@ -16817,7 +19221,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-regret-minimization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-regret-minimization -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-regret-minimization"
         ],
@@ -16827,7 +19231,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-reversibility -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-reversibility -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-reversibility"
         ],
@@ -16837,7 +19241,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-scientific-method -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-scientific-method -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-scientific-method"
         ],
@@ -16847,7 +19251,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-second-order -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-second-order -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-second-order"
         ],
@@ -16857,7 +19261,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-socratic -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-socratic -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-socratic"
         ],
@@ -16867,7 +19271,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-steel-manning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-steel-manning -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-steel-manning"
         ],
@@ -16877,7 +19281,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-systems -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-systems -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-systems"
         ],
@@ -16887,7 +19291,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-theory-of-constraints -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-theory-of-constraints -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-theory-of-constraints"
         ],
@@ -16897,7 +19301,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-thought-experiment -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-thought-experiment -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-thought-experiment"
         ],
@@ -16907,7 +19311,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-triz -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-triz -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-triz"
         ],
@@ -16917,7 +19321,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-via-negativa -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tjboudreaux/cc-thinking-skills --skill thinking-via-negativa -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "thinking-via-negativa"
         ],
@@ -16927,7 +19331,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "codeql",
           "property-based-testing",
@@ -16939,7 +19343,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "agentic-actions-auditor",
           "differential-review",
@@ -16954,7 +19358,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add truongduy2611/app-store-preflight-skills --skill app-store-preflight-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add truongduy2611/app-store-preflight-skills --skill app-store-preflight-skills -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "app-store-preflight-skills"
         ],
@@ -16964,7 +19368,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add tt-a1i/archify --skill archify -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add tt-a1i/archify --skill archify -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "archify"
         ],
@@ -16974,7 +19378,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add twostraws/Swift-Concurrency-Agent-Skill --skill swift-concurrency-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add twostraws/Swift-Concurrency-Agent-Skill --skill swift-concurrency-pro -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swift-concurrency-pro"
         ],
@@ -16984,7 +19388,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add twostraws/Swift-Testing-Agent-Skill --skill swift-testing-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add twostraws/Swift-Testing-Agent-Skill --skill swift-testing-pro -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swift-testing-pro"
         ],
@@ -16994,7 +19398,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add twostraws/SwiftData-Agent-Skill --skill swiftdata-pro -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add twostraws/SwiftData-Agent-Skill --skill swiftdata-pro -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swiftdata-pro"
         ],
@@ -17004,7 +19408,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add vanab/swiftdata-agent-skill --skill swiftdata-expert-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add vanab/swiftdata-agent-skill --skill swiftdata-expert-skill -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "swiftdata-expert-skill"
         ],
@@ -17014,7 +19418,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add vercel-labs/agent-skills --skill deploy-to-vercel --skill vercel-optimize -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add vercel-labs/agent-skills --skill deploy-to-vercel --skill vercel-optimize -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "deploy-to-vercel",
           "vercel-optimize"
@@ -17025,7 +19429,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill vercel-react-native-skills -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "vercel-composition-patterns",
           "vercel-react-best-practices",
@@ -17038,7 +19442,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "next-best-practices",
           "next-cache-components",
@@ -17050,7 +19454,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add wgwtest/novel-writing --skill novel-writing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add wgwtest/novel-writing --skill novel-writing -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "novel-writing"
         ],
@@ -17060,7 +19464,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add wshobson/agents --skill fastapi-templates --skill nodejs-backend-patterns --skill postmortem-writing --skill on-call-handoff-patterns --skill nx-workspace-patterns --skill turborepo-caching --skill langchain-architecture --skill llm-evaluation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add wshobson/agents --skill fastapi-templates --skill nodejs-backend-patterns --skill postmortem-writing --skill on-call-handoff-patterns --skill nx-workspace-patterns --skill turborepo-caching --skill langchain-architecture --skill llm-evaluation -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "fastapi-templates",
           "langchain-architecture",
@@ -17077,7 +19481,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add wshobson/agents --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add wshobson/agents --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "gitops-workflow",
           "helm-chart-scaffolding",
@@ -17091,7 +19495,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add wshobson/agents --skill openapi-spec-generation --skill uv-package-manager --skill changelog-automation --skill debugging-strategies -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add wshobson/agents --skill openapi-spec-generation --skill uv-package-manager --skill changelog-automation --skill debugging-strategies -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "changelog-automation",
           "debugging-strategies",
@@ -17104,7 +19508,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a claude-code codex crush cursor opencode",
         "skills": [
           "database-migration",
           "deployment-pipeline-design",
@@ -17126,7 +19530,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add wzyn20051216/solidworks-automation-skill --skill solidworks-automation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add wzyn20051216/solidworks-automation-skill --skill solidworks-automation -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "solidworks-automation"
         ],
@@ -17146,7 +19550,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add yctimlin/mcp_excalidraw --skill excalidraw-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add yctimlin/mcp_excalidraw --skill excalidraw-skill -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "excalidraw-skill"
         ],
@@ -17156,7 +19560,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add yujiachen-y/codebase-recon-skill --skill codebase-recon -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add yujiachen-y/codebase-recon-skill --skill codebase-recon -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "codebase-recon"
         ],
@@ -17166,7 +19570,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add yuritoledo/openspec-tdd --skill opsx:tdd -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add yuritoledo/openspec-tdd --skill opsx:tdd -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "opsx-tdd"
         ],
@@ -17176,7 +19580,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add zarazhangrui/frontend-slides --skill frontend-slides -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add zarazhangrui/frontend-slides --skill frontend-slides -y -g -a claude-code codex crush cursor grok opencode",
         "skills": [
           "frontend-slides"
         ],
@@ -17201,12 +19605,6 @@ const baseSiteData = {
   },
   "supportedAgents": [
     {
-      "description": "Advanced Agentic Coding assistant.",
-      "href": "https://antigravity.google/",
-      "id": "antigravity",
-      "label": "Antigravity"
-    },
-    {
       "description": "Anthropic's official CLI for Claude.",
       "href": "https://docs.anthropic.com/en/docs/claude-code",
       "id": "claude-code",
@@ -17220,7 +19618,7 @@ const baseSiteData = {
     },
     {
       "description": "Autonomous development agent focused on fast terminal workflows.",
-      "href": "https://github.com/crush-ai/crush",
+      "href": "https://github.com/charmbracelet/crush",
       "id": "crush",
       "label": "Crush"
     },
@@ -17229,18 +19627,6 @@ const baseSiteData = {
       "href": "https://cursor.com/",
       "id": "cursor",
       "label": "Cursor"
-    },
-    {
-      "description": "Google's command-line interface for Gemini.",
-      "href": "https://github.com/google/gemini-cli",
-      "id": "gemini-cli",
-      "label": "Gemini CLI"
-    },
-    {
-      "description": "Your AI pair programmer, right in your IDE.",
-      "href": "https://github.com/features/copilot",
-      "id": "github-copilot",
-      "label": "GitHub Copilot"
     },
     {
       "description": "xAI's agentic coding CLI with skills, MCP, and Claude Code compatibility.",

@@ -9,17 +9,18 @@ Runtimes are host environments that consume repo-managed surfaces through native
 
 <Badge text="compatibility truth" variant="note" size="large" />
 
+<Aside type="caution" title="Projection capability is not runtime readiness">
+Rows describe repo-owned instruction, skill, tool, hook, and agent projections. They do not assert that a local binary is installed, authenticated, or live-smoke validated; use Harness Support for those gates.
+</Aside>
+
 <div class="runtime-table-wrapper">
 <table>
 <thead><tr><th>Runtime</th><th>Instructions</th><th>Skills</th><th>Tools</th><th>Hooks</th><th>Agents</th></tr></thead>
 <tbody>
-<tr><td>Antigravity</td><td>generated</td><td>Skills CLI</td><td>MCP projection</td><td>limited</td><td>not primary</td></tr>
 <tr><td>Claude Code</td><td>native import</td><td>plugin/Skills CLI</td><td>MCP</td><td>generated</td><td>native subagents</td></tr>
 <tr><td>Codex</td><td>AGENTS.md + config</td><td>plugin/Skills CLI</td><td>MCPHub</td><td>generated</td><td>dynamic delegation</td></tr>
 <tr><td>Crush</td><td>AGENTS.md</td><td>Skills CLI</td><td>MCP projection</td><td>limited</td><td>not primary</td></tr>
 <tr><td>Cursor</td><td>rules + AGENTS.md</td><td>Skills CLI</td><td>MCPHub</td><td>native hooks</td><td><code>.cursor/agents</code></td></tr>
-<tr><td>Gemini CLI</td><td>GEMINI.md</td><td>Skills CLI</td><td>MCP projection</td><td>generated</td><td>not primary</td></tr>
-<tr><td>GitHub Copilot</td><td>generated instructions</td><td>Skills CLI</td><td>MCP projection</td><td>baseline hooks</td><td>Copilot-only agents</td></tr>
 <tr><td>Grok Build</td><td>generated config</td><td>mirrored skills</td><td>MCPHub</td><td>generated</td><td>delegation</td></tr>
 <tr><td>OpenCode</td><td>AGENTS.md</td><td>Skills CLI</td><td>MCPHub + plugins</td><td>generated</td><td>native agents</td></tr>
 </tbody>
@@ -30,14 +31,15 @@ Runtimes are host environments that consume repo-managed surfaces through native
 Use Harness Support for support tiers, fixture status, sync commands, rollback coverage, and validation commands.
 </Aside>
 
+<Aside type="caution" title="Candidate corpus runtime status">
+The July 2026 corpus is fully represented in repo catalogs and reconciled skill surfaces, but literal runtime activation is intentionally narrower. The successor ledger accepts 20 of 65 CLI, library, MCP, and plugin artifacts: 12 of 31 CLI/library artifacts, 0 of 17 MCP artifacts, and 8 of 17 plugins have bounded behavior and rollback evidence. The remaining 45 stay policy- or credential-gated. This page therefore does not claim universal local usability.
+</Aside>
+
 <CardGrid>
-  <LinkCard title="Antigravity" href="https://antigravity.google/" description="Advanced Agentic Coding assistant." />
   <LinkCard title="Claude Code" href="https://docs.anthropic.com/en/docs/claude-code" description="Anthropic's official CLI for Claude." />
   <LinkCard title="Codex" href="https://github.com/openai/codex" description="Autonomous coding workflows for command-line development." />
-  <LinkCard title="Crush" href="https://github.com/crush-ai/crush" description="Autonomous development agent focused on fast terminal workflows." />
+  <LinkCard title="Crush" href="https://github.com/charmbracelet/crush" description="Autonomous development agent focused on fast terminal workflows." />
   <LinkCard title="Cursor" href="https://cursor.com/" description="The AI Code Editor." />
-  <LinkCard title="Gemini CLI" href="https://github.com/google/gemini-cli" description="Google's command-line interface for Gemini." />
-  <LinkCard title="GitHub Copilot" href="https://github.com/features/copilot" description="Your AI pair programmer, right in your IDE." />
   <LinkCard title="Grok Build" href="https://x.ai/cli" description="xAI's agentic coding CLI with skills, MCP, and Claude Code compatibility." />
   <LinkCard title="OpenCode" href="https://github.com/anomalyco/opencode" description="Native AGENTS.md support plus repo-level OpenCode config and subagents." />
   <LinkCard title="Harness Support" href="/harness-support/" description="Fixture-backed support tiers and validation commands." />

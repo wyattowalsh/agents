@@ -41,10 +41,25 @@ After `apm compile -t opencode`, always re-run that sync so APM's portable agent
 - Permission rules use a simple `allow` / `ask` / `deny` vocabulary. Patterns support globs (`*`) and exact command prefixes.
 - This file is **not** part of the portable agent contract. It is an implementation detail of the OpenCode harness integration.
 
+## Task delegation policy
+
+OpenCode `permission.task` allowlists for `orchestrator` and `triage-lead` are owned by
+`config/agent-delegation-policy.json`. Materialize overlay task blocks before sync:
+
+```bash
+uv run python scripts/materialize_opencode_task_permissions.py --apply
+just sync-opencode
+```
+
+Use `--check` (default) to fail when `config/opencode-agents.json` drifts from policy.
+`tests/test_agent_delegation_policy.py` enforces parity in CI.
+
 ## Maintenance
 
 When a new agent is added to `agents/`:
 
 1. Add a matching entry to `config/opencode-agents.json` with OpenCode runtime keys.
-2. Run `just sync-opencode` (or the `sync_agent_stack.py` command above).
-3. Keep portable frontmatter in `agents/<name>.md` minimal (`name`, `description`, and documented optional fields).
+2. Update `config/agent-delegation-policy.json` when the agent is delegatable from `orchestrator` or `triage-lead`.
+3. Run `uv run python scripts/materialize_opencode_task_permissions.py --apply`.
+4. Run `just sync-opencode` (or the `sync_agent_stack.py` command above).
+5. Keep portable frontmatter in `agents/<name>.md` minimal (`name`, `description`, and documented optional fields).

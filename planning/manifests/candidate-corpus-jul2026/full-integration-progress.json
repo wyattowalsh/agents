@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-16T02:52:03.935745+00:00",
+  "generated_at": "2026-07-29T09:29:12.584972+00:00",
   "phase": "corpus-integration-complete",
   "complete": true,
   "raw_candidates": 293,
@@ -31,9 +31,9 @@
     "ready_for_repo_promotion": 0,
     "ready_for_live_install": 0,
     "terminal_native_or_hard_blocked": 168,
-    "terminal_non_install_rows": 162,
-    "promoted_unique_targets": 115,
-    "promoted_installable_rows": 1267,
+    "terminal_non_install_rows": 158,
+    "promoted_unique_targets": 114,
+    "promoted_installable_rows": 1266,
     "integrated_targets": 289,
     "unintegrated_targets": 0,
     "integration_classification_counts": {
@@ -44,7 +44,7 @@
     },
     "integrated_quarantine_targets": 4,
     "active_install_blocks": 4,
-    "recorded_install_evidence_rows": 1267
+    "recorded_install_evidence_rows": 1266
   },
   "promotion_waves": {
     "W00": 121,
@@ -52,30 +52,30 @@
     "W02": 3,
     "W03": 38,
     "W04": 14,
-    "W05": 5,
+    "W05": 4,
     "W06": 11,
-    "W07": 15,
+    "W07": 16,
     "W08": 68,
     "W99": 4
   },
   "live_install": {
     "eligible_count": 0,
     "status": "no-live-install-commands-emitted",
-    "installed_skill_rows": 1267,
-    "recorded_install_evidence_rows": 1267,
+    "installed_skill_rows": 1266,
+    "recorded_install_evidence_rows": 1266,
     "new_live_install_commands_emitted": 0,
-    "installed_path_refs": 4031,
-    "verified_skill_md_count": 4031,
+    "installed_path_refs": 4028,
+    "verified_skill_md_count": 4028,
     "missing_skill_md_count": 0,
     "reason": "live-install-command-preview.json remains the no-new-live-install gate artifact; promotion-overrides.json records prior non-dry-run Skills CLI install evidence.",
     "pre_overlay_preview_status": "live-install-command-preview.json remains the no-new-live-install gate artifact; promotion-overrides.json and catalog-authoring-summary.json record reviewed install evidence.",
     "harness_assurance_complete": true,
-    "harness_count": 9,
+    "harness_count": 6,
     "harness_totals": {
-      "already_present": 14400,
+      "already_present": 9696,
       "missing": 0,
       "pin_blocked": 0,
-      "unresolved": 1530,
+      "unresolved": 1019,
       "commands": 0
     }
   },
@@ -94,12 +94,14 @@
     "promotion_queue_drained": true,
     "installed_paths_verified": true,
     "harness_install_assurance": true,
-    "non_skill_install_assurance": true
+    "non_skill_install_assurance": true,
+    "runtime_activation_model": true
   },
   "completion_errors": [],
-  "completion_scope": "Complete for the July 2026 corpus: every normalized target maps to a permanent catalog integration and one runtime disposition; 1267 skill rows are reconciled across nine harnesses and 63/63 non-skill artifacts are verified, while candidate MCPs, broad-hook plugins, credentials, and quarantines retain their explicit activation gates.",
+  "completion_scope": "Complete for the July 2026 corpus: every normalized target maps to a permanent catalog integration and one runtime disposition; 1266 skill rows are reconciled across 6 supported harnesses and the successor ledger discovers 65 runtime artifacts, accepts 20, and keeps 45 fail-closed. Literal full runtime usability remains a separate gate.",
   "non_skill_install": {
     "complete": true,
+    "scope": "historical-package-config-inventory",
     "unique_target_count": 289,
     "totals": {
       "runtime_artifacts": 63,
@@ -113,8 +115,8 @@
         "installed-mixed-runtime": 10,
         "integrated-non-executable-surface": 213,
         "not-applicable-skill-only": 20,
-        "registered-disabled-plugin": 2,
-        "registered-plugin": 8
+        "registered-disabled-plugin": 3,
+        "registered-plugin": 7
       },
       "artifact_kind_counts": {
         "cli": 29,
@@ -125,13 +127,28 @@
     },
     "assurance_file": "non-skill-install-assurance.json"
   },
+  "runtime_activation": {
+    "assurance_file": "runtime-activation-assurance.json",
+    "source_target_count": 289,
+    "runtime_artifact_count": 65,
+    "accepted": 20,
+    "incomplete": 45,
+    "kind_counts": {
+      "cli": 30,
+      "library": 1,
+      "mcp": 17,
+      "plugin": 17
+    },
+    "requested_full_usability": false,
+    "active_blocker_count": 45
+  },
   "terminal_decisions": {
     "raw_candidates_processed": 293,
     "unique_normalized_targets": 289,
-    "installable_curated_rows": 1267,
-    "live_installs_recorded": 1267,
+    "installable_curated_rows": 1266,
+    "live_installs_recorded": 1266,
     "new_live_install_commands_emitted": 0,
-    "terminal_non_install_rows": 162,
+    "terminal_non_install_rows": 158,
     "duplicate_raw_groups": 4,
     "conservative_intake_hard_blocks": 4,
     "integrated_targets": 289,

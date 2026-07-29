@@ -1,0 +1,34 @@
+{
+  "generated_at": "2026-07-29T07:15:45Z",
+  "branch": "main",
+  "total_dirty_paths": 4055,
+  "total_buckets": 22,
+  "buckets": {
+    "docs": 3605,
+    "skills": 110,
+    "planning": 78,
+    "tests": 57,
+    "scripts": 43,
+    "wagents": 31,
+    ".github": 30,
+    "platforms": 26,
+    ".apm": 16,
+    "openspec": 15,
+    "config": 13,
+    ".": 9,
+    ".claude": 4,
+    ".cursor": 4,
+    "instructions": 4,
+    ".antigravity": 2,
+    "hooks": 2,
+    "kb": 2,
+    ".gemini": 1,
+    ".grok": 1,
+    ".opencode": 1,
+    "mcp": 1
+  },
+  "notes": [
+    "path locks on dirty main; no worktree",
+    "skipped 1 non-path status lines"
+  ]
+}

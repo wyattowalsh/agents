@@ -71,7 +71,7 @@ def scan_hooks(*, repo_root: Path) -> dict[str, Any]:
                         projected.add(hid)
 
     reg_harnesses: set[str] = set(registry.get("by_harness", {}).keys())
-    # Alias targets count as covered (e.g. github-copilot-cli -> github-copilot).
+    # Alias targets count as covered when a registry provides a canonical target.
     for target in HARNESS_ALIASES.values():
         reg_harnesses.add(target)
 

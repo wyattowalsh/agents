@@ -1,0 +1,13 @@
+{
+  "id": "implicit-justfile-nl",
+  "prompt": "Please add a just recipe that runs our pytest suite with optional args, matching this repo's justfile style.",
+  "expected_output": "Implicit trigger into justfile create/edit with house-style [doc]/[group] recipe and *args passthrough, not a standalone shell script.",
+  "files": ["justfile"],
+  "assertions": [
+    "Recognizes justfile/just recipe intent without requiring the slash command",
+    "Routes to justfile skill create or edit rather than pure shell-scripter script generation",
+    "Follows house-style documentation/grouping conventions",
+    "Supports optional args passthrough for pytest",
+    "Inspects existing justfile before writing when one exists"
+  ]
+}

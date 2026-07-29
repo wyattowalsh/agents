@@ -9,7 +9,13 @@
       "max_long_edge": 2000,
       "max_pixels": 4000000,
       "max_bytes": 4500000,
-      "quality_steps": [90, 85, 80, 75, 70],
+      "quality_steps": [
+        90,
+        85,
+        80,
+        75,
+        70
+      ],
       "output_format": "jpeg"
     },
     "screenshot-text": {
@@ -17,7 +23,13 @@
       "max_long_edge": 3000,
       "max_pixels": 8000000,
       "max_bytes": 4500000,
-      "quality_steps": [95, 90, 85, 80, 75],
+      "quality_steps": [
+        95,
+        90,
+        85,
+        80,
+        75
+      ],
       "output_format": "jpeg"
     },
     "transparent": {
@@ -25,7 +37,13 @@
       "max_long_edge": 3000,
       "max_pixels": 8000000,
       "max_bytes": 4500000,
-      "quality_steps": [95, 90, 85, 80, 75],
+      "quality_steps": [
+        95,
+        90,
+        85,
+        80,
+        75
+      ],
       "output_format": "png"
     },
     "thumbnail": {
@@ -33,7 +51,12 @@
       "max_long_edge": 1024,
       "max_pixels": 1048576,
       "max_bytes": 1500000,
-      "quality_steps": [85, 80, 75, 70],
+      "quality_steps": [
+        85,
+        80,
+        75,
+        70
+      ],
       "output_format": "jpeg"
     }
   },
@@ -60,7 +83,10 @@
       "enforcement": "native-transform",
       "owner": "opencode-large-image-optimizer@latest",
       "assurance": "OpenCode consumes the repo-managed native plugin and config/opencode-large-image-optimizer.json.",
-      "repo_surfaces": ["opencode.json", "config/opencode-large-image-optimizer.json"]
+      "repo_surfaces": [
+        "opencode.json",
+        "config/opencode-large-image-optimizer.json"
+      ]
     },
     {
       "id": "codex",
@@ -68,7 +94,11 @@
       "enforcement": "pretool-mcp-image-paths-only",
       "owner": "image-input-optimizer-guard",
       "assurance": "Codex PreToolUse only reaches eligible tool inputs; oversized image paths are blocked with optimized retry paths, and native image attachments are not claimed.",
-      "repo_surfaces": ["config/hook-registry.json", "hooks/wagents-hook.py", ".codex/hooks.json"]
+      "repo_surfaces": [
+        "config/hook-registry.json",
+        "hooks/wagents-hook.py",
+        ".codex/hooks.json"
+      ]
     },
     {
       "id": "claude-code",
@@ -76,7 +106,11 @@
       "enforcement": "pretool-rewrite",
       "owner": "image-input-optimizer-guard",
       "assurance": "PreToolUse hook rewrites eligible image path inputs to cache-optimized derivatives when updatedInput is honored.",
-      "repo_surfaces": ["config/hook-registry.json", "hooks/wagents-hook.py", ".claude/settings.json"]
+      "repo_surfaces": [
+        "config/hook-registry.json",
+        "hooks/wagents-hook.py",
+        ".claude/settings.json"
+      ]
     },
     {
       "id": "cursor",
@@ -84,23 +118,11 @@
       "enforcement": "pretool-block-with-optimized-retry",
       "owner": "image-input-optimizer-guard",
       "assurance": "PreToolUse hook blocks oversized image consumption and returns the optimized cache path for retry.",
-      "repo_surfaces": ["config/hook-registry.json", "hooks/wagents-hook.py", ".cursor/hooks.json"]
-    },
-    {
-      "id": "gemini-cli",
-      "tier": "hook-block",
-      "enforcement": "pretool-block-with-optimized-retry",
-      "owner": "image-input-optimizer-guard",
-      "assurance": "BeforeTool hook blocks oversized image consumption and returns the optimized cache path for retry.",
-      "repo_surfaces": ["config/hook-registry.json", "hooks/wagents-hook.py", ".gemini/settings.json"]
-    },
-    {
-      "id": "github-copilot-cli",
-      "tier": "hook-block",
-      "enforcement": "pretool-block-with-optimized-retry",
-      "owner": "image-input-optimizer-guard",
-      "assurance": "Command hook blocks oversized image consumption and returns the optimized cache path for retry.",
-      "repo_surfaces": ["config/hook-registry.json", "hooks/wagents-hook.py", ".github/hooks/policy.json"]
+      "repo_surfaces": [
+        "config/hook-registry.json",
+        "hooks/wagents-hook.py",
+        ".cursor/hooks.json"
+      ]
     },
     {
       "id": "grok-build",
@@ -108,7 +130,10 @@
       "enforcement": "not-enabled-until-generic-hook-projection-is-proven",
       "owner": "config/grok-plannotator-hooks.json remains the only generated Grok hook surface",
       "assurance": "No hard assurance is claimed until Grok generic PreToolUse projection is implemented and fixture-tested.",
-      "repo_surfaces": ["wagents/platforms/grok.py", "config/grok-plannotator-hooks.json"]
+      "repo_surfaces": [
+        "wagents/platforms/grok.py",
+        "config/grok-plannotator-hooks.json"
+      ]
     },
     {
       "id": "chatgpt",
@@ -116,7 +141,9 @@
       "enforcement": "no-local-pre-consumption-hook",
       "owner": "instructions",
       "assurance": "Instruction-only guidance; no hard local hook can assure pre-consumption resizing.",
-      "repo_surfaces": ["instructions/global.md"]
+      "repo_surfaces": [
+        "instructions/global.md"
+      ]
     },
     {
       "id": "claude-desktop",
@@ -124,15 +151,9 @@
       "enforcement": "no-local-pre-consumption-hook",
       "owner": "instructions",
       "assurance": "Instruction-only guidance; no hard local hook can assure pre-consumption resizing.",
-      "repo_surfaces": ["instructions/global.md"]
-    },
-    {
-      "id": "github-copilot-web",
-      "tier": "instruction-only",
-      "enforcement": "no-local-pre-consumption-hook",
-      "owner": "instructions",
-      "assurance": "Instruction-only guidance; web and coding-agent surfaces may be outside local hook control.",
-      "repo_surfaces": ["instructions/global.md"]
+      "repo_surfaces": [
+        "instructions/global.md"
+      ]
     },
     {
       "id": "cursor-cloud-subagent",
@@ -140,15 +161,10 @@
       "enforcement": "no-proven-local-pre-consumption-hook",
       "owner": "instructions",
       "assurance": "Instruction-only guidance until cloud subagent hook semantics are proven.",
-      "repo_surfaces": ["config/hook-surface-registry.json", "instructions/global.md"]
-    },
-    {
-      "id": "antigravity",
-      "tier": "instruction-only",
-      "enforcement": "no-proven-local-pre-consumption-hook",
-      "owner": "instructions",
-      "assurance": "Instruction-only guidance; local pre-consumption image rewrite is not claimed.",
-      "repo_surfaces": ["instructions/global.md"]
+      "repo_surfaces": [
+        "config/hook-surface-registry.json",
+        "instructions/global.md"
+      ]
     },
     {
       "id": "cherry-studio",
@@ -156,7 +172,10 @@
       "enforcement": "mcp-only-no-pre-consumption-hook",
       "owner": "instructions",
       "assurance": "Instruction-only guidance; MCP-only surface has no repo-managed pre-consumption image hook.",
-      "repo_surfaces": ["config/mcp-registry.json", "instructions/global.md"]
+      "repo_surfaces": [
+        "config/mcp-registry.json",
+        "instructions/global.md"
+      ]
     },
     {
       "id": "lm-studio",
@@ -164,7 +183,11 @@
       "enforcement": "mcp-only-no-pre-consumption-hook",
       "owner": "instructions",
       "assurance": "Instruction-only guidance; MCP-only surface has no repo-managed pre-consumption image hook.",
-      "repo_surfaces": ["config/mcp-registry.json", "wagents/platforms/lm_studio.py", "instructions/global.md"]
+      "repo_surfaces": [
+        "config/mcp-registry.json",
+        "wagents/platforms/lm_studio.py",
+        "instructions/global.md"
+      ]
     },
     {
       "id": "crush",
@@ -172,7 +195,9 @@
       "enforcement": "no-proven-local-pre-consumption-hook",
       "owner": "instructions",
       "assurance": "Instruction-only guidance; local pre-consumption image rewrite is not claimed.",
-      "repo_surfaces": ["instructions/global.md"]
+      "repo_surfaces": [
+        "instructions/global.md"
+      ]
     }
   ]
 }

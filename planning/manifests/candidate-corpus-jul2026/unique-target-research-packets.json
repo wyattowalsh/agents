@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-16T02:52:03.780594+00:00",
+  "generated_at": "2026-07-29T09:29:04.750183+00:00",
   "packet_count": 289,
   "packets": [
     {
@@ -1230,10 +1230,10 @@
       "attribution_notes": [
         "Preserve attribution to Auriti-Labs/geo-optimizer-skill; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_mcp_surface",
-      "surface_decision": "integrated-mcp-surface",
+      "current_intake_decision": "integrated_skill_catalog_surface",
+      "surface_decision": "integrated-skill-catalog-surface",
       "integration_classification": "integrated-reference",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-skill-catalog-surface",
       "trust_cleared_installable": false,
       "hard_blocked": false,
       "integrated": true,
@@ -1329,7 +1329,7 @@
           "required_check": "Merge raw-lane routing into one terminal surface decision.",
           "required_evidence": "terminal_decision",
           "status": "terminal-static-intake",
-          "notes": "Terminal surface decision: integrated_mcp_surface."
+          "notes": "Terminal surface decision: integrated_skill_catalog_surface."
         },
         {
           "leaf_id": "N060.ATTRIB",
@@ -1378,9 +1378,9 @@
         }
       ],
       "promotion_wave": {
-        "wave_id": "W05",
-        "name": "cloud-iac-devops-security-mcp-plugins",
-        "description": "Cloud, IaC, DevOps, security, MCP, plugins, and CLIs.",
+        "wave_id": "W07",
+        "name": "seo-aso-gtm-sales-marketing-product-content",
+        "description": "SEO, ASO, GEO, GTM, sales, marketing, product, and content.",
         "mutation_policy": "single integrator only after read-only research packets pass"
       },
       "reviewer_notes": "Unique-target synthesis packet; final promotion requires all raw packet gates to pass."
@@ -2790,10 +2790,10 @@
       "attribution_notes": [
         "Preserve attribution to CharlesWiltgen/Axiom; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_mcp_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -3604,19 +3604,7 @@
       "trust_cleared_installable": false,
       "hard_blocked": true,
       "integrated": true,
-      "catalog_rows": [
-        {
-          "name": "composiohq-awesome-codex-skills-competitive-ads-extractor",
-          "path": "docs/src/authoring/skills/composiohq-awesome-codex-skills-competitive-ads-extractor.mdx",
-          "source": "ComposioHQ/awesome-codex-skills",
-          "install_source": "ComposioHQ/awesome-codex-skills",
-          "source_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/competitive-ads-extractor",
-          "status": "integrated-quarantine-reference",
-          "trust_tier": "hard-blocked",
-          "sync_kind": "none",
-          "has_install_command": false
-        }
-      ],
+      "catalog_rows": [],
       "existing_integration_status": "needs-promotion-review",
       "existing_rows": [],
       "source_list_evidence": {
@@ -3753,7 +3741,7 @@
         "wave_id": "W99",
         "name": "hard-blocked",
         "description": "Hard-blocked, inaccessible, malformed, or quarantined sources.",
-        "mutation_policy": "authoring-only stable quarantine reference; no install"
+        "mutation_policy": "manifest-only quarantine record; no authoring or install"
       },
       "reviewer_notes": "Unique-target synthesis packet; final promotion requires all raw packet gates to pass."
     },
@@ -7320,19 +7308,7 @@
       "trust_cleared_installable": false,
       "hard_blocked": true,
       "integrated": true,
-      "catalog_rows": [
-        {
-          "name": "composiohq-awesome-codex-skills-video-downloader",
-          "path": "docs/src/authoring/skills/composiohq-awesome-codex-skills-video-downloader.mdx",
-          "source": "ComposioHQ/awesome-codex-skills",
-          "install_source": "ComposioHQ/awesome-codex-skills",
-          "source_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/video-downloader",
-          "status": "integrated-quarantine-reference",
-          "trust_tier": "hard-blocked",
-          "sync_kind": "none",
-          "has_install_command": false
-        }
-      ],
+      "catalog_rows": [],
       "existing_integration_status": "needs-promotion-review",
       "existing_rows": [],
       "source_list_evidence": {
@@ -7469,7 +7445,7 @@
         "wave_id": "W99",
         "name": "hard-blocked",
         "description": "Hard-blocked, inaccessible, malformed, or quarantined sources.",
-        "mutation_policy": "authoring-only stable quarantine reference; no install"
+        "mutation_policy": "manifest-only quarantine record; no authoring or install"
       },
       "reviewer_notes": "Unique-target synthesis packet; final promotion requires all raw packet gates to pass."
     },
@@ -8834,10 +8810,10 @@
       "attribution_notes": [
         "Preserve attribution to HDeibler/universal-design-principles; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_native_surface",
-      "surface_decision": "integrated-native-surface",
+      "current_intake_decision": "integrated_plugin_surface",
+      "surface_decision": "integrated-plugin-surface",
       "integration_classification": "integrated-reference",
-      "integration_surface": "integrated-native-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": false,
       "hard_blocked": false,
       "integrated": true,
@@ -8943,7 +8919,7 @@
           "required_check": "Merge raw-lane routing into one terminal surface decision.",
           "required_evidence": "terminal_decision",
           "status": "terminal-static-intake",
-          "notes": "Terminal surface decision: integrated_native_surface."
+          "notes": "Terminal surface decision: integrated_plugin_surface."
         },
         {
           "leaf_id": "N166.ATTRIB",
@@ -11205,7 +11181,6 @@
         "GEMINI_API_KEY",
         "GOOGLE_API_KEY",
         "HF_TOKEN",
-        "HORDE_API_KEY",
         "HUGGINGFACE_API_KEY",
         "IDEOGRAM_API_KEY",
         "LEONARDO_API_KEY",
@@ -11225,10 +11200,10 @@
       "attribution_notes": [
         "Preserve attribution to MohamedAbdallah-14/prompt-to-asset; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_mcp_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -11702,10 +11677,10 @@
       "attribution_notes": [
         "Preserve attribution to MohamedAbdallah-14/unslop; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_existing_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -23245,10 +23220,10 @@
       "attribution_notes": [
         "Preserve attribution to PapiScholz/roadmapsmith; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_existing_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -23643,40 +23618,28 @@
       "attribution_notes": [
         "Preserve attribution to PleasePrompto/notebooklm-skill; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_existing_surface",
-      "surface_decision": "covered-by-existing-catalog",
-      "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
-      "trust_cleared_installable": true,
+      "current_intake_decision": "integrated_skill_catalog_surface",
+      "surface_decision": "integrated-skill-catalog-surface",
+      "integration_classification": "integrated-reference",
+      "integration_surface": "integrated-skill-catalog-surface",
+      "trust_cleared_installable": false,
       "hard_blocked": false,
       "integrated": true,
       "catalog_rows": [
         {
-          "name": "notebooklm",
-          "path": "docs/src/authoring/skills/notebooklm.mdx",
+          "name": "pleaseprompto-notebooklm-skill",
+          "path": "docs/src/authoring/skills/pleaseprompto-notebooklm-skill.mdx",
           "source": "PleasePrompto/notebooklm-skill",
           "install_source": "PleasePrompto/notebooklm-skill",
           "source_url": "https://github.com/PleasePrompto/notebooklm-skill",
-          "status": "install-now-after-trust-gate",
-          "trust_tier": "curated-trust-gated",
-          "sync_kind": "skills-cli",
-          "has_install_command": true
+          "status": "integrated-reference",
+          "trust_tier": "needs-inspection",
+          "sync_kind": "none",
+          "has_install_command": false
         }
       ],
-      "existing_integration_status": "covered-by-existing-installable-catalog",
-      "existing_rows": [
-        {
-          "name": "notebooklm",
-          "path": "docs/src/authoring/skills/notebooklm.mdx",
-          "source": "PleasePrompto/notebooklm-skill",
-          "install_source": "PleasePrompto/notebooklm-skill",
-          "source_url": "https://github.com/PleasePrompto/notebooklm-skill",
-          "status": "install-now-after-trust-gate",
-          "trust_tier": "curated-trust-gated",
-          "sync_kind": "skills-cli",
-          "has_install_command": true
-        }
-      ],
+      "existing_integration_status": "needs-promotion-review",
+      "existing_rows": [],
       "source_list_evidence": {
         "rank": 70,
         "raw_indexes": [
@@ -23724,7 +23687,12 @@
         "reports",
         "skill-research"
       ],
-      "terminal_route_requirements": [],
+      "terminal_route_requirements": [
+        "preserve attribution and license notes",
+        "keep credentials user-owned",
+        "avoid vendoring or executing candidate code from intake rows",
+        "use repo-native MCP/plugin/tool/catalog surfaces"
+      ],
       "leaf_checks": [
         {
           "leaf_id": "N109.RAW-MAP",
@@ -23732,7 +23700,7 @@
           "mode": "R",
           "required_check": "List all raw entries that map to this normalized target.",
           "required_evidence": "raw_index_list",
-          "status": "covered-by-existing-catalog",
+          "status": "complete-static",
           "notes": "Raw indexes covered: 111"
         },
         {
@@ -23750,8 +23718,8 @@
           "mode": "R",
           "required_check": "Merge raw-lane routing into one terminal surface decision.",
           "required_evidence": "terminal_decision",
-          "status": "covered-by-existing-catalog",
-          "notes": "Existing curated catalog row is the integration surface."
+          "status": "terminal-static-intake",
+          "notes": "Terminal surface decision: integrated_skill_catalog_surface."
         },
         {
           "leaf_id": "N109.ATTRIB",
@@ -23768,7 +23736,7 @@
           "mode": "R/E",
           "required_check": "Consolidate auth requirements and setup links.",
           "required_evidence": "auth_guide",
-          "status": "covered-by-existing-catalog",
+          "status": "terminal-static-intake",
           "notes": "No auth requirement detected in the static intake packet."
         },
         {
@@ -23777,8 +23745,8 @@
           "mode": "S/M/E",
           "required_check": "Show exact install/apply command if live install is eligible.",
           "required_evidence": "install_command_packet",
-          "status": "covered-by-existing-catalog",
-          "notes": "Existing curated catalog row already owns install command; no duplicate command is published."
+          "status": "terminal-non-install-surface",
+          "notes": "No portable install command is emitted for terminal native-surface or hard-block rows."
         },
         {
           "leaf_id": "N109.DOCS",
@@ -23786,7 +23754,7 @@
           "mode": "S/M",
           "required_check": "Update docs-steward surfaces for the final decision.",
           "required_evidence": "docs_update",
-          "status": "covered-by-existing-catalog",
+          "status": "terminal-static-intake",
           "notes": "Docs-steward surfaces are mapped and regenerated from the corpus manifests."
         },
         {
@@ -23795,15 +23763,15 @@
           "mode": "S/R",
           "required_check": "Validate generated rows, config, docs, and install preview/apply result.",
           "required_evidence": "validation_result",
-          "status": "covered-by-existing-catalog",
-          "notes": "Covered by existing catalog validation and skills sync dry-run."
+          "status": "terminal-non-install-surface",
+          "notes": "Validation checks generated catalog, manifest, docs, and sync preview surfaces."
         }
       ],
       "promotion_wave": {
-        "wave_id": "W00",
-        "name": "existing-catalog-coverage",
-        "description": "Already covered by existing curated/installable catalog entries.",
-        "mutation_policy": "no mutation; use existing catalog rows"
+        "wave_id": "W06",
+        "name": "research-legal-finance-economics",
+        "description": "Research, academic, legal, finance, and economics.",
+        "mutation_policy": "single integrator only after read-only research packets pass"
       },
       "reviewer_notes": "Unique-target synthesis packet; final promotion requires all raw packet gates to pass."
     },
@@ -23846,10 +23814,10 @@
       "attribution_notes": [
         "Preserve attribution to Pythoughts-labs/designer-skill; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_mcp_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -24242,10 +24210,10 @@
       "attribution_notes": [
         "Preserve attribution to Ratnaditya-J/csvglow; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_mcp_surface",
+      "current_intake_decision": "integrated_existing_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-existing-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -45967,10 +45935,10 @@
       "attribution_notes": [
         "Preserve attribution to hashgraph-online/awesome-codex-plugins; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_existing_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -46170,10 +46138,10 @@
       "attribution_notes": [
         "Preserve attribution to hashgraph-online/awesome-codex-plugins; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_existing_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -46374,10 +46342,10 @@
       "attribution_notes": [
         "Preserve attribution to hashgraph-online/awesome-codex-plugins; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_existing_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -46575,10 +46543,10 @@
       "attribution_notes": [
         "Preserve attribution to hashgraph-online/hol-guard-plugin; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_existing_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -48402,10 +48370,10 @@
       "attribution_notes": [
         "Preserve attribution to hyhmrright/brooks-lint; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_existing_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -50358,19 +50326,7 @@
       "trust_cleared_installable": false,
       "hard_blocked": true,
       "integrated": true,
-      "catalog_rows": [
-        {
-          "name": "jihe520-social-push",
-          "path": "docs/src/authoring/skills/jihe520-social-push.mdx",
-          "source": "jihe520/social-push",
-          "install_source": "jihe520/social-push",
-          "source_url": "https://github.com/jihe520/social-push",
-          "status": "integrated-quarantine-reference",
-          "trust_tier": "hard-blocked",
-          "sync_kind": "none",
-          "has_install_command": false
-        }
-      ],
+      "catalog_rows": [],
       "existing_integration_status": "needs-promotion-review",
       "existing_rows": [],
       "source_list_evidence": {
@@ -50507,7 +50463,7 @@
         "wave_id": "W99",
         "name": "hard-blocked",
         "description": "Hard-blocked, inaccessible, malformed, or quarantined sources.",
-        "mutation_policy": "authoring-only stable quarantine reference; no install"
+        "mutation_policy": "manifest-only quarantine record; no authoring or install"
       },
       "reviewer_notes": "Unique-target synthesis packet; final promotion requires all raw packet gates to pass."
     },
@@ -50959,10 +50915,10 @@
       "attribution_notes": [
         "Preserve attribution to johnvouros/nullcost-plugin; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_mcp_surface",
-      "surface_decision": "integrated-mcp-surface",
+      "current_intake_decision": "integrated_plugin_surface",
+      "surface_decision": "integrated-plugin-surface",
       "integration_classification": "integrated-reference",
-      "integration_surface": "integrated-mcp-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": false,
       "hard_blocked": false,
       "integrated": true,
@@ -51064,7 +51020,7 @@
           "required_check": "Merge raw-lane routing into one terminal surface decision.",
           "required_evidence": "terminal_decision",
           "status": "terminal-static-intake",
-          "notes": "Terminal surface decision: integrated_mcp_surface."
+          "notes": "Terminal surface decision: integrated_plugin_surface."
         },
         {
           "leaf_id": "N169.ATTRIB",
@@ -51391,19 +51347,7 @@
       "trust_cleared_installable": false,
       "hard_blocked": true,
       "integrated": true,
-      "catalog_rows": [
-        {
-          "name": "klajdikkolaj-upwork-autopilot",
-          "path": "docs/src/authoring/skills/klajdikkolaj-upwork-autopilot.mdx",
-          "source": "klajdikkolaj/upwork-autopilot",
-          "install_source": "klajdikkolaj/upwork-autopilot",
-          "source_url": "https://github.com/klajdikkolaj/upwork-autopilot",
-          "status": "integrated-quarantine-reference",
-          "trust_tier": "hard-blocked",
-          "sync_kind": "none",
-          "has_install_command": false
-        }
-      ],
+      "catalog_rows": [],
       "existing_integration_status": "needs-promotion-review",
       "existing_rows": [],
       "source_list_evidence": {
@@ -51539,7 +51483,7 @@
         "wave_id": "W99",
         "name": "hard-blocked",
         "description": "Hard-blocked, inaccessible, malformed, or quarantined sources.",
-        "mutation_policy": "authoring-only stable quarantine reference; no install"
+        "mutation_policy": "manifest-only quarantine record; no authoring or install"
       },
       "reviewer_notes": "Unique-target synthesis packet; final promotion requires all raw packet gates to pass."
     },
@@ -58673,8 +58617,12 @@
         "library",
         "skill"
       ],
-      "auth_required": false,
-      "env_vars_or_credentials": [],
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PAPER_SEARCH_MCP_CORE_API_KEY",
+        "SEMANTIC_SCHOLAR_API_KEY",
+        "ZENODO_ACCESS_TOKEN"
+      ],
       "security_notes": [
         "Executable/tool surface requires script and dependency review."
       ],
@@ -58876,18 +58824,20 @@
         "plugin",
         "skill"
       ],
-      "auth_required": false,
-      "env_vars_or_credentials": [],
+      "auth_required": true,
+      "env_vars_or_credentials": [
+        "PAPERSFLOW_OAUTH_ACCOUNT"
+      ],
       "security_notes": [
         "Executable/tool surface requires script and dependency review."
       ],
       "attribution_notes": [
         "Preserve attribution to papersflow-ai/papersflow-codex-plugin; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_existing_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -80377,10 +80327,10 @@
       "attribution_notes": [
         "Preserve attribution to summer521521/Zotero_Research_plugin; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_existing_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -80799,7 +80749,7 @@
       ],
       "auth_required": true,
       "env_vars_or_credentials": [
-        "PLACEHOLDER_ONLY_REVIEW_REQUIRED"
+        "NOTEBOOKLM_PROFILE"
       ],
       "security_notes": [
         "No elevated keyword risk detected."
@@ -80807,28 +80757,40 @@
       "attribution_notes": [
         "Preserve attribution to teng-lin/notebooklm-py; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_native_surface",
-      "surface_decision": "integrated-native-surface",
-      "integration_classification": "integrated-reference",
-      "integration_surface": "integrated-native-surface",
-      "trust_cleared_installable": false,
+      "current_intake_decision": "integrated_mcp_surface",
+      "surface_decision": "covered-by-existing-catalog",
+      "integration_classification": "installable-existing",
+      "integration_surface": "integrated-mcp-surface",
+      "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
       "catalog_rows": [
         {
-          "name": "teng-lin-notebooklm-py",
-          "path": "docs/src/authoring/skills/teng-lin-notebooklm-py.mdx",
+          "name": "notebooklm",
+          "path": "docs/src/authoring/skills/notebooklm.mdx",
           "source": "teng-lin/notebooklm-py",
-          "install_source": "teng-lin/notebooklm-py",
+          "install_source": "https://github.com/teng-lin/notebooklm-py",
           "source_url": "https://github.com/teng-lin/notebooklm-py",
-          "status": "integrated-reference",
-          "trust_tier": "needs-inspection",
-          "sync_kind": "none",
-          "has_install_command": false
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
         }
       ],
-      "existing_integration_status": "needs-promotion-review",
-      "existing_rows": [],
+      "existing_integration_status": "covered-by-existing-installable-catalog",
+      "existing_rows": [
+        {
+          "name": "notebooklm",
+          "path": "docs/src/authoring/skills/notebooklm.mdx",
+          "source": "teng-lin/notebooklm-py",
+          "install_source": "https://github.com/teng-lin/notebooklm-py",
+          "source_url": "https://github.com/teng-lin/notebooklm-py",
+          "status": "install-now-after-trust-gate",
+          "trust_tier": "curated-trust-gated",
+          "sync_kind": "skills-cli",
+          "has_install_command": true
+        }
+      ],
       "source_list_evidence": {
         "rank": 252,
         "raw_indexes": [
@@ -80874,12 +80836,7 @@
         "reports",
         "skill-research"
       ],
-      "terminal_route_requirements": [
-        "preserve attribution and license notes",
-        "keep credentials user-owned",
-        "avoid vendoring or executing candidate code from intake rows",
-        "use repo-native MCP/plugin/tool/catalog surfaces"
-      ],
+      "terminal_route_requirements": [],
       "leaf_checks": [
         {
           "leaf_id": "N144.RAW-MAP",
@@ -80887,7 +80844,7 @@
           "mode": "R",
           "required_check": "List all raw entries that map to this normalized target.",
           "required_evidence": "raw_index_list",
-          "status": "complete-static",
+          "status": "covered-by-existing-catalog",
           "notes": "Raw indexes covered: 146"
         },
         {
@@ -80905,8 +80862,8 @@
           "mode": "R",
           "required_check": "Merge raw-lane routing into one terminal surface decision.",
           "required_evidence": "terminal_decision",
-          "status": "terminal-static-intake",
-          "notes": "Terminal surface decision: integrated_native_surface."
+          "status": "covered-by-existing-catalog",
+          "notes": "Existing curated catalog row is the integration surface."
         },
         {
           "leaf_id": "N144.ATTRIB",
@@ -80923,7 +80880,7 @@
           "mode": "R/E",
           "required_check": "Consolidate auth requirements and setup links.",
           "required_evidence": "auth_guide",
-          "status": "terminal-static-intake",
+          "status": "covered-by-existing-catalog",
           "notes": "No auth requirement detected in the static intake packet."
         },
         {
@@ -80932,8 +80889,8 @@
           "mode": "S/M/E",
           "required_check": "Show exact install/apply command if live install is eligible.",
           "required_evidence": "install_command_packet",
-          "status": "terminal-non-install-surface",
-          "notes": "No portable install command is emitted for terminal native-surface or hard-block rows."
+          "status": "covered-by-existing-catalog",
+          "notes": "Existing curated catalog row already owns install command; no duplicate command is published."
         },
         {
           "leaf_id": "N144.DOCS",
@@ -80941,7 +80898,7 @@
           "mode": "S/M",
           "required_check": "Update docs-steward surfaces for the final decision.",
           "required_evidence": "docs_update",
-          "status": "terminal-static-intake",
+          "status": "covered-by-existing-catalog",
           "notes": "Docs-steward surfaces are mapped and regenerated from the corpus manifests."
         },
         {
@@ -80950,15 +80907,15 @@
           "mode": "S/R",
           "required_check": "Validate generated rows, config, docs, and install preview/apply result.",
           "required_evidence": "validation_result",
-          "status": "terminal-non-install-surface",
-          "notes": "Validation checks generated catalog, manifest, docs, and sync preview surfaces."
+          "status": "covered-by-existing-catalog",
+          "notes": "Covered by existing catalog validation and skills sync dry-run."
         }
       ],
       "promotion_wave": {
-        "wave_id": "W06",
-        "name": "research-legal-finance-economics",
-        "description": "Research, academic, legal, finance, and economics.",
-        "mutation_policy": "single integrator only after read-only research packets pass"
+        "wave_id": "W00",
+        "name": "existing-catalog-coverage",
+        "description": "Already covered by existing curated/installable catalog entries.",
+        "mutation_policy": "no mutation; use existing catalog rows"
       },
       "reviewer_notes": "Unique-target synthesis packet; final promotion requires all raw packet gates to pass."
     },
@@ -80997,10 +80954,10 @@
       "attribution_notes": [
         "Preserve attribution to tim-osterhus/codex-remotion-plugin; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_existing_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,
@@ -85447,10 +85404,10 @@
       "attribution_notes": [
         "Preserve attribution to yujiachen-y/codebase-recon-skill; verify license before adapting content."
       ],
-      "current_intake_decision": "integrated_existing_surface",
+      "current_intake_decision": "integrated_plugin_surface",
       "surface_decision": "covered-by-existing-catalog",
       "integration_classification": "installable-existing",
-      "integration_surface": "integrated-existing-surface",
+      "integration_surface": "integrated-plugin-surface",
       "trust_cleared_installable": true,
       "hard_blocked": false,
       "integrated": true,

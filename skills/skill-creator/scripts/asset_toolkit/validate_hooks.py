@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Validate hooks in skills, agents, and settings."""
+"""Validate hooks in skills, agents, and settings.
+
+``wagents hooks validate`` and ``wagents validate`` both share this skill-creator
+module as the hooks validator. Bundled copies under other skills'
+``scripts/asset_toolkit/`` trees are packaging-only; edit this canonical file and
+sync with ``sync_asset_toolkit.py --modules validate_hooks.py --apply``.
+"""
 
 from __future__ import annotations
 
@@ -20,7 +26,14 @@ from asset_toolkit.common import (
     parse_frontmatter,
 )
 
-SUPPORTED_HARNESSES = {"all", "codex", "claude-code", "cursor", "github-copilot", "gemini-cli"}
+SUPPORTED_HARNESSES = {"all", "codex", "claude-code", "cursor"}
+
+# Cursor pin layers (Phase A rewrite + Phase B allowlist) must be present in the
+# projected `.cursor/hooks.json` and stay fail-open (RV-S-008 + RV-S-010).
+CURSOR_REQUIRED_PIN_COMMAND_SUBSTRINGS = (
+    "cursor-task-model-pin-rewrite",
+    "cursor-subagent-model-allowlist",
+)
 
 
 def _validate_hooks(source: str, hooks_dict: dict, add_error) -> None:
@@ -62,9 +75,41 @@ def _validate_hooks(source: str, hooks_dict: dict, add_error) -> None:
                     add_error(source, f"{handler_type} handler in '{event}' has empty prompt")
 
 
+def _validate_cursor_pin_presence(hooks: dict, add_error) -> None:
+    """Require pin command substrings with explicit failClosed false."""
+    found: dict[str, dict] = {}
+    for entries in hooks.values():
+        if not isinstance(entries, list):
+            continue
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            command = entry.get("command")
+            if not isinstance(command, str) or not command:
+                continue
+            for pin_id in CURSOR_REQUIRED_PIN_COMMAND_SUBSTRINGS:
+                if pin_id in command and pin_id not in found:
+                    found[pin_id] = entry
+
+    for pin_id in CURSOR_REQUIRED_PIN_COMMAND_SUBSTRINGS:
+        entry = found.get(pin_id)
+        if entry is None:
+            add_error(
+                ".cursor/hooks.json",
+                f"missing required Cursor pin hook command containing '{pin_id}'",
+            )
+            continue
+        if entry.get("failClosed") is not False:
+            add_error(
+                ".cursor/hooks.json",
+                f"Cursor pin hook '{pin_id}' must set failClosed to false (pins stay fail-open)",
+            )
+
+
 def _validate_cursor_hooks(repo_root: Path, add_error) -> None:
     path = repo_root / ".cursor" / "hooks.json"
     if not path.is_file():
+        add_error(".cursor/hooks.json", "missing required Cursor hooks projection")
         return
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -93,6 +138,7 @@ def _validate_cursor_hooks(repo_root: Path, add_error) -> None:
                 continue
             if "${workspaceFolder}" in command:
                 add_error(entry_source, "Cursor hook commands must use $CURSOR_PROJECT_DIR, not ${workspaceFolder}")
+    _validate_cursor_pin_presence(hooks, add_error)
 
 
 def validate_hooks(repo_root: Path, *, harness: str = "all") -> list[dict[str, str]]:
@@ -125,7 +171,7 @@ def validate_hooks(repo_root: Path, *, harness: str = "all") -> list[dict[str, s
                             if entry.get("bash") or entry.get("timeoutSec"):
                                 add_error(
                                     entry_source,
-                                    "Claude settings must not contain Copilot-style bash hook entries",
+                                    "Claude settings must not contain foreign flat bash hook entries",
                                 )
                             if "hooks" not in entry and entry.get("command"):
                                 add_error(

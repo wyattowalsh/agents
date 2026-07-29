@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/mcphub/common.sh
+source "${SCRIPT_DIR}/../common.sh"
+mcphub_load_env
+
+if [[ $# -ne 2 ]]; then
+  printf 'usage: candidate-uv-tool <managed-package> <managed-server>\n' >&2
+  exit 64
+fi
+
+package="$1"
+server="$2"
+case "$package:$server" in
+  charted:charted-mcp|geo-optimizer-skill:geo-mcp)
+    fixed_args=()
+    allow_env=()
+    ;;
+  langfuse-mcp:langfuse-mcp)
+    fixed_args=()
+    allow_env=(LANGFUSE_HOST LANGFUSE_MCP_READ_ONLY LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY)
+    ;;
+  paper-search-mcp:paper-search-mcp)
+    fixed_args=()
+    allow_env=(PAPER_SEARCH_MCP_CORE_API_KEY SEMANTIC_SCHOLAR_API_KEY UNPAYWALL_EMAIL ZENODO_ACCESS_TOKEN)
+    ;;
+  csvglow:csvglow)
+    fixed_args=(--mcp)
+    allow_env=()
+    ;;
+  *)
+    printf 'candidate-uv-tool: unsupported managed package/server pair: %s:%s\n' "$package" "$server" >&2
+    exit 64
+    ;;
+esac
+
+install_root="$HOME/.local/share/uv/tools/$package"
+executable="$install_root/bin/$server"
+if [[ ! -x "$executable" ]]; then
+  printf 'candidate-uv-tool: managed executable is missing: %s\n' "$executable" >&2
+  exit 127
+fi
+
+resolved_root="$(cd "$install_root" && pwd -P)"
+resolved_executable="$(python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$executable")"
+case "$resolved_executable" in
+  "$resolved_root"/*) ;;
+  *)
+    printf 'candidate-uv-tool: executable escapes managed root: %s\n' "$resolved_executable" >&2
+    exit 126
+    ;;
+esac
+
+mcphub_exec_clean "${allow_env[@]}" -- "$executable" "${fixed_args[@]}"

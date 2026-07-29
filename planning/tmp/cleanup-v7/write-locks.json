@@ -1,0 +1,215 @@
+{
+  "generated_at": "2026-07-29T07:05:00Z",
+  "wave": "W0",
+  "rule": "Each hotspot maps to exactly one packet owner; never parallel two writers on the same path.",
+  "hotspots": [
+    {
+      "path": "planning/manifests/security-quarantine-register.json",
+      "owner_packet": "quarantine-align",
+      "wave": "W1a",
+      "notes": "Align EXT-085..088 status only; no new MDX"
+    },
+    {
+      "path": "docs/public/generated-registries/skills-catalog-index.json",
+      "owner_packet": "quarantine-align",
+      "wave": "W1a",
+      "notes": "Related index status only if required for validate; W6 owns full regen"
+    },
+    {
+      "path": "config/sync-manifest.json",
+      "owner_packet": "sync-manifest",
+      "wave": "W1a"
+    },
+    {
+      "path": "planning/manifests/remove-three-harnesses/g8-dod.md",
+      "owner_packet": "g8-receipt-note",
+      "wave": "W1a",
+      "notes": "Status fields only after validate attempt"
+    },
+    {
+      "path": "openspec/changes/{archive-14}",
+      "owner_packet": "W1b-archive-14",
+      "wave": "W1b",
+      "notes": "Move-only; disjoint from W2a; pinned ids in plan"
+    },
+    {
+      "path": "skills/skill-signing-verifier/",
+      "owner_packet": "del-signing",
+      "wave": "W2a"
+    },
+    {
+      "path": "docs/src/authoring/skills/skill-signing-verifier.mdx",
+      "owner_packet": "del-signing",
+      "wave": "W2a"
+    },
+    {
+      "path": "skills/skill-localization-packager/",
+      "owner_packet": "del-localization",
+      "wave": "W2a"
+    },
+    {
+      "path": "docs/src/authoring/skills/skill-localization-packager.mdx",
+      "owner_packet": "del-localization",
+      "wave": "W2a"
+    },
+    {
+      "path": "skills/skill-registry-lock/",
+      "owner_packet": "del-registry-lock",
+      "wave": "W2a"
+    },
+    {
+      "path": "docs/src/authoring/skills/skill-registry-lock.mdx",
+      "owner_packet": "del-registry-lock",
+      "wave": "W2a"
+    },
+    {
+      "path": "skills/skill-lifecycle-manager/evals/evals.json",
+      "owner_packet": "scrub-lifecycle-evals",
+      "wave": "W2a"
+    },
+    {
+      "path": ".claude/agents/orchestrator.md",
+      "owner_packet": "claude-drift",
+      "wave": "W2a"
+    },
+    {
+      "path": ".claude/agents/planner.md",
+      "owner_packet": "claude-drift",
+      "wave": "W2a"
+    },
+    {
+      "path": ".claude/agents/researcher.md",
+      "owner_packet": "claude-drift",
+      "wave": "W2a"
+    },
+    {
+      "path": ".claude/agents/performance-profiler.md",
+      "owner_packet": "claude-drift",
+      "wave": "W2a"
+    },
+    {
+      "path": "scripts/*candidate*",
+      "owner_packet": "candidate-ops",
+      "wave": "W2a",
+      "notes": "Move to scripts/ops/candidate/ + thin shims; wrappers under scripts/mcphub/wrappers/candidate-* stay (keep-matrix)"
+    },
+    {
+      "path": "agents/prompt-optimizer.md",
+      "owner_packet": "body-prompt-optimizer",
+      "wave": "W3"
+    },
+    {
+      "path": "evals/agents/prompt-optimizer/",
+      "owner_packet": "body-prompt-optimizer",
+      "wave": "W3"
+    },
+    {
+      "path": "agents/agent-transpiler.md",
+      "owner_packet": "body-agent-transpiler",
+      "wave": "W3"
+    },
+    {
+      "path": "evals/agents/agent-transpiler/",
+      "owner_packet": "body-agent-transpiler",
+      "wave": "W3"
+    },
+    {
+      "path": "agents/agent-registry-publisher.md",
+      "owner_packet": "body-agent-registry-publisher",
+      "wave": "W3"
+    },
+    {
+      "path": "evals/agents/agent-registry-publisher/",
+      "owner_packet": "body-agent-registry-publisher",
+      "wave": "W3"
+    },
+    {
+      "path": "agents/agent-permission-simulator.md",
+      "owner_packet": "body-agent-permission-simulator",
+      "wave": "W3"
+    },
+    {
+      "path": "evals/agents/agent-permission-simulator/",
+      "owner_packet": "body-agent-permission-simulator",
+      "wave": "W3"
+    },
+    {
+      "path": "config/cursor-agents.json",
+      "owner_packet": "overlay-cursor",
+      "wave": "W4",
+      "notes": "Single owner for cursor overlay JSON"
+    },
+    {
+      "path": "config/opencode-agents.json",
+      "owner_packet": "overlay-opencode",
+      "wave": "W4",
+      "notes": "Narrow bash allowlists; never parallel with second overlay writer"
+    },
+    {
+      "path": ".opencode/agents/",
+      "owner_packet": "sync-apply-agents",
+      "wave": "Sync",
+      "notes": "After W3||W4; repo targets only; no home sync"
+    },
+    {
+      "path": ".cursor/agents/",
+      "owner_packet": "sync-apply-agents",
+      "wave": "Sync"
+    },
+    {
+      "path": "agents/README.md",
+      "owner_packet": "W3.5-agents-readme",
+      "wave": "W3.5",
+      "notes": "After Sync; never parallel with body packets"
+    },
+    {
+      "path": "wagents/",
+      "owner_packet": "W5-god-spine",
+      "wave": "W5",
+      "notes": "Serial extracts; before W6 docs generate"
+    },
+    {
+      "path": "scripts/sync_agent_stack.py",
+      "owner_packet": "W5-god-spine",
+      "wave": "W5"
+    },
+    {
+      "path": "docs/public/generated-registries/",
+      "owner_packet": "W6-docs-generate",
+      "wave": "W6",
+      "notes": "No hand-edit; singleton regen wave"
+    },
+    {
+      "path": "docs/src/content/docs/skills/catalog/",
+      "owner_packet": "W6-docs-generate",
+      "wave": "W6"
+    },
+    {
+      "path": "README.md",
+      "owner_packet": "W6-readme",
+      "wave": "W6",
+      "notes": "wagents readme after docs generate"
+    },
+    {
+      "path": "scripts/mcphub/wrappers/candidate-*",
+      "owner_packet": "KEEP",
+      "wave": "none",
+      "notes": "Must-keep; not deleted; not moved by del packets"
+    },
+    {
+      "path": "opencode.json auth plugins / gemini-api authoring / Crush gemini-shaped MCP",
+      "owner_packet": "KEEP",
+      "wave": "none",
+      "notes": "keep-matrix; path lock against accidental scrub"
+    }
+  ],
+  "never_parallel": [
+    ["overlay-cursor", "overlay-opencode-same-file"],
+    ["body-*", "W3.5-agents-readme"],
+    ["hand-edit-catalog", "any"],
+    ["W1b-archive-14", "edits-inside-those-14"],
+    ["W5-god-spine", "W6-docs-generate"],
+    ["quarantine-align", "invent-mdx"]
+  ],
+  "path_lock": "dirty main; no unsolicited worktrees/branches; no home sync"
+}

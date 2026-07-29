@@ -9,6 +9,7 @@ docs_density: standard
 trust_tier: "global-only-or-avoid"
 curated_status: "global-only-or-avoid"
 sync_kind: "none"
+target_agents: ["claude-code", "codex", "crush", "cursor", "opencode"]
 research_slug: "huggingface-skills-all"
 ---
 
@@ -77,6 +78,7 @@ General purpose agent skills in similar domain (see catalog for alternatives); e
 | Installability | local inventory only |
 | Review State | curated |
 | Trust Tier | `global-only-or-avoid` |
+| Target Agents | `claude-code`, `codex`, `crush`, `cursor`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
@@ -102,7 +104,7 @@ provenance_status: "explicit-unresolved"
 sync_kind: "none"
 install_command: ""
 source_url: "https://github.com/huggingface/skills"
-target_agents: []
+target_agents: ["claude-code", "codex", "crush", "cursor", "opencode"]
 notes: "keep global unless ML workflows become frequent."
 risk_notes: "keep global unless ML workflows become frequent."
 promotion_policy: "Keep global-only or avoid unless explicitly approved."

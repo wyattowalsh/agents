@@ -267,22 +267,6 @@ def test_prompt_triage_does_not_clear_forced_research_mode(monkeypatch, tmp_path
     assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
 
 
-def test_copilot_readonly_guard_denies_write_when_active(monkeypatch, tmp_path):
-    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
-
-    code, stdout, _stderr = run_hook(
-        monkeypatch,
-        {"toolName": "edit", "toolArgs": json.dumps({"path": "src/app.py"}), "sessionId": "s1"},
-        ["research-readonly-write-guard", "--harness", "github-copilot"],
-        env_active=True,
-    )
-
-    payload = json.loads(stdout)
-    assert code == 0
-    assert payload["permissionDecision"] == "deny"
-    assert "read-only" in payload["permissionDecisionReason"]
-
-
 def test_claude_readonly_guard_blocks_with_exit_2(monkeypatch, tmp_path):
     monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
 
@@ -1486,28 +1470,6 @@ def test_shell_write_guard_allows_direct_journal_store_invocation(monkeypatch, t
     assert code == 0
     assert stdout == ""
     assert stderr == ""
-
-
-def test_gemini_evidence_ledger_records_urls(monkeypatch, tmp_path):
-    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
-
-    code, stdout, _stderr = run_hook(
-        monkeypatch,
-        {
-            "session_id": "s1",
-            "hook_event_name": "AfterTool",
-            "tool_name": "web_search",
-            "tool_response": {"llmContent": "See https://example.com/research and https://example.com/research."},
-        },
-        ["research-evidence-ledger", "--harness", "gemini-cli"],
-        env_active=True,
-    )
-
-    assert code == 0
-    assert stdout == ""
-    ledger = next((tmp_path / ".gemini" / "research" / "hook-ledger").glob("*.jsonl"))
-    record = json.loads(ledger.read_text(encoding="utf-8"))
-    assert record["urls"] == ["https://example.com/research"]
 
 
 def test_stop_verifier_skips_recursive_payload(monkeypatch):

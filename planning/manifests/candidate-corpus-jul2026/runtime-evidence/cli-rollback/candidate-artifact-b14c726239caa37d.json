@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-b14c726239caa37d",
+  "normalized_url": "https://github.com/mohamedabdallah-14/unslop",
+  "transaction_id": "e4c1cd91abfe4c70a27c5abac24fa1b2",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "4afd337da683e888a061b5d9c1d0daae4e35a815bcf62361b49cc50313c64040",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "7bee67cac3968d9b5d4cdf867a07db1aa608df472406cf21c4f72976f39c702d",
+  "isolated_rollback_digest": "7bee67cac3968d9b5d4cdf867a07db1aa608df472406cf21c4f72976f39c702d",
+  "fresh_absence": {
+    "unslop": null
+  },
+  "fresh_absence_process_id": 17704,
+  "fresh_absence_output_sha256": "e67ec104e183ca11c58d067d35bfd1a34527dff0ab7d172796138cabf7e45ecc",
+  "restored_use_process_id": 17896,
+  "restored_use_output_sha256": "be14afad184b5e0d7fd4d7165a573327b124696e2afcc2f6a2b8ff84eed10261",
+  "restored_use_launch_paths": [
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-b14c726239caa37d-27zbzp6v/bin/unslop",
+    "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-b14c726239caa37d-27zbzp6v/bin/unslop"
+  ],
+  "restored_use_launch_realpaths": [
+    "/Users/ww/.local/share/uv/tools/unslop/bin/unslop",
+    "/Users/ww/.local/share/uv/tools/unslop/bin/unslop"
+  ],
+  "restored_executable_map": {
+    "unslop": {
+      "launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-cli-rollback-candidate-artifact-b14c726239caa37d-27zbzp6v/bin/unslop",
+      "realpath": "/Users/ww/.local/share/uv/tools/unslop/bin/unslop"
+    }
+  },
+  "installed_digest": "0bcd4877c26f513e718e530d6548806b45a440095ff28dd79a2b5b073f9b257e",
+  "status": "passed"
+}

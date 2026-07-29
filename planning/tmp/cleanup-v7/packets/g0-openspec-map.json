@@ -1,0 +1,11 @@
+{
+  "status": "ok",
+  "paths_written": [
+    "planning/tmp/cleanup-v7/openspec-map.json"
+  ],
+  "archive14_all_active": true,
+  "remove_gemini_unchecked_count": 9,
+  "g8_status": "PARTIAL",
+  "validate_clean_checkbox": false,
+  "notes": "archive14 all 14 active under openspec/changes/; remove-gemini tasks 0 checked / 9 unchecked; g8-dod PARTIAL with validate clean unchecked"
+}

@@ -6,7 +6,7 @@
     <a href="https://github.com/wyattowalsh/agents/actions/workflows/CI"><img src="https://github.com/wyattowalsh/agents/actions/workflows/CI/badge.svg" alt="CI"></a>
     <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE"><img src="https://img.shields.io/github/license/wyattowalsh/agents?style=flat-square&color=5D6D7E" alt="License"></a>
     <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=2E86C1" alt="Release"></a>
-    <a href="https://agents.w4w.dev/skills/catalog/"><img src="https://img.shields.io/badge/skills-69-0f766e?style=flat-square" alt="Skills"></a>
+    <a href="https://agents.w4w.dev/skills/catalog/"><img src="https://img.shields.io/badge/skills-67-0f766e?style=flat-square" alt="Skills"></a>
     <a href="https://agents.w4w.dev"><img src="https://img.shields.io/badge/docs-agents.w4w.dev-00b4d8?style=flat-square&logo=read-the-docs&logoColor=white" alt="Docs"></a>
   </p>
   <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/docs/public/social-card.png" alt="Agents social preview" width="640">
@@ -21,7 +21,7 @@ New here? Start with [START-HERE.md](START-HERE.md) for a 30-minute onboarding p
 Install all skills globally into your favorite agents:
 
 ```bash
-npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
+npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode
 ```
 
 For non-trivial repository changes, check the OpenSpec workflow state:
@@ -88,6 +88,7 @@ Reusable actions and knowledge bases for AI agents.
 | incident-response-engineer | Operational incident response for triage, containment, communications, recovery, and postmortems. Use when coordinating outages or service degradation. NOT for code review or proactive security scanning. |
 | infrastructure-coder | Infrastructure-as-Code: Terraform, Kubernetes, Docker. Generate, review, cost-compare, security-scan. Use for IaC work. NOT for CI/CD (devops-engineer), application code, or actual pricing. |
 | javascript-conventions | Configure and validate JS/TS tooling conventions. Enforce pnpm, TypeScript, ESLint, and Prettier defaults. Use when working on JS/TS files or package.json. NOT for Python, backend-only, or shell scripts. |
+| justfile | Create, edit, migrate, check, and inspect just/justfile runners. Use when changing justfiles, migrating Makefile/npm scripts to just, linting house-style justfiles, or discovering via just --list/--show/--dump. NOT for shell scripts (shell-scripter), shell conventions (shell-conventions), CI YAML (devops-engineer), Make mtime builds, Compose, or mise. |
 | learn | Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights. NOT for one-time fixes or code review. |
 | mcp-creator | Build MCP servers with FastMCP v3. Research, scaffold, implement, test, deploy. Use when creating MCP servers or integrating APIs via MCP. NOT for REST APIs, CLI tools, or non-MCP integrations. |
 | mcphub-operator | Operate MCPHub groups, endpoints, compression, and CLI from repo registry. Use for hub preflight, group picking, tunnel vs local exposure. NOT harness sync. |
@@ -116,12 +117,9 @@ Reusable actions and knowledge bases for AI agents.
 | skill-eval-scaffolder | Scaffold evals/evals.json manifests for repo skills with baseline cases. Use when adding behavioral eval coverage. NOT for live LLM eval execution. |
 | skill-install-dry-run-planner | Plan cross-harness skills sync dry-run steps before any live install. Use when reconciling harness skill inventory. NOT for --apply or npx installs. |
 | skill-lifecycle-manager | Report skill lifecycle stage from frontmatter, eval coverage, and validators. Use when promoting, deprecating, or auditing repo skills. NOT for live installs. |
-| skill-localization-packager | Scaffold for packaging localized skill variants (planned). Use when designing i18n skill bundles. NOT for live catalog edits. |
-| skill-package-manifest-enricher | Enrich portable skill ZIP manifests with compatibility and eval metadata. Use before packaging or catalog promotion. NOT for live installs. |
+| skill-package-manifest-enricher | Generates manifest sidecars from safe YAML and catalog/sync evidence. Use when enriching metadata before package validation. NOT for ZIP creation, guessed harness support, installs, or source edits. |
 | skill-quality-dashboard | Aggregate generated maintainer reports into a skill-quality summary. Use when reviewing docs, link, and eval health. NOT for editing report sources. |
-| skill-registry-lock | Scaffold for pinning curated skill registry lockfiles (planned). Use when designing reproducible sync locks. NOT for live --apply sync. |
 | skill-router | Route tasks to local skills. Use when choosing skills, recovering omitted skills after context warnings, or preparing a small skill context packet. NOT for install, authoring, or audit workflows. |
-| skill-signing-verifier | Scaffold for verifying skill package signatures and provenance (planned). Use when designing supply-chain checks. NOT for live signing or key management. |
 | skill-tag-taxonomist | Infer and audit skill tags from names, descriptions, and catalog authoring rows. Use when organizing catalog taxonomies. NOT for live catalog index edits. |
 | skill-token-budget-linter | Lint skill descriptions, body length, and reference bulk against token budgets. Use when tightening standing-context cost. NOT for DCP tuning or RTK hooks. |
 | skill-trace-debugger | Inspect eval manifests and portable validators for trace-friendly skill signals. Use when debugging skill invocation gaps. NOT for live LLM trace capture. |
@@ -215,20 +213,23 @@ First-party MCP servers authored in this repository (see `AGENTS.md` §2). Curat
 
 Third-party skill collections can be installed directly with `npx skills add <source> --skill <name> -y -g --agent <agent>`. Repeat `--skill` and `--agent` to target a curated subset.
 
-## 🤝 Supported Agents
+## 🤝 Managed Agent Families
 
-- [Antigravity](https://antigravity.google/)
-- [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview)
-- [Codex](https://github.com/openai/codex)
-- [Crush](https://github.com/crush-ai/crush)
-- [Cursor](https://cursor.sh/)
-- [Gemini CLI](https://github.com/google/gemini-cli)
-- [GitHub Copilot](https://github.com/features/copilot)
-- [Grok Build](https://x.ai/)
-- [OpenCode](https://github.com/anomalyco/opencode) — native AGENTS.md support with repo-level config
-- [Cherry Studio](https://www.cherry-ai.com/) — MCP-only via MCPHub registry
-- [LM Studio](https://lmstudio.ai/) — MCP and managed instruction/agent preset projections; optional repo-owned skill mirror for compatible community plugins (default: none)
-And other [agentskills.io](https://agentskills.io)-compatible agents.
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — Anthropic's official CLI for Claude.
+- [Codex](https://github.com/openai/codex) — Autonomous coding workflows for command-line development.
+- [Crush](https://github.com/charmbracelet/crush) — Autonomous development agent focused on fast terminal workflows.
+- [Cursor](https://cursor.com/) — The AI Code Editor.
+- [Grok Build](https://x.ai/cli) — xAI's agentic coding CLI with skills, MCP, and Claude Code compatibility.
+- [OpenCode](https://github.com/anomalyco/opencode) — Native AGENTS.md support plus repo-level OpenCode config and subagents.
+
+## 🔌 Additional Integration Surfaces
+
+- [Cherry Studio](https://www.cherry-ai.com/) — `mcp-only`: MCPHub registry and generated import pack; not a managed agent family.
+- [Claude Desktop](https://claude.ai/download) — `mcp-only`: Managed MCP configuration client; not a managed agent family.
+- [ChatGPT](https://chatgpt.com/) — `connector`: Remote MCP connector surface; not a managed agent family.
+- [LM Studio](https://lmstudio.ai/) — `hybrid`: MCP plus managed instruction and agent presets, with an optional skill mirror.
+
+Other [agentskills.io](https://agentskills.io)-compatible agents may consume portable skills, but they are not counted as managed families.
 
 ## 📚 Documentation
 

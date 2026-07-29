@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "transaction_id": "7f43ff2d2071418b837b2d6d120944a1",
+  "artifact_id": "candidate-artifact-e481630ab46fdac7",
+  "normalized_url": "https://github.com/hashgraph-online/awesome-codex-plugins/tree/main/plugins/mturac/env-lint",
+  "plugin_id": "env-lint@candidate-corpus-local",
+  "plugin_scope": "user-global-codex",
+  "scope": "isolated-codex-home",
+  "rehearsal_kind": "isolated-plugin-root-detach",
+  "digest_algorithm": "lstat-tree-v1",
+  "digest_ignored_dirs": [
+    ".cache",
+    ".git",
+    ".pytest_cache",
+    "__pycache__"
+  ],
+  "preimage_digest": "695a1eb532627c11cf35df10ca51d88c965bb71582b587286ac6d9f7c2eb2925",
+  "rollback_digest": "695a1eb532627c11cf35df10ca51d88c965bb71582b587286ac6d9f7c2eb2925",
+  "promoted_final_digest": "32159b87554b661468e5656294ddeced8725f340408eb06f99988367a177ac13",
+  "live_install_unchanged": true,
+  "fresh_absence_process_id": 63350,
+  "restored_use_process_id": 63360,
+  "restored_use_output_sha256": "aecc78aa748046f22809efc0d624336a4fcf6d136b9f180d0ea58b16554f1aad",
+  "process_ids": {
+    "marketplace": 63306,
+    "initial_add": 63308,
+    "initial_inventory": 63310,
+    "remove": 63312,
+    "fresh_absence": 63350,
+    "restore": 63353,
+    "restored_inventory": 63355,
+    "restored_use_initial": 63357,
+    "restored_use_fresh": 63360,
+    "restored_use_discovery": 63363
+  },
+  "launch_evidence": {
+    "marketplace": {
+      "launch_id": "a624b41081ed89e66117ad57470e9a04",
+      "started_at_ns": 1784364444188437000,
+      "process_id": 63306
+    },
+    "initial_add": {
+      "launch_id": "fcafe370353a7e791522a81096a2f6b9",
+      "started_at_ns": 1784364444281316000,
+      "process_id": 63308
+    },
+    "initial_inventory": {
+      "launch_id": "efa1f4c7ddba1c6a23b82d73181540cb",
+      "started_at_ns": 1784364444378174000,
+      "process_id": 63310
+    },
+    "remove": {
+      "launch_id": "cab110c049df37769ead6c5bcdbda4f3",
+      "started_at_ns": 1784364444483676000,
+      "process_id": 63312
+    },
+    "fresh_absence": {
+      "launch_id": "cc4c4b1a8206795d80516c2377e8cb50",
+      "started_at_ns": 1784364444579113000,
+      "process_id": 63350
+    },
+    "restore": {
+      "launch_id": "161e4774f5fb1c4c834458e54a5a64e1",
+      "started_at_ns": 1784364444667949000,
+      "process_id": 63353
+    },
+    "restored_inventory": {
+      "launch_id": "7f00b8cc1b05ced787556e7b4788a161",
+      "started_at_ns": 1784364444761503000,
+      "process_id": 63355
+    },
+    "restored_use_initial": {
+      "launch_id": "255e3012f2edb3790dc2feb560673161",
+      "started_at_ns": 1784364444858662000,
+      "process_id": 63357
+    },
+    "restored_use_fresh": {
+      "launch_id": "fe7bd6605a5056d47df485052a2e225f",
+      "started_at_ns": 1784364445041564000,
+      "process_id": 63360
+    },
+    "restored_use_discovery": {
+      "launch_id": "242590569145842c81a0c17b80568245",
+      "started_at_ns": 1784364445231920000,
+      "process_id": 63363
+    }
+  },
+  "commands": [
+    {
+      "phase": "marketplace-add",
+      "argv": [
+        "codex",
+        "plugin",
+        "marketplace",
+        "add",
+        "<marketplace-root>",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 63306,
+      "launch_id": "a624b41081ed89e66117ad57470e9a04",
+      "started_at_ns": 1784364444188437000,
+      "stdout_sha256": "005d6f8e0f309df3257f6e3b5b10e8de56900d4b97450de3f1bf35d713e740dc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "initial-add",
+      "argv": [
+        "codex",
+        "plugin",
+        "add",
+        "env-lint@candidate-corpus-local",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 63308,
+      "launch_id": "fcafe370353a7e791522a81096a2f6b9",
+      "started_at_ns": 1784364444281316000,
+      "stdout_sha256": "35329ade8613829c6554653203d61d0979a4b720b1a29b0025dab524b68a6778",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "initial-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 63310,
+      "launch_id": "efa1f4c7ddba1c6a23b82d73181540cb",
+      "started_at_ns": 1784364444378174000,
+      "stdout_sha256": "013ffd1b0a4d873eeaae30d5bbe5ab512203b75a6f690f5b73f423ff837b3fb9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "remove",
+      "argv": [
+        "codex",
+        "plugin",
+        "remove",
+        "env-lint@candidate-corpus-local",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 63312,
+      "launch_id": "cab110c049df37769ead6c5bcdbda4f3",
+      "started_at_ns": 1784364444483676000,
+      "stdout_sha256": "2dbfc46d6f49dc5aaf8031a4a90e67ecf0ad3c7f55d67783bc28337608d3dec5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "absence-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 63350,
+      "launch_id": "cc4c4b1a8206795d80516c2377e8cb50",
+      "started_at_ns": 1784364444579113000,
+      "stdout_sha256": "050e2dee988ae4ba4d1d8220591b660829a9ee3f06f52d548acc87522ee90885",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "restore",
+      "argv": [
+        "codex",
+        "plugin",
+        "add",
+        "env-lint@candidate-corpus-local",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 63353,
+      "launch_id": "161e4774f5fb1c4c834458e54a5a64e1",
+      "started_at_ns": 1784364444667949000,
+      "stdout_sha256": "35329ade8613829c6554653203d61d0979a4b720b1a29b0025dab524b68a6778",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "restored-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 63355,
+      "launch_id": "7f00b8cc1b05ced787556e7b4788a161",
+      "started_at_ns": 1784364444761503000,
+      "stdout_sha256": "013ffd1b0a4d873eeaae30d5bbe5ab512203b75a6f690f5b73f423ff837b3fb9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "restored_probe": {
+    "fixture_id": "candidate-plugin-env-lint-owned-fixture-v2",
+    "probe_kind": "semantic-plugin-isolated-codex-fixture",
+    "assertions": [
+      "source-specific happy path passed",
+      "source-specific failure path passed",
+      "unsafe or mutating path was denied",
+      "fresh process repeated the semantic capability",
+      "isolated one-plugin Codex process recovered source-only skill evidence"
+    ],
+    "output_sha256": "aecc78aa748046f22809efc0d624336a4fcf6d136b9f180d0ea58b16554f1aad",
+    "discovery_output_sha256": "6cc9753a8de2b315fd7f1d46d93a3ac8074d337efe3dab8f446f1a75bc93438e"
+  }
+}

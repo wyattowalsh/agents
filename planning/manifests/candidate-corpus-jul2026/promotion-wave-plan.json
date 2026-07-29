@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-16T02:45:28.654091+00:00",
+  "generated_at": "2026-07-18T08:59:45.739538+00:00",
   "status": "terminal-integration-wave-plan-generated",
   "wave_count": 10,
   "total_targets": 289,
@@ -177,7 +177,7 @@
           "raw_lane_ids": [
             "U029"
           ],
-          "current_intake_decision": "integrated_mcp_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "standard-review",
           "auth_required": true,
@@ -357,7 +357,7 @@
           "raw_lane_ids": [
             "U172"
           ],
-          "current_intake_decision": "integrated_mcp_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "standard-review",
           "auth_required": true,
@@ -377,7 +377,7 @@
             "U132",
             "U175"
           ],
-          "current_intake_decision": "integrated_existing_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "standard-review",
           "auth_required": true,
@@ -485,7 +485,7 @@
           "raw_lane_ids": [
             "U177"
           ],
-          "current_intake_decision": "integrated_existing_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "standard-review",
           "auth_required": true,
@@ -512,24 +512,6 @@
           "next_gate": "existing installable catalog coverage"
         },
         {
-          "lane_id": "N109",
-          "normalized_url": "https://github.com/PleasePrompto/notebooklm-skill",
-          "source_name": "PleasePrompto/notebooklm-skill",
-          "raw_indexes": [
-            111
-          ],
-          "raw_lane_ids": [
-            "U111"
-          ],
-          "current_intake_decision": "integrated_existing_surface",
-          "existing_integration_status": "covered-by-existing-installable-catalog",
-          "risk_tier": "standard-review",
-          "auth_required": true,
-          "live_install_eligible": false,
-          "next_packet_required": "terminal route recorded; no candidate-code execution from corpus rows",
-          "next_gate": "existing installable catalog coverage"
-        },
-        {
           "lane_id": "N161",
           "normalized_url": "https://github.com/Pythoughts-labs/designer-skill",
           "source_name": "Pythoughts-labs/designer-skill",
@@ -539,7 +521,7 @@
           "raw_lane_ids": [
             "U163"
           ],
-          "current_intake_decision": "integrated_mcp_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "standard-review",
           "auth_required": true,
@@ -557,7 +539,7 @@
           "raw_lane_ids": [
             "U001"
           ],
-          "current_intake_decision": "integrated_mcp_surface",
+          "current_intake_decision": "integrated_existing_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "standard-review",
           "auth_required": true,
@@ -1189,7 +1171,7 @@
           "raw_lane_ids": [
             "U194"
           ],
-          "current_intake_decision": "integrated_existing_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "executable-surface-review-required",
           "auth_required": true,
@@ -1207,7 +1189,7 @@
           "raw_lane_ids": [
             "U164"
           ],
-          "current_intake_decision": "integrated_existing_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "executable-surface-review-required",
           "auth_required": false,
@@ -1225,7 +1207,7 @@
           "raw_lane_ids": [
             "U166"
           ],
-          "current_intake_decision": "integrated_existing_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "executable-surface-review-required",
           "auth_required": true,
@@ -1243,7 +1225,7 @@
           "raw_lane_ids": [
             "U165"
           ],
-          "current_intake_decision": "integrated_existing_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "executable-surface-review-required",
           "auth_required": false,
@@ -1297,7 +1279,7 @@
           "raw_lane_ids": [
             "U120"
           ],
-          "current_intake_decision": "integrated_existing_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "standard-review",
           "auth_required": true,
@@ -1642,7 +1624,7 @@
           "current_intake_decision": "integrated_existing_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "executable-surface-review-required",
-          "auth_required": false,
+          "auth_required": true,
           "live_install_eligible": false,
           "next_packet_required": "terminal route recorded; no candidate-code execution from corpus rows",
           "next_gate": "existing installable catalog coverage"
@@ -1657,10 +1639,10 @@
           "raw_lane_ids": [
             "U279"
           ],
-          "current_intake_decision": "integrated_existing_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "executable-surface-review-required",
-          "auth_required": false,
+          "auth_required": true,
           "live_install_eligible": false,
           "next_packet_required": "terminal route recorded; no candidate-code execution from corpus rows",
           "next_gate": "existing installable catalog coverage"
@@ -1909,7 +1891,7 @@
           "raw_lane_ids": [
             "U176"
           ],
-          "current_intake_decision": "integrated_existing_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "executable-surface-review-required",
           "auth_required": true,
@@ -1936,6 +1918,24 @@
           "next_gate": "existing installable catalog coverage"
         },
         {
+          "lane_id": "N144",
+          "normalized_url": "https://github.com/teng-lin/notebooklm-py",
+          "source_name": "teng-lin/notebooklm-py",
+          "raw_indexes": [
+            146
+          ],
+          "raw_lane_ids": [
+            "U146"
+          ],
+          "current_intake_decision": "integrated_mcp_surface",
+          "existing_integration_status": "covered-by-existing-installable-catalog",
+          "risk_tier": "standard-review",
+          "auth_required": true,
+          "live_install_eligible": false,
+          "next_packet_required": "terminal route recorded; no candidate-code execution from corpus rows",
+          "next_gate": "existing installable catalog coverage"
+        },
+        {
           "lane_id": "N172",
           "normalized_url": "https://github.com/tim-osterhus/codex-remotion-plugin",
           "source_name": "tim-osterhus/codex-remotion-plugin",
@@ -1945,7 +1945,7 @@
           "raw_lane_ids": [
             "U174"
           ],
-          "current_intake_decision": "integrated_existing_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "executable-surface-review-required",
           "auth_required": false,
@@ -2179,7 +2179,7 @@
           "raw_lane_ids": [
             "U121"
           ],
-          "current_intake_decision": "integrated_existing_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "risk_tier": "standard-review",
           "auth_required": false,
@@ -2450,7 +2450,7 @@
           "lane_id": "N029",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_mcp_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "standard-review",
           "auth_required": true,
           "docs_steward_surfaces": [
@@ -2751,7 +2751,7 @@
           "lane_id": "N170",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_mcp_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "standard-review",
           "auth_required": true,
           "docs_steward_surfaces": [
@@ -2783,7 +2783,7 @@
           "lane_id": "N130",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_existing_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "standard-review",
           "auth_required": true,
           "docs_steward_surfaces": [
@@ -2965,7 +2965,7 @@
           "lane_id": "N174",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_existing_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "standard-review",
           "auth_required": true,
           "docs_steward_surfaces": [
@@ -3014,36 +3014,6 @@
           "next_gate": "Existing installable catalog row owns integration; no duplicate install command."
         },
         {
-          "normalized_url": "https://github.com/PleasePrompto/notebooklm-skill",
-          "source_name": "PleasePrompto/notebooklm-skill",
-          "raw_indexes": [
-            111
-          ],
-          "raw_lane_ids": [
-            "U111"
-          ],
-          "lane_id": "N109",
-          "coverage_status": "covered-by-existing-installable-catalog",
-          "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_existing_surface",
-          "risk_tier": "standard-review",
-          "auth_required": true,
-          "docs_steward_surfaces": [
-            "README",
-            "auth-matrix",
-            "catalog-authoring",
-            "catalog-generated",
-            "changelog",
-            "decision-log",
-            "generated-drift",
-            "install-docs",
-            "openspec",
-            "reports",
-            "skill-research"
-          ],
-          "next_gate": "Existing installable catalog row owns integration; no duplicate install command."
-        },
-        {
           "normalized_url": "https://github.com/Pythoughts-labs/designer-skill",
           "source_name": "Pythoughts-labs/designer-skill",
           "raw_indexes": [
@@ -3055,7 +3025,7 @@
           "lane_id": "N161",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_mcp_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "standard-review",
           "auth_required": true,
           "docs_steward_surfaces": [
@@ -3085,7 +3055,7 @@
           "lane_id": "N001",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_mcp_surface",
+          "intake_decision": "integrated_existing_surface",
           "risk_tier": "standard-review",
           "auth_required": true,
           "docs_steward_surfaces": [
@@ -4144,7 +4114,7 @@
           "lane_id": "N191",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_existing_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "executable-surface-review-required",
           "auth_required": true,
           "docs_steward_surfaces": [
@@ -4176,7 +4146,7 @@
           "lane_id": "N162",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_existing_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "executable-surface-review-required",
           "auth_required": false,
           "docs_steward_surfaces": [
@@ -4208,7 +4178,7 @@
           "lane_id": "N164",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_existing_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "executable-surface-review-required",
           "auth_required": true,
           "docs_steward_surfaces": [
@@ -4240,7 +4210,7 @@
           "lane_id": "N163",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_existing_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "executable-surface-review-required",
           "auth_required": false,
           "docs_steward_surfaces": [
@@ -4332,7 +4302,7 @@
           "lane_id": "N118",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_existing_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "standard-review",
           "auth_required": true,
           "docs_steward_surfaces": [
@@ -4906,7 +4876,7 @@
           "existing_integration_status": "covered-by-existing-installable-catalog",
           "intake_decision": "integrated_existing_surface",
           "risk_tier": "executable-surface-review-required",
-          "auth_required": false,
+          "auth_required": true,
           "docs_steward_surfaces": [
             "README",
             "auth-matrix",
@@ -4936,9 +4906,9 @@
           "lane_id": "N276",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_existing_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "executable-surface-review-required",
-          "auth_required": false,
+          "auth_required": true,
           "docs_steward_surfaces": [
             "README",
             "auth-matrix",
@@ -5360,7 +5330,7 @@
           "lane_id": "N173",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_existing_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "executable-surface-review-required",
           "auth_required": true,
           "docs_steward_surfaces": [
@@ -5411,6 +5381,36 @@
           "next_gate": "Existing installable catalog row owns integration; no duplicate install command."
         },
         {
+          "normalized_url": "https://github.com/teng-lin/notebooklm-py",
+          "source_name": "teng-lin/notebooklm-py",
+          "raw_indexes": [
+            146
+          ],
+          "raw_lane_ids": [
+            "U146"
+          ],
+          "lane_id": "N144",
+          "coverage_status": "covered-by-existing-installable-catalog",
+          "existing_integration_status": "covered-by-existing-installable-catalog",
+          "intake_decision": "integrated_mcp_surface",
+          "risk_tier": "standard-review",
+          "auth_required": true,
+          "docs_steward_surfaces": [
+            "README",
+            "auth-matrix",
+            "catalog-authoring",
+            "catalog-generated",
+            "changelog",
+            "decision-log",
+            "generated-drift",
+            "install-docs",
+            "openspec",
+            "reports",
+            "skill-research"
+          ],
+          "next_gate": "Existing installable catalog row owns integration; no duplicate install command."
+        },
+        {
           "normalized_url": "https://github.com/tim-osterhus/codex-remotion-plugin",
           "source_name": "tim-osterhus/codex-remotion-plugin",
           "raw_indexes": [
@@ -5422,7 +5422,7 @@
           "lane_id": "N172",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_existing_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "executable-surface-review-required",
           "auth_required": false,
           "docs_steward_surfaces": [
@@ -5817,7 +5817,7 @@
           "lane_id": "N119",
           "coverage_status": "covered-by-existing-installable-catalog",
           "existing_integration_status": "covered-by-existing-installable-catalog",
-          "intake_decision": "integrated_existing_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "standard-review",
           "auth_required": false,
           "docs_steward_surfaces": [
@@ -5969,7 +5969,6 @@
         106,
         107,
         108,
-        111,
         112,
         113,
         115,
@@ -5984,6 +5983,7 @@
         142,
         144,
         145,
+        146,
         149,
         151,
         156,
@@ -6854,7 +6854,7 @@
           "raw_lane_ids": [
             "U168"
           ],
-          "current_intake_decision": "integrated_native_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "needs-promotion-review",
           "risk_tier": "standard-review",
           "auth_required": true,
@@ -7052,7 +7052,7 @@
           "raw_lane_ids": [
             "U171"
           ],
-          "current_intake_decision": "integrated_mcp_surface",
+          "current_intake_decision": "integrated_plugin_surface",
           "existing_integration_status": "needs-promotion-review",
           "risk_tier": "executable-surface-review-required",
           "auth_required": true,
@@ -7596,7 +7596,7 @@
           "lane_id": "N166",
           "coverage_status": "needs-promotion-review",
           "existing_integration_status": "needs-promotion-review",
-          "intake_decision": "integrated_native_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "standard-review",
           "auth_required": true,
           "docs_steward_surfaces": [
@@ -7939,7 +7939,7 @@
           "lane_id": "N169",
           "coverage_status": "needs-promotion-review",
           "existing_integration_status": "needs-promotion-review",
-          "intake_decision": "integrated_mcp_surface",
+          "intake_decision": "integrated_plugin_surface",
           "risk_tier": "executable-surface-review-required",
           "auth_required": true,
           "docs_steward_surfaces": [
@@ -9428,34 +9428,16 @@
         "uv run wagents skills sync --dry-run",
         "uv run wagents docs generate --no-installed"
       ],
-      "unique_target_count": 5,
-      "raw_entry_count": 6,
+      "unique_target_count": 4,
+      "raw_entry_count": 5,
       "coverage_status_counts": {
         "covered-by-existing-inspection-required": 1,
-        "needs-promotion-review": 4
+        "needs-promotion-review": 3
       },
       "risk_tier_counts": {
-        "standard-review": 5
+        "standard-review": 4
       },
       "lanes": [
-        {
-          "lane_id": "N060",
-          "normalized_url": "https://github.com/Auriti-Labs/geo-optimizer-skill",
-          "source_name": "Auriti-Labs/geo-optimizer-skill",
-          "raw_indexes": [
-            61
-          ],
-          "raw_lane_ids": [
-            "U061"
-          ],
-          "current_intake_decision": "integrated_mcp_surface",
-          "existing_integration_status": "needs-promotion-review",
-          "risk_tier": "standard-review",
-          "auth_required": true,
-          "live_install_eligible": false,
-          "next_packet_required": "terminal route recorded; no candidate-code execution from corpus rows",
-          "next_gate": "Executable or operational source; require dry-run, least privilege, and smoke tests."
-        },
         {
           "lane_id": "N096",
           "normalized_url": "https://github.com/CloudAI-X/threejs-skills",
@@ -9532,36 +9514,6 @@
         }
       ],
       "targets": [
-        {
-          "normalized_url": "https://github.com/Auriti-Labs/geo-optimizer-skill",
-          "source_name": "Auriti-Labs/geo-optimizer-skill",
-          "raw_indexes": [
-            61
-          ],
-          "raw_lane_ids": [
-            "U061"
-          ],
-          "lane_id": "N060",
-          "coverage_status": "needs-promotion-review",
-          "existing_integration_status": "needs-promotion-review",
-          "intake_decision": "integrated_mcp_surface",
-          "risk_tier": "standard-review",
-          "auth_required": true,
-          "docs_steward_surfaces": [
-            "README",
-            "auth-matrix",
-            "catalog-authoring",
-            "catalog-generated",
-            "changelog",
-            "decision-log",
-            "generated-drift",
-            "install-docs",
-            "openspec",
-            "reports",
-            "skill-research"
-          ],
-          "next_gate": "Executable or operational source; require dry-run, least privilege, and smoke tests."
-        },
         {
           "normalized_url": "https://github.com/CloudAI-X/threejs-skills",
           "source_name": "CloudAI-X/threejs-skills",
@@ -9685,11 +9637,10 @@
           "next_gate": "Executable or operational source; require dry-run, least privilege, and smoke tests."
         }
       ],
-      "target_count": 5,
+      "target_count": 4,
       "raw_indexes": [
         5,
         56,
-        61,
         98,
         246,
         285
@@ -9817,6 +9768,24 @@
           "next_gate": "Research/domain source; document citation, evidence, non-advice, and reproducibility."
         },
         {
+          "lane_id": "N109",
+          "normalized_url": "https://github.com/PleasePrompto/notebooklm-skill",
+          "source_name": "PleasePrompto/notebooklm-skill",
+          "raw_indexes": [
+            111
+          ],
+          "raw_lane_ids": [
+            "U111"
+          ],
+          "current_intake_decision": "integrated_skill_catalog_surface",
+          "existing_integration_status": "needs-promotion-review",
+          "risk_tier": "standard-review",
+          "auth_required": true,
+          "live_install_eligible": false,
+          "next_packet_required": "terminal route recorded; no candidate-code execution from corpus rows",
+          "next_gate": "Research/domain source; document citation, evidence, non-advice, and reproducibility."
+        },
+        {
           "lane_id": "N052",
           "normalized_url": "https://github.com/Trae1ounG/paper-plot-skills",
           "source_name": "Trae1ounG/paper-plot-skills",
@@ -9902,24 +9871,6 @@
           "existing_integration_status": "needs-promotion-review",
           "risk_tier": "standard-review",
           "auth_required": false,
-          "live_install_eligible": false,
-          "next_packet_required": "terminal route recorded; no candidate-code execution from corpus rows",
-          "next_gate": "Research/domain source; document citation, evidence, non-advice, and reproducibility."
-        },
-        {
-          "lane_id": "N144",
-          "normalized_url": "https://github.com/teng-lin/notebooklm-py",
-          "source_name": "teng-lin/notebooklm-py",
-          "raw_indexes": [
-            146
-          ],
-          "raw_lane_ids": [
-            "U146"
-          ],
-          "current_intake_decision": "integrated_native_surface",
-          "existing_integration_status": "needs-promotion-review",
-          "risk_tier": "standard-review",
-          "auth_required": true,
           "live_install_eligible": false,
           "next_packet_required": "terminal route recorded; no candidate-code execution from corpus rows",
           "next_gate": "Research/domain source; document citation, evidence, non-advice, and reproducibility."
@@ -10077,6 +10028,36 @@
           "next_gate": "Research/domain source; document citation, evidence, non-advice, and reproducibility."
         },
         {
+          "normalized_url": "https://github.com/PleasePrompto/notebooklm-skill",
+          "source_name": "PleasePrompto/notebooklm-skill",
+          "raw_indexes": [
+            111
+          ],
+          "raw_lane_ids": [
+            "U111"
+          ],
+          "lane_id": "N109",
+          "coverage_status": "needs-promotion-review",
+          "existing_integration_status": "needs-promotion-review",
+          "intake_decision": "integrated_skill_catalog_surface",
+          "risk_tier": "standard-review",
+          "auth_required": true,
+          "docs_steward_surfaces": [
+            "README",
+            "auth-matrix",
+            "catalog-authoring",
+            "catalog-generated",
+            "changelog",
+            "decision-log",
+            "generated-drift",
+            "install-docs",
+            "openspec",
+            "reports",
+            "skill-research"
+          ],
+          "next_gate": "Research/domain source; document citation, evidence, non-advice, and reproducibility."
+        },
+        {
           "normalized_url": "https://github.com/Trae1ounG/paper-plot-skills",
           "source_name": "Trae1ounG/paper-plot-skills",
           "raw_indexes": [
@@ -10225,36 +10206,6 @@
             "skill-research"
           ],
           "next_gate": "Research/domain source; document citation, evidence, non-advice, and reproducibility."
-        },
-        {
-          "normalized_url": "https://github.com/teng-lin/notebooklm-py",
-          "source_name": "teng-lin/notebooklm-py",
-          "raw_indexes": [
-            146
-          ],
-          "raw_lane_ids": [
-            "U146"
-          ],
-          "lane_id": "N144",
-          "coverage_status": "needs-promotion-review",
-          "existing_integration_status": "needs-promotion-review",
-          "intake_decision": "integrated_native_surface",
-          "risk_tier": "standard-review",
-          "auth_required": true,
-          "docs_steward_surfaces": [
-            "README",
-            "auth-matrix",
-            "catalog-authoring",
-            "catalog-generated",
-            "changelog",
-            "decision-log",
-            "generated-drift",
-            "install-docs",
-            "openspec",
-            "reports",
-            "skill-research"
-          ],
-          "next_gate": "Research/domain source; document citation, evidence, non-advice, and reproducibility."
         }
       ],
       "target_count": 11,
@@ -10263,10 +10214,10 @@
         41,
         52,
         62,
+        111,
         126,
         130,
         137,
-        146,
         206,
         225,
         291
@@ -10294,15 +10245,33 @@
         "uv run wagents skills sync --dry-run",
         "uv run wagents docs generate --no-installed"
       ],
-      "unique_target_count": 15,
-      "raw_entry_count": 15,
+      "unique_target_count": 16,
+      "raw_entry_count": 16,
       "coverage_status_counts": {
-        "needs-promotion-review": 15
+        "needs-promotion-review": 16
       },
       "risk_tier_counts": {
-        "standard-review": 15
+        "standard-review": 16
       },
       "lanes": [
+        {
+          "lane_id": "N060",
+          "normalized_url": "https://github.com/Auriti-Labs/geo-optimizer-skill",
+          "source_name": "Auriti-Labs/geo-optimizer-skill",
+          "raw_indexes": [
+            61
+          ],
+          "raw_lane_ids": [
+            "U061"
+          ],
+          "current_intake_decision": "integrated_skill_catalog_surface",
+          "existing_integration_status": "needs-promotion-review",
+          "risk_tier": "standard-review",
+          "auth_required": true,
+          "live_install_eligible": false,
+          "next_packet_required": "terminal route recorded; no candidate-code execution from corpus rows",
+          "next_gate": "Growth/product source; document anti-abuse, ToS, and non-deceptive boundaries."
+        },
         {
           "lane_id": "N131",
           "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/spreadsheet-formula-helper",
@@ -10576,6 +10545,36 @@
       ],
       "targets": [
         {
+          "normalized_url": "https://github.com/Auriti-Labs/geo-optimizer-skill",
+          "source_name": "Auriti-Labs/geo-optimizer-skill",
+          "raw_indexes": [
+            61
+          ],
+          "raw_lane_ids": [
+            "U061"
+          ],
+          "lane_id": "N060",
+          "coverage_status": "needs-promotion-review",
+          "existing_integration_status": "needs-promotion-review",
+          "intake_decision": "integrated_skill_catalog_surface",
+          "risk_tier": "standard-review",
+          "auth_required": true,
+          "docs_steward_surfaces": [
+            "README",
+            "auth-matrix",
+            "catalog-authoring",
+            "catalog-generated",
+            "changelog",
+            "decision-log",
+            "generated-drift",
+            "install-docs",
+            "openspec",
+            "reports",
+            "skill-research"
+          ],
+          "next_gate": "Growth/product source; document anti-abuse, ToS, and non-deceptive boundaries."
+        },
+        {
           "normalized_url": "https://github.com/ComposioHQ/awesome-codex-skills/tree/master/spreadsheet-formula-helper",
           "source_name": "ComposioHQ/awesome-codex-skills",
           "raw_indexes": [
@@ -11026,9 +11025,10 @@
           "next_gate": "Growth/product source; document anti-abuse, ToS, and non-deceptive boundaries."
         }
       ],
-      "target_count": 15,
+      "target_count": 16,
       "raw_indexes": [
         60,
+        61,
         110,
         133,
         223,
@@ -14653,7 +14653,7 @@
         205,
         280
       ],
-      "mutation_policy": "authoring-only stable quarantine reference; no install"
+      "mutation_policy": "manifest-only quarantine record; no authoring or install"
     }
   ]
 }

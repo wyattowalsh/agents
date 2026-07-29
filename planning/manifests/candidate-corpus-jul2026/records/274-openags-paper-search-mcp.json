@@ -14,8 +14,12 @@
   ],
   "install_or_integration_decision": "integrated_existing_surface",
   "reason": "Existing repo catalog surface already covers this source/domain.",
-  "auth_required": false,
-  "env_vars_or_credentials": [],
+  "auth_required": true,
+  "env_vars_or_credentials": [
+    "PAPER_SEARCH_MCP_CORE_API_KEY",
+    "SEMANTIC_SCHOLAR_API_KEY",
+    "ZENODO_ACCESS_TOKEN"
+  ],
   "safety_notes": "Executable/tool surface requires script and dependency review.",
   "attribution_notes": "Preserve attribution to openags/paper-search-mcp; verify license before adapting content.",
   "files_added": [
@@ -164,8 +168,12 @@
     "license_name": "MIT License"
   },
   "compliance_packet": {
-    "auth_required": false,
-    "env_vars_or_credentials": [],
+    "auth_required": true,
+    "env_vars_or_credentials": [
+      "PAPER_SEARCH_MCP_CORE_API_KEY",
+      "SEMANTIC_SCHOLAR_API_KEY",
+      "ZENODO_ACCESS_TOKEN"
+    ],
     "evidence_source": "deep-source-audit.json"
   },
   "docs_steward_surfaces": [

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-61b4d2cbcadfaec1",
+  "mcp_server": "charted",
+  "transaction_id": "89c3b268b66a42e19ab673d204b40e31",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "c97941cb288107e62185b1f12c7d88fe3513159ee9690362020375734e5d0913",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "5b04c03a0d9cda9bb2244fed6e76ea7a11ae523956fb700f6539e02486f0e9e5",
+  "isolated_rollback_digest": "5b04c03a0d9cda9bb2244fed6e76ea7a11ae523956fb700f6539e02486f0e9e5",
+  "fresh_absence": {
+    "charted-mcp": null
+  },
+  "fresh_absence_process_id": 21065,
+  "fresh_absence_output_sha256": "53fb29e4699a374586b5fddd1075b987b69e811016fb95c91781f0ddc9e4108e",
+  "restored_use_process_id": 21122,
+  "restored_use_output_sha256": "ace788649b423bb6f84ce5a7b7f0557153ed487f32f74e73ebb42e9c22f1aafa",
+  "restored_use_launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-mcp-entrypoint-rollback-candidate-artifact-61b4d2cbcadfaec1-_g5fenfu/bin/charted-mcp",
+  "restored_use_launch_realpath": "/Users/ww/.local/share/uv/tools/charted/bin/charted-mcp",
+  "installed_digest": "db12615bb57dd82aa759365e419a39e29c2146a766783623a67695a391ee8248",
+  "status": "passed"
+}

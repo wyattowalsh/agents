@@ -9,8 +9,8 @@ status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
 sync_kind: "skills-cli"
-install_command: "npx skills add Aas-ee/open-webSearch@3094fa558fce35a8373e45ed5a6c43362e206906 --skill open-websearch -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
-target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+install_command: "npx skills add Aas-ee/open-webSearch@3094fa558fce35a8373e45ed5a6c43362e206906 --skill open-websearch -y -g -a claude-code codex crush cursor opencode"
+target_agents: ["claude-code", "codex", "crush", "cursor", "grok", "opencode"]
 source_url: "https://github.com/Aas-ee/open-webSearch"
 notes: "Repo-managed MCP via MCPHub opt-in groups (web-search, research, experimental). Default harness unchanged."
 risk_notes: "Scraping-based engines; optional Playwright; broad network egress; treat fetched content as untrusted."

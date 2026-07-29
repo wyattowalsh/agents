@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from wagents.platforms import get_adapter
 from wagents.platforms.base import SyncContext
 
@@ -16,23 +18,7 @@ def test_codex_adapter_dry_run_notes_changes(tmp_path, monkeypatch):
     assert ctx.changes
 
 
-def test_copilot_adapter_dry_run_notes_repo_changes(tmp_path, monkeypatch):
-    stale = tmp_path / ".github" / "copilot-instructions.md"
-    stale.parent.mkdir(parents=True)
-    stale.write_text("stale\n", encoding="utf-8")
-    monkeypatch.setattr("scripts.sync_agent_stack.COPILOT_REPO_INSTRUCTIONS_PATH", stale)
-
-    ctx = SyncContext(apply=False)
-    adapter = get_adapter("github-copilot")
-    adapter.sync_repo(ctx, {}, {}, {})
-    assert ctx.changes
-
-
-def test_gemini_adapter_dry_run_home_notes_when_settings_missing(monkeypatch):
-    ctx = SyncContext(apply=False)
-    adapter = get_adapter("gemini-cli")
-    missing_settings = __import__("pathlib").Path("/nonexistent/settings.json")
-    monkeypatch.setattr("scripts.sync_agent_stack.GEMINI_SETTINGS_PATH", missing_settings)
-    adapter.sync_home(ctx, {}, {}, {}, {})
-    # no settings file: merge_gemini_settings returns early without changes
-    assert isinstance(ctx.changes, list)
+@pytest.mark.parametrize("retired_id", ["antigravity", "gemini-cli", "github-copilot"])
+def test_retired_harness_adapters_are_rejected(retired_id):
+    with pytest.raises(KeyError):
+        get_adapter(retired_id)

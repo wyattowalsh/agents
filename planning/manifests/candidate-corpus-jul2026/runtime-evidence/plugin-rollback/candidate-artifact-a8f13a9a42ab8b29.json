@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "transaction_id": "a4bbd39e0b4c4c85b28c4b870a9ffedb",
+  "artifact_id": "candidate-artifact-a8f13a9a42ab8b29",
+  "normalized_url": "https://github.com/mohamedabdallah-14/unslop",
+  "plugin_id": "unslop@awesome-codex-plugins",
+  "plugin_scope": "user-global-codex",
+  "scope": "isolated-codex-home",
+  "rehearsal_kind": "isolated-plugin-root-detach",
+  "digest_algorithm": "lstat-tree-v1",
+  "digest_ignored_dirs": [
+    ".cache",
+    ".git",
+    ".pytest_cache",
+    "__pycache__"
+  ],
+  "preimage_digest": "a3ae7aeede5f233f13251c33b028276f7fc06c02b7d241630512fddf58a3c039",
+  "rollback_digest": "a3ae7aeede5f233f13251c33b028276f7fc06c02b7d241630512fddf58a3c039",
+  "promoted_final_digest": "05d41066073524e0cebbab10778bfe1428fa5621da3998c7789b3c0d8070b4b0",
+  "live_install_unchanged": true,
+  "fresh_absence_process_id": 73490,
+  "restored_use_process_id": 73550,
+  "restored_use_output_sha256": "e44d1d8674e3e0349b1f7269b6d49ead314854086c4463ff79c0fbb39a94511d",
+  "process_ids": {
+    "marketplace": 73410,
+    "initial_add": 73458,
+    "initial_inventory": 73472,
+    "remove": 73485,
+    "fresh_absence": 73490,
+    "restore": 73493,
+    "restored_inventory": 73496,
+    "restored_use_initial": 73500,
+    "restored_use_fresh": 73550,
+    "restored_use_discovery": 73558
+  },
+  "launch_evidence": {
+    "marketplace": {
+      "launch_id": "25d828524ac64660f3c8e7904273862f",
+      "started_at_ns": 1784364636872198000,
+      "process_id": 73410
+    },
+    "initial_add": {
+      "launch_id": "29bf8594d7928184dc823a981277f856",
+      "started_at_ns": 1784364637011307000,
+      "process_id": 73458
+    },
+    "initial_inventory": {
+      "launch_id": "3a3ac05f1cb0fee1bbc11999cea9e676",
+      "started_at_ns": 1784364637133265000,
+      "process_id": 73472
+    },
+    "remove": {
+      "launch_id": "98f8cd9a80fc1bbe8e5b59a7fd7be9f2",
+      "started_at_ns": 1784364637235109000,
+      "process_id": 73485
+    },
+    "fresh_absence": {
+      "launch_id": "02512ab0f6286a025428a695efc5cb49",
+      "started_at_ns": 1784364637334595000,
+      "process_id": 73490
+    },
+    "restore": {
+      "launch_id": "035a2339d0371c60ce8f545000431a54",
+      "started_at_ns": 1784364637439248000,
+      "process_id": 73493
+    },
+    "restored_inventory": {
+      "launch_id": "4519c278ef3c9ae7137447e8be932239",
+      "started_at_ns": 1784364637567912000,
+      "process_id": 73496
+    },
+    "restored_use_initial": {
+      "launch_id": "8fb7391281cb3621ab28be31d18d4bde",
+      "started_at_ns": 1784364637688509000,
+      "process_id": 73500
+    },
+    "restored_use_fresh": {
+      "launch_id": "cdd1bbf587a9cd3a1834e492547add07",
+      "started_at_ns": 1784364638027971000,
+      "process_id": 73550
+    },
+    "restored_use_discovery": {
+      "launch_id": "23c6073a6e20197117f6d1b6a4840115",
+      "started_at_ns": 1784364638368485000,
+      "process_id": 73558
+    }
+  },
+  "commands": [
+    {
+      "phase": "marketplace-add",
+      "argv": [
+        "codex",
+        "plugin",
+        "marketplace",
+        "add",
+        "<marketplace-root>",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 73410,
+      "launch_id": "25d828524ac64660f3c8e7904273862f",
+      "started_at_ns": 1784364636872198000,
+      "stdout_sha256": "56cc505d92803d59507b06dcf317d715038947b7c8adb371b1c088cf437e67ce",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "initial-add",
+      "argv": [
+        "codex",
+        "plugin",
+        "add",
+        "unslop@awesome-codex-plugins",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 73458,
+      "launch_id": "29bf8594d7928184dc823a981277f856",
+      "started_at_ns": 1784364637011307000,
+      "stdout_sha256": "ce6bf0bf819e8d863c895745a573de54f6cabe16bcd3335173856e538b95af74",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "initial-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 73472,
+      "launch_id": "3a3ac05f1cb0fee1bbc11999cea9e676",
+      "started_at_ns": 1784364637133265000,
+      "stdout_sha256": "995e36d81656f8f08ed02ccca949421224dc1a0a8fad10a018737e1de6c71ac9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "remove",
+      "argv": [
+        "codex",
+        "plugin",
+        "remove",
+        "unslop@awesome-codex-plugins",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 73485,
+      "launch_id": "98f8cd9a80fc1bbe8e5b59a7fd7be9f2",
+      "started_at_ns": 1784364637235109000,
+      "stdout_sha256": "dc6164df132ed00ae137f85a0038614b52a2c2691966617041ef22920669d9d7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "absence-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 73490,
+      "launch_id": "02512ab0f6286a025428a695efc5cb49",
+      "started_at_ns": 1784364637334595000,
+      "stdout_sha256": "050e2dee988ae4ba4d1d8220591b660829a9ee3f06f52d548acc87522ee90885",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "restore",
+      "argv": [
+        "codex",
+        "plugin",
+        "add",
+        "unslop@awesome-codex-plugins",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 73493,
+      "launch_id": "035a2339d0371c60ce8f545000431a54",
+      "started_at_ns": 1784364637439248000,
+      "stdout_sha256": "ce6bf0bf819e8d863c895745a573de54f6cabe16bcd3335173856e538b95af74",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "restored-inventory",
+      "argv": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "returncode": 0,
+      "process_id": 73496,
+      "launch_id": "4519c278ef3c9ae7137447e8be932239",
+      "started_at_ns": 1784364637567912000,
+      "stdout_sha256": "995e36d81656f8f08ed02ccca949421224dc1a0a8fad10a018737e1de6c71ac9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "restored_probe": {
+    "fixture_id": "candidate-plugin-unslop-owned-fixture-v2",
+    "probe_kind": "semantic-plugin-isolated-codex-fixture",
+    "assertions": [
+      "source-specific happy path passed",
+      "source-specific failure path passed",
+      "unsafe or mutating path was denied",
+      "fresh process repeated the semantic capability",
+      "isolated one-plugin Codex process recovered source-only skill evidence"
+    ],
+    "output_sha256": "e44d1d8674e3e0349b1f7269b6d49ead314854086c4463ff79c0fbb39a94511d",
+    "discovery_output_sha256": "14dd626a324242285632d0b0b8dc9bd7bc326d2919cf47e17a28723312e0558e"
+  }
+}

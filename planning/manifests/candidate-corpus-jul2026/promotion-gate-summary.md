@@ -11,5 +11,5 @@
 - Ready for live install: 0
 - Live install commands emitted: 0
 
-Every normalized source has a stable catalog integration; integration classification is independent from trust-cleared installability.
+Every normalized source has a durable terminal integration identity; integration classification is independent from trust-cleared installability.
 Quarantine references remain non-installable with active hard blocks.

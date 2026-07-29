@@ -1,6 +1,7 @@
 import json
 import subprocess
 import sys
+from pathlib import Path
 from typing import Any, cast
 
 import pytest
@@ -110,13 +111,13 @@ npx skills add vercel-labs/agent-skills --skill curated-skill -y -g -a codex cla
                 "name": "lock-skill",
                 "path": str(lock_skill_dir),
                 "scope": "global",
-                "agents": ["Antigravity"] if agent == "antigravity" else [],
+                "agents": ["Crush"] if agent == "crush" else [],
             },
         )
         return _completed(cmd, payload)
 
     snapshot = collect_installed_inventory(
-        agent_ids=("antigravity", "claude-code"),
+        agent_ids=("crush", "claude-code"),
         root=root,
         home=home,
         runner=runner,
@@ -131,7 +132,7 @@ npx skills add vercel-labs/agent-skills --skill curated-skill -y -g -a codex cla
 
     assert by_name["curated-skill"].provenance_status == "verified-curated-external"
     assert by_name["curated-skill"].source == "vercel-labs/agent-skills"
-    assert by_name["curated-skill"].installed_agents == ("antigravity", "claude-code", "codex")
+    assert by_name["curated-skill"].installed_agents == ("claude-code", "codex", "crush")
 
     assert by_name["lock-skill"].provenance_status == "installed-external"
     assert by_name["lock-skill"].source == "example/skills"
@@ -192,12 +193,12 @@ def test_collect_installed_inventory_reports_query_errors(tmp_path):
     home.mkdir()
 
     def runner(cmd, **kwargs):
-        if cmd[6] == "github-copilot":
-            return subprocess.CompletedProcess(cmd, 1, stdout="", stderr="Invalid agents: github-copilot")
+        if cmd[6] == "not-a-real-agent":
+            return subprocess.CompletedProcess(cmd, 1, stdout="", stderr="Invalid agents: not-a-real-agent")
         return _completed(cmd, [])
 
     snapshot = collect_installed_inventory(
-        agent_ids=("claude-code", "github-copilot"),
+        agent_ids=("claude-code", "not-a-real-agent"),
         root=root,
         home=home,
         runner=runner,
@@ -205,7 +206,7 @@ def test_collect_installed_inventory_reports_query_errors(tmp_path):
     )
 
     errors = {query.agent_id: query.error for query in snapshot.queries if not query.ok}
-    assert errors["github-copilot"] == "Invalid agents: github-copilot"
+    assert errors["not-a-real-agent"] == "Invalid agents: not-a-real-agent"
 
 
 def test_query_harness_skills_reports_timeout(tmp_path):
@@ -241,7 +242,6 @@ def test_query_harness_skills_falls_back_to_local_root_on_timeout(tmp_path):
 
 def test_query_harness_skills_falls_back_for_plugin_overlap_harnesses(tmp_path):
     roots = {
-        "antigravity": (tmp_path / ".agents" / "skills" / "fallback-skill", "Antigravity"),
         "crush": (tmp_path / ".config" / "crush" / "skills" / "fallback-skill", "Crush"),
         "cursor": (tmp_path / ".cursor" / "skills" / "fallback-skill", "Cursor"),
     }
@@ -253,7 +253,7 @@ def test_query_harness_skills_falls_back_for_plugin_overlap_harnesses(tmp_path):
         raise subprocess.TimeoutExpired(cmd, kwargs["timeout"])
 
     results = query_harness_skills(
-        agent_ids=("antigravity", "crush", "cursor"),
+        agent_ids=("crush", "cursor", "codex"),
         runner=runner,
         timeout_sec=3,
         home=tmp_path,
@@ -450,14 +450,20 @@ def test_merge_local_skill_roots_into_query_adds_internal_skills(tmp_path):
     assert "skill-registry-lock" in names
 
 
-@pytest.mark.parametrize(("agent_id", "label"), [("gemini-cli", "Gemini CLI"), ("github-copilot", "GitHub Copilot")])
-def test_merge_local_skill_roots_scans_universal_agents_root_for_cli_shared_harnesses(
+@pytest.mark.parametrize(
+    ("agent_id", "label", "relative_root"),
+    [
+        ("crush", "Crush", Path(".config") / "crush" / "skills"),
+    ],
+)
+def test_merge_local_skill_roots_scans_native_cli_harness_roots(
     tmp_path,
     agent_id: str,
     label: str,
+    relative_root: Path,
 ) -> None:
     home = tmp_path / "home"
-    skill_dir = home / ".agents" / "skills" / "skill-registry-lock"
+    skill_dir = home / relative_root / "skill-registry-lock"
     skill_dir.mkdir(parents=True)
     (skill_dir / "SKILL.md").write_text(
         "---\nname: skill-registry-lock\ndescription: Internal scaffold\n---\n\n# Skill Registry Lock\n",
@@ -499,6 +505,29 @@ def test_collect_skill_cleanup_exposures_marks_repo_symlink_removed_when_plugin_
     assert exposure.repo_owned is True
     assert exposure.canonical_owner == EXPOSURE_OWNER_PLUGIN
     assert exposure.cleanup_action == CLEANUP_ACTION_REMOVE_GENERATED_SYMLINK
+
+
+def test_collect_skill_cleanup_exposures_includes_current_crush_roots(tmp_path):
+    home = tmp_path / "home"
+    roots = [
+        home / ".config" / "crush" / "skills",
+    ]
+    for root in roots:
+        skill = root / "shared-skill"
+        skill.mkdir(parents=True)
+        (skill / "SKILL.md").write_text("---\nname: shared-skill\ndescription: x\n---\n")
+
+    from wagents.installed_inventory import (
+        DUPLICATE_CLASS_NONE,
+        DUPLICATE_CLASS_SAME_REALPATH,
+        collect_skill_cleanup_exposures,
+    )
+
+    exposures = collect_skill_cleanup_exposures(home=home)
+    crush = [item for item in exposures if item.name == "shared-skill" and item.harness == "crush"]
+
+    assert {Path(item.path).parent for item in crush} == set(roots)
+    assert {item.duplicate_class for item in crush} <= {DUPLICATE_CLASS_NONE, DUPLICATE_CLASS_SAME_REALPATH}
 
 
 def test_collect_skill_cleanup_exposures_classifies_duplicate_bodies(tmp_path):

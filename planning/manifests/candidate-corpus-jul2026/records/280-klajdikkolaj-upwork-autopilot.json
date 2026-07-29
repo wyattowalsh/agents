@@ -21,8 +21,6 @@
   "safety_notes": "Marketplace application automation can violate platform ToS, spend connects, misrepresent the user, or submit irreversible outreach. Do not install or run by default; require user-owned credentials, connect-budget limits, manual approval before every proposal, and final success evidence.",
   "attribution_notes": "Preserve attribution to klajdikkolaj/upwork-autopilot; verify license before adapting content.",
   "files_added": [
-    "docs/src/authoring/skills/klajdikkolaj-upwork-autopilot.mdx",
-    "docs/src/content/docs/skills/catalog/external/klajdikkolaj-upwork-autopilot.mdx",
     "planning/manifests/candidate-corpus-jul2026/records/280-klajdikkolaj-upwork-autopilot.json"
   ],
   "files_modified": [

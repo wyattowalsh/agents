@@ -44,6 +44,15 @@ def test_readme_contains_skills_table(tmp_repo):
     assert "[CONTRIBUTING.md](CONTRIBUTING.md)" in readme_text
     assert "[SECURITY.md](SECURITY.md)" in readme_text
     assert "https://github.com/anomalyco/opencode" in readme_text
+    assert "## 🤝 Managed Agent Families" in readme_text
+    assert "## 🔌 Additional Integration Surfaces" in readme_text
+    managed = readme_text.split("## 🤝 Managed Agent Families", 1)[1].split(
+        "## 🔌 Additional Integration Surfaces",
+        1,
+    )[0]
+    assert "[Crush](https://github.com/charmbracelet/crush)" in managed
+    assert "Cherry Studio" not in managed
+    assert "LM Studio" not in managed
 
 
 # ---------------------------------------------------------------------------

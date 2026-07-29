@@ -3,94 +3,122 @@
   "registry": {
     "by_harness": {
       "claude-code": [
-        "research-prompt-triage-context",
-        "research-readonly-write-guard",
+        "destructive-shell-guard",
+        "git-commit-push-guard",
+        "image-input-optimizer-guard",
+        "protected-file-guard",
         "research-dangerous-shell-guard",
         "research-evidence-ledger",
-        "research-stop-verifier"
+        "research-prompt-triage-context",
+        "research-readonly-write-guard",
+        "research-stop-verifier",
+        "task-completed-gate",
+        "teammate-idle-gate",
+        "verify-before-stop"
       ],
       "codex": [
-        "codex-session-start-context",
         "codex-destructive-shell-guard",
-        "codex-protected-file-guard",
         "codex-permission-request-guard",
         "codex-post-tool-verify-context",
+        "codex-protected-file-guard",
+        "codex-session-start-context",
         "codex-stop-truth-gate",
-        "research-prompt-triage-context",
-        "research-readonly-write-guard",
+        "git-commit-push-guard",
+        "image-input-optimizer-guard",
         "research-dangerous-shell-guard",
         "research-evidence-ledger",
-        "research-stop-verifier"
-      ],
-      "gemini-cli": [
         "research-prompt-triage-context",
         "research-readonly-write-guard",
+        "research-stop-verifier"
+      ],
+      "cursor-editor": [
+        "cursor-after-file-edit-context",
+        "cursor-before-mcp-execution-guard",
+        "cursor-before-read-file-guard",
+        "cursor-before-shell-execution-guard",
+        "cursor-destructive-shell-guard",
+        "cursor-post-tool-verify-context",
+        "cursor-protected-file-guard",
+        "cursor-session-start-context",
+        "cursor-stop-truth-gate",
+        "cursor-subagent-start-context",
+        "git-commit-push-guard",
+        "image-input-optimizer-guard",
         "research-dangerous-shell-guard",
         "research-evidence-ledger",
-        "research-stop-verifier"
-      ],
-      "github-copilot": [
-        "session-start",
-        "prompt-log",
-        "destructive-shell-guard",
-        "protected-file-guard",
-        "post-edit-format",
-        "post-edit-lint",
         "research-prompt-triage-context",
         "research-readonly-write-guard",
-        "research-dangerous-shell-guard",
-        "research-evidence-ledger"
+        "research-stop-verifier"
       ]
     },
     "by_logical_event": {
+      "AfterFileEdit": [
+        "cursor-after-file-edit-context"
+      ],
+      "BeforeMCPExecution": [
+        "cursor-before-mcp-execution-guard"
+      ],
+      "BeforeReadFile": [
+        "cursor-before-read-file-guard"
+      ],
+      "BeforeShellExecution": [
+        "cursor-before-shell-execution-guard"
+      ],
       "PermissionRequest": [
         "codex-permission-request-guard"
       ],
       "PostToolUse": [
         "codex-post-tool-verify-context",
-        "post-edit-format",
-        "post-edit-lint",
+        "cursor-post-tool-verify-context",
         "research-evidence-ledger"
       ],
       "PreToolUse": [
         "codex-destructive-shell-guard",
         "codex-protected-file-guard",
+        "cursor-destructive-shell-guard",
+        "cursor-protected-file-guard",
         "destructive-shell-guard",
+        "git-commit-push-guard",
+        "image-input-optimizer-guard",
         "protected-file-guard",
         "research-dangerous-shell-guard",
         "research-readonly-write-guard"
       ],
       "SessionStart": [
         "codex-session-start-context",
-        "session-start"
+        "cursor-session-start-context"
       ],
       "Stop": [
         "codex-stop-truth-gate",
-        "research-stop-verifier"
+        "cursor-stop-truth-gate",
+        "research-stop-verifier",
+        "task-completed-gate",
+        "verify-before-stop"
+      ],
+      "SubagentStart": [
+        "cursor-subagent-start-context"
+      ],
+      "SubagentStop": [
+        "teammate-idle-gate"
       ],
       "UserPromptSubmit": [
-        "prompt-log",
         "research-prompt-triage-context"
       ]
     },
-    "managed_wagents_hook_count": 12
+    "managed_wagents_hook_count": 0
   },
   "frontmatter": {
-    "skills_with_hooks": 5,
+    "skills_with_hooks": 1,
     "agents_with_hooks": 0,
     "sources": [
-      "skill:design",
-      "skill:namer",
-      "skill:review",
-      "skill:research",
-      "skill:skill-creator"
+      "skill:namer"
     ]
   },
   "embedded_settings": {
     "claude": true,
-    "gemini": false,
     "paths": [
-      ".claude/settings.json"
+      ".claude/settings.json",
+      ".claude/settings.local.json"
     ]
   },
   "grok_managed": {
@@ -100,27 +128,28 @@
     "harnesses_projecting_hooks": [
       "claude-code",
       "codex",
-      "github-copilot-cli",
+      "cursor-cloud-agent",
+      "cursor-editor",
+      "grok-build",
       "opencode"
     ],
     "harnesses_in_registry": [
       "claude-code",
       "codex",
-      "gemini-cli",
-      "github-copilot"
+      "cursor-editor",
+      "opencode"
     ],
     "alias_map_used": {
-      "copilot": "github-copilot",
+      "claude": "claude-code",
+      "claude-desktop": "claude-code",
       "cursor": "cursor-editor",
       "cursor-agent-cli": "cursor-editor",
-      "cursor-agent-web": "cursor-editor",
-      "github-copilot-cli": "github-copilot",
-      "github-copilot-web": "github-copilot"
+      "cursor-agent-web": "cursor-editor"
     }
   },
   "gaps": [
-    "harness:github-copilot-cli:hooks-projected-in-harness-registry-but-missing-from-hook-registry",
-    "harness:opencode:hooks-projected-in-harness-registry-but-missing-from-hook-registry"
+    "harness:cursor-cloud-agent:hooks-projected-in-harness-registry-but-missing-from-hook-registry",
+    "harness:grok-build:hooks-projected-in-harness-registry-but-missing-from-hook-registry"
   ],
   "validation_errors": [],
   "blind_spots": [

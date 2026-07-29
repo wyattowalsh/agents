@@ -70,7 +70,7 @@ if ! devtools_ready; then
   exit 1
 fi
 
-exec npx -y chrome-devtools-mcp@latest \
+mcphub_exec_clean -- npx -y chrome-devtools-mcp@latest \
   --browserUrl "${DEBUG_URL}" \
   --no-usage-statistics \
   --no-performance-crux \

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "artifact_id": "candidate-artifact-80af75ed8efa0694",
+  "mcp_server": "semiotic",
+  "transaction_id": "89c3b268b66a42e19ab673d204b40e31",
+  "rehearsal_kind": "isolated-entrypoint-root-detach",
+  "live_entrypoint_digest": "657a9171ffb2f0133b06da362c298d52064162fa865b7214c8b3adeeb300e1f8",
+  "live_entrypoint_unchanged": true,
+  "isolated_preimage_digest": "b34471f892be64eb8ddbd0d71fc749eb83867a111524aedd0f6a7b4a7b19d2d9",
+  "isolated_rollback_digest": "b34471f892be64eb8ddbd0d71fc749eb83867a111524aedd0f6a7b4a7b19d2d9",
+  "fresh_absence": {
+    "semiotic-ai": null,
+    "semiotic-mcp": null
+  },
+  "fresh_absence_process_id": 21484,
+  "fresh_absence_output_sha256": "10c4a0841f9d634f92336c338a6309a965529c693e0839e167d661edd589de1f",
+  "restored_use_process_id": 21555,
+  "restored_use_output_sha256": "85ba311f68e9a3af79b51a7134b840b1fb0ec2ed76f744d057620b67e516a635",
+  "restored_use_launch_path": "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/wagents-mcp-entrypoint-rollback-candidate-artifact-80af75ed8efa0694-db5jr4bx/bin/semiotic-mcp",
+  "restored_use_launch_realpath": "/Users/ww/.local/share/wagents/candidate-runtime/npm/node_modules/semiotic/ai/dist/mcp-server.js",
+  "installed_digest": "8d452c659352da08e5d52e94a9074a8b8c552dd4e7586343f02dd7f4c62a17a7",
+  "status": "passed"
+}

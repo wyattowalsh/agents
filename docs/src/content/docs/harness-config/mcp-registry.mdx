@@ -39,19 +39,19 @@ When `mcphub.enabled` is true:
 
 ## What It Controls
 
-- **67** top-level MCP server keys in the live registry. Media work prefers skill/CLI `ffmpeg` routing — there is **no** standalone `ffmpeg` server key.
+- **69** top-level MCP server keys in the live registry. Media work prefers skill/CLI `ffmpeg` routing — there is **no** standalone `ffmpeg` server key.
 - Per-server: transport, command (often npx/uvx with repo wrappers for chrome-devtools), env (API keys via placeholders), enabled, timeouts, tools list or `*` + tools_allow_all, tool_approvals, platform_overrides, exclude_from_harnesses, ownership rules (plugin vs extension vs repo_mcp)
 - Named groups for targeting (`harness`, `tunnel`, `daily`, `coding`, `research`, `review`, `release`, capability groups, and risk/exposure groups)
 - Client defaults and overrides (transport, auth, included_groups, enable_server_endpoints, etc.)
 - Contributor policy defaults (tools_policy, wildcard opt-in)
 
-Chrome DevTools has special one-owner rules (Claude Code / Copilot plugins own their instances; repo MCP is fallback for others).
+Chrome DevTools has a one-owner rule: the Claude Code plugin owns its instance when installed, while repo MCP is the fallback for other managed and MCP-only clients.
 
 ## Harness Surfaces
 
 Projections target:
-- Codex, OpenCode, Grok, ChatGPT (via MCPHub or direct)
-- Claude Desktop, Cursor, Gemini, Cherry Studio, Crush, LM Studio, AITK, Copilot CLI shadow configs, etc.
+- Managed agent families: Claude Code, Codex, Crush, Cursor, Grok Build, and OpenCode.
+- Additional MCP-only/hybrid projections: ChatGPT, Claude Desktop, Cherry Studio, LM Studio, and AITK.
 - Repo `mcp.json` (MCPHub distribution projection) and `~/.config/...` home merges/generates.
 
 See `config/sync-manifest.json` for which outputs are generated vs merged. Refresh the embedded JSON dump below with `uv run wagents docs compose --regen-configs --config mcp-registry` after registry edits.

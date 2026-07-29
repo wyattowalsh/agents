@@ -78,6 +78,10 @@ AUTH_PATTERNS = re.compile(
     re.I,
 )
 
+AUTH_SOURCE_OVERRIDES: dict[str, tuple[str, ...]] = {
+    "papersflow-ai/papersflow-codex-plugin": ("PAPERSFLOW_OAUTH_ACCOUNT",),
+}
+
 
 def now() -> str:
     return datetime.now(UTC).isoformat()
@@ -246,7 +250,7 @@ def scan_security(fetched_files: list[dict[str, Any]], paths: list[str]) -> dict
 
 def detect_auth(fetched_files: list[dict[str, Any]], paths: list[str], source_name: str) -> dict[str, Any]:
     haystack = "\n".join(paths + [str(file.get("text", "")) for file in fetched_files])
-    env_vars = extract_auth_env_names(haystack)
+    env_vars = sorted(set(extract_auth_env_names(haystack)) | set(AUTH_SOURCE_OVERRIDES.get(source_name.lower(), ())))
     auth_required = bool(AUTH_PATTERNS.search(haystack)) or bool(env_vars)
     risk_sources = [source_name.lower(), haystack.lower()]
     if any(

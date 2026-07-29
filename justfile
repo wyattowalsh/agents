@@ -61,16 +61,6 @@ install-claude:
 install-cursor:
     npx -y skills add {{ repo }} --skill '*' -a cursor -g -y
 
-[doc("Install all skills to GitHub Copilot")]
-[group("install")]
-install-copilot:
-    npx -y skills add {{ repo }} --skill '*' -a github-copilot -g -y
-
-[doc("Install all skills to Gemini CLI")]
-[group("install")]
-install-gemini:
-    npx -y skills add {{ repo }} --skill '*' -a gemini-cli -g -y
-
 [doc("Install all skills to Codex")]
 [group("install")]
 install-codex:
@@ -85,11 +75,6 @@ install-opencode:
 [group("install")]
 install-crush:
     npx -y skills add {{ repo }} --skill '*' -a crush -g -y
-
-[doc("Install all skills to Antigravity")]
-[group("install")]
-install-antigravity:
-    npx -y skills add {{ repo }} --skill '*' -a antigravity -g -y
 
 [doc("List available skills without installing")]
 [group("install")]

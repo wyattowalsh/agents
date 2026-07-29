@@ -1,0 +1,12 @@
+{
+  "id": "neg-mise-toolchain",
+  "prompt": "/justfile configure mise so Node and Python toolchains are pinned and auto-activated across projects",
+  "expected_output": "Refuses toolchain-version product work and redirects away from justfile authorship as the solution.",
+  "files": [],
+  "assertions": [
+    "Treats mise/toolchain version management as out of scope for this skill",
+    "Does not author a justfile as a substitute for mise config",
+    "Names the boundary toward mise-oriented tooling",
+    "Avoids hardcoding version pins as Just's primary job"
+  ]
+}

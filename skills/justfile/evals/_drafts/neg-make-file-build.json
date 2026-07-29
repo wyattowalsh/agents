@@ -1,0 +1,12 @@
+{
+  "id": "neg-make-file-build",
+  "prompt": "/justfile migrate this Makefile so .c files rebuild when headers change using pattern rules and mtimes",
+  "expected_output": "Refuses treating Just as a Make file-timestamp build system; explains poor fit and keeps Make for pattern rules.",
+  "files": ["Makefile"],
+  "assertions": [
+    "Recognizes Make file-timestamp / pattern-rule build semantics",
+    "Refuses full Just replacement for mtime-accurate C builds",
+    "Points to when-not-just guidance or equivalent boundary",
+    "Does not claim Just is a drop-in Make replacement for pattern rules"
+  ]
+}
