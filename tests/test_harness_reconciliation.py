@@ -213,6 +213,8 @@ def test_skill_rows_subtracts_owner_covered_agents_and_exports_cleanup_metadata(
 
     assert rows[0]["owner_covered_agents"] == ["codex", "opencode"]
     assert rows[0]["missing_agents"] == ["claude-code"]
+    assert rows[0]["store_missing_agents"] == ["claude-code"]
+    assert rows[0]["projection_missing_agents"] == []
     assert rows[0]["exposure_owner"] == "plugin"
     assert rows[0]["duplicate_class"] == "same-realpath"
     assert rows[0]["cleanup_action"] == "remove-generated-symlink"
@@ -220,6 +222,60 @@ def test_skill_rows_subtracts_owner_covered_agents_and_exports_cleanup_metadata(
     assert summary["default_sync_missing_by_agent"]["codex"] == 0
     assert summary["default_sync_missing_by_agent"]["opencode"] == 0
     assert summary["default_sync_missing_by_agent"]["claude-code"] == 1
+    assert summary["store_missing_by_agent"]["claude-code"] == 1
+    assert summary["projection_missing_by_agent"]["claude-code"] == 0
+
+
+def test_skill_rows_cursor_store_only_counts_projection_missing(monkeypatch, tmp_path) -> None:
+    module = load_generator_module()
+    home = tmp_path / "home"
+    store = home / ".agents" / "skills" / "cursor-skill"
+    store.mkdir(parents=True)
+    (store / "SKILL.md").write_text(
+        "---\nname: cursor-skill\ndescription: t\n---\n\nbody\n",
+        encoding="utf-8",
+    )
+    row = InstalledSkillInventoryRow(
+        name="cursor-skill",
+        path="",
+        source_path="skills/cursor-skill/SKILL.md",
+        scope="desired",
+        description="Cursor skill.",
+        license="",
+        version="",
+        author="",
+        source="github:wyattowalsh/agents",
+        install_source="github:wyattowalsh/agents",
+        source_url="https://github.com/wyattowalsh/agents",
+        install_command="npx skills add github:wyattowalsh/agents --skill cursor-skill -y -g",
+        provenance_status="repo-owned",
+        trust_tier="repo-owned",
+        selector_mode="named",
+        installed_agents=(),
+        discovered_in=(),
+        target_agents=("cursor",),
+        sync_kind="skills-cli",
+        docs_status="documented",
+    )
+
+    monkeypatch.setattr(module, "HOME", home)
+    monkeypatch.setattr(module, "read_external_skill_entries", lambda strict=True: [])
+    monkeypatch.setattr(module, "collect_installed_inventory", lambda **kwargs: SimpleNamespace(queries=()))
+    monkeypatch.setattr(module, "collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr(module, "merge_desired_with_installed", lambda snapshot, desired: SimpleNamespace(rows=desired))
+    monkeypatch.setattr(module, "collect_skill_cleanup_exposures", lambda: ())
+    monkeypatch.setattr(module, "supported_agent_ids", lambda: ("cursor",))
+    monkeypatch.setattr(module, "repo_skill_owner_covered_agents", lambda row, target_agents, **kwargs: ())
+
+    rows, summary = module._skill_rows()
+
+    assert rows[0]["missing_agents"] == ["cursor"]
+    assert rows[0]["store_missing_agents"] == []
+    assert rows[0]["projection_missing_agents"] == ["cursor"]
+    assert summary["default_sync_missing_by_agent"]["cursor"] == 1
+    assert summary["store_missing_by_agent"]["cursor"] == 0
+    assert summary["projection_missing_by_agent"]["cursor"] == 1
+    assert "store/secondary is not durable Cursor sync" in rows[0]["evidence"]
 
 
 def test_skills_sync_treats_upstream_selector_alias_as_installed(monkeypatch) -> None:

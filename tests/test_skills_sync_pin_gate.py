@@ -1,79 +1,98 @@
-"""Pin-gate contract for skills sync (session RV-008 / review RV-002)."""
+"""Pin-gate coverage for skills sync install command preservation."""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, cast
+import json
+from dataclasses import replace
 
-from wagents.cli import _partition_missing_for_pin_gate, apply_dry_run_pin_gate
+from typer.testing import CliRunner
 
-if TYPE_CHECKING:
-    from wagents.installed_inventory import InstalledSkillInventoryRow
+from wagents.cli import app
+from wagents.external_skills import parse_external_skill_entries
+from wagents.installed_inventory import (
+    HarnessQueryResult,
+    InstalledInventorySnapshot,
+    external_entry_to_inventory_row,
+)
 
-
-def _fake_row(*, name: str = "floating-skill", pinned: bool = False) -> InstalledSkillInventoryRow:
-    class _Row:
-        def __init__(self) -> None:
-            self.name = name
-            self.install_command = (
-                "npx skills add github:org/repo@abc123 --skill floating-skill"
-                if pinned
-                else "npx skills add github:org/repo --skill floating-skill"
-            )
-            self.source = "github:org/repo" if not pinned else "github:org/repo@abc123"
-            self.audited_head = "" if not pinned else "abc123"
-
-        def is_verified_curated(self) -> bool:
-            return True
-
-        def is_repo_skill(self) -> bool:
-            return False
-
-    return cast("InstalledSkillInventoryRow", _Row())
+runner = CliRunner()
 
 
-def test_dry_run_soft_lists_pin_blocked_without_failing() -> None:
-    """Default soft dry-run leaves ok=True when only pin_blocked exists."""
-    missing = [_fake_row(pinned=False)]
-    kept, blocked = _partition_missing_for_pin_gate(missing, accept_floating=False)
-    assert kept == []
-    assert len(blocked) == 1
-    report: dict[str, object] = {
-        "ok": True,
-        "pin_blocked_count": len(blocked),
-        "pin_gate": "Install-now curated skills without @ref pin or audited_head are blocked on apply.",
-    }
-    apply_dry_run_pin_gate(report, strict_pin=False, accept_floating=False)
-    assert report["ok"] is True
-    assert report["pin_blocked_count"] == 1
-    assert "error_type" not in report
+def _empty_snapshot() -> InstalledInventorySnapshot:
+    return InstalledInventorySnapshot(rows=(), queries=())
 
 
-def test_strict_pin_dry_run_fails() -> None:
-    """Production helper fails dry-run when strict_pin and pin_blocked_count > 0."""
-    report: dict[str, object] = {
-        "ok": True,
-        "pin_blocked_count": 2,
-        "pin_gate": "blocked floating install-now",
-    }
-    out = apply_dry_run_pin_gate(report, strict_pin=True, accept_floating=False)
-    assert out is report
-    assert report["ok"] is False
-    assert report["error_type"] == "pin-gate"
-    assert "blocked" in str(report.get("error") or "").lower() or "floating" in str(report.get("error") or "").lower()
+def test_skills_sync_pin_gate_preserves_commit_pin_in_command(monkeypatch):
+    """Pinned @commit install sources must survive command regrouping."""
+    install_cmd = (
+        "npx skills add github:ChromeDevTools/chrome-devtools-mcp@deadbeef "
+        "--skill chrome-devtools --skill chrome-devtools-cli -y -g -a codex"
+    )
+    curated = parse_external_skill_entries(
+        f"""
+## Install Now After Trust Gate
+
+```bash
+{install_cmd}
+```
+"""
+    )[0]
+    desired_row = external_entry_to_inventory_row(curated)
+
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (desired_row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    result = runner.invoke(
+        app,
+        ["skills", "sync", "--agent", "codex", "--format", "json", "--verbose"],
+    )
+
+    assert result.exit_code == 0
+    agent = json.loads(result.output)["agents"][0]
+    assert agent["store_missing"]
+    assert agent["commands"] == [
+        "npx skills add github:ChromeDevTools/chrome-devtools-mcp@deadbeef "
+        "--skill chrome-devtools --skill chrome-devtools-cli -y -g -a codex"
+    ]
 
 
-def test_strict_pin_respects_accept_floating() -> None:
-    report: dict[str, object] = {"ok": True, "pin_blocked_count": 2, "pin_gate": "blocked"}
-    apply_dry_run_pin_gate(report, strict_pin=True, accept_floating=True)
-    assert report["ok"] is True
-    assert "error_type" not in report
+def test_skills_sync_pin_gate_cursor_store_missing_keeps_pin(tmp_path, monkeypatch):
+    install_cmd = "npx skills add github:example/skills@abc123 --skill pinned-skill -y -g -a cursor"
+    curated = parse_external_skill_entries(
+        f"""
+## Install Now After Trust Gate
 
+```bash
+{install_cmd}
+```
+"""
+    )[0]
+    desired_row = replace(external_entry_to_inventory_row(curated), target_agents=("cursor",))
+    home = tmp_path / "home"
+    home.mkdir()
 
-def test_apply_still_hard_blocks_without_accept_floating() -> None:
-    missing = [_fake_row(pinned=False)]
-    kept, blocked = _partition_missing_for_pin_gate(missing, accept_floating=False)
-    assert not kept
-    assert blocked
-    kept2, blocked2 = _partition_missing_for_pin_gate(missing, accept_floating=True)
-    assert kept2
-    assert not blocked2
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr(
+        "wagents.cli.collect_installed_inventory",
+        lambda **kwargs: InstalledInventorySnapshot(
+            rows=(),
+            queries=(HarnessQueryResult("cursor", True, (), ""),),
+        ),
+    )
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (desired_row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+    monkeypatch.setattr("wagents.cli.HOME", home)
+
+    result = runner.invoke(
+        app,
+        ["skills", "sync", "--agent", "cursor", "--format", "json", "--verbose"],
+    )
+
+    assert result.exit_code == 0, result.output
+    agent = json.loads(result.output)["agents"][0]
+    assert "pinned-skill" in " ".join(agent["store_missing"])
+    assert any("@abc123" in command for command in agent["commands"])

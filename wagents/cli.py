@@ -22,7 +22,6 @@ from wagents.context import (
     detect_install_mode,
     get_repo_root,
     get_repo_root_optional,
-    resolve_repo_root,
 )
 from wagents.docs import docs_app, regenerate_sidebar_and_indexes
 
@@ -32,12 +31,7 @@ from wagents.eval_adequacy import (
     build_adequacy_report,
     filter_high_risk,
 )
-from wagents.external_skills import (
-    ExternalSkillCatalogError,
-    ExternalSkillEntry,
-    read_external_skill_entries,
-    sync_apply_pin_satisfied,
-)
+from wagents.external_skills import ExternalSkillCatalogError, ExternalSkillEntry, read_external_skill_entries
 from wagents.installed_inventory import (
     InstalledSkillInventoryRow,
     build_skill_cleanup_report,
@@ -65,19 +59,24 @@ from wagents.openspec import (
 )
 from wagents.output import emit_structured_output, normalize_output_format
 from wagents.parsing import parse_frontmatter, to_title
+from wagents.platforms.base import HOME
+from wagents.platforms.cursor import ensure_cursor_authoritative_links
 from wagents.plugins import load_command_plugins
 from wagents.rendering import scaffold_doc_page
 from wagents.self_cmd import self_app
 from wagents.site_model import (
-    ADDITIONAL_INTEGRATION_SURFACES,
     REPO_SOURCE,
     SUPPORTED_AGENT_IDS,
     VISUAL_ASSET_BY_ID,
     build_install_command,
     docs_asset_repo_path,
 )
-from wagents.site_model import (
-    SUPPORTED_AGENTS as SUPPORTED_AGENT_RECORDS,
+from wagents.skill_coverage import evaluate_skill_presence
+from wagents.external_skills import (
+    ExternalSkillCatalogError,
+    ExternalSkillEntry,
+    read_external_skill_entries,
+    sync_apply_pin_satisfied,
 )
 from wagents.telemetry import begin_command_telemetry, doctor_telemetry_check, end_command_telemetry
 
@@ -165,7 +164,9 @@ rtk_app = typer.Typer(help="Diagnose and sync RTK token-saving hooks")
 app.add_typer(rtk_app, name="rtk")
 app.add_typer(self_app, name="self")
 
-apm_app = typer.Typer(help="APM (Microsoft Agent Package Manager) facade: materialize .apm/, doctor, refresh-lock")
+apm_app = typer.Typer(
+    help="APM (Microsoft Agent Package Manager) facade: materialize .apm/, doctor, refresh-lock"
+)
 app.add_typer(apm_app, name="apm")
 register_validate_commands(app)
 
@@ -214,6 +215,8 @@ SKILL_SOURCES = (
     "codex",
     "global",
     "claude-code",
+    "gemini-cli",
+    "github-copilot",
     "opencode",
     "plugin",
 )
@@ -501,9 +504,8 @@ def _collect_doctor_checks() -> list[dict[str, str]]:
     """Collect environment and toolchain diagnostics for the repo."""
     checks: list[dict[str, str]] = []
     tool_paths: dict[str, str | None] = {}
-    repo_root = resolve_repo_root(cwd=Path.cwd()) or get_repo_root_optional() or ROOT
 
-    pyproject_file = repo_root / "pyproject.toml"
+    pyproject_file = ROOT / "pyproject.toml"
     requires_python = ""
     if pyproject_file.exists():
         data = tomllib.loads(pyproject_file.read_text())
@@ -559,7 +561,7 @@ def _collect_doctor_checks() -> list[dict[str, str]]:
                 )
             )
 
-    docs_dir = repo_root / "docs"
+    docs_dir = ROOT / "docs"
     package_json = docs_dir / "package.json"
     lock_file = docs_dir / "pnpm-lock.yaml"
     node_modules = docs_dir / "node_modules"
@@ -881,7 +883,7 @@ def _collect_doctor_checks() -> list[dict[str, str]]:
                 capture_output=True,
                 text=True,
                 check=False,
-                cwd=repo_root,
+                cwd=ROOT,
             )
         except OSError:
             checks.append(
@@ -1344,23 +1346,38 @@ def _sync_row_summary(row: InstalledSkillInventoryRow) -> str:
     return f"{row.name} [{row.provenance_status}]{suffix}"
 
 
-def _sync_row_install_names(row: InstalledSkillInventoryRow) -> set[str]:
-    """Return catalog plus upstream selector names that can satisfy a sync row."""
-    names = {row.name}
-    spec = _skills_cli_install_spec(row)
-    if spec is None:
-        return names
-    selector_mode = cast("str", spec["selector_mode"])
-    if selector_mode in {"named", "source-spec"}:
-        names.update(cast("tuple[str, ...]", spec["skills"]))
-    return {name for name in names if name}
+def _repo_skill_covered_by_non_cli_owner(row: InstalledSkillInventoryRow, agent_id: str) -> bool:
+    """Return true when repo bundle coverage should suppress Skills CLI install."""
+    return bool(repo_skill_owner_covered_agents(row, (agent_id,)))
 
 
-def _rows_share_install_source(left: InstalledSkillInventoryRow, right: InstalledSkillInventoryRow) -> bool:
-    """Return true when two inventory rows clearly refer to the same upstream source."""
-    left_sources = {left.source, left.install_source, left.source_url} - {""}
-    right_sources = {right.source, right.install_source, right.source_url} - {""}
-    return bool(left_sources and right_sources and left_sources.intersection(right_sources))
+def _optional_installed_superseded(
+    row: InstalledSkillInventoryRow,
+    verified_rows: list[InstalledSkillInventoryRow],
+) -> bool:
+    """Skip stale lockfile names when the verified catalog already owns the replacement."""
+    if row.provenance_status != "installed-external":
+        return False
+    replacement = load_installed_skill_supersession_aliases().get(row.name)
+    if not replacement:
+        return False
+    verified_names = {verified_row.name for verified_row in verified_rows}
+    return replacement in verified_names
+
+
+SYNC_BUCKET_KEYS = (
+    "already_present",
+    "projection_ensure",
+    "projection_blocked",
+    "store_missing",
+    "internal_projection",
+    "skipped",
+)
+SYNC_SAMPLE_LIMIT = 5
+
+
+def _empty_sync_buckets() -> dict[str, list[InstalledSkillInventoryRow]]:
+    return {key: [] for key in SYNC_BUCKET_KEYS}
 
 
 def sync_row_installed_agents(
@@ -1380,24 +1397,6 @@ def sync_row_installed_agents(
         installed_agents.update(candidate.installed_agents)
     return tuple(sorted(installed_agents))
 
-
-def _repo_skill_covered_by_non_cli_owner(row: InstalledSkillInventoryRow, agent_id: str) -> bool:
-    """Return true when repo bundle coverage should suppress Skills CLI install."""
-    return bool(repo_skill_owner_covered_agents(row, (agent_id,)))
-
-
-def _optional_installed_superseded(
-    row: InstalledSkillInventoryRow,
-    verified_rows: list[InstalledSkillInventoryRow],
-) -> bool:
-    """Skip stale lockfile names when the verified catalog already owns the replacement."""
-    if row.provenance_status != "installed-external":
-        return False
-    replacement = load_installed_skill_supersession_aliases().get(row.name)
-    if not replacement:
-        return False
-    verified_names = {verified_row.name for verified_row in verified_rows}
-    return replacement in verified_names
 
 
 def _partition_missing_for_pin_gate(
@@ -1443,16 +1442,84 @@ def apply_dry_run_pin_gate(
     return report
 
 
+
+def _classify_cursor_sync_row(
+    row: InstalledSkillInventoryRow,
+    *,
+    home: Path,
+    preferred_non_cli: bool,
+) -> str:
+    """Return the Cursor sync bucket for one desired/installable skill row.
+
+    ``already_present`` only when preferred non-CLI ownership covers the row, or
+    when both the Skills CLI store and ``~/.cursor/skills`` projection are present
+    and ensure would not block a divergent real tree.
+    Store-only secondary presence is never treated as durable Cursor sync.
+    """
+    if preferred_non_cli:
+        return "already_present"
+
+    presence = evaluate_skill_presence(row.name, "cursor", home=home)
+    if presence.projection_present and not presence.store_present:
+        # Home projection without store — preserve; do not plan Skills CLI install.
+        return "internal_projection"
+    if not presence.store_present:
+        return "store_missing"
+
+    # Store present: use ensure dry-run to distinguish covered vs ensure vs blocked.
+    ensure_report = ensure_cursor_authoritative_links(names=[row.name], home=home, dry_run=True)
+    if ensure_report.blocked:
+        return "projection_blocked"
+    if ensure_report.skipped_missing_store:
+        return "store_missing"
+    if ensure_report.already_correct and presence.projection_present:
+        return "already_present"
+    if ensure_report.created or ensure_report.repaired or not presence.projection_present:
+        return "projection_ensure"
+    return "already_present"
+
+
+def _classify_harness_sync_row(
+    row: InstalledSkillInventoryRow,
+    agent_id: str,
+    *,
+    home: Path,
+) -> str:
+    """Return the sync bucket for one row on one harness."""
+    preferred_non_cli = _repo_skill_covered_by_non_cli_owner(row, agent_id)
+    if agent_id == "cursor":
+        return _classify_cursor_sync_row(row, home=home, preferred_non_cli=preferred_non_cli)
+    if preferred_non_cli or agent_id in row.installed_agents:
+        return "already_present"
+    return "store_missing"
+
+
+def _summarize_bucket_rows(rows: list[InstalledSkillInventoryRow]) -> list[str]:
+    return [_sync_row_summary(row) for row in sorted(rows, key=lambda item: item.name)]
+
+
+def _compact_sync_bucket_payload(rows: list[str], *, verbose: bool) -> dict[str, object]:
+    """Compact default JSON uses counts + samples to avoid OOM on large fleets."""
+    if verbose:
+        return {"count": len(rows), "items": rows}
+    return {
+        "count": len(rows),
+        "sample": rows[:SYNC_SAMPLE_LIMIT],
+        "truncated": max(0, len(rows) - SYNC_SAMPLE_LIMIT),
+    }
+
+
 def _build_sync_report(
     target_agents: tuple[str, ...],
     *,
     include_installed: bool,
-    accept_floating: bool = False,
     external_entries: list[ExternalSkillEntry] | None = None,
+    home: Path | None = None,
 ) -> dict[str, object]:
     """Build dry-run/apply data for additive skill sync."""
     # Always collect the full cross-harness inventory so a skill present in any
     # harness is visible when checking what is missing in the requested targets.
+    home_dir = Path(home) if home is not None else HOME
     snapshot = collect_installed_inventory(external_entries=external_entries)
     merged = merge_desired_with_installed(
         snapshot,
@@ -1470,52 +1537,53 @@ def _build_sync_report(
         query = query_by_agent.get(agent_id)
         if query is not None and not query.ok:
             hard_error_agents.append(agent_id)
+            empty_buckets = {key: [] for key in SYNC_BUCKET_KEYS}
             report_agents.append({
                 "agent": agent_id,
                 "error": query.error,
                 "warning": "",
                 "missing": [],
-                "pin_blocked": [],
-                "already_present": [],
+                **empty_buckets,
                 "unresolved": [],
-                "skipped": [],
                 "commands": [],
+                "_projection_ensure_names": [],
             })
             continue
 
-        missing: list[InstalledSkillInventoryRow] = []
-        already_present: list[InstalledSkillInventoryRow] = []
+        buckets = _empty_sync_buckets()
         unresolved: list[InstalledSkillInventoryRow] = []
-        skipped: list[InstalledSkillInventoryRow] = []
 
         for row in verified_rows:
             if not row.is_syncable():
-                skipped.append(row)
+                buckets["skipped"].append(row)
                 continue
             if not _row_targets_agent(row, agent_id):
-                skipped.append(row)
+                buckets["skipped"].append(row)
                 continue
-            if agent_id in sync_row_installed_agents(row, merged.rows) or _repo_skill_covered_by_non_cli_owner(
-                row,
-                agent_id,
-            ):
-                already_present.append(row)
-            else:
-                missing.append(row)
-
-        missing, pin_blocked = _partition_missing_for_pin_gate(missing, accept_floating=accept_floating)
+            bucket = _classify_harness_sync_row(row, agent_id, home=home_dir)
+            buckets[bucket].append(row)
 
         for row in optional_installed:
             if not include_installed:
-                skipped.append(row)
+                buckets["skipped"].append(row)
                 continue
             if _optional_installed_superseded(row, verified_rows):
-                skipped.append(row)
+                buckets["skipped"].append(row)
                 continue
-            if agent_id in row.installed_agents:
-                already_present.append(row)
+            if agent_id == "cursor":
+                bucket = _classify_cursor_sync_row(
+                    row,
+                    home=home_dir,
+                    preferred_non_cli=False,
+                )
+                if bucket == "store_missing" and not row.is_installable():
+                    unresolved.append(row)
+                else:
+                    buckets[bucket].append(row)
+            elif agent_id in row.installed_agents:
+                buckets["already_present"].append(row)
             elif row.is_installable():
-                missing.append(row)
+                buckets["store_missing"].append(row)
             else:
                 unresolved.append(row)
 
@@ -1523,36 +1591,39 @@ def _build_sync_report(
             if include_installed or _row_targets_agent(row, agent_id):
                 unresolved.append(row)
             else:
-                skipped.append(row)
+                buckets["skipped"].append(row)
 
-        command_groups = _sync_command_groups(missing, agent_id)
+        # Skills CLI batches only for store_missing. projection_ensure is linked after apply.
+        store_missing = buckets["store_missing"]
+        command_groups = _sync_command_groups(store_missing, agent_id)
+        # Backward-compatible alias: missing == store_missing summaries.
+        missing_summaries = _summarize_bucket_rows(store_missing)
         report_agents.append({
             "agent": agent_id,
             "error": "",
             "warning": query.error if query is not None and query.ok else "",
-            "missing": [_sync_row_summary(row) for row in sorted(missing, key=lambda item: item.name)],
-            "pin_blocked": [_sync_row_summary(row) for row in sorted(pin_blocked, key=lambda item: item.name)],
-            "already_present": [_sync_row_summary(row) for row in sorted(already_present, key=lambda item: item.name)],
-            "unresolved": [_sync_row_summary(row) for row in sorted(unresolved, key=lambda item: item.name)],
-            "skipped": [_sync_row_summary(row) for row in sorted(skipped, key=lambda item: item.name)],
+            "missing": missing_summaries,
+            "already_present": _summarize_bucket_rows(buckets["already_present"]),
+            "projection_ensure": _summarize_bucket_rows(buckets["projection_ensure"]),
+            "projection_blocked": _summarize_bucket_rows(buckets["projection_blocked"]),
+            "store_missing": missing_summaries,
+            "internal_projection": _summarize_bucket_rows(buckets["internal_projection"]),
+            "unresolved": _summarize_bucket_rows(unresolved),
+            "skipped": _summarize_bucket_rows(buckets["skipped"]),
             "commands": [command["text"] for command in command_groups],
             "_command_argvs": [command["argv"] for command in command_groups],
+            "_projection_ensure_names": [
+                row.name for row in sorted(buckets["projection_ensure"], key=lambda item: item.name)
+            ],
+            "_store_missing_rows": store_missing,
         })
 
-    pin_blocked_total = sum(len(cast("list[str]", a.get("pin_blocked") or [])) for a in report_agents)
     report: dict[str, object] = {
         "ok": not hard_error_agents,
         "inventory_count": len(merged.rows),
         "include_installed": include_installed,
-        "accept_floating": accept_floating,
-        "pin_blocked_count": pin_blocked_total,
         "agents": report_agents,
     }
-    if pin_blocked_total and not accept_floating:
-        report["pin_gate"] = (
-            "Install-now curated skills without @ref pin or audited_head are blocked on apply; "
-            "pass --accept-floating to override."
-        )
     if hard_error_agents:
         report["error"] = "Target harness inventory failed for: " + ", ".join(sorted(hard_error_agents))
         report["error_type"] = "inventory"
@@ -1570,7 +1641,30 @@ def _sync_error_report(error: str, *, include_installed: bool) -> dict[str, obje
     }
 
 
-def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str = "text") -> None:
+def _public_agent_sync_payload(agent_payload: dict[str, object], *, verbose: bool) -> dict[str, object]:
+    """Strip private keys and optionally compact large bucket lists."""
+    public: dict[str, object] = {}
+    for key, value in agent_payload.items():
+        if str(key).startswith("_"):
+            continue
+        if key in SYNC_BUCKET_KEYS or key in {"missing", "unresolved"}:
+            rows = cast("list[str]", value or [])
+            if verbose:
+                public[key] = rows
+            else:
+                public[key] = _compact_sync_bucket_payload(rows, verbose=False)
+            continue
+        public[key] = value
+    return public
+
+
+def _emit_sync_report(
+    report: dict[str, object],
+    *,
+    dry_run: bool,
+    format_: str = "text",
+    verbose: bool = False,
+) -> None:
     """Emit a skills sync report in text, json, or jsonl format."""
     mode = "dry-run" if dry_run else "apply"
     agent_reports = cast("list[dict[str, object]]", report.get("agents") or [])
@@ -1579,10 +1673,8 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
         "mode": mode,
         "inventory_count": report.get("inventory_count"),
         "include_installed": report.get("include_installed"),
-        "agents": [
-            {key: value for key, value in agent_payload.items() if not str(key).startswith("_")}
-            for agent_payload in agent_reports
-        ],
+        "verbose": verbose,
+        "agents": [_public_agent_sync_payload(agent_payload, verbose=verbose) for agent_payload in agent_reports],
     }
     if "error" in report:
         json_payload["error"] = report.get("error")
@@ -1590,6 +1682,8 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
         json_payload["error_type"] = report.get("error_type")
     if "apply_failures" in report:
         json_payload["apply_failures"] = report.get("apply_failures")
+    if "cursor_projection_ensure" in report:
+        json_payload["cursor_projection_ensure"] = report.get("cursor_projection_ensure")
     if format_ != "text":
         _emit_structured_output(
             format_,
@@ -1607,6 +1701,15 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
         typer.echo(f"error: {top_level_error}")
     typer.echo(f"Inventory rows: {report['inventory_count']}")
     typer.echo("")
+    text_bucket_keys = [
+        "store_missing",
+        "projection_ensure",
+        "projection_blocked",
+        "already_present",
+        "internal_projection",
+        "unresolved",
+        "skipped",
+    ]
     for agent_payload in agent_reports:
         typer.echo(f"[{agent_payload['agent']}]")
         error = str(agent_payload.get("error") or "")
@@ -1617,22 +1720,18 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
         warning = str(agent_payload.get("warning") or "")
         if warning:
             typer.echo(f"  warning: {warning}")
-        for key in ["missing", "pin_blocked", "already_present", "unresolved", "skipped"]:
+        for key in text_bucket_keys:
             rows = cast("list[str]", agent_payload.get(key) or [])
-            if not rows and key == "pin_blocked":
-                continue
             typer.echo(f"  {key.replace('_', '-')} ({len(rows)})")
-            for row in rows:
+            display_rows = rows if verbose else rows[:SYNC_SAMPLE_LIMIT]
+            for row in display_rows:
                 typer.echo(f"    - {row}")
+            if not verbose and len(rows) > SYNC_SAMPLE_LIMIT:
+                typer.echo(f"    ... truncated {len(rows) - SYNC_SAMPLE_LIMIT} more (use --verbose)")
         commands = cast("list[str]", agent_payload.get("commands") or [])
         typer.echo(f"  commands ({len(commands)})")
         for command in commands:
             typer.echo(f"    {command}")
-        typer.echo("")
-    pin_gate = str(report.get("pin_gate") or "")
-    pin_blocked_count = report.get("pin_blocked_count")
-    if pin_gate and isinstance(pin_blocked_count, int) and pin_blocked_count:
-        typer.echo(pin_gate)
         typer.echo("")
 
 
@@ -2065,13 +2164,18 @@ def skills_sync(
         "--strict-pin",
         help="Fail dry-run when install-now curated skills lack @ref pin or audited_head",
     ),
+    verbose: bool = typer.Option(
+        False,
+        "--verbose",
+        help="Emit full bucket name lists in JSON/text (default is compact counts + samples)",
+    ),
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Additively sync repo and curated external skills across supported harnesses.
 
-    Dry-run previews missing installs per harness (soft on floating pins unless
-    ``--strict-pin``). Apply runs every planned Skills CLI batch across all target
-    harnesses before exiting; partial failures set ``ok: false`` and populate
+    Dry-run previews missing installs per harness. Apply runs Skills CLI batches for
+    ``store_missing`` only, then ensures Cursor authoritative home projections for
+    ``projection_ensure`` names. Partial failures set ``ok: false`` and populate
     ``apply_failures`` in JSON/JSONL output with ``argv``, ``returncode``, and
     ``text`` for each failed command.
     """
@@ -2087,6 +2191,7 @@ def skills_sync(
             _sync_error_report(str(exc), include_installed=include_installed),
             dry_run=dry_run,
             format_=format_,
+            verbose=verbose,
         )
         raise typer.Exit(code=1) from exc
 
@@ -2095,78 +2200,92 @@ def skills_sync(
     report = _build_sync_report(
         target_agents,
         include_installed=include_installed,
-        accept_floating=accept_floating,
         external_entries=external_entries,
     )
     agent_reports = cast("list[dict[str, object]]", report.get("agents") or [])
     structured_output = format_ in {"json", "jsonl"}
 
-    pin_blocked_value = report.get("pin_blocked_count")
-    pin_blocked_count = pin_blocked_value if isinstance(pin_blocked_value, int) else 0
-
     if dry_run:
         apply_dry_run_pin_gate(report, strict_pin=strict_pin, accept_floating=accept_floating)
-        _emit_sync_report(report, dry_run=True, format_=format_)
+        _emit_sync_report(report, dry_run=True, format_=format_, verbose=verbose)
         if not bool(report.get("ok", True)):
             raise typer.Exit(code=1)
         return
 
-    if pin_blocked_count and not accept_floating:
-        report["ok"] = False
-        report["error"] = str(
-            report.get("pin_gate") or "Floating install-now curated skills blocked; pass --accept-floating to apply."
-        )
-        report["error_type"] = "pin-gate"
-        _emit_sync_report(report, dry_run=False, format_=format_)
-        raise typer.Exit(code=1)
-
     if not structured_output:
-        _emit_sync_report(report, dry_run=False, format_=format_)
+        _emit_sync_report(report, dry_run=False, format_=format_, verbose=verbose)
     if not bool(report.get("ok", True)):
         if structured_output:
-            _emit_sync_report(report, dry_run=False, format_=format_)
+            _emit_sync_report(report, dry_run=False, format_=format_, verbose=verbose)
         raise typer.Exit(code=1)
 
     grok_mirror_needed = False
-    apply_failures: list[dict[str, object]] = []
+    apply_failures: list[tuple[list[str], int]] = []
     for payload in agent_reports:
         if payload.get("agent") == "grok" and payload.get("_command_argvs"):
             grok_mirror_needed = True
         for argv in cast("list[list[str]]", payload.get("_command_argvs") or []):
-            result = subprocess.run(
-                argv,
-                capture_output=structured_output,
-                text=structured_output,
-            )
+            result = subprocess.run(argv, capture_output=False)
             if result.returncode != 0:
-                failure: dict[str, object] = {
-                    "argv": argv,
-                    "returncode": result.returncode,
-                    "text": _command_text(argv),
-                }
-                if structured_output:
-                    failure["stdout"] = (result.stdout or "").strip()
-                    failure["stderr"] = (result.stderr or "").strip()
-                apply_failures.append(failure)
+                apply_failures.append((argv, result.returncode))
     if grok_mirror_needed:
         mirrored = mirror_grok_skills_from_claude()
         if mirrored:
             typer.echo(f"Mirrored {mirrored} skill(s) into ~/.grok/skills")
+
+    # After Skills CLI store installs, ensure Cursor home projections for names
+    # that already had store bodies (or just received them via CLI batches).
+    cursor_ensure_names: list[str] = []
+    for payload in agent_reports:
+        if payload.get("agent") != "cursor":
+            continue
+        cursor_ensure_names.extend(cast("list[str]", payload.get("_projection_ensure_names") or []))
+        # Newly installed store_missing rows also need Cursor projection links.
+        cursor_ensure_names.extend(
+            row.name for row in cast("list[InstalledSkillInventoryRow]", payload.get("_store_missing_rows") or [])
+        )
+    # Deduplicate while preserving order.
+    seen_ensure: set[str] = set()
+    ordered_ensure: list[str] = []
+    for name in cursor_ensure_names:
+        if name in seen_ensure:
+            continue
+        seen_ensure.add(name)
+        ordered_ensure.append(name)
+    if ordered_ensure:
+        ensure_report = ensure_cursor_authoritative_links(names=ordered_ensure, dry_run=False)
+        report["cursor_projection_ensure"] = {
+            "created": list(ensure_report.created),
+            "repaired": list(ensure_report.repaired),
+            "already_correct": list(ensure_report.already_correct),
+            "blocked": list(ensure_report.blocked),
+            "skipped_missing_store": list(ensure_report.skipped_missing_store),
+        }
+        if ensure_report.blocked and not structured_output:
+            for blocked in ensure_report.blocked:
+                typer.echo(
+                    f"cursor projection blocked: {blocked.get('name')}: {blocked.get('reason')}",
+                    err=True,
+                )
+
     if apply_failures:
         report["ok"] = False
-        report["apply_failures"] = apply_failures
+        report["apply_failures"] = [
+            {"argv": argv, "returncode": returncode, "text": _command_text(argv)}
+            for argv, returncode in apply_failures
+        ]
         if structured_output:
-            _emit_sync_report(report, dry_run=False, format_=format_)
+            _emit_sync_report(report, dry_run=False, format_=format_, verbose=verbose)
         else:
-            for failure in apply_failures:
+            for argv, returncode in apply_failures:
                 typer.echo(
-                    f"apply failed ({failure['returncode']}): {failure['text']}",
+                    f"apply failed ({returncode}): {' '.join(argv)}",
                     err=True,
                 )
         raise typer.Exit(code=1)
 
     if structured_output:
-        _emit_sync_report(report, dry_run=False, format_=format_)
+        _emit_sync_report(report, dry_run=False, format_=format_, verbose=verbose)
 
 
 @catalog_app.command("index")
@@ -2178,21 +2297,23 @@ def catalog_index(
     from wagents.skill_index import (
         CATALOG_BROWSER_INDEX_PATH,
         CATALOG_INDEX_PATH,
+        catalog_browser_index_stale_reason,
         catalog_index_stale_reason,
     )
 
-    reason = catalog_index_stale_reason()
-    reasons = [reason] if reason else []
+    reasons = [reason for reason in (catalog_index_stale_reason(), catalog_browser_index_stale_reason()) if reason]
     reason = "; ".join(reasons)
     if check:
         if reason:
             if format_ == "json" or format_ == "jsonl":
                 typer.echo(
-                    json.dumps({
-                        "ok": False,
-                        "error": reason,
-                        "paths": [str(CATALOG_INDEX_PATH), str(CATALOG_BROWSER_INDEX_PATH)],
-                    })
+                    json.dumps(
+                        {
+                            "ok": False,
+                            "error": reason,
+                            "paths": [str(CATALOG_INDEX_PATH), str(CATALOG_BROWSER_INDEX_PATH)],
+                        }
+                    )
                 )
             else:
                 typer.echo(reason, err=True)
@@ -2210,7 +2331,8 @@ def catalog_index(
         typer.echo(reason)
     else:
         typer.echo(
-            f"{CATALOG_INDEX_PATH.relative_to(ROOT)} and {CATALOG_BROWSER_INDEX_PATH.relative_to(ROOT)} are up to date"
+            f"{CATALOG_INDEX_PATH.relative_to(ROOT)} and "
+            f"{CATALOG_BROWSER_INDEX_PATH.relative_to(ROOT)} are up to date"
         )
 
 
@@ -2839,8 +2961,7 @@ def readme(
             (
                 "First-party MCP servers authored in this repository (see `AGENTS.md` §2). "
                 "Curated external servers are configured in `config/mcp-registry.json` "
-                "and rendered into MCPHub settings; disabled entries remain unavailable until explicit "
-                "enablement and group assignment."
+                "and exposed via MCPHub."
             ),
             "",
             "| Name | Description |",
@@ -2895,24 +3016,21 @@ def readme(
         "",
     ])
 
-    # Managed agents and separately typed integration surfaces.
+    # Supported agents
     content_parts.extend([
-        "## 🤝 Managed Agent Families",
+        "## 🤝 Supported Agents",
         "",
-    ])
-    for agent in SUPPORTED_AGENT_RECORDS:
-        content_parts.append(f"- [{agent.label}]({agent.href}) — {agent.description}")
-    content_parts.extend([
-        "",
-        "## 🔌 Additional Integration Surfaces",
-        "",
-    ])
-    for surface in ADDITIONAL_INTEGRATION_SURFACES:
-        content_parts.append(f"- [{surface.label}]({surface.href}) — `{surface.surface_kind}`: {surface.description}")
-    content_parts.extend([
-        "",
-        "Other [agentskills.io](https://agentskills.io)-compatible agents may consume portable skills, "
-        "but they are not counted as managed families.",
+        "- [Antigravity](https://antigravity.google/)",
+        "- [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview)",
+        "- [Codex](https://github.com/openai/codex)",
+        "- [Crush](https://github.com/crush-ai/crush)",
+        "- [Cursor](https://cursor.sh/)",
+        "- [Gemini CLI](https://github.com/google/gemini-cli)",
+        "- [GitHub Copilot](https://github.com/features/copilot)",
+        "- [Grok Build](https://x.ai/)",
+        "- [OpenCode](https://github.com/anomalyco/opencode) — native AGENTS.md support with repo-level config",
+        "- [Cherry Studio](https://www.cherry-ai.com/) — MCP-only via MCPHub registry",
+        "And other [agentskills.io](https://agentskills.io)-compatible agents.",
         "",
     ])
 
@@ -3034,7 +3152,7 @@ def hooks_validate(
     harness: str = typer.Option(
         "all",
         "--harness",
-        help="Harness filter: all, codex, claude-code, cursor, grok, opencode",
+        help="Harness filter: all, codex, claude-code, cursor, github-copilot, gemini-cli",
     ),
 ):
     """Validate all hooks across skills, agents, and settings."""
@@ -3078,78 +3196,6 @@ def hooks_convert(
 # ---------------------------------------------------------------------------
 
 
-def _declared_eval_projection_files(data: object, evals_dir: Path) -> set[str]:
-    """Return projection names only when the manifest declaration is closed and safe."""
-    if not isinstance(data, dict):
-        return set()
-    declared = data.get("projection_files")
-    evals = data.get("evals")
-    if not isinstance(declared, list) or not declared or not isinstance(evals, list):
-        return set()
-
-    declared_strings = [item for item in declared if isinstance(item, str)]
-    if len(declared_strings) != len(declared) or len(set(declared_strings)) != len(declared_strings):
-        return set()
-    if any(Path(name).name != name or not name.endswith(".json") or name == "evals.json" for name in declared_strings):
-        return set()
-
-    skill_name = data.get("skill_name")
-    if not isinstance(skill_name, str) or not skill_name.strip() or skill_name != evals_dir.parent.name:
-        return set()
-    cases: dict[str, dict] = {}
-    for item in evals:
-        if not isinstance(item, dict):
-            return set()
-        case_id = item.get("id")
-        prompt = item.get("prompt")
-        expected_output = item.get("expected_output")
-        assertions = item.get("assertions")
-        files = item.get("files", [])
-        if (
-            not isinstance(case_id, str)
-            or not case_id
-            or case_id in cases
-            or Path(f"{case_id}.json").name != f"{case_id}.json"
-            or not isinstance(prompt, str)
-            or not prompt.strip()
-            or not isinstance(expected_output, str)
-            or not expected_output.strip()
-            or not isinstance(assertions, list)
-            or not assertions
-            or any(not isinstance(assertion, str) or not assertion.strip() for assertion in assertions)
-            or not isinstance(files, list)
-            or any(not isinstance(file, str) for file in files)
-        ):
-            return set()
-        cases[case_id] = item
-    case_ids = list(cases)
-    expected = {f"{case_id}.json" for case_id in case_ids}
-    declared_set = set(declared_strings)
-    actual = {path.name for path in evals_dir.glob("*.json") if path.name != "evals.json"}
-    if declared_set != expected or expected != actual:
-        return set()
-
-    for filename in declared_set:
-        try:
-            projection = json.loads((evals_dir / filename).read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            return set()
-        if not isinstance(projection, dict):
-            return set()
-        case = cases[filename.removesuffix(".json")]
-        parity = {
-            "skills": [skill_name],
-            "query": case.get("prompt"),
-            "files": case.get("files", []),
-            "expected_behavior": case.get("assertions", []),
-        }
-        if set(projection) != set(parity):
-            return set()
-        if any(projection.get(field) != value for field, value in parity.items()):
-            return set()
-    return declared_set
-
-
 def _collect_evals() -> list[tuple[Path, dict]]:
     """Scan skills/*/evals/*.json and return (path, parsed_data) pairs."""
     results: list[tuple[Path, dict]] = []
@@ -3162,20 +3208,10 @@ def _collect_evals() -> list[tuple[Path, dict]]:
         evals_dir = skill_dir / "evals"
         if not evals_dir.is_dir():
             continue
-        projection_files: set[str] = set()
-        manifest_path = evals_dir / "evals.json"
-        if manifest_path.is_file():
-            try:
-                manifest_data = json.loads(manifest_path.read_text(encoding="utf-8"))
-            except json.JSONDecodeError:
-                manifest_data = {}
-            projection_files = _declared_eval_projection_files(manifest_data, evals_dir)
         for eval_file in sorted(evals_dir.glob("*.json")):
-            if eval_file.name in projection_files:
-                continue
             try:
-                data = json.loads(eval_file.read_text(encoding="utf-8"))
-                results.append((eval_file, data if isinstance(data, dict) else {}))
+                data = json.loads(eval_file.read_text())
+                results.append((eval_file, data))
             except json.JSONDecodeError:
                 results.append((eval_file, {}))
     return results

@@ -1605,8 +1605,30 @@ def test_non_skill_install_assurance_covers_every_normalized_target() -> None:
     assert assurance["totals"]["failed_runtime_artifacts"] == 0
 
 
-def test_non_skill_install_assurance_keeps_candidate_mcps_disabled_and_pinned() -> None:
-    registry = _load_json(ROOT / "config/mcp-registry.json")["servers"]
+def test_non_skill_install_assurance_keeps_candidate_mcps_bounded_and_pinned() -> None:
+    registry_payload = _load_json(ROOT / "config/mcp-registry.json")
+    registry = registry_payload["servers"]
+    enabled_mcps = {item["name"] for item in registry_payload["mcphub"]["groups"]["candidate-corpus"]["servers"]}
+    disabled_mcps = {"langfuse-mcp", "papersflow"}
+    assert enabled_mcps == {
+        "antv-chart",
+        "axiom-mcp",
+        "better-icons",
+        "charted",
+        "csvglow",
+        "designer-skill-mcp",
+        "geo-mcp",
+        "mcp-dashboards",
+        "mcp-excalidraw",
+        "mobile-mcp",
+        "nullcost",
+        "openspec-mcp",
+        "paper-search-mcp",
+        "prompt-to-asset",
+        "semiotic",
+    }
+    assert all(registry[name]["enabled"] is True for name in enabled_mcps)
+    assert all(registry[name]["enabled"] is False for name in disabled_mcps)
     receipts = _load_json(MANIFEST_DIR / "runtime-activation-receipts.json")["receipts"]
     resolved_versions = {
         (row.get("package_id"), row.get("resolved_version"))
@@ -1632,7 +1654,7 @@ def test_non_skill_install_assurance_keeps_candidate_mcps_disabled_and_pinned() 
     }
 
     for name, (wrapper, args, package_id, version) in expected.items():
-        assert registry[name]["enabled"] is False
+        assert registry[name]["enabled"] is True
         assert Path(registry[name]["command"]).name == wrapper
         assert registry[name]["args"] == args
         assert (package_id, version) in resolved_versions
@@ -1641,6 +1663,9 @@ def test_non_skill_install_assurance_keeps_candidate_mcps_disabled_and_pinned() 
 
 def test_non_skill_install_assurance_is_secret_free_and_quarantine_safe() -> None:
     assurance = _load_json(MANIFEST_DIR / "non-skill-install-assurance.json")
+    registry = _load_json(ROOT / "config/mcp-registry.json")
+    enabled_mcps = {item["name"] for item in registry["mcphub"]["groups"]["candidate-corpus"]["servers"]}
+    observed_mcps: set[str] = set()
     auth_name = re.compile(r"^[A-Z][A-Z0-9_]{2,}$")
 
     for row in assurance["items"]:
@@ -1649,10 +1674,15 @@ def test_non_skill_install_assurance_is_secret_free_and_quarantine_safe() -> Non
             assert artifact["verified"] is True
             assert all(not path.startswith("/") and "/Users/" not in path for path in artifact["resolved_paths"])
             if artifact["kind"] == "mcp":
-                assert artifact["mcp_enabled"] is False
+                mcp_name = artifact["mcp_server"]
+                observed_mcps.add(mcp_name)
+                expected_enabled = mcp_name in enabled_mcps
+                assert artifact["mcp_expected_enabled"] is expected_enabled
+                assert artifact["mcp_enabled"] is expected_enabled
         if row["runtime_disposition"] == "hard-quarantined":
             assert row["artifacts"] == []
             assert row["activation_state"] == "quarantined"
+    assert observed_mcps == enabled_mcps | {"langfuse-mcp", "papersflow"}
     papersflow = next(
         row
         for row in assurance["items"]

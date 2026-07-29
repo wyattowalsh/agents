@@ -15,6 +15,17 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 REQUIRED_TOP_KEYS = frozenset({"ok", "mode", "inventory_count", "include_installed", "agents"})
 REQUIRED_AGENT_KEYS = frozenset({"agent", "missing", "already_present", "unresolved", "skipped"})
 
+# Buckets emitted by skills sync (legacy lists or compact count/sample objects).
+# Optional keys are validated when present so Wave 1b+ compact JSON stays compatible.
+REQUIRED_BUCKET_KEYS = ("missing", "already_present", "unresolved", "skipped")
+OPTIONAL_BUCKET_KEYS = (
+    "projection_ensure",
+    "projection_blocked",
+    "store_missing",
+    "internal_projection",
+    "pin_blocked",
+)
+
 
 def _find_repo_root() -> Path:
     candidate = REPO_ROOT
@@ -58,6 +69,40 @@ def _run_sync(repo_root: Path, *, agent: str | None) -> dict[str, Any]:
     return payload
 
 
+def _bucket_shape_error(label: str, value: Any) -> str | None:
+    """Return an error if value is neither a legacy list nor a compact bucket object."""
+    if isinstance(value, list):
+        if not all(isinstance(item, str) for item in value):
+            return f"{label} list items must be strings"
+        return None
+
+    if isinstance(value, dict):
+        count = value.get("count")
+        if not isinstance(count, int) or count < 0:
+            return f"{label} compact bucket requires non-negative int 'count'"
+
+        # Default compact JSON: {count, sample, truncated}
+        if "sample" in value:
+            sample = value.get("sample")
+            truncated = value.get("truncated")
+            if not isinstance(sample, list) or not all(isinstance(item, str) for item in sample):
+                return f"{label} compact bucket 'sample' must be a list of strings"
+            if not isinstance(truncated, int) or truncated < 0:
+                return f"{label} compact bucket requires non-negative int 'truncated'"
+            return None
+
+        # Verbose object form (if ever emitted): {count, items}
+        if "items" in value:
+            items = value.get("items")
+            if not isinstance(items, list) or not all(isinstance(item, str) for item in items):
+                return f"{label} compact bucket 'items' must be a list of strings"
+            return None
+
+        return f"{label} compact bucket must include 'sample' (+ 'truncated') or 'items'"
+
+    return f"{label} must be a list or compact {{count,sample,truncated}} object"
+
+
 def validate_payload(payload: dict[str, Any]) -> list[str]:
     errors: list[str] = []
 
@@ -84,10 +129,18 @@ def validate_payload(payload: dict[str, Any]) -> list[str]:
             continue
         if not isinstance(row.get("agent"), str) or not row["agent"].strip():
             errors.append(f"{label}.agent must be a non-empty string")
-        for key in ("missing", "already_present", "unresolved", "skipped"):
-            value = row.get(key)
-            if not isinstance(value, list):
-                errors.append(f"{label}.{key} must be a list")
+
+        for key in REQUIRED_BUCKET_KEYS:
+            message = _bucket_shape_error(f"{label}.{key}", row.get(key))
+            if message:
+                errors.append(message)
+
+        for key in OPTIONAL_BUCKET_KEYS:
+            if key not in row:
+                continue
+            message = _bucket_shape_error(f"{label}.{key}", row.get(key))
+            if message:
+                errors.append(message)
 
     return errors
 

@@ -1,5 +1,12 @@
 # BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS
 
+[mcp_servers.mcphub_group_candidate-corpus]
+url = "http://127.0.0.1:46683/mcp/candidate-corpus"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+enabled = true
+
 [mcp_servers.mcphub_group_harness]
 url = "http://127.0.0.1:46683/mcp/harness"
 headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }

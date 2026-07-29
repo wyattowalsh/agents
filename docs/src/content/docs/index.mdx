@@ -60,7 +60,7 @@ A surface is a portable piece of agent configuration. `wagents` keeps each surfa
   <a class="surface-node surface-node--skills" href="/skills/catalog/">
     <span class="surface-kicker">02</span>
     <strong>Skills</strong>
-    <span>1829 catalog entries: 70 repo-owned, 1759 curated external.</span>
+    <span>1826 catalog entries: 67 repo-owned, 1759 curated external.</span>
   </a>
   <a class="surface-node surface-node--tools" href="/surfaces/tools/">
     <span class="surface-kicker">03</span>
@@ -87,11 +87,12 @@ Runtimes consume the same surfaces through native files, generated projections, 
 <table>
 <thead><tr><th>Runtime</th><th>Instructions</th><th>Skills</th><th>Tools</th><th>Hooks</th><th>Agents</th></tr></thead>
 <tbody>
-<tr><td>Codex</td><td>generated</td><td>plugin/Skills CLI</td><td>MCPHub</td><td>generated</td><td>dynamic</td></tr>
 <tr><td>Claude Code</td><td>native import</td><td>plugin/Skills CLI</td><td>MCP</td><td>generated</td><td>native subagents</td></tr>
+<tr><td>Codex</td><td>generated</td><td>plugin/Skills CLI</td><td>MCPHub</td><td>generated</td><td>dynamic delegation</td></tr>
+<tr><td>Crush</td><td>AGENTS.md</td><td>Skills CLI</td><td>MCP projection</td><td>limited</td><td>not primary</td></tr>
+<tr><td>Cursor</td><td>rules + AGENTS.md</td><td>Skills CLI</td><td>MCPHub</td><td>native hooks</td><td>.cursor/agents</td></tr>
+<tr><td>Grok Build</td><td>generated config</td><td>mirrored skills</td><td>MCPHub</td><td>generated</td><td>delegation</td></tr>
 <tr><td>OpenCode</td><td>native AGENTS.md</td><td>Skills CLI</td><td>MCPHub + plugins</td><td>generated</td><td>native agents</td></tr>
-<tr><td>Cursor</td><td>rules + AGENTS.md</td><td>Skills CLI</td><td>MCPHub</td><td>native hooks</td><td><code>.cursor/agents</code></td></tr>
-<tr><td>Grok Build</td><td>generated</td><td>mirrored skills</td><td>MCPHub</td><td>generated</td><td>delegation</td></tr>
 </tbody>
 </table>
 </div>

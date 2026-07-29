@@ -32,6 +32,7 @@ from wagents.installed_inventory import (
     skill_cleanup_metadata_for_exposures,
     supported_agent_ids,
 )
+from wagents.skill_coverage import evaluate_skill_presence
 
 OUT = ROOT / "planning" / "manifests" / "harness-reconciliation.json"
 HOME = Path.home()
@@ -149,23 +150,48 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
     default_missing_by_agent: dict[str, int] = dict.fromkeys(all_agents, 0)
     include_installed_missing_by_agent: dict[str, int] = dict.fromkeys(all_agents, 0)
     query_blocked_by_agent: dict[str, int] = dict.fromkeys(all_agents, 0)
+    store_missing_by_agent: dict[str, int] = dict.fromkeys(all_agents, 0)
+    projection_missing_by_agent: dict[str, int] = dict.fromkeys(all_agents, 0)
 
     desired_names = {row.name for row in desired}
     for row in merged.rows:
         installed_agents = sync_row_installed_agents(row, merged.rows)
         if row.provenance_status == "read-only-discovered" and not row.target_agents:
-            target_agents = installed_agents
+            target_agents = tuple(installed_agents)
         else:
             target_agents = tuple(row.target_agents or all_agents)
         unknown = set(target_agents) & failed_agents
         owner_covered = set(repo_skill_owner_covered_agents(row, target_agents, home=HOME, root=ROOT))
-        missing = set(target_agents) - set(installed_agents) - unknown - owner_covered
+        # Inventory installed_agents already excludes Cursor store-only paths, but
+        # still compute store vs projection explicitly so Cursor cannot false-zero
+        # when the universal store is present and ~/.cursor/skills is not.
+        store_missing_agents: set[str] = set()
+        projection_missing_agents: set[str] = set()
+        for agent in target_agents:
+            if agent in unknown or agent in owner_covered:
+                continue
+            if agent == "cursor":
+                presence = evaluate_skill_presence(row.name, "cursor", home=HOME, repo_root=ROOT)
+                if not presence.store_present and not presence.projection_present:
+                    store_missing_agents.add(agent)
+                elif presence.store_present and not presence.projection_present:
+                    projection_missing_agents.add(agent)
+                continue
+            if agent not in installed_agents:
+                store_missing_agents.add(agent)
+
+        missing = set(store_missing_agents) | set(projection_missing_agents)
         classification, action, rationale = _skill_disposition(row, all_agents, missing, unknown)
         if owner_covered and row.provenance_status == "repo-owned" and classification == "synced":
             rationale = (
                 "Repo-owned skill is covered by a native plugin or direct repo skill path for "
                 f"{', '.join(sorted(owner_covered))}; no duplicate Skills CLI install is recommended."
             )
+        if projection_missing_agents and "cursor" in projection_missing_agents:
+            rationale = (
+                f"{rationale} Cursor has Skills CLI store presence without ~/.cursor/skills "
+                "projection; store/secondary is not durable Cursor sync."
+            ).strip()
         cleanup_meta = skill_cleanup_metadata_for_exposures(
             cleanup_by_name.get(row.name, ()),
             fallback_docs_status=row.docs_status,
@@ -173,6 +199,10 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
         if row.name in desired_names or row.provenance_status in {"repo-owned", "verified-curated-external"}:
             for agent in missing:
                 default_missing_by_agent[agent] = default_missing_by_agent.get(agent, 0) + 1
+            for agent in store_missing_agents:
+                store_missing_by_agent[agent] = store_missing_by_agent.get(agent, 0) + 1
+            for agent in projection_missing_agents:
+                projection_missing_by_agent[agent] = projection_missing_by_agent.get(agent, 0) + 1
             for agent in unknown:
                 query_blocked_by_agent[agent] = query_blocked_by_agent.get(agent, 0) + 1
         if row.provenance_status in {"repo-owned", "verified-curated-external", "installed-external"}:
@@ -189,9 +219,11 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
                 "provenance_status": row.provenance_status,
                 "trust_tier": row.trust_tier,
                 "sync_kind": row.sync_kind,
-                "installed_agents": list(installed_agents),
+                "installed_agents": list(row.installed_agents),
                 "target_agents": list(target_agents),
                 "missing_agents": sorted(missing),
+                "store_missing_agents": sorted(store_missing_agents),
+                "projection_missing_agents": sorted(projection_missing_agents),
                 "owner_covered_agents": sorted(owner_covered),
                 "query_blocked_agents": sorted(unknown),
                 "exposure_owner": cleanup_meta["exposure_owner"],
@@ -217,6 +249,8 @@ def _skill_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
         "classification_counts": dict(Counter(row["classification"] for row in rows)),
         "default_sync_missing_by_agent": default_missing_by_agent,
         "include_installed_missing_by_agent": include_installed_missing_by_agent,
+        "store_missing_by_agent": store_missing_by_agent,
+        "projection_missing_by_agent": projection_missing_by_agent,
         "query_blocked_by_agent": query_blocked_by_agent,
     }
     return rows, summary
@@ -340,6 +374,62 @@ def _codex_plugin_rows() -> list[dict[str, Any]]:
     return rows
 
 
+def _gemini_extension_evidence(invalid_disabled: list[str]) -> str:
+    if invalid_disabled:
+        return "Gemini settings contain MCP disabled keys rejected by the CLI; repair before extension validation."
+    return "Extension is locally installed and preserved unless promoted through catalog/registry review."
+
+
+def _gemini_rows() -> list[dict[str, Any]]:
+    settings = _safe_json(HOME / ".gemini" / "settings.json")
+    enabled = set(settings.get("enabledPlugins", []) if isinstance(settings.get("enabledPlugins"), list) else [])
+    mcp_servers = settings.get("mcpServers", {}) if isinstance(settings.get("mcpServers"), dict) else {}
+    invalid_disabled = [name for name, value in mcp_servers.items() if isinstance(value, dict) and "disabled" in value]
+    extension_root = HOME / ".gemini" / "extensions"
+    rows: list[dict[str, Any]] = []
+    if extension_root.is_dir():
+        for path in sorted(extension_root.iterdir()):
+            if not path.is_dir() or path.name.startswith("."):
+                continue
+            skill_count = len(list(path.glob("skills/*/SKILL.md")))
+            command_count = len([item for item in path.glob("commands/*") if item.is_file()])
+            rows.append(
+                {
+                    "asset_type": "extension",
+                    "harness": "gemini-cli",
+                    "name": path.name,
+                    "source": "gemini extension directory",
+                    "source_path": _redact(str(path)),
+                    "installed_state": {
+                        "enabled_in_settings": path.name in enabled,
+                        "skill_count": skill_count,
+                        "command_count": command_count,
+                    },
+                    "classification": "config-repair-needed" if invalid_disabled else "local-only-preserve",
+                    "action": "config-repair-needed" if invalid_disabled else "local-only-preserve",
+                    "owner": "user-local",
+                    "evidence": _gemini_extension_evidence(invalid_disabled),
+                }
+            )
+    if enabled:
+        for name in sorted(enabled):
+            rows.append(
+                {
+                    "asset_type": "plugin",
+                    "harness": "gemini-cli",
+                    "name": name,
+                    "source": "enabledPlugins",
+                    "source_path": "~/.gemini/settings.json",
+                    "installed_state": {"enabled_in_settings": True},
+                    "classification": "config-repair-needed" if invalid_disabled else "local-only-preserve",
+                    "action": "config-repair-needed" if invalid_disabled else "local-only-preserve",
+                    "owner": "user-local",
+                    "evidence": "Gemini enabled plugin entry is local user configuration.",
+                }
+    )
+    return rows
+
+
 def _native_plugins_reported(result: dict[str, Any]) -> bool:
     if not result.get("ok"):
         return False
@@ -426,7 +516,7 @@ def _simple_plugin_rows() -> list[dict[str, Any]]:
             ),
         }
     )
-    for harness in ("cursor", "crush"):
+    for harness in ("cursor", "github-copilot", "crush", "antigravity"):
         rows.append(
             {
                 "asset_type": "plugin",
@@ -451,6 +541,7 @@ def _plugin_rows() -> list[dict[str, Any]]:
     rows = []
     rows.extend(_codex_plugin_rows())
     rows.extend(_opencode_plugin_rows())
+    rows.extend(_gemini_rows())
     rows.extend(_simple_plugin_rows())
     return rows
 
@@ -508,9 +599,11 @@ def _task_files(harness: str, asset_type: str) -> list[str]:
                 "~/.config/opencode/tui.json",
             }
         )
+    if harness == "gemini-cli":
+        files.update({"GEMINI.md", "~/.gemini/settings.json", "~/.gemini/extensions/*"})
     if harness == "grok":
         files.update({"config/grok-config.toml", "~/.grok/config.toml", "~/.grok/skills/*"})
-    if harness in {"cursor", "crush"}:
+    if harness in {"cursor", "github-copilot", "crush", "antigravity"}:
         files.add("config/plugin-extension-registry.json")
     return sorted(files)
 

@@ -38,9 +38,11 @@ Phase 1 executes the repo skills-sync dry-run command and asserts:
 
 - top-level keys: `ok`, `mode`, `inventory_count`, `include_installed`, `agents`
 - `mode` is `dry-run`
-- each agent row includes `agent` plus list fields `missing`, `already_present`, `unresolved`, `skipped`
+- each agent row includes `agent` plus bucket fields `missing`, `already_present`, `unresolved`, `skipped`
+- bucket fields may be legacy string lists **or** compact objects `{count, sample, truncated}` (Wave 1b+ default JSON)
+- when present, optional buckets (`projection_ensure`, `projection_blocked`, `store_missing`, `internal_projection`, `pin_blocked`) use the same shapes
 
-Pass criteria: script exits `0` and prints a JSON summary to stdout.
+Pass criteria: script exits `0` and prints a JSON summary to stdout. Phase 1 is dry-run only — never `--apply`.
 
 ## Phase 2 — Temp-HOME Smoke
 

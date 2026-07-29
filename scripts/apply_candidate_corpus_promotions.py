@@ -36,6 +36,10 @@ from wagents.candidate_corpus_reports import (
     render_promotion_wave_report,
     validate_promotion_wave_plan,
 )
+from wagents.candidate_mcp_policy import (
+    CANDIDATE_MCP_SERVERS,
+    candidate_mcp_enabled_set,
+)
 from wagents.parsing import parse_frontmatter
 from wagents.site_model import SUPPORTED_AGENT_IDS
 
@@ -535,6 +539,8 @@ def non_skill_assurance_errors(payload: dict[str, Any] | None = None) -> list[st
         expected_fingerprints[name] = semantic_json_sha256(path)
     if len(expected_fingerprints) != len(source_paths) or assurance.get("source_fingerprints") != expected_fingerprints:
         errors.append("non-skill install assurance source fingerprints are stale")
+    enabled_candidate_mcps = candidate_mcp_enabled_set(load_json(source_paths["mcp_registry"]))
+    observed_candidate_mcps: list[str] = []
     for item in items:
         if not isinstance(item, dict):
             errors.append("non-skill install assurance row is not an object")
@@ -544,12 +550,19 @@ def non_skill_assurance_errors(payload: dict[str, Any] | None = None) -> list[st
         for artifact in item.get("artifacts", []):
             if not isinstance(artifact, dict) or artifact.get("verified") is not True:
                 errors.append(f"unverified non-skill artifact: {item.get('normalized_url')}")
-            if (
-                isinstance(artifact, dict)
-                and artifact.get("kind") == "mcp"
-                and artifact.get("mcp_enabled") is not False
-            ):
-                errors.append(f"candidate MCP is not disabled: {item.get('normalized_url')}")
+            if isinstance(artifact, dict) and artifact.get("kind") == "mcp":
+                mcp_name = str(artifact.get("mcp_server") or "")
+                observed_candidate_mcps.append(mcp_name)
+                expected_enabled = mcp_name in enabled_candidate_mcps
+                if artifact.get("mcp_expected_enabled") is not expected_enabled:
+                    errors.append(f"candidate MCP expected state is stale: {item.get('normalized_url')}")
+                if artifact.get("mcp_enabled") is not expected_enabled:
+                    errors.append(f"candidate MCP enabled state is stale: {item.get('normalized_url')}")
+    if (
+        len(observed_candidate_mcps) != len(CANDIDATE_MCP_SERVERS)
+        or set(observed_candidate_mcps) != CANDIDATE_MCP_SERVERS
+    ):
+        errors.append("non-skill assurance must contain the exact 17 candidate MCP artifacts")
     return errors
 
 
@@ -2576,7 +2589,8 @@ def write_promotion_reports(summary: dict[str, Any], overrides: list[dict[str, A
         ),
         (
             "- Installs or registers the audited CLI, library, MCP, and native plugin overlay; records exact "
-            "activation state, placeholder-only auth requirements, and disabled safety boundaries."
+            "activation state, placeholder-only auth requirements, 15 enabled bounded MCPs, and the two "
+            "credential-bound MCPs that remain disabled."
         ),
         "- Records the authorized install reconciliation and keeps subsequent validation checks non-mutating.",
     ]

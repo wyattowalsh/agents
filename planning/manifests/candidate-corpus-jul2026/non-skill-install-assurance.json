@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "generated_at": "2026-07-29T09:20:56.433107+00:00",
+  "generated_at": "2026-07-29T17:42:40.172916+00:00",
   "assurance_kind": "candidate-non-skill-live-install",
   "complete": true,
   "unique_target_count": 289,
   "source_fingerprints": {
     "integration_decisions": "e04eec6051dda23cc3c3bf27b7579c40efcf984df69f6009353eb92a63b968f2",
-    "mcp_registry": "e7e8790897da9662e049d380d8e75e2d70656aff7836f51aa0e3bf7d8e949e16",
+    "mcp_registry": "9f8951f8ac49ca927942e935a6b57ce6e27c43c3c201794285a76171190d475d",
     "plugin_registry": "b220ee850c38965cee1ea8ee0a96ad028a2fa85e09c6378d0bd4a46e282145a4",
     "tooling_policy": "0d556d96b6c0928834ce5f2fd92dfd676dcf7622443d1681f484a3a12757cc9e"
   },
@@ -34,6 +34,7 @@
           "executables": [
             "csvglow"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -48,6 +49,7 @@
           "smoke_exit_code": 0,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         },
@@ -59,6 +61,7 @@
           "executables": [
             "csvglow"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "csvglow",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -75,7 +78,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         }
@@ -182,7 +186,7 @@
       ],
       "decision": "integrated_mcp_surface",
       "integration_classification": "installable-existing",
-      "runtime_disposition": "configured-disabled-mcp",
+      "runtime_disposition": "configured-enabled-mcp",
       "artifacts": [
         {
           "kind": "mcp",
@@ -193,6 +197,7 @@
             "mcp-excalidraw-server",
             "excalidraw-canvas"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "mcp-excalidraw",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -209,7 +214,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         }
@@ -269,6 +275,7 @@
           "executables": [
             "refine"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -283,6 +290,7 @@
           "smoke_exit_code": 1,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -403,6 +411,7 @@
           "executables": [
             "lathe"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -417,6 +426,7 @@
           "smoke_exit_code": 0,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -512,6 +522,7 @@
           "executables": [
             "tanstack"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -526,6 +537,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -599,6 +611,7 @@
           "executables": [
             "tot"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -613,6 +626,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -729,6 +743,7 @@
           "executables": [
             "better-icons"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -743,6 +758,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         },
@@ -754,6 +770,7 @@
           "executables": [
             "better-icons"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "better-icons",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -770,7 +787,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         }
@@ -870,6 +888,7 @@
           "executables": [
             "axiom-mcp"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "axiom-mcp",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -886,7 +905,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         },
@@ -896,6 +916,7 @@
           "package_name": "axiom@axiom-marketplace",
           "version": "27.0.0-beta.22",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "axiom@axiom-marketplace",
           "plugin_enabled": false,
@@ -910,6 +931,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -1489,6 +1511,7 @@
           "executables": [
             "newsjack"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -1503,6 +1526,7 @@
           "smoke_exit_code": 0,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -1558,6 +1582,7 @@
           "package_name": "@aitytech/agentkits-marketing",
           "version": "1.7.2",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -1572,6 +1597,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -1609,6 +1635,7 @@
             "geo-mcp",
             "geo-web"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -1625,6 +1652,7 @@
           "smoke_exit_code": 0,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         },
@@ -1636,6 +1664,7 @@
           "executables": [
             "geo-mcp"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "geo-mcp",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -1658,7 +1687,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         }
@@ -1721,6 +1751,7 @@
           "executables": [
             "opendirectory"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -1735,6 +1766,7 @@
           "smoke_exit_code": 0,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -2027,6 +2059,7 @@
           "executables": [
             "asc"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -2041,6 +2074,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -2497,6 +2531,7 @@
           "executables": [
             "archify"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -2511,6 +2546,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -2862,6 +2898,7 @@
           "executables": [
             "skillspector"
           ],
+          "probe_timeout_sec": 120,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -2876,6 +2913,7 @@
           "smoke_exit_code": 0,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -2906,6 +2944,7 @@
           "executables": [
             "deslop"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -2920,6 +2959,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -2955,6 +2995,7 @@
           "executables": [
             "react-doctor"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -2969,6 +3010,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -3023,6 +3065,7 @@
           "package_name": "brooks-lint@awesome-codex-plugins",
           "version": "1.4.0",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "brooks-lint@awesome-codex-plugins",
           "plugin_enabled": true,
@@ -3037,6 +3080,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -3069,6 +3113,7 @@
           "package_name": "codebase-recon@awesome-codex-plugins",
           "version": "1.0.0",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "codebase-recon@awesome-codex-plugins",
           "plugin_enabled": true,
@@ -3083,6 +3128,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -3335,6 +3381,7 @@
           "executables": [
             "unslop"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -3349,6 +3396,7 @@
           "smoke_exit_code": 0,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         },
@@ -3358,6 +3406,7 @@
           "package_name": "unslop@awesome-codex-plugins",
           "version": "0.6.2",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "unslop@awesome-codex-plugins",
           "plugin_enabled": true,
@@ -3372,6 +3421,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -3600,6 +3650,7 @@
           "executables": [
             "gws"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -3614,6 +3665,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -3710,6 +3762,7 @@
           "executables": [
             "notebooklm"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -3724,6 +3777,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -3898,7 +3952,7 @@
       ],
       "decision": "integrated_mcp_surface",
       "integration_classification": "integrated-reference",
-      "runtime_disposition": "configured-disabled-mcp",
+      "runtime_disposition": "configured-enabled-mcp",
       "artifacts": [
         {
           "kind": "mcp",
@@ -3908,6 +3962,7 @@
           "executables": [
             "mcp-server-mobile"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "mobile-mcp",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -3924,7 +3979,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         }
@@ -3961,6 +4017,7 @@
           "executables": [
             "mcp-inspector"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -3975,6 +4032,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -4010,6 +4068,7 @@
           "executables": [
             "hyperframes"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -4024,6 +4083,7 @@
           "smoke_exit_code": 0,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         },
@@ -4033,6 +4093,7 @@
           "package_name": "hyperframes@hyperframes-upstream",
           "version": "0.7.61",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "hyperframes@hyperframes-upstream",
           "plugin_enabled": false,
@@ -4047,6 +4108,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -4083,6 +4145,7 @@
           "executables": [
             "agent-reach"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -4097,6 +4160,7 @@
           "smoke_exit_code": 0,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -4181,7 +4245,7 @@
       ],
       "decision": "integrated_mcp_surface",
       "integration_classification": "integrated-reference",
-      "runtime_disposition": "configured-disabled-mcp",
+      "runtime_disposition": "configured-enabled-mcp",
       "artifacts": [
         {
           "kind": "mcp",
@@ -4191,6 +4255,7 @@
           "executables": [
             "mcp-server-chart"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "antv-chart",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -4211,7 +4276,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         }
@@ -4276,6 +4342,7 @@
           "executables": [
             "designer-skill-mcp"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "designer-skill-mcp",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -4292,7 +4359,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         },
@@ -4302,6 +4370,7 @@
           "package_name": "designer-skill@awesome-codex-plugins",
           "version": "0.14.0",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "designer-skill@awesome-codex-plugins",
           "plugin_enabled": false,
@@ -4316,6 +4385,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -4351,6 +4421,7 @@
           "package_name": "env-lint@candidate-corpus-local",
           "version": "0.1.0",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "env-lint@candidate-corpus-local",
           "plugin_enabled": true,
@@ -4365,6 +4436,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -4397,6 +4469,7 @@
           "package_name": "hol-guard-plugin@awesome-codex-plugins",
           "version": "0.1.0",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "hol-guard-plugin@awesome-codex-plugins",
           "plugin_enabled": false,
@@ -4411,6 +4484,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -4444,6 +4518,7 @@
           "package_name": "secret-guard@candidate-corpus-local",
           "version": "0.1.0",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "secret-guard@candidate-corpus-local",
           "plugin_enabled": true,
@@ -4458,6 +4533,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -4512,6 +4588,7 @@
           "package_name": "universal-design-principles@awesome-codex-plugins",
           "version": "1.0.0",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "universal-design-principles@awesome-codex-plugins",
           "plugin_enabled": true,
@@ -4526,6 +4603,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -4585,6 +4663,7 @@
           "executables": [
             "langfuse-mcp"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "langfuse-mcp",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -4606,6 +4685,7 @@
           "smoke_exit_code": null,
           "mcp_configured": true,
           "mcp_enabled": false,
+          "mcp_expected_enabled": false,
           "plugin_installed": null,
           "verified": true
         }
@@ -4637,7 +4717,7 @@
       ],
       "decision": "integrated_plugin_surface",
       "integration_classification": "integrated-reference",
-      "runtime_disposition": "configured-disabled-mcp",
+      "runtime_disposition": "configured-enabled-mcp",
       "artifacts": [
         {
           "kind": "mcp",
@@ -4647,6 +4727,7 @@
           "executables": [
             "nullcost-plugin"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "nullcost",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -4663,7 +4744,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         }
@@ -4704,6 +4786,7 @@
             "p2a",
             "prompt-to-asset"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -4718,6 +4801,7 @@
           "smoke_exit_code": 0,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         },
@@ -4730,6 +4814,7 @@
             "p2a",
             "prompt-to-asset"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "prompt-to-asset",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -4769,7 +4854,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         },
@@ -4779,6 +4865,7 @@
           "package_name": "prompt-to-asset@awesome-codex-plugins",
           "version": "0.1.0",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "prompt-to-asset@awesome-codex-plugins",
           "plugin_enabled": false,
@@ -4793,6 +4880,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -4874,6 +4962,7 @@
           "package_name": "remotion@awesome-codex-plugins",
           "version": "0.1.0",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "remotion@awesome-codex-plugins",
           "plugin_enabled": false,
@@ -4888,6 +4977,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -4921,6 +5011,7 @@
           "package_name": "zotero-research-tools@awesome-codex-plugins",
           "version": "0.1.5",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "zotero-research-tools@awesome-codex-plugins",
           "plugin_enabled": false,
@@ -4935,6 +5026,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -4969,6 +5061,7 @@
           "package_name": "roadmapsmith@awesome-codex-plugins",
           "version": "1.2.2",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "roadmapsmith@awesome-codex-plugins",
           "plugin_enabled": true,
@@ -4983,6 +5076,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -5059,6 +5153,7 @@
           "executables": [
             "ralphy-spec"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -5073,6 +5168,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -5128,6 +5224,7 @@
           "executables": [
             "openspecui"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -5142,6 +5239,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -5194,6 +5292,7 @@
           "executables": [
             "openspec-ui"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -5208,6 +5307,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -5239,6 +5339,7 @@
           "executables": [
             "specboard"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -5253,6 +5354,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -5285,6 +5387,7 @@
           "executables": [
             "openspec-pw"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -5299,6 +5402,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -5320,7 +5424,7 @@
       ],
       "decision": "integrated_mcp_surface",
       "integration_classification": "integrated-reference",
-      "runtime_disposition": "configured-disabled-mcp",
+      "runtime_disposition": "configured-enabled-mcp",
       "artifacts": [
         {
           "kind": "mcp",
@@ -5328,6 +5432,7 @@
           "package_name": "openspec-mcp",
           "version": "0.4.2",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "openspec-mcp",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -5342,7 +5447,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         }
@@ -5496,6 +5602,7 @@
           "package_name": "commit-narrator@candidate-corpus-local",
           "version": "0.1.0",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "commit-narrator@candidate-corpus-local",
           "plugin_enabled": true,
@@ -5510,6 +5617,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         }
@@ -7071,7 +7179,7 @@
       ],
       "decision": "integrated_existing_surface",
       "integration_classification": "installable-existing",
-      "runtime_disposition": "configured-disabled-mcp",
+      "runtime_disposition": "configured-enabled-mcp",
       "artifacts": [
         {
           "kind": "mcp",
@@ -7081,6 +7189,7 @@
           "executables": [
             "paper-search-mcp"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "paper-search-mcp",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -7102,7 +7211,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         }
@@ -7142,6 +7252,7 @@
           "executables": [
             "dotagents"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -7156,6 +7267,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -7209,6 +7321,7 @@
           "executables": [
             "transpile"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -7223,6 +7336,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         }
@@ -7278,6 +7392,7 @@
           "package_name": "papersflow-codex-plugin@awesome-codex-plugins",
           "version": "1.0.0",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "papersflow-codex-plugin@awesome-codex-plugins",
           "plugin_enabled": false,
@@ -7292,6 +7407,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": true,
           "verified": true
         },
@@ -7301,6 +7417,7 @@
           "package_name": "papersflow",
           "version": "account-bound",
           "executables": [],
+          "probe_timeout_sec": 60,
           "mcp_server": "papersflow",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -7318,6 +7435,7 @@
           "smoke_exit_code": null,
           "mcp_configured": true,
           "mcp_enabled": false,
+          "mcp_expected_enabled": false,
           "plugin_installed": null,
           "verified": true
         }
@@ -7446,7 +7564,7 @@
       ],
       "decision": "integrated_mcp_surface",
       "integration_classification": "integrated-reference",
-      "runtime_disposition": "configured-disabled-mcp",
+      "runtime_disposition": "configured-enabled-mcp",
       "artifacts": [
         {
           "kind": "mcp",
@@ -7456,6 +7574,7 @@
           "executables": [
             "mcp-dashboards"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "mcp-dashboards",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -7472,7 +7591,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         }
@@ -7511,6 +7631,7 @@
             "charted",
             "charted-mcp"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -7526,6 +7647,7 @@
           "smoke_exit_code": null,
           "mcp_configured": null,
           "mcp_enabled": null,
+          "mcp_expected_enabled": null,
           "plugin_installed": null,
           "verified": true
         },
@@ -7537,6 +7659,7 @@
           "executables": [
             "charted-mcp"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "charted",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -7553,7 +7676,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         }
@@ -7582,7 +7706,7 @@
       ],
       "decision": "integrated_mcp_surface",
       "integration_classification": "integrated-reference",
-      "runtime_disposition": "configured-disabled-mcp",
+      "runtime_disposition": "configured-enabled-mcp",
       "artifacts": [
         {
           "kind": "mcp",
@@ -7593,6 +7717,7 @@
             "semiotic-ai",
             "semiotic-mcp"
           ],
+          "probe_timeout_sec": 60,
           "mcp_server": "semiotic",
           "plugin_id": "",
           "plugin_enabled": null,
@@ -7610,7 +7735,8 @@
           "smoke_status": "path-or-config-verified",
           "smoke_exit_code": null,
           "mcp_configured": true,
-          "mcp_enabled": false,
+          "mcp_enabled": true,
+          "mcp_expected_enabled": true,
           "plugin_installed": null,
           "verified": true
         }
@@ -7726,7 +7852,8 @@
     "verified_runtime_artifacts": 63,
     "failed_runtime_artifacts": 0,
     "disposition_counts": {
-      "configured-disabled-mcp": 9,
+      "configured-disabled-mcp": 1,
+      "configured-enabled-mcp": 8,
       "hard-quarantined": 4,
       "installed-cli": 22,
       "installed-library": 1,
@@ -7744,5 +7871,5 @@
     }
   },
   "failed_artifacts": [],
-  "notes": "This machine-local evidence records package paths, bounded smoke probes, disabled MCP registrations, plugin activation state, and terminal non-runtime dispositions without storing credential values."
+  "notes": "This machine-local evidence records package paths, bounded smoke probes, the exact enabled/disabled candidate MCP partition, plugin activation state, and terminal non-runtime dispositions without storing credential values."
 }

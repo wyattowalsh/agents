@@ -2,6 +2,7 @@
 
 import json
 import subprocess
+from pathlib import Path
 from typing import cast
 
 from typer.testing import CliRunner
@@ -260,7 +261,7 @@ npx skills add vercel-labs/agent-skills@abc123 --skill missing-curated -y -g -a 
     result = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
 
     assert result.exit_code == 0
-    assert "missing (1)" in result.output
+    assert "store-missing (1)" in result.output
     assert "missing-curated [verified-curated-external]" in result.output
     assert (
         "npx skills add vercel-labs/agent-skills@abc123 --skill missing-curated -y -g -a codex"
@@ -329,7 +330,7 @@ def test_sync_skips_external_tool_rows(monkeypatch):
     result = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
 
     assert result.exit_code == 0
-    assert "missing (0)" in result.output
+    assert "store-missing (0)" in result.output
     assert "commands (0)" in result.output
     assert "pip install apm-cli" not in result.output
 
@@ -403,7 +404,7 @@ def test_sync_strict_catalog_failure_json(monkeypatch):
         lambda **kwargs: (_ for _ in ()).throw(ExternalSkillCatalogError("catalog broken")),
     )
 
-    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json"])
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json", "--verbose"])
 
     assert result.exit_code == 1
     payload = json.loads(result.output)
@@ -433,6 +434,7 @@ def test_sync_strict_catalog_failure_jsonl(monkeypatch):
             "mode": "dry-run",
             "inventory_count": None,
             "include_installed": False,
+            "verbose": False,
             "agents": [],
             "error": "catalog broken",
             "error_type": "external-skill-catalog",
@@ -446,7 +448,7 @@ def test_sync_success_json_reports_ok(monkeypatch):
     monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
     monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: ())
 
-    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json"])
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json", "--verbose"])
 
     assert result.exit_code == 0
     payload = json.loads(result.output)
@@ -460,7 +462,7 @@ def test_sync_dry_run_inventory_failure_reports_not_ok(monkeypatch):
     monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _failed_query_snapshot())
     monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: ())
 
-    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json"])
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json", "--verbose"])
 
     assert result.exit_code == 1
     payload = json.loads(result.output)
@@ -484,7 +486,7 @@ def test_sync_apply_inventory_failure_exits_before_install_commands(monkeypatch)
     monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: ())
     monkeypatch.setattr("wagents.cli.subprocess.run", mock_run)
 
-    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply", "--format", "json"])
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply", "--format", "json", "--verbose"])
 
     assert result.exit_code == 1
     assert calls == []
@@ -497,7 +499,7 @@ def test_sync_warning_inventory_fallback_remains_ok(monkeypatch):
     monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _warning_query_snapshot())
     monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: ())
 
-    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json"])
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json", "--verbose"])
 
     assert result.exit_code == 0
     payload = json.loads(result.output)
@@ -546,7 +548,7 @@ def test_sync_repo_owned_skill_covered_by_non_cli_owner_is_already_present(monke
     monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
     monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: tuple(agent_ids))
 
-    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json"])
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json", "--verbose"])
 
     assert result.exit_code == 0
     payload = json.loads(result.output)
@@ -565,7 +567,7 @@ def test_sync_repo_owned_skill_missing_when_owner_is_skills_cli(monkeypatch):
     monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
     monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
 
-    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json"])
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json", "--verbose"])
 
     assert result.exit_code == 0
     agent = json.loads(result.output)["agents"][0]
@@ -589,7 +591,7 @@ def test_sync_inventory_failure_still_blocks_owner_covered_repo_skill(monkeypatc
     monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: tuple(agent_ids))
     monkeypatch.setattr("wagents.cli.subprocess.run", mock_run)
 
-    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply", "--format", "json"])
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply", "--format", "json", "--verbose"])
 
     assert result.exit_code == 1
     assert calls == []
@@ -733,7 +735,7 @@ def test_sync_apply_partial_failure_json_includes_apply_failures(monkeypatch):
     monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
     monkeypatch.setattr("wagents.cli.subprocess.run", mock_run)
 
-    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply", "--format", "json"])
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply", "--format", "json", "--verbose"])
 
     assert result.exit_code == 1
     assert len(calls) == 1
@@ -782,10 +784,24 @@ def test_sync_apply_continue_on_error_runs_all_batches(monkeypatch):
     monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row_a, row_b))
     monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
     monkeypatch.setattr("wagents.cli.subprocess.run", mock_run)
+    monkeypatch.setattr(
+        "wagents.cli.ensure_cursor_authoritative_links",
+        lambda **kwargs: type(
+            "R",
+            (),
+            {
+                "created": tuple(kwargs.get("names") or ()),
+                "repaired": (),
+                "already_correct": (),
+                "blocked": (),
+                "skipped_missing_store": (),
+            },
+        )(),
+    )
 
     result = runner.invoke(
         app,
-        ["skills", "sync", "--agent", "codex", "--agent", "cursor", "--apply", "--format", "json"],
+        ["skills", "sync", "--agent", "codex", "--agent", "cursor", "--apply", "--format", "json", "--verbose"],
     )
 
     assert result.exit_code == 1
@@ -805,3 +821,178 @@ def test_collect_installed_inventory_respects_empty_external_entries(monkeypatch
     snapshot = collect_installed_inventory(external_entries=[])
 
     assert snapshot.rows == ()
+
+
+def _write_skill_body(skill_dir: Path, name: str, body: str = "body\n") -> None:
+    skill_dir.mkdir(parents=True, exist_ok=True)
+    (skill_dir / "SKILL.md").write_text(f"---\nname: {name}\ndescription: t\n---\n\n{body}", encoding="utf-8")
+
+
+def _cursor_desired_row(name: str = "cursor-skill") -> InstalledSkillInventoryRow:
+    return InstalledSkillInventoryRow(
+        name=name,
+        path="",
+        source_path=f"skills/{name}/SKILL.md",
+        scope="desired",
+        description="Cursor skill.",
+        license="",
+        version="",
+        author="",
+        source="github:wyattowalsh/agents",
+        install_source="github:wyattowalsh/agents",
+        source_url="https://github.com/wyattowalsh/agents",
+        install_command=f"npx skills add github:wyattowalsh/agents --skill {name} -y -g",
+        provenance_status="repo-owned",
+        trust_tier="repo-owned",
+        selector_mode="named",
+        installed_agents=(),
+        discovered_in=(),
+        target_agents=("cursor",),
+        sync_kind="skills-cli",
+    )
+
+
+def test_cursor_store_only_is_projection_ensure_not_already_present(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    store = home / ".agents" / "skills" / "cursor-skill"
+    _write_skill_body(store, "cursor-skill")
+    row = _cursor_desired_row()
+
+    monkeypatch.setattr("wagents.cli.HOME", home)
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    report = _build_sync_report(("cursor",), include_installed=False, external_entries=[], home=home)
+    agent = cast("dict[str, object]", cast("list", report["agents"])[0])
+    assert agent["already_present"] == []
+    assert agent["store_missing"] == []
+    assert agent["projection_ensure"] == ["cursor-skill [repo-owned]"]
+    assert agent["commands"] == []
+
+
+def test_cursor_store_and_projection_is_already_present(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    store = home / ".agents" / "skills" / "cursor-skill"
+    projection = home / ".cursor" / "skills" / "cursor-skill"
+    _write_skill_body(store, "cursor-skill")
+    _write_skill_body(projection, "cursor-skill")
+    row = _cursor_desired_row()
+
+    monkeypatch.setattr("wagents.cli.HOME", home)
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    report = _build_sync_report(("cursor",), include_installed=False, external_entries=[], home=home)
+    agent = cast("dict[str, object]", cast("list", report["agents"])[0])
+    assert agent["already_present"] == ["cursor-skill [repo-owned]"]
+    assert agent["projection_ensure"] == []
+    assert agent["store_missing"] == []
+
+
+def test_cursor_absent_is_store_missing_with_cli_command(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    home.mkdir()
+    row = _cursor_desired_row()
+
+    monkeypatch.setattr("wagents.cli.HOME", home)
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    report = _build_sync_report(("cursor",), include_installed=False, external_entries=[], home=home)
+    agent = cast("dict[str, object]", cast("list", report["agents"])[0])
+    assert agent["store_missing"] == ["cursor-skill [repo-owned]"]
+    assert agent["missing"] == agent["store_missing"]
+    assert agent["commands"] == [
+        "npx skills add github:wyattowalsh/agents --skill cursor-skill -y -g -a cursor"
+    ]
+
+
+def test_cursor_divergent_projection_is_blocked(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    store = home / ".agents" / "skills" / "cursor-skill"
+    projection = home / ".cursor" / "skills" / "cursor-skill"
+    _write_skill_body(store, "cursor-skill", "store-body\n")
+    _write_skill_body(projection, "cursor-skill", "local-body\n")
+    row = _cursor_desired_row()
+
+    monkeypatch.setattr("wagents.cli.HOME", home)
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    report = _build_sync_report(("cursor",), include_installed=False, external_entries=[], home=home)
+    agent = cast("dict[str, object]", cast("list", report["agents"])[0])
+    assert agent["projection_blocked"] == ["cursor-skill [repo-owned]"]
+    assert agent["already_present"] == []
+    assert agent["commands"] == []
+
+
+def test_cursor_apply_runs_cli_then_ensure(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    home.mkdir()
+    row = _cursor_desired_row()
+    cli_calls: list[list[str]] = []
+    ensure_calls: list[dict[str, object]] = []
+
+    def mock_run(cmd, **kwargs):
+        cli_calls.append(cmd)
+        # Simulate Skills CLI writing the store body.
+        _write_skill_body(home / ".agents" / "skills" / "cursor-skill", "cursor-skill")
+        return subprocess.CompletedProcess(cmd, 0)
+
+    def mock_ensure(**kwargs):
+        ensure_calls.append(kwargs)
+        return type(
+            "R",
+            (),
+            {
+                "created": ("cursor-skill",),
+                "repaired": (),
+                "already_correct": (),
+                "blocked": (),
+                "skipped_missing_store": (),
+            },
+        )()
+
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.HOME", home)
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+    monkeypatch.setattr("wagents.cli.subprocess.run", mock_run)
+    monkeypatch.setattr("wagents.cli.ensure_cursor_authoritative_links", mock_ensure)
+
+    result = runner.invoke(
+        app,
+        ["skills", "sync", "--agent", "cursor", "--apply", "--format", "json", "--verbose"],
+    )
+
+    assert result.exit_code == 0
+    assert len(cli_calls) == 1
+    assert ensure_calls
+    assert ensure_calls[0]["dry_run"] is False
+    assert "cursor-skill" in ensure_calls[0]["names"]
+    payload = json.loads(result.output)
+    assert payload["cursor_projection_ensure"]["created"] == ["cursor-skill"]
+
+
+def test_sync_json_default_is_compact_counts_and_samples(monkeypatch):
+    row = _repo_owned_desired_row()
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--format", "json"])
+
+    assert result.exit_code == 0
+    agent = json.loads(result.output)["agents"][0]
+    assert agent["store_missing"]["count"] == 1
+    assert agent["store_missing"]["sample"] == ["repo-owned-skill [repo-owned]"]
+    assert agent["store_missing"]["truncated"] == 0
+    assert isinstance(agent["already_present"], dict)

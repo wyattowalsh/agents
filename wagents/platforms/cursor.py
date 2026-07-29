@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import yaml
 
@@ -25,11 +26,154 @@ from wagents.platforms.base import (
     merge_server_maps,
 )
 
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
 CURSOR_HOME_MCP_PATH = HOME / ".cursor" / "mcp.json"
 CURSOR_HOME_HOOKS_PATH = HOME / ".cursor" / "hooks.json"
 CURSOR_HOME_AGENTS_DIR = HOME / ".cursor" / "agents"
 CURSOR_MANAGED_AGENT_MARKER = "<!-- Managed by wagents. Source: agents/"
 CURSOR_DEFAULT_MODEL = "cursor-grok-4.5-high"
+
+# Skills CLI universal store → Cursor home projection (not repo `.cursor/skills/repo`).
+DEFAULT_CURSOR_SKILL_STORE = Path(".agents") / "skills"
+DEFAULT_CURSOR_SKILL_PROJECTION = Path(".cursor") / "skills"
+
+
+@dataclass(frozen=True)
+class CursorAuthoritativeLinksReport:
+    """Outcome of ensuring Cursor home skill links point at the Skills CLI store."""
+
+    created: tuple[str, ...]
+    repaired: tuple[str, ...]
+    already_correct: tuple[str, ...]
+    blocked: tuple[dict[str, str], ...]
+    skipped_missing_store: tuple[str, ...]
+
+
+def _read_skill_md_body(skill_dir: Path) -> str | None:
+    """Return SKILL.md text when the path is a readable file; otherwise None."""
+    skill_file = skill_dir / "SKILL.md"
+    if not skill_file.is_file():
+        return None
+    try:
+        return skill_file.read_text(encoding="utf-8")
+    except OSError:
+        return None
+
+
+def _projection_symlink_resolves_to(projection: Path, store_dir: Path) -> bool:
+    """True when ``projection`` is a symlink whose resolved target is ``store_dir``."""
+    if not projection.is_symlink():
+        return False
+    try:
+        store_real = store_dir.resolve()
+        if not store_real.exists():
+            return False
+        return projection.resolve() == store_real
+    except OSError:
+        return False
+
+
+def _replace_projection_symlink(projection: Path, store_real: Path) -> None:
+    """Replace a symlink at ``projection`` with one pointing at ``store_real``.
+
+    Only unlinks when the path is already a symlink. Never removes real trees.
+    """
+    if projection.is_symlink():
+        projection.unlink()
+    elif projection.exists():
+        raise ValueError(f"refusing to replace non-symlink projection path: {projection}")
+    projection.symlink_to(store_real, target_is_directory=True)
+
+
+def ensure_cursor_authoritative_links(
+    *,
+    names: Iterable[str],
+    home: Path | None = None,
+    store_root: Path | None = None,
+    projection_root: Path | None = None,
+    dry_run: bool = True,
+) -> CursorAuthoritativeLinksReport:
+    """Ensure ``~/.cursor/skills/<name>`` symlinks to ``~/.agents/skills/<name>``.
+
+    Conflict matrix (per name):
+
+    - Missing projection + valid store ``SKILL.md`` → create symlink to store realpath
+    - Broken or wrong symlink → replace the symlink only (never ``rm -r`` real trees)
+    - Real directory with identical ``SKILL.md`` body → already correct
+    - Real directory with divergent ``SKILL.md`` → blocked
+    - No readable store ``SKILL.md`` → skipped missing store
+
+    Defaults to dry-run. Does not touch repo ``.cursor/skills/repo`` sync
+    (``_sync_skill_symlinks``).
+    """
+    home_dir = Path(home) if home is not None else HOME
+    resolved_store_root = Path(store_root) if store_root is not None else home_dir / DEFAULT_CURSOR_SKILL_STORE
+    resolved_projection_root = (
+        Path(projection_root) if projection_root is not None else home_dir / DEFAULT_CURSOR_SKILL_PROJECTION
+    )
+
+    created: list[str] = []
+    repaired: list[str] = []
+    already_correct: list[str] = []
+    blocked: list[dict[str, str]] = []
+    skipped_missing_store: list[str] = []
+
+    for name in names:
+        store_dir = resolved_store_root / name
+        store_body = _read_skill_md_body(store_dir)
+        if store_body is None:
+            skipped_missing_store.append(name)
+            continue
+
+        store_real = store_dir.resolve()
+        projection = resolved_projection_root / name
+        path_present = projection.exists() or projection.is_symlink()
+
+        if not path_present:
+            if not dry_run:
+                resolved_projection_root.mkdir(parents=True, exist_ok=True)
+                projection.symlink_to(store_real, target_is_directory=True)
+            created.append(name)
+            continue
+
+        if projection.is_symlink():
+            if _projection_symlink_resolves_to(projection, store_dir):
+                already_correct.append(name)
+                continue
+            if not dry_run:
+                _replace_projection_symlink(projection, store_real)
+            repaired.append(name)
+            continue
+
+        if projection.is_dir():
+            projection_body = _read_skill_md_body(projection)
+            if projection_body is not None and projection_body == store_body:
+                already_correct.append(name)
+                continue
+            blocked.append(
+                {
+                    "name": name,
+                    "reason": "real directory with divergent SKILL.md; refusing to replace tree",
+                }
+            )
+            continue
+
+        blocked.append(
+            {
+                "name": name,
+                "reason": "projection path exists and is not a replaceable symlink",
+            }
+        )
+
+    return CursorAuthoritativeLinksReport(
+        created=tuple(created),
+        repaired=tuple(repaired),
+        already_correct=tuple(already_correct),
+        blocked=tuple(blocked),
+        skipped_missing_store=tuple(skipped_missing_store),
+    )
 
 
 def cursor_project_dir() -> Path:

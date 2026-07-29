@@ -222,10 +222,6 @@
       "name": "skill-lifecycle-manager"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-localization-packager -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
-      "name": "skill-localization-packager"
-    },
-    {
       "command": "npx skills add github:wyattowalsh/agents --skill skill-package-manifest-enricher -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
       "name": "skill-package-manifest-enricher"
     },
@@ -234,16 +230,8 @@
       "name": "skill-quality-dashboard"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-registry-lock -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
-      "name": "skill-registry-lock"
-    },
-    {
       "command": "npx skills add github:wyattowalsh/agents --skill skill-router -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
       "name": "skill-router"
-    },
-    {
-      "command": "npx skills add github:wyattowalsh/agents --skill skill-signing-verifier -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",
-      "name": "skill-signing-verifier"
     },
     {
       "command": "npx skills add github:wyattowalsh/agents --skill skill-tag-taxonomist -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode",

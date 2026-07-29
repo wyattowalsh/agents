@@ -1,5 +1,12 @@
 {
   "mcpServers": {
+    "mcphub_group_candidate-corpus": {
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/candidate-corpus"
+      ],
+      "disabled": false
+    },
     "mcphub_group_harness": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [

@@ -620,7 +620,7 @@ class TestSkillsSync:
         result = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
 
         assert result.exit_code == 0
-        assert "missing (1)" in result.output
+        assert "store-missing (1)" in result.output
         assert "already-present (1)" in result.output
         assert "unresolved (1)" in result.output
         assert "skipped (1)" in result.output
@@ -646,7 +646,7 @@ class TestSkillsSync:
 
         assert result.exit_code == 0
         assert "warning: Fallback local skill-root inventory after timeout: npx skills ls" in result.output
-        assert "missing (1)" in result.output
+        assert "store-missing (1)" in result.output
 
     def test_sync_apply_executes_verified_commands_only(self, monkeypatch):
         calls = []
@@ -705,8 +705,8 @@ class TestSkillsSync:
 
     def test_sync_reports_zero_install_copilot_truthfully(self, monkeypatch):
         # Physically possible state: skill discovered in claude-code (installed
-        # there), but crush query returned nothing — so the skill is
-        # genuinely missing from crush.
+        # there), but github-copilot query returned nothing — so the skill is
+        # genuinely missing from github-copilot.
         snapshot = InstalledInventorySnapshot(
             rows=(
                 InstalledSkillInventoryRow(
@@ -732,18 +732,18 @@ class TestSkillsSync:
             ),
             queries=(
                 HarnessQueryResult(agent_id="claude-code", ok=True, entries=()),
-                HarnessQueryResult(agent_id="crush", ok=True, entries=()),
+                HarnessQueryResult(agent_id="github-copilot", ok=True, entries=()),
             ),
         )
         monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
         self._patch_sync_inventory(monkeypatch, snapshot)
 
-        result = runner.invoke(app, ["skills", "sync", "--agent", "crush"])
+        result = runner.invoke(app, ["skills", "sync", "--agent", "github-copilot"])
 
         assert result.exit_code == 0
-        assert "[crush]" in result.output
+        assert "[github-copilot]" in result.output
         assert "already-present (0)" in result.output
-        assert "missing (1)" in result.output
+        assert "store-missing (1)" in result.output
         assert "npx skills add github:wyattowalsh/agents --skill repo-skill -y -g -a crush" in result.output
 
     def test_targeted_sync_uses_full_cross_harness_inventory(self, monkeypatch):
@@ -805,7 +805,7 @@ class TestSkillsSync:
             "_build_sync_report must not filter the inventory to target agents; got kwargs: " + repr(inventory_calls[0])
         )
         # Cross-harness skill correctly reported as missing for the target.
-        assert "missing (1)" in result.output
+        assert "store-missing (1)" in result.output
         assert "npx skills add github:wyattowalsh/agents --skill repo-skill -y -g -a codex" in result.output
 
 

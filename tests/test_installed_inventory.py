@@ -21,14 +21,28 @@ from wagents.installed_inventory import (
     HarnessQueryResult,
     _merge_local_skill_roots_into_query,
     _run_harness_command,
+    _tree_hash,
     build_skill_cleanup_report,
     collect_installed_inventory,
     collect_skill_cleanup_exposures,
+    cursor_entry_counts_as_global_projection,
+    is_repo_cursor_skills_path,
     load_installed_skill_supersession_aliases,
     mirror_grok_skills_from_claude,
     query_harness_skills,
     repo_skill_exposure_owner_for_agent,
     skills_cli_agent_id,
+)
+from wagents.skill_coverage import (
+    PRESENCE_TIER_ABSENT,
+    PRESENCE_TIER_COVERED,
+    PRESENCE_TIER_PROJECTION_ONLY,
+    PRESENCE_TIER_STORE_ONLY,
+    evaluate_skill_presence,
+    missing_projections,
+    presence_tier,
+    projection_present,
+    store_present,
 )
 
 
@@ -638,3 +652,109 @@ def test_load_installed_skill_supersession_aliases_returns_empty_when_missing(tm
     repo.mkdir()
 
     assert load_installed_skill_supersession_aliases(repo_root=repo) == {}
+
+
+def test_presence_tier_matrix():
+    assert presence_tier(store_present=False, projection_present=False) == PRESENCE_TIER_ABSENT
+    assert presence_tier(store_present=True, projection_present=False) == PRESENCE_TIER_STORE_ONLY
+    assert presence_tier(store_present=False, projection_present=True) == PRESENCE_TIER_PROJECTION_ONLY
+    assert presence_tier(store_present=True, projection_present=True) == PRESENCE_TIER_COVERED
+
+
+def test_cursor_store_vs_projection_presence(tmp_path):
+    home = tmp_path / "home"
+    repo = tmp_path / "repo"
+    store = home / ".agents" / "skills" / "alpha"
+    projection = home / ".cursor" / "skills" / "alpha"
+    project_only = repo / ".cursor" / "skills" / "alpha"
+    _write_skill(store, "alpha")
+    _write_skill(project_only, "alpha")
+
+    assert store_present("alpha", home=home) is True
+    assert projection_present("alpha", "cursor", home=home, repo_root=repo) is False
+    assert is_repo_cursor_skills_path(project_only, repo) is True
+    assert cursor_entry_counts_as_global_projection(project_only, home=home, repo_root=repo) is False
+    assert cursor_entry_counts_as_global_projection(store, home=home, repo_root=repo) is False
+
+    presence = evaluate_skill_presence("alpha", "cursor", home=home, repo_root=repo)
+    assert presence.store_present is True
+    assert presence.projection_present is False
+    assert presence.presence_tier == PRESENCE_TIER_STORE_ONLY
+    assert missing_projections(["alpha"], "cursor", home=home, repo_root=repo) == ("alpha",)
+
+    _write_skill(projection, "alpha")
+    covered = evaluate_skill_presence("alpha", "cursor", home=home, repo_root=repo)
+    assert covered.projection_present is True
+    assert covered.presence_tier == PRESENCE_TIER_COVERED
+    assert projection_present("alpha", "cursor", home=home, repo_root=repo) is True
+    assert missing_projections(["alpha"], "cursor", home=home, repo_root=repo) == ()
+
+
+def test_query_cursor_ignores_project_and_store_only_paths(tmp_path):
+    home = tmp_path / "home"
+    repo = tmp_path / "repo"
+    store_skill = home / ".agents" / "skills" / "store-only"
+    project_skill = repo / ".cursor" / "skills" / "project-only"
+    projection_skill = home / ".cursor" / "skills" / "projected"
+    _write_skill(store_skill, "store-only")
+    _write_skill(project_skill, "project-only")
+    _write_skill(projection_skill, "projected")
+
+    def runner(cmd, **kwargs):
+        payload = [
+            {
+                "name": "store-only",
+                "path": str(store_skill),
+                "scope": "global",
+                "agents": ["Cursor"],
+            },
+            {
+                "name": "project-only",
+                "path": str(project_skill),
+                "scope": "global",
+                "agents": ["Cursor"],
+            },
+            {
+                "name": "projected",
+                "path": str(projection_skill),
+                "scope": "global",
+                "agents": ["Cursor"],
+            },
+        ]
+        return _completed(cmd, payload)
+
+    (result,) = query_harness_skills(
+        agent_ids=("cursor",),
+        runner=runner,
+        home=home,
+        repo_root=repo,
+    )
+
+    names = {entry.name for entry in result.entries}
+    assert names == {"projected"}
+    assert all(entry.path.startswith(str(home / ".cursor" / "skills")) for entry in result.entries)
+
+
+def test_cleanup_hashing_is_lazy_for_same_realpath(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    repo = tmp_path / "repo"
+    store = home / ".agents" / "skills" / "shared"
+    _write_skill(store, "shared")
+    link_root = home / ".claude" / "skills"
+    link_root.mkdir(parents=True)
+    (link_root / "shared").symlink_to(store.resolve(), target_is_directory=True)
+
+    calls: list[str] = []
+
+    def tracking_tree_hash(skill_dir):
+        calls.append(str(skill_dir))
+        return _tree_hash(skill_dir)
+
+    monkeypatch.setattr("wagents.installed_inventory._tree_hash", tracking_tree_hash)
+
+    exposures = collect_skill_cleanup_exposures(root=repo, home=home)
+    shared = [item for item in exposures if item.name == "shared"]
+    assert len(shared) >= 2
+    assert {item.duplicate_class for item in shared} == {DUPLICATE_CLASS_SAME_REALPATH}
+    assert calls == []
+    assert all(item.tree_hash == "" for item in shared)

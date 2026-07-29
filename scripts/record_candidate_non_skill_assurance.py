@@ -15,6 +15,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from wagents.candidate_mcp_policy import (
+    CANDIDATE_MCP_SERVERS,
+    candidate_mcp_enabled_set,
+)
+
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_DIR = ROOT / "planning" / "manifests" / "candidate-corpus-jul2026"
 OUTPUT = MANIFEST_DIR / "non-skill-install-assurance.json"
@@ -32,6 +37,7 @@ NON_SKILL_TYPES = {"CLI/tool", "MCP server", "plugin", "library"}
 ALLOWED_DISPOSITIONS = {
     "collection-extracted",
     "configured-disabled-mcp",
+    "configured-enabled-mcp",
     "hard-quarantined",
     "installed-cli",
     "installed-library",
@@ -55,6 +61,7 @@ def _artifact(
     probe_contains: str = "",
     probe_exit_codes: tuple[int, ...] = (0,),
     probe_env: dict[str, str] | None = None,
+    probe_timeout_sec: int = 60,
     mcp_server: str = "",
     plugin_id: str = "",
     plugin_enabled: bool | None = None,
@@ -73,6 +80,7 @@ def _artifact(
         "probe_contains": probe_contains,
         "probe_exit_codes": list(probe_exit_codes),
         "probe_env": dict(probe_env or {}),
+        "probe_timeout_sec": probe_timeout_sec,
         "mcp_server": mcp_server,
         "plugin_id": plugin_id,
         "plugin_enabled": plugin_enabled,
@@ -92,6 +100,7 @@ def _cli(
     probe_contains: str = "",
     probe_exit_codes: tuple[int, ...] = (0,),
     probe_env: dict[str, str] | None = None,
+    probe_timeout_sec: int = 60,
     notes: str = "",
 ) -> dict[str, Any]:
     return _artifact(
@@ -104,6 +113,7 @@ def _cli(
         probe_contains=probe_contains,
         probe_exit_codes=probe_exit_codes,
         probe_env=probe_env,
+        probe_timeout_sec=probe_timeout_sec,
         notes=notes,
     )
 
@@ -222,6 +232,7 @@ RUNTIME_SPECS: dict[str, list[dict[str, Any]]] = {
             ("skillspector",),
             probe=("skillspector", "--version"),
             probe_contains="2.3.13",
+            probe_timeout_sec=120,
         ),
     ],
     "https://github.com/auriti-labs/geo-optimizer-skill": [
@@ -620,7 +631,7 @@ def run_probe(spec: dict[str, Any]) -> tuple[str, int | None]:
             env=env,
             capture_output=True,
             text=True,
-            timeout=20,
+            timeout=int(spec.get("probe_timeout_sec", 60)),
         )
     except (OSError, subprocess.TimeoutExpired):
         return "failed", None
@@ -634,6 +645,7 @@ def run_probe(spec: dict[str, Any]) -> tuple[str, int | None]:
 def evaluate_artifact(
     spec: dict[str, Any],
     mcp_servers: dict[str, Any],
+    enabled_candidate_mcps: frozenset[str],
     plugins: dict[str, dict[str, Any]],
 ) -> dict[str, Any]:
     item = {
@@ -657,10 +669,12 @@ def evaluate_artifact(
     mcp_name = str(spec.get("mcp_server") or "")
     mcp_configured = None
     mcp_enabled = None
+    mcp_expected_enabled = None
     if mcp_name:
         server = mcp_servers.get(mcp_name)
         mcp_configured = isinstance(server, dict)
         mcp_enabled = server.get("enabled") if isinstance(server, dict) else None
+        mcp_expected_enabled = mcp_name in enabled_candidate_mcps
 
     plugin_id = str(spec.get("plugin_id") or "")
     plugin_installed = None
@@ -674,7 +688,7 @@ def evaluate_artifact(
     expected_plugin_enabled = spec.get("plugin_enabled")
     verified = all(path_checks) if path_checks else True
     if mcp_name:
-        verified = verified and mcp_configured is True and mcp_enabled is False
+        verified = verified and mcp_configured is True and mcp_enabled is mcp_expected_enabled
     if plugin_id:
         verified = verified and plugin_installed is True and plugin_enabled is expected_plugin_enabled
     verified = verified and smoke_status != "failed"
@@ -686,6 +700,7 @@ def evaluate_artifact(
         "smoke_exit_code": smoke_exit_code,
         "mcp_configured": mcp_configured,
         "mcp_enabled": mcp_enabled,
+        "mcp_expected_enabled": mcp_expected_enabled,
         "plugin_installed": plugin_installed,
         "plugin_enabled": plugin_enabled,
         "verified": verified,
@@ -698,7 +713,11 @@ def disposition_for(artifacts: list[dict[str, Any]]) -> str:
     if len(kinds) > 1:
         return "installed-mixed-runtime"
     if "mcp" in kinds:
-        return "configured-disabled-mcp"
+        return (
+            "configured-enabled-mcp"
+            if any(item.get("mcp_expected_enabled") is True for item in artifacts)
+            else "configured-disabled-mcp"
+        )
     if "plugin" in kinds:
         return (
             "registered-plugin"
@@ -713,7 +732,9 @@ def disposition_for(artifacts: list[dict[str, Any]]) -> str:
 def build_assurance() -> dict[str, Any]:
     targets = load_json(INTEGRATION_TARGETS).get("items", [])
     records = load_json(ALL_RECORDS).get("records", [])
-    mcp_servers = load_json(SOURCE_FILES["mcp_registry"]).get("servers", {})
+    mcp_registry = load_json(SOURCE_FILES["mcp_registry"])
+    enabled_candidate_mcps = candidate_mcp_enabled_set(mcp_registry)
+    mcp_servers = mcp_registry.get("servers", {})
     plugins = plugin_inventory()
     if not isinstance(targets, list) or not isinstance(records, list) or not isinstance(mcp_servers, dict):
         raise ValueError("candidate inputs have invalid collection shapes")
@@ -733,7 +754,9 @@ def build_assurance() -> dict[str, Any]:
         key = url.lower()
         artifact_types = sorted(record_types.get(key, set()))
         hard_blocked = bool(target.get("hard_blocked"))
-        artifacts = [evaluate_artifact(spec, mcp_servers, plugins) for spec in RUNTIME_SPECS.get(key, [])]
+        artifacts = [
+            evaluate_artifact(spec, mcp_servers, enabled_candidate_mcps, plugins) for spec in RUNTIME_SPECS.get(key, [])
+        ]
         if hard_blocked:
             disposition = "hard-quarantined"
             reason = "Hard quarantine prohibits installation and activation."
@@ -815,14 +838,17 @@ def build_assurance() -> dict[str, Any]:
         },
         "failed_artifacts": failed_artifacts,
         "notes": (
-            "This machine-local evidence records package paths, bounded smoke probes, disabled MCP registrations, "
-            "plugin activation state, and terminal non-runtime dispositions without storing credential values."
+            "This machine-local evidence records package paths, bounded smoke probes, the exact enabled/disabled "
+            "candidate MCP partition, plugin activation state, and terminal non-runtime dispositions without "
+            "storing credential values."
         ),
     }
 
 
 def validation_errors(payload: dict[str, Any]) -> list[str]:
     errors: list[str] = []
+    enabled_candidate_mcps = candidate_mcp_enabled_set(load_json(SOURCE_FILES["mcp_registry"]))
+    observed_candidate_mcps: list[str] = []
     items = payload.get("items", [])
     if not isinstance(items, list) or len(items) != EXPECTED_UNIQUE_TARGETS:
         errors.append("non-skill assurance must contain 289 item rows")
@@ -860,8 +886,19 @@ def validation_errors(payload: dict[str, Any]) -> list[str]:
             for path in artifact.get("resolved_paths", []):
                 if str(path).startswith("/") or "/Users/" in str(path):
                     errors.append(f"absolute home path leaked for {item.get('normalized_url')}")
-            if artifact.get("kind") == "mcp" and artifact.get("mcp_enabled") is not False:
-                errors.append(f"candidate MCP is not disabled for {item.get('normalized_url')}")
+            if artifact.get("kind") == "mcp":
+                mcp_name = str(artifact.get("mcp_server") or "")
+                observed_candidate_mcps.append(mcp_name)
+                expected_enabled = mcp_name in enabled_candidate_mcps
+                if artifact.get("mcp_expected_enabled") is not expected_enabled:
+                    errors.append(f"candidate MCP expected state is stale for {item.get('normalized_url')}")
+                if artifact.get("mcp_enabled") is not expected_enabled:
+                    errors.append(f"candidate MCP enabled state is stale for {item.get('normalized_url')}")
+    if (
+        len(observed_candidate_mcps) != len(CANDIDATE_MCP_SERVERS)
+        or set(observed_candidate_mcps) != CANDIDATE_MCP_SERVERS
+    ):
+        errors.append("candidate MCP assurance must contain the exact 17-server inventory")
     if payload.get("complete") is not True:
         errors.append("non-skill assurance is not complete")
     return errors

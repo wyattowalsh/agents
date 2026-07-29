@@ -81,18 +81,18 @@
     {
       "date": "2026-07-29",
       "orphan_count": 0,
-      "total_internal_links": 4499,
-      "total_pages": 2291
+      "total_internal_links": 4490,
+      "total_pages": 2288
     }
   ],
   "latest": {
     "most_linked_pages": [
       {
-        "backlinks": 1910,
+        "backlinks": 1907,
         "slug": "/cli"
       },
       {
-        "backlinks": 1840,
+        "backlinks": 1837,
         "slug": "/skills/catalog"
       },
       {
@@ -151,7 +151,7 @@
     "note": "Counts static absolute-path markdown and MDX/HTML href links only (paths like /foo/); relative links, generated sidebars, and client-created links are not resolved.",
     "orphan_count": 0,
     "orphan_pages": [],
-    "total_internal_links": 4499,
-    "total_pages": 2291
+    "total_internal_links": 4490,
+    "total_pages": 2288
   }
 }

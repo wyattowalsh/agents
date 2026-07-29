@@ -1,5 +1,12 @@
 {
   "mcpServers": {
+    "mcphub_group_candidate-corpus": {
+      "type": "http",
+      "url": "http://127.0.0.1:46683/mcp/candidate-corpus",
+      "headers": {
+        "Authorization": "Bearer ${env:MCPHUB_BEARER_TOKEN}"
+      }
+    },
     "mcphub_group_harness": {
       "type": "http",
       "url": "http://127.0.0.1:46683/mcp/harness",

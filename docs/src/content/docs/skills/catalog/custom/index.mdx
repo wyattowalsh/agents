@@ -21,9 +21,9 @@ Every card here corresponds to one tracked `skills/<name>/SKILL.md` file.
 </Aside>
 
 <div class="stats-bar">
-  <span class="stat stat-skill">70 Custom Skills</span>
+  <span class="stat stat-skill">67 Custom Skills</span>
   <span class="stat stat-installed">63 User-Invocable</span>
-  <span class="stat stat-agent">7 Convention Skills</span>
+  <span class="stat stat-agent">4 Convention Skills</span>
 </div>
 
 <CatalogSkillFilter />
@@ -94,7 +94,7 @@ Every card here corresponds to one tracked `skills/<name>/SKILL.md` file.
   <LinkCard title="skill-eval-scaffolder" href="/skills/catalog/custom/skill-eval-scaffolder/" description="Scaffold evals/evals.json manifests for repo skills with baseline cases. Use when adding behavioral eval coverage. NOT for live LLM eval execution." />
   <LinkCard title="skill-install-dry-run-planner" href="/skills/catalog/custom/skill-install-dry-run-planner/" description="Plan cross-harness skills sync dry-run steps before any live install. Use when reconciling harness skill inventory. NOT for --apply or npx installs." />
   <LinkCard title="skill-lifecycle-manager" href="/skills/catalog/custom/skill-lifecycle-manager/" description="Report skill lifecycle stage from frontmatter, eval coverage, and validators. Use when promoting, deprecating, or auditing repo skills. NOT for live installs." />
-  <LinkCard title="skill-package-manifest-enricher" href="/skills/catalog/custom/skill-package-manifest-enricher/" description="Enrich portable skill ZIP manifests with compatibility and eval metadata. Use before packaging or catalog promotion. NOT for live installs." />
+  <LinkCard title="skill-package-manifest-enricher" href="/skills/catalog/custom/skill-package-manifest-enricher/" description="Generates manifest sidecars from safe YAML and catalog/sync evidence. Use when enriching metadata before package validation." />
   <LinkCard title="skill-quality-dashboard" href="/skills/catalog/custom/skill-quality-dashboard/" description="Aggregate generated maintainer reports into a skill-quality summary. Use when reviewing docs, link, and eval health. NOT for editing report sources." />
   <LinkCard title="skill-router" href="/skills/catalog/custom/skill-router/" description="Route tasks to local skills. Use when choosing skills, recovering omitted skills after context warnings, or preparing a small skill context packet." />
   <LinkCard title="skill-tag-taxonomist" href="/skills/catalog/custom/skill-tag-taxonomist/" description="Infer and audit skill tags from names, descriptions, and catalog authoring rows. Use when organizing catalog taxonomies. NOT for live catalog index edits." />
@@ -109,7 +109,7 @@ Every card here corresponds to one tracked `skills/<name>/SKILL.md` file.
 </CardGrid>
 </div>
 
-## Convention Skills (7)
+## Convention Skills (4)
 
 <Badge text="Auto-invoked" variant="caution" /> The agent loads these automatically when repo context matches. They stay out of the `/` menu.
 
@@ -119,9 +119,6 @@ Every card here corresponds to one tracked `skills/<name>/SKILL.md` file.
   <LinkCard title="javascript-conventions" href="/skills/catalog/custom/javascript-conventions/" description="Configure and validate JS/TS tooling conventions. Enforce pnpm, TypeScript, ESLint, and Prettier defaults. Use when working on JS/TS files or package.json." />
   <LinkCard title="python-conventions" href="/skills/catalog/custom/python-conventions/" description="Enforce Python tooling conventions for uv, ty, Ruff, pytest, and pyproject.toml. Use when working on .py files or Python project config." />
   <LinkCard title="shell-conventions" href="/skills/catalog/custom/shell-conventions/" description="Apply and review shell tooling conventions. Enforce portable bash and sh practices, quoting, env usage, and Make or just patterns. Use when editing shell files." />
-  <LinkCard title="skill-localization-packager" href="/skills/catalog/custom/skill-localization-packager/" description="Scaffold for packaging localized skill variants (planned). Use when designing i18n skill bundles. NOT for live catalog edits." />
-  <LinkCard title="skill-registry-lock" href="/skills/catalog/custom/skill-registry-lock/" description="Scaffold for pinning curated skill registry lockfiles (planned). Use when designing reproducible sync locks. NOT for live --apply sync." />
-  <LinkCard title="skill-signing-verifier" href="/skills/catalog/custom/skill-signing-verifier/" description="Scaffold for verifying skill package signatures and provenance (planned). Use when designing supply-chain checks. NOT for live signing or key management." />
 </CardGrid>
 </div>
 
