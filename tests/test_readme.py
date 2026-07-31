@@ -130,3 +130,5 @@ def test_readme_empty_repo_produces_valid_output(tmp_repo):
     assert "## 🤝 Contributing" in readme_text
     assert "## 📚 Documentation" in readme_text
     assert "## 📜 License" in readme_text
+    # Soft assert: Development table documents just typecheck (config-driven ty).
+    assert "just typecheck" in readme_text or "ty check" in readme_text
