@@ -231,7 +231,7 @@ CODE_CONTEXT_RE = re.compile(
     r"(?i)(`[^`]+`|(?:^|\s)[\w./-]+\.(?:py|json|toml|md|yaml|yml|js|jsx|ts|tsx|sh|rs|go|rb|java|kt|swift|lock)\b|\b(code|repo|repository|file|files|path|paths|diff|hook|hooks|config|script|test|tests|docs?|readme|openspec|registry|lockfile)\b)"
 )
 VALIDATION_EVIDENCE_RE = re.compile(
-    r"(?i)\b(test(?:ed|s)?|pytest|unittest|vitest|npm\s+test|pnpm\s+test|uv\s+run|validate(?:d|ion)?|lint(?:ed)?|typecheck|mypy|ruff|py_compile|build|git\s+diff\s+--check|not\s+run|not\s+executed|could\s+not\s+run|couldn't\s+run|unable\s+to\s+run|skipped)\b"
+    r"(?i)\b(test(?:ed|s)?|pytest|unittest|vitest|npm\s+test|pnpm\s+test|uv\s+run|validate(?:d|ion)?|lint(?:ed)?|typecheck|mypy|ty|ruff|py_compile|build|git\s+diff\s+--check|not\s+run|not\s+executed|could\s+not\s+run|couldn't\s+run|unable\s+to\s+run|skipped)\b"
 )
 TRUTH_GATE_SKIP_RE = re.compile(
     r"(?i)\b(blocked|not\s+complete|not\s+completed|unable\s+to\s+complete|no\s+code\s+changes)\b"

@@ -2990,7 +2990,7 @@ def readme(
         ),
         "| `wagents skills search <query>` | Search local repo, installed, and plugin skills on demand |",
         "| `wagents skills context <query>` | Build a compact context packet for matching skills |",
-        "| `just typecheck` | Run ty across `wagents/` and `scripts/` |",
+        "| `just typecheck` | Run config-driven / gated ty check (`[tool.ty.src]`) |",
         "| `wagents readme` | Regenerate this README |",
         "| `wagents package <name>` | Package a skill into portable ZIP |",
         "| `wagents package --all` | Package all skills |",

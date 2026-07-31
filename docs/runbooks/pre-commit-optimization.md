@@ -8,7 +8,7 @@ pay for the full validation matrix on every commit.
 
 | Scope | Files | Typical hooks |
 |-------|-------|----------------|
-| Python source | `wagents/**/*.py`, `scripts/**/*.py`, `mcp/**/*.py` | `ruff check`, `ruff format --check`, `ty check` |
+| Python source | Gated by `[tool.ruff].include` / `[tool.ty.src]` in `pyproject.toml` (`wagents/`, `scripts/`, `tests/`, `skills/nerdbot`, and among MCP only `mcp/source-url-health`) | `ruff check`, `ruff format --check`, `ty check` |
 | Skills / agents | `skills/**`, `agents/**` | `wagents validate`, frontmatter/eval checks |
 | Docs | `docs/**`, `*.mdx` | `wagents docs lint`, link checks (no full Astro build locally) |
 | Config / registries | `config/*.json`, `openspec/**` | JSON schema checks, `wagents openspec validate` |
@@ -24,7 +24,7 @@ pay for the full validation matrix on every commit.
 
 **Slow (skip on unrelated paths, run explicitly or in CI):**
 
-- `uv run ty check` (whole-repo type check)
+- `uv run ty check` (config-driven / gated ty check)
 - `uv run wagents docs build` (full Astro build + Playwright smoke)
 - `actionlint` (only meaningful when `.github/workflows/*.yml` changed)
 - `SKILL_PORTABLE_CI=1 uv run pytest tests/test_skill_portability.py ...` (packaging matrix)

@@ -91,6 +91,20 @@ def test_pyproject_declares_ruff_and_ty_scope() -> None:
     assert '"tests"' in text or "'tests'" in text
 
 
+def test_pyproject_has_no_mypy_dependency_or_tool_block() -> None:
+    text = _read(ROOT / "pyproject.toml")
+    assert "[tool.mypy]" not in text
+    dep_groups = text.split("[dependency-groups]", 1)[1].split("\n[", 1)[0]
+    assert "mypy" not in dep_groups
+
+
+def test_agents_and_claude_document_ty_check() -> None:
+    agents = _read(ROOT / "AGENTS.md")
+    claude = _read(ROOT / "CLAUDE.md")
+    assert "uv run ty check" in agents
+    assert "uv run ty check" in claude
+
+
 def test_doctor_reports_python_tooling_checks() -> None:
     from typer.testing import CliRunner
 

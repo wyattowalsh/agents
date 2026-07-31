@@ -279,6 +279,10 @@ wagents new mcp <name>              # → mcp/<name>/ (server.py + pyproject.tom
 wagents validate             # Checks frontmatter of all skills and agents
 wagents hooks validate --harness all   # Per-harness hook projection checks
 
+# Python quality (config-driven; gated scope in pyproject.toml)
+uv run ruff check            # Lint gated sources ([tool.ruff].include)
+uv run ty check              # Type-check gated sources ([tool.ty.src]); or: just typecheck
+
 # Sync harness projections (instructions, hooks, MCP mirrors)
 uv run python scripts/sync_agent_stack.py --apply --targets repo
 
@@ -349,7 +353,7 @@ Docs-facing authority follows the same pattern: keep repo policy and workflow tr
 | `instructions/global.md` | Canonical cross-platform instructions | Hand-authored SSOT | Entrypoint for bridges that support `@` imports |
 | `instructions/*-global.md` | Platform overlays | Hand-authored; `@./instructions/global.md` where supported | `scripts/sync_agent_stack.py` for generated mirrors |
 | `.claude/rules/*.md` | Claude Code scoped rules (global + platform + path rules) | Hand-authored copies composed for Claude's rule loader | Not generated |
-| `.cursor/rules/*.mdc` | Cursor scoped rules (incl. always-on `cursor-models.mdc` pin) | Hand-authored (independent from `.claude/rules/`) | Home sync allowlists `cursor-models.mdc` to `~/.cursor/rules/` (orphans preserved); managed-marker agents to `~/.cursor/agents/` |
+| `.cursor/rules/*.mdc` | Cursor scoped rules (incl. always-on `cursor-models.mdc` pin) | Hand-authored (independent from `.claude/rules/`) | Home sync allowlists `cursor-models.mdc` and `python-quality.mdc` to `~/.cursor/rules/` (orphans preserved); managed-marker agents to `~/.cursor/agents/` |
 | `.apm/instructions/*.instructions.md` | Microsoft APM instruction primitives | Generated from `instructions/` + path-scoped `.claude/rules/` | `uv run wagents apm materialize` |
 
 Claude's `.claude/rules/` tree intentionally duplicates `instructions/global.md` and platform overlays without `@` imports because Claude composes scoped rules natively. Keep path-scoped rules (`agents/*.md`, `skills/*/SKILL.md`, `docs/**`, `**/*.py`, etc.) synchronized when editing shared policy. Cursor rules use a separate `.mdc` schema and content set; do not assume parity with `.claude/rules/`. Cursor model pin: canonical slug `cursor-grok-4.5-high` — always pass Task `model`; soft rule `.cursor/rules/cursor-models.mdc` (home-sync allowlisted; quotes layer matrix SSOT) plus hard Task rewrite and subagentStart allowlist (Phase B allows omit; soft rule bans omit). Operators SHOULD set user-owned local CLI `exploreSubagentModel=inherit`; IDE picker owns the parent model; sync SHALL NOT write `cli-config` or live `state.vscdb`.

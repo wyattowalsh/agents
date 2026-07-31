@@ -1219,6 +1219,26 @@ def test_codex_stop_truth_gate_allows_explicit_validation_status(monkeypatch, tm
     assert stderr == ""
 
 
+def test_codex_stop_truth_gate_allows_bare_ty_check(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "Stop",
+            "last_assistant_message": (
+                "Implemented the hook changes in hooks/wagents-hook.py.\n\nValidation: ty check"
+            ),
+        },
+        ["codex-stop-truth-gate", "--harness", "codex"],
+    )
+
+    assert code == 0
+    assert stdout == ""
+    assert stderr == ""
+
+
 def test_codex_stop_truth_gate_allows_generic_non_code_addition(monkeypatch, tmp_path):
     monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
 
