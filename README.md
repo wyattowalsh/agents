@@ -159,7 +159,7 @@ System prompts and context definitions for AI agents.
 
 ## 🔌 MCP Servers
 
-First-party MCP servers authored in this repository (see `AGENTS.md` §2). Curated external servers are configured in `config/mcp-registry.json` and rendered into MCPHub settings; disabled entries remain unavailable until explicit enablement and group assignment.
+First-party MCP servers authored in this repository (see `AGENTS.md` §2). Curated external servers are configured in `config/mcp-registry.json` and exposed via MCPHub.
 
 | Name | Description |
 | ---- | ----------- |
@@ -213,23 +213,19 @@ First-party MCP servers authored in this repository (see `AGENTS.md` §2). Curat
 
 Third-party skill collections can be installed directly with `npx skills add <source> --skill <name> -y -g --agent <agent>`. Repeat `--skill` and `--agent` to target a curated subset.
 
-## 🤝 Managed Agent Families
+## 🤝 Supported Agents
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — Anthropic's official CLI for Claude.
-- [Codex](https://github.com/openai/codex) — Autonomous coding workflows for command-line development.
-- [Crush](https://github.com/charmbracelet/crush) — Autonomous development agent focused on fast terminal workflows.
-- [Cursor](https://cursor.com/) — The AI Code Editor.
-- [Grok Build](https://x.ai/cli) — xAI's agentic coding CLI with skills, MCP, and Claude Code compatibility.
-- [OpenCode](https://github.com/anomalyco/opencode) — Native AGENTS.md support plus repo-level OpenCode config and subagents.
-
-## 🔌 Additional Integration Surfaces
-
-- [Cherry Studio](https://www.cherry-ai.com/) — `mcp-only`: MCPHub registry and generated import pack; not a managed agent family.
-- [Claude Desktop](https://claude.ai/download) — `mcp-only`: Managed MCP configuration client; not a managed agent family.
-- [ChatGPT](https://chatgpt.com/) — `connector`: Remote MCP connector surface; not a managed agent family.
-- [LM Studio](https://lmstudio.ai/) — `hybrid`: MCP plus managed instruction and agent presets, with an optional skill mirror.
-
-Other [agentskills.io](https://agentskills.io)-compatible agents may consume portable skills, but they are not counted as managed families.
+- [Antigravity](https://antigravity.google/)
+- [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview)
+- [Codex](https://github.com/openai/codex)
+- [Crush](https://github.com/crush-ai/crush)
+- [Cursor](https://cursor.sh/)
+- [Gemini CLI](https://github.com/google/gemini-cli)
+- [GitHub Copilot](https://github.com/features/copilot)
+- [Grok Build](https://x.ai/)
+- [OpenCode](https://github.com/anomalyco/opencode) — native AGENTS.md support with repo-level config
+- [Cherry Studio](https://www.cherry-ai.com/) — MCP-only via MCPHub registry
+And other [agentskills.io](https://agentskills.io)-compatible agents.
 
 ## 📚 Documentation
 

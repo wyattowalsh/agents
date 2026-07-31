@@ -2012,7 +2012,6 @@
         ],
         "included_groups": [
           "harness",
-          "candidate-corpus",
           "nlm"
         ],
         "enabled_endpoint_kinds": [
@@ -2020,7 +2019,6 @@
         ],
         "enabled_groups": [
           "harness",
-          "candidate-corpus",
           "nlm"
         ],
         "enable_server_endpoints": true
@@ -2034,7 +2032,6 @@
         ],
         "included_groups": [
           "harness",
-          "candidate-corpus",
           "nlm"
         ],
         "enabled_endpoint_kinds": [
@@ -2042,7 +2039,6 @@
         ],
         "enabled_groups": [
           "harness",
-          "candidate-corpus",
           "nlm"
         ],
         "enable_server_endpoints": true
@@ -2056,7 +2052,6 @@
         ],
         "included_groups": [
           "harness",
-          "candidate-corpus",
           "nlm"
         ],
         "enabled_endpoint_kinds": [
@@ -2064,7 +2059,6 @@
         ],
         "enabled_groups": [
           "harness",
-          "candidate-corpus",
           "nlm"
         ],
         "enable_server_endpoints": true
@@ -2078,7 +2072,6 @@
         ],
         "included_groups": [
           "harness",
-          "candidate-corpus",
           "nlm"
         ],
         "enabled_endpoint_kinds": [
@@ -2086,7 +2079,6 @@
         ],
         "enabled_groups": [
           "harness",
-          "candidate-corpus",
           "nlm"
         ],
         "enable_server_endpoints": true,
