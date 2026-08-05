@@ -13,7 +13,7 @@ from typing import Annotated, Any, cast
 
 import typer
 
-from wagents import ROOT, VERSION
+from wagents import KEBAB_CASE_PATTERN, ROOT, VERSION
 from wagents.catalog import CatalogNode
 from wagents.commands.validate import register_validate_commands, validate_name
 from wagents.context import (
@@ -23,7 +23,7 @@ from wagents.context import (
     get_repo_root,
     get_repo_root_optional,
 )
-from wagents.docs import docs_app, regenerate_sidebar_and_indexes
+from wagents.docs import regenerate_sidebar_and_indexes, web_app
 
 # Eval adequacy (structural E3/E4 grader)
 from wagents.eval_adequacy import (
@@ -31,7 +31,15 @@ from wagents.eval_adequacy import (
     build_adequacy_report,
     filter_high_risk,
 )
-from wagents.external_skills import ExternalSkillCatalogError, ExternalSkillEntry, read_external_skill_entries
+from wagents.external_skills import (
+    ExternalSkillCatalogError,
+    ExternalSkillEntry,
+    install_source_spec_has_pin,
+    is_valid_install_skill_name,
+    normalize_install_skill_name,
+    read_external_skill_entries,
+    sync_apply_pin_satisfied,
+)
 from wagents.installed_inventory import (
     InstalledSkillInventoryRow,
     build_skill_cleanup_report,
@@ -65,19 +73,17 @@ from wagents.plugins import load_command_plugins
 from wagents.rendering import scaffold_doc_page
 from wagents.self_cmd import self_app
 from wagents.site_model import (
+    ADDITIONAL_INTEGRATION_SURFACES,
     REPO_SOURCE,
     SUPPORTED_AGENT_IDS,
     VISUAL_ASSET_BY_ID,
     build_install_command,
     docs_asset_repo_path,
 )
-from wagents.skill_coverage import evaluate_skill_presence
-from wagents.external_skills import (
-    ExternalSkillCatalogError,
-    ExternalSkillEntry,
-    read_external_skill_entries,
-    sync_apply_pin_satisfied,
+from wagents.site_model import (
+    SUPPORTED_AGENTS as MANAGED_AGENT_DEFINITIONS,
 )
+from wagents.skill_coverage import evaluate_skill_presence
 from wagents.telemetry import begin_command_telemetry, doctor_telemetry_check, end_command_telemetry
 
 
@@ -141,7 +147,7 @@ app = typer.Typer(
 )
 new_app = typer.Typer(help="Create new assets from reference templates")
 app.add_typer(new_app, name="new")
-app.add_typer(docs_app, name="docs")
+app.add_typer(web_app, name="web")
 hooks_app = typer.Typer(help="Manage hooks across skills and agents")
 app.add_typer(hooks_app, name="hooks")
 media_app = typer.Typer(help="Optimize model-bound media inputs")
@@ -164,9 +170,7 @@ rtk_app = typer.Typer(help="Diagnose and sync RTK token-saving hooks")
 app.add_typer(rtk_app, name="rtk")
 app.add_typer(self_app, name="self")
 
-apm_app = typer.Typer(
-    help="APM (Microsoft Agent Package Manager) facade: materialize .apm/, doctor, refresh-lock"
-)
+apm_app = typer.Typer(help="APM (Microsoft Agent Package Manager) facade: materialize .apm/, doctor, refresh-lock")
 app.add_typer(apm_app, name="apm")
 register_validate_commands(app)
 
@@ -215,8 +219,6 @@ SKILL_SOURCES = (
     "codex",
     "global",
     "claude-code",
-    "gemini-cli",
-    "github-copilot",
     "opencode",
     "plugin",
 )
@@ -1262,7 +1264,12 @@ def _command_text(argv: list[str]) -> str:
 
 
 def _skills_cli_install_spec(row: InstalledSkillInventoryRow) -> dict[str, object] | None:
-    """Parse a row's audited Skills CLI install command into grouped command parts."""
+    """Parse a row's audited Skills CLI install command into safe command parts.
+
+    Sync never replays arbitrary catalog arguments. Only the exact Skills CLI
+    prefix, safe selectors, managed agent identifiers, and the non-interactive
+    global-install flags are accepted.
+    """
     if not row.is_syncable() or not row.install_command:
         return None
     try:
@@ -1273,29 +1280,65 @@ def _skills_cli_install_spec(row: InstalledSkillInventoryRow) -> dict[str, objec
         return None
 
     source = parts[3]
+    if not source or source.startswith("-"):
+        return None
+    if row.install_source and _canonical_sync_install_source(row.install_source) != _canonical_sync_install_source(
+        source
+    ):
+        return None
+    if not _valid_sync_skill_name(row.name):
+        return None
+    if row.install_skill_name and not is_valid_install_skill_name(row.install_skill_name):
+        return None
+
     skills: list[str] = []
     passthrough: list[str] = []
     idx = 4
     while idx < len(parts):
         part = parts[idx]
-        if part == "--skill" and idx + 1 < len(parts):
-            skills.append(parts[idx + 1])
+        if part == "--skill":
+            if idx + 1 >= len(parts):
+                return None
+            selector = parts[idx + 1]
+            if selector != "*" and not _valid_sync_selector(selector):
+                return None
+            skills.append(selector)
             idx += 2
             continue
         if part in {"-a", "--agent"}:
             idx += 1
+            agent_count = 0
             while idx < len(parts) and not parts[idx].startswith("-"):
+                if parts[idx] not in SUPPORTED_AGENT_IDS:
+                    return None
+                agent_count += 1
                 idx += 1
+            if not agent_count:
+                return None
             continue
-        passthrough.append(part)
-        idx += 1
+        if part in {"-y", "--yes", "-g", "--global"}:
+            passthrough.append(part)
+            idx += 1
+            continue
+        # Reject operands, compact flags, --flag=value forms, and all unknown
+        # options instead of replaying them during apply.
+        return None
 
     if row.selector_mode == "source-spec":
-        skills = []
-    elif row.selector_mode == "wildcard" and not skills:
-        skills = ["*"]
-    elif row.selector_mode == "named" and not skills:
-        skills = [row.name]
+        if skills:
+            return None
+    elif row.selector_mode == "wildcard":
+        if not skills:
+            skills = ["*"]
+        if skills != ["*"]:
+            return None
+    elif row.selector_mode == "named":
+        if not skills or "*" in skills:
+            return None
+    else:
+        return None
+    if row.install_skill_name and row.install_skill_name not in skills:
+        return None
 
     return {
         "source": source,
@@ -1303,6 +1346,21 @@ def _skills_cli_install_spec(row: InstalledSkillInventoryRow) -> dict[str, objec
         "skills": tuple(skills),
         "passthrough": tuple(passthrough),
     }
+
+
+def _valid_sync_skill_name(name: str) -> bool:
+    """Return whether *name* is a safe portable skill identifier."""
+    return bool(name and len(name) <= 64 and KEBAB_CASE_PATTERN.fullmatch(name))
+
+
+def _valid_sync_selector(selector: str) -> bool:
+    """Return whether a logical selector contains only kebab-safe segments."""
+    return is_valid_install_skill_name(selector)
+
+
+def _canonical_sync_install_source(source: str) -> str:
+    """Normalize equivalent GitHub source spelling while preserving any @ref."""
+    return str(source or "").strip().removeprefix("github:")
 
 
 def _sync_command_groups(rows: list[InstalledSkillInventoryRow], agent_id: str) -> list[dict[str, object]]:
@@ -1370,6 +1428,7 @@ SYNC_BUCKET_KEYS = (
     "projection_ensure",
     "projection_blocked",
     "store_missing",
+    "pin_blocked",
     "internal_projection",
     "skipped",
 )
@@ -1378,6 +1437,64 @@ SYNC_SAMPLE_LIMIT = 5
 
 def _empty_sync_buckets() -> dict[str, list[InstalledSkillInventoryRow]]:
     return {key: [] for key in SYNC_BUCKET_KEYS}
+
+
+def _sync_row_install_names(row: InstalledSkillInventoryRow) -> set[str]:
+    """Return only catalog and explicitly declared upstream identity names."""
+    names = {row.name}
+    spec = _skills_cli_install_spec(row)
+    if spec is None:
+        return names
+    if row.install_skill_name and row.install_skill_name in cast("tuple[str, ...]", spec["skills"]):
+        names.add(row.install_skill_name)
+    return {name for name in names if name}
+
+
+def _sync_row_projection_name(row: InstalledSkillInventoryRow) -> str:
+    """Return the catalog-owned name used for store/projection filesystem paths."""
+    return row.name
+
+
+def _sync_install_creates_catalog_store(row: InstalledSkillInventoryRow) -> bool:
+    """Return whether the audited install selects the catalog-owned store name."""
+    spec = _skills_cli_install_spec(row)
+    if spec is None:
+        return False
+    selector_mode = cast("str", spec["selector_mode"])
+    if selector_mode == "source-spec":
+        return True
+    if selector_mode == "wildcard":
+        return False
+    selectors = cast("tuple[str, ...]", spec["skills"])
+    if row.name in selectors:
+        return True
+    return _sync_declared_alias_creates_catalog_store(row, selectors)
+
+
+def _sync_declared_alias_creates_catalog_store(
+    row: InstalledSkillInventoryRow,
+    selectors: tuple[str, ...] | None = None,
+) -> bool:
+    """Return whether explicit alias metadata proves the normalized store name."""
+    spec = _skills_cli_install_spec(row)
+    if spec is None:
+        return False
+    parsed_selectors = selectors or cast("tuple[str, ...]", spec["skills"])
+    alias = row.install_skill_name
+    return bool(alias and alias in parsed_selectors and normalize_install_skill_name(alias) == row.name)
+
+
+def _rows_share_install_source(left: InstalledSkillInventoryRow, right: InstalledSkillInventoryRow) -> bool:
+    """Return true when alias rows have immutable, revision-bound source evidence."""
+    left_spec = _skills_cli_install_spec(left)
+    right_spec = _skills_cli_install_spec(right)
+    if left_spec is None or right_spec is None:
+        return False
+    left_source = _canonical_sync_install_source(cast("str", left_spec["source"]))
+    right_source = _canonical_sync_install_source(cast("str", right_spec["source"]))
+    if not left_source or left_source != right_source:
+        return False
+    return install_source_spec_has_pin(left_source)
 
 
 def sync_row_installed_agents(
@@ -1398,13 +1515,12 @@ def sync_row_installed_agents(
     return tuple(sorted(installed_agents))
 
 
-
 def _partition_missing_for_pin_gate(
     missing: list[InstalledSkillInventoryRow],
     *,
     accept_floating: bool,
 ) -> tuple[list[InstalledSkillInventoryRow], list[InstalledSkillInventoryRow]]:
-    """Split install-now curated rows that lack pin/audited-head evidence."""
+    """Split install-now curated rows whose command lacks an explicit @ref."""
     if accept_floating:
         return missing, []
     allowed: list[InstalledSkillInventoryRow] = []
@@ -1442,9 +1558,9 @@ def apply_dry_run_pin_gate(
     return report
 
 
-
 def _classify_cursor_sync_row(
     row: InstalledSkillInventoryRow,
+    all_rows: tuple[InstalledSkillInventoryRow, ...],
     *,
     home: Path,
     preferred_non_cli: bool,
@@ -1459,15 +1575,74 @@ def _classify_cursor_sync_row(
     if preferred_non_cli:
         return "already_present"
 
-    presence = evaluate_skill_presence(row.name, "cursor", home=home)
+    projection_name = _sync_row_projection_name(row)
+    presence = evaluate_skill_presence(projection_name, "cursor", home=home)
+
+    # Prefer-store curated aliases: Skills CLI selector may not create the
+    # catalog store name (install_skill_name != row.name), but the catalog path
+    # may already be correct on disk. Validate against catalog identity
+    # (row.name), not the upstream selector, then short-circuit only when the
+    # store is absent or ensure reports a hard block.
+    if row.is_verified_curated() and not _sync_install_creates_catalog_store(row):
+        if presence.store_present:
+            prefer_store_ensure = ensure_cursor_authoritative_links(
+                names=[projection_name],
+                home=home,
+                expected_skill_names={projection_name: row.name},
+                dry_run=True,
+            )
+            if prefer_store_ensure.already_correct and presence.projection_present:
+                return "already_present"
+            if prefer_store_ensure.blocked:
+                return "projection_blocked"
+            if prefer_store_ensure.created or prefer_store_ensure.repaired or not presence.projection_present:
+                return "projection_ensure"
+        # No catalog store (or ensure no-op without coverage): do not invent an
+        # install of a differently named upstream skill onto this path.
+        return "projection_blocked"
     if presence.projection_present and not presence.store_present:
         # Home projection without store — preserve; do not plan Skills CLI install.
         return "internal_projection"
+    if presence.store_present and row.is_verified_curated() and not sync_row_installed_agents(row, all_rows):
+        # When store + projection already match the catalog/install identity,
+        # treat as covered. Do not force reinstall or block solely for missing
+        # source-qualified installed_agents (opsx:tdd / prefer-store DRW cases).
+        ensure_probe = ensure_cursor_authoritative_links(
+            names=[projection_name],
+            home=home,
+            expected_skill_names={projection_name: row.install_skill_name or row.name},
+            dry_run=True,
+        )
+        if ensure_probe.already_correct and presence.projection_present:
+            return "already_present"
+        if ensure_probe.blocked:
+            return "projection_blocked"
+        if ensure_probe.skipped_missing_store:
+            return "store_missing"
+        # Prefer pinned reinstall for unqualified store coverage before projecting.
+        # Path alone is untrusted without source-qualified installed_agents.
+        spec = _skills_cli_install_spec(row)
+        source = cast("str", spec["source"]) if spec is not None else ""
+        if _sync_declared_alias_creates_catalog_store(row) and install_source_spec_has_pin(source):
+            return "store_missing"
+        if ensure_probe.created or ensure_probe.repaired or not presence.projection_present:
+            return "projection_ensure"
+        return "projection_blocked"
     if not presence.store_present:
+        # A catalog alias may intentionally select a differently named upstream
+        # skill. Skills CLI would populate that upstream name, not the
+        # catalog-owned Cursor path, so never reinstall/project it implicitly.
+        if not _sync_install_creates_catalog_store(row):
+            return "projection_blocked"
         return "store_missing"
 
     # Store present: use ensure dry-run to distinguish covered vs ensure vs blocked.
-    ensure_report = ensure_cursor_authoritative_links(names=[row.name], home=home, dry_run=True)
+    ensure_report = ensure_cursor_authoritative_links(
+        names=[projection_name],
+        home=home,
+        expected_skill_names={projection_name: row.install_skill_name or row.name},
+        dry_run=True,
+    )
     if ensure_report.blocked:
         return "projection_blocked"
     if ensure_report.skipped_missing_store:
@@ -1482,14 +1657,20 @@ def _classify_cursor_sync_row(
 def _classify_harness_sync_row(
     row: InstalledSkillInventoryRow,
     agent_id: str,
+    all_rows: tuple[InstalledSkillInventoryRow, ...],
     *,
     home: Path,
 ) -> str:
     """Return the sync bucket for one row on one harness."""
     preferred_non_cli = _repo_skill_covered_by_non_cli_owner(row, agent_id)
     if agent_id == "cursor":
-        return _classify_cursor_sync_row(row, home=home, preferred_non_cli=preferred_non_cli)
-    if preferred_non_cli or agent_id in row.installed_agents:
+        return _classify_cursor_sync_row(
+            row,
+            all_rows,
+            home=home,
+            preferred_non_cli=preferred_non_cli,
+        )
+    if preferred_non_cli or agent_id in sync_row_installed_agents(row, all_rows):
         return "already_present"
     return "store_missing"
 
@@ -1513,6 +1694,7 @@ def _build_sync_report(
     target_agents: tuple[str, ...],
     *,
     include_installed: bool,
+    accept_floating: bool = False,
     external_entries: list[ExternalSkillEntry] | None = None,
     home: Path | None = None,
 ) -> dict[str, object]:
@@ -1552,6 +1734,7 @@ def _build_sync_report(
 
         buckets = _empty_sync_buckets()
         unresolved: list[InstalledSkillInventoryRow] = []
+        invalid_install_specs: list[InstalledSkillInventoryRow] = []
 
         for row in verified_rows:
             if not row.is_syncable():
@@ -1560,7 +1743,11 @@ def _build_sync_report(
             if not _row_targets_agent(row, agent_id):
                 buckets["skipped"].append(row)
                 continue
-            bucket = _classify_harness_sync_row(row, agent_id, home=home_dir)
+            if _skills_cli_install_spec(row) is None:
+                unresolved.append(row)
+                invalid_install_specs.append(row)
+                continue
+            bucket = _classify_harness_sync_row(row, agent_id, merged.rows, home=home_dir)
             buckets[bucket].append(row)
 
         for row in optional_installed:
@@ -1570,9 +1757,14 @@ def _build_sync_report(
             if _optional_installed_superseded(row, verified_rows):
                 buckets["skipped"].append(row)
                 continue
+            if row.is_syncable() and _skills_cli_install_spec(row) is None:
+                unresolved.append(row)
+                invalid_install_specs.append(row)
+                continue
             if agent_id == "cursor":
                 bucket = _classify_cursor_sync_row(
                     row,
+                    merged.rows,
                     home=home_dir,
                     preferred_non_cli=False,
                 )
@@ -1593,8 +1785,14 @@ def _build_sync_report(
             else:
                 buckets["skipped"].append(row)
 
-        # Skills CLI batches only for store_missing. projection_ensure is linked after apply.
-        store_missing = buckets["store_missing"]
+        # Skills CLI batches only for allowed store_missing rows. Floating curated
+        # installs remain visible but never become executable without explicit opt-in.
+        store_missing, pin_blocked = _partition_missing_for_pin_gate(
+            buckets["store_missing"],
+            accept_floating=accept_floating,
+        )
+        buckets["store_missing"] = store_missing
+        buckets["pin_blocked"] = pin_blocked
         command_groups = _sync_command_groups(store_missing, agent_id)
         # Backward-compatible alias: missing == store_missing summaries.
         missing_summaries = _summarize_bucket_rows(store_missing)
@@ -1607,23 +1805,45 @@ def _build_sync_report(
             "projection_ensure": _summarize_bucket_rows(buckets["projection_ensure"]),
             "projection_blocked": _summarize_bucket_rows(buckets["projection_blocked"]),
             "store_missing": missing_summaries,
+            "pin_blocked": _summarize_bucket_rows(buckets["pin_blocked"]),
             "internal_projection": _summarize_bucket_rows(buckets["internal_projection"]),
             "unresolved": _summarize_bucket_rows(unresolved),
             "skipped": _summarize_bucket_rows(buckets["skipped"]),
             "commands": [command["text"] for command in command_groups],
             "_command_argvs": [command["argv"] for command in command_groups],
             "_projection_ensure_names": [
-                row.name for row in sorted(buckets["projection_ensure"], key=lambda item: item.name)
+                _sync_row_projection_name(row)
+                for row in sorted(buckets["projection_ensure"], key=lambda item: item.name)
             ],
+            "_projection_ensure_rows": sorted(
+                buckets["projection_ensure"],
+                key=lambda item: item.name,
+            ),
             "_store_missing_rows": store_missing,
+            "_invalid_install_specs": invalid_install_specs,
         })
 
+    pin_blocked_total = sum(
+        len(cast("list[str]", agent_payload.get("pin_blocked") or [])) for agent_payload in report_agents
+    )
+    invalid_install_spec_total = sum(
+        len(cast("list[InstalledSkillInventoryRow]", agent_payload.get("_invalid_install_specs") or []))
+        for agent_payload in report_agents
+    )
     report: dict[str, object] = {
         "ok": not hard_error_agents,
         "inventory_count": len(merged.rows),
         "include_installed": include_installed,
+        "accept_floating": accept_floating,
+        "pin_blocked_count": pin_blocked_total,
+        "invalid_install_spec_count": invalid_install_spec_total,
         "agents": report_agents,
     }
+    if pin_blocked_total and not accept_floating:
+        report["pin_gate"] = (
+            "Install-now curated skills without an explicit @ref are blocked on apply; "
+            "pass --accept-floating to override."
+        )
     if hard_error_agents:
         report["error"] = "Target harness inventory failed for: " + ", ".join(sorted(hard_error_agents))
         report["error_type"] = "inventory"
@@ -1676,6 +1896,11 @@ def _emit_sync_report(
         "verbose": verbose,
         "agents": [_public_agent_sync_payload(agent_payload, verbose=verbose) for agent_payload in agent_reports],
     }
+    for key in ("accept_floating", "pin_blocked_count", "invalid_install_spec_count"):
+        if key in report:
+            json_payload[key] = report.get(key)
+    if "pin_gate" in report:
+        json_payload["pin_gate"] = report.get("pin_gate")
     if "error" in report:
         json_payload["error"] = report.get("error")
     if "error_type" in report:
@@ -1703,6 +1928,7 @@ def _emit_sync_report(
     typer.echo("")
     text_bucket_keys = [
         "store_missing",
+        "pin_blocked",
         "projection_ensure",
         "projection_blocked",
         "already_present",
@@ -2157,12 +2383,12 @@ def skills_sync(
     accept_floating: bool = typer.Option(
         False,
         "--accept-floating",
-        help="Allow apply for install-now curated skills without @ref pin or audited_head",
+        help="Allow apply for install-now curated skills without an explicit @ref",
     ),
     strict_pin: bool = typer.Option(
         False,
         "--strict-pin",
-        help="Fail dry-run when install-now curated skills lack @ref pin or audited_head",
+        help="Fail dry-run when install-now curated skills lack an explicit @ref",
     ),
     verbose: bool = typer.Option(
         False,
@@ -2176,8 +2402,10 @@ def skills_sync(
     Dry-run previews missing installs per harness. Apply runs Skills CLI batches for
     ``store_missing`` only, then ensures Cursor authoritative home projections for
     ``projection_ensure`` names. Partial failures set ``ok: false`` and populate
-    ``apply_failures`` in JSON/JSONL output with ``argv``, ``returncode``, and
-    ``text`` for each failed command.
+    ``apply_failures`` in JSON/JSONL output with ``argv``, ``returncode``,
+    ``text``, and (when structured capture is used) ``stdout`` / ``stderr`` for
+    each failed command. Text mode streams installers to the terminal without
+    capturing their output.
     """
     if not shutil.which("npx"):
         typer.echo("Error: npx not found. Install Node.js first.", err=True)
@@ -2200,6 +2428,7 @@ def skills_sync(
     report = _build_sync_report(
         target_agents,
         include_installed=include_installed,
+        accept_floating=accept_floating,
         external_entries=external_entries,
     )
     agent_reports = cast("list[dict[str, object]]", report.get("agents") or [])
@@ -2212,6 +2441,28 @@ def skills_sync(
             raise typer.Exit(code=1)
         return
 
+    invalid_spec_value = report.get("invalid_install_spec_count")
+    invalid_spec_count = invalid_spec_value if isinstance(invalid_spec_value, int) else 0
+    if invalid_spec_count:
+        report["ok"] = False
+        report["error"] = (
+            f"{invalid_spec_count} targeted skill install specification(s) failed safe parsing; refusing apply."
+        )
+        report["error_type"] = "invalid-install-spec"
+        _emit_sync_report(report, dry_run=False, format_=format_, verbose=verbose)
+        raise typer.Exit(code=1)
+
+    pin_blocked_value = report.get("pin_blocked_count")
+    pin_blocked_count = pin_blocked_value if isinstance(pin_blocked_value, int) else 0
+    if pin_blocked_count and not accept_floating:
+        report["ok"] = False
+        report["error"] = str(
+            report.get("pin_gate") or "Floating install-now curated skills blocked; pass --accept-floating to apply."
+        )
+        report["error_type"] = "pin-gate"
+        _emit_sync_report(report, dry_run=False, format_=format_, verbose=verbose)
+        raise typer.Exit(code=1)
+
     if not structured_output:
         _emit_sync_report(report, dry_run=False, format_=format_, verbose=verbose)
     if not bool(report.get("ok", True)):
@@ -2220,14 +2471,27 @@ def skills_sync(
         raise typer.Exit(code=1)
 
     grok_mirror_needed = False
-    apply_failures: list[tuple[list[str], int]] = []
+    # Structured apply captures installer stdout/stderr for machine-readable
+    # failures; text mode streams so operators see live installer progress.
+    apply_failures: list[dict[str, object]] = []
     for payload in agent_reports:
         if payload.get("agent") == "grok" and payload.get("_command_argvs"):
             grok_mirror_needed = True
         for argv in cast("list[list[str]]", payload.get("_command_argvs") or []):
-            result = subprocess.run(argv, capture_output=False)
+            if structured_output:
+                result = subprocess.run(argv, capture_output=True, text=True)
+            else:
+                result = subprocess.run(argv, capture_output=False)
             if result.returncode != 0:
-                apply_failures.append((argv, result.returncode))
+                failure: dict[str, object] = {
+                    "argv": argv,
+                    "returncode": result.returncode,
+                    "text": _command_text(argv),
+                }
+                if structured_output:
+                    failure["stdout"] = result.stdout or ""
+                    failure["stderr"] = result.stderr or ""
+                apply_failures.append(failure)
     if grok_mirror_needed:
         mirrored = mirror_grok_skills_from_claude()
         if mirrored:
@@ -2235,25 +2499,33 @@ def skills_sync(
 
     # After Skills CLI store installs, ensure Cursor home projections for names
     # that already had store bodies (or just received them via CLI batches).
-    cursor_ensure_names: list[str] = []
+    cursor_ensure_rows: list[InstalledSkillInventoryRow] = []
     for payload in agent_reports:
         if payload.get("agent") != "cursor":
             continue
-        cursor_ensure_names.extend(cast("list[str]", payload.get("_projection_ensure_names") or []))
-        # Newly installed store_missing rows also need Cursor projection links.
-        cursor_ensure_names.extend(
-            row.name for row in cast("list[InstalledSkillInventoryRow]", payload.get("_store_missing_rows") or [])
+        cursor_ensure_rows.extend(
+            cast("list[InstalledSkillInventoryRow]", payload.get("_projection_ensure_rows") or [])
         )
+        # Newly installed store_missing rows also need Cursor projection links.
+        cursor_ensure_rows.extend(cast("list[InstalledSkillInventoryRow]", payload.get("_store_missing_rows") or []))
     # Deduplicate while preserving order.
     seen_ensure: set[str] = set()
     ordered_ensure: list[str] = []
-    for name in cursor_ensure_names:
+    expected_skill_names: dict[str, str] = {}
+    for row in cursor_ensure_rows:
+        name = _sync_row_projection_name(row)
+        expected_skill_names[name] = row.install_skill_name or row.name
         if name in seen_ensure:
             continue
         seen_ensure.add(name)
         ordered_ensure.append(name)
+    cursor_projection_failed = False
     if ordered_ensure:
-        ensure_report = ensure_cursor_authoritative_links(names=ordered_ensure, dry_run=False)
+        ensure_report = ensure_cursor_authoritative_links(
+            names=ordered_ensure,
+            expected_skill_names=expected_skill_names,
+            dry_run=False,
+        )
         report["cursor_projection_ensure"] = {
             "created": list(ensure_report.created),
             "repaired": list(ensure_report.repaired),
@@ -2261,27 +2533,42 @@ def skills_sync(
             "blocked": list(ensure_report.blocked),
             "skipped_missing_store": list(ensure_report.skipped_missing_store),
         }
+        cursor_projection_failed = bool(ensure_report.blocked or ensure_report.skipped_missing_store)
+        if cursor_projection_failed:
+            report["ok"] = False
+            report["error"] = "Cursor projection identity/store verification failed."
+            report["error_type"] = "cursor-projection"
         if ensure_report.blocked and not structured_output:
             for blocked in ensure_report.blocked:
                 typer.echo(
                     f"cursor projection blocked: {blocked.get('name')}: {blocked.get('reason')}",
                     err=True,
                 )
+        if ensure_report.skipped_missing_store and not structured_output:
+            for missing_name in ensure_report.skipped_missing_store:
+                typer.echo(
+                    f"cursor projection blocked: {missing_name}: verified store SKILL.md missing",
+                    err=True,
+                )
 
     if apply_failures:
         report["ok"] = False
-        report["apply_failures"] = [
-            {"argv": argv, "returncode": returncode, "text": _command_text(argv)}
-            for argv, returncode in apply_failures
-        ]
+        report["apply_failures"] = apply_failures
         if structured_output:
             _emit_sync_report(report, dry_run=False, format_=format_, verbose=verbose)
         else:
-            for argv, returncode in apply_failures:
+            for failure in apply_failures:
+                argv = cast("list[str]", failure["argv"])
+                returncode = int(cast("int", failure["returncode"]))
                 typer.echo(
                     f"apply failed ({returncode}): {' '.join(argv)}",
                     err=True,
                 )
+        raise typer.Exit(code=1)
+
+    if cursor_projection_failed:
+        if structured_output:
+            _emit_sync_report(report, dry_run=False, format_=format_, verbose=verbose)
         raise typer.Exit(code=1)
 
     if structured_output:
@@ -2307,13 +2594,11 @@ def catalog_index(
         if reason:
             if format_ == "json" or format_ == "jsonl":
                 typer.echo(
-                    json.dumps(
-                        {
-                            "ok": False,
-                            "error": reason,
-                            "paths": [str(CATALOG_INDEX_PATH), str(CATALOG_BROWSER_INDEX_PATH)],
-                        }
-                    )
+                    json.dumps({
+                        "ok": False,
+                        "error": reason,
+                        "paths": [str(CATALOG_INDEX_PATH), str(CATALOG_BROWSER_INDEX_PATH)],
+                    })
                 )
             else:
                 typer.echo(reason, err=True)
@@ -2331,8 +2616,7 @@ def catalog_index(
         typer.echo(reason)
     else:
         typer.echo(
-            f"{CATALOG_INDEX_PATH.relative_to(ROOT)} and "
-            f"{CATALOG_BROWSER_INDEX_PATH.relative_to(ROOT)} are up to date"
+            f"{CATALOG_INDEX_PATH.relative_to(ROOT)} and {CATALOG_BROWSER_INDEX_PATH.relative_to(ROOT)} are up to date"
         )
 
 
@@ -2921,7 +3205,7 @@ def readme(
         "| 📦 **Portable** | 🧩 **Composable** | 🌐 **Open Source** |",
         "| :--- | :--- | :--- |",
         (
-            "| Use skills across Claude Code, Cursor, Copilot, and more. | Combine "
+            "| Use skills across the managed agent families. | Combine "
             "simple skills into complex, multi-agent workflows. | Extensible, "
             "readable, and community-driven. |"
         ),
@@ -2990,7 +3274,7 @@ def readme(
         ),
         "| `wagents skills search <query>` | Search local repo, installed, and plugin skills on demand |",
         "| `wagents skills context <query>` | Build a compact context packet for matching skills |",
-        "| `just typecheck` | Run ty across `wagents/` and `scripts/` |",
+        "| `just typecheck` | Run ty on gated sources from pyproject.toml `[tool.ty.src]` |",
         "| `wagents readme` | Regenerate this README |",
         "| `wagents package <name>` | Package a skill into portable ZIP |",
         "| `wagents package --all` | Package all skills |",
@@ -3016,21 +3300,26 @@ def readme(
         "",
     ])
 
-    # Supported agents
+    # Managed agent families and separately typed integration surfaces.
     content_parts.extend([
-        "## 🤝 Supported Agents",
+        "## 🤝 Managed Agent Families",
         "",
-        "- [Antigravity](https://antigravity.google/)",
-        "- [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview)",
-        "- [Codex](https://github.com/openai/codex)",
-        "- [Crush](https://github.com/crush-ai/crush)",
-        "- [Cursor](https://cursor.sh/)",
-        "- [Gemini CLI](https://github.com/google/gemini-cli)",
-        "- [GitHub Copilot](https://github.com/features/copilot)",
-        "- [Grok Build](https://x.ai/)",
-        "- [OpenCode](https://github.com/anomalyco/opencode) — native AGENTS.md support with repo-level config",
-        "- [Cherry Studio](https://www.cherry-ai.com/) — MCP-only via MCPHub registry",
-        "And other [agentskills.io](https://agentskills.io)-compatible agents.",
+    ])
+    for agent in MANAGED_AGENT_DEFINITIONS:
+        content_parts.append(f"- [{agent.label}]({agent.href}) — {agent.description}")
+    content_parts.extend([
+        "",
+        "## 🔌 Additional Integration Surfaces",
+        "",
+    ])
+    for surface in ADDITIONAL_INTEGRATION_SURFACES:
+        content_parts.append(f"- [{surface.label}]({surface.href}) — `{surface.surface_kind}`: {surface.description}")
+    content_parts.extend([
+        "",
+        (
+            "Other [agentskills.io](https://agentskills.io)-compatible agents may consume "
+            "portable skills, but they are not counted as managed families."
+        ),
         "",
     ])
 
@@ -3152,7 +3441,7 @@ def hooks_validate(
     harness: str = typer.Option(
         "all",
         "--harness",
-        help="Harness filter: all, codex, claude-code, cursor, github-copilot, gemini-cli",
+        help="Harness filter: all, codex, claude-code, cursor",
     ),
 ):
     """Validate all hooks across skills, agents, and settings."""

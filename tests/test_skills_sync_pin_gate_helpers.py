@@ -4,13 +4,24 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, cast
 
-from wagents.cli import _partition_missing_for_pin_gate, apply_dry_run_pin_gate
+import pytest
+
+from wagents.cli import (
+    _partition_missing_for_pin_gate,
+    _valid_sync_selector,
+    apply_dry_run_pin_gate,
+)
 
 if TYPE_CHECKING:
     from wagents.installed_inventory import InstalledSkillInventoryRow
 
 
-def _fake_row(*, name: str = "floating-skill", pinned: bool = False) -> InstalledSkillInventoryRow:
+def _fake_row(
+    *,
+    name: str = "floating-skill",
+    pinned: bool = False,
+    audited: bool = False,
+) -> InstalledSkillInventoryRow:
     class _Row:
         def __init__(self) -> None:
             self.name = name
@@ -20,7 +31,7 @@ def _fake_row(*, name: str = "floating-skill", pinned: bool = False) -> Installe
                 else "npx skills add github:org/repo --skill floating-skill"
             )
             self.source = "github:org/repo" if not pinned else "github:org/repo@abc123"
-            self.audited_head = "" if not pinned else "abc123"
+            self.audited_head = "abc123" if pinned or audited else ""
 
         def is_verified_curated(self) -> bool:
             return True
@@ -40,7 +51,7 @@ def test_dry_run_soft_lists_pin_blocked_without_failing() -> None:
     report: dict[str, object] = {
         "ok": True,
         "pin_blocked_count": len(blocked),
-        "pin_gate": "Install-now curated skills without @ref pin or audited_head are blocked on apply.",
+        "pin_gate": "Install-now curated skills without an explicit @ref are blocked on apply.",
     }
     apply_dry_run_pin_gate(report, strict_pin=False, accept_floating=False)
     assert report["ok"] is True
@@ -77,3 +88,37 @@ def test_apply_still_hard_blocks_without_accept_floating() -> None:
     kept2, blocked2 = _partition_missing_for_pin_gate(missing, accept_floating=True)
     assert kept2
     assert not blocked2
+
+
+def test_audited_head_does_not_authorize_a_floating_apply() -> None:
+    kept, blocked = _partition_missing_for_pin_gate(
+        [_fake_row(pinned=False, audited=True)],
+        accept_floating=False,
+    )
+    assert kept == []
+    assert len(blocked) == 1
+
+
+@pytest.mark.parametrize("selector", ["plain-skill", "opsx:tdd", "vendor:group:skill-name"])
+def test_logical_selector_accepts_only_colon_separated_kebab_segments(selector: str) -> None:
+    assert _valid_sync_selector(selector)
+
+
+@pytest.mark.parametrize(
+    "selector",
+    [
+        "",
+        ":opsx",
+        "opsx:",
+        "opsx::tdd",
+        "opsx:tdd/escape",
+        r"opsx:tdd\escape",
+        "opsx:.tdd",
+        "opsx:-tdd",
+        "--skill",
+        "opsx tdd",
+        f"opsx:{'x' * 60}",
+    ],
+)
+def test_logical_selector_rejects_empty_path_dot_option_and_oversized_forms(selector: str) -> None:
+    assert not _valid_sync_selector(selector)

@@ -16,6 +16,7 @@ from scripts.sync_agent_stack import (
     merge_opencode_config,
     merge_server_maps,
     merge_server_root_config,
+    render_aitk_mcp,
     render_cherry_import_files,
     render_cherry_server,
     render_client_mcp,
@@ -344,9 +345,9 @@ def test_repo_workflow_groups_and_bounded_clients():
         assert set(group_server_names(group_config)).issubset(enabled_servers), group_name
     expected_client = {
         "included_endpoint_kinds": ["group", "server"],
-        "included_groups": ["harness", "nlm"],
+        "included_groups": ["harness", "candidate-corpus", "nlm"],
         "enabled_endpoint_kinds": ["group"],
-        "enabled_groups": ["harness", "nlm"],
+        "enabled_groups": ["harness", "candidate-corpus", "nlm"],
         "enable_server_endpoints": True,
     }
     for name in ("default", "codex", "grok", "opencode"):
@@ -579,6 +580,37 @@ def test_docling_renderers_use_upstream_stdio_launch_shape():
         "opencode": opencode,
         "codex": codex,
     })
+
+
+def test_aitk_crush_projection_is_flat_stdio_and_harness_filtered():
+    registry = {
+        "servers": {
+            "shared": {
+                "command": "uvx",
+                "args": ["shared-mcp"],
+                "enabled": True,
+                "transport": "stdio",
+            },
+            "excluded-from-crush": {
+                "command": "uvx",
+                "args": ["excluded-mcp"],
+                "enabled": True,
+                "transport": "stdio",
+                "exclude_from_harnesses": ["crush"],
+            },
+        }
+    }
+
+    rendered = render_aitk_mcp(registry, {})
+
+    assert rendered == {
+        "shared": {
+            "type": "stdio",
+            "command": "uvx",
+            "args": ["shared-mcp"],
+        }
+    }
+    assert "mcpServers" not in rendered
 
 
 def test_standard_hook_renderers_use_supported_harness_events():

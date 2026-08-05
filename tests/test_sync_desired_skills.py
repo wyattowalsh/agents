@@ -2,9 +2,11 @@
 
 import json
 import subprocess
+from dataclasses import replace
 from pathlib import Path
 from typing import cast
 
+import pytest
 from typer.testing import CliRunner
 
 from wagents.cli import _build_sync_report, _optional_installed_superseded, app
@@ -13,6 +15,7 @@ from wagents.external_skills import (
     ExternalSkillEntry,
     desired_install_now_entries,
     parse_external_skill_entries,
+    read_catalog_external_entries,
 )
 from wagents.installed_inventory import (
     HarnessQueryResult,
@@ -109,6 +112,56 @@ npx skills add vercel-labs/agent-skills --skill curated-skill -y -g -a codex
     assert "curated-skill" in row.install_command
 
 
+def test_external_entry_to_inventory_row_preserves_audited_head():
+    entry = ExternalSkillEntry(
+        name="audited-skill",
+        source="owner/repo",
+        install_source="owner/repo",
+        status="install-now-after-trust-gate",
+        trust_tier="curated-trust-gated",
+        provenance_status="verified-install-command",
+        install_command="npx skills add owner/repo --skill audited-skill -y -g -a codex",
+        target_agents=("codex",),
+        source_url="https://github.com/owner/repo",
+        notes="Audited floating source.",
+        audited_head="deadbeef",
+        install_skill_name="audited-skill",
+    )
+
+    row = external_entry_to_inventory_row(entry)
+    assert row.audited_head == "deadbeef"
+    assert row.install_skill_name == "audited-skill"
+
+
+def test_catalog_index_reader_preserves_install_skill_name(monkeypatch):
+    monkeypatch.setattr(
+        "wagents.skill_index.read_catalog_index",
+        lambda **kwargs: {
+            "externalSkillIndex": [
+                {
+                    "name": "opsx-tdd",
+                    "sourceType": "curated-external",
+                    "sourceRoot": "owner/repo",
+                    "installSource": "owner/repo@abc123",
+                    "status": "install-now-after-trust-gate",
+                    "trustTier": "curated-trust-gated",
+                    "provenanceStatus": "verified-install-command",
+                    "installCommand": "npx skills add owner/repo@abc123 --skill opsx:tdd -y -g",
+                    "installSkillName": "opsx:tdd",
+                    "targetAgents": ["codex"],
+                    "selectorMode": "named",
+                    "syncKind": "skills-cli",
+                }
+            ]
+        },
+    )
+
+    (entry,) = read_catalog_external_entries(strict=True)
+
+    assert entry.name == "opsx-tdd"
+    assert entry.install_skill_name == "opsx:tdd"
+
+
 def test_external_entry_to_inventory_row_does_not_synthesize_global_only_command():
     row = external_entry_to_inventory_row(
         ExternalSkillEntry(
@@ -144,6 +197,7 @@ npx skills add vercel-labs/agent-skills --skill curated-skill -y -g -a codex cla
 """
         )[0]
     )
+    desired = replace(desired, audited_head="deadbeef")
     installed = InstalledSkillInventoryRow(
         name="curated-skill",
         path="/tmp/curated-skill",
@@ -173,6 +227,7 @@ npx skills add vercel-labs/agent-skills --skill curated-skill -y -g -a codex cla
     assert row.path == "/tmp/curated-skill"
     assert row.install_command == desired.install_command
     assert row.sync_kind == "skills-cli"
+    assert row.audited_head == "deadbeef"
 
 
 def test_desired_install_now_entries_excludes_external_tool_rows(monkeypatch):
@@ -223,22 +278,91 @@ npx skills add vercel-labs/agent-skills --skill floating-skill -y -g -a codex
     monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
     monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
     monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (desired_row,))
+    calls: list[list[str]] = []
+
+    def mock_run(cmd, **kwargs):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(args=cmd, returncode=0)
+
+    monkeypatch.setattr("wagents.cli.subprocess.run", mock_run)
 
     dry = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
     assert dry.exit_code == 0
     assert "pin-blocked (1)" in dry.output
     assert "floating-skill" in dry.output
 
+    strict = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--strict-pin"])
+    assert strict.exit_code == 1
+    assert "pin-gate" not in strict.output
+    assert "--accept-floating" in strict.output
+    assert calls == []
+
     apply = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply"])
     assert apply.exit_code == 1
     assert "--accept-floating" in apply.output
+    assert calls == []
 
-    monkeypatch.setattr(
-        "subprocess.run",
-        lambda *args, **kwargs: subprocess.CompletedProcess(args=args[0], returncode=0),
-    )
     accepted = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply", "--accept-floating"])
     assert accepted.exit_code == 0
+    assert len(calls) == 1
+
+    monkeypatch.setattr(
+        "wagents.cli.collect_desired_sync_rows",
+        lambda **kwargs: (replace(desired_row, audited_head="deadbeef"),),
+    )
+    audited = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply"])
+    assert audited.exit_code == 1
+    assert "--accept-floating" in audited.output
+    assert len(calls) == 1
+
+
+@pytest.mark.parametrize(
+    "install_command",
+    [
+        "npx skills add owner/repo@abc123 --skill ../escape -y -g",
+        "npx skills add owner/repo@abc123 --skill safe-skill --agent=codex -y -g",
+        "npx skills add owner/repo@abc123 --skill safe-skill -yg",
+        "npx skills add owner/repo@abc123 --skill safe-skill --unknown value",
+        "npx skills add -malicious --skill safe-skill -y -g",
+        "npx skills add owner/repo@abc123 --skill opsx::tdd -y -g",
+        "npx skills add owner/repo@abc123 --skill opsx:tdd/escape -y -g",
+        "npx skills add owner/repo@abc123 --skill opsx:.tdd -y -g",
+        "npx skills add owner/repo@abc123 --skill opsx:-tdd -y -g",
+    ],
+)
+def test_sync_invalid_install_spec_is_unresolved_and_apply_never_runs(
+    monkeypatch,
+    install_command: str,
+) -> None:
+    row = replace(
+        _repo_owned_desired_row(),
+        name="safe-skill",
+        source="owner/repo@abc123",
+        install_source="owner/repo@abc123",
+        install_command=install_command,
+    )
+    calls: list[list[str]] = []
+
+    def mock_run(cmd, **kwargs):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(args=cmd, returncode=0)
+
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+    monkeypatch.setattr("wagents.cli.subprocess.run", mock_run)
+
+    dry = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
+    assert dry.exit_code == 0
+    assert "unresolved (1)" in dry.output
+    assert "commands (0)" in dry.output
+
+    apply = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply"])
+    assert apply.exit_code == 1
+    assert "failed safe parsing" in apply.output
+    assert calls == []
 
 
 def test_sync_reports_uninstalled_install_now_as_missing(monkeypatch):
@@ -263,10 +387,53 @@ npx skills add vercel-labs/agent-skills@abc123 --skill missing-curated -y -g -a 
     assert result.exit_code == 0
     assert "store-missing (1)" in result.output
     assert "missing-curated [verified-curated-external]" in result.output
-    assert (
-        "npx skills add vercel-labs/agent-skills@abc123 --skill missing-curated -y -g -a codex"
-        in result.output
+    assert "npx skills add vercel-labs/agent-skills@abc123 --skill missing-curated -y -g -a codex" in result.output
+
+
+def test_sync_preserves_safe_namespaced_selector_in_argv(monkeypatch):
+    row = replace(
+        _repo_owned_desired_row(),
+        name="opsx-tdd",
+        source="owner/repo@abc123",
+        install_source="owner/repo@abc123",
+        install_command="npx skills add owner/repo@abc123 --skill opsx:tdd -y -g -a codex",
+        install_skill_name="opsx:tdd",
     )
+
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
+
+    assert result.exit_code == 0
+    assert "store-missing (1)" in result.output
+    assert "npx skills add owner/repo@abc123 --skill opsx:tdd -y -g -a codex" in result.output
+
+
+def test_sync_rejects_explicit_install_skill_name_not_in_parsed_selectors(monkeypatch):
+    row = replace(
+        _repo_owned_desired_row(),
+        name="opsx-tdd",
+        source="owner/repo@abc123",
+        install_source="owner/repo@abc123",
+        install_command="npx skills add owner/repo@abc123 --skill opsx:tdd -y -g",
+        install_skill_name="opsx:other",
+    )
+
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    result = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
+
+    assert result.exit_code == 0
+    assert "unresolved (1)" in result.output
+    assert "commands (0)" in result.output
 
 
 def test_sync_preserves_pinned_multi_skill_bundle_command(monkeypatch):
@@ -572,9 +739,7 @@ def test_sync_repo_owned_skill_missing_when_owner_is_skills_cli(monkeypatch):
     assert result.exit_code == 0
     agent = json.loads(result.output)["agents"][0]
     assert agent["missing"] == ["repo-owned-skill [repo-owned]"]
-    assert agent["commands"] == [
-        "npx skills add github:wyattowalsh/agents --skill repo-owned-skill -y -g -a codex"
-    ]
+    assert agent["commands"] == ["npx skills add github:wyattowalsh/agents --skill repo-owned-skill -y -g -a codex"]
 
 
 def test_sync_inventory_failure_still_blocks_owner_covered_repo_skill(monkeypatch):
@@ -905,9 +1070,280 @@ def test_cursor_absent_is_store_missing_with_cli_command(tmp_path, monkeypatch):
     agent = cast("dict[str, object]", cast("list", report["agents"])[0])
     assert agent["store_missing"] == ["cursor-skill [repo-owned]"]
     assert agent["missing"] == agent["store_missing"]
-    assert agent["commands"] == [
-        "npx skills add github:wyattowalsh/agents --skill cursor-skill -y -g -a cursor"
+    assert agent["commands"] == ["npx skills add github:wyattowalsh/agents --skill cursor-skill -y -g -a cursor"]
+
+
+def test_cursor_prefer_store_curated_catalog_identity_is_already_present(tmp_path, monkeypatch):
+    """Catalog store+projection correct under row.name even when install selector differs."""
+    home = tmp_path / "home"
+    store = home / ".agents" / "skills" / "deep-research-workflow"
+    projection = home / ".cursor" / "skills" / "deep-research-workflow"
+    _write_skill_body(store, "deep-research-workflow")
+    _write_skill_body(projection, "deep-research-workflow")
+    row = replace(
+        _cursor_desired_row("deep-research-workflow"),
+        source="Weizhena/Deep-Research-skills@abc123",
+        install_source="Weizhena/Deep-Research-skills@abc123",
+        install_command=("npx skills add Weizhena/Deep-Research-skills@abc123 --skill research -y -g"),
+        provenance_status="verified-curated-external",
+        trust_tier="curated-trust-gated",
+        install_skill_name="research",
+    )
+
+    monkeypatch.setattr("wagents.cli.HOME", home)
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    report = _build_sync_report(("cursor",), include_installed=False, external_entries=[], home=home)
+    agent = cast("dict[str, object]", cast("list", report["agents"])[0])
+
+    assert agent["already_present"] == [
+        "deep-research-workflow [verified-curated-external] — Weizhena/Deep-Research-skills@abc123"
     ]
+    assert agent["projection_blocked"] == []
+    assert agent["store_missing"] == []
+    assert agent["commands"] == []
+
+
+def test_cursor_prefer_store_curated_without_store_stays_projection_blocked(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    home.mkdir()
+    row = replace(
+        _cursor_desired_row("deep-research-workflow"),
+        source="Weizhena/Deep-Research-skills@abc123",
+        install_source="Weizhena/Deep-Research-skills@abc123",
+        install_command=("npx skills add Weizhena/Deep-Research-skills@abc123 --skill research -y -g"),
+        provenance_status="verified-curated-external",
+        trust_tier="curated-trust-gated",
+        install_skill_name="research",
+    )
+
+    monkeypatch.setattr("wagents.cli.HOME", home)
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    report = _build_sync_report(("cursor",), include_installed=False, external_entries=[], home=home)
+    agent = cast("dict[str, object]", cast("list", report["agents"])[0])
+
+    assert agent["projection_blocked"] == [
+        "deep-research-workflow [verified-curated-external] — Weizhena/Deep-Research-skills@abc123"
+    ]
+    assert agent["store_missing"] == []
+    assert agent["commands"] == []
+
+
+def test_cursor_alias_never_uses_upstream_selector_as_filesystem_name(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    upstream_store = home / ".agents" / "skills" / "upstream-name"
+    _write_skill_body(upstream_store, "upstream-name")
+    row = replace(
+        _cursor_desired_row("catalog-name"),
+        source="owner/repo@abc123",
+        install_source="owner/repo@abc123",
+        install_command="npx skills add owner/repo@abc123 --skill upstream-name -y -g",
+        install_skill_name="upstream-name",
+    )
+
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    report = _build_sync_report(("cursor",), include_installed=False, external_entries=[], home=home)
+    agent = cast("dict[str, object]", cast("list", report["agents"])[0])
+
+    assert agent["projection_blocked"] == ["catalog-name [repo-owned]"]
+    assert agent["store_missing"] == []
+    assert agent["commands"] == []
+    assert not (home / ".cursor" / "skills" / "upstream-name").exists()
+    assert not (home / ".cursor" / "skills" / "catalog-name").exists()
+
+
+def test_cursor_alias_ensures_existing_catalog_store_name(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    _write_skill_body(home / ".agents" / "skills" / "catalog-name", "upstream-name")
+    row = replace(
+        _cursor_desired_row("catalog-name"),
+        source="owner/repo@abc123",
+        install_source="owner/repo@abc123",
+        install_command="npx skills add owner/repo@abc123 --skill upstream-name -y -g",
+        install_skill_name="upstream-name",
+    )
+
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    report = _build_sync_report(("cursor",), include_installed=False, external_entries=[], home=home)
+    agent = cast("dict[str, object]", cast("list", report["agents"])[0])
+
+    assert agent["projection_ensure"] == ["catalog-name [repo-owned]"]
+    assert agent["_projection_ensure_names"] == ["catalog-name"]
+    assert agent["commands"] == []
+
+
+def test_cursor_namespaced_selector_normalizes_to_exact_catalog_store_name(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    row = replace(
+        _cursor_desired_row("opsx-tdd"),
+        source="owner/repo@abc123",
+        install_source="owner/repo@abc123",
+        install_command="npx skills add owner/repo@abc123 --skill opsx:tdd -y -g",
+        provenance_status="verified-curated-external",
+        trust_tier="curated-trust-gated",
+        install_skill_name="opsx:tdd",
+    )
+
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    report = _build_sync_report(("cursor",), include_installed=False, external_entries=[], home=home)
+    agent = cast("dict[str, object]", cast("list", report["agents"])[0])
+
+    assert agent["projection_blocked"] == []
+    assert agent["store_missing"] == ["opsx-tdd [verified-curated-external] — owner/repo@abc123"]
+    assert agent["commands"] == ["npx skills add owner/repo@abc123 --skill opsx:tdd -y -g -a cursor"]
+    assert agent["_projection_ensure_names"] == []
+
+
+def test_cursor_curated_alias_reinstalls_pinned_source_when_store_is_unqualified(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    _write_skill_body(home / ".agents" / "skills" / "opsx-tdd", "opsx:tdd")
+    row = replace(
+        _cursor_desired_row("opsx-tdd"),
+        source="owner/repo",
+        install_source="owner/repo@abc123",
+        install_command="npx skills add owner/repo@abc123 --skill opsx:tdd -y -g",
+        provenance_status="verified-curated-external",
+        trust_tier="curated-trust-gated",
+        install_skill_name="opsx:tdd",
+    )
+
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    report = _build_sync_report(("cursor",), include_installed=False, external_entries=[], home=home)
+    agent = cast("dict[str, object]", cast("list", report["agents"])[0])
+
+    assert agent["already_present"] == []
+    assert agent["projection_ensure"] == []
+    assert agent["store_missing"] == ["opsx-tdd [verified-curated-external] — owner/repo"]
+    assert agent["commands"] == ["npx skills add owner/repo@abc123 --skill opsx:tdd -y -g -a cursor"]
+
+
+def test_cursor_curated_alias_projects_only_with_exact_source_qualified_coverage(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    _write_skill_body(home / ".agents" / "skills" / "opsx-tdd", "opsx:tdd")
+    desired = replace(
+        _cursor_desired_row("opsx-tdd"),
+        source="owner/repo",
+        install_source="owner/repo@abc123",
+        install_command="npx skills add owner/repo@abc123 --skill opsx:tdd -y -g",
+        provenance_status="verified-curated-external",
+        trust_tier="curated-trust-gated",
+        install_skill_name="opsx:tdd",
+    )
+    installed = replace(
+        desired,
+        path=str(home / ".agents" / "skills" / "opsx-tdd"),
+        source_path=str(home / ".agents" / "skills" / "opsx-tdd" / "SKILL.md"),
+        scope="global",
+        provenance_status="installed-external",
+        installed_agents=("codex",),
+        discovered_in=("codex",),
+        target_agents=(),
+    )
+    snapshot = InstalledInventorySnapshot(rows=(installed,), queries=())
+
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: snapshot)
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (desired,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    report = _build_sync_report(("cursor",), include_installed=False, external_entries=[], home=home)
+    agent = cast("dict[str, object]", cast("list", report["agents"])[0])
+
+    assert agent["projection_ensure"] == ["opsx-tdd [verified-curated-external] — owner/repo"]
+    assert agent["store_missing"] == []
+    assert agent["commands"] == []
+
+
+def test_cursor_curated_alias_different_source_store_is_reinstalled_not_projected(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    _write_skill_body(home / ".agents" / "skills" / "opsx-tdd", "opsx:tdd")
+    desired = replace(
+        _cursor_desired_row("opsx-tdd"),
+        source="owner/repo",
+        install_source="owner/repo@new-revision",
+        install_command="npx skills add owner/repo@new-revision --skill opsx:tdd -y -g",
+        provenance_status="verified-curated-external",
+        trust_tier="curated-trust-gated",
+        install_skill_name="opsx:tdd",
+    )
+    installed = replace(
+        desired,
+        path=str(home / ".agents" / "skills" / "opsx-tdd"),
+        source_path=str(home / ".agents" / "skills" / "opsx-tdd" / "SKILL.md"),
+        scope="global",
+        install_source="other/repo@old-revision",
+        install_command="npx skills add other/repo@old-revision --skill opsx:tdd -y -g",
+        provenance_status="installed-external",
+        installed_agents=("codex",),
+        discovered_in=("codex",),
+        target_agents=(),
+    )
+    snapshot = InstalledInventorySnapshot(rows=(installed,), queries=())
+
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: snapshot)
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (desired,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    report = _build_sync_report(("cursor",), include_installed=False, external_entries=[], home=home)
+    agent = cast("dict[str, object]", cast("list", report["agents"])[0])
+
+    assert agent["already_present"] == []
+    assert agent["projection_ensure"] == []
+    assert agent["store_missing"] == ["opsx-tdd [verified-curated-external] — owner/repo"]
+    assert "owner/repo@new-revision" in cast("list[str]", agent["commands"])[0]
+
+
+def test_cursor_rejects_source_qualified_alias_with_different_normalized_identity(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    _write_skill_body(home / ".agents" / "skills" / "opsx-tdd", "other:tdd")
+    desired = replace(
+        _cursor_desired_row("opsx-tdd"),
+        source="owner/repo",
+        install_source="owner/repo@abc123",
+        install_command="npx skills add owner/repo@abc123 --skill other:tdd -y -g",
+        provenance_status="verified-curated-external",
+        trust_tier="curated-trust-gated",
+        install_skill_name="other:tdd",
+    )
+    installed = replace(
+        desired,
+        path=str(home / ".agents" / "skills" / "opsx-tdd"),
+        source_path=str(home / ".agents" / "skills" / "opsx-tdd" / "SKILL.md"),
+        scope="global",
+        provenance_status="installed-external",
+        installed_agents=("codex",),
+        discovered_in=("codex",),
+        target_agents=(),
+    )
+    snapshot = InstalledInventorySnapshot(rows=(installed,), queries=())
+
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: snapshot)
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (desired,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+
+    report = _build_sync_report(("cursor",), include_installed=False, external_entries=[], home=home)
+    agent = cast("dict[str, object]", cast("list", report["agents"])[0])
+
+    assert agent["projection_blocked"] == ["opsx-tdd [verified-curated-external] — owner/repo"]
+    assert agent["projection_ensure"] == []
+    assert agent["store_missing"] == []
+    assert agent["commands"] == []
 
 
 def test_cursor_divergent_projection_is_blocked(tmp_path, monkeypatch):
@@ -975,9 +1411,54 @@ def test_cursor_apply_runs_cli_then_ensure(tmp_path, monkeypatch):
     assert len(cli_calls) == 1
     assert ensure_calls
     assert ensure_calls[0]["dry_run"] is False
-    assert "cursor-skill" in ensure_calls[0]["names"]
+    assert "cursor-skill" in cast("list[str]", ensure_calls[0]["names"])
+    assert ensure_calls[0]["expected_skill_names"] == {"cursor-skill": "cursor-skill"}
     payload = json.loads(result.output)
     assert payload["cursor_projection_ensure"]["created"] == ["cursor-skill"]
+
+
+def test_cursor_apply_fails_when_installed_store_identity_does_not_match_alias(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    home.mkdir()
+    row = replace(
+        _cursor_desired_row("opsx-tdd"),
+        source="owner/repo",
+        install_source="owner/repo@abc123",
+        install_command="npx skills add owner/repo@abc123 --skill opsx:tdd -y -g",
+        provenance_status="verified-curated-external",
+        trust_tier="curated-trust-gated",
+        install_skill_name="opsx:tdd",
+    )
+    calls: list[list[str]] = []
+
+    def mock_run(cmd, **kwargs):
+        calls.append(cmd)
+        _write_skill_body(home / ".agents" / "skills" / "opsx-tdd", "wrong-skill")
+        return subprocess.CompletedProcess(cmd, 0)
+
+    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+    monkeypatch.setattr("wagents.cli.HOME", home)
+    monkeypatch.setattr("wagents.platforms.cursor.HOME", home)
+    monkeypatch.setattr("wagents.cli.read_external_skill_entries", lambda **kwargs: [])
+    monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: _empty_snapshot())
+    monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: (row,))
+    monkeypatch.setattr("wagents.cli.repo_skill_owner_covered_agents", lambda row, agent_ids: ())
+    monkeypatch.setattr("wagents.cli.subprocess.run", mock_run)
+
+    result = runner.invoke(
+        app,
+        ["skills", "sync", "--agent", "cursor", "--apply", "--format", "json", "--verbose"],
+    )
+
+    assert result.exit_code == 1
+    assert len(calls) == 1
+    payload = json.loads(result.output)
+    assert payload["ok"] is False
+    assert payload["error_type"] == "cursor-projection"
+    (blocked,) = payload["cursor_projection_ensure"]["blocked"]
+    assert blocked["name"] == "opsx-tdd"
+    assert "expected 'opsx:tdd', found 'wrong-skill'" in blocked["reason"]
+    assert not (home / ".cursor" / "skills" / "opsx-tdd").exists()
 
 
 def test_sync_json_default_is_compact_counts_and_samples(monkeypatch):
