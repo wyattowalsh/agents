@@ -279,6 +279,13 @@ wagents new mcp <name>              # → mcp/<name>/ (server.py + pyproject.tom
 wagents validate             # Checks frontmatter of all skills and agents
 wagents hooks validate --harness all   # Per-harness hook projection checks
 
+# Python quality (gated scope from pyproject.toml [tool.ruff] / [tool.ty.src])
+uv run ruff check
+uv run ruff format
+uv run ty check
+uv run pytest
+# Or: just check-python
+
 # Sync harness projections (instructions, hooks, MCP mirrors)
 uv run python scripts/sync_agent_stack.py --apply --targets repo
 
@@ -362,7 +369,8 @@ Everything situational uses **skills as context loaders** — Claude sees skill 
 | `python-conventions`     | Auto-invoke only                 | ~45 tokens             | Working on Python files                           |
 | `javascript-conventions` | Auto-invoke only                 | ~25 tokens             | Working on JS/TS files                            |
 | `agent-conventions`      | Auto-invoke only                 | ~30 tokens             | Creating/modifying agents                         |
-| `shell-conventions`      | Auto-invoke only                 | ~30 tokens             | Working on shell/Makefile/justfile files          |
+| `shell-conventions`      | Auto-invoke only                 | ~30 tokens             | Shell/Makefile hygiene; Just authoring → `/justfile` |
+| `justfile`               | User-invocable (`/justfile`)     | ~40 tokens             | Just create/edit/migrate/check/discover           |
 | `learn`                  | User-invocable + auto-invoke     | ~50 tokens             | Proposing instruction changes, capturing patterns |
 | `grill-me` (curated)     | User-invocable (`/grill-me`)     | ~25 tokens             | User-pivotal uncertainties before plan/build |
 
@@ -442,3 +450,14 @@ Full maintainer hub: docs site `/harness-config/token-efficacy/` (generated from
 | LM Studio          | MCP + presets (instructions/agents); skills mirror **default none** | `wagents/platforms/lm_studio.py`, `instructions/lm-studio-global.md`; home via pointer or `~/.lmstudio` (`mcp.json`, `config-presets/wagents-*.preset.json`, optional `skills/` via `WAGENTS_LM_STUDIO_SKILLS`); no hooks; Skills CLI has no native adapter; local LLM provider for Codex/OpenCode is separate (`tooling-policy.json`) |
 
 Grok Build discovers skills from `~/.grok/skills/`, repo `.grok/skills/`, and `~/.claude/skills/`. The Skills CLI has no native `grok` adapter; `wagents skills sync` installs Grok-targeted curated skills via the Claude Code adapter and mirrors them into `~/.grok/skills`. Codex and OpenCode parents delegate Grok task-graph nodes via `/grok-delegate` (native `grok -p`, `-r`, worktrees only). Plannotator on Grok uses `wagents grok plannotator install` (CLI + core skills + optional hooks synced from `config/grok-plannotator-hooks.json`); there is no Grok npm plugin like OpenCode's `@plannotator/opencode`.
+
+**Plannotator (cross-harness plan review):**
+
+| Layer | Skills / path | Notes |
+| --- | --- | --- |
+| Core | `plannotator-review`, `plannotator-annotate`, `plannotator-last` | Installed by `wagents grok plannotator install` (and mirrored for Claude/Cursor/Codex/OpenCode/Grok) |
+| Extras | `plannotator-compound`, `plannotator-setup-goal`, `plannotator-visual-explainer` | Optional extras; same install path with extras enabled (default) |
+| Improvement hook | `~/.plannotator/hooks/compound/enterplanmode-improve-hook.txt` | Feeds improve-context on enter-plan; required for compound residual injection |
+| Tot | `plannotator-tot` | **Reference-only** — catalog `sync_kind: none`; do **not** install via skills sync |
+
+OpenCode keeps `@plannotator/opencode@latest` as the runtime plugin (`workflow: "plan-agent"`, `planningAgents: ["plan"]`). Grok uses CLI + skills + hooks only.
