@@ -1,0 +1,113 @@
+{
+  "leaf": "W000",
+  "code_buckets": {
+    "store_missing": 0,
+    "projection_blocked": 0,
+    "projection_ensure": 0,
+    "skipped": 12,
+    "unresolved": 145,
+    "already_present": 1613
+  },
+  "remove_approved": [
+    "dagster-expert",
+    "dignified-python",
+    "docx",
+    "frontend-design",
+    "opsx:tdd",
+    "pdf",
+    "planning-with-files",
+    "pptx",
+    "web-artifacts-builder",
+    "webapp-testing",
+    "xlsx"
+  ],
+  "keep": [
+    "frontend-designer"
+  ],
+  "ondisk_remove": [
+    {
+      "name": "dagster-expert",
+      "paths": [
+        "/Users/ww/.agents/skills/dagster-expert",
+        "/Users/ww/.claude/skills/dagster-expert",
+        "/Users/ww/.grok/skills/dagster-expert"
+      ]
+    },
+    {
+      "name": "dignified-python",
+      "paths": [
+        "/Users/ww/.agents/skills/dignified-python",
+        "/Users/ww/.claude/skills/dignified-python",
+        "/Users/ww/.grok/skills/dignified-python"
+      ]
+    },
+    {
+      "name": "docx",
+      "paths": [
+        "/Users/ww/.agents/skills/docx",
+        "/Users/ww/.claude/skills/docx",
+        "/Users/ww/.grok/skills/docx"
+      ]
+    },
+    {
+      "name": "frontend-design",
+      "paths": [
+        "/Users/ww/.agents/skills/frontend-design",
+        "/Users/ww/.claude/skills/frontend-design",
+        "/Users/ww/.grok/skills/frontend-design"
+      ]
+    },
+    {
+      "name": "pdf",
+      "paths": [
+        "/Users/ww/.agents/skills/pdf",
+        "/Users/ww/.claude/skills/pdf",
+        "/Users/ww/.grok/skills/pdf"
+      ]
+    },
+    {
+      "name": "planning-with-files",
+      "paths": [
+        "/Users/ww/.agents/skills/planning-with-files",
+        "/Users/ww/.claude/skills/planning-with-files",
+        "/Users/ww/.grok/skills/planning-with-files"
+      ]
+    },
+    {
+      "name": "pptx",
+      "paths": [
+        "/Users/ww/.agents/skills/pptx",
+        "/Users/ww/.claude/skills/pptx",
+        "/Users/ww/.grok/skills/pptx"
+      ]
+    },
+    {
+      "name": "web-artifacts-builder",
+      "paths": [
+        "/Users/ww/.agents/skills/web-artifacts-builder",
+        "/Users/ww/.claude/skills/web-artifacts-builder",
+        "/Users/ww/.grok/skills/web-artifacts-builder"
+      ]
+    },
+    {
+      "name": "webapp-testing",
+      "paths": [
+        "/Users/ww/.agents/skills/webapp-testing",
+        "/Users/ww/.claude/skills/webapp-testing",
+        "/Users/ww/.grok/skills/webapp-testing"
+      ]
+    },
+    {
+      "name": "xlsx",
+      "paths": [
+        "/Users/ww/.agents/skills/xlsx",
+        "/Users/ww/.claude/skills/xlsx",
+        "/Users/ww/.grok/skills/xlsx"
+      ]
+    }
+  ],
+  "already_absent": [
+    "opsx:tdd"
+  ],
+  "frontend_designer_exists": true
+}

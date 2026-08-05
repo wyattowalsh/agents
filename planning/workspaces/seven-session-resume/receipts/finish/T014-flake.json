@@ -1,0 +1,18 @@
+{
+  "leaf": "T014",
+  "status": "PASS",
+  "fix": "hybrid structured capture for skills sync --apply",
+  "cli": "wagents/cli.py apply loop: capture_output=True,text=True when format json/jsonl; stream when text",
+  "apply_failures_keys_structured": [
+    "argv",
+    "returncode",
+    "text",
+    "stdout",
+    "stderr"
+  ],
+  "tests": [
+    "tests/test_sync_desired_skills.py::test_sync_apply_partial_failure_json_includes_apply_failures",
+    "tests/test_sync_desired_skills.py::test_sync_apply_continue_on_error_runs_all_batches"
+  ],
+  "pytest": "2 passed"
+}

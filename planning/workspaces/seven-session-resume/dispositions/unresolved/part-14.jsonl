@@ -1,0 +1,5 @@
+{"id": "use-dom", "bucket": "unresolved", "disposition": "quarantine_filter", "evidence": "use-dom [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill.", "risk": "low"}
+{"id": "watchOS", "bucket": "unresolved", "disposition": "quarantine_filter", "evidence": "watchOS [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill.", "risk": "low"}
+{"id": "web-design-guidelines", "bucket": "unresolved", "disposition": "quarantine_filter", "evidence": "web-design-guidelines [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill.", "risk": "low"}
+{"id": "web-perf", "bucket": "unresolved", "disposition": "quarantine_filter", "evidence": "web-perf [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill.", "risk": "low"}
+{"id": "youtube-downloader", "bucket": "unresolved", "disposition": "quarantine_filter", "evidence": "youtube-downloader [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill.", "risk": "low"}

@@ -1,0 +1,32 @@
+{
+  "store_missing": 1,
+  "projection_ensure": 0,
+  "projection_blocked": 1,
+  "skipped": 12,
+  "unresolved": 145,
+  "already_present": 1611,
+  "commands": [
+    "npx skills add yuritoledo/openspec-tdd@463646fce4605808cd9dcf7e786829dcf293586e --skill opsx:tdd -y -g -a cursor"
+  ],
+  "store_missing_sample": [
+    "opsx-tdd [verified-curated-external] \u2014 yuritoledo/openspec-tdd"
+  ],
+  "projection_blocked_sample": [
+    "deep-research-workflow [verified-curated-external] \u2014 Weizhena/Deep-Research-skills"
+  ],
+  "skipped_sample": [
+    "dagster-expert [installed-external] \u2014 dagster-io/skills",
+    "dignified-python [installed-external] \u2014 dagster-io/skills",
+    "docx [installed-external] \u2014 anthropics/skills",
+    "frontend-design [installed-external] \u2014 anthropics/skills",
+    "frontend-designer [installed-external] \u2014 wyattowalsh/agents"
+  ],
+  "unresolved_sample": [
+    "ab-test-setup [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill.",
+    "accessibility [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill.",
+    "ad-creative [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill.",
+    "agent-browser [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill.",
+    "analytics-tracking [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill."
+  ],
+  "L084_drw": "symlinked"
+}

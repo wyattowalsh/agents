@@ -1,0 +1,8 @@
+{
+  "leaf": "P020",
+  "status": "SKIP",
+  "reason": "Hook already satisfies improve-context UI; full compound HTML report is optional upgrade",
+  "hook_path": "/Users/ww/.plannotator/hooks/compound/enterplanmode-improve-hook.txt",
+  "hook_assured_by": "W002",
+  "upgrade_path": "Run full /plannotator-compound only if user requests P021"
+}

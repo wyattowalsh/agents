@@ -1,0 +1,32 @@
+{
+  "leaf": "W001",
+  "expected": 6,
+  "harnesses": {
+    "agents": {
+      "count": 6,
+      "missing": []
+    },
+    "cursor": {
+      "count": 6,
+      "missing": []
+    },
+    "claude": {
+      "count": 6,
+      "missing": []
+    },
+    "codex": {
+      "count": 6,
+      "missing": []
+    },
+    "opencode": {
+      "count": 6,
+      "missing": []
+    },
+    "grok": {
+      "count": 6,
+      "missing": []
+    }
+  },
+  "plannotator_tot_installed": false,
+  "pass": true
+}

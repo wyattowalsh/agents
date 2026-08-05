@@ -1,0 +1,9 @@
+{
+  "leaf": "W002",
+  "hook_exists": true,
+  "hook_bytes": 2513,
+  "hook_lines": 18,
+  "improve_exit": 0,
+  "injects_residual": true,
+  "ctx_len": 4764
+}

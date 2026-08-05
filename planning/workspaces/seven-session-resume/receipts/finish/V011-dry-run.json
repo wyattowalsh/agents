@@ -1,0 +1,30 @@
+{
+  "leaf": "V011",
+  "ok": true,
+  "mode": "dry-run",
+  "code_buckets": {
+    "store_missing": 0,
+    "projection_blocked": 0,
+    "projection_ensure": 0
+  },
+  "skipped": 10,
+  "unresolved": 145,
+  "already_present": 1613,
+  "skipped_names": [
+    "docx",
+    "frontend-design",
+    "frontend-designer",
+    "opsx:tdd",
+    "pdf",
+    "planning-with-files",
+    "pptx",
+    "web-artifacts-builder",
+    "webapp-testing",
+    "xlsx"
+  ],
+  "ondisk_remove_present": [],
+  "frontend_designer_intact": true,
+  "plannotator_tot_installed": false,
+  "note": "L092 remove targets absent on disk (H012). Dry-run still lists some as skipped installed-external from catalog/inventory residual (not re-installed). On-disk absence is authority for L092. Unresolved 145 remains quarantine residual.",
+  "code_zero_set": true
+}

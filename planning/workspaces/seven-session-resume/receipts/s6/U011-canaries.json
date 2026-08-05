@@ -1,0 +1,14 @@
+{
+  "ruff_guard": {
+    "exit": 0,
+    "tail": "All checks passed!\n"
+  },
+  "pytest_classify": {
+    "exit": 0,
+    "tail": ".......                                                                                                                                                                                                                                                                           [100%]\n7 passed, 51 deselected in 0.23s\n"
+  },
+  "pytest_guard": {
+    "exit": 0,
+    "tail": "................................................                                                                                                                                                                                                                                  [100%]\n48 passed in 0.07s\n"
+  }
+}

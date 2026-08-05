@@ -1,0 +1,24 @@
+{
+  "total_lines": 3200,
+  "by_top": {
+    "docs": 2629,
+    "planning": 335,
+    "openspec": 127,
+    "scripts": 29,
+    "tests": 22,
+    "skills": 14,
+    "wagents": 11,
+    ".cursor": 5,
+    "agents": 5,
+    ".claude": 4,
+    ".opencode": 4,
+    "config": 4,
+    "evals": 4,
+    "hooks": 2,
+    "AGENTS.md": 1,
+    "CLAUDE.md": 1,
+    "README.md": 1,
+    "agent-bundle.json": 1,
+    "tmp": 1
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "leaf": "F013",
+  "status": "CLOSED",
+  "code_zero_set": true,
+  "counts": {
+    "store_missing": 0,
+    "projection_blocked": 0,
+    "projection_ensure": 0,
+    "skipped": 12,
+    "unresolved": 145,
+    "already_present": 1613
+  },
+  "skipped_residual": {
+    "count": 12,
+    "policy": "L092 approved; remove\u00d711 keep\u00d71 frontend-designer; home uninstall not auto-applied (inventory visibility only)"
+  },
+  "unresolved_residual": {
+    "count": 145,
+    "policy": "quarantine_filter_non_blocking"
+  }
+}

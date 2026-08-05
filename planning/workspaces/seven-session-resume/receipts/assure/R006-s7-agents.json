@@ -1,0 +1,22 @@
+{
+  "leaf": "R006",
+  "has_plannotator": true,
+  "has_compound": true,
+  "has_hook_path": true,
+  "has_tot_reference_only": true,
+  "names_hit": 6,
+  "core": [
+    "plannotator-review",
+    "plannotator-annotate",
+    "plannotator-last"
+  ],
+  "extras": [
+    "plannotator-compound",
+    "plannotator-setup-goal",
+    "plannotator-visual-explainer"
+  ],
+  "hook": "~/.plannotator/hooks/compound/enterplanmode-improve-hook.txt",
+  "gap": false,
+  "status": "CLOSED",
+  "source": "AGENTS.md §6 Plannotator table"
+}

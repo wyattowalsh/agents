@@ -1,0 +1,9 @@
+{
+  "leaf": "A021",
+  "status": "CLOSED",
+  "guard_trailer_deny": true,
+  "openspec": "openspec/changes/kill-agent-attribution",
+  "registry_key": "git-commit-push-guard",
+  "never_sign_instructions": true,
+  "cli_attr_false": true
+}

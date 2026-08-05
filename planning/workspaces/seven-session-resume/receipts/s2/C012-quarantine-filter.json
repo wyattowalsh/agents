@@ -1,0 +1,8 @@
+{
+  "leaf": "C012",
+  "status": "CLOSED",
+  "policy": "quarantine_filter_non_blocking",
+  "unresolved_count": 145,
+  "blocking": false,
+  "note": "read-only-discovered unresolved inventory remains visible but does not block S2 code zero-set; no mass delete"
+}

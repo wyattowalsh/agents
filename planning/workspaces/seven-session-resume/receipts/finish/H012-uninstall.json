@@ -1,0 +1,409 @@
+{
+  "leaf": "H012",
+  "allowlist": [
+    "dagster-expert",
+    "dignified-python",
+    "docx",
+    "frontend-design",
+    "pdf",
+    "planning-with-files",
+    "pptx",
+    "web-artifacts-builder",
+    "webapp-testing",
+    "xlsx"
+  ],
+  "actions": [
+    {
+      "name": "dagster-expert",
+      "path": "/Users/ww/.agents/skills/dagster-expert",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "dagster-expert",
+      "path": "/Users/ww/.claude/skills/dagster-expert",
+      "existed": true,
+      "action": "unlink-symlink",
+      "gone": true
+    },
+    {
+      "name": "dagster-expert",
+      "path": "/Users/ww/.cursor/skills/dagster-expert",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "dagster-expert",
+      "path": "/Users/ww/.codex/skills/dagster-expert",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "dagster-expert",
+      "path": "/Users/ww/.opencode/skills/dagster-expert",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "dagster-expert",
+      "path": "/Users/ww/.grok/skills/dagster-expert",
+      "existed": true,
+      "action": "unlink-symlink",
+      "gone": true
+    },
+    {
+      "name": "dignified-python",
+      "path": "/Users/ww/.agents/skills/dignified-python",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "dignified-python",
+      "path": "/Users/ww/.claude/skills/dignified-python",
+      "existed": true,
+      "action": "unlink-symlink",
+      "gone": true
+    },
+    {
+      "name": "dignified-python",
+      "path": "/Users/ww/.cursor/skills/dignified-python",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "dignified-python",
+      "path": "/Users/ww/.codex/skills/dignified-python",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "dignified-python",
+      "path": "/Users/ww/.opencode/skills/dignified-python",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "dignified-python",
+      "path": "/Users/ww/.grok/skills/dignified-python",
+      "existed": true,
+      "action": "unlink-symlink",
+      "gone": true
+    },
+    {
+      "name": "docx",
+      "path": "/Users/ww/.agents/skills/docx",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "docx",
+      "path": "/Users/ww/.claude/skills/docx",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "docx",
+      "path": "/Users/ww/.cursor/skills/docx",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "docx",
+      "path": "/Users/ww/.codex/skills/docx",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "docx",
+      "path": "/Users/ww/.opencode/skills/docx",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "docx",
+      "path": "/Users/ww/.grok/skills/docx",
+      "existed": true,
+      "action": "unlink-symlink",
+      "gone": true
+    },
+    {
+      "name": "frontend-design",
+      "path": "/Users/ww/.agents/skills/frontend-design",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "frontend-design",
+      "path": "/Users/ww/.claude/skills/frontend-design",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "frontend-design",
+      "path": "/Users/ww/.cursor/skills/frontend-design",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "frontend-design",
+      "path": "/Users/ww/.codex/skills/frontend-design",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "frontend-design",
+      "path": "/Users/ww/.opencode/skills/frontend-design",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "frontend-design",
+      "path": "/Users/ww/.grok/skills/frontend-design",
+      "existed": true,
+      "action": "unlink-symlink",
+      "gone": true
+    },
+    {
+      "name": "pdf",
+      "path": "/Users/ww/.agents/skills/pdf",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "pdf",
+      "path": "/Users/ww/.claude/skills/pdf",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "pdf",
+      "path": "/Users/ww/.cursor/skills/pdf",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "pdf",
+      "path": "/Users/ww/.codex/skills/pdf",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "pdf",
+      "path": "/Users/ww/.opencode/skills/pdf",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "pdf",
+      "path": "/Users/ww/.grok/skills/pdf",
+      "existed": true,
+      "action": "unlink-symlink",
+      "gone": true
+    },
+    {
+      "name": "planning-with-files",
+      "path": "/Users/ww/.agents/skills/planning-with-files",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "planning-with-files",
+      "path": "/Users/ww/.claude/skills/planning-with-files",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "planning-with-files",
+      "path": "/Users/ww/.cursor/skills/planning-with-files",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "planning-with-files",
+      "path": "/Users/ww/.codex/skills/planning-with-files",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "planning-with-files",
+      "path": "/Users/ww/.opencode/skills/planning-with-files",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "planning-with-files",
+      "path": "/Users/ww/.grok/skills/planning-with-files",
+      "existed": true,
+      "action": "unlink-symlink",
+      "gone": true
+    },
+    {
+      "name": "pptx",
+      "path": "/Users/ww/.agents/skills/pptx",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "pptx",
+      "path": "/Users/ww/.claude/skills/pptx",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "pptx",
+      "path": "/Users/ww/.cursor/skills/pptx",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "pptx",
+      "path": "/Users/ww/.codex/skills/pptx",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "pptx",
+      "path": "/Users/ww/.opencode/skills/pptx",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "pptx",
+      "path": "/Users/ww/.grok/skills/pptx",
+      "existed": true,
+      "action": "unlink-symlink",
+      "gone": true
+    },
+    {
+      "name": "web-artifacts-builder",
+      "path": "/Users/ww/.agents/skills/web-artifacts-builder",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "web-artifacts-builder",
+      "path": "/Users/ww/.claude/skills/web-artifacts-builder",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "web-artifacts-builder",
+      "path": "/Users/ww/.cursor/skills/web-artifacts-builder",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "web-artifacts-builder",
+      "path": "/Users/ww/.codex/skills/web-artifacts-builder",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "web-artifacts-builder",
+      "path": "/Users/ww/.opencode/skills/web-artifacts-builder",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "web-artifacts-builder",
+      "path": "/Users/ww/.grok/skills/web-artifacts-builder",
+      "existed": true,
+      "action": "unlink-symlink",
+      "gone": true
+    },
+    {
+      "name": "webapp-testing",
+      "path": "/Users/ww/.agents/skills/webapp-testing",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "webapp-testing",
+      "path": "/Users/ww/.claude/skills/webapp-testing",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "webapp-testing",
+      "path": "/Users/ww/.cursor/skills/webapp-testing",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "webapp-testing",
+      "path": "/Users/ww/.codex/skills/webapp-testing",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "webapp-testing",
+      "path": "/Users/ww/.opencode/skills/webapp-testing",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "webapp-testing",
+      "path": "/Users/ww/.grok/skills/webapp-testing",
+      "existed": true,
+      "action": "unlink-symlink",
+      "gone": true
+    },
+    {
+      "name": "xlsx",
+      "path": "/Users/ww/.agents/skills/xlsx",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "xlsx",
+      "path": "/Users/ww/.claude/skills/xlsx",
+      "existed": true,
+      "action": "rmtree",
+      "gone": true
+    },
+    {
+      "name": "xlsx",
+      "path": "/Users/ww/.cursor/skills/xlsx",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "xlsx",
+      "path": "/Users/ww/.codex/skills/xlsx",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "xlsx",
+      "path": "/Users/ww/.opencode/skills/xlsx",
+      "existed": false,
+      "action": "skip-missing"
+    },
+    {
+      "name": "xlsx",
+      "path": "/Users/ww/.grok/skills/xlsx",
+      "existed": true,
+      "action": "unlink-symlink",
+      "gone": true
+    }
+  ],
+  "frontend_designer_intact": true,
+  "removed_count": 30
+}

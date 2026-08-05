@@ -1,0 +1,12 @@
+{
+  "leaf": "R003",
+  "apply_gate": {
+    "decision": "no",
+    "agents": [],
+    "operator": "lead",
+    "timestamp": "2026-07-29T10:40:00Z"
+  },
+  "check_exit": 0,
+  "check_tail": "  }\n  ],\n  \"bonus\": 0,\n  \"patterns_found\": [\n    \"dispatch-table\",\n    \"reference-file-index\",\n    \"critical-rules\",\n    \"canonical-vocabulary\",\n    \"scope-boundaries\",\n    \"classification-gating\",\n    \"scripts\",\n    \"progressive-disclosure\",\n    \"body-substitutions\"\n  ],\n  \"patterns_suggested\": [],\n  \"patterns_not_applicable\": [\n    \"scaling-strategy\",\n    \"state-management\",\n    \"templates\",\n    \"hooks\",\n    \"stop-hooks\"\n  ],\n  \"meta\": {\n    \"lines\": 160,\n    \"refs\": 8,\n    \"scripts\": 1\n  }\n}\n",
+  "status": "PASS"
+}

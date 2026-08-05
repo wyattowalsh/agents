@@ -1,0 +1,26 @@
+{
+  "bucket": "skipped",
+  "count": 12,
+  "by_disposition": {
+    "remove": 11,
+    "keep": 1
+  },
+  "ids_by_disposition": {
+    "remove": [
+      "dagster-expert",
+      "dignified-python",
+      "docx",
+      "frontend-design",
+      "opsx:tdd",
+      "pdf",
+      "planning-with-files",
+      "pptx",
+      "web-artifacts-builder",
+      "webapp-testing",
+      "xlsx"
+    ],
+    "keep": [
+      "frontend-designer"
+    ]
+  }
+}

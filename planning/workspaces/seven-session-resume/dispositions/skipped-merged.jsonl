@@ -1,0 +1,12 @@
+{"id": "dagster-expert", "bucket": "skipped", "disposition": "remove", "evidence": "dagster-expert [installed-external] \u2014 dagster-io/skills", "risk": "low"}
+{"id": "dignified-python", "bucket": "skipped", "disposition": "remove", "evidence": "dignified-python [installed-external] \u2014 dagster-io/skills", "risk": "low"}
+{"id": "docx", "bucket": "skipped", "disposition": "remove", "evidence": "docx [installed-external] \u2014 anthropics/skills", "risk": "low"}
+{"id": "frontend-design", "bucket": "skipped", "disposition": "remove", "evidence": "frontend-design [installed-external] \u2014 anthropics/skills", "risk": "low"}
+{"id": "frontend-designer", "bucket": "skipped", "disposition": "keep", "evidence": "frontend-designer [installed-external] \u2014 wyattowalsh/agents", "risk": "low"}
+{"id": "opsx:tdd", "bucket": "skipped", "disposition": "remove", "evidence": "opsx:tdd [installed-external] \u2014 yuritoledo/openspec-tdd", "risk": "low"}
+{"id": "pdf", "bucket": "skipped", "disposition": "remove", "evidence": "pdf [installed-external] \u2014 anthropics/skills", "risk": "low"}
+{"id": "planning-with-files", "bucket": "skipped", "disposition": "remove", "evidence": "planning-with-files [installed-external] \u2014 OthmanAdi/planning-with-files", "risk": "low"}
+{"id": "pptx", "bucket": "skipped", "disposition": "remove", "evidence": "pptx [installed-external] \u2014 anthropics/skills", "risk": "low"}
+{"id": "web-artifacts-builder", "bucket": "skipped", "disposition": "remove", "evidence": "web-artifacts-builder [installed-external] \u2014 anthropics/skills", "risk": "low"}
+{"id": "webapp-testing", "bucket": "skipped", "disposition": "remove", "evidence": "webapp-testing [installed-external] \u2014 anthropics/skills", "risk": "low"}
+{"id": "xlsx", "bucket": "skipped", "disposition": "remove", "evidence": "xlsx [installed-external] \u2014 anthropics/skills", "risk": "low"}

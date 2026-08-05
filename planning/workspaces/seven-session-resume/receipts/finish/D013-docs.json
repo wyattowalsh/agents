@@ -1,0 +1,8 @@
+{
+  "leaf": "D013",
+  "status": "PASS",
+  "docs_generate": "uv run wagents docs generate --no-installed \u2192 exit 0 (1862 pages)",
+  "readme": "uv run wagents readme \u2192 exit 0",
+  "validate": "uv run wagents validate \u2192 All validations passed",
+  "r006": "CLOSED"
+}

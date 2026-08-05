@@ -1,0 +1,12 @@
+{
+  "counts": {
+    "store_missing": 0,
+    "projection_blocked": 0,
+    "projection_ensure": 0,
+    "skipped": 12,
+    "unresolved": 145,
+    "already_present": 1613
+  },
+  "blocked": [],
+  "store_missing": []
+}

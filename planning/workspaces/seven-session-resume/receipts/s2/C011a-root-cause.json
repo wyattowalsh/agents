@@ -1,0 +1,34 @@
+{
+  "leaf": "C011a",
+  "status": "DONE",
+  "finding": "DRW hits early short-circuit before ensure_probe",
+  "branch": "cli.py:_classify_cursor_sync_row ~L1583: is_verified_curated() and not _sync_install_creates_catalog_store(row) -> projection_blocked",
+  "row": {
+    "name": "deep-research-workflow",
+    "is_verified_curated": true,
+    "creates_catalog_store": false,
+    "projection_name": "deep-research-workflow",
+    "install_skill_name": "research",
+    "installed_agents": [],
+    "classify_bucket": "projection_blocked"
+  },
+  "contrast_opsx": {
+    "name": "opsx-tdd",
+    "creates_catalog_store": true,
+    "install_skill_name": "opsx:tdd",
+    "classify_bucket": "already_present"
+  },
+  "ensure_probe": {
+    "deep-research-workflow": "already_correct",
+    "store_present": true,
+    "projection_present": true,
+    "symlink_target": "~/.agents/skills/deep-research-workflow"
+  },
+  "root_cause": "install_skill_name='research' makes _sync_install_creates_catalog_store False (CLI would install as research, not catalog path). Early curated short-circuit returns projection_blocked without consulting ensure already_correct. Prefer-store DRW is live-correct but misclassified.",
+  "fix_options": [
+    "A: Before early short-circuit, if store+projection present and ensure already_correct -> already_present",
+    "B: Treat prefer-store / catalog projection identity as creates_catalog_store when store path matches projection name",
+    "C: Special-case install name != catalog name when store already materializes catalog path"
+  ],
+  "recommended": "A (minimal, matches opsx ensure_probe pattern; no install apply)"
+}

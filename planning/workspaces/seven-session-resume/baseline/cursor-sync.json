@@ -1,0 +1,89 @@
+{
+  "ok": true,
+  "mode": "dry-run",
+  "inventory_count": 1770,
+  "include_installed": false,
+  "verbose": false,
+  "agents": [
+    {
+      "agent": "cursor",
+      "error": "",
+      "warning": "Fallback local skill-root inventory after timeout: npx -y skills ls -g -a cursor --json",
+      "missing": {
+        "count": 1,
+        "sample": [
+          "opsx-tdd [verified-curated-external] \u2014 yuritoledo/openspec-tdd"
+        ],
+        "truncated": 0
+      },
+      "already_present": {
+        "count": 1611,
+        "sample": [
+          "00-ke-hoach-mkt [verified-curated-external] \u2014 minhnv0807/ai-business-skills",
+          "00-marketing-plan-global [verified-curated-external] \u2014 minhnv0807/ai-business-skills",
+          "01-content-calendar-global [verified-curated-external] \u2014 minhnv0807/ai-business-skills",
+          "01-lich-noi-dung [verified-curated-external] \u2014 minhnv0807/ai-business-skills",
+          "02-brief-chien-dich [verified-curated-external] \u2014 minhnv0807/ai-business-skills"
+        ],
+        "truncated": 1606
+      },
+      "projection_ensure": {
+        "count": 0,
+        "sample": [],
+        "truncated": 0
+      },
+      "projection_blocked": {
+        "count": 1,
+        "sample": [
+          "deep-research-workflow [verified-curated-external] \u2014 Weizhena/Deep-Research-skills"
+        ],
+        "truncated": 0
+      },
+      "store_missing": {
+        "count": 1,
+        "sample": [
+          "opsx-tdd [verified-curated-external] \u2014 yuritoledo/openspec-tdd"
+        ],
+        "truncated": 0
+      },
+      "pin_blocked": {
+        "count": 0,
+        "sample": [],
+        "truncated": 0
+      },
+      "internal_projection": {
+        "count": 0,
+        "sample": [],
+        "truncated": 0
+      },
+      "unresolved": {
+        "count": 145,
+        "sample": [
+          "ab-test-setup [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill.",
+          "accessibility [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill.",
+          "ad-creative [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill.",
+          "agent-browser [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill.",
+          "analytics-tracking [read-only-discovered] \u2014 No lockfile or curated source was found for this installed skill."
+        ],
+        "truncated": 140
+      },
+      "skipped": {
+        "count": 12,
+        "sample": [
+          "dagster-expert [installed-external] \u2014 dagster-io/skills",
+          "dignified-python [installed-external] \u2014 dagster-io/skills",
+          "docx [installed-external] \u2014 anthropics/skills",
+          "frontend-design [installed-external] \u2014 anthropics/skills",
+          "frontend-designer [installed-external] \u2014 wyattowalsh/agents"
+        ],
+        "truncated": 7
+      },
+      "commands": [
+        "npx skills add yuritoledo/openspec-tdd@463646fce4605808cd9dcf7e786829dcf293586e --skill opsx:tdd -y -g -a cursor"
+      ]
+    }
+  ],
+  "accept_floating": false,
+  "pin_blocked_count": 0,
+  "invalid_install_spec_count": 0
+}

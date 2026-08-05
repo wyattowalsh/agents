@@ -1,0 +1,14 @@
+{
+  "leaf": "R005",
+  "counts": {
+    "claude": 6,
+    "agents": 6,
+    "cursor": 6,
+    "codex": 6,
+    "opencode": 6,
+    "grok": 6
+  },
+  "hub": true,
+  "hub_index": true,
+  "status": "PASS"
+}

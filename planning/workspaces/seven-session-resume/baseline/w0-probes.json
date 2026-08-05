@@ -1,0 +1,55 @@
+{
+  "L001c": {
+    "exists": true,
+    "writable": true
+  },
+  "L005c": {
+    "attributeCommitsToAgent_true": true,
+    "attributePRsToAgent_true": true
+  },
+  "L005a": {
+    "has_ruff_format": false,
+    "has_ty": true
+  },
+  "L005b": {
+    "first_return_line": 1844,
+    "dead_return_line": 1845,
+    "snippet": [
+      "    if reason:",
+      "        return _deny(payload, reason, 'destructive-shell-guard')",
+      "    return 0",
+      "    return 0",
+      ""
+    ]
+  },
+  "L005d": {
+    "ty_os_active": true
+  },
+  "L004": {
+    "plannotator_counts": {
+      "claude": 6,
+      "agents": 6,
+      "cursor": 6,
+      "codex": 0,
+      "opencode": 0,
+      "grok": 6
+    },
+    "gstack_agents": false,
+    "gstack_home": false
+  },
+  "L007": {
+    "ensure_import": true,
+    "store_missing": true,
+    "projection_ensure": true
+  },
+  "L001a": {
+    "hooks_json": true,
+    "wrapper": true,
+    "wrapper_exec": true
+  },
+  "L001b": {
+    "hooks_json": true,
+    "wrapper": true,
+    "wrapper_exec": true
+  }
+}
