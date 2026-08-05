@@ -27,6 +27,9 @@ from wagents.hooks.policies import (
         "git commit -m x --no-verify",
         "git push --no-verify",
         "git commit --no-gpg-sign -m x",
+        'git commit -m "fix: x\n\nCo-authored-by: Cursor <cursor@example.com>"',
+        "git commit -m 'feat: x' -m 'Made-with: Cursor'",
+        "git commit -m 'Generated-by: Cursor Agent'",
     ],
 )
 def test_git_commit_push_guard_blocks(command: str) -> None:
@@ -143,7 +146,7 @@ def test_quality_gate_command_resolves_repo_script() -> None:
 
 
 def test_destructive_shell_blocks():
-    assert evaluate_destructive_shell('rm -rf /') is not None
+    assert evaluate_destructive_shell("rm -rf /") is not None
 
 
 def test_protected_file_blocks_env():
@@ -180,4 +183,3 @@ def test_protected_file_allows_safe_env_templates_and_src(path: str) -> None:
 
 def test_protected_file_allows_src():
     assert evaluate_protected_file("src/main.py") is None
-
