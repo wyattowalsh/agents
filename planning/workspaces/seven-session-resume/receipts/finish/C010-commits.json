@@ -1,0 +1,29 @@
+{
+  "leaf": "C010",
+  "status": "DONE",
+  "branch": "main",
+  "ahead_of": "origin/main",
+  "commits": [
+    {
+      "sha": "ee79cae4",
+      "message": "fix(skills-sync): prefer-store classify and capture apply JSON failures"
+    },
+    {
+      "sha": "2261b964",
+      "message": "fix(hooks): deny Cursor agent attribution trailers in commits"
+    },
+    {
+      "sha": "55152532",
+      "message": "docs(agents): document Plannotator core, extras, and hook path"
+    },
+    {
+      "sha": "6c071f22",
+      "message": "chore: add kill-agent-attribution OpenSpec and finish receipts"
+    }
+  ],
+  "not_committed": [
+    "CLAUDE.md (one-line ruff format note; unrelated drive-by)",
+    "remaining ~3k dirty tree (docs authoring MDX, agents projections, other openspec, candidate corpus) — out of finish scope"
+  ],
+  "pushed": false
+}
