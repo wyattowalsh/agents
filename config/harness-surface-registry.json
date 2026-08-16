@@ -183,7 +183,7 @@
     },
     {
       "id": "cursor-cli",
-      "label": "Cursor CLI",
+      "label": "Cursor Agent CLI",
       "brand": "Cursor",
       "surface_kind": "cli",
       "owner_change": "agents-c04-cursor-harness",
@@ -193,23 +193,40 @@
         ".cursor/mcp.json",
         ".cursor/agents/",
         "config/cursor-agents.json",
-        "wagents/platforms/cursor.py"
+        "wagents/platforms/cursor.py",
+        "instructions/cursor-cli-global.md",
+        ".cursor/rules/cursor-cli.mdc",
+        "wagents/cursor_cli_doctor.py",
+        "skills/harness-master/scripts/discovery/classify_intent.py"
       ],
       "projection_surfaces": [
-        "cli-permissions",
+        "instructions",
+        "rules",
+        "skills",
+        "agents",
+        "hooks",
         "mcp",
-        "agents"
+        "plugins",
+        "cli-permissions",
+        "worktrees"
       ],
       "validation_requirements": [
         "CLI permissions fixture",
         "no global-only CLI fields fixture",
         "MCP fixture",
-        "optional Cursor CLI smoke when real Cursor agent binary is available"
+        "optional Cursor CLI smoke when real Cursor agent binary is available",
+        "harness-master classify alias fixture",
+        "instruction overlay fixture",
+        "hook-surface consumer fixture",
+        "doctor redaction fixture"
       ],
       "caveats": [
-        "Project .cursor/cli.json is CLI-only; global ~/.cursor/cli-config.json is user-owned - keep exploreSubagentModel=inherit so Explore inherits the High parent.",
-        "Home sync projects allowlisted rules (~/.cursor/rules/, orphans preserved) and managed-marker agents (~/.cursor/agents/); Task launches must pass model cursor-grok-4.5-high (soft rule + hard Task rewrite + subagentStart allowlist).",
-        "IDE picker owns parent model selection; no live state.vscdb writes from repo sync."
+        "Binary is `agent` (also `cursor-agent`). Skills CLI adapter remains `cursor`; do not install with -a cursor-cli.",
+        "Shared hooks/MCP/skills/agents are rendered once by the Cursor adapter (hook-registry harness id cursor). cursor-cli is a consumer, not a second render target.",
+        "Project .cursor/cli.json is permissions-only. Global ~/.cursor/cli-config.json is user-owned; sync SHALL NOT write it or state.vscdb.",
+        "Plugin marketplace add is operator-opt-in. Repo may document --plugin-dir; sync must not run agent plugin marketplace add.",
+        "ACP remains the cursor-acp row. agent worker and dashboard MCP stay out of repo sync.",
+        "Keep exploreSubagentModel=inherit in user-owned CLI config. IDE picker owns the parent model."
       ]
     },
     {

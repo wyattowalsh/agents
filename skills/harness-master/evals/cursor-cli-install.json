@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master install cursor-cli",
+  "files": ["references/install-guidance.md"],
+  "expected_behavior": [
+    "Agent enters Install Guidance rather than audit or apply mode",
+    "Agent treats `cursor-cli` as Cursor Agent CLI and keeps Skills CLI on `--agent cursor` / `-a cursor`",
+    "Agent does not recommend `-a cursor-cli` or `--agent cursor-cli`"
+  ]
+}

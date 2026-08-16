@@ -20,7 +20,7 @@ Use exactly one of these tags on every finding:
 
 ## Alias And Facet Rules
 
-- Alias normalization must preserve evidence boundaries. For example, `cursor-cli` and `cursor-cloud` normalize to `cursor`, but CLI and cloud blind spots still need explicit reporting.
+- Alias normalization must preserve evidence boundaries. `cursor-cli` (`agent` / `cursor-agent` / `agent-cli`) is its own harness-master report. `cursor-cloud` and related cloud aliases remain facets of the editor `cursor` report and still need explicit cloud blind spots.
 - Desktop-app harnesses such as `claude-desktop`, `chatgpt`, `perplexity-desktop`, and `cherry-studio` can have no install agent name. Report them as config/app surfaces, not Skills CLI targets.
 
 ## Confidence Guidance

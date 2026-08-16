@@ -1002,6 +1002,44 @@
         "uv run wagents validate"
       ],
       "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/.cursor/rules/cursor-cli.mdc",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "elevate-cursor-agent-cli-harness",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/instructions/cursor-cli-global.md",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "elevate-cursor-agent-cli-harness",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_discovery_classify_intent.py",
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/wagents/cursor_cli_doctor.py",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "elevate-cursor-agent-cli-harness",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_cursor_cli_doctor.py",
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
     }
   ]
 }

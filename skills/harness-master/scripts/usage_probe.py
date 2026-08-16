@@ -35,6 +35,17 @@ OPENCODE_LOCAL_SOURCES = [
 ]
 
 
+CURSOR_CLI_LOCAL_SOURCES = [
+    ".cursor/cli.json",
+    ".cursor/hooks.json",
+    ".cursor/mcp.json",
+    "instructions/cursor-cli-global.md",
+    ".cursor/rules/cursor-cli.mdc",
+    "wagents/cursor_cli_doctor.py",
+    "config/harness-surface-registry.json",
+]
+
+
 ENV_PRESENCE_KEYS = [
     "LANGFUSE_PUBLIC_KEY",
     "LANGFUSE_SECRET_KEY",
@@ -126,6 +137,14 @@ def _opencode_plugin_names(repo_root: Path) -> list[str]:
 
 def _planned_commands(harnesses: list[str], days: int) -> list[dict[str, Any]]:
     commands: list[dict[str, Any]] = []
+    if "cursor-cli" in harnesses:
+        commands.append({
+            "id": "cursor-cli-about",
+            "command_shape": "agent about --format json",
+            "privacy_class": "metadata-safe",
+            "execution": "planned-only",
+            "redact": ["account-email", "token", "api-key", "authorization"],
+        })
     if "opencode" in harnesses:
         commands.extend([
             {
@@ -192,6 +211,17 @@ def _usage_sources(harnesses: list[str], level: str) -> list[UsageSource]:
                 status="ready",
             )
         )
+    if "cursor-cli" in harnesses:
+        sources.append(
+            UsageSource(
+                id="cursor-cli-local-metadata",
+                harness="cursor-cli",
+                level=level,
+                privacy_class="metadata-safe",
+                access_method="top-level-config-metadata",
+                status="ready",
+            )
+        )
     return sources
 
 
@@ -222,6 +252,32 @@ def _usage_signals(harnesses: list[str], level: str, days: int, metadata: list[d
                 confidence="medium",
             )
         )
+    if "cursor-cli" in harnesses:
+        existing = [
+            item["path"]
+            for item in metadata
+            if item.get("exists")
+            and (
+                "cursor" in str(item.get("path", "")).lower()
+                or str(item.get("path", "")).startswith("instructions/cursor-cli")
+                or str(item.get("path", "")).startswith("wagents/cursor_cli")
+            )
+        ]
+        signals.append(
+            UsageSignal(
+                category="tool-usage",
+                source_id="cursor-cli-local-metadata",
+                privacy_class="metadata-safe",
+                harness="cursor-cli",
+                level=level,
+                window_days=days,
+                summary=(
+                    f"Observed {len(existing)} Cursor Agent CLI metadata source(s). "
+                    "Report cli-config key presence only; never collect agent about email or transcripts."
+                ),
+                confidence="medium",
+            )
+        )
     return signals
 
 
@@ -230,6 +286,16 @@ def probe(repo_root: Path, harnesses: list[str], level: str, days: int) -> dict[
     opencode_metadata = []
     if "opencode" in harnesses:
         opencode_metadata = [_safe_file_metadata(repo_root, path) for path in OPENCODE_LOCAL_SOURCES]
+    cursor_cli_metadata: list[dict[str, Any]] = []
+    if "cursor-cli" in harnesses:
+        cursor_cli_metadata = [_safe_file_metadata(repo_root, path) for path in CURSOR_CLI_LOCAL_SOURCES]
+        cli_config = Path.home() / ".cursor" / "cli-config.json"
+        cursor_cli_metadata.append({
+            "path": "~/.cursor/cli-config.json",
+            "exists": cli_config.exists(),
+            "privacy_class": "metadata-safe",
+            "json_top_level_keys": _top_level_json_keys(cli_config) if cli_config.exists() else [],
+        })
 
     payload = {
         "schema_version": "1.0",
@@ -244,16 +310,20 @@ def probe(repo_root: Path, harnesses: list[str], level: str, days: int) -> dict[
         },
         "tools_available": {
             "opencode": bool(shutil.which("opencode")),
+            "agent": bool(shutil.which("agent")),
+            "cursor-agent": bool(shutil.which("cursor-agent")),
             "uv": bool(shutil.which("uv")),
         },
         "env_presence": {key: bool(os.environ.get(key)) for key in ENV_PRESENCE_KEYS},
         "surface_summary": surfaces.get("summary", {}),
         "opencode_metadata": opencode_metadata,
         "opencode_plugins": _opencode_plugin_names(repo_root) if "opencode" in harnesses else [],
+        "cursor_cli_metadata": cursor_cli_metadata,
         "planned_safe_commands": _planned_commands(harnesses, days),
     }
+    signal_metadata = opencode_metadata + cursor_cli_metadata
     payload["usage_sources"] = [asdict(item) for item in _usage_sources(harnesses, level)]
-    payload["usage_signals"] = [asdict(item) for item in _usage_signals(harnesses, level, days, opencode_metadata)]
+    payload["usage_signals"] = [asdict(item) for item in _usage_signals(harnesses, level, days, signal_metadata)]
     return payload
 
 

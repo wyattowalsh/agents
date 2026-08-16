@@ -130,19 +130,28 @@
         "cli-permissions-fixture",
         "mcp-fixture",
         "agents-fixture",
-        "rollback-fixture"
+        "rollback-fixture",
+        "instruction-overlay-fixture",
+        "hook-surface-consumer-fixture",
+        "classify-alias-fixture",
+        "doctor-redaction-fixture"
       ],
       "validation_commands": [
         "uv run pytest tests/test_sync_agent_stack.py -q -k cursor",
         "uv run pytest tests/test_harness_plan_fixtures.py -q -k cursor",
         "uv run pytest tests/test_harness_rollback_fixtures.py -q -k cursor_rollback",
         "uv run pytest tests/test_validate_repo.py -q -k cursor_agents",
-        "uv run wagents validate"
+        "uv run wagents validate",
+        "uv run python skills/harness-master/scripts/discovery/classify_intent.py --args \"agent both\" --json",
+        "uv run pytest tests/test_discovery_classify_intent.py -q",
+        "uv run pytest tests/test_cursor_cli_doctor.py -q",
+        "uv run wagents cursor-cli doctor --format json"
       ],
       "rollback_coverage": "present",
-      "promotion_blocker": "Global ~/.cursor/cli-config.json is user-owned; keep CI matrix green.",
+      "promotion_blocker": "Global ~/.cursor/cli-config.json is user-owned; keep CI matrix green. Do not treat marketplace add or live agent -p as fixtures.",
       "notes": [
-        "Project .cursor/cli.json permissions, MCP, and agent overlays are repo-synced."
+        "Agent CLI (`agent`) consumes shared Cursor hooks/MCP/skills/agents plus project cli.json permissions, instruction overlay, and a read-only doctor. Global cli-config.json stays user-owned.",
+        "Skills CLI adapter remains cursor. Hook-registry render id remains cursor."
       ]
     },
     {

@@ -162,3 +162,41 @@ def test_classify_has_at_least_eight_distinct_modes_covered():
         res = mod.classify_intent(c)
         modes.add(res["mode"])
     assert len(modes) >= 5
+
+
+def test_classify_cursor_agent_aliases_to_cursor_cli():
+    mod = _load()
+    for raw in ("agent both", "cursor-agent both", "cursor-cli both", "agent-cli project"):
+        res = mod.classify_intent(raw)
+        assert res["harnesses"] == ["cursor-cli"], raw
+
+
+def test_classify_cursor_editor_stays_cursor():
+    mod = _load()
+    for raw in ("cursor both", "cursor-editor project", "cursor-desktop global"):
+        res = mod.classify_intent(raw)
+        assert res["harnesses"] == ["cursor"], raw
+
+
+def test_classify_all_order_inserts_cursor_cli_after_cursor():
+    mod = _load()
+    res = mod.classify_intent("all both")
+    harnesses = res["harnesses"]
+    assert "cursor" in harnesses
+    assert "cursor-cli" in harnesses
+    assert harnesses.index("cursor") < harnesses.index("cursor-cli")
+    assert harnesses.index("cursor-cli") < harnesses.index("grok-build")
+
+
+def test_classify_usage_discover_install_all_expand_but_apply_does_not():
+    mod = _load()
+    expected = list(mod.DETERMINISTIC_ALL_ORDER)
+    for raw in ("usage all", "discover all", "install all"):
+        res = mod.classify_intent(raw)
+        assert res["is_all"] is True, raw
+        assert res["harnesses"] == expected, raw
+        assert res["harnesses"].index("cursor") < res["harnesses"].index("cursor-cli")
+    apply_res = mod.classify_intent("apply all")
+    assert apply_res["mode"] == "apply"
+    assert apply_res["is_all"] is True
+    assert apply_res["harnesses"] == []

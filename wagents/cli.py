@@ -166,6 +166,8 @@ grok_app = typer.Typer(help="Diagnose Grok Build runtime state")
 plannotator_app = typer.Typer(help="Install and verify Plannotator for Grok Build")
 grok_app.add_typer(plannotator_app, name="plannotator")
 app.add_typer(grok_app, name="grok")
+cursor_cli_app = typer.Typer(help="Diagnose Cursor Agent CLI runtime state")
+app.add_typer(cursor_cli_app, name="cursor-cli")
 rtk_app = typer.Typer(help="Diagnose and sync RTK token-saving hooks")
 app.add_typer(rtk_app, name="rtk")
 app.add_typer(self_app, name="self")
@@ -2119,6 +2121,44 @@ def grok_doctor(
     issues = [check["summary"] for check in checks if check["status"] == "fail"]
     warnings = [check["summary"] for check in checks if check["status"] == "warn"]
     lines: list[str] = ["Grok Build doctor", ""]
+    for check in checks:
+        lines.append(f"{check['name']}: {check['summary']}")
+    if warnings:
+        lines.append("")
+        lines.append("warnings:")
+        lines.extend(f"- {item}" for item in warnings)
+    if issues:
+        lines.append("")
+        lines.append("issues:")
+        lines.extend(f"- {item}" for item in issues)
+
+    typer.echo("\n".join(lines))
+    if issues:
+        raise typer.Exit(code=1)
+
+
+
+@cursor_cli_app.command("doctor")
+def cursor_cli_doctor(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+) -> None:
+    """Report Cursor Agent CLI binaries, config key presence, and overlays."""
+    from wagents.cursor_cli_doctor import collect_cursor_cli_doctor_checks, cursor_cli_doctor_report
+
+    format_ = _normalize_output_format(format_)
+
+    if format_ in {"json", "jsonl"}:
+        report = cursor_cli_doctor_report()
+        checks = report["checks"]
+        _emit_doctor_report(format_, checks)
+        if not report["ok"]:
+            raise typer.Exit(code=1)
+        return
+
+    checks = collect_cursor_cli_doctor_checks()
+    issues = [check["summary"] for check in checks if check["status"] == "fail"]
+    warnings = [check["summary"] for check in checks if check["status"] == "warn"]
+    lines: list[str] = ["Cursor Agent CLI doctor", ""]
     for check in checks:
         lines.append(f"{check['name']}: {check['summary']}")
     if warnings:

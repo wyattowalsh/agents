@@ -18,6 +18,7 @@ SUPPORTED_HARNESSES = [
     "chatgpt",
     "codex",
     "cursor",
+    "cursor-cli",
     "grok-build",
     "opencode",
     "perplexity-desktop",
@@ -34,15 +35,17 @@ HARNESS_ALIASES: dict[str, list[str]] = {
     "openai-chatgpt": ["chatgpt"],
     "codex": ["codex"],
     "cursor": ["cursor"],
-    "cursor-agent": ["cursor"],
     "cursor-editor": ["cursor"],
     "cursor-desktop": ["cursor"],
-    "cursor-cli": ["cursor"],
-    "agent-cli": ["cursor"],
+    "cursor-web": ["cursor"],
     "cursor-cloud": ["cursor"],
     "cursor-cloud-agent": ["cursor"],
     "cursor-background-agent": ["cursor"],
-    "cursor-web": ["cursor"],
+    "cursor-cli": ["cursor-cli"],
+    "cursor-agent": ["cursor-cli"],
+    "cursor-agent-cli": ["cursor-cli"],
+    "agent-cli": ["cursor-cli"],
+    "agent": ["cursor-cli"],
     "grok": ["grok-build"],
     "grok-build": ["grok-build"],
     "grok-cli": ["grok-build"],
@@ -84,12 +87,15 @@ OTHER_EXPLICIT_MODES = {
     "apply": "apply",
 }
 
+_EXPANDABLE_ALL_MODES = frozenset({"audit", "usage", "discover", "install"})
+
 DETERMINISTIC_ALL_ORDER = [
     "claude-code",
     "claude-desktop",
     "chatgpt",
     "codex",
     "cursor",
+    "cursor-cli",
     "grok-build",
     "opencode",
     "perplexity-desktop",
@@ -175,6 +181,11 @@ def _infer_discover_depth_from_discover_tokens(remaining: list[str]) -> str:
     return "full"
 
 
+def _expand_all(cls: Classification) -> None:
+    if cls.is_all and not cls.harnesses and cls.mode in _EXPANDABLE_ALL_MODES:
+        cls.harnesses = list(DETERMINISTIC_ALL_ORDER)
+
+
 def _set_discover(cls: Classification, depth: str, remaining: list[str]) -> None:
     cls.mode = "discover"
     cls.discover_depth = depth
@@ -183,6 +194,7 @@ def _set_discover(cls: Classification, depth: str, remaining: list[str]) -> None
     cls.level = level
     cls.unresolved = unresolved
     cls.is_all = is_all
+    _expand_all(cls)
 
 
 def classify_intent(argstr: str | None) -> dict[str, Any]:
@@ -222,6 +234,7 @@ def classify_intent(argstr: str | None) -> dict[str, Any]:
         cls.level = level
         cls.unresolved = unresolved
         cls.is_all = is_all
+        _expand_all(cls)
         return _as_dict(cls)
 
     harnesses, level, unresolved, is_all = _collect_harness_level(norm_tokens)

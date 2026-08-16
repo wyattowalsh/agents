@@ -1,0 +1,11 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master cursor-cli both",
+  "files": [],
+  "expected_behavior": [
+    "Agent resolves `cursor-cli` (or `agent both`) as the Cursor Agent CLI harness, not editor `cursor`",
+    "Agent independently reviews CLI surfaces: instruction overlay, `.cursor/cli.json` permissions, shared hooks/MCP/skills/agents, worktrees, and `plugin.json`",
+    "Agent does not collapse the report into an editor-only Cursor review",
+    "Agent flags `~/.cursor/cli-config.json` values, plugin marketplace auth, and dashboard MCP/worker pools as blind spots"
+  ]
+}

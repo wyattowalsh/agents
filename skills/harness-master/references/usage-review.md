@@ -47,6 +47,7 @@ Prefer these runtime summaries when available:
 - `gemini_quota` for Gemini quota posture
 - `workspace-summary` and `git-smart-status` for repo context and worktree risk
 - `wagents rtk review` and `wagents rtk gain --history` for RTK shell token-savings usage review
+- `wagents cursor-cli doctor --format json` or `agent about --format json` for Cursor Agent CLI metadata (omit email; never print tokens)
 
 OpenCode command shapes that are safe to plan or run only when sanitized:
 
@@ -153,6 +154,15 @@ Verdict mapping:
 - `instrument`: add safer aggregate measurement before changing behavior
 - `defer`: evidence is incomplete or blocked
 - `do-not-change`: risk outweighs benefit
+
+## Cursor Agent CLI Privacy Notes
+
+When reviewing `cursor-cli` usage:
+
+- Treat `agent about --format json` (or `wagents cursor-cli doctor --format json`) as `metadata-safe` only after omitting email, tokens, and API keys. Binary version, model name, and boolean capability flags are allowed.
+- For `~/.cursor/cli-config.json`, report **key presence only**. Do not print values (permissions lists, model objects, attribution, network, or any credential-shaped fields).
+- Do not collect CLI transcripts, session bodies, resume histories, or `agent ls` conversation contents (`raw-sensitive`).
+- Plugin marketplace auth, dashboard MCP, Cloud Agent handoff, and `agent worker` pools are `manual-only` blind spots.
 
 ## OpenCode Baseline Sources
 

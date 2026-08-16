@@ -4,7 +4,7 @@
   "files": [],
   "expected_behavior": [
     "Agent enters Install Guidance rather than audit or apply mode",
-    "Agent surfaces the exact `npx skills add <source> --skill harness-master -y -g --agent <agent>` form",
+    "Agent surfaces the exact `npx skills add <source> --skill harness-master -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode` form",
     "Agent does not suggest install commands for unrelated native config problems"
   ]
 }

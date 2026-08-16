@@ -125,6 +125,18 @@
       ]
     },
     {
+      "id": "cursor-cli",
+      "tier": "specified-only",
+      "enforcement": "no-proven-cli-pretooluse-image-path",
+      "owner": "image-input-optimizer-guard",
+      "assurance": "Shares the Cursor adapter PreToolUse image-input-optimizer-guard render (not a second hook). Agent CLI image-read hook fire is unsmoked; no hook-block assurance. Do not treat the Cursor before-read-file guard as the image optimizer.",
+      "repo_surfaces": [
+        "config/hook-registry.json",
+        "hooks/wagents-hook.py",
+        ".cursor/hooks.json"
+      ]
+    },
+    {
       "id": "grok-build",
       "tier": "specified-only",
       "enforcement": "not-enabled-until-generic-hook-projection-is-proven",

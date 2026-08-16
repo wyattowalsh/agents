@@ -7,10 +7,11 @@
 3. [ChatGPT](#chatgpt)
 4. [Codex](#codex)
 5. [Cursor](#cursor)
-6. [Grok Build](#grok-build)
-7. [OpenCode](#opencode)
-8. [Perplexity Desktop](#perplexity-desktop)
-9. [Cherry Studio](#cherry-studio)
+6. [Cursor Agent CLI](#cursor-agent-cli)
+7. [Grok Build](#grok-build)
+8. [OpenCode](#opencode)
+9. [Perplexity Desktop](#perplexity-desktop)
+10. [Cherry Studio](#cherry-studio)
 
 ## Claude Code
 
@@ -54,6 +55,8 @@ Check:
 
 ## Cursor
 
+Editor (`cursor`) only. Agent CLI has its own checklist below.
+
 Check:
 
 - `AGENTS.md` vs `.cursor/rules/**` responsibilities
@@ -61,10 +64,28 @@ Check:
 - `.cursor/mcp.json` location and interpolation quality
 - `.cursor/skills/**`, `.agents/skills/**`, `.cursor/agents/**`, and compatibility directory duplication
 - `.cursor/hooks.json` and `~/.cursor/hooks.json` precedence
-- `.cursor/cli.json` vs `~/.cursor/cli-config.json` permissions split
+- do not audit CLI-only `.cursor/cli.json` / `~/.cursor/cli-config.json` here (see Cursor Agent CLI)
 - `.cursorignore` coverage for sensitive or noisy paths
 - `~/.cursor/permissions.json` fit for the repo's risk profile, with medium confidence if docs conflict
 - UI-only user/team rules and Cloud Agent settings/secrets/API state as blind spots
+
+## Cursor Agent CLI
+
+Canonical id `cursor-cli` (`agent` / `cursor-agent`). Do not collapse this review into the editor `cursor` report.
+
+Check:
+
+- aliases `cursor-cli`, `cursor-agent`, `cursor-agent-cli`, `agent-cli`, and `agent` normalize to `cursor-cli`
+- `instructions/cursor-cli-global.md` overlay is present, with a thin `.cursor/rules/cursor-cli.mdc` pointer
+- project `.cursor/cli.json` is permissions-only; remaining CLI settings belong in user-owned `~/.cursor/cli-config.json`
+- sync and apply recommendations do **not** write `~/.cursor/cli-config.json` or `state.vscdb`
+- shared hooks, MCP, skills, and agents are consumed from the Cursor adapter (`harness="cursor"`), not re-rendered for `cursor-cli`
+- `wagents cursor-cli doctor --format json` (or `agent about --format json` with email stripped) for binary/model/key-presence metadata
+- plugin marketplace is operator-opt-in: document `--plugin-dir`; never run `agent plugin marketplace add` during sync
+- `.cursor/worktrees.json` only when present; do not author worktrees or start `agent worker` unless the user asks
+- ACP remains the `cursor-acp` row (`agent acp`); do not merge ACP into this report as a second product id
+- Skills CLI install stays `-a cursor`; do not recommend `-a cursor-cli`
+- flag `cli-config.json` values, plugin marketplace auth, dashboard MCP, Cloud Agent handoff, and worker pools as blind spots
 
 ## Grok Build
 

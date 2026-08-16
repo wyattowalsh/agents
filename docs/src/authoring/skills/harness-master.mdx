@@ -2,7 +2,6 @@
 name: "harness-master"
 description: "Audit harness configs, discover gaps, usage signals, apply approved fixes. Use when tuning Claude, Codex, Copilot, Cursor, Gemini, Grok, OpenCode, Cherry, or LM Studio. NOT agents, MCP, or app telemetry."
 license: "MIT"
-model: "opus"
 source_kind: "custom"
 trust_tier: "repo-owned"
 status: "repo-owned"
@@ -55,7 +54,7 @@ If the user invokes `/harness-master` with no arguments:
 
 ## Input Normalization
 
-- Supported harnesses: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `cursor`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
+- Supported harnesses: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `cursor`, `cursor-cli`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
 - Supported levels: `project`, `global`, `both`
 - Supported research categories: `config`, `plugin`, `extension`, `mcp`, `skill`, `all`
 - Supported usage windows: positive day counts such as `7`, `14`, `30`, or `days=14`; default to `14` when absent
@@ -64,7 +63,8 @@ If the user invokes `/harness-master` with no arguments:
   - `claude-desktop` -> `claude-desktop`
   - `chatgpt`, `chatgpt-desktop`, `openai-chatgpt` -> `chatgpt`
   - `codex` -> `codex`
-  - `cursor`, `cursor-agent`, `cursor-editor`, `cursor-desktop`, `cursor-cli`, `agent-cli`, `cursor-cloud`, `cursor-cloud-agent`, `cursor-background-agent`, `cursor-web` -> `cursor`
+  - `cursor`, `cursor-editor`, `cursor-desktop`, `cursor-web`, `cursor-cloud`, `cursor-cloud-agent`, `cursor-background-agent` -> `cursor`
+  - `cursor-cli`, `cursor-agent`, `cursor-agent-cli`, `agent-cli`, `agent` -> `cursor-cli`
   - `grok`, `grok-build`, `grok-cli` -> `grok-build`
   - `opencode`, `open-code` -> `opencode`
   - `perplexity`, `perplexity-desktop`, `perplexity-mac` -> `perplexity-desktop`
@@ -76,7 +76,7 @@ If the user invokes `/harness-master` with no arguments:
   - `both`, `all-levels` -> `both`
 - Split multiple harnesses on commas and whitespace.
 - If the user supplies both `all` and named harnesses, ask which form they want.
-- Deterministic `all` order: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `cursor`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
+- Deterministic `all` order: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `cursor`, `cursor-cli`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`, `lm-studio`
 - Unknown tokens are never guessed. Ask one focused clarification question.
 
 
@@ -91,6 +91,16 @@ If the user invokes `/harness-master` with no arguments:
 - **Cross-harness delegate:** `/grok-delegate` — native headless `grok -p` / `-r` / worktrees / leader for Codex/OpenCode task graphs (not config sync)
 - **Isolated sync:** repo stack sync with `--platforms grok --targets home` (skips other harness home merges; includes Plannotator hook refresh)
 
+### Cursor Agent CLI (`cursor-cli`)
+
+- **Binary:** `agent` (also `cursor-agent`). Skills CLI adapter remains `cursor` (`-a cursor`).
+- **Instruction entry:** `AGENTS.md` + `CLAUDE.md` + `.cursor/rules` + `instructions/cursor-cli-global.md` (thin `.cursor/rules/cursor-cli.mdc` pointer)
+- **Shared SSOT with editor:** `.cursor/hooks.json`, `.cursor/mcp.json`, `.cursor/skills`, `.cursor/agents`, `~/.cursor/{hooks,mcp,skills,agents}` — rendered once by the Cursor adapter (`harness="cursor"`)
+- **CLI-only:** project `.cursor/cli.json` permissions; user-owned `~/.cursor/cli-config.json` (sync SHALL NOT write it). Doctor: repo CLI `cursor-cli doctor`
+- **Plugins:** `--plugin-dir` and `agent plugin marketplace` (operator-opt-in; never sync-add)
+- **ACP / worktrees / worker:** cite `cursor-acp`; `agent --worktree`; `agent worker` is out of repo sync
+- **Hooks:** consume shared hooks.json + plugin hooks. Do not add `cursor-cli` to hook-registry render lists
+
 ## Classification Gate
 
 1. Parse `$ARGUMENTS` into harnesses, level, `all`, install intent, apply intent, and unresolved tokens.
@@ -101,7 +111,7 @@ If the user invokes `/harness-master` with no arguments:
 6. If ad-hoc "find skill for X", redirect to `skill-router search` or `npx skills find`. If systematic skill/MCP expansion, stay in Discover. If create skill, redirect to skill-creator. If open-ended non-harness research, redirect to `/research`.
 7. If the request is `apply ...` or an approval phrase, run Apply Approved only if the matching dry-run review already exists in this session. Otherwise rerun audit first.
 8. If the request includes unsupported harnesses, refuse cleanly and list the supported set.
-9. If harnesses are missing (audit/usage), ask only for harnesses or `all`.
+9. If harnesses are missing and `all` was not supplied (audit/usage), ask only for harnesses or `all`.
 10. If the level is missing (audit/usage), ask only for `project`, `global`, or `both`.
 11. Otherwise run Audit in dry-run mode.
 
@@ -216,7 +226,7 @@ Never claim `latest` without evidence from a current source.
 - Load `references/install-guidance.md` only when the user asks how to install `harness-master`, or when missing skill availability is the actual root cause.
 - Default surfaced form:
   ```bash
-  npx skills add <source> --skill harness-master -y -g --agent <agent>
+  npx skills add <source> --skill harness-master -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode
   ```
 - Do not recommend install commands for native config problems.
 - Do not suggest project-local install by default. Mention `python scripts/install_skills.py --local --execute` only if the user explicitly asks for project-local installation.
@@ -228,7 +238,7 @@ After changing this skill, run:
 ```bash
 python scripts/check.py
 uv run python scripts/usage_probe.py --repo-root . --harness opencode --level both --days 14 --json
-uv run python scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness cursor --harness grok-build --harness opencode --harness perplexity-desktop --harness cherry-studio --harness lm-studio
+uv run python scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness cursor --harness cursor-cli --harness grok-build --harness opencode --harness perplexity-desktop --harness cherry-studio --harness lm-studio
 ```
 
 Completion criteria:

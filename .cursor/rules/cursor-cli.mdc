@@ -1,0 +1,8 @@
+---
+description: Cursor Agent CLI (`agent` / `cursor-agent`) overlay
+alwaysApply: true
+---
+
+# Cursor Agent CLI
+
+Follow `instructions/cursor-cli-global.md` for the `agent` / `cursor-agent` CLI overlay. The editor also loads this rule; shared hooks, MCP, skills, and agents stay on the Cursor adapter.

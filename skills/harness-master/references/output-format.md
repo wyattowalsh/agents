@@ -70,7 +70,7 @@ Keep cross-harness synthesis separate from the per-harness sections.
 
 ## Facet Reporting
 
-- If a facet alias normalizes to one harness, such as `cursor-cli` or `cursor-cloud`, keep one `cursor` report and call out facet-specific files and blind spots inside that report.
+- If a cloud/Bugbot facet alias normalizes to `cursor`, keep one editor report and call out facet-specific files and blind spots inside that report. `cursor-cli` is not a facet: give it its own per-harness section.
 - Desktop or web UI-only harnesses may have empty file-reviewed lists for a scope; in that case, list the blind spots instead of inventing local surfaces.
 
 ## Ecosystem Research Report

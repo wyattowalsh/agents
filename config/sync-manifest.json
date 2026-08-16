@@ -328,6 +328,18 @@
 		{
 			"path": "${REPO_ROOT}/config/grok-lsp.json",
 			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/instructions/cursor-cli-global.md",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/.cursor/rules/cursor-cli.mdc",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/wagents/cursor_cli_doctor.py",
+			"mode": "canonical"
 		}
 	]
 }

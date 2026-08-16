@@ -208,6 +208,12 @@ verify-docs:
 verify-all: verify-fast verify-docs ci-check
     uv run wagents openspec validate
 
+
+[doc("Diagnose Cursor Agent CLI binaries and config key presence")]
+[group("checks")]
+doctor-cursor-cli:
+    uv run wagents cursor-cli doctor --format json
+
 # ---------------------------------------------------------------------------- #
 #                                   OPENSPEC                                   #
 # ---------------------------------------------------------------------------- #

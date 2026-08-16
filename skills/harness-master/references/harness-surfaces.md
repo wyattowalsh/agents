@@ -8,10 +8,11 @@
 4. [ChatGPT](#chatgpt)
 5. [Codex](#codex)
 6. [Cursor](#cursor)
-7. [Grok Build](#grok-build)
-8. [OpenCode](#opencode)
-9. [Perplexity Desktop](#perplexity-desktop)
-10. [Cherry Studio](#cherry-studio)
+7. [Cursor Agent CLI](#cursor-agent-cli)
+8. [Grok Build](#grok-build)
+9. [OpenCode](#opencode)
+10. [Perplexity Desktop](#perplexity-desktop)
+11. [Cherry Studio](#cherry-studio)
 
 ## Legend
 
@@ -74,31 +75,68 @@ Install agent name: `codex`
 
 ## Cursor
 
+Editor, desktop, web, and Cloud Agent aliases (`cursor`, `cursor-editor`, `cursor-desktop`, `cursor-web`, `cursor-cloud`, `cursor-cloud-agent`, `cursor-background-agent`) stay on this harness. Cursor Agent CLI is a separate canonical harness: [Cursor Agent CLI](#cursor-agent-cli).
+
+Shared SSOT with the CLI (rendered once by the Cursor adapter, `harness="cursor"`): `.cursor/hooks.json`, `.cursor/mcp.json`, `.cursor/skills`, `.cursor/agents`, and the matching `~/.cursor/{hooks,mcp,skills,agents}` trees. CLI-only permissions live under `cursor-cli`.
+
 | Scope | Surface | Role | Notes |
 |-------|---------|------|-------|
 | project | `AGENTS.md` | authoritative or secondary | Simple instruction path; compare with `.cursor/rules/**` |
 | project | nested `AGENTS.md` | secondary | More specific directory-scoped instructions |
 | project | `.cursor/rules/*.md` / `.cursor/rules/*.mdc` | authoritative when present | Project rules system |
-| project | `.cursor/mcp.json` | authoritative when present | Project MCP config |
-| project | `.cursor/skills/**/SKILL.md` | authoritative when present | Cursor-native project skills |
+| project | `.cursor/mcp.json` | authoritative when present | Shared project MCP config (same file as CLI) |
+| project | `.cursor/skills/**/SKILL.md` | authoritative when present | Cursor-native project skills; shared with CLI |
 | project | `.agents/skills/**/SKILL.md` | secondary | Compatibility skills directory |
-| project | `.cursor/agents/*.md` | authoritative when present | Cursor subagents |
-| project | `.cursor/hooks.json` | authoritative when present | Project hooks; cloud agents may also run repo hooks |
-| project | `.cursor/cli.json` | authoritative when present | Project CLI permissions/settings |
+| project | `.cursor/agents/*.md` | authoritative when present | Cursor subagents; shared with CLI |
+| project | `.cursor/hooks.json` | authoritative when present | Shared project hooks; cloud agents may also run repo hooks |
 | project | `.cursorignore` | authoritative when present | Files excluded from Cursor context |
-| global | `~/.cursor/mcp.json` | authoritative | Global MCP config |
-| global | `~/.cursor/permissions.json` | authoritative, medium confidence | Still referenced by current docs but newer CLI docs also use CLI config |
-| global | `~/.cursor/cli-config.json` | authoritative | CLI global config |
-| global | `~/.cursor/hooks.json` | authoritative when present | User hooks |
+| global | `~/.cursor/mcp.json` | authoritative | Shared global MCP config |
+| global | `~/.cursor/permissions.json` | authoritative, medium confidence | Still referenced by current docs; CLI permissions are in `cli.json` / `cli-config.json` |
+| global | `~/.cursor/hooks.json` | authoritative when present | Shared user hooks |
 | global | `~/.cursor/skills` | authoritative when present | Cursor-native global skills — durable synced surface for `wagents skills sync` |
 | global | `~/.agents/skills` | secondary | Compatibility / Skills CLI universal store; store presence alone is **not** durable Cursor sync |
-| global | `~/.cursor/agents/*.md` | authoritative when present | Global Cursor subagents |
+| global | `~/.cursor/agents/*.md` | authoritative when present | Global Cursor subagents; shared with CLI |
 | global | Cursor user rules in settings UI | blind-spot | UI-managed unless exported |
 | global | Team rules/dashboard | blind-spot | Org-managed, not observable from local files |
 | global | Cloud Agent settings/secrets/API state | blind-spot | Dashboard/API-managed web surfaces |
 | global | Team/Enterprise hooks | blind-spot | Admin-distributed hooks may not be local files |
 
 Install agent name: `cursor`
+
+## Cursor Agent CLI
+
+Canonical id `cursor-cli`. Binary: `agent` (also `cursor-agent`). Aliases `cursor-cli`, `cursor-agent`, `cursor-agent-cli`, `agent-cli`, and `agent` normalize here. Review this harness independently; do not collapse it into an editor-only `cursor` report.
+
+Official CLI docs confirm the CLI loads `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, shared `mcp.json` / skills / hooks, project `.cursor/cli.json` permissions, and remaining settings in user-owned `~/.cursor/cli-config.json`. Shared hooks/MCP/skills/agents stay one SSOT owned by the Cursor adapter. `cursor-cli` is a consumer, not a second render target. ACP stays the `cursor-acp` row (`agent acp`); `agent worker` is out of repo sync.
+
+| Scope | Surface | Role | Notes |
+|-------|---------|------|-------|
+| project | `AGENTS.md` | authoritative | CLI applies root `AGENTS.md` as rules |
+| project | `CLAUDE.md` | secondary | Official CLI also applies root `CLAUDE.md` as rules |
+| project | `instructions/cursor-cli-global.md` | authoritative when present | CLI-specific overlay; thin `.cursor/rules/cursor-cli.mdc` pointer |
+| project | `.cursor/rules/*.md` / `.cursor/rules/*.mdc` | authoritative when present | Shared rules, including the CLI overlay pointer |
+| project | `.cursor/mcp.json` | authoritative when present | Shared project MCP; CLI auto-detects the same file as the editor |
+| project | `.cursor/skills/**/SKILL.md` | authoritative when present | Shared Cursor-native project skills |
+| project | `.agents/skills/**/SKILL.md` | secondary | Compatibility skills directory |
+| project | `.cursor/agents/*.md` | authoritative when present | Shared project subagents |
+| project | `.cursor/hooks.json` | authoritative when present | Shared project hooks plus plugin hooks; do not add `cursor-cli` to hook-registry render lists |
+| project | `.cursor/cli.json` | authoritative when present | CLI-only project permissions (`permissions.allow` / `permissions.deny`). Official docs: only permissions may be project-scoped |
+| project | `.cursor/worktrees.json` | authoritative when present | Worktree setup for `agent --worktree`; this repo does not author the file by default |
+| project | `plugin.json` | repo-observed | Portable Agent Plugins 1.0 manifest. CLI may load plugins via `--plugin-dir` or marketplace; do not infer auto-install |
+| project | `wagents/cursor_cli_doctor.py` | repo-observed | Read-only doctor backing `wagents cursor-cli doctor` |
+| global | `~/.cursor/mcp.json` | authoritative | Shared global MCP |
+| global | `~/.cursor/cli-config.json` | authoritative | User-owned global CLI config. Sync SHALL NOT write it or `state.vscdb`. Usage review: key presence only |
+| global | `~/.cursor/hooks.json` | authoritative when present | Shared user hooks |
+| global | `~/.cursor/skills` | authoritative when present | Shared Cursor-native global skills; Skills CLI adapter remains `cursor` |
+| global | `~/.agents/skills` | secondary | Compatibility / Skills CLI universal store |
+| global | `~/.cursor/agents/*.md` | authoritative when present | Shared global subagents |
+| global | `~/.cursor/settings.json` | authoritative when present | User plugin enablement (`enabled_plugins`); marketplace add is operator-opt-in |
+| global | CLI plugin marketplace auth | blind-spot | `agent plugin marketplace add/list` may require account auth and is not repo-synced |
+| global | Team/enterprise hooks | blind-spot | Admin-distributed hooks may load outside local `hooks.json` |
+| global | Dashboard MCP and worker pools | blind-spot | Team MCP, Cloud Agent handoff, and `agent worker` pools are dashboard-managed |
+| global | `cli-config.json` values | blind-spot | Report key presence only; do not print secret or account values |
+
+Install agent name: `cursor` (Skills CLI adapter stays `cursor`; do not recommend `-a cursor-cli`)
 
 ## Grok Build
 

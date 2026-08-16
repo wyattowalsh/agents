@@ -19,10 +19,11 @@ Do **not** surface install commands for native config problems such as:
 Use this order exactly when you show the command:
 
 ```bash
-npx skills add <source> --skill harness-master -y -g --agent <agent>
+npx skills add <source> --skill harness-master -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode
 ```
 
-Repeat `--agent` for multi-harness rollout.
+This is the complete Skills CLI target set. Grok uses the dedicated wagents
+sync and mirror route because Skills CLI has no native Grok adapter.
 
 ## Per-Harness Commands
 
@@ -34,6 +35,8 @@ npx skills add <source> --skill harness-master -y -g --agent cursor
 npx skills add <source> --skill harness-master -y -g --agent opencode
 ```
 
+Cursor Agent CLI (`cursor-cli`) consumes the same Skills CLI projection as the editor. Keep `--agent cursor` (`-a cursor`). Do not recommend `-a cursor-cli`.
+
 No Skills CLI install command is available for these config-only or UI-managed harnesses:
 
 - `claude-desktop`
@@ -44,7 +47,7 @@ No Skills CLI install command is available for these config-only or UI-managed h
 For this repository's published collection, the likely source is:
 
 ```bash
-npx skills add wyattowalsh/agents --skill harness-master -y -g --agent <agent>
+npx skills add wyattowalsh/agents --skill harness-master -y -g --agent claude-code --agent codex --agent crush --agent cursor --agent opencode
 ```
 
 If the skill is not being installed from that source, replace `<source>` with the actual published source.

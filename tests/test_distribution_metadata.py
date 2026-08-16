@@ -81,21 +81,22 @@ def assert_git_tracked(relative_path: str) -> None:
 def test_agent_bundle_points_to_canonical_sources():
     bundle = load_json("agent-bundle.json")
 
+    assert bundle["schemaVersion"] == 2
     assert bundle["name"] == "agents"
-    assert "bundled agent definitions" in bundle["description"]
+    assert "generated client-native agents" in bundle["description"]
     assert bundle["source"]["repository"] == "wyattowalsh/agents"
     assert bundle["source"]["skillsSource"] == "github:wyattowalsh/agents"
-    assert bundle["components"]["skills"] == "./skills/"
-    assert bundle["components"]["openspec"] == "./openspec/"
-    assert bundle["adapters"]["claude-code"]["pluginManifest"] == "./.claude-plugin/plugin.json"
-    assert bundle["adapters"]["codex"]["pluginManifest"] == "./.codex-plugin/plugin.json"
-    assert bundle["adapters"]["openspec"]["package"] == OPENSPEC_PACKAGE
-    assert bundle["adapters"]["openspec"]["minimumNode"] == format_min_node_version()
-    assert bundle["adapters"]["openspec"]["toolMapping"] == OPENSPEC_TOOL_BY_AGENT
+    assert bundle["domainSources"]["portable-skills"]["path"] == "./skills/"
+    assert bundle["domainSources"]["openspec"]["path"] == "./openspec/"
+    assert bundle["artifactRecipes"]["claude-native"]["entryPoints"][0] == ".claude-plugin/plugin.json"
+    assert bundle["artifactRecipes"]["codex-native"]["entryPoints"][0] == ".codex-plugin/plugin.json"
+    assert bundle["operations"]["openspec"]["package"] == OPENSPEC_PACKAGE
+    assert bundle["operations"]["openspec"]["minimumNode"] == format_min_node_version()
+    assert bundle["operations"]["openspec"]["toolMapping"] == OPENSPEC_TOOL_BY_AGENT
 
     # apm adapter (Wave 4) - assert structure when present
-    if "apm" in bundle.get("adapters", {}):
-        apm = bundle["adapters"]["apm"]
+    if "apm" in bundle.get("operations", {}):
+        apm = bundle["operations"]["apm"]["commands"]
         assert "install" in apm
         assert "update" in apm
         assert "audit" in apm
@@ -113,7 +114,10 @@ def test_claude_plugin_manifest_uses_repo_root_components():
     assert "version" not in manifest
     assert (ROOT / manifest["skills"]).is_dir()
     assert (ROOT / manifest["agents"]).is_dir()
-    assert (ROOT / manifest["mcpServers"]).is_file()
+    assert manifest["mcpServers"] == "./.claude-plugin/mcp.json"
+    mcp = load_json(manifest["mcpServers"])
+    assert set(mcp["mcpServers"]) == {"mcphub-harness"}
+    assert mcp["mcpServers"]["mcphub-harness"]["url"].endswith("/mcp/harness")
 
 
 def test_claude_marketplace_exposes_repo_root_plugin_without_version_pin():
@@ -138,7 +142,10 @@ def test_codex_plugin_manifest_and_marketplace_are_git_backed():
     assert manifest["agents"] == "./agents/"
     assert (ROOT / manifest["skills"]).is_dir()
     assert (ROOT / manifest["agents"]).is_dir()
-    assert (ROOT / manifest["mcpServers"]).is_file()
+    assert manifest["mcpServers"] == "./.mcp.json"
+    mcp = load_json(manifest["mcpServers"])
+    assert set(mcp["mcpServers"]) == {"mcphub-harness"}
+    assert mcp["mcpServers"]["mcphub-harness"]["url"].endswith("/mcp/harness")
 
     assert marketplace["name"] == "agents"
     assert len(marketplace["plugins"]) == 1
@@ -153,6 +160,12 @@ def test_codex_plugin_manifest_and_marketplace_are_git_backed():
 
 
 def test_opencode_project_plugins_use_latest_dist_tag():
+    manifest = load_json(".opencode-plugin/plugin.json")
+    assert manifest["entrypoint"] == "./opencode.json"
+    assert "mcpServers" not in manifest
+    plugin_config = load_json(manifest["entrypoint"])
+    assert "mcphub_group_harness" in plugin_config["mcp"]
+
     config = load_json("opencode.json")
 
     for plugin_spec in config["plugin"]:
@@ -246,6 +259,10 @@ def test_image_input_optimizer_config_validates_and_declares_harness_tiers():
     assert ".claude/settings.json" in harnesses["claude-code"]["repo_surfaces"]
     assert harnesses["cursor"]["tier"] == "hook-block"
     assert ".cursor/hooks.json" in harnesses["cursor"]["repo_surfaces"]
+    assert harnesses["cursor-cli"]["tier"] == "specified-only"
+    assert "PreToolUse" in harnesses["cursor-cli"]["assurance"]
+    assert "no hook-block assurance" in harnesses["cursor-cli"]["assurance"]
+    assert "hooks.json (beforeReadFile)" not in harnesses["cursor-cli"]["assurance"]
     assert "gemini-cli" not in harnesses
     assert "github-copilot-cli" not in harnesses
     assert "antigravity" not in harnesses
@@ -455,6 +472,25 @@ def test_harness_surface_registry_splits_cloud_desktop_cli_and_editor_variants()
     assert expected_ids.issubset(harnesses)
     assert harnesses["cursor-editor"]["support_tier"] == "validated"
     assert harnesses["cursor-cli"]["support_tier"] == "validated"
+    assert {
+        "instructions",
+        "rules",
+        "skills",
+        "agents",
+        "hooks",
+        "mcp",
+        "plugins",
+        "cli-permissions",
+        "worktrees",
+    }.issubset(set(harnesses["cursor-cli"]["projection_surfaces"]))
+    cursor_cli_contract = "\n".join(harnesses["cursor-cli"].get("caveats") or [])
+    assert "agent" in cursor_cli_contract
+    assert "cli-config.json" in cursor_cli_contract
+    assert "do not install with -a cursor-cli" in cursor_cli_contract
+    from wagents.site_model import SUPPORTED_AGENT_IDS
+
+    assert "cursor" in SUPPORTED_AGENT_IDS
+    assert "cursor-cli" not in SUPPORTED_AGENT_IDS
     assert harnesses["cursor-bugbot"]["support_tier"] == "repo-present-validation-required"
     assert harnesses["cursor-cloud-agent"]["support_tier"] == "repo-present-validation-required"
     assert harnesses["cursor-cloud-subagent"]["support_tier"] == "repo-present-validation-required"
@@ -615,3 +651,7 @@ def test_hook_surface_tiers_match_harness_registry_for_shared_ids():
         assert hook_by_id[hid]["support_tier"] == harness_by_id[hid]["support_tier"], (
             f"{hid} hook/harness support_tier mismatch"
         )
+
+    aliases = hook_registry.get("harness_aliases") or {}
+    assert aliases.get("agent-cli") == "cursor-cli"
+    assert aliases.get("agent") == "cursor-cli"

@@ -29,7 +29,9 @@
     "grok-build": "grok-build",
     "grok-cli": "grok-build",
     "opencode": "opencode",
-    "open-code": "opencode"
+    "open-code": "opencode",
+    "agent": "cursor-cli",
+    "agent-cli": "cursor-cli"
   },
   "harnesses": [
     {
@@ -143,6 +145,49 @@
         "config/hook-registry.json (harnesses include 'cursor')",
         "wagents/platforms/cursor.py",
         ".cursor/hooks.json (generated on sync)"
+      ]
+    },
+    {
+      "id": "cursor-cli",
+      "label": "Cursor Agent CLI",
+      "brand": "Cursor",
+      "surface_kind": "cli",
+      "owner_change": "agents-c04-cursor-harness",
+      "support_tier": "validated",
+      "hook_surfaces": [
+        {
+          "level": "project",
+          "label": "project hooks",
+          "path": ".cursor/hooks.json",
+          "kind": "hooks",
+          "role": "authoritative",
+          "notes": "Agent CLI loads project hooks.json and plugin hooks. Rendered by the Cursor adapter (harness id cursor); this row is a consumer."
+        },
+        {
+          "level": "global",
+          "label": "global hooks",
+          "path": "~/.cursor/hooks.json",
+          "kind": "hooks",
+          "role": "authoritative",
+          "notes": "User hooks apply to Agent CLI. Team/enterprise hooks are a blind spot."
+        }
+      ],
+      "blind_spots": [
+        {
+          "level": "global",
+          "label": "Cursor team/enterprise hooks",
+          "notes": "Admin-distributed hooks may load outside local hooks.json."
+        },
+        {
+          "level": "global",
+          "label": "Plugin marketplace hooks",
+          "notes": "Hooks from installed marketplaces or --plugin-dir are not repo-rendered."
+        }
+      ],
+      "repo_evidence": [
+        "config/hook-registry.json (render harness remains cursor)",
+        ".cursor/hooks.json",
+        "wagents/platforms/cursor.py"
       ]
     },
     {

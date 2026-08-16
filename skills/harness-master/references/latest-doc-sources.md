@@ -91,6 +91,8 @@ Use for:
 
 ## Cursor
 
+### Editor (`cursor`)
+
 Preferred sources:
 
 - `https://cursor.com/llms.txt`
@@ -101,18 +103,42 @@ Preferred sources:
 - `https://cursor.com/docs/skills.md`
 - `https://cursor.com/docs/subagents.md`
 - `https://cursor.com/docs/hooks.md`
-- `https://cursor.com/docs/cli/overview.md`
-- `https://cursor.com/docs/cli/reference/configuration.md`
-- `https://cursor.com/docs/cli/reference/permissions.md`
+- `https://cursor.com/docs/plugins.md`
 - `https://cursor.com/docs/cloud-agent`
+- `https://cursor.com/docs/configuration/worktrees.md`
 
 Use for:
 
 - `AGENTS.md` vs `.cursor/rules/**`
 - nested `AGENTS.md` support
 - `.cursor/mcp.json` project/global behavior
-- skills, subagents, hooks, CLI config, cloud agents, and `.cursorignore`
+- skills, subagents, hooks, plugins, cloud agents, and `.cursorignore`
 - `~/.cursor/permissions.json` only with medium confidence if docs remain inconsistent
+
+### Agent CLI (`cursor-cli`)
+
+Preferred sources (first-party CLI index is also in `https://cursor.com/llms.txt`):
+
+- `https://cursor.com/docs/cli/overview.md`
+- `https://cursor.com/docs/cli/using.md`
+- `https://cursor.com/docs/cli/reference/configuration.md`
+- `https://cursor.com/docs/cli/reference/permissions.md`
+- `https://cursor.com/docs/cli/headless.md`
+- `https://cursor.com/docs/cli/acp.md`
+- `https://cursor.com/docs/plugins.md`
+- `https://cursor.com/docs/cli/changelog.md`
+
+Shared editor pages that the CLI also loads: `skills.md`, `hooks.md`, `mcp.md`, and `configuration/worktrees.md`.
+
+Use for:
+
+- `agent` / `cursor-agent` binary, interactive vs `-p` / headless, and `agent acp`
+- project `.cursor/cli.json` permissions vs user-owned `~/.cursor/cli-config.json`
+- shared rules, `AGENTS.md` / `CLAUDE.md`, MCP, skills, hooks, and `.cursor/worktrees.json`
+- `--plugin-dir` and `agent plugin marketplace` (operator-opt-in; never sync-add)
+- Cloud Agent handoff (`&`) and `agent worker` as dashboard / out-of-sync surfaces
+
+Do not treat editor-only Cloud Agent dashboard pages as a substitute for the CLI configuration and permissions docs.
 
 ## OpenCode
 

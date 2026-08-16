@@ -52,7 +52,7 @@
       "expected_show_any": [
         "Cursor hook:"
       ],
-      "notes": "Current RTK cursor init may also touch Claude RTK assets; keep sync dry-run first."
+      "notes": "Current RTK cursor init may also touch Claude RTK assets; keep sync dry-run first. Agent CLI (cursor-cli) consumes the same Cursor hooks; do not run rtk init --agent cursor-cli."
     },
     "opencode": {
       "tier": "B",

@@ -86,8 +86,32 @@ PROJECT_SURFACES: dict[str, list[dict[str, str]]] = {
         },
         {"label": "project subagents", "path": ".cursor/agents/*.md", "kind": "agents", "role": "authoritative"},
         {"label": "project hooks", "path": ".cursor/hooks.json", "kind": "hooks", "role": "authoritative"},
-        {"label": "project cli config", "path": ".cursor/cli.json", "kind": "config", "role": "authoritative"},
         {"label": "cursor ignore", "path": ".cursorignore", "kind": "permissions", "role": "authoritative"},
+    ],
+    "cursor-cli": [
+        {"label": "root agents", "path": "AGENTS.md", "kind": "instructions", "role": "authoritative"},
+        {"label": "claude compat instructions", "path": "CLAUDE.md", "kind": "instructions", "role": "secondary"},
+        {
+            "label": "cursor-cli instruction overlay",
+            "path": "instructions/cursor-cli-global.md",
+            "kind": "instructions",
+            "role": "authoritative",
+        },
+        {"label": "cursor rules", "path": ".cursor/rules/*", "kind": "rules", "role": "authoritative"},
+        {"label": "project mcp", "path": ".cursor/mcp.json", "kind": "mcp", "role": "authoritative"},
+        {"label": "project skills", "path": ".cursor/skills/**/SKILL.md", "kind": "skills", "role": "authoritative"},
+        {
+            "label": "compatible project skills",
+            "path": ".agents/skills/**/SKILL.md",
+            "kind": "skills",
+            "role": "secondary",
+        },
+        {"label": "project subagents", "path": ".cursor/agents/*.md", "kind": "agents", "role": "authoritative"},
+        {"label": "project hooks", "path": ".cursor/hooks.json", "kind": "hooks", "role": "authoritative"},
+        {"label": "project cli permissions", "path": ".cursor/cli.json", "kind": "config", "role": "authoritative"},
+        {"label": "worktree setup", "path": ".cursor/worktrees.json", "kind": "config", "role": "authoritative"},
+        {"label": "portable plugin manifest", "path": "plugin.json", "kind": "plugins", "role": "repo-observed"},
+        {"label": "cursor-cli doctor", "path": "wagents/cursor_cli_doctor.py", "kind": "config", "role": "repo-observed"},
     ],
     "grok-build": [
         # hook surfaces per spec: project repo-observed plannotator policy + global ~/.grok/hooks
@@ -206,11 +230,29 @@ GLOBAL_SURFACES: dict[str, list[dict[str, str]]] = {
     "cursor": [
         {"label": "global mcp", "path": "~/.cursor/mcp.json", "kind": "mcp", "role": "authoritative"},
         {"label": "permissions", "path": "~/.cursor/permissions.json", "kind": "permissions", "role": "authoritative"},
-        {"label": "global cli config", "path": "~/.cursor/cli-config.json", "kind": "config", "role": "authoritative"},
         {"label": "global hooks", "path": "~/.cursor/hooks.json", "kind": "hooks", "role": "authoritative"},
         {"label": "global skills", "path": "~/.cursor/skills", "kind": "skills", "role": "authoritative"},
         {"label": "compatible global skills", "path": "~/.agents/skills", "kind": "skills", "role": "secondary"},
         {"label": "global subagents", "path": "~/.cursor/agents/*.md", "kind": "agents", "role": "authoritative"},
+    ],
+    "cursor-cli": [
+        {"label": "global mcp", "path": "~/.cursor/mcp.json", "kind": "mcp", "role": "authoritative"},
+        {
+            "label": "global cli config",
+            "path": "~/.cursor/cli-config.json",
+            "kind": "config",
+            "role": "authoritative",
+        },
+        {"label": "global hooks", "path": "~/.cursor/hooks.json", "kind": "hooks", "role": "authoritative"},
+        {"label": "global skills", "path": "~/.cursor/skills", "kind": "skills", "role": "authoritative"},
+        {"label": "compatible global skills", "path": "~/.agents/skills", "kind": "skills", "role": "secondary"},
+        {"label": "global subagents", "path": "~/.cursor/agents/*.md", "kind": "agents", "role": "authoritative"},
+        {
+            "label": "user plugin enablement",
+            "path": "~/.cursor/settings.json",
+            "kind": "plugins",
+            "role": "authoritative",
+        },
     ],
     "grok-build": [
         # hook surfaces per spec: global ~/.grok/hooks/*.json
@@ -320,6 +362,28 @@ BLIND_SPOTS: dict[str, list[tuple[str, str, str]]] = {
             "global",
             "Cursor team hooks",
             "Team or enterprise hooks may be distributed from admin surfaces outside local files.",
+        ),
+    ],
+    "cursor-cli": [
+        (
+            "global",
+            "CLI plugin marketplace auth",
+            "agent plugin marketplace add/list may require account auth and is not repo-synced.",
+        ),
+        (
+            "global",
+            "Team/enterprise hooks",
+            "Team or enterprise hooks may load from admin paths outside local hooks.json.",
+        ),
+        (
+            "global",
+            "Dashboard MCP and worker pools",
+            "Team MCP, Cloud Agent handoff, and agent worker pools are dashboard-managed.",
+        ),
+        (
+            "global",
+            "cli-config.json values",
+            "Global CLI settings are user-owned; usage review may report key presence only, not secret values.",
         ),
     ],
     "chatgpt": [

@@ -475,6 +475,7 @@
     "Plugins are native projections of canonical repo assets, not independent sources of truth.",
     "Runtime plugin arrays must preserve user-owned local settings when merged.",
     "Desktop app import surfaces remain experimental until fixture-backed.",
-    "A harness must have exactly one active MCP owner for a given server; plugin and extension owners suppress duplicate standalone repo MCP projection for that harness."
+    "A harness must have exactly one active MCP owner for a given server; plugin and extension owners suppress duplicate standalone repo MCP projection for that harness.",
+    "Cursor Agent CLI (cursor-cli) consumes the same repo MCP projection as cursor; do not add a second MCP owner. Plugin marketplace add is operator-opt-in; repo-owned loading may use --plugin-dir."
   ]
 }

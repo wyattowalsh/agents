@@ -1,0 +1,81 @@
+# Cursor Agent CLI Global Instructions
+
+@./instructions/global.md
+
+## Binary
+
+Use `agent` (also `cursor-agent`).
+
+## What this harness reads
+
+Load `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, and this overlay.
+
+## Shared with the editor
+
+Consume the same project surfaces the Cursor adapter already renders (`harness="cursor"`):
+
+- `.cursor/hooks.json` (and user `~/.cursor/hooks.json`)
+- `.cursor/mcp.json`
+- skills (`.cursor/skills/`, Skills CLI store)
+- agents (`.cursor/agents/`)
+
+Do not treat `cursor-cli` as a second hook-render target. Do not duplicate those files.
+
+## CLI-only config
+
+Keep project `.cursor/cli.json` **permissions only**. Repo sync writes that file from the Cursor adapter.
+
+Treat `~/.cursor/cli-config.json` as user-owned. Operators SHOULD set `exploreSubagentModel=inherit`. Never write `cli-config.json` or live `state.vscdb` from repo sync.
+
+## Modes
+
+- Default: agent
+- Plan: `--plan` or `--mode=plan`
+- Ask (read-only): `--mode=ask`
+
+## Headless
+
+Use `agent -p` / `agent --print` for non-interactive runs. Apply writes with `--force` (`--yolo` is an alias). Auto-approve MCP servers with `--approve-mcps`.
+
+## MCP
+
+Manage the shared `mcp.json` (MCPHub **harness** group) with:
+
+```bash
+agent mcp list
+agent mcp login <identifier>
+agent mcp enable <identifier>
+agent mcp disable <identifier>
+```
+
+Do not print bearer tokens or MCP auth material.
+
+## Plugins
+
+Load a local plugin with `--plugin-dir <path>` (repeatable). Treat `agent plugin marketplace` as operator-opt-in. Never run marketplace add from repo sync.
+
+## Worktrees
+
+Use `agent --worktree` only when the user asks. If `.cursor/worktrees.json` is present, CLI setup scripts come from that file. This repo does not author `worktrees.json`. Do not create, switch, or delete worktrees unless the user explicitly asks.
+
+## ACP and worker
+
+Use `agent acp` for Agent Client Protocol. ACP stays on the existing `cursor-acp` harness-surface row. Keep `agent worker` out of repo sync.
+
+## Skills
+
+Install with `npx skills add ... -a cursor` or `wagents install` / `wagents skills sync -a cursor`. There is no native `agent` / `cursor-cli` Skills CLI adapter. Do not use `-a cursor-cli`.
+
+## Doctor
+
+```bash
+uv run wagents cursor-cli doctor --format json
+```
+
+## Update
+
+Run `agent update` to refresh the CLI. A desktop-style restart is not typically required; update the binary when the CLI is stale.
+
+## Secrets
+
+Never print secrets, tokens, or account email. Do not dump `agent about` / `agent status` output that includes account identifiers.

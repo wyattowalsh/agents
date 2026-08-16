@@ -908,6 +908,33 @@
       "owner_change": "agents-c04-lm-studio-harness",
       "next_action": "sync-via-lm-studio-adapter",
       "validation_command": "uv run pytest tests/test_lm_studio_platform.py -q"
+    },
+    {
+      "path": "${REPO_ROOT}/.cursor/rules/cursor-cli.mdc",
+      "expected_mode": "canonical",
+      "current_state": "tracked-clean",
+      "drift_risk": "low",
+      "owner_change": "elevate-cursor-agent-cli-harness",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/instructions/cursor-cli-global.md",
+      "expected_mode": "canonical",
+      "current_state": "tracked-clean",
+      "drift_risk": "low",
+      "owner_change": "elevate-cursor-agent-cli-harness",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/wagents/cursor_cli_doctor.py",
+      "expected_mode": "canonical",
+      "current_state": "untracked",
+      "drift_risk": "low",
+      "owner_change": "elevate-cursor-agent-cli-harness",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run pytest tests/test_cursor_cli_doctor.py"
     }
   ]
 }
