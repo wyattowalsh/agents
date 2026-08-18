@@ -1,6 +1,8 @@
 # wagents init Bootstrap Runbook
 
-Planned one-command bootstrap for new clones and greenfield projects. **The `wagents init` CLI may not exist yet** — this runbook documents the intended workflow maintainers should follow manually until the command ships (IDEAS W13 T-760).
+Implemented consumer bootstrap: `scripts/bootstrap-dev-env.sh`. Preview first; mutate only with `--apply`.
+
+The interactive Typer `wagents init` wizard remains deferred (IDEAS W13 T-760). This script is the one-command path until that ships.
 
 ## Goals
 
@@ -9,7 +11,18 @@ Planned one-command bootstrap for new clones and greenfield projects. **The `wag
 - Sync harness projections for the active platform.
 - Run validate + doctor gates before first skill/agent work.
 
-## Planned CLI Shape (draft)
+## Implemented command
+
+```bash
+./scripts/bootstrap-dev-env.sh                  # dry-run preview (default)
+./scripts/bootstrap-dev-env.sh --apply
+./scripts/bootstrap-dev-env.sh --check
+./scripts/bootstrap-dev-env.sh --format json    # machine-readable status for agents
+```
+
+Never starts the Cloudflare tunnel. Live `wagents skills sync --apply` requires `--install-skills`. Home projections require `--home`.
+
+## Planned CLI Shape (deferred wizard)
 
 ```bash
 wagents init                          # interactive: detect harness, sync, validate
