@@ -27,7 +27,9 @@ permissions:
   issues: write
 
 concurrency:
-  group: frontier-radar-deterministic-substrate
+  # Keep the paired EDT/EST cron candidates independent so the later
+  # DST-suppressed candidate cannot cancel a still-running valid lane.
+  group: frontier-radar-${{ github.event_name }}-${{ github.event.schedule || inputs.lane }}
   cancel-in-progress: true
 
 env:
@@ -40,9 +42,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1635ceea3d9b4d4f8b53728782 # v4
-      - uses: ./.github/actions/setup-uv
-
       - name: Resolve the DST-safe lane
         id: route
         env:
@@ -96,6 +95,14 @@ jobs:
           echo "### Frontier Radar" >> "$GITHUB_STEP_SUMMARY"
           echo "Suppressed the DST-mismatched cron candidate." >> "$GITHUB_STEP_SUMMARY"
           echo "Nominal local time: ${{ steps.route.outputs.local_label }}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check out the repository
+        if: steps.route.outputs.should_run == 'true'
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Set up the uv workspace
+        if: steps.route.outputs.should_run == 'true'
+        uses: ./.github/actions/setup-uv
 
       - name: Prepare evidence directory
         if: steps.route.outputs.should_run == 'true'
@@ -202,6 +209,16 @@ jobs:
           echo "- Frontier CLI available: \`${{ steps.frontier.outputs.available }}\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- Authority: read-only scans, validation, and ephemeral evidence only" >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Upload deterministic evidence
+        if: always() && steps.route.outputs.should_run == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: frontier-radar-${{ steps.route.outputs.lane }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/frontier-radar
+          if-no-files-found: warn
+          retention-days: 30
+          compression-level: 9
+
       - name: Report a failed recurring lane
         if: failure() && steps.route.outputs.should_run == 'true'
         env:
@@ -220,4 +237,4 @@ jobs:
           No candidate installation, activation, push, merge, release, or deployment was attempted.
           EOF
           )
-          gh issue comment "$FRONTIER_ISSUE_NUMBER" --body "$body"
+          gh issue comment "$FRONTIER_ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
