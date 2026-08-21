@@ -92,9 +92,11 @@ jobs:
       - name: Record a suppressed DST candidate
         if: steps.route.outputs.should_run != 'true'
         run: |
-          echo "### Frontier Radar" >> "$GITHUB_STEP_SUMMARY"
-          echo "Suppressed the DST-mismatched cron candidate." >> "$GITHUB_STEP_SUMMARY"
-          echo "Nominal local time: ${{ steps.route.outputs.local_label }}" >> "$GITHUB_STEP_SUMMARY"
+          printf '%s\n' \
+            "### Frontier Radar" \
+            "Suppressed the DST-mismatched cron candidate." \
+            "Nominal local time: ${{ steps.route.outputs.local_label }}" \
+            >> "$GITHUB_STEP_SUMMARY"
 
       - name: Check out the repository
         if: steps.route.outputs.should_run == 'true'
@@ -203,11 +205,13 @@ jobs:
       - name: Summarize the executed lane
         if: success() && steps.route.outputs.should_run == 'true'
         run: |
-          echo "### Frontier Radar deterministic substrate" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Lane: \`${{ steps.route.outputs.lane }}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Nominal local time: \`${{ steps.route.outputs.local_label }}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Frontier CLI available: \`${{ steps.frontier.outputs.available }}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Authority: read-only scans, validation, and ephemeral evidence only" >> "$GITHUB_STEP_SUMMARY"
+          printf '%s\n' \
+            "### Frontier Radar deterministic substrate" \
+            "- Lane: \`${{ steps.route.outputs.lane }}\`" \
+            "- Nominal local time: \`${{ steps.route.outputs.local_label }}\`" \
+            "- Frontier CLI available: \`${{ steps.frontier.outputs.available }}\`" \
+            "- Authority: read-only scans, validation, and ephemeral evidence only" \
+            >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload deterministic evidence
         if: always() && steps.route.outputs.should_run == 'true'
