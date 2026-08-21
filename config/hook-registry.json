@@ -436,6 +436,90 @@
       "harnesses": [
         "claude-code"
       ]
+    },
+    {
+      "id": "atuin-claude-pre",
+      "description": "Start an Atuin history entry for a Claude Code Bash command.",
+      "status_message": "Recording Atuin history",
+      "mode": "context",
+      "logical_policy": "atuin-history-start",
+      "logical_event": "PreToolUse",
+      "matcher": "Bash",
+      "command": "{repo_root}/hooks/atuin-agent-hook.sh claude-code",
+      "timeout": 5,
+      "harnesses": [
+        "claude-code"
+      ]
+    },
+    {
+      "id": "atuin-claude-post",
+      "description": "Finish an Atuin history entry after a Claude Code Bash command.",
+      "status_message": "Recording Atuin history",
+      "mode": "context",
+      "logical_policy": "atuin-history-end",
+      "logical_event": "PostToolUse",
+      "matcher": "Bash",
+      "command": "{repo_root}/hooks/atuin-agent-hook.sh claude-code",
+      "timeout": 5,
+      "harnesses": [
+        "claude-code"
+      ]
+    },
+    {
+      "id": "atuin-claude-post-failure",
+      "description": "Finish an Atuin history entry after a failed Claude Code Bash command.",
+      "status_message": "Recording Atuin history",
+      "mode": "context",
+      "logical_policy": "atuin-history-end",
+      "logical_event": "PostToolUseFailure",
+      "matcher": "Bash",
+      "command": "{repo_root}/hooks/atuin-agent-hook.sh claude-code",
+      "timeout": 5,
+      "harnesses": [
+        "claude-code"
+      ]
+    },
+    {
+      "id": "atuin-codex-pre",
+      "description": "Start an Atuin history entry for a Codex Bash command.",
+      "status_message": "Recording Atuin history",
+      "mode": "context",
+      "logical_policy": "atuin-history-start",
+      "logical_event": "PreToolUse",
+      "matcher": "^Bash$",
+      "command": "{repo_root}/hooks/atuin-agent-hook.sh codex",
+      "timeout": 5,
+      "harnesses": [
+        "codex"
+      ]
+    },
+    {
+      "id": "atuin-codex-post",
+      "description": "Finish an Atuin history entry after a Codex Bash command.",
+      "status_message": "Recording Atuin history",
+      "mode": "context",
+      "logical_policy": "atuin-history-end",
+      "logical_event": "PostToolUse",
+      "matcher": "^Bash$",
+      "command": "{repo_root}/hooks/atuin-agent-hook.sh codex",
+      "timeout": 5,
+      "harnesses": [
+        "codex"
+      ]
+    },
+    {
+      "id": "atuin-codex-post-failure",
+      "description": "Finish an Atuin history entry after a failed Codex Bash command.",
+      "status_message": "Recording Atuin history",
+      "mode": "context",
+      "logical_policy": "atuin-history-end",
+      "logical_event": "PostToolUseFailure",
+      "matcher": "^Bash$",
+      "command": "{repo_root}/hooks/atuin-agent-hook.sh codex",
+      "timeout": 5,
+      "harnesses": [
+        "codex"
+      ]
     }
   ]
 }

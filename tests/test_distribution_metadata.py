@@ -81,30 +81,23 @@ def assert_git_tracked(relative_path: str) -> None:
 def test_agent_bundle_points_to_canonical_sources():
     bundle = load_json("agent-bundle.json")
 
-    assert bundle["schemaVersion"] == 2
+    assert bundle["schemaVersion"] == 1
     assert bundle["name"] == "agents"
-    assert "generated client-native agents" in bundle["description"]
+    assert "Portable AI agent skills" in bundle["description"]
     assert bundle["source"]["repository"] == "wyattowalsh/agents"
     assert bundle["source"]["skillsSource"] == "github:wyattowalsh/agents"
-    assert bundle["domainSources"]["portable-skills"]["path"] == "./skills/"
-    assert bundle["domainSources"]["openspec"]["path"] == "./openspec/"
-    assert bundle["artifactRecipes"]["claude-native"]["entryPoints"][0] == ".claude-plugin/plugin.json"
-    assert bundle["artifactRecipes"]["codex-native"]["entryPoints"][0] == ".codex-plugin/plugin.json"
-    assert bundle["operations"]["openspec"]["package"] == OPENSPEC_PACKAGE
-    assert bundle["operations"]["openspec"]["minimumNode"] == format_min_node_version()
-    assert bundle["operations"]["openspec"]["toolMapping"] == OPENSPEC_TOOL_BY_AGENT
+    assert bundle["components"]["skills"] == "./skills/"
+    assert bundle["components"]["openspec"] == "./openspec/"
+    assert bundle["adapters"]["claude-code"]["pluginManifest"] == "./.claude-plugin/plugin.json"
+    assert bundle["adapters"]["codex"]["pluginManifest"] == "./.codex-plugin/plugin.json"
+    assert bundle["adapters"]["openspec"]["package"] == OPENSPEC_PACKAGE
+    assert bundle["adapters"]["openspec"]["minimumNode"] == format_min_node_version()
+    assert bundle["adapters"]["openspec"]["toolMapping"] == OPENSPEC_TOOL_BY_AGENT
 
-    # apm adapter (Wave 4) - assert structure when present
-    if "apm" in bundle.get("operations", {}):
-        apm = bundle["operations"]["apm"]["commands"]
-        assert "install" in apm
-        assert "update" in apm
-        assert "audit" in apm
-        assert "compile" in apm
-        assert "materialize" in apm
-        assert apm["install"]  # non-empty command
-        # explicit keys per Wave 4 polish
-        assert {"install", "audit", "materialize"} <= set(apm.keys())
+    apm = bundle["adapters"]["apm"]
+    assert {"install", "update", "audit", "compile", "materialize"} <= set(apm.keys())
+    assert apm["install"]
+    assert apm["materialize"]
 
 
 def test_claude_plugin_manifest_uses_repo_root_components():
@@ -114,10 +107,11 @@ def test_claude_plugin_manifest_uses_repo_root_components():
     assert "version" not in manifest
     assert (ROOT / manifest["skills"]).is_dir()
     assert (ROOT / manifest["agents"]).is_dir()
-    assert manifest["mcpServers"] == "./.claude-plugin/mcp.json"
+    assert manifest["mcpServers"] == "./mcp.json"
     mcp = load_json(manifest["mcpServers"])
-    assert set(mcp["mcpServers"]) == {"mcphub-harness"}
-    assert mcp["mcpServers"]["mcphub-harness"]["url"].endswith("/mcp/harness")
+    assert "mcphub_group_harness" in mcp["mcpServers"]
+    harness = mcp["mcpServers"]["mcphub_group_harness"]
+    assert any(str(arg).endswith("/mcp/harness") for arg in harness.get("args", []))
 
 
 def test_claude_marketplace_exposes_repo_root_plugin_without_version_pin():
@@ -142,10 +136,11 @@ def test_codex_plugin_manifest_and_marketplace_are_git_backed():
     assert manifest["agents"] == "./agents/"
     assert (ROOT / manifest["skills"]).is_dir()
     assert (ROOT / manifest["agents"]).is_dir()
-    assert manifest["mcpServers"] == "./.mcp.json"
+    assert manifest["mcpServers"] == "./mcp.json"
     mcp = load_json(manifest["mcpServers"])
-    assert set(mcp["mcpServers"]) == {"mcphub-harness"}
-    assert mcp["mcpServers"]["mcphub-harness"]["url"].endswith("/mcp/harness")
+    assert "mcphub_group_harness" in mcp["mcpServers"]
+    harness = mcp["mcpServers"]["mcphub_group_harness"]
+    assert any(str(arg).endswith("/mcp/harness") for arg in harness.get("args", []))
 
     assert marketplace["name"] == "agents"
     assert len(marketplace["plugins"]) == 1
@@ -161,9 +156,9 @@ def test_codex_plugin_manifest_and_marketplace_are_git_backed():
 
 def test_opencode_project_plugins_use_latest_dist_tag():
     manifest = load_json(".opencode-plugin/plugin.json")
-    assert manifest["entrypoint"] == "./opencode.json"
-    assert "mcpServers" not in manifest
-    plugin_config = load_json(manifest["entrypoint"])
+    assert manifest["entrypoint"] == "."
+    assert manifest["mcpServers"] == "./mcp.json"
+    plugin_config = load_json("opencode.json")
     assert "mcphub_group_harness" in plugin_config["mcp"]
 
     config = load_json("opencode.json")

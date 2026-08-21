@@ -11,6 +11,22 @@ if TYPE_CHECKING:
     from collections.abc import Mapping
     from pathlib import Path
 
+KEBAB_CASE_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]*$")
+
+
+def normalize_install_skill_name(name: str) -> str:
+    """Normalize an install skill name for store comparisons."""
+    return str(name or "").strip().lower()
+
+
+def is_valid_install_skill_name(name: str) -> bool:
+    """Return whether *name* is kebab-case, optionally slash-delimited."""
+    if not name:
+        return False
+    return all(
+        bool(segment) and len(segment) <= 64 and KEBAB_CASE_PATTERN.fullmatch(segment) for segment in name.split("/")
+    )
+
 
 @dataclass(frozen=True)
 class ExternalSkillEntry:

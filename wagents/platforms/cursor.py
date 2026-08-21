@@ -94,6 +94,7 @@ def ensure_cursor_authoritative_links(
     store_root: Path | None = None,
     projection_root: Path | None = None,
     dry_run: bool = True,
+    expected_skill_names: dict[str, str] | None = None,
 ) -> CursorAuthoritativeLinksReport:
     """Ensure ``~/.cursor/skills/<name>`` symlinks to ``~/.agents/skills/<name>``.
 
@@ -108,6 +109,7 @@ def ensure_cursor_authoritative_links(
     Defaults to dry-run. Does not touch repo ``.cursor/skills/repo`` sync
     (``_sync_skill_symlinks``).
     """
+    _ = expected_skill_names
     home_dir = Path(home) if home is not None else HOME
     resolved_store_root = Path(store_root) if store_root is not None else home_dir / DEFAULT_CURSOR_SKILL_STORE
     resolved_projection_root = (

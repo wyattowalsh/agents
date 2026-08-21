@@ -283,6 +283,8 @@ class InstalledSkillInventoryRow:
     duplicate_class: str = DUPLICATE_CLASS_NONE
     cleanup_action: str = CLEANUP_ACTION_NONE
     docs_status: str = DOCS_STATUS_NOT_APPLICABLE
+    install_skill_name: str = ""
+    audited_head: str = ""
 
     def is_repo_owned(self) -> bool:
         return self.provenance_status == "repo-owned"
