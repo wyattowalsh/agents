@@ -28,7 +28,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1635ceea3d9b4d4f8b53728782 # v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: ./.github/actions/setup-uv
       - run: uv run wagents eval validate --format json
       - run: uv run wagents eval adequacy --strict --format json
