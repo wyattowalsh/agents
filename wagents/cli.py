@@ -23,7 +23,8 @@ from wagents.context import (
     get_repo_root,
     get_repo_root_optional,
 )
-from wagents.docs import regenerate_sidebar_and_indexes, web_app
+from wagents.docs import docs_app as web_app
+from wagents.docs import regenerate_sidebar_and_indexes
 
 # Eval adequacy (structural E3/E4 grader)
 from wagents.eval_adequacy import (
@@ -148,6 +149,7 @@ app = typer.Typer(
 new_app = typer.Typer(help="Create new assets from reference templates")
 app.add_typer(new_app, name="new")
 app.add_typer(web_app, name="web")
+app.add_typer(web_app, name="docs")
 hooks_app = typer.Typer(help="Manage hooks across skills and agents")
 app.add_typer(hooks_app, name="hooks")
 media_app = typer.Typer(help="Optimize model-bound media inputs")
@@ -2135,7 +2137,6 @@ def grok_doctor(
     typer.echo("\n".join(lines))
     if issues:
         raise typer.Exit(code=1)
-
 
 
 @cursor_cli_app.command("doctor")

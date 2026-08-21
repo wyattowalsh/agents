@@ -20,6 +20,16 @@
           }
         ],
         "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command|Bash|bash"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/atuin-agent-hook.sh claude-code",
+            "timeout": 5
+          }
+        ],
+        "matcher": "Bash"
       }
     ],
     "UserPromptSubmit": [
@@ -43,6 +53,16 @@
           }
         ],
         "matcher": "WebSearch|web_search|fetch|fetcher|trafilatura|docling|mcp__.*|mcp_.*"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/atuin-agent-hook.sh claude-code",
+            "timeout": 5
+          }
+        ],
+        "matcher": "Bash"
       }
     ],
     "Stop": [
@@ -83,6 +103,18 @@
             "timeout": 120
           }
         ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/atuin-agent-hook.sh claude-code",
+            "timeout": 5
+          }
+        ],
+        "matcher": "Bash"
       }
     ]
   }

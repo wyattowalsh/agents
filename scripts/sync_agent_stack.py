@@ -450,6 +450,8 @@ def sync_additive_skill_bridge(ctx: SyncContext, source_dir: Path, target_dir: P
 
 
 def load_codex_config() -> dict[str, Any]:
+    if not CODEX_CONFIG_PATH.is_file():
+        return {}
     with CODEX_CONFIG_PATH.open("rb") as handle:
         return tomllib.load(handle)
 

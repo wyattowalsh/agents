@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS_DIR = ROOT / ".github" / "workflows"
 WORKFLOW_FILES = ("ci.yml", "release-skills.yml")
 SHA_PIN_RE = re.compile(r"^[0-9a-f]{40}$")
-CHECKOUT_REF = "11bd71901bbe5b1635ceea3d9b4d4f8b53728782"
+CHECKOUT_REF = "d23441a48e516b6c34aea4fa41551a30e30af803"
 
 
 def _load_workflow(name: str) -> dict:

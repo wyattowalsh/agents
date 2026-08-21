@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 # Fail-open Atuin agent history hook. Missing Atuin or a hook error must not
 # block Claude Code / Codex Bash tool use. stdin is the harness event JSON.
-PATH="/opt/homebrew/bin:/usr/local/bin:${HOME}/.local/bin:${PATH:-/usr/bin:/bin}"
+if [ -n "${ATUIN_HOOK_PATH:-}" ]; then
+  PATH="${ATUIN_HOOK_PATH}"
+else
+  PATH="/opt/homebrew/bin:/usr/local/bin:${HOME}/.local/bin:${PATH:-/usr/bin:/bin}"
+fi
 export PATH
 
 agent="${1:-}"

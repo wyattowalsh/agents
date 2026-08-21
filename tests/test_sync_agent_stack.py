@@ -16,7 +16,6 @@ from scripts.sync_agent_stack import (
     merge_opencode_config,
     merge_server_maps,
     merge_server_root_config,
-    render_aitk_mcp,
     render_cherry_import_files,
     render_cherry_server,
     render_client_mcp,
@@ -601,7 +600,7 @@ def test_aitk_crush_projection_is_flat_stdio_and_harness_filtered():
         }
     }
 
-    rendered = render_aitk_mcp(registry, {})
+    rendered = render_flat_mcp(registry, {}, harness="crush")
 
     assert rendered == {
         "shared": {

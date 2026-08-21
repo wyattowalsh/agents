@@ -12,6 +12,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from wagents.context import get_repo_root
+from wagents.hooks.render import CLAUDE_EVENT_MAP
 from wagents.platforms.base import (
     HOME,
     PlatformAdapter,
@@ -45,17 +46,7 @@ class Adapter(PlatformAdapter):
         return [CLAUDE_SETTINGS_PATH, CLAUDE_DESKTOP_CONFIG_PATH]
 
     def render_hooks(self, hook_registry: dict[str, Any], *, repo_relative: bool = False) -> dict[str, Any] | None:
-        event_map = {
-            "SessionStart": "SessionStart",
-            "UserPromptSubmit": "UserPromptSubmit",
-            "PreToolUse": "PreToolUse",
-            "PermissionRequest": "PermissionRequest",
-            "PostToolUse": "PostToolUse",
-            "SubagentStart": "SubagentStart",
-            "SubagentStop": "SubagentStop",
-            "Stop": "Stop",
-        }
-        return self._render_standard_hooks(hook_registry, event_map, repo_relative=repo_relative)
+        return self._render_standard_hooks(hook_registry, CLAUDE_EVENT_MAP, repo_relative=repo_relative)
 
     def sync_repo(
         self,
