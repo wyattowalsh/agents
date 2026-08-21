@@ -5,9 +5,10 @@
 - [x] Document shadow-week and expanded-mode operation.
 - [x] Add a DST-safe deterministic GitHub Actions substrate.
 - [x] Add failure-only issue reporting and silent successful operation.
-- [ ] Validate the workflow with `actionlint`.
-- [ ] Run `uv run wagents openspec validate`.
-- [ ] Run the workflow manually for `w0`, `freshness`, and `control`.
+- [x] Validate every workflow with `actionlint` and the repository workflow analyzer.
+- [x] Create the corresponding Google Calendar control series for all registered recurring lanes.
+- [ ] Run `uv run wagents openspec validate` after the existing `wagents.docs.web_app` import failure is repaired.
+- [ ] Run the merged workflow manually for `w0`, `freshness`, and `control`.
 - [ ] Confirm the first scheduled Eastern-time run chooses exactly one UTC candidate.
-- [ ] Create the corresponding native ChatGPT Scheduled Tasks and Codex Automations from the registered prompts.
+- [ ] Create the native ChatGPT Scheduled Tasks and Codex Automations from the registered prompts in their in-product automation surfaces.
 - [ ] Review shadow-week precision before enabling expanded monitors.
