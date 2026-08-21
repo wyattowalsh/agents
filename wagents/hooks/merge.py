@@ -20,6 +20,7 @@ CLAUDE_NATIVE_HOOK_EVENTS: frozenset[str] = frozenset({
     "PreToolUse",
     "PermissionRequest",
     "PostToolUse",
+    "PostToolUseFailure",
     "SubagentStart",
     "SubagentStop",
     "Stop",

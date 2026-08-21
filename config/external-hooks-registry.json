@@ -27,6 +27,34 @@
         "Policy remains separate from repo-owned hook-registry rows until the G1 unification task."
       ],
       "notes": "First curated external row. The unified harness-neutral policy lives in config/plannotator-hooks.policy.json (G1 T-012a). config/grok-plannotator-hooks.json remains the Grok render template; later waves may collapse it into a derived projection."
+    },
+    {
+      "id": "atuin-agent-history",
+      "name": "Atuin agent shell history",
+      "description": "Capture Claude Code and Codex Bash tool commands into local Atuin history, tagged by author.",
+      "source": "https://docs.atuin.sh/latest/guide/agent-hooks/",
+      "trust_tier": "repo-managed-external",
+      "status": "home-and-repo-projected",
+      "logical_events": [
+        "PreToolUse",
+        "PostToolUse",
+        "PostToolUseFailure"
+      ],
+      "matchers": [
+        "Bash",
+        "^Bash$"
+      ],
+      "policy_source": "config/hook-registry.json",
+      "harnesses": [
+        "claude-code",
+        "codex"
+      ],
+      "owner": "atuin",
+      "risk_notes": [
+        "Observational only (context mode) via hooks/atuin-agent-hook.sh; missing Atuin must not block Bash.",
+        "Do not also run atuin hook install against live settings \u2014 wagents merge is the SSOT so home sync cannot drop PostToolUseFailure."
+      ],
+      "notes": "Rows atuin-claude-* and atuin-codex-* in config/hook-registry.json. History DB stays on the machine; Atuin Cloud is out of scope."
     }
   ]
 }
