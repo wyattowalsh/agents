@@ -171,17 +171,32 @@ def test_render_client_mcp_projects_remote_stdio_bridge_for_stdio_clients(monkey
 
     assert rendered["mcphub_all"]["command"].endswith("scripts/mcphub/remote-stdio.sh")
     assert rendered["mcphub_all"]["args"] == ["http://127.0.0.1:46683/mcp"]
-    assert rendered["mcphub_all"]["env"] == {"MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"}
+    # remote-stdio bridge is portable path only; bearer is not projected as env
+    assert "env" not in rendered["mcphub_all"]
     assert rendered["mcphub_smart_all"]["disabled"] is True
 
 
-def test_vscode_repo_mcp_keeps_mcphub_token_placeholder(monkeypatch):
+def test_vscode_native_mcp_keeps_mcphub_token_placeholder(monkeypatch):
     monkeypatch.setenv("MCPHUB_BEARER_TOKEN", "local-secret")
 
-    rendered = vscode_platform.Adapter().render_mcp(mcphub_registry(), {}, harness="repo-mcp")["mcpServers"]
+    rendered = vscode_platform.Adapter().render_mcp(mcphub_registry(), {}, harness="vscode")["mcpServers"]
 
-    assert rendered["mcphub_all"]["env"] == {"MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"}
+    # stdio bridge must not materialize live secrets or env placeholders
+    assert "env" not in rendered["mcphub_all"]
     assert "local-secret" not in json.dumps(rendered)
+
+
+def test_vscode_repo_sync_never_owns_portable_root_mcp(tmp_path, monkeypatch):
+    monkeypatch.setattr(vscode_platform, "get_repo_root", lambda: tmp_path)
+    adapter = vscode_platform.Adapter()
+    ctx = platform_base.SyncContext(apply=True)
+    registry = mcphub_registry()
+
+    adapter.sync_repo(ctx, registry, {}, {})
+
+    assert adapter.repo_config_paths() == [tmp_path / ".vscode" / "mcp.json"]
+    assert (tmp_path / ".vscode" / "mcp.json").is_file()
+    assert not (tmp_path / "mcp.json").exists()
 
 
 def test_render_client_mcp_can_project_public_mcphub_url_for_chatgpt(monkeypatch):
@@ -199,7 +214,7 @@ def test_render_client_mcp_can_project_public_mcphub_url_for_chatgpt(monkeypatch
 
     assert list(rendered) == ["mcphub_all"]
     assert rendered["mcphub_all"]["args"] == ["https://mcp.w4w.dev/mcp"]
-    assert rendered["mcphub_all"]["env"] == {"MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"}
+    assert "env" not in rendered["mcphub_all"]
 
 
 def test_render_opencode_mcp_projects_remote_mcphub_entries(monkeypatch):
@@ -268,7 +283,10 @@ def test_repo_mcphub_projects_harness_to_managed_harnesses():
     assert all(codex_payload["mcp_servers"][name]["enabled"] is False for name in prefixed_server_names)
 
     claude = render_client_mcp(registry, {}, "claude-desktop")["mcpServers"]
-    assert list(claude) == ["mcphub_group_harness", "mcphub_group_nlm", *prefixed_server_names]
+    expected_groups = [
+        f"mcphub_group_{name}" for name in sorted(registry["mcphub"]["clients"]["default"]["included_groups"])
+    ]
+    assert list(claude) == [*expected_groups, *prefixed_server_names]
     assert claude["mcphub_group_harness"]["disabled"] is False
     assert all(claude[name]["disabled"] is True for name in prefixed_server_names)
 
@@ -415,14 +433,12 @@ def test_merge_client_mcp_config_preserves_local_only_servers(tmp_path, monkeypa
 
     path = tmp_path / "claude_desktop_config.json"
     path.write_text(
-        json.dumps(
-            {
-                "mcpServers": {
-                    "user-local-only": {"command": "echo", "args": ["hi"]},
-                    "will-be-managed": {"command": "old"},
-                }
+        json.dumps({
+            "mcpServers": {
+                "user-local-only": {"command": "echo", "args": ["hi"]},
+                "will-be-managed": {"command": "old"},
             }
-        ),
+        }),
         encoding="utf-8",
     )
     monkeypatch.setattr(sas, "CLAUDE_DESKTOP_CONFIG_PATH", path)
@@ -689,6 +705,7 @@ def test_codex_hook_renderer_supports_current_official_events():
                 "PreToolUse",
                 "PermissionRequest",
                 "PostToolUse",
+                "PostToolUseFailure",
                 "PreCompact",
                 "PostCompact",
                 "SubagentStart",
@@ -706,6 +723,7 @@ def test_codex_hook_renderer_supports_current_official_events():
         "PreToolUse",
         "PermissionRequest",
         "PostToolUse",
+        "PostToolUseFailure",
         "PreCompact",
         "PostCompact",
         "SubagentStart",
@@ -931,7 +949,8 @@ def test_hook_registry_renders_research_hooks_for_supported_harnesses():
     assert "research-readonly-write-guard --harness codex" in codex_command
     assert str(sync_agent_stack.REPO_ROOT) in codex_command
     assert "research-readonly-write-guard --harness claude-code" in claude_command
-    assert claude["hooks"]["PreToolUse"][0]["hooks"][0]["timeout"] == 5000
+    # Hook registry timeouts are seconds (not ms) across harness renders
+    assert claude["hooks"]["PreToolUse"][0]["hooks"][0]["timeout"] == 5
     assert "Stop" in codex["hooks"]
 
 
@@ -944,6 +963,28 @@ def test_render_codex_config_enables_hooks_feature():
     assert "\n[features]\n" in rendered
     assert "hooks = true" in rendered
     assert "codex_hooks" not in rendered
+
+
+def test_render_codex_config_defaults_to_gpt_5_6_sol_ultra():
+    import json
+    import tomllib
+
+    policy = json.loads((sync_agent_stack.REPO_ROOT / "config/tooling-policy.json").read_text(encoding="utf-8"))
+    rendered = render_codex_config("", {"servers": {}}, {}, include_local_extras=False)
+    data = tomllib.loads(rendered)
+    policy_codex = policy["model_defaults"]["codex"]
+
+    assert policy_codex["model"] == "gpt-5.6-sol"
+    assert policy_codex["reasoning_effort"] == "ultra"
+    assert data["model"] == "gpt-5.6-sol"
+    assert data["model_reasoning_effort"] == "ultra"
+    assert data["plan_mode_reasoning_effort"] == "ultra"
+    assert data["profiles"]["deep"]["model"] == "gpt-5.6-sol"
+    assert data["profiles"]["deep"]["model_reasoning_effort"] == "ultra"
+    assert data["profiles"]["full_access"]["model"] == "gpt-5.6-sol"
+    assert data["profiles"]["full_access"]["model_reasoning_effort"] == "ultra"
+    assert data["profiles"]["fast"]["model"] == "gpt-5.4-mini"
+    assert data["profiles"]["fast"]["model_reasoning_effort"] == "xhigh"
 
 
 def test_render_codex_config_uses_live_web_search_per_latest_docs():
@@ -1075,6 +1116,31 @@ def test_render_codex_config_uses_lmstudio_env_for_home_config(monkeypatch):
 
     assert 'base_url = "http://localhost:1234/v1"' in home_config
     assert 'base_url = "http://127.0.0.1:1234/v1"' in repo_config
+
+
+def test_render_codex_config_preserves_computer_use_plugin_and_mcp_on_home_only():
+    registry = {"servers": {}}
+    policy = {"model_defaults": {"codex": {"model": "gpt-5.5", "reasoning_effort": "high", "personality": "pragmatic"}}}
+    current = """
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
+[mcp_servers.computer-use]
+command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
+args = ["mcp"]
+cwd = "."
+enabled = true
+"""
+
+    home_config = render_codex_config(current, registry, policy, include_local_extras=True)
+    repo_config = render_codex_config(current, registry, policy, include_local_extras=False)
+    home_data = tomllib.loads(home_config)
+    repo_data = tomllib.loads(repo_config)
+
+    assert home_data["plugins"]["computer-use@openai-bundled"]["enabled"] is True
+    assert home_data["mcp_servers"]["computer-use"]["enabled"] is True
+    assert "computer-use@openai-bundled" not in repo_data.get("plugins", {})
+    assert "computer-use" not in repo_data.get("mcp_servers", {})
 
 
 def test_sync_generated_json_directory_rewrites_managed_json_and_leaves_parent_files_untouched(tmp_path):
@@ -1747,7 +1813,9 @@ def test_vscode_adapter_render_mcphub_mcp_preserves_env_placeholders(monkeypatch
     payload = json.dumps(rendered)
 
     assert "real-secret" not in payload
-    assert rendered["mcpServers"]["mcphub_group_safe"]["env"] == {"MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"}
+    # Group endpoint projection uses remote-stdio without env materialization
+    assert "env" not in rendered["mcpServers"]["mcphub_group_safe"]
+    assert "real-secret" not in json.dumps(rendered["mcpServers"]["mcphub_group_safe"])
 
 
 def test_cursor_adapter_render_mcphub_mcp_uses_native_placeholders(monkeypatch):
@@ -1867,8 +1935,10 @@ def test_cursor_adapter_render_hooks_uses_native_event_names():
             "preToolUse": [
                 {
                     "command": (
-                        '"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook" '
-                        "cursor-destructive-shell-guard --harness cursor"
+                        "/bin/sh -c "
+                        '\'ROOT="${CURSOR_PROJECT_DIR:-${PWD}}"; '
+                        'exec "$ROOT/hooks/run-wagents-hook" "$@"\' '
+                        "sh cursor-destructive-shell-guard --harness cursor"
                     ),
                     "matcher": "Bash",
                     "timeout": 5,
@@ -1988,9 +2058,7 @@ def test_check_opencode_managed_agents_dir_requires_overlay_parity(tmp_path):
 def test_render_opencode_agents_use_permission_not_portable_tools():
     rendered = opencode_platform._render_opencode_agents()
     agent_names = {
-        f"{path.stem}.md"
-        for path in (sync_agent_stack.REPO_ROOT / "agents").glob("*.md")
-        if path.name != "README.md"
+        f"{path.stem}.md" for path in (sync_agent_stack.REPO_ROOT / "agents").glob("*.md") if path.name != "README.md"
     }
 
     assert set(rendered) == agent_names
@@ -2110,6 +2178,7 @@ def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_pat
     )
     monkeypatch.setattr(cursor_platform, "CURSOR_HOME_MCP_PATH", config_path)
     monkeypatch.setattr(cursor_platform, "CURSOR_HOME_HOOKS_PATH", hooks_path)
+    monkeypatch.setattr(cursor_platform, "CURSOR_HOME_HOOKS_DIR", home_cursor / "hooks")
     monkeypatch.setattr(
         cursor_platform,
         "render_cursor_global_hooks",
@@ -2118,10 +2187,17 @@ def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_pat
             "hooks": {
                 "preToolUse": [
                     {
-                        "matcher": "exit_plan_mode|ExitPlanMode",
-                        "command": "/new/plannotator",
+                        "matcher": "SwitchMode",
+                        "command": "/tmp/plannotator-plan-hook.py enter",
+                        "timeout": 5,
+                        "failClosed": False,
+                    },
+                    {
+                        "matcher": "CreatePlan",
+                        "command": "/tmp/plannotator-plan-hook.py exit",
                         "timeout": 345600,
-                    }
+                        "failClosed": False,
+                    },
                 ]
             },
         },
@@ -2155,7 +2231,11 @@ def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_pat
         },
     }
     commands = [entry["command"] for entry in hooks_payload["hooks"]["preToolUse"]]
-    assert commands == ["/usr/local/bin/custom-hook.sh", "/new/plannotator"]
+    assert commands == [
+        "/usr/local/bin/custom-hook.sh",
+        "/tmp/plannotator-plan-hook.py enter",
+        "/tmp/plannotator-plan-hook.py exit",
+    ]
     for entry in hooks_payload["hooks"]["preToolUse"]:
         assert "hooks" not in entry
 

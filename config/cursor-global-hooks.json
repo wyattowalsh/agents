@@ -3,14 +3,16 @@
   "hooks": {
     "preToolUse": [
       {
-        "matcher": "exit_plan_mode|ExitPlanMode",
-        "command": "__PLANNOTATOR_BIN__",
-        "timeout": 345600
+        "matcher": "SwitchMode",
+        "command": "__PLANNOTATOR_CURSOR_PLAN_HOOK__ enter",
+        "timeout": 5,
+        "failClosed": false
       },
       {
-        "matcher": "enter_plan_mode|EnterPlanMode",
-        "command": "__PLANNOTATOR_BIN__ improve-context",
-        "timeout": 5
+        "matcher": "CreatePlan",
+        "command": "__PLANNOTATOR_CURSOR_PLAN_HOOK__ exit",
+        "timeout": 345600,
+        "failClosed": false
       }
     ]
   }

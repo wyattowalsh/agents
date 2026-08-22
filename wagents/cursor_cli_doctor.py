@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from wagents import ROOT
+from wagents.hooks.render import resolve_plannotator_binary
 
 AGENT_CLI_TIMEOUT_SECONDS = 15
 
@@ -343,6 +344,106 @@ def _collect_presence_checks(repo_root: Path) -> list[dict[str, str]]:
     return checks
 
 
+def _plannotator_binary_for_home(home_dir: Path) -> Path | None:
+    preferred = home_dir / ".local" / "bin" / "plannotator"
+    if preferred.exists():
+        return preferred
+    which = shutil.which("plannotator")
+    if which:
+        return Path(which)
+    canonical = resolve_plannotator_binary()
+    if home_dir.resolve() == Path.home().resolve() and canonical.exists():
+        return canonical
+    return None
+
+
+def _cursor_plannotator_hook_matchers(hooks_path: Path) -> tuple[bool, bool]:
+    try:
+        data = json.loads(hooks_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+        return False, False
+    hooks = data.get("hooks")
+    if not isinstance(hooks, dict):
+        return False, False
+    entries = hooks.get("preToolUse") or hooks.get("PreToolUse") or []
+    if not isinstance(entries, list):
+        return False, False
+    has_create = False
+    has_switch = False
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        matcher = str(entry.get("matcher") or "")
+        command = str(entry.get("command") or "")
+        if "plannotator-plan-hook" not in command:
+            continue
+        if "CreatePlan" in matcher:
+            has_create = True
+        if "SwitchMode" in matcher:
+            has_switch = True
+    return has_create, has_switch
+
+
+def _collect_plannotator_checks(home_dir: Path) -> list[dict[str, str]]:
+    checks: list[dict[str, str]] = []
+    binary = _plannotator_binary_for_home(home_dir)
+    if binary is not None:
+        checks.append(_make_check("plannotator-binary", "ok", f"present at {binary}"))
+    else:
+        checks.append(
+            _make_check(
+                "plannotator-binary",
+                "warn",
+                "plannotator CLI missing",
+                "Run uv run wagents cursor-cli plannotator install",
+            )
+        )
+
+    hooks_path = home_dir / ".cursor" / "hooks.json"
+    if hooks_path.is_file():
+        has_create, has_switch = _cursor_plannotator_hook_matchers(hooks_path)
+        if has_create and has_switch:
+            checks.append(
+                _make_check(
+                    "plannotator-hooks",
+                    "ok",
+                    f"CreatePlan and SwitchMode rows at {hooks_path}",
+                )
+            )
+        else:
+            checks.append(
+                _make_check(
+                    "plannotator-hooks",
+                    "warn",
+                    f"missing CreatePlan/SwitchMode Plannotator rows at {hooks_path}",
+                    "Run uv run wagents cursor-cli plannotator sync",
+                )
+            )
+    else:
+        checks.append(
+            _make_check(
+                "plannotator-hooks",
+                "warn",
+                f"missing at {hooks_path}",
+                "Run uv run wagents cursor-cli plannotator sync",
+            )
+        )
+
+    shim_path = home_dir / ".cursor" / "hooks" / "plannotator-plan-hook.py"
+    if shim_path.is_file():
+        checks.append(_make_check("plannotator-shim", "ok", f"present at {shim_path}"))
+    else:
+        checks.append(
+            _make_check(
+                "plannotator-shim",
+                "warn",
+                f"missing at {shim_path}",
+                "Run uv run wagents cursor-cli plannotator sync",
+            )
+        )
+    return checks
+
+
 def collect_cursor_cli_doctor_checks(
     repo_root: Path | str | None = None,
     home: Path | str | None = None,
@@ -358,6 +459,7 @@ def collect_cursor_cli_doctor_checks(
     checks.append(_collect_project_cli_check(root))
     checks.extend(_collect_home_config_checks(home_dir))
     checks.extend(_collect_presence_checks(root))
+    checks.extend(_collect_plannotator_checks(home_dir))
     return checks
 
 

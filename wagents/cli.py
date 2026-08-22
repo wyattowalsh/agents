@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import tomllib
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Annotated, Any, cast
 
@@ -15,6 +16,7 @@ import typer
 
 from wagents import KEBAB_CASE_PATTERN, ROOT, VERSION
 from wagents.catalog import CatalogNode
+from wagents.commands.plugin import plugin_app
 from wagents.commands.validate import register_validate_commands, validate_name
 from wagents.context import (
     REPO_ROOT_ENV,
@@ -147,6 +149,7 @@ app = typer.Typer(
 )
 new_app = typer.Typer(help="Create new assets from reference templates")
 app.add_typer(new_app, name="new")
+app.add_typer(plugin_app, name="plugin")
 app.add_typer(web_app, name="web")
 hooks_app = typer.Typer(help="Manage hooks across skills and agents")
 app.add_typer(hooks_app, name="hooks")
@@ -167,6 +170,8 @@ plannotator_app = typer.Typer(help="Install and verify Plannotator for Grok Buil
 grok_app.add_typer(plannotator_app, name="plannotator")
 app.add_typer(grok_app, name="grok")
 cursor_cli_app = typer.Typer(help="Diagnose Cursor Agent CLI runtime state")
+cursor_plannotator_app = typer.Typer(help="Install and sync Plannotator hooks for Cursor Agent (IDE + CLI)")
+cursor_cli_app.add_typer(cursor_plannotator_app, name="plannotator")
 app.add_typer(cursor_cli_app, name="cursor-cli")
 rtk_app = typer.Typer(help="Diagnose and sync RTK token-saving hooks")
 app.add_typer(rtk_app, name="rtk")
@@ -1487,13 +1492,17 @@ def _sync_declared_alias_creates_catalog_store(
 
 
 def _rows_share_install_source(left: InstalledSkillInventoryRow, right: InstalledSkillInventoryRow) -> bool:
-    """Return true when alias rows have immutable, revision-bound source evidence."""
+    """Return true when alias rows share immutable, revision-bound source evidence.
+
+    The desired row must provide a safely parsed install command. Installed
+    inventory can lose that command while retaining its normalized source
+    identity, so compare the recorded source without weakening the pin gate.
+    """
     left_spec = _skills_cli_install_spec(left)
-    right_spec = _skills_cli_install_spec(right)
-    if left_spec is None or right_spec is None:
+    if left_spec is None:
         return False
     left_source = _canonical_sync_install_source(cast("str", left_spec["source"]))
-    right_source = _canonical_sync_install_source(cast("str", right_spec["source"]))
+    right_source = _canonical_sync_install_source(right.install_source or right.source)
     if not left_source or left_source != right_source:
         return False
     return install_source_spec_has_pin(left_source)
@@ -2137,6 +2146,48 @@ def grok_doctor(
         raise typer.Exit(code=1)
 
 
+@cursor_plannotator_app.command("install")
+def cursor_plannotator_install(
+    hooks: bool = typer.Option(
+        True,
+        "--hooks/--no-hooks",
+        help="Sync repo-managed Plannotator plan-review hooks to ~/.cursor",
+    ),
+) -> None:
+    """Install Plannotator CLI and sync Cursor home plan-review hooks."""
+    from wagents.platforms.base import SyncContext
+    from wagents.platforms.cursor import sync_cursor_plannotator
+
+    typer.echo("Installing plannotator CLI...")
+    install_result = subprocess.run(
+        [
+            "bash",
+            "-c",
+            "curl -fsSL https://plannotator.ai/install.sh | bash -s -- --non-interactive --minimal",
+        ],
+        capture_output=False,
+    )
+    if install_result.returncode != 0:
+        raise typer.Exit(code=install_result.returncode)
+
+    if hooks:
+        ctx = SyncContext(apply=True)
+        sync_cursor_plannotator(ctx)
+        typer.echo(f"Wrote {Path.home() / '.cursor' / 'hooks.json'}")
+
+    typer.echo("Plannotator install complete. Restart Cursor before using hooks.")
+
+
+@cursor_plannotator_app.command("sync")
+def cursor_plannotator_sync() -> None:
+    """Sync home-local Cursor Plannotator hooks and shim."""
+    from wagents.platforms.base import SyncContext
+    from wagents.platforms.cursor import sync_cursor_plannotator
+
+    ctx = SyncContext(apply=True)
+    sync_cursor_plannotator(ctx)
+    typer.echo("Plannotator sync complete. Restart Cursor before using hooks.")
+
 
 @cursor_cli_app.command("doctor")
 def cursor_cli_doctor(
@@ -2694,7 +2745,7 @@ def catalog_sync_authoring(
 ):
     """Sync repo-owned skills/*/SKILL.md into docs/src/authoring/skills/*.mdx (source_kind: custom).
 
-    This populates the authoring SSOT used by docs generate for catalog index + pages.
+    This populates the authoring SSOT used by web generate for catalog index + pages.
     External (curated) entries are authored separately (or via migrate script) under same dir.
     """
     from wagents.authoring_sync import sync_custom_authoring_from_skills
@@ -2708,7 +2759,7 @@ def catalog_sync_authoring(
             typer.echo(f"  ... and {len(targets) - 20} more")
     else:
         typer.echo(f"Synced {len(targets)} custom authoring MDX entries")
-        typer.echo("Next: uv run wagents docs generate --no-installed to refresh pages + indexes.")
+        typer.echo("Next: uv run wagents web generate --no-installed to refresh pages + indexes.")
 
 
 def _emit_openspec_command_result(result, format_: str, *, success_message: str) -> None:
@@ -3202,18 +3253,24 @@ def readme(
         "| Target | Path | Update behavior |",
         "| ------ | ---- | --------------- |",
         (
-            "| Claude Code | `.claude-plugin/plugin.json` + `.claude-plugin/marketplace.json` | "
-            "Git-hosted plugin updates resolve from the latest commit because "
-            "the plugin version is intentionally unpinned |"
+            "| Agent Plugins 1.0 | `plugin.json` + `skills/` + `mcp.json` | "
+            "Versionless portable source package; validate it with "
+            "`uv run wagents plugin validate . --target portable` and build only into an explicit isolated output |"
         ),
         (
-            "| Codex | `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` | "
-            "Codex can load the Git-backed plugin bundle and bundled skills from the repository root |"
+            "| Claude Code | `.claude-plugin/plugin.json` + `.claude-plugin/marketplace.json` + "
+            "`.claude-plugin/mcp.json` | Git-hosted native updates resolve from the latest commit; "
+            "the target-local MCP config never reuses portable root `mcp.json` |"
         ),
         (
-            "| OpenCode | `opencode.json` + `.opencode/` | Repo-managed npm runtime plugin specs use "
-            "`@latest`; OCX-managed components stay copied under `.opencode/` with `.ocx/` receipts; "
-            "restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale |"
+            "| Codex | `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` + `.mcp.json` | "
+            "Codex loads the Git-backed native bundle with target-local MCP configuration; "
+            "portable root `mcp.json` remains independently valid |"
+        ),
+        (
+            "| OpenCode | `.opencode-plugin/plugin.json` + `opencode.json` + `.opencode/` | "
+            "The native manifest delegates runtime and MCP ownership to `opencode.json`; repo-managed npm plugin "
+            "specs use `@latest`, while OCX-managed components retain `.ocx/` receipts |"
         ),
         (
             "| Other agents | `npx skills add github:wyattowalsh/agents ...` | "
@@ -3223,6 +3280,84 @@ def readme(
         (
             "| OpenSpec | `openspec/` + `uv run wagents openspec ...` | "
             "Spec/change workflow with JSON wrappers and local downstream AI tool artifact generation |"
+        ),
+        "",
+        "### Deterministic plugin maintenance",
+        "",
+        (
+            "Check the strict skill corpus against the typed native overlay and parity receipt before "
+            "validating or building artifacts:"
+        ),
+        "",
+        "```bash",
+        "uv run wagents plugin reconcile-skills",
+        "uv run wagents plugin validate . --target portable",
+        "uv run wagents plugin build --target all --check",
+        "```",
+        "",
+        (
+            "`--target all --check` freezes one union source snapshot, derives one family source identity and "
+            "fingerprint, validates every direct target child in a temporary family, reverifies the source union, "
+            "and discards the family. Adding `--out` to `--check` compares an existing artifact for drift but "
+            "never materializes a missing output."
+        ),
+        "",
+        (
+            "When reconciliation reports drift, the repo-only apply path atomically refreshes "
+            "`config/skill-adapters.json` and "
+            "`planning/manifests/agent-plugin-skill-parity.json`; it does not install skills or "
+            "write client or home configuration:"
+        ),
+        "",
+        "```bash",
+        "uv run wagents plugin reconcile-skills --apply",
+        "```",
+        "",
+        (
+            "For one target, `--out` names that target's direct artifact root, for example "
+            "`--target portable --out dist/portable`. For `--target all`, it names the family container and "
+            "each recipe becomes a direct `<out>/<target>/` child. The repository-local family form is:"
+        ),
+        "",
+        "```bash",
+        "uv run wagents plugin build --target all --out dist --release-version X.Y.Z",
+        "```",
+        "",
+        (
+            "The family publishes once only after every target validates and the source union is unchanged. A "
+            "late render failure, source mutation, or existing/mixed destination publishes no partial target. "
+            "JSON output uses redacted `outputPath`, `sourceSnapshotSha256`, and `artifactOutputPaths` fields; "
+            "external destinations appear as `<external-output>` and failed families expose no output paths."
+        ),
+        "",
+        (
+            "Source manifests remain versionless. The closed `releasePolicy` fixes source identity to "
+            "`source-versionless`, requires source manifest versions to be omitted, accepts one SemVer identity "
+            "for tagged/release materialization, injects it into staged artifacts only, applies it to every "
+            "supported version field, and forbids source mutation. The command above materializes that identity "
+            "only in the isolated family; it does not authorize a release or publication."
+        ),
+        "",
+        (
+            "Each persisted target includes a deterministic CycloneDX 1.6 `sbom.cdx.json` and closed "
+            "`manifest.json` with source revision and dirty-state policy, standards/schema digests, normalized "
+            "build environment, target capabilities, tree integrity, and per-file checksum, mode, license, "
+            "provenance, runtime, and side-effect evidence. Runtime dependencies identify interpreters or "
+            "platform requirements only; they are not a resolved package graph and do not install or execute code."
+        ),
+        "",
+        (
+            "Regular resources contained by each skill, including `references/`, `scripts/`, and `assets/`, are "
+            "inventoried and staged. Native hook policy can be attested while executable hooks are deliberately "
+            "omitted because no self-contained target hook adapter is rendered; native rules are likewise omitted "
+            "without a recipe-declared rule source. Manifest interface metadata, logos, and screenshots are not "
+            "recipe-declared artifact inputs."
+        ),
+        "",
+        (
+            "The tracked retrospective rollback set recovers `131/131` entries with zero blockers, but it does not "
+            "supply a contemporaneous pre-migration behavior golden or retroactively perform the immediate rollback "
+            "that was missed at cutover."
         ),
         "",
         "## 🤝 Contributing",
@@ -3323,16 +3458,17 @@ def readme(
         "| `wagents install <name>` | Install specific skill to all agents |",
         "| `wagents install <name> -a <agent>` | Install specific skill to specific agents |",
         "| `wagents update` | Refresh installed skills from their recorded sources |",
-        "| `wagents docs init` | One-time setup: install docs dependencies |",
-        "| `wagents docs generate` | Generate MDX content pages from assets |",
+        "| `wagents web init` | One-time setup: install web/ (Fumadocs) dependencies |",
+        "| `wagents web generate` | Generate Fumadocs MDX content pages into web/content |",
         (
-            "| `wagents docs generate --include-installed` | Include installed "
-            "skills discovered from the normalized harness inventory in generated docs |"
+            "| `wagents web generate --include-installed` | Include installed "
+            "skills discovered from the normalized harness inventory in generated pages |"
         ),
-        "| `wagents docs dev` | Generate + launch dev server |",
-        "| `wagents docs build` | Generate + production build |",
-        "| `wagents docs preview` | Generate + build + preview server |",
-        "| `wagents docs clean` | Remove generated content pages |",
+        "| `wagents web generate --check` | Fail when generated web artifacts are stale |",
+        "| `wagents web dev` | Generate + launch Next.js dev server |",
+        "| `wagents web build` | Generate + production build |",
+        "| `wagents web preview` | Generate + build + preview server |",
+        "| `wagents web clean` | Remove generated content pages |",
         "",
         "Third-party skill collections can be installed directly with "
         "`npx skills add <source> --skill <name> -y -g --agent <agent>`. "
@@ -3525,9 +3661,91 @@ def hooks_convert(
 # ---------------------------------------------------------------------------
 
 
-def _collect_evals() -> list[tuple[Path, dict]]:
-    """Scan skills/*/evals/*.json and return (path, parsed_data) pairs."""
-    results: list[tuple[Path, dict]] = []
+def _valid_declared_eval_projections(
+    manifest_path: Path,
+    manifest: Mapping[str, object],
+    payloads: Mapping[str, object],
+) -> set[str]:
+    """Return projections that exactly reproduce one canonical manifest.
+
+    Listing must not double-count a valid compatibility projection, but an
+    invalid declaration must never hide an independently discoverable eval.
+    Keep this predicate fail-closed: suppress files only when the declaration,
+    file set, case contract, and every projected value agree exactly.
+    """
+    projection_files = manifest.get("projection_files")
+    if not isinstance(projection_files, list) or not projection_files:
+        return set()
+    if any(not isinstance(item, str) or not item for item in projection_files):
+        return set()
+
+    declared = list(cast("list[str]", projection_files))
+    if len(declared) != len(set(declared)):
+        return set()
+    if any(
+        Path(filename).name != filename or Path(filename).suffix != ".json" or filename == manifest_path.name
+        for filename in declared
+    ):
+        return set()
+
+    raw_cases = manifest.get("evals")
+    if not isinstance(raw_cases, list):
+        return set()
+    cases: dict[str, dict[str, object]] = {}
+    for raw_case in raw_cases:
+        if not isinstance(raw_case, dict):
+            return set()
+        case = cast("dict[str, object]", raw_case)
+        case_id = case.get("id")
+        if not isinstance(case_id, str) or not case_id.strip():
+            return set()
+        filename = f"{case_id}.json"
+        if Path(filename).name != filename or case_id in cases:
+            return set()
+        assertions = case.get("assertions")
+        if (
+            not isinstance(assertions, list)
+            or not assertions
+            or any(not isinstance(assertion, str) or not assertion.strip() for assertion in assertions)
+        ):
+            return set()
+        files = case.get("files", [])
+        if not isinstance(files, list) or any(not isinstance(file, str) for file in files):
+            return set()
+        cases[case_id] = case
+
+    declared_set = set(declared)
+    expected_set = {f"{case_id}.json" for case_id in cases}
+    actual_set = set(payloads) - {manifest_path.name}
+    if declared_set != expected_set or actual_set != declared_set:
+        return set()
+
+    skill_name = manifest.get("skill_name")
+    if not isinstance(skill_name, str) or not skill_name.strip():
+        return set()
+    parity_keys = {"skills", "query", "files", "expected_behavior"}
+    for filename in sorted(declared_set):
+        projection = payloads.get(filename)
+        if not isinstance(projection, dict):
+            return set()
+        projection_data = cast("dict[str, object]", projection)
+        if set(projection_data) != parity_keys:
+            return set()
+        case = cases[filename.removesuffix(".json")]
+        expected_projection = {
+            "skills": [skill_name],
+            "query": case.get("prompt"),
+            "files": case.get("files", []),
+            "expected_behavior": case.get("assertions", []),
+        }
+        if projection_data != expected_projection:
+            return set()
+    return declared_set
+
+
+def _collect_evals() -> list[tuple[Path, object]]:
+    """Scan skills/*/evals/*.json and return logical eval sources."""
+    results: list[tuple[Path, object]] = []
     evals_root = ROOT / "skills"
     if not evals_root.exists():
         return results
@@ -3537,27 +3755,45 @@ def _collect_evals() -> list[tuple[Path, dict]]:
         evals_dir = skill_dir / "evals"
         if not evals_dir.is_dir():
             continue
-        for eval_file in sorted(evals_dir.glob("*.json")):
+        payloads: dict[str, object] = {}
+        eval_files = sorted(evals_dir.glob("*.json"))
+        for eval_file in eval_files:
             try:
-                data = json.loads(eval_file.read_text())
-                results.append((eval_file, data))
+                payloads[eval_file.name] = json.loads(eval_file.read_text())
             except json.JSONDecodeError:
-                results.append((eval_file, {}))
+                payloads[eval_file.name] = {}
+
+        valid_projections: set[str] = set()
+        for eval_file in eval_files:
+            payload = payloads[eval_file.name]
+            if isinstance(payload, dict):
+                manifest = cast("dict[str, object]", payload)
+                if _is_eval_manifest(manifest):
+                    valid_projections.update(_valid_declared_eval_projections(eval_file, manifest, payloads))
+        for eval_file in eval_files:
+            if eval_file.name not in valid_projections:
+                results.append((eval_file, payloads[eval_file.name]))
     return results
 
 
-def _is_eval_manifest(data: dict) -> bool:
+def _is_eval_manifest(data: Mapping[str, object]) -> bool:
     """Return True when an eval JSON file uses the canonical manifest shape."""
     return "evals" in data
 
 
-def _expand_eval_cases(path: Path, data: dict) -> list[dict[str, object]]:
+def _expand_eval_cases(path: Path, data: object) -> list[dict[str, object]]:
     """Expand an eval file into normalized per-case records."""
     skill_name = path.parent.parent.name
-    if _is_eval_manifest(data):
+    if not isinstance(data, dict):
+        return [{"skill": skill_name, "query": "", "source": path.name, "case_id": path.stem}]
+    record = cast("dict[str, object]", data)
+    if _is_eval_manifest(record):
         records: list[dict[str, object]] = []
-        manifest_skill = data.get("skill_name", skill_name)
-        for index, item in enumerate(data.get("evals", []), start=1):
+        manifest_skill = record.get("skill_name", skill_name)
+        raw_evals = record.get("evals")
+        if not isinstance(raw_evals, list):
+            return records
+        for index, item in enumerate(raw_evals, start=1):
             if not isinstance(item, dict):
                 records.append({"skill": manifest_skill, "query": "", "source": path.name, "case_id": index})
                 continue
@@ -3568,7 +3804,7 @@ def _expand_eval_cases(path: Path, data: dict) -> list[dict[str, object]]:
                 "case_id": item.get("id", index),
             })
         return records
-    return [{"skill": skill_name, "query": data.get("query", ""), "source": path.name, "case_id": path.stem}]
+    return [{"skill": skill_name, "query": record.get("query", ""), "source": path.name, "case_id": path.stem}]
 
 
 @eval_app.command("list")

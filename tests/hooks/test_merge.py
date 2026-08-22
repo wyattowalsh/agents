@@ -13,6 +13,7 @@ from wagents.hooks.merge import (
     merge_cursor_flat_hooks,
     merge_hook_groups,
     strip_foreign_claude_hook_entries,
+    strip_foreign_codex_hook_entries,
     strip_generated_hook_entries,
 )
 
@@ -92,8 +93,7 @@ def test_strip_foreign_claude_hook_entries_removes_copilot_and_cursor_shapes():
                     {
                         "type": "command",
                         "command": (
-                            "python3 ${workspaceFolder}/hooks/wagents-hook.py "
-                            "research-evidence-ledger --harness cursor"
+                            "python3 ${workspaceFolder}/hooks/wagents-hook.py research-evidence-ledger --harness cursor"
                         ),
                         "timeout": 5,
                     }
@@ -126,23 +126,97 @@ def test_strip_foreign_claude_hook_entries_removes_copilot_and_cursor_shapes():
     assert len(stripped["PreToolUse"]) == 1
 
 
+def test_strip_foreign_codex_removes_camelcase_events_and_apm_bash():
+    hooks = {
+        "sessionStart": [
+            {
+                "type": "command",
+                "bash": "./hooks/session-start.sh",
+                "cwd": ".",
+                "timeoutSec": 15,
+                "_apm_source": "_local/agents",
+            }
+        ],
+        "preToolUse": [
+            {
+                "type": "command",
+                "bash": "./hooks/guard-destructive.sh",
+                "cwd": ".",
+                "timeoutSec": 5,
+                "_apm_source": "_local/agents",
+            }
+        ],
+        "PreToolUse": [
+            {
+                "matcher": "Bash",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": (
+                            "/Users/ww/dev/projects/agents/hooks/run-wagents-hook "
+                            "codex-destructive-shell-guard --harness codex"
+                        ),
+                        "timeout": 5,
+                    }
+                ],
+            }
+        ],
+        "Stop": [
+            {"hooks": [{"type": "command", "command": "./hooks/verify-before-stop.sh", "timeout": 60}]},
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": (
+                            "/Users/ww/dev/projects/agents/hooks/run-wagents-hook codex-stop-truth-gate --harness codex"
+                        ),
+                        "timeout": 5,
+                    }
+                ]
+            },
+        ],
+        "SubagentStop": [{"hooks": [{"type": "command", "command": "./hooks/teammate-idle-gate.sh", "timeout": 120}]}],
+    }
+    stripped = strip_foreign_codex_hook_entries(hooks)
+    assert "sessionStart" not in stripped
+    assert "preToolUse" not in stripped
+    assert "SubagentStop" not in stripped
+    assert len(stripped["PreToolUse"]) == 1
+    stop_cmds = [h["command"] for group in stripped["Stop"] for h in group["hooks"]]
+    assert any("codex-stop-truth-gate" in c for c in stop_cmds)
+    assert not any("verify-before-stop" in c for c in stop_cmds)
+
+
+def test_strip_foreign_codex_preserves_custom_user_hooks():
+    hooks = {"Stop": [{"hooks": [{"type": "command", "command": "./hooks/my-user-hook.sh", "timeout": 10}]}]}
+    stripped = strip_foreign_codex_hook_entries(hooks)
+    cmds = [h["command"] for group in stripped["Stop"] for h in group["hooks"]]
+    assert cmds == ["./hooks/my-user-hook.sh"]
+
+
 def test_merge_cursor_flat_hooks_replaces_managed_plannotator_rows():
-    plannotator = "/Users/example/.local/bin/plannotator"
+    hook = "/Users/example/.cursor/hooks/plannotator-plan-hook.py"
     existing = {
         "preToolUse": [
             {
                 "matcher": "exit_plan_mode|ExitPlanMode",
-                "hooks": [{"type": "command", "command": plannotator, "timeout": 345600}],
+                "hooks": [{"type": "command", "command": "/Users/example/.local/bin/plannotator", "timeout": 345600}],
+            },
+            {
+                "matcher": "exit_plan_mode|ExitPlanMode",
+                "command": "/Users/example/.local/bin/plannotator",
+                "timeout": 345600,
             },
             {"command": "/usr/local/bin/my-custom-hook.sh"},
         ]
     }
     generated = {
         "preToolUse": [
-            {"matcher": "exit_plan_mode|ExitPlanMode", "command": plannotator, "timeout": 345600},
-            {"matcher": "enter_plan_mode|EnterPlanMode", "command": f"{plannotator} improve-context", "timeout": 5},
+            {"matcher": "SwitchMode", "command": f"{hook} enter", "timeout": 5, "failClosed": False},
+            {"matcher": "CreatePlan", "command": f"{hook} exit", "timeout": 345600, "failClosed": False},
         ]
     }
     merged = merge_cursor_flat_hooks(existing, generated)
     commands = [entry["command"] for entry in merged["preToolUse"]]
-    assert commands == ["/usr/local/bin/my-custom-hook.sh", plannotator, f"{plannotator} improve-context"]
+    assert commands == ["/usr/local/bin/my-custom-hook.sh", f"{hook} enter", f"{hook} exit"]
+    assert all("hooks" not in entry for entry in merged["preToolUse"])

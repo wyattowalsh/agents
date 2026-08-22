@@ -99,7 +99,7 @@ If the user invokes `/harness-master` with no arguments:
 - **CLI-only:** project `.cursor/cli.json` permissions; user-owned `~/.cursor/cli-config.json` (sync SHALL NOT write it). Doctor: repo CLI `cursor-cli doctor`
 - **Plugins:** `--plugin-dir` and `agent plugin marketplace` (operator-opt-in; never sync-add)
 - **ACP / worktrees / worker:** cite `cursor-acp`; `agent --worktree`; `agent worker` is out of repo sync
-- **Hooks:** consume shared hooks.json + plugin hooks. Do not add `cursor-cli` to hook-registry render lists
+- **Hooks:** consume shared hooks.json + plugin hooks. Do not add `cursor-cli` to hook-registry render lists. Home-only Plannotator: `CreatePlan` / `SwitchMode` via `config/cursor-global-hooks.json` → `~/.cursor/hooks.json` + `plannotator-plan-hook.py`. Install/sync: `cursor-cli plannotator sync`. Never project into git-tracked `.cursor/hooks.json`.
 
 ## Classification Gate
 

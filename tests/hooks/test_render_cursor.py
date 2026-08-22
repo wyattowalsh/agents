@@ -15,6 +15,15 @@ from wagents.platforms import cursor as cursor_platform
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
+# Resilient Cursor runner: $CURSOR_PROJECT_DIR with $PWD fallback (worker hosts).
+_CURSOR_RUNNER_PREFIX = (
+    '/bin/sh -c \'ROOT="${CURSOR_PROJECT_DIR:-${PWD}}"; exec "$ROOT/hooks/run-wagents-hook" "$@"\' sh'
+)
+
+
+def _cursor_runner_command(*args: str) -> str:
+    return f"{_CURSOR_RUNNER_PREFIX} {' '.join(args)}"
+
 
 def _registry() -> dict[str, object]:
     return {
@@ -81,9 +90,10 @@ def test_render_cursor_hooks_maps_events_and_failclosed():
     pre = hooks["preToolUse"]
     assert pre == [
         {
-            "command": (
-                '"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook" '
-                "cursor-destructive-shell-guard --harness cursor"
+            "command": _cursor_runner_command(
+                "cursor-destructive-shell-guard",
+                "--harness",
+                "cursor",
             ),
             "matcher": "Bash|bash|run_shell_command",
             "timeout": 5,
@@ -115,9 +125,10 @@ def test_render_cursor_hooks_fail_opens_catch_all_image_optimizer():
         "hooks": {
             "preToolUse": [
                 {
-                    "command": (
-                        '"$CURSOR_PROJECT_DIR/hooks/run-wagents-hook" '
-                        "image-input-optimizer-guard --harness cursor"
+                    "command": _cursor_runner_command(
+                        "image-input-optimizer-guard",
+                        "--harness",
+                        "cursor",
                     ),
                     "matcher": ".*",
                     "timeout": 60,
@@ -214,7 +225,8 @@ def test_adapter_render_hooks_uses_cursor_project_dir_by_default():
     assert rendered is not None
     flattened = json.dumps(rendered)
     assert "${workspaceFolder}" not in flattened
-    assert "$CURSOR_PROJECT_DIR/hooks/run-wagents-hook" in flattened
+    assert "${CURSOR_PROJECT_DIR:-${PWD}}" in flattened
+    assert "$ROOT/hooks/run-wagents-hook" in flattened
 
 
 def test_repo_cursor_hooks_json_is_flat():
@@ -283,16 +295,24 @@ def test_repo_cursor_hooks_json_contains_pin_hooks_fail_open():
 
 def test_render_cursor_global_hooks_is_flat_plannotator_shape(monkeypatch, tmp_path):
     template = tmp_path / "cursor-global-hooks.json"
+    hooks_dir = tmp_path / "hooks"
     template.write_text(
         json.dumps({
             "version": 1,
             "hooks": {
                 "preToolUse": [
                     {
-                        "matcher": "exit_plan_mode|ExitPlanMode",
-                        "command": "__PLANNOTATOR_BIN__",
+                        "matcher": "SwitchMode",
+                        "command": "__PLANNOTATOR_CURSOR_PLAN_HOOK__ enter",
+                        "timeout": 5,
+                        "failClosed": False,
+                    },
+                    {
+                        "matcher": "CreatePlan",
+                        "command": "__PLANNOTATOR_CURSOR_PLAN_HOOK__ exit",
                         "timeout": 345600,
-                    }
+                        "failClosed": False,
+                    },
                 ]
             },
         })
@@ -300,16 +320,35 @@ def test_render_cursor_global_hooks_is_flat_plannotator_shape(monkeypatch, tmp_p
         encoding="utf-8",
     )
     monkeypatch.setattr("wagents.hooks.render.resolve_plannotator_binary", lambda: tmp_path / "plannotator")
-    rendered = render_cursor_global_hooks(template_path=template)
+    rendered = render_cursor_global_hooks(template_path=template, hooks_dir=hooks_dir)
+    hook = str((hooks_dir / "plannotator-plan-hook.py").resolve())
     assert rendered == {
         "version": 1,
         "hooks": {
             "preToolUse": [
                 {
-                    "matcher": "exit_plan_mode|ExitPlanMode",
-                    "command": str(tmp_path / "plannotator"),
+                    "matcher": "SwitchMode",
+                    "command": f"{hook} enter",
+                    "timeout": 5,
+                    "failClosed": False,
+                },
+                {
+                    "matcher": "CreatePlan",
+                    "command": f"{hook} exit",
                     "timeout": 345600,
-                }
+                    "failClosed": False,
+                },
             ]
         },
     }
+
+
+def test_repo_cursor_global_hooks_template_uses_create_plan_and_switch_mode():
+    rendered = render_cursor_global_hooks()
+    assert rendered is not None
+    entries = rendered["hooks"]["preToolUse"]
+    matchers = [entry["matcher"] for entry in entries]
+    assert matchers == ["SwitchMode", "CreatePlan"]
+    assert all(entry.get("failClosed") is False for entry in entries)
+    assert entries[0]["command"].endswith("plannotator-plan-hook.py enter")
+    assert entries[1]["command"].endswith("plannotator-plan-hook.py exit")

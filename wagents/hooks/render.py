@@ -309,6 +309,7 @@ CODEX_EVENT_MAP: dict[str, str] = {
     "PreToolUse": "PreToolUse",
     "PermissionRequest": "PermissionRequest",
     "PostToolUse": "PostToolUse",
+    "PostToolUseFailure": "PostToolUseFailure",
     "PreCompact": "PreCompact",
     "PostCompact": "PostCompact",
     "SubagentStart": "SubagentStart",
@@ -322,6 +323,7 @@ CLAUDE_EVENT_MAP: dict[str, str] = {
     "PreToolUse": "PreToolUse",
     "PermissionRequest": "PermissionRequest",
     "PostToolUse": "PostToolUse",
+    "PostToolUseFailure": "PostToolUseFailure",
     "SubagentStart": "SubagentStart",
     "SubagentStop": "SubagentStop",
     "Stop": "Stop",
@@ -363,15 +365,42 @@ def _wagents_policy_id(hook: dict[str, Any]) -> str:
     return str(hook.get("logical_policy") or hook["id"])
 
 
+def _cursor_runner_uses_project_dir_placeholder(repo_root: str) -> bool:
+    return repo_root in {"$CURSOR_PROJECT_DIR", "${CURSOR_PROJECT_DIR}"}
+
+
+def _cursor_run_wagents_hook(repo_root: str, argv_suffix: str) -> str:
+    """Build a Cursor hook command that survives missing ``CURSOR_PROJECT_DIR``.
+
+    Cursor project hooks normally expand ``$CURSOR_PROJECT_DIR``. Some worker /
+    extension-host contexts omit that variable; fail-closed enforce hooks then
+    try to exec ``/hooks/run-wagents-hook`` and deny every tool. Fall back to
+    ``$PWD`` (Cursor's hook cwd is the project root) without weakening enforce.
+
+    Args after the inline ``sh`` become ``$@`` inside the ``-c`` script so
+    worker-socket / bundle flags keep normal shell expansion.
+    """
+    if _cursor_runner_uses_project_dir_placeholder(repo_root):
+        return (
+            "/bin/sh -c "
+            '\'ROOT="${CURSOR_PROJECT_DIR:-${PWD}}"; '
+            'exec "$ROOT/hooks/run-wagents-hook" "$@"\' '
+            f"sh {argv_suffix}"
+        )
+    runner = f'"{repo_root}/hooks/run-wagents-hook"'
+    return f"{runner} {argv_suffix}"
+
+
 def render_cursor_hook_command(hook: dict[str, Any], harness: str, *, repo_root: str) -> str:
     """Render Cursor wagents hooks through the shell-expanded project runner.
 
     Cursor currently passes hook command strings to the shell without expanding
     ``${workspaceFolder}``, while ``$CURSOR_PROJECT_DIR`` is available to the
-    hook environment. Use the repo runner for all wagents policies so the
-    trusted-Python lookup and script path resolution stay centralized.
+    hook environment in the IDE. Prefer that variable with a ``$PWD`` fallback
+    so worker hosts that omit ``CURSOR_PROJECT_DIR`` still resolve the runner.
+    Use the repo runner for all wagents policies so the trusted-Python lookup
+    and script path resolution stay centralized.
     """
-    runner = f'"{repo_root}/hooks/run-wagents-hook"'
     bundle_ids = hook.get("_bundle_policy_ids")
     if isinstance(bundle_ids, list) and bundle_ids:
         ids_csv = ",".join(str(policy_id) for policy_id in bundle_ids)
@@ -379,20 +408,25 @@ def render_cursor_hook_command(hook: dict[str, Any], harness: str, *, repo_root:
         timeout = int(hook.get("timeout", DEFAULT_HARNESS_HOOK_TIMEOUT))
         command = str(hook.get("command") or "")
         if "--worker-socket" in command or "wagents-hook-worker.py" in command:
-            return (
-                f'{runner} --worker-socket "${{WAGENTS_HOOK_WORKER_SOCKET:-}}" '
+            suffix = (
+                f'--worker-socket "${{WAGENTS_HOOK_WORKER_SOCKET:-}}" '
                 f"--bundle {shlex.quote(ids_csv)} --harness {shlex.quote(harness)} "
                 f"--bundle-mode {shlex.quote(bundle_mode)} --bundle-timeout {timeout}"
             )
-        return (
-            f"{runner} --bundle {shlex.quote(ids_csv)} --harness {shlex.quote(harness)} "
+            return _cursor_run_wagents_hook(repo_root, suffix)
+        suffix = (
+            f"--bundle {shlex.quote(ids_csv)} --harness {shlex.quote(harness)} "
             f"--bundle-mode {shlex.quote(bundle_mode)} --bundle-timeout {timeout}"
         )
+        return _cursor_run_wagents_hook(repo_root, suffix)
     policy_id = _wagents_policy_id(hook)
     # Single-policy worker tier is not rendered yet. When enabling --worker-socket here,
     # pass --forward-timeout from hook["timeout"] so socket forwards exceed policy budgets
     # (e.g. image-input-optimizer-guard 60s registry vs 5s client default).
-    return f"{runner} {shlex.quote(policy_id)} --harness {shlex.quote(harness)}"
+    return _cursor_run_wagents_hook(
+        repo_root,
+        f"{shlex.quote(policy_id)} --harness {shlex.quote(harness)}",
+    )
 
 
 def _cursor_flat_entry(
@@ -435,9 +469,7 @@ def render_cursor_hooks(
         event = events.get(str(hook.get("logical_event")))
         if not event:
             continue
-        rendered.setdefault(event, []).append(
-            _cursor_flat_entry(hook, event, harness=harness, repo_root=repo_root)
-        )
+        rendered.setdefault(event, []).append(_cursor_flat_entry(hook, event, harness=harness, repo_root=repo_root))
     if not rendered:
         return None
     return {"version": 1, "hooks": rendered}
@@ -445,24 +477,39 @@ def render_cursor_hooks(
 
 CURSOR_GLOBAL_HOOKS_PATH = get_repo_root() / "config" / "cursor-global-hooks.json"
 PLANNOTATOR_BIN_PLACEHOLDER = "__PLANNOTATOR_BIN__"
+PLANNOTATOR_CURSOR_PLAN_HOOK_PLACEHOLDER = "__PLANNOTATOR_CURSOR_PLAN_HOOK__"
+PLANNOTATOR_CURSOR_PLAN_HOOK_HOME_NAME = "plannotator-plan-hook.py"
 
 
 def resolve_plannotator_binary() -> Path:
     return Path.home() / ".local" / "bin" / "plannotator"
 
 
-def _substitute_cursor_global_placeholders(payload: str) -> str:
+def cursor_plannotator_plan_hook_home_path(*, hooks_dir: Path | None = None) -> Path:
+    """Return the home-local Cursor Plannotator plan-hook path."""
+    return (hooks_dir or (Path.home() / ".cursor" / "hooks")) / PLANNOTATOR_CURSOR_PLAN_HOOK_HOME_NAME
+
+
+def _substitute_cursor_global_placeholders(payload: str, *, hooks_dir: Path | None = None) -> str:
     plannotator_bin = str(resolve_plannotator_binary())
-    return payload.replace(PLANNOTATOR_BIN_PLACEHOLDER, plannotator_bin)
+    plan_hook = str(cursor_plannotator_plan_hook_home_path(hooks_dir=hooks_dir).resolve())
+    substituted = payload.replace(PLANNOTATOR_BIN_PLACEHOLDER, plannotator_bin)
+    return substituted.replace(PLANNOTATOR_CURSOR_PLAN_HOOK_PLACEHOLDER, plan_hook)
 
 
-def render_cursor_global_hooks(*, template_path: Path | None = None) -> dict[str, Any] | None:
+def render_cursor_global_hooks(
+    *,
+    template_path: Path | None = None,
+    hooks_dir: Path | None = None,
+) -> dict[str, Any] | None:
     """Render home-global Cursor hooks (for example Plannotator plan review) in flat shape."""
     path = template_path or CURSOR_GLOBAL_HOOKS_PATH
     if not path.is_file():
         return None
     try:
-        data = json.loads(_substitute_cursor_global_placeholders(path.read_text(encoding="utf-8")))
+        data = json.loads(
+            _substitute_cursor_global_placeholders(path.read_text(encoding="utf-8"), hooks_dir=hooks_dir)
+        )
     except json.JSONDecodeError:
         return None
     hooks = data.get("hooks")

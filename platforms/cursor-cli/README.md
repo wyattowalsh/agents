@@ -24,7 +24,8 @@ uv run python skills/harness-master/scripts/discovery/classify_intent.py --args 
 
 Repo / home sync uses `wagents/platforms/cursor.py` (`harness="cursor"`):
 
-- **Writes:** `.cursor/cli.json` (project `permissions` only), shared `.cursor/hooks.json`, `.cursor/mcp.json`, agents, skills
+- **Writes:** `.cursor/cli.json` (project `permissions` only), shared `.cursor/hooks.json` (fleet; no Plannotator), `.cursor/mcp.json`, agents, skills
+- **Home writes (opt-out `--no-plannotator-hooks`):** `~/.cursor/hooks.json` Plannotator `CreatePlan`/`SwitchMode` rows and `~/.cursor/hooks/plannotator-plan-hook.py`
 - **Must not write:** `~/.cursor/cli-config.json`, live `state.vscdb`
 
 Operators SHOULD set `exploreSubagentModel=inherit` in user-owned `~/.cursor/cli-config.json`.
@@ -39,6 +40,15 @@ uv run wagents skills sync -a cursor --dry-run
 # uv run wagents install -a cursor
 # npx skills add github:wyattowalsh/agents ... -a cursor
 ```
+
+## Plannotator
+
+```bash
+uv run wagents cursor-cli plannotator sync
+uv run wagents cursor-cli plannotator install
+```
+
+Home-only. Do not render Plannotator into project `.cursor/hooks.json`.
 
 ## Doctor
 

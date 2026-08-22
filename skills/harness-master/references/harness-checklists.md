@@ -86,6 +86,8 @@ Check:
 - ACP remains the `cursor-acp` row (`agent acp`); do not merge ACP into this report as a second product id
 - Skills CLI install stays `-a cursor`; do not recommend `-a cursor-cli`
 - flag `cli-config.json` values, plugin marketplace auth, dashboard MCP, Cloud Agent handoff, and worker pools as blind spots
+- home-only Plannotator: `~/.cursor/hooks.json` CreatePlan/SwitchMode rows + `~/.cursor/hooks/plannotator-plan-hook.py`; never in project `.cursor/hooks.json`
+- `wagents cursor-cli plannotator sync` / doctor warn-only Plannotator checks
 
 ## Grok Build
 

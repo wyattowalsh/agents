@@ -126,6 +126,14 @@
           "path": "~/.cursor/hooks.json",
           "kind": "hooks",
           "role": "authoritative"
+        },
+        {
+          "level": "repo",
+          "label": "cursor plannotator home template",
+          "path": "config/cursor-global-hooks.json",
+          "kind": "hooks",
+          "role": "repo-observed",
+          "notes": "Cursor-native CreatePlan/SwitchMode Plannotator template. Home sync copies scripts/cursor/plannotator-plan-hook.py to ~/.cursor/hooks/ and merges into ~/.cursor/hooks.json. Not projected into git-tracked .cursor/hooks.json."
         }
       ],
       "blind_spots": [
@@ -144,7 +152,9 @@
       "repo_evidence": [
         "config/hook-registry.json (harnesses include 'cursor')",
         "wagents/platforms/cursor.py",
-        ".cursor/hooks.json (generated on sync)"
+        ".cursor/hooks.json (generated on sync)",
+        "config/cursor-global-hooks.json",
+        "scripts/cursor/plannotator-plan-hook.py"
       ]
     },
     {
@@ -169,7 +179,15 @@
           "path": "~/.cursor/hooks.json",
           "kind": "hooks",
           "role": "authoritative",
-          "notes": "User hooks apply to Agent CLI. Team/enterprise hooks are a blind spot."
+          "notes": "User hooks apply to Agent CLI, including home-only Plannotator CreatePlan/SwitchMode rows. Team/enterprise hooks are a blind spot. Do not add cursor-cli to hook-registry render lists."
+        },
+        {
+          "level": "repo",
+          "label": "cursor plannotator home template",
+          "path": "config/cursor-global-hooks.json",
+          "kind": "hooks",
+          "role": "repo-observed",
+          "notes": "Cursor-native CreatePlan/SwitchMode Plannotator template. Home sync copies scripts/cursor/plannotator-plan-hook.py to ~/.cursor/hooks/ and merges into ~/.cursor/hooks.json. Not projected into git-tracked .cursor/hooks.json."
         }
       ],
       "blind_spots": [
@@ -187,7 +205,9 @@
       "repo_evidence": [
         "config/hook-registry.json (render harness remains cursor)",
         ".cursor/hooks.json",
-        "wagents/platforms/cursor.py"
+        "wagents/platforms/cursor.py",
+        "config/cursor-global-hooks.json",
+        "scripts/cursor/plannotator-plan-hook.py"
       ]
     },
     {
@@ -217,6 +237,11 @@
           "level": "global",
           "label": "Cursor cloud agent hook settings",
           "notes": "Cloud agent hook configuration and secrets may be dashboard-managed and not present in local ~/.cursor/hooks.json."
+        },
+        {
+          "level": "global",
+          "label": "User home Plannotator hooks",
+          "notes": "Cloud agents do not load ~/.cursor/hooks.json. Plannotator review stays home-only so the 345600s GUI hook cannot hang cloud runs."
         }
       ],
       "repo_evidence": [

@@ -28,6 +28,7 @@ Audit AI harness configuration quality, usage posture, and ecosystem options, th
 | `<harness...>`                                                                    | Intake             | Resolve one or more harnesses, then ask only for missing level                                                            |
 | `<level>`                                                                         | Intake             | Resolve level, then ask only for missing harnesses                                                                        |
 | `<harness...> <level>` / `<level> <harness...>`                                   | Audit              | Run dry-run review for the selected harnesses and level                                                                   |
+| `grok-build both` in a repo with the rig workflow capability                     | Audit + receipt    | Audit plugin ownership/collisions and emit a hash-bound saved-workflow projection preview; do not apply                  |
 | `apply approved`                                                                  | Apply Approved     | Apply the last matching dry-run batch only if the user already approved it in this session                                |
 | `apply <harness...> <level>` / `apply <level> <harness...>`                       | Apply Approved     | Apply only if the same scope was already reviewed and approved in this session; otherwise rerun audit first               |
 | `install <harness...>`                                                            | Install Guidance   | Show exact `npx skills add ...` commands only; do not edit configs                                                        |
@@ -84,7 +85,10 @@ If the user invokes `/harness-master` with no arguments:
 - **Instruction entry:** `AGENTS.md` -> `instructions/grok-global.md` -> `instructions/global.md`
 - **Policy template:** `config/grok-config.toml` merged into `~/.grok/config.toml` via repo Grok platform adapter sync
 - **Ownership:** replace-owned (`models`, `mcp_servers`, `plugins`, `compat`, `telemetry`) vs blend-owned (`ui`, `features`, `session`, `tools`, `toolset`, `subagents`, `memory`)
-- **Skills:** no native Skills CLI adapter; install/sync uses `claude-code` alias + mirror to `~/.grok/skills`; inventory also scans repo `.grok/skills` (project scope)
+- **Repo skills:** when normalized `~/.grok/config.toml` `[plugins].paths` resolves to this valid repo root, the plugin is the preferred non-CLI owner. Do not emit Skills CLI, Claude alias, or `~/.grok/skills` mirrors for its repo skill bodies.
+- **External skills:** no native Skills CLI adapter; curated external install/sync retains the `claude-code` alias + mirror to `~/.grok/skills`.
+- **Collisions:** plugin-covered names in `~/.agents/skills`, `~/.claude/skills`, or `~/.grok/skills` are cleanup candidates and block a collision-free activation claim.
+- **Saved workflows:** repo `.grok/workflows/*.rhai` is source only. Project user projection and recognized legacy migration use `scripts/grok_workflow_projection.py`, an exact preview receipt, fresh canaries, and receipt-bound rollback.
 - **Plannotator:** CLI + skills + hooks (no Grok npm plugin). Install: `grok plannotator install` (repo CLI). Policy: `config/grok-plannotator-hooks.json` -> `~/.grok/hooks/plannotator.json`; home shim maps `block` -> `deny`. Curated in `docs/src/authoring/skills/*.mdx`. Contrast OpenCode `@plannotator/opencode@latest`.
 - **Env (not in TOML):** `GROK_WEB_FETCH`, `GROK_MEMORY`, `GROK_SUBAGENTS`, `GROK_LSP_TOOLS` — document in `config/grok-env.sh`; verify with `/grok-delegate preflight`
 - **Cross-harness delegate:** `/grok-delegate` — native headless `grok -p` / `-r` / worktrees / leader for Codex/OpenCode task graphs (not config sync)
@@ -98,7 +102,7 @@ If the user invokes `/harness-master` with no arguments:
 - **CLI-only:** project `.cursor/cli.json` permissions; user-owned `~/.cursor/cli-config.json` (sync SHALL NOT write it). Doctor: repo CLI `cursor-cli doctor`
 - **Plugins:** `--plugin-dir` and `agent plugin marketplace` (operator-opt-in; never sync-add)
 - **ACP / worktrees / worker:** cite `cursor-acp`; `agent --worktree`; `agent worker` is out of repo sync
-- **Hooks:** consume shared hooks.json + plugin hooks. Do not add `cursor-cli` to hook-registry render lists
+- **Hooks:** consume shared hooks.json + plugin hooks. Do not add `cursor-cli` to hook-registry render lists. Home-only Plannotator: `CreatePlan` / `SwitchMode` via `config/cursor-global-hooks.json` → `~/.cursor/hooks.json` + `plannotator-plan-hook.py`. Install/sync: `cursor-cli plannotator sync`. Never project into git-tracked `.cursor/hooks.json`.
 
 ## Classification Gate
 
@@ -148,6 +152,29 @@ If the user invokes `/harness-master` with no arguments:
    - For `both`, compare project/global precedence before recommending edits.
    - Mark generated surfaces explicitly. Prefer fixing the canonical source over directly editing generated output.
    - Treat missing native surfaces as evidence to assess, not automatic failure.
+   - For `grok-build both`, if the selected repo owns
+     `.grok/workflows/rig-ecosystem-index.rhai` and
+     `skills/rig-ecosystem-refresh/SKILL.md`, verify config-path plugin ownership
+     and the three duplicate skill roots. Resolve the downstream dotfiles root
+     from current task context; never hard-code a user path.
+   - Validate the canonical workflow with Grok's native workflow validator and
+     validate the configured plugin source before treating the receipt as
+     approval-eligible. Keep those results as separate evidence bound to the
+     receipt's source hash.
+   - Produce the workflow preview with:
+     ```bash
+     uv run python skills/harness-master/scripts/grok_workflow_projection.py preview \
+       --repo-root <agents-repo> \
+       --dotfiles-root <dotfiles-repo> \
+       --receipt-out <user-state-receipt.json> \
+       --format json
+     ```
+     The receipt path must be outside Grok skill/workflow discovery roots. A
+     divergent destination, divergent legacy hash, invalid plugin owner, or
+     duplicate skill exposure blocks the batch. Plugin ownership requires
+     readable portable frontmatter whose non-empty `name` and `description`
+     match the skill directory. An existing transaction owner marker also
+     blocks a fresh preview.
 
 5. **Gate 4 — Report dry-run findings**
    - Use the structure in `references/output-format.md`.
@@ -164,6 +191,35 @@ If the user invokes `/harness-master` with no arguments:
 5. Apply the smallest approved batch only. Do not broaden scope silently.
 6. If the approved remediation is an install step, use the exact `npx skills add ...` guidance from `references/install-guidance.md`.
 7. After edits, rerun surface discovery and targeted dry-run checks for the touched harnesses, then summarize remaining gaps.
+8. For an approved `rig-ecosystem-index` Grok receipt, do not use a broad
+   cross-harness skill-sync apply. Apply the exact receipt digest in phases:
+   Reconfirm the native workflow/plugin validation evidence still covers the
+   receipt's unchanged source hash before running:
+   ```bash
+   uv run python skills/harness-master/scripts/grok_workflow_projection.py apply \
+     --receipt <receipt.json> --receipt-sha256 <approved-sha256> --format json
+   ```
+   Start a fresh Grok process, verify one plugin-owned user-invocable skill,
+   exact workflow bytes, non-mutating help, and workflow validation. Only after
+   all canaries pass may the same approved receipt migrate recognized legacy
+   bytes:
+   ```bash
+   uv run python skills/harness-master/scripts/grok_workflow_projection.py migrate \
+     --receipt <receipt.json> --receipt-sha256 <approved-sha256> \
+     --canaries-passed --format json
+   ```
+   On failure, run only the same receipt's `rollback` command. Rollback first
+   restores every verified legacy backup, then removes newly projected matching
+   bytes last so a failed restore cannot leave Grok without a working workflow.
+   Removal requires the active durable owner marker for that exact receipt
+   digest and transaction. Before discarding the receipt-owned projected inode,
+   rollback transitions that marker to a file-and-directory-synced
+   transaction-specific `rolled-back` tombstone outside workflow discovery.
+   The tombstone remains permanently so a stale receipt cannot claim a later
+   transaction's identical bytes. A missing, different, or tombstoned marker
+   preserves any public projection. Legacy and projected removals use
+   inode-bound, no-clobber quarantine so a same-hash replacement race fails
+   closed.
 
 ### Mode C: Discover
 
@@ -236,6 +292,9 @@ After changing this skill, run:
 
 ```bash
 python scripts/check.py
+uv run python skills/skill-creator/scripts/audit.py skills/harness-master/
+uv run python skills/skill-creator/scripts/package.py skills/harness-master/ --dry-run
+uv run pytest tests/test_grok_workflow_projection.py tests/test_grok_doctor_json.py -q
 uv run python scripts/usage_probe.py --repo-root . --harness opencode --level both --days 14 --json
 uv run python scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness cursor --harness cursor-cli --harness grok-build --harness opencode --harness perplexity-desktop --harness cherry-studio --harness lm-studio
 ```
@@ -345,3 +404,14 @@ Use these terms exactly throughout:
 15. GitHub GraphQL enriches known candidate repositories; use REST/search or code/file lookup for broad discovery.
 16. Usage Review is advisory and read-only. Never apply config changes, install tools, export raw sessions, or print raw prompts/traces from usage findings alone.
 17. Usage Review may use aggregate-safe and sanitized metadata sources, but secret files, credential values, raw transcripts, raw traces, and raw message-table bodies are out of scope.
+18. A configured Grok plugin is the repo-skill owner only after normalized path,
+    valid manifest, and readable portable `SKILL.md` frontmatter with matching
+    directory/name and non-empty description. Invalid ownership fails closed for
+    dedicated activation without changing external-skill fallback behavior.
+19. Saved-workflow projection, canary-gated legacy migration, and rollback must
+    all use the same exact receipt digest. Never overwrite a divergent workflow
+    or keep a workflow backup under a discovery root. Validate the complete
+    receipt path/rollback shape before deriving the mutation lock, and remove a
+    projected workflow only with its exact active apply-owner marker. Publish
+    and durably sync its transaction-specific `rolled-back` tombstone before
+    discarding the receipt-owned workflow inode; never delete that tombstone.

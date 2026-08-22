@@ -1,0 +1,83 @@
+---
+title: "Plannotator"
+description: "Fleet matrix for Plannotator slash skills (core + extras), OpenCode plan-agent plugin, Grok hooks, Cursor home hooks, and install/doctor commands."
+page_kind: "harness-config"
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Aside, Badge } from '@astrojs/starlight/components';
+
+> Plan-review tooling across harnesses: slash skills, OpenCode plan-agent plugin, Grok hooks, and Cursor home-only hooks. Core and extras are first-class; do not install from the monorepo root.
+
+<Badge text="6 slash skills" variant="note" size="large" />
+
+## Skill inventory
+
+| Kind | Skills |
+| --- | --- |
+| **Core** | `plannotator-review`, `plannotator-annotate`, `plannotator-last` |
+| **Extras** | `plannotator-compound`, `plannotator-setup-goal`, `plannotator-visual-explainer` |
+| **Out of scope** | `plannotator-tot` (reference), unrelated `html` packages |
+
+## Surface matrix
+
+| Surface | Slash skills | Notes |
+| --- | --- | --- |
+| Claude Code | Core + extras | Primary Skills CLI target |
+| Agents store (`~/.agents/skills`) | Core + extras | Shared store |
+| Cursor | Core + extras **and** home hooks | Skills via store projection / symlinks. Plan gates: home-only `CreatePlan` / `SwitchMode` via `wagents cursor-cli plannotator sync`. Never project into git-tracked `.cursor/hooks.json` (cloud hang). |
+| Codex | Core + extras | Target via Skills CLI `-a codex` |
+| OpenCode | Core + extras **and** npm plugin | Keep `@plannotator/opencode@latest` (`workflow: plan-agent`, `planningAgents: ["plan"]`) |
+| Grok | Core + extras | `wagents grok plannotator install`; hooks from repo policy |
+| Crush | Via catalog targets when installed | Same Skills CLI path |
+
+## Install
+
+**Targeted** (preferred — do not full-catalog sync apply):
+
+```bash
+# Core
+npx skills add backnotprop/plannotator/apps/skills/core \
+  --skill plannotator-review --skill plannotator-annotate --skill plannotator-last \
+  -y -g -a claude-code codex crush cursor opencode
+
+# Extras
+npx skills add backnotprop/plannotator/apps/skills \
+  --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer \
+  -y -g -a claude-code codex crush cursor opencode
+```
+
+Grok refresh (extras on by default):
+
+```bash
+uv run wagents grok plannotator install
+# or: uv run wagents grok plannotator sync
+```
+
+Cursor Agent (IDE + CLI) home hooks (binary + shim; skills already via `-a cursor`):
+
+```bash
+uv run wagents cursor-cli plannotator install
+# or: uv run wagents cursor-cli plannotator sync
+```
+
+<Aside type="caution" title="Do not">
+Install from `backnotprop/plannotator` repository root. Use the `apps/skills/core` and `apps/skills` paths above. Avoid unbound `wagents skills sync --apply` when you only need Plannotator rows.
+</Aside>
+
+## Doctor
+
+```bash
+uv run wagents grok doctor --format json
+uv run wagents cursor-cli doctor --format json
+```
+
+Core skills missing → hard fail path where configured. Extras missing → warn when extras are expected on by default.
+
+## Related
+
+- Catalog authoring: `docs/src/authoring/skills/plannotator-*.mdx`
+- Grok hooks policy: `config/grok-plannotator-hooks.json` (or plannotator hooks policy path in repo)
+- Cursor home template: `config/cursor-global-hooks.json` → `~/.cursor/hooks.json` + `~/.cursor/hooks/plannotator-plan-hook.py`
+- OpenCode plugin entry: repo `opencode.json` `plugin` array

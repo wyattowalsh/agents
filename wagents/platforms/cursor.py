@@ -2,16 +2,24 @@
 
 from __future__ import annotations
 
+import os
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import yaml
 
+from wagents import KEBAB_CASE_PATTERN
 from wagents.context import get_repo_root
 from wagents.hooks.merge import merge_cursor_flat_hooks
 from wagents.hooks.registry import sync_hook_projection
-from wagents.hooks.render import render_cursor_global_hooks, render_cursor_hooks, resolve_hook_perf_tier
+from wagents.hooks.render import (
+    PLANNOTATOR_CURSOR_PLAN_HOOK_HOME_NAME,
+    render_cursor_global_hooks,
+    render_cursor_hooks,
+    resolve_hook_perf_tier,
+)
 from wagents.parsing import parse_frontmatter
 from wagents.platforms.base import (
     HOME,
@@ -27,13 +35,17 @@ from wagents.platforms.base import (
 )
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Iterable, Mapping
 
 CURSOR_HOME_MCP_PATH = HOME / ".cursor" / "mcp.json"
 CURSOR_HOME_HOOKS_PATH = HOME / ".cursor" / "hooks.json"
+CURSOR_HOME_HOOKS_DIR = HOME / ".cursor" / "hooks"
 CURSOR_HOME_AGENTS_DIR = HOME / ".cursor" / "agents"
+PLANNOTATOR_PLAN_HOOK_PY_REL = Path("scripts") / "cursor" / "plannotator-plan-hook.py"
+PLANNOTATOR_PLAN_HOOK_PY_PATH = get_repo_root() / PLANNOTATOR_PLAN_HOOK_PY_REL
+PLANNOTATOR_PLAN_HOOK_HOME_NAME = PLANNOTATOR_CURSOR_PLAN_HOOK_HOME_NAME
 CURSOR_MANAGED_AGENT_MARKER = "<!-- Managed by wagents. Source: agents/"
-CURSOR_DEFAULT_MODEL = "cursor-grok-4.5-high"
+CURSOR_DEFAULT_MODEL = "cursor-grok-4.6-xhigh"
 
 # Skills CLI universal store → Cursor home projection (not repo `.cursor/skills/repo`).
 DEFAULT_CURSOR_SKILL_STORE = Path(".agents") / "skills"
@@ -62,6 +74,17 @@ def _read_skill_md_body(skill_dir: Path) -> str | None:
         return None
 
 
+def _skill_frontmatter_name(body: str) -> str:
+    """Return the exact SKILL.md frontmatter name, or empty on parse failure."""
+    try:
+        frontmatter, _ = parse_frontmatter(body)
+    except (TypeError, ValueError, yaml.YAMLError):
+        return ""
+    if not isinstance(frontmatter, dict):
+        return ""
+    return str(frontmatter.get("name") or "")
+
+
 def _projection_symlink_resolves_to(projection: Path, store_dir: Path) -> bool:
     """True when ``projection`` is a symlink whose resolved target is ``store_dir``."""
     if not projection.is_symlink():
@@ -87,12 +110,28 @@ def _replace_projection_symlink(projection: Path, store_real: Path) -> None:
     projection.symlink_to(store_real, target_is_directory=True)
 
 
+def _safe_skill_child(root: Path, name: str) -> Path | None:
+    """Return a contained child path for a portable skill name."""
+    if not name or len(name) > 64 or KEBAB_CASE_PATTERN.fullmatch(name) is None:
+        return None
+    if Path(name).is_absolute() or Path(name).name != name:
+        return None
+    child = root / name
+    try:
+        if child.parent.resolve(strict=False) != root.resolve(strict=False):
+            return None
+    except OSError:
+        return None
+    return child
+
+
 def ensure_cursor_authoritative_links(
     *,
     names: Iterable[str],
     home: Path | None = None,
     store_root: Path | None = None,
     projection_root: Path | None = None,
+    expected_skill_names: Mapping[str, str] | None = None,
     dry_run: bool = True,
 ) -> CursorAuthoritativeLinksReport:
     """Ensure ``~/.cursor/skills/<name>`` symlinks to ``~/.agents/skills/<name>``.
@@ -121,14 +160,29 @@ def ensure_cursor_authoritative_links(
     skipped_missing_store: list[str] = []
 
     for name in names:
-        store_dir = resolved_store_root / name
+        store_dir = _safe_skill_child(resolved_store_root, name)
+        projection = _safe_skill_child(resolved_projection_root, name)
+        if store_dir is None or projection is None:
+            blocked.append({
+                "name": name,
+                "reason": "invalid skill name; expected a contained kebab-case identifier",
+            })
+            continue
+
         store_body = _read_skill_md_body(store_dir)
         if store_body is None:
             skipped_missing_store.append(name)
             continue
+        expected_name = (expected_skill_names or {}).get(name, name)
+        actual_name = _skill_frontmatter_name(store_body)
+        if actual_name != expected_name:
+            blocked.append({
+                "name": name,
+                "reason": (f"store SKILL.md identity mismatch; expected {expected_name!r}, found {actual_name!r}"),
+            })
+            continue
 
         store_real = store_dir.resolve()
-        projection = resolved_projection_root / name
         path_present = projection.exists() or projection.is_symlink()
 
         if not path_present:
@@ -152,20 +206,16 @@ def ensure_cursor_authoritative_links(
             if projection_body is not None and projection_body == store_body:
                 already_correct.append(name)
                 continue
-            blocked.append(
-                {
-                    "name": name,
-                    "reason": "real directory with divergent SKILL.md; refusing to replace tree",
-                }
-            )
+            blocked.append({
+                "name": name,
+                "reason": "real directory with divergent SKILL.md; refusing to replace tree",
+            })
             continue
 
-        blocked.append(
-            {
-                "name": name,
-                "reason": "projection path exists and is not a replaceable symlink",
-            }
-        )
+        blocked.append({
+            "name": name,
+            "reason": "projection path exists and is not a replaceable symlink",
+        })
 
     return CursorAuthoritativeLinksReport(
         created=tuple(created),
@@ -353,6 +403,52 @@ def _sync_skill_symlinks(ctx: SyncContext) -> None:
             target.unlink()
 
 
+def _chmod_executable(path: Path) -> None:
+    path.chmod(path.stat().st_mode | 0o111)
+
+
+def _copy_plannotator_plan_hook(ctx: SyncContext, *, hooks_dir: Path) -> None:
+    source = PLANNOTATOR_PLAN_HOOK_PY_PATH
+    if not source.is_file():
+        return
+    destination = hooks_dir / PLANNOTATOR_PLAN_HOOK_HOME_NAME
+    if destination.exists() and destination.read_bytes() == source.read_bytes():
+        if ctx.apply and not os.access(destination, os.X_OK):
+            _chmod_executable(destination)
+        return
+    ctx.note(f"copy {source} -> {destination}")
+    if ctx.apply:
+        hooks_dir.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, destination)
+        _chmod_executable(destination)
+
+
+def sync_cursor_plannotator(
+    ctx: SyncContext,
+    *,
+    hooks_dir: Path | None = None,
+    hooks_json_path: Path | None = None,
+) -> None:
+    """Copy the Cursor Plannotator shim and merge home-only plan-review hooks."""
+    dest_dir = hooks_dir or CURSOR_HOME_HOOKS_DIR
+    dest_json = hooks_json_path or CURSOR_HOME_HOOKS_PATH
+    _copy_plannotator_plan_hook(ctx, hooks_dir=dest_dir)
+    rendered_global = render_cursor_global_hooks(hooks_dir=dest_dir)
+    if rendered_global is None:
+        return
+    existing_hooks: dict[str, Any] = {}
+    if dest_json.exists():
+        existing_payload = load_json(dest_json)
+        raw_hooks = existing_payload.get("hooks")
+        if isinstance(raw_hooks, dict):
+            existing_hooks = raw_hooks
+    merged_hooks = merge_cursor_flat_hooks(existing_hooks, rendered_global.get("hooks", {}))
+    ctx.write_json(
+        dest_json,
+        {"version": int(rendered_global.get("version", 1)), "hooks": merged_hooks},
+    )
+
+
 class Adapter(PlatformAdapter):
     name = "cursor"
 
@@ -419,20 +515,8 @@ class Adapter(PlatformAdapter):
         # Managed-marker projection only — never wipe unmarked user agents.
         _sync_generated_text_directory(ctx, CURSOR_HOME_AGENTS_DIR, _render_cursor_agents())
 
-        rendered_global = render_cursor_global_hooks()
-        if rendered_global is None:
-            return
-        existing_hooks: dict[str, Any] = {}
-        if CURSOR_HOME_HOOKS_PATH.exists():
-            existing_payload = load_json(CURSOR_HOME_HOOKS_PATH)
-            raw_hooks = existing_payload.get("hooks")
-            if isinstance(raw_hooks, dict):
-                existing_hooks = raw_hooks
-        merged_hooks = merge_cursor_flat_hooks(existing_hooks, rendered_global.get("hooks", {}))
-        ctx.write_json(
-            CURSOR_HOME_HOOKS_PATH,
-            {"version": int(rendered_global.get("version", 1)), "hooks": merged_hooks},
-        )
+        if ctx.grok_plannotator_hooks:
+            sync_cursor_plannotator(ctx)
 
     def render_mcp(
         self,

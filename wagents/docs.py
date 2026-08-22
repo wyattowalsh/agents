@@ -1,4 +1,4 @@
-"""Documentation site generation: indexes, sidebar, and docs subcommands."""
+"""Public web site generation: indexes, content emit, and `wagents web` subcommands."""
 
 import fcntl
 import json
@@ -15,7 +15,13 @@ from typing import Literal, TypeVar, cast
 import typer
 from typer.models import OptionInfo
 
-from wagents import CONTENT_DIR, DOCS_DIR, ROOT
+from wagents import (
+    AUTHORING_SKILLS_DIR,
+    CONTENT_DIR,
+    DOCS_DIR,
+    ROOT,
+    WEB_DIR,
+)
 
 # Authoring SSOT + catalog index (W3)
 from wagents.authoring_sync import sync_custom_authoring_from_skills
@@ -27,6 +33,7 @@ from wagents.docs_reports import (
     write_reports_pages,
 )
 from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
+from wagents.page_frontmatter import render_collection_json_ld_script
 from wagents.parsing import escape_attr, truncate_sentence
 from wagents.rendering import escape_mdx, render_page
 from wagents.site_model import (
@@ -161,13 +168,13 @@ def _mcp_overview_badge_stale_reason() -> str | None:
     expected_badge = f'<Badge text="{count} configured servers"'
     if not match:
         return (
-            "docs/src/content/docs/mcp/index.mdx MCP badge is missing or malformed; "
+            "web/content/docs/mcp/index.mdx MCP badge is missing or malformed; "
             f"update hand-maintained badge to `{expected_badge} ...`"
         )
     badge_count = int(match.group(1))
     if badge_count != count:
         return (
-            f"docs/src/content/docs/mcp/index.mdx MCP badge shows {badge_count} servers but "
+            f"web/content/docs/mcp/index.mdx MCP badge shows {badge_count} servers but "
             f"the MCP registry defines {count}; update the hand-maintained badge"
         )
     return None
@@ -205,7 +212,10 @@ def write_site_data(nodes: list, external_entries: list[ExternalSkillEntry] | No
         has_mcp_overview=_has_mcp_overview_page(),
         external_skills=external_entries,
     )
-    (DOCS_DIR / "src" / "generated-site-data.mjs").write_text(render_site_data_module(data), encoding="utf-8")
+    # DOCS_DIR aliases WEB_DIR (tests monkeypatch DOCS_DIR to a temp package root).
+    lib_dir = DOCS_DIR / "lib"
+    lib_dir.mkdir(parents=True, exist_ok=True)
+    (lib_dir / "generated-site-data.mjs").write_text(render_site_data_module(data), encoding="utf-8")
     public_index_dir = DOCS_DIR / "public" / "generated-skill-indexes"
     public_index_dir.mkdir(parents=True, exist_ok=True)
     for stale in ("custom.json", "external.json", "all.json", "installed.json"):
@@ -215,9 +225,9 @@ def write_site_data(nodes: list, external_entries: list[ExternalSkillEntry] | No
     (public_index_dir / "install-scripts.json").write_text(
         json.dumps(data["skillInstallScripts"], indent=2, sort_keys=True), encoding="utf-8"
     )
-    (DOCS_DIR / "src" / "generated-skill-indexes.mjs").write_text(render_skill_indexes_module(data), encoding="utf-8")
+    (lib_dir / "generated-skill-indexes.mjs").write_text(render_skill_indexes_module(data), encoding="utf-8")
     update_research_manifest()
-    (DOCS_DIR / "src" / "generated-visual-assets.css").write_text(render_visual_assets_css(), encoding="utf-8")
+    (lib_dir / "generated-visual-assets.css").write_text(render_visual_assets_css(), encoding="utf-8")
 
 
 def public_landing_stats(counts: dict[str, int | str], *, mcps: list, has_mcp_overview: bool) -> list[str]:
@@ -307,9 +317,7 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     parts.append("      icon: right-arrow")
     parts.append("---")
     parts.append("")
-    parts.append("import { Badge, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';")
-    parts.append("import InstallCommand from '../../components/InstallCommand.astro';")
-    parts.append("import { installCommands } from '../../generated-site-data.mjs';")
+    parts.append("import { installCommands } from '@/lib/generated-site-data.mjs';")
     parts.append("")
 
     has_mcp_overview = _has_mcp_overview_page()
@@ -522,17 +530,18 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     if has_mcp_overview and not mcps and external_mcp:
         parts.append(
             "Repo-owned catalog pages are generated from `skills/`, `agents/`, and `mcp/` via "
-            "`wagents docs generate`. Curated external catalog rows use authoring SSOT under "
+            "`wagents web generate`. Curated external catalog rows use authoring SSOT under "
             "`docs/src/authoring/skills/*.mdx` (machine index: "
-            "`docs/public/generated-registries/skills-catalog-index.json`). "
+            "`web/public/generated-registries/skills-catalog-index.json`). "
             f"The MCP overview summarizes {external_mcp} configured tools from "
-            "`config/mcp-registry.json` (MCPHub projections may also appear in root `mcp.json`). "
+            "`config/mcp-registry.json`; portable root `mcp.json` exposes only the secret-free "
+            "MCPHub `harness` default, while native targets use target-local projections. "
             "Repo policy lives in `AGENTS.md`."
         )
     else:
         parts.append(
             "Repo-owned catalog pages are generated from `skills/`, `agents/`, and `mcp/` via "
-            "`wagents docs generate`. Curated external rows are authored in "
+            "`wagents web generate`. Curated external rows are authored in "
             "`docs/src/authoring/skills/*.mdx` and emitted into the skills catalog index. "
             "Onboarding pages stay hand-maintained. "
             "See [Contributing](/contributing/) for CI/CD, generated artifact, and validation detail."
@@ -540,7 +549,7 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     parts.append("</Aside>")
     parts.append("")
 
-    content_dir = ROOT / "docs" / "src" / "content" / "docs"
+    content_dir = CONTENT_DIR
     content_dir.mkdir(parents=True, exist_ok=True)
     (content_dir / "index.mdx").write_text("\n".join(parts))
 
@@ -554,9 +563,7 @@ def write_install_page() -> None:
         "description: Intent-based install paths for wagents surfaces and runtimes",
         "---",
         "",
-        "import { CardGrid, LinkCard, Steps, Aside } from '@astrojs/starlight/components';",
-        "import InstallCommand from '../../components/InstallCommand.astro';",
-        "import { installCommands } from '../../generated-site-data.mjs';",
+        "import { installCommands } from '@/lib/generated-site-data.mjs';",
         "",
         "Use this page to choose the shortest safe path. Live install/apply commands are explicit; "
         "preview commands are safe first passes.",
@@ -618,13 +625,13 @@ def write_install_page() -> None:
         "2. Regenerate public docs and registries.",
         "",
         "   ```bash",
-        "   uv run wagents docs generate --no-installed",
+        "   uv run wagents web generate --no-installed",
         "   ```",
         "",
-        "3. Build the docs site.",
+        "3. Build the public web site.",
         "",
         "   ```bash",
-        "   uv run wagents docs build",
+        "   uv run wagents web build",
         "   ```",
         "",
         "</Steps>",
@@ -663,7 +670,6 @@ def write_surfaces_pages(nodes: list) -> None:
         "description: Portable configuration surfaces managed by wagents",
         "---",
         "",
-        "import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';",
         "",
         "Surfaces are the portable units in this repo. Runtimes are the places those surfaces are projected.",
         "",
@@ -693,7 +699,6 @@ def write_surfaces_pages(nodes: list) -> None:
         "description: Shared and platform-specific instruction surfaces",
         "---",
         "",
-        "import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';",
         "",
         "Instructions define the standing behavior that runtimes should load before a task begins.",
         "",
@@ -741,7 +746,6 @@ def write_surfaces_pages(nodes: list) -> None:
         "description: MCP, CLI, and plugin surfaces managed by wagents",
         "---",
         "",
-        "import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';",
         "",
         "Tools are the executable and connected capabilities that support agent work. In this repo, that means "
         "MCP servers, the `wagents` CLI, Skills CLI install paths, and runtime plugin manifests.",
@@ -791,7 +795,6 @@ def write_runtimes_page() -> None:
         "description: Compatibility truth for supported agent runtimes",
         "---",
         "",
-        "import { CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';",
         "",
         "Runtimes are host environments that consume repo-managed surfaces through native support, "
         "generated projections, plugin manifests, MCPHub endpoints, or Skills CLI installs.",
@@ -869,7 +872,6 @@ def write_reference_page() -> None:
         "description: Factual lookup pages for generated registries, schemas, CLI, and runtime compatibility",
         "---",
         "",
-        "import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';",
         "",
         "Reference pages are lookup surfaces. Operational process lives under [Contributing](/contributing/).",
         "",
@@ -894,7 +896,7 @@ def write_reference_page() -> None:
         "",
         '<Aside type="note" title="Generated data">',
         "Machine-readable public artifacts live under `docs/public/generated-*` and generated ESM modules under "
-        "`docs/src/generated-*`. Regenerate them with `uv run wagents docs generate --no-installed`.",
+        "`web/src/generated-*`. Regenerate them with `uv run wagents web generate --no-installed`.",
         "</Aside>",
         "",
     ]
@@ -949,12 +951,8 @@ def write_cli_page() -> None:
     parts.append("description: wagents CLI commands and usage")
     parts.append("---")
     parts.append("")
-    parts.append(
-        "import { Tabs, TabItem, Steps, FileTree, CardGrid, LinkCard, Aside, Badge }"
-        " from '@astrojs/starlight/components';"
-    )
-    parts.append(f"import harnessMatrixArt from '{_mdx_asset_import_path(VISUAL_ASSET_BY_ID['harness-matrix'].src)}';")
-    parts.append("")
+    # Fumadocs injects Tabs/CardGrid/etc via getMDXComponents — no bare import.
+    # Serve illustration from public/ (static URL); do not use Astro-style asset imports.
     parts.append(
         "`wagents` is the repo control plane for skills, agents, MCP servers, and generated docs. "
         "Use it to scaffold new assets, validate the repo, publish docs, and package skills for release."
@@ -962,7 +960,8 @@ def write_cli_page() -> None:
     parts.append("")
     parts.append('<figure class="visual-panel">')
     parts.append(
-        f'  <img src={{harnessMatrixArt.src}} alt="{escape_attr(VISUAL_ASSET_BY_ID["harness-matrix"].alt)}" />'
+        f'  <img src="/illustrations/harness-matrix.webp" '
+        f'alt="{escape_attr(VISUAL_ASSET_BY_ID["harness-matrix"].alt)}" />'
     )
     parts.append("  <figcaption>")
     parts.append(f"    <strong>{escape_attr(VISUAL_ASSET_BY_ID['harness-matrix'].title)}</strong>")
@@ -1000,9 +999,9 @@ def write_cli_page() -> None:
     parts.append("   uv run wagents validate")
     parts.append("   ```")
     parts.append("")
-    parts.append("4. Start the docs site when you need to inspect generated output:")
+    parts.append("4. Start the public web site when you need to inspect generated output:")
     parts.append("   ```bash")
-    parts.append("   uv run wagents docs dev")
+    parts.append("   uv run wagents web dev")
     parts.append("   ```")
     parts.append("")
     parts.append("</Steps>")
@@ -1032,8 +1031,12 @@ def write_cli_page() -> None:
     parts.append(
         "| `wagents skills <subcommand>` | Inventory, sync, search, read, and diagnose local skills on demand |"
     )
+    parts.append(
+        "| `wagents plugin <subcommand>` | Reconcile strict skills, validate plugin contracts, "
+        "and build isolated target artifacts |"
+    )
     parts.append("| `wagents package <name>` | Build portable ZIP packages for sharing or release |")
-    parts.append("| `wagents docs <subcommand>` | Generate, serve, build, preview, or clean the docs site |")
+    parts.append("| `wagents web <subcommand>` | Generate, serve, build, preview, or clean the Fumadocs web site |")
     parts.append("| `wagents hooks <subcommand>` | List and validate lifecycle hooks |")
     parts.append("| `wagents eval <subcommand>` | List, validate, and check eval coverage |")
     parts.append("| `wagents media <subcommand>` | Image optimize and related media helpers |")
@@ -1359,6 +1362,28 @@ def write_cli_page() -> None:
         "Pass `--no-plannotator-hooks` to `sync_agent_stack.py` to skip hook refresh."
     )
     parts.append("")
+    parts.append("---")
+    parts.append("")
+    parts.append("### `wagents cursor-cli plannotator install` -- Plannotator for Cursor")
+    parts.append("")
+    parts.append(
+        "Install the Plannotator CLI and sync home-only Cursor plan-review hooks "
+        "(`CreatePlan` / `SwitchMode` plus `~/.cursor/hooks/plannotator-plan-hook.py`). "
+        "Does not mirror Grok skills; Cursor skills stay on `-a cursor`. "
+        "Do not install these hooks into project `.cursor/hooks.json`."
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents cursor-cli plannotator install")
+    parts.append("wagents cursor-cli plannotator install --no-hooks")
+    parts.append("wagents cursor-cli plannotator sync")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "Cursor home sync enables Plannotator hooks by default. "
+        "Pass `--no-plannotator-hooks` to `sync_agent_stack.py` to skip both Grok and Cursor Plannotator rows."
+    )
+    parts.append("")
     parts.append("")
     parts.append("---")
     parts.append("")
@@ -1595,6 +1620,119 @@ def write_cli_page() -> None:
     parts.append("---")
     parts.append("")
 
+    # --- wagents plugin ---
+    parts.append("### `wagents plugin` -- Agent Plugin Maintenance")
+    parts.append("")
+    parts.append(
+        "Maintain the strict portable Agent Plugins source and deterministic client-native adapters "
+        "without installing them into a live harness."
+    )
+    parts.append("")
+    parts.append("<Tabs>")
+    parts.append('  <TabItem label="reconcile-skills">')
+    parts.append("")
+    parts.append("Check the strict skill corpus against `config/skill-adapters.json` and the parity receipt:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents plugin reconcile-skills")
+    parts.append("```")
+    parts.append("")
+    parts.append("If the check reports drift, atomically refresh the repo-owned generated adapter and parity receipt:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents plugin reconcile-skills --apply")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "The apply path writes only `config/skill-adapters.json` and "
+        "`planning/manifests/agent-plugin-skill-parity.json`. It does not install skills or mutate "
+        "client/home configuration."
+    )
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append('  <TabItem label="validate">')
+    parts.append("")
+    parts.append("Validate the portable root discovery boundary without writing an artifact:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents plugin validate . --target portable")
+    parts.append("```")
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append('  <TabItem label="build/check">')
+    parts.append("")
+    parts.append("Hermetically double-render and compare every supported isolated target recipe:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents plugin build --target all --check")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "`--target all --check` freezes one union source snapshot, derives one family source identity and "
+        "fingerprint, validates every direct target child in a temporary family, reverifies the source union, and "
+        "discards the family. Passing `--out` with `--check` compares an existing artifact for drift; it never "
+        "materializes a missing output."
+    )
+    parts.append("")
+    parts.append(
+        "For one target, `--out` names that target's direct artifact root, for example "
+        "`--target portable --out dist/portable`. For `--target all`, it names the family container and each "
+        "recipe becomes a direct `<out>/<target>/` child. The repository-local family form is:"
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents plugin build --target all --out dist --release-version X.Y.Z")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "The family publishes once only after every target validates and the source union is unchanged. A late "
+        "render failure, source mutation, or existing/mixed destination publishes no partial target. JSON output "
+        "uses redacted `outputPath`, `sourceSnapshotSha256`, and `artifactOutputPaths`; external destinations appear "
+        "as `<external-output>` and failed families expose no output paths."
+    )
+    parts.append("")
+    parts.append(
+        "Source manifests remain versionless. The closed `releasePolicy` fixes source identity to "
+        "`source-versionless`, requires source manifest versions to be omitted, accepts one SemVer identity for "
+        "tagged/release materialization, injects it into staged artifacts only, applies it to every supported "
+        "version field, and forbids source mutation. An explicit non-check build with `--release-version` "
+        "materializes that identity only in its isolated artifact; it does not authorize publication."
+    )
+    parts.append("")
+    parts.append('<Aside type="note" title="Artifact evidence">')
+    parts.append(
+        "A persistent target directory contains a deterministic CycloneDX 1.6 `sbom.cdx.json` and a closed "
+        "`manifest.json`. The manifest records source commit and dirty state under a "
+        "`recorded-not-rejected` policy, standards-lock and schema digests, the normalized build environment, "
+        "target capabilities, the tree digest, and per-file checksum, mode, license, provenance, file kind, "
+        "runtime dependency, and side-effect classification. Runtime dependencies identify only the "
+        "interpreter or platform needed to launch a file; they are not a resolved package graph and do not "
+        "authorize lookup, installation, or execution."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append(
+        "Regular resources contained by each skill, including `references/`, `scripts/`, and `assets/`, are "
+        "inventoried and staged. Native hook policy can be attested while executable hooks are deliberately "
+        "omitted because no self-contained target hook adapter is rendered; native rules are likewise omitted "
+        "without a recipe-declared rule source. Manifest interface metadata, logos, and screenshots are not "
+        "recipe-declared artifact inputs."
+    )
+    parts.append("")
+    parts.append('<Aside type="caution" title="Retrospective rollback boundary">')
+    parts.append(
+        "The tracked rollback set recovers `131/131` entries with zero blockers. It does not supply a "
+        "contemporaneous pre-migration behavior golden or retroactively perform the immediate rollback that was "
+        "missed at cutover."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append("</Tabs>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
     # --- wagents package ---
     parts.append("### `wagents package` -- Package Skills")
     parts.append("")
@@ -1631,76 +1769,79 @@ def write_cli_page() -> None:
     parts.append("---")
     parts.append("")
 
-    # --- wagents docs ---
-    parts.append("### `wagents docs` -- Documentation Site")
+    # --- wagents web ---
+    parts.append("### `wagents web` -- Public Web Site (Fumadocs)")
     parts.append("")
     parts.append(
-        "Manage the [Starlight](https://starlight.astro.build/)-powered documentation site "
+        "Manage the [Fumadocs](https://fumadocs.dev/)/Next.js public site under `web/` "
         "at [agents.w4w.dev](https://agents.w4w.dev)."
     )
     parts.append("")
     parts.append("<Tabs>")
     parts.append('  <TabItem label="init">')
     parts.append("")
-    parts.append("One-time setup to install documentation dependencies:")
+    parts.append("One-time setup to install web dependencies:")
     parts.append("")
     parts.append("```bash")
-    parts.append("wagents docs init")
+    parts.append("wagents web init")
     parts.append("```")
     parts.append("")
-    parts.append("This runs `pnpm install` in the `docs/` directory.")
+    parts.append("This runs `pnpm install --ignore-workspace` in the `web/` directory.")
     parts.append("")
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="generate">')
     parts.append("")
-    parts.append("Generate MDX content pages, sidebar, and index pages from repository assets:")
+    parts.append("Generate Fumadocs MDX content pages, registries, and indexes from repository assets:")
     parts.append("")
     parts.append("```bash")
-    parts.append("wagents docs generate")
+    parts.append("wagents web generate")
     parts.append("```")
     parts.append("")
     parts.append("**Options:**")
     parts.append("")
     parts.append("```bash")
     parts.append("# Default: repository-only catalog (CI parity)")
-    parts.append("wagents docs generate --no-installed")
+    parts.append("wagents web generate --no-installed")
     parts.append("")
     parts.append(
         "# Include installed skills from local agent skill directories "
         "(~/.config/opencode/skills/, ~/.agents/skills/, ~/.claude/skills/)"
     )
-    parts.append("wagents docs generate --include-installed")
+    parts.append("wagents web generate --include-installed")
     parts.append("")
     parts.append("# Include skills with TODO descriptions")
-    parts.append("wagents docs generate --include-drafts")
+    parts.append("wagents web generate --include-drafts")
+    parts.append("")
+    parts.append("# Fail when generated artifacts are stale")
+    parts.append("wagents web generate --check")
     parts.append("```")
     parts.append("")
     parts.append(
         "By default, generation is deterministic and repository-only (`--no-installed`). "
         "Opt in with `--include-installed` for local harness inventory rows. The generator creates "
-        "individual pages for each skill, agent, and MCP server, plus category index pages "
-        "and the sidebar navigation."
+        "individual pages for each skill, agent, and MCP server under `web/content/docs/`, plus "
+        "category index pages and machine registries under `web/public/`."
     )
     parts.append("")
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="dev">')
     parts.append("")
-    parts.append("Generate content and start the development server with hot reload:")
+    parts.append("Generate content and start the Next.js development server with hot reload:")
     parts.append("")
     parts.append("```bash")
-    parts.append("wagents docs dev")
+    parts.append("wagents web dev")
     parts.append("```")
     parts.append("")
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="build">')
     parts.append("")
-    parts.append("Generate content and produce a static build:")
+    parts.append("Generate content and produce a production Next.js build:")
     parts.append("")
     parts.append("```bash")
-    parts.append("wagents docs build")
+    parts.append("wagents web build")
     parts.append("```")
     parts.append("")
-    parts.append("Output goes to `docs/dist/`.")
+    parts.append("Output goes to `web/.next/` (Vercel-compatible Next.js build).")
     parts.append("")
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="preview">')
@@ -1708,7 +1849,7 @@ def write_cli_page() -> None:
     parts.append("Generate, build, and start a preview server for the production build:")
     parts.append("")
     parts.append("```bash")
-    parts.append("wagents docs preview")
+    parts.append("wagents web preview")
     parts.append("```")
     parts.append("")
     parts.append("  </TabItem>")
@@ -1717,7 +1858,7 @@ def write_cli_page() -> None:
     parts.append("Remove generated content pages while preserving hand-maintained files:")
     parts.append("")
     parts.append("```bash")
-    parts.append("wagents docs clean")
+    parts.append("wagents web clean")
     parts.append("```")
     parts.append("")
     parts.append(
@@ -1730,10 +1871,10 @@ def write_cli_page() -> None:
     parts.append("  </TabItem>")
     parts.append("</Tabs>")
     parts.append("")
-    parts.append('<Aside type="tip" title="Typical docs workflow">')
+    parts.append('<Aside type="tip" title="Typical web workflow">')
     parts.append(
-        "For day-to-day development, `wagents docs dev` is the most common command "
-        "-- it regenerates all content and launches a hot-reloading dev server in one step."
+        "For day-to-day development, `wagents web dev` is the most common command "
+        "-- it regenerates all content and launches a hot-reloading Next.js server in one step."
     )
     parts.append("</Aside>")
     parts.append("")
@@ -1880,9 +2021,9 @@ def write_cli_page() -> None:
     parts.append("   wagents validate")
     parts.append("   ```")
     parts.append("")
-    parts.append("4. Preview the docs page:")
+    parts.append("4. Preview the web page:")
     parts.append("   ```bash")
-    parts.append("   wagents docs dev")
+    parts.append("   wagents web dev")
     parts.append("   ```")
     parts.append("")
     parts.append("5. Package for distribution:")
@@ -1898,7 +2039,7 @@ def write_cli_page() -> None:
     parts.append("")
     parts.append("1. Regenerate all docs:")
     parts.append("   ```bash")
-    parts.append("   wagents docs generate")
+    parts.append("   wagents web generate")
     parts.append("   ```")
     parts.append("")
     parts.append("2. Rebuild the README:")
@@ -1952,11 +2093,14 @@ def write_cli_page() -> None:
     parts.append("    - pyproject.toml")
     parts.append("    - fastmcp.json")
     parts.append("  - servers/ (ignored local third-party installs)")
-    parts.append("- docs/ (this site)")
-    parts.append("  - src/")
-    parts.append("    - content/")
-    parts.append("      - docs/ (generated MDX pages)")
+    parts.append("- web/ (Fumadocs / Next.js public site)")
+    parts.append("  - content/")
+    parts.append("    - docs/ (generated and hand-maintained MDX pages)")
+    parts.append("  - lib/")
     parts.append("    - generated-sidebar.mjs")
+    parts.append("- docs/")
+    parts.append("  - src/")
+    parts.append("    - authoring/ (catalog authoring SSOT)")
     parts.append("- wagents/")
     parts.append("  - \\_\\_init\\_\\_.py")
     parts.append("  - cli.py")
@@ -1982,7 +2126,7 @@ def write_cli_page() -> None:
     parts.append("")
     parts = _accordionize_command_reference(parts)
 
-    content_dir = ROOT / "docs" / "src" / "content" / "docs"
+    content_dir = CONTENT_DIR
     content_dir.mkdir(parents=True, exist_ok=True)
     (content_dir / "cli.mdx").write_text("\n".join(parts))
 
@@ -2036,7 +2180,6 @@ def write_catalog_index(nodes: list) -> None:
         "description: Browse custom and external agent skills",
         "---",
         "",
-        "import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';",
         "",
         "Browse repo-owned skills and curated external skills. Detail pages live under "
         f"`/{SKILL_CATALOG_PREFIX}/custom/<name>/` and `/{SKILL_CATALOG_PREFIX}/external/<name>/`.",
@@ -2060,11 +2203,24 @@ def write_catalog_index(nodes: list) -> None:
         "",
         '<Aside type="note" title="Generation modes">',
         "Public docs default to repo-owned custom skills plus curated external catalog entries "
-        "(`wagents docs generate --no-installed`). Use `--include-installed` locally to add harness-discovered rows. "
+        "(`wagents web generate --no-installed`). Use `--include-installed` locally to add harness-discovered rows. "
         "See [Harness Support](/harness-support/) for per-harness validation and sync coverage.",
         "</Aside>",
         "",
     ]
+    parts.extend(
+        render_collection_json_ld_script(
+            title="Skill Catalog",
+            description="Browse custom and external agent skills",
+            url="/skills/catalog/",
+            items=[
+                (f"Custom Skills ({custom_count})", "/skills/catalog/custom/"),
+                (f"External Skills ({external_count})", "/skills/catalog/external/"),
+                ("Install Scripts", "/skills/install/"),
+                ("Harness Support", "/harness-support/"),
+            ],
+        )
+    )
 
     out_dir = CONTENT_DIR / SKILL_CATALOG_PREFIX
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -2076,18 +2232,13 @@ def write_catalog_custom_index(nodes: list) -> None:
     custom = [n for n in nodes if n.kind == "skill" and n.source == "custom"]
     user_invocable = [n for n in custom if n.metadata.get("user-invocable") is not False]
     auto_invoke = [n for n in custom if n.metadata.get("user-invocable") is False]
-    custom_import_prefix = _src_import_prefix(under_content_docs="skills/catalog/custom")
-
     parts = [
         "---",
         "title: Custom Skills",
         "description: Browse repo-owned AI agent skills",
         "---",
         "",
-        "import { CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';",
-        f"import InstallCommand from '{custom_import_prefix}components/InstallCommand.astro';",
-        f"import CatalogSkillFilter from '{custom_import_prefix}components/CatalogSkillFilter.astro';",
-        f"import {{ installCommands }} from '{custom_import_prefix}generated-site-data.mjs';",
+        "import { installCommands } from '@/lib/generated-site-data.mjs';",
         "",
         "These are the repo-owned skills in `./skills/`. Detail pages live under "
         f"`/{SKILL_CATALOG_PREFIX}/custom/<name>/`. See [Skill Catalog](/skills/catalog/) for external skills.",
@@ -2181,6 +2332,18 @@ def write_catalog_custom_index(nodes: list) -> None:
         "Or run `wagents new skill my-skill` from the [CLI](/cli/).",
         "</Aside>",
     ])
+    parts.extend(
+        render_collection_json_ld_script(
+            title="Custom Skills",
+            description="Browse repo-owned AI agent skills",
+            url="/skills/catalog/custom/",
+            items=[
+                (node.id, skill_detail_href(node.id, node=node))
+                for node in sorted(custom, key=lambda item: item.id)
+                if _skill_id_is_linkable(node.id)
+            ],
+        )
+    )
 
     out_dir = CONTENT_DIR / SKILL_CATALOG_PREFIX / "custom"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -2229,19 +2392,11 @@ def _catalog_browser_preview_rows(nodes: list, *, limit: int = 48) -> list[dict[
 def write_catalog_external_index(nodes: list) -> None:
     """Write skills/catalog/external/index.mdx for curated and installed external skills."""
     external = [n for n in nodes if n.kind == "skill" and skill_catalog_group(node=n) == "external"]
-    external_import_prefix = _src_import_prefix(under_content_docs="skills/catalog/external")
     lanes: dict[str, list] = {"install-now": [], "inspect": [], "avoid": []}
     for node in external:
         lanes.setdefault(_external_lane(node), []).append(node)
 
     use_catalog_browser = len(external) >= CATALOG_BROWSER_THRESHOLD
-    imports = [
-        "import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';",
-    ]
-    if use_catalog_browser:
-        imports.append(f"import CatalogBrowser from '{external_import_prefix}components/CatalogBrowser.astro';")
-    else:
-        imports.append(f"import CatalogSkillFilter from '{external_import_prefix}components/CatalogSkillFilter.astro';")
 
     parts = [
         "---",
@@ -2249,10 +2404,8 @@ def write_catalog_external_index(nodes: list) -> None:
         "description: Curated and installed external agent skills",
         "---",
         "",
-        *imports,
-        "",
         "External skills are authored in `docs/src/authoring/skills/*.mdx` and emitted to "
-        "`docs/public/generated-registries/skills-catalog-index.json`. With `--include-installed`, "
+        "`web/public/generated-registries/skills-catalog-index.json`. With `--include-installed`, "
         "local harness inventory may add rows.",
         "",
         '<Aside type="note" title="Trust and provenance">',
@@ -2302,6 +2455,20 @@ def write_catalog_external_index(nodes: list) -> None:
             parts.append("</div>")
             parts.append("")
 
+    visible_external = external[:48] if use_catalog_browser else external
+    parts.extend(
+        render_collection_json_ld_script(
+            title="External Skills",
+            description="Curated and installed external agent skills",
+            url="/skills/catalog/external/",
+            items=[
+                (node.id, skill_detail_href(node.id, node=node))
+                for node in visible_external
+                if _skill_id_is_linkable(node.id)
+            ],
+        )
+    )
+
     out_dir = CONTENT_DIR / SKILL_CATALOG_PREFIX / "external"
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "index.mdx").write_text("\n".join(parts))
@@ -2315,8 +2482,7 @@ def write_skill_install_scripts_page() -> None:
         "description: Copyable install commands for custom and external skills",
         "---",
         "",
-        "import InstallScripts from '../../../components/InstallScripts.astro';",
-        "import { skillInstallScripts } from '../../../generated-site-data.mjs';",
+        "import { skillInstallScripts } from '@/lib/generated-site-data.mjs';",
         "",
         "The canonical portable install path is `npx skills add`. `uv run wagents ...` commands are repo-local "
         "control-plane commands for validation and reconciliation, not a replacement for Skills CLI installation.",
@@ -2337,7 +2503,6 @@ def write_agents_index(nodes: list) -> None:
     parts.append("description: Browse all available AI agent configurations")
     parts.append("---")
     parts.append("")
-    parts.append("import { Card, CardGrid, LinkCard, Badge } from '@astrojs/starlight/components';")
     parts.append("")
     parts.append(
         "> Specialized agent configurations with tools, permissions,"
@@ -2348,6 +2513,14 @@ def write_agents_index(nodes: list) -> None:
     parts.append(f'  <span class="stat stat-agent">{len(nodes)} agents available</span>')
     parts.append("</div>")
     parts.append("")
+    parts.extend(
+        render_collection_json_ld_script(
+            title="Agents",
+            description="Browse all available AI agent configurations",
+            url="/agents/",
+            items=[(node.id, f"/agents/{node.id}/") for node in nodes],
+        )
+    )
     parts.append("## All Agents")
     parts.append("")
     parts.append('<div class="catalog-agent">')
@@ -2381,9 +2554,22 @@ def write_mcp_index(nodes: list) -> None:
     parts.append("description: Browse all available MCP servers")
     parts.append("---")
     parts.append("")
-    parts.append("import { Card, CardGrid, LinkCard, Badge } from '@astrojs/starlight/components';")
     parts.append("")
     parts.append("> Model Context Protocol servers providing tools and data to AI agents.")
+    parts.append("")
+    parts.append('<Aside type="note" title="Portable package and MCP topology">')
+    parts.append(
+        "`config/mcp-registry.json` is the authoring authority for MCP topology and typed profiles. "
+        "Root `mcp.json` is the portable Agent Plugins 1.0 MCP component rendered from the reviewed "
+        "`mcp:harness` profile; native clients use target-local configs instead."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append("Validate the portable source discovery boundary without writing an artifact:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("uv run wagents plugin validate . --target portable")
+    parts.append("```")
     parts.append("")
     parts.append('<div class="stats-bar">')
     parts.append(f'  <span class="stat stat-mcp">{len(nodes)} MCP servers available</span>')
@@ -2399,6 +2585,14 @@ def write_mcp_index(nodes: list) -> None:
     parts.append("</CardGrid>")
     parts.append("</div>")
     parts.append("")
+    parts.extend(
+        render_collection_json_ld_script(
+            title="MCP Servers",
+            description="Browse all available MCP servers",
+            url="/mcp/",
+            items=[(node.id, f"/mcp/{node.id}/") for node in nodes],
+        )
+    )
 
     (index_path).write_text("\n".join(parts))
 
@@ -2417,9 +2611,8 @@ def write_harness_support_page() -> None:
         "description: Honest support tiers and fixture status for each agent harness",
         "---",
         "",
-        "import { Aside, Badge } from '@astrojs/starlight/components';",
         "",
-        "{/* Auto-generated by wagents docs generate - do not edit */}",
+        "{/* Auto-generated by wagents web generate - do not edit */}",
         "",
         "Public honesty matrix for repo-managed harness surfaces. The table reflects "
         "`config/harness-surface-registry.json` support tiers; **validated** rows have "
@@ -2428,7 +2621,7 @@ def write_harness_support_page() -> None:
         "",
         '<Aside type="caution" title="Stranger defaults">',
         "Use MCPHub only when you explicitly opt in. Repo docs and public catalog default to repository "
-        "+ external catalog skills (`wagents docs generate --no-installed`).",
+        "+ external catalog skills (`wagents web generate --no-installed`).",
         "</Aside>",
         "",
         "| Harness | Support tier | Fixture status | Validation commands |",
@@ -2476,7 +2669,7 @@ def write_skill_research_pages(nodes: list) -> None:
 
     skill_nodes = {n.id: n for n in nodes if n.kind == "skill"}
     # Authoring SSOT ids also count as catalog membership for research publish.
-    authoring_dir = ROOT / "docs" / "src" / "authoring" / "skills"
+    authoring_dir = AUTHORING_SKILLS_DIR
     authoring_ids = {p.stem for p in authoring_dir.glob("*.mdx")} if authoring_dir.exists() else set()
     written = 0
     skipped_orphans = 0
@@ -2532,9 +2725,8 @@ def write_skill_research_pages(nodes: list) -> None:
             "  hidden: true",
             "---",
             "",
-            "{/* GENERATED by wagents docs generate — do not edit */}",
+            "{/* GENERATED by wagents web generate — do not edit */}",
             "",
-            "import { Aside } from '@astrojs/starlight/components';",
             "",
             '<Aside type="caution" title="Evidence only">',
             "Research cache for catalog enrichment. Not authoritative for install or trust decisions.",
@@ -2555,12 +2747,12 @@ def write_skill_research_pages(nodes: list) -> None:
 
 
 def render_sidebar_module(nodes: list) -> str:
-    """Render docs/src/generated-sidebar.mjs content without writing to disk."""
+    """Render web/src/generated-sidebar.mjs content without writing to disk."""
     agents = [n for n in nodes if n.kind == "agent"]
     mcps = [n for n in nodes if n.kind == "mcp"]
     mcp_overview_path = CONTENT_DIR / "mcp" / "index.mdx"
     lines = []
-    lines.append("// Auto-generated by wagents docs generate — do not edit")
+    lines.append("// Auto-generated by wagents web generate — do not edit")
     lines.append("export const navLinks = [")
     nav_items = [
         "  { label: 'Overview', link: '/' }",
@@ -2574,7 +2766,7 @@ def render_sidebar_module(nodes: list) -> str:
     lines.append(",\n".join(nav_items))
     lines.append("];")
     lines.append("")
-    lines.append("export default [")
+    lines.append("const sidebar = [")
     if (CONTENT_DIR / "index.mdx").exists():
         lines.append("  { label: 'Overview', link: '/' },")
     if (CONTENT_DIR / "start-here.mdx").exists():
@@ -2667,13 +2859,14 @@ def render_sidebar_module(nodes: list) -> str:
     if (CONTENT_DIR / "contributing.mdx").exists():
         lines.append("  { slug: 'contributing', label: 'Contributing' },")
     lines.append("];")
+    lines.append("export default sidebar;")
     lines.append("")
     return "\n".join(lines)
 
 
 def write_sidebar(nodes: list) -> None:
-    """Write docs/src/generated-sidebar.mjs with dynamic sidebar config."""
-    sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
+    """Write web/lib/generated-sidebar.mjs with dynamic sidebar config."""
+    sidebar_path = DOCS_DIR / "lib" / "generated-sidebar.mjs"
     sidebar_path.parent.mkdir(parents=True, exist_ok=True)
     content = render_sidebar_module(nodes)
     tmp_path = sidebar_path.with_suffix(".mjs.tmp")
@@ -2806,16 +2999,18 @@ def _clean_content_subdir(d: Path) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# docs subcommand group
+# web subcommand group (canonical; formerly `docs`)
 # ---------------------------------------------------------------------------
 
-docs_app = typer.Typer(help="Documentation site management")
+web_app = typer.Typer(help="Public web site management (Fumadocs under web/)")
+# Back-compat symbol for internal imports during migration; not registered on CLI.
+docs_app = web_app
 
 DOCS_GENERATE_LOCK_MAX_AGE_S = 2 * 60 * 60
 
 
 def _docs_generate_lock_path() -> Path:
-    return DOCS_DIR / ".wagents-docs-generate.lock"
+    return WEB_DIR / ".wagents-web-generate.lock"
 
 
 @contextmanager
@@ -2856,14 +3051,17 @@ def _docs_generate_lock():
         handle.close()
 
 
-@docs_app.command("init")
+@web_app.command("init")
 def docs_init():
-    """One-time setup: install docs dependencies."""
-    if not (DOCS_DIR / "package.json").exists():
-        typer.echo("Error: docs/package.json not found. Is the scaffold committed?", err=True)
+    """One-time setup: install web dependencies."""
+    if not (WEB_DIR / "package.json").exists():
+        typer.echo("Error: web/package.json not found. Is the scaffold committed?", err=True)
         raise typer.Exit(code=1)
-    typer.echo("Installing docs dependencies...")
-    result = subprocess.run(["pnpm", "install"], cwd=str(DOCS_DIR))
+    typer.echo("Installing web dependencies...")
+    result = subprocess.run(
+        ["pnpm", "install", "--ignore-workspace"],
+        cwd=str(WEB_DIR),
+    )
     if result.returncode != 0:
         typer.echo("Error: pnpm install failed", err=True)
         raise typer.Exit(code=1)
@@ -2892,69 +3090,60 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
         external_skills=external_entries,
     )
     expected_site = render_site_data_module(expected_data)
-    site_path = DOCS_DIR / "src" / "generated-site-data.mjs"
+    site_path = DOCS_DIR / "lib" / "generated-site-data.mjs"
     if not site_path.exists():
-        reasons.append("docs/src/generated-site-data.mjs missing; run `uv run wagents docs generate --no-installed`")
+        reasons.append("web/lib/generated-site-data.mjs missing; run `uv run wagents web generate --no-installed`")
     elif site_path.read_text(encoding="utf-8") != expected_site:
-        reasons.append("docs/src/generated-site-data.mjs is stale; run `uv run wagents docs generate --no-installed`")
+        reasons.append("web/lib/generated-site-data.mjs is stale; run `uv run wagents web generate --no-installed`")
 
     expected_skill_indexes = render_skill_indexes_module(expected_data)
-    skill_indexes_path = DOCS_DIR / "src" / "generated-skill-indexes.mjs"
+    skill_indexes_path = DOCS_DIR / "lib" / "generated-skill-indexes.mjs"
     if not skill_indexes_path.exists():
-        reasons.append(
-            "docs/src/generated-skill-indexes.mjs missing; run `uv run wagents docs generate --no-installed`"
-        )
+        reasons.append("web/lib/generated-skill-indexes.mjs missing; run `uv run wagents web generate --no-installed`")
     elif skill_indexes_path.read_text(encoding="utf-8") != expected_skill_indexes:
-        reasons.append(
-            "docs/src/generated-skill-indexes.mjs is stale; run `uv run wagents docs generate --no-installed`"
-        )
+        reasons.append("web/lib/generated-skill-indexes.mjs is stale; run `uv run wagents web generate --no-installed`")
 
     expected_sidebar = render_sidebar_module(nodes)
-    sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
+    sidebar_path = DOCS_DIR / "lib" / "generated-sidebar.mjs"
     if not sidebar_path.exists():
-        reasons.append("docs/src/generated-sidebar.mjs missing; run `uv run wagents docs generate --no-installed`")
+        reasons.append("web/lib/generated-sidebar.mjs missing; run `uv run wagents web generate --no-installed`")
     elif sidebar_path.read_text(encoding="utf-8") != expected_sidebar:
-        reasons.append("docs/src/generated-sidebar.mjs is stale; run `uv run wagents docs generate --no-installed`")
+        reasons.append("web/lib/generated-sidebar.mjs is stale; run `uv run wagents web generate --no-installed`")
 
     expected_install_scripts = json.dumps(expected_data["skillInstallScripts"], indent=2, sort_keys=True)
     install_scripts_path = DOCS_DIR / "public" / "generated-skill-indexes" / "install-scripts.json"
     if not install_scripts_path.exists():
         reasons.append(
-            "docs/public/generated-skill-indexes/install-scripts.json missing; "
-            "run `uv run wagents docs generate --no-installed`"
+            "web/public/generated-skill-indexes/install-scripts.json missing; "
+            "run `uv run wagents web generate --no-installed`"
         )
     elif install_scripts_path.read_text(encoding="utf-8") != expected_install_scripts + "\n":
         actual = install_scripts_path.read_text(encoding="utf-8").strip()
         if actual != expected_install_scripts.strip():
             reasons.append(
-                "docs/public/generated-skill-indexes/install-scripts.json is stale; "
-                "run `uv run wagents docs generate --no-installed`"
+                "web/public/generated-skill-indexes/install-scripts.json is stale; "
+                "run `uv run wagents web generate --no-installed`"
             )
 
     expected_visual_css = render_visual_assets_css()
-    visual_css_path = DOCS_DIR / "src" / "generated-visual-assets.css"
+    visual_css_path = DOCS_DIR / "lib" / "generated-visual-assets.css"
     if not visual_css_path.exists():
-        reasons.append(
-            "docs/src/generated-visual-assets.css missing; run `uv run wagents docs generate --no-installed`"
-        )
+        reasons.append("web/lib/generated-visual-assets.css missing; run `uv run wagents web generate --no-installed`")
     elif visual_css_path.read_text(encoding="utf-8") != expected_visual_css:
-        reasons.append(
-            "docs/src/generated-visual-assets.css is stale; run `uv run wagents docs generate --no-installed`"
-        )
+        reasons.append("web/lib/generated-visual-assets.css is stale; run `uv run wagents web generate --no-installed`")
 
     from wagents.skill_research import MANIFEST_PATH as research_manifest_path
 
     expected_manifest = render_research_manifest()
     if not research_manifest_path.exists():
         reasons.append(
-            "docs/src/generated-skill-research-index.mjs missing; run `uv run wagents docs generate --no-installed`"
+            "web/src/generated-skill-research-index.mjs missing; run `uv run wagents web generate --no-installed`"
         )
     else:
         actual_manifest = research_manifest_path.read_text(encoding="utf-8")
         if actual_manifest != expected_manifest:
             reasons.append(
-                "docs/src/generated-skill-research-index.mjs is stale; "
-                "run `uv run wagents docs generate --no-installed`"
+                "web/src/generated-skill-research-index.mjs is stale; run `uv run wagents web generate --no-installed`"
             )
 
     reasons.extend(reports_stale_reasons())
@@ -2962,9 +3151,9 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
     for path, expected in render_catalog_page_artifacts(nodes=nodes).items():
         display_path = path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
         if not path.exists():
-            reasons.append(f"{display_path} missing; run `uv run wagents docs generate --no-installed`")
+            reasons.append(f"{display_path} missing; run `uv run wagents web generate --no-installed`")
         elif path.read_text(encoding="utf-8") != expected:
-            reasons.append(f"{display_path} is stale; run `uv run wagents docs generate --no-installed`")
+            reasons.append(f"{display_path} is stale; run `uv run wagents web generate --no-installed`")
 
     return reasons
 
@@ -3163,7 +3352,7 @@ def docs_build():
     if result.returncode != 0:
         typer.echo("Error: build failed", err=True)
         raise typer.Exit(code=1)
-    typer.echo("Build complete. Output in docs/dist/")
+    typer.echo("Build complete. Output in web/.next/")
 
 
 @docs_app.command("preview")
@@ -3667,7 +3856,7 @@ def docs_clean():
     if external_path.exists():
         external_path.unlink()
         cleaned = True
-    sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
+    sidebar_path = DOCS_DIR / "lib" / "generated-sidebar.mjs"
     if sidebar_path.exists():
         sidebar_path.unlink()
         cleaned = True

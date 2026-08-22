@@ -41,7 +41,7 @@ The Cursor harness lane SHALL define repo-owned Cursor editor and CLI projection
 - **GIVEN** portable agents exist in `agents/*.md`
 - **WHEN** repo sync renders `.cursor/agents/*.md`
 - **THEN** every portable agent has a matching `config/cursor-agents.json` overlay
-- **AND** the Cursor frontmatter includes explicit `readonly` and `model: cursor-grok-4.5-high` values.
+- **AND** the Cursor frontmatter includes explicit `readonly` and `model: cursor-grok-4.6-xhigh` values.
 
 #### Scenario: Cursor Cloud and API surfaces are caveated
 
@@ -49,17 +49,17 @@ The Cursor harness lane SHALL define repo-owned Cursor editor and CLI projection
 - **WHEN** Cursor Cloud Agent, cloud subagent, Bugbot, or ACP support is described
 - **THEN** dashboard/team MCP, OAuth, secrets, Bugbot Admin API, and Cloud Agent settings are documented as out of scope for repo sync.
 
-### Requirement: Cursor Grok 4.5 High pin
+### Requirement: Cursor Grok 4.6 Extra High pin
 
-The Cursor harness SHALL force `cursor-grok-4.5-high` on every controllable Task/subagent path (overlay, rule, hooks, home projection) without mutating Cloud/dashboard state. Local CLI `exploreSubagentModel: inherit` and IDE High picker are operator SHOULD (user-owned). Sync SHALL NOT write `~/.cursor/cli-config.json` or live `state.vscdb`. Soft-rule omit ban (agents must not omit Task `model`) does not change Phase B omit-allow semantics.
+The Cursor harness SHALL force `cursor-grok-4.6-xhigh` on every controllable Task/subagent path (overlay, rule, hooks, home projection) without mutating Cloud/dashboard state. Local CLI `exploreSubagentModel: inherit` and IDE Extra High picker are operator SHOULD (user-owned). Sync SHALL NOT write `~/.cursor/cli-config.json` or live `state.vscdb`. Soft-rule omit ban (agents must not omit Task `model`) does not change Phase B omit-allow semantics.
 
-#### Scenario: Task launches must pass High
+#### Scenario: Task launches must pass Extra High
 
 - **GIVEN** a parent agent launches Cursor `Task` or a custom subagent
 - **WHEN** the tool call is issued
-- **THEN** it MUST pass `model: cursor-grok-4.5-high`
+- **THEN** it MUST pass `model: cursor-grok-4.6-xhigh`
 - **AND** soft rule requires agents SHALL NOT omit `model` or pass `inherit`, `*-fast`, or other non-pin slugs
-- **AND** Phase B still allows omit so the High parent can inherit.
+- **AND** Phase B still allows omit so the Extra High parent can inherit.
 
 #### Scenario: Home sync copies allowlisted rules without orphan deletes
 
@@ -70,17 +70,17 @@ The Cursor harness SHALL force `cursor-grok-4.5-high` on every controllable Task
 
 #### Scenario: Home agents use managed-marker projection
 
-- **GIVEN** portable agents have Cursor overlays pinned to `cursor-grok-4.5-high`
+- **GIVEN** portable agents have Cursor overlays pinned to `cursor-grok-4.6-xhigh`
 - **WHEN** home sync projects agents
 - **THEN** managed agents are written to `~/.cursor/agents/` with the wagents managed marker
 - **AND** unmarked user agents under that directory are preserved.
 
-#### Scenario: Local app uses CLI inherit and IDE High without vscdb edits
+#### Scenario: Local app uses CLI inherit and IDE Extra High without vscdb edits
 
 - **GIVEN** local Cursor app/CLI config is in scope
 - **WHEN** parent/Explore defaults are set
 - **THEN** operators SHOULD set `~/.cursor/cli-config.json` `exploreSubagentModel: inherit`
-- **AND** operators SHOULD set the IDE model picker to Grok 4.5 High
+- **AND** operators SHOULD set the IDE model picker to Grok 4.6 Extra High
 - **AND** sync SHALL NOT write `~/.cursor/cli-config.json` or live `state.vscdb`
 - **AND** operators SHALL NOT hand-edit live `state.vscdb`.
 
@@ -88,9 +88,9 @@ The Cursor harness SHALL force `cursor-grok-4.5-high` on every controllable Task
 
 - **GIVEN** Cursor hooks are rendered from the hook registry
 - **WHEN** a `preToolUse` Task launch omits or mis-sets `model`
-- **THEN** Phase A rewrite sets `updated_input.model` to `cursor-grok-4.5-high` (fail-open)
-- **AND** Phase B `subagentStart` denies explicit models outside the High allowlist
-- **AND** Phase B allows omit (inherit High parent).
+- **THEN** Phase A rewrite sets `updated_input.model` to `cursor-grok-4.6-xhigh` (fail-open)
+- **AND** Phase B `subagentStart` denies explicit models outside the Extra High allowlist
+- **AND** Phase B allows omit (inherit Extra High parent).
 
 ### Requirement: Cursor Agent CLI is independently reviewable
 
@@ -170,3 +170,57 @@ doctor that redacts account identifiers.
 - **WHEN** `wagents cursor-cli doctor --format json` runs
 - **THEN** output SHALL omit email, tokens, and API keys
 - **AND** it MAY report binary version, model name, and cli-config key presence
+
+
+### Requirement: Cursor Plannotator hooks are home-only
+
+The system SHALL project Plannotator plan-review hooks into user
+`~/.cursor/hooks.json` and copy `scripts/cursor/plannotator-plan-hook.py` to
+`~/.cursor/hooks/plannotator-plan-hook.py`. Project `.cursor/hooks.json` SHALL
+NOT gain Plannotator rows. `cursor-cli` SHALL consume the same user hooks and
+SHALL NOT be added to hook-registry render lists.
+
+#### Scenario: Home sync installs Cursor-native matchers
+
+- **WHEN** Cursor home sync runs with Plannotator hooks enabled
+- **THEN** `~/.cursor/hooks.json` SHALL contain flat `preToolUse` rows matching
+  `SwitchMode` (enter / improve-context, timeout 5, `failClosed` false) and
+  `CreatePlan` (plan review, timeout 345600, `failClosed` false)
+
+#### Scenario: Project hooks stay fleet-only
+
+- **WHEN** repo Cursor hook projection runs
+- **THEN** git-tracked `.cursor/hooks.json` SHALL NOT include Plannotator
+  CreatePlan or SwitchMode commands
+
+#### Scenario: Cloud agents do not load user Plannotator hooks
+
+- **WHEN** a Cursor cloud agent starts
+- **THEN** it SHALL NOT load `~/.cursor/hooks.json`
+- **AND** the 345600s review hook SHALL remain home-local so cloud runs cannot hang on it
+
+#### Scenario: Opt-out skips Cursor Plannotator rows
+
+- **WHEN** home sync runs with `--no-plannotator-hooks`
+- **THEN** the Cursor shim SHALL NOT be copied
+- **AND** Plannotator rows SHALL NOT be merged into `~/.cursor/hooks.json`
+
+### Requirement: Cursor Plannotator shim is fail-open
+
+The home shim SHALL parse Cursor camelCase and snake_case tool payloads, review
+inline `plan` then `overview` on `CreatePlan`, and run `plannotator
+improve-context` only when `SwitchMode` targets `plan`. Missing binary, empty
+plan, crash, or unmapped JSON SHALL allow. The shim SHALL NOT exit 2 and SHALL
+NOT scan other projects' plan files.
+
+#### Scenario: CreatePlan deny maps to Cursor permission JSON
+
+- **WHEN** Plannotator returns a mapped deny or block decision
+- **THEN** the shim SHALL print `{"permission": "deny", "agent_message": "..."}`
+  with optional `user_message`
+- **AND** the process exit code SHALL be 0
+
+#### Scenario: SwitchMode to agent allows immediately
+
+- **WHEN** `SwitchMode` `target_mode_id` is not `plan`
+- **THEN** the shim SHALL allow without invoking Plannotator

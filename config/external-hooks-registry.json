@@ -14,7 +14,9 @@
       ],
       "matchers": [
         "exit_plan_mode|ExitPlanMode",
-        "enter_plan_mode|EnterPlanMode"
+        "enter_plan_mode|EnterPlanMode",
+        "CreatePlan",
+        "SwitchMode"
       ],
       "policy_source": "config/plannotator-hooks.policy.json",
       "harnesses": [
@@ -23,10 +25,39 @@
       ],
       "owner": "plannotator",
       "risk_notes": [
-        "Exit-plan hook can run for long plan review windows.",
+        "Exit-plan / CreatePlan hook can run for long plan review windows.",
+        "Cursor projection is home-only so cloud agents do not load the 345600s GUI hook.",
         "Policy remains separate from repo-owned hook-registry rows until the G1 unification task."
       ],
-      "notes": "First curated external row. The unified harness-neutral policy lives in config/plannotator-hooks.policy.json (G1 T-012a). config/grok-plannotator-hooks.json remains the Grok render template; later waves may collapse it into a derived projection."
+      "notes": "Grok uses enter/exit_plan_mode via config/plannotator-hooks.policy.json (re-exported as config/grok-plannotator-hooks.json). Cursor IDE and Agent CLI use CreatePlan/SwitchMode via config/cursor-global-hooks.json (home-only; fail-open shim at ~/.cursor/hooks/plannotator-plan-hook.py). Do not install Plannotator into project .cursor/hooks.json (cloud agents would hang)."
+    },
+    {
+      "id": "atuin-agent-history",
+      "name": "Atuin agent shell history",
+      "description": "Capture Claude Code and Codex Bash tool commands into local Atuin history, tagged by author.",
+      "source": "https://docs.atuin.sh/latest/guide/agent-hooks/",
+      "trust_tier": "repo-managed-external",
+      "status": "home-and-repo-projected",
+      "logical_events": [
+        "PreToolUse",
+        "PostToolUse",
+        "PostToolUseFailure"
+      ],
+      "matchers": [
+        "Bash",
+        "^Bash$"
+      ],
+      "policy_source": "config/hook-registry.json",
+      "harnesses": [
+        "claude-code",
+        "codex"
+      ],
+      "owner": "atuin",
+      "risk_notes": [
+        "Observational only (context mode) via hooks/atuin-agent-hook.sh; missing Atuin must not block Bash.",
+        "Do not also run atuin hook install against live settings \u2014 wagents merge is the SSOT so home sync cannot drop PostToolUseFailure."
+      ],
+      "notes": "Rows atuin-claude-* and atuin-codex-* in config/hook-registry.json. History DB stays on the machine; Atuin Cloud is out of scope."
     }
   ]
 }

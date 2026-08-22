@@ -88,11 +88,11 @@ Shared SSOT with the CLI (rendered once by the Cursor adapter, `harness="cursor"
 | project | `.cursor/skills/**/SKILL.md` | authoritative when present | Cursor-native project skills; shared with CLI |
 | project | `.agents/skills/**/SKILL.md` | secondary | Compatibility skills directory |
 | project | `.cursor/agents/*.md` | authoritative when present | Cursor subagents; shared with CLI |
-| project | `.cursor/hooks.json` | authoritative when present | Shared project hooks; cloud agents may also run repo hooks |
+| project | `.cursor/hooks.json` | authoritative when present | Shared project hooks; cloud agents may also run repo hooks. Fleet-only — no Plannotator (home `~/.cursor/hooks.json` only) |
 | project | `.cursorignore` | authoritative when present | Files excluded from Cursor context |
 | global | `~/.cursor/mcp.json` | authoritative | Shared global MCP config |
 | global | `~/.cursor/permissions.json` | authoritative, medium confidence | Still referenced by current docs; CLI permissions are in `cli.json` / `cli-config.json` |
-| global | `~/.cursor/hooks.json` | authoritative when present | Shared user hooks |
+| global | `~/.cursor/hooks.json` | authoritative when present | Shared user hooks; home-only Plannotator `CreatePlan`/`SwitchMode` when synced |
 | global | `~/.cursor/skills` | authoritative when present | Cursor-native global skills — durable synced surface for `wagents skills sync` |
 | global | `~/.agents/skills` | secondary | Compatibility / Skills CLI universal store; store presence alone is **not** durable Cursor sync |
 | global | `~/.cursor/agents/*.md` | authoritative when present | Global Cursor subagents; shared with CLI |
@@ -119,14 +119,16 @@ Official CLI docs confirm the CLI loads `AGENTS.md`, `CLAUDE.md`, `.cursor/rules
 | project | `.cursor/skills/**/SKILL.md` | authoritative when present | Shared Cursor-native project skills |
 | project | `.agents/skills/**/SKILL.md` | secondary | Compatibility skills directory |
 | project | `.cursor/agents/*.md` | authoritative when present | Shared project subagents |
-| project | `.cursor/hooks.json` | authoritative when present | Shared project hooks plus plugin hooks; do not add `cursor-cli` to hook-registry render lists |
+| project | `.cursor/hooks.json` | authoritative when present | Shared project hooks plus plugin hooks; fleet-only (no Plannotator). Do not add `cursor-cli` to hook-registry render lists |
 | project | `.cursor/cli.json` | authoritative when present | CLI-only project permissions (`permissions.allow` / `permissions.deny`). Official docs: only permissions may be project-scoped |
 | project | `.cursor/worktrees.json` | authoritative when present | Worktree setup for `agent --worktree`; this repo does not author the file by default |
 | project | `plugin.json` | repo-observed | Portable Agent Plugins 1.0 manifest. CLI may load plugins via `--plugin-dir` or marketplace; do not infer auto-install |
 | project | `wagents/cursor_cli_doctor.py` | repo-observed | Read-only doctor backing `wagents cursor-cli doctor` |
+| project | `config/cursor-global-hooks.json` | repo-observed | Cursor Plannotator home template (`CreatePlan` / `SwitchMode`); not rendered into project hooks |
+| global | `~/.cursor/hooks/plannotator-plan-hook.py` | authoritative when present | Home-copied fail-open shim; `wagents cursor-cli plannotator sync` |
 | global | `~/.cursor/mcp.json` | authoritative | Shared global MCP |
 | global | `~/.cursor/cli-config.json` | authoritative | User-owned global CLI config. Sync SHALL NOT write it or `state.vscdb`. Usage review: key presence only |
-| global | `~/.cursor/hooks.json` | authoritative when present | Shared user hooks |
+| global | `~/.cursor/hooks.json` | authoritative when present | Shared user hooks; home-only Plannotator `CreatePlan`/`SwitchMode` when synced |
 | global | `~/.cursor/skills` | authoritative when present | Shared Cursor-native global skills; Skills CLI adapter remains `cursor` |
 | global | `~/.agents/skills` | secondary | Compatibility / Skills CLI universal store |
 | global | `~/.cursor/agents/*.md` | authoritative when present | Shared global subagents |
@@ -142,11 +144,16 @@ Install agent name: `cursor` (Skills CLI adapter stays `cursor`; do not recommen
 
 | Scope | Surface | Role | Notes |
 |-------|---------|------|-------|
+| project | `plugin.json` + `skills/*/SKILL.md` | authoritative when configured | A normalized `~/.grok/config.toml` plugin path resolving to this valid repo root is the preferred non-CLI owner for repo skills |
+| project | `.grok/workflows/*.rhai` | authoritative source when explicitly repo-owned | Saved-workflow source; project files are not a substitute for the user workflow projection |
+| global | `~/.grok/config.toml` `[plugins].paths` | authoritative | Config-path plugin ownership; resolve tilde, relative paths, and symlinks before comparing roots |
+| global | `~/.grok/workflows/*.rhai` | authoritative | User saved-workflow discovery root; project canonical workflows require separate receipt-bound projection |
+| global | `~/.agents/skills`, `~/.claude/skills`, `~/.grok/skills` | secondary/collision roots | For plugin-covered repo skills these are duplicate exposures; curated external skills retain Claude-alias-plus-mirror behavior |
 | project | `config/grok-plannotator-hooks.json` | repo-observed | Canonical policy for Plannotator plan-mode hooks (PreToolUse for enter/exit); rendered on sync to global hooks dir |
 | global | `~/.grok/hooks/*.json` | authoritative | Grok hook surfaces (directory of JSON hook files); includes plannotator.json when synced via repo Grok plannotator install |
 | global | `~/.grok/hooks/plannotator.json` | authoritative (when present) | Rendered Plannotator hooks (exit_plan_mode -> block/deny shim + context improvement) |
 
-Grok Build also observes shared `AGENTS.md` / `instructions/grok-global.md` and MCP via the common sync pipeline (see harness-surface-registry for other projection surfaces).
+Grok Build also observes shared `AGENTS.md` / `instructions/grok-global.md` and MCP via the common sync pipeline (see harness-surface-registry for other projection surfaces). Config-path plugin ownership and Skills CLI ownership are distinct evidence classes: a valid configured plugin can cover only repo skills whose readable portable `SKILL.md` frontmatter has a matching directory/name and non-empty description, without a copy in any global skill directory. Invalid or uncovered skills retain their fallback owner. A saved workflow still requires its own user projection.
 
 Install agent name: `grok-build`
 

@@ -86,6 +86,12 @@ PROJECT_SURFACES: dict[str, list[dict[str, str]]] = {
         },
         {"label": "project subagents", "path": ".cursor/agents/*.md", "kind": "agents", "role": "authoritative"},
         {"label": "project hooks", "path": ".cursor/hooks.json", "kind": "hooks", "role": "authoritative"},
+        {
+            "label": "cursor plannotator home template",
+            "path": "config/cursor-global-hooks.json",
+            "kind": "hooks",
+            "role": "repo-observed",
+        },
         {"label": "cursor ignore", "path": ".cursorignore", "kind": "permissions", "role": "authoritative"},
     ],
     "cursor-cli": [
@@ -112,6 +118,12 @@ PROJECT_SURFACES: dict[str, list[dict[str, str]]] = {
         {"label": "worktree setup", "path": ".cursor/worktrees.json", "kind": "config", "role": "authoritative"},
         {"label": "portable plugin manifest", "path": "plugin.json", "kind": "plugins", "role": "repo-observed"},
         {"label": "cursor-cli doctor", "path": "wagents/cursor_cli_doctor.py", "kind": "config", "role": "repo-observed"},
+        {
+            "label": "cursor plannotator home template",
+            "path": "config/cursor-global-hooks.json",
+            "kind": "hooks",
+            "role": "repo-observed",
+        },
     ],
     "grok-build": [
         # hook surfaces per spec: project repo-observed plannotator policy + global ~/.grok/hooks
@@ -231,6 +243,12 @@ GLOBAL_SURFACES: dict[str, list[dict[str, str]]] = {
         {"label": "global mcp", "path": "~/.cursor/mcp.json", "kind": "mcp", "role": "authoritative"},
         {"label": "permissions", "path": "~/.cursor/permissions.json", "kind": "permissions", "role": "authoritative"},
         {"label": "global hooks", "path": "~/.cursor/hooks.json", "kind": "hooks", "role": "authoritative"},
+        {
+            "label": "cursor plannotator plan hook",
+            "path": "~/.cursor/hooks/plannotator-plan-hook.py",
+            "kind": "hooks",
+            "role": "authoritative",
+        },
         {"label": "global skills", "path": "~/.cursor/skills", "kind": "skills", "role": "authoritative"},
         {"label": "compatible global skills", "path": "~/.agents/skills", "kind": "skills", "role": "secondary"},
         {"label": "global subagents", "path": "~/.cursor/agents/*.md", "kind": "agents", "role": "authoritative"},
@@ -244,6 +262,12 @@ GLOBAL_SURFACES: dict[str, list[dict[str, str]]] = {
             "role": "authoritative",
         },
         {"label": "global hooks", "path": "~/.cursor/hooks.json", "kind": "hooks", "role": "authoritative"},
+        {
+            "label": "cursor plannotator plan hook",
+            "path": "~/.cursor/hooks/plannotator-plan-hook.py",
+            "kind": "hooks",
+            "role": "authoritative",
+        },
         {"label": "global skills", "path": "~/.cursor/skills", "kind": "skills", "role": "authoritative"},
         {"label": "compatible global skills", "path": "~/.agents/skills", "kind": "skills", "role": "secondary"},
         {"label": "global subagents", "path": "~/.cursor/agents/*.md", "kind": "agents", "role": "authoritative"},

@@ -14,7 +14,8 @@ Load `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, and this overlay.
 
 Consume the same project surfaces the Cursor adapter already renders (`harness="cursor"`):
 
-- `.cursor/hooks.json` (and user `~/.cursor/hooks.json`)
+- `.cursor/hooks.json` (fleet hooks only; no Plannotator)
+- user `~/.cursor/hooks.json` (home-only Plannotator `CreatePlan` / `SwitchMode` gates)
 - `.cursor/mcp.json`
 - skills (`.cursor/skills/`, Skills CLI store)
 - agents (`.cursor/agents/`)
@@ -66,11 +67,26 @@ Use `agent acp` for Agent Client Protocol. ACP stays on the existing `cursor-acp
 
 Install with `npx skills add ... -a cursor` or `wagents install` / `wagents skills sync -a cursor`. There is no native `agent` / `cursor-cli` Skills CLI adapter. Do not use `-a cursor-cli`.
 
+## Plannotator
+
+Home-only plan review: `SwitchMode` (enter / `improve-context`, 5s) and `CreatePlan` (review, fail-open). The shim is `~/.cursor/hooks/plannotator-plan-hook.py`. Missing binary, empty plan, crash, or unmapped JSON allow; never exit code 2 / `failClosed: true`.
+
+Do not add Plannotator to project `.cursor/hooks.json` (cloud agents load project hooks and would hang on the 345600s GUI review). `Shift+Tab` / `--plan` may skip `SwitchMode`; `CreatePlan` still fires when a plan is submitted.
+
+```bash
+uv run wagents cursor-cli plannotator sync
+uv run wagents cursor-cli plannotator install
+```
+
+Home stack sync skips both Grok and Cursor Plannotator rows with `--no-plannotator-hooks`.
+
 ## Doctor
 
 ```bash
 uv run wagents cursor-cli doctor --format json
 ```
+
+Doctor warns (does not fail) when the Plannotator binary, home `CreatePlan`/`SwitchMode` rows, or home shim are missing.
 
 ## Update
 

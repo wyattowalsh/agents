@@ -247,3 +247,43 @@ def test_cursor_cli_doctor_rejects_invalid_format():
     result = runner.invoke(app, ["cursor-cli", "doctor", "--format", "yaml"])
     assert result.exit_code == 1
     assert "unsupported format" in result.output.lower()
+
+
+def test_plannotator_checks_are_warn_only_when_missing(tmp_path, monkeypatch):
+    repo, home = _trees(tmp_path)
+    monkeypatch.setattr("wagents.cursor_cli_doctor.shutil.which", lambda _name: None)
+    report = cursor_cli_doctor_report(repo_root=repo, home=home)
+    assert report["ok"] is True
+    by_name = {check["name"]: check for check in report["checks"]}
+    assert by_name["plannotator-binary"]["status"] == "warn"
+    assert by_name["plannotator-hooks"]["status"] == "warn"
+    assert by_name["plannotator-shim"]["status"] == "warn"
+
+
+def test_plannotator_checks_ok_when_home_surfaces_present(tmp_path, monkeypatch):
+    repo, home = _trees(tmp_path)
+    binary = home / ".local" / "bin" / "plannotator"
+    binary.parent.mkdir(parents=True)
+    binary.write_text("#!/bin/sh\n", encoding="utf-8")
+    shim = home / ".cursor" / "hooks" / "plannotator-plan-hook.py"
+    shim.parent.mkdir(parents=True)
+    shim.write_text("# shim\n", encoding="utf-8")
+    _write(
+        home / ".cursor" / "hooks.json",
+        {
+            "version": 1,
+            "hooks": {
+                "preToolUse": [
+                    {"matcher": "SwitchMode", "command": str(shim) + " enter"},
+                    {"matcher": "CreatePlan", "command": str(shim) + " exit"},
+                ]
+            },
+        },
+    )
+    monkeypatch.setattr("wagents.cursor_cli_doctor.shutil.which", lambda _name: None)
+    report = cursor_cli_doctor_report(repo_root=repo, home=home)
+    assert report["ok"] is True
+    by_name = {check["name"]: check for check in report["checks"]}
+    assert by_name["plannotator-binary"]["status"] == "ok"
+    assert by_name["plannotator-hooks"]["status"] == "ok"
+    assert by_name["plannotator-shim"]["status"] == "ok"

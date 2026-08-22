@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import json
+import os
+
 from scripts import sync_agent_stack
 from scripts.sync_agent_stack import SyncContext, sync_cursor_home_allowlisted_rules, sync_home_targets
 from wagents.platforms import cursor as cursor_platform
@@ -109,12 +112,12 @@ def test_cursor_adapter_sync_home_writes_managed_agents_preserves_unmarked(
 
     user_agent = agents_dir / "my-custom.md"
     user_agent.write_text(
-        "---\nname: my-custom\ndescription: User owned.\nmodel: cursor-grok-4.5-high\n---\n\nCustom.\n",
+        "---\nname: my-custom\ndescription: User owned.\nmodel: cursor-grok-4.6-xhigh\n---\n\nCustom.\n",
         encoding="utf-8",
     )
     stale_managed = agents_dir / "stale-managed.md"
     stale_managed.write_text(
-        "---\nname: stale-managed\ndescription: Old managed.\nmodel: cursor-grok-4.5-high\n---\n\n"
+        "---\nname: stale-managed\ndescription: Old managed.\nmodel: cursor-grok-4.6-xhigh\n---\n\n"
         f"{cursor_platform.CURSOR_MANAGED_AGENT_MARKER}stale-managed.md -->\n\nGone.\n",
         encoding="utf-8",
     )
@@ -127,22 +130,89 @@ def test_cursor_adapter_sync_home_writes_managed_agents_preserves_unmarked(
         "_render_cursor_agents",
         lambda: {
             "planner.md": (
-                "---\nname: planner\ndescription: Plan.\nmodel: cursor-grok-4.5-high\n"
+                "---\nname: planner\ndescription: Plan.\nmodel: cursor-grok-4.6-xhigh\n"
                 "readonly: true\n---\n\n"
                 f"{cursor_platform.CURSOR_MANAGED_AGENT_MARKER}planner.md -->\n\nPlan body.\n"
             )
         },
     )
-    monkeypatch.setattr(cursor_platform, "render_cursor_global_hooks", lambda: None)
+    monkeypatch.setattr(cursor_platform, "CURSOR_HOME_HOOKS_DIR", home_cursor / "hooks")
+    monkeypatch.setattr(cursor_platform, "render_cursor_global_hooks", lambda **_: None)
 
     adapter = cursor_platform.Adapter()
-    ctx = cursor_platform.SyncContext(apply=True)
+    ctx = cursor_platform.SyncContext(apply=True, grok_plannotator_hooks=False)
     adapter.sync_home(ctx, {"servers": {}}, {}, {}, {})
 
     managed = agents_dir / "planner.md"
     assert managed.is_file()
     assert cursor_platform.CURSOR_MANAGED_AGENT_MARKER in managed.read_text(encoding="utf-8")
-    assert "model: cursor-grok-4.5-high" in managed.read_text(encoding="utf-8")
+    assert "model: cursor-grok-4.6-xhigh" in managed.read_text(encoding="utf-8")
     assert user_agent.is_file()
     assert user_agent.read_text(encoding="utf-8").startswith("---\nname: my-custom")
     assert not stale_managed.exists()
+
+
+def test_sync_cursor_plannotator_copies_shim_and_replaces_stale_rows(tmp_path, monkeypatch) -> None:
+    home_cursor = tmp_path / ".cursor"
+    hooks_dir = home_cursor / "hooks"
+    hooks_json = home_cursor / "hooks.json"
+    agents_dir = home_cursor / "agents"
+    hooks_dir.mkdir(parents=True)
+    agents_dir.mkdir(parents=True)
+    hooks_json.write_text(
+        json.dumps({
+            "version": 1,
+            "hooks": {
+                "preToolUse": [
+                    {
+                        "matcher": "exit_plan_mode|ExitPlanMode",
+                        "command": "/old/plannotator",
+                        "timeout": 1,
+                    },
+                    {"command": "/usr/local/bin/custom-hook.sh"},
+                ]
+            },
+        })
+        + "\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(cursor_platform, "CURSOR_HOME_MCP_PATH", home_cursor / "mcp.json")
+    monkeypatch.setattr(cursor_platform, "CURSOR_HOME_HOOKS_PATH", hooks_json)
+    monkeypatch.setattr(cursor_platform, "CURSOR_HOME_HOOKS_DIR", hooks_dir)
+    monkeypatch.setattr(cursor_platform, "CURSOR_HOME_AGENTS_DIR", agents_dir)
+    monkeypatch.setattr(cursor_platform, "_render_cursor_agents", lambda: {})
+
+    ctx = cursor_platform.SyncContext(apply=True)
+    cursor_platform.Adapter().sync_home(ctx, {"servers": {}}, {}, {}, {})
+
+    shim = hooks_dir / "plannotator-plan-hook.py"
+    assert shim.is_file()
+    assert os.access(shim, os.X_OK)
+    payload = json.loads(hooks_json.read_text(encoding="utf-8"))
+    commands = [entry["command"] for entry in payload["hooks"]["preToolUse"]]
+    assert "/usr/local/bin/custom-hook.sh" in commands
+    assert any(command.endswith("plannotator-plan-hook.py enter") for command in commands)
+    assert any(command.endswith("plannotator-plan-hook.py exit") for command in commands)
+    assert all(entry.get("matcher") != "exit_plan_mode|ExitPlanMode" for entry in payload["hooks"]["preToolUse"])
+
+
+def test_sync_home_skips_cursor_plannotator_when_disabled(tmp_path, monkeypatch) -> None:
+    home_cursor = tmp_path / ".cursor"
+    hooks_dir = home_cursor / "hooks"
+    hooks_json = home_cursor / "hooks.json"
+    agents_dir = home_cursor / "agents"
+    hooks_dir.mkdir(parents=True)
+    agents_dir.mkdir(parents=True)
+    original = json.dumps({"version": 1, "hooks": {"preToolUse": [{"command": "/keep-me.sh"}]}}) + "\n"
+    hooks_json.write_text(original, encoding="utf-8")
+    monkeypatch.setattr(cursor_platform, "CURSOR_HOME_MCP_PATH", home_cursor / "mcp.json")
+    monkeypatch.setattr(cursor_platform, "CURSOR_HOME_HOOKS_PATH", hooks_json)
+    monkeypatch.setattr(cursor_platform, "CURSOR_HOME_HOOKS_DIR", hooks_dir)
+    monkeypatch.setattr(cursor_platform, "CURSOR_HOME_AGENTS_DIR", agents_dir)
+    monkeypatch.setattr(cursor_platform, "_render_cursor_agents", lambda: {})
+
+    ctx = cursor_platform.SyncContext(apply=True, grok_plannotator_hooks=False)
+    cursor_platform.Adapter().sync_home(ctx, {"servers": {}}, {}, {}, {})
+
+    assert hooks_json.read_text(encoding="utf-8") == original
+    assert not (hooks_dir / "plannotator-plan-hook.py").exists()
