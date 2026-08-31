@@ -1,72 +1,65 @@
-"""Hermetic tests for the MCPHub loopback-only launcher shim."""
+"""Static proofs for the owned loopback listeners and retired bind shim."""
 
 from __future__ import annotations
 
-import json
-import os
-import subprocess
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-PRELOAD = REPO_ROOT / "scripts" / "mcphub" / "bind-loopback.cjs"
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPTS = ROOT / "scripts" / "mcphub"
+DOWNSTREAM = ROOT / "mcp" / "mcphub" / "downstream"
 
 
-def _run_probe(*, host: str, explicit_host: str | None = None) -> subprocess.CompletedProcess[str]:
-    listen_args = "0"
-    if explicit_host is not None:
-        listen_args += f", {json.dumps(explicit_host)}"
-    source = f"""
-const http = require('node:http');
-const server = http.createServer((_req, res) => res.end('ok'));
-server.listen({listen_args}, () => {{
-  console.log(JSON.stringify({{ address: server.address().address, nodeOptions: process.env.NODE_OPTIONS || '' }}));
-  server.close();
-}});
-"""
-    env = {
-        **os.environ,
-        "MCPHUB_BIND_SHIM_FORCE": "1",
-        "MCPHUB_BIND_HOST": host,
-        "PORT": "0",
-    }
-    return subprocess.run(
-        ["node", "--require", str(PRELOAD), "-e", source],
-        cwd=REPO_ROOT,
-        env=env,
-        text=True,
-        capture_output=True,
-        check=False,
-    )
+def _read(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
 
 
-def test_bind_shim_injects_loopback_and_clears_child_preload() -> None:
-    result = _run_probe(host="127.0.0.1")
+def test_bind_preload_is_absent_and_typescript_owns_both_loopback_listeners() -> None:
+    assert not (SCRIPTS / "bind-loopback.cjs").exists()
 
-    assert result.returncode == 0, result.stderr
-    payload = json.loads(result.stdout)
-    assert payload == {"address": "127.0.0.1", "nodeOptions": ""}
-
-
-def test_bind_shim_rejects_non_loopback_configuration() -> None:
-    result = _run_probe(host="0.0.0.0")
-
-    assert result.returncode != 0
-    assert "MCPHUB_BIND_HOST must be loopback-only" in result.stderr
-
-
-def test_bind_shim_rejects_explicit_wildcard_listen() -> None:
-    result = _run_probe(host="127.0.0.1", explicit_host="0.0.0.0")
-
-    assert result.returncode != 0
-    assert "refused non-loopback listen host" in result.stderr
+    constants = _read(DOWNSTREAM / "src" / "ingress" / "constants.ts")
+    main = _read(DOWNSTREAM / "src" / "runtime" / "main.ts")
+    assert constants.count('host: "127.0.0.1"') == 2
+    assert "port: 46683" in constants
+    assert "port: 46684" in constants
+    assert 'resource: "http://127.0.0.1:46683/mcp/things"' in constants
+    assert 'resource: "https://mcp.w4w.dev/mcp/things"' in constants
+    assert "createServer(upstreamApplication)" in main
+    assert "createThingsIngressRequestListener" in main
 
 
-def test_launchers_pin_mcphub_and_require_listener_check() -> None:
-    start = (REPO_ROOT / "scripts" / "mcphub" / "start-server.sh").read_text(encoding="utf-8")
-    common = (REPO_ROOT / "scripts" / "mcphub" / "common.sh").read_text(encoding="utf-8")
-    doctor = (REPO_ROOT / "scripts" / "mcphub" / "doctor.sh").read_text(encoding="utf-8")
+def test_launcher_executes_only_the_selected_sealed_distribution() -> None:
+    start = _read(SCRIPTS / "start-server.sh")
+    assert 'exec node --disallow-code-generation-from-strings "${MCPHUB_DOWNSTREAM_LAUNCHER}"' in start
+    assert '--runtime-root "${MCPHUB_DOWNSTREAM_RUNTIME_ROOT}"' in start
+    assert "mcphub_distribution_is_selected" in start
+    assert "npx" not in start
+    assert "MCPHUB_PACKAGE_VERSION" not in start
+    assert "bind-loopback" not in start
+    assert "mcphub-esm-" not in start
 
-    assert 'MCPHUB_PACKAGE_VERSION="${MCPHUB_PACKAGE_VERSION:-1.0.24}"' in start
-    assert '"@samanhappy/mcphub@${MCPHUB_PACKAGE_VERSION}"' in start
+
+def test_readiness_requires_fixed_loopback_endpoints_owned_by_the_tracked_pid() -> None:
+    common = _read(SCRIPTS / "common.sh")
+    assert 'PORT="${PORT:-46683}"' in common
+    assert 'MCPHUB_REMOTE_PORT="${MCPHUB_REMOTE_PORT:-46684}"' in common
+    assert 'MCPHUB_BIND_HOST="${MCPHUB_BIND_HOST:-127.0.0.1}"' in common
     assert "mcphub_listener_is_loopback" in common
-    assert "unsafe non-loopback listener" in doctor
+    assert "mcphub_listener_owned_by_pid" in common
+    assert "mcphub_pid_file_managed_running" in common
+    assert '"${MCPHUB_BASE_URL}/mcp/things"' in common
+    assert "MCPHUB_STATUS:405" in common
+    assert "MCPHUB_SIZE:0" in common
+
+
+def test_remote_tunnel_targets_only_the_owned_46684_route_manifest() -> None:
+    common = _read(SCRIPTS / "common.sh")
+    activation = _read(SCRIPTS / "remote-activation.mjs")
+    assert "service: http://127.0.0.1:46684" in activation
+    assert "127.0.0.1:46683" not in activation
+    assert "mcp/things" in activation
+    assert "oauth-protected-resource/mcp/things" in activation
+    assert "oauth-authorization-server" in activation
+    assert "oauth/session/logout" in activation
+    assert "http_status:404" in activation
+    assert "verify-config" in common
+    assert "token-only Cloudflare launch" in common

@@ -30,9 +30,20 @@ def test_codex_bounded_profile_includes_configured_groups_and_disabled_servers()
     assert kinds == {"group", "server"}
 
     group_names = {spec["group"] for spec in specs if spec["kind"] == "group"}
-    assert group_names == {"harness", "nlm"}
-    assert {spec["server"] for spec in specs if spec["kind"] == "server"} == set(registry["servers"])
+    assert group_names == {"harness", "candidate-corpus", "nlm", "things"}
+    projectable_servers = {name for name, entry in registry["servers"].items() if entry.get("group_only") is not True}
+    assert {spec["server"] for spec in specs if spec["kind"] == "server"} == projectable_servers
     assert all(spec["enabled"] is False for spec in specs if spec["kind"] == "server")
+
+    things = next(spec for spec in specs if spec.get("group") == "things")
+    assert things["url"] == "http://127.0.0.1:46683/mcp/things"
+    assert things["enabled"] is False
+    assert things["group_id"] == "3b94a096-b95f-586c-b2e7-e69ed177eb5a"
+    assert things["approval_policy"] == {
+        "default": "per-call",
+        "read_only_risk": "never",
+        "otherwise": "per-call",
+    }
 
 
 def test_remote_stdio_projection_uses_portable_path_without_token_env():
