@@ -24,6 +24,7 @@ def _run(command: list[str]) -> int:
 def main() -> int:
     toolkit = _toolkit_path()
     commands: list[list[str]] = [
+        [sys.executable, str(SKILL_DIR / "scripts" / "render_capabilities.py"), "--check"],
         [sys.executable, str(toolkit / "validate_skill.py"), str(SKILL_DIR)],
     ]
     if (SKILL_DIR / "evals").is_dir():

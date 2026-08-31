@@ -1,0 +1,26 @@
+[project]
+name = "mcp-things-core"
+version = "0.1.0"
+description = "Security adapter for the audited mcp-server-things toolset"
+requires-python = ">=3.12"
+dependencies = [
+  "fastmcp>=3.4.7,<4",
+  "mcp-server-things==1.9.0",
+  "pydantic>=2.12",
+  "things-common",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["things_core"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"things_core/core_manifest.json" = "things_core/core_manifest.json"
+"things_core/upstream_contract.json" = "things_core/upstream_contract.json"
+"things_core/upstream_record.csv" = "things_core/upstream_record.csv"
+
+[tool.uv.sources]
+things-common = { workspace = true }

@@ -63,7 +63,7 @@ packages = ["wagents"]
 
 [dependency-groups]
 dev = [
-    "fastmcp>=2",
+    "fastmcp>=3.4.7,<4",
     "jsonschema>=4.25.1",
     "playwright>=1.58.0",
     "pytest>=8",
@@ -74,7 +74,7 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "mcp/things-shortcuts/tests", "mcp/things-native/tests"]
 
 [tool.ruff]
 target-version = "py313"
@@ -88,6 +88,10 @@ include = [
     "skills/**/scripts/**/*.py",
     "skills/nerdbot/src/**/*.py",
     "mcp/source-url-health/**/*.py",
+    "packages/things-common/**/*.py",
+    "mcp/things-core/**/*.py",
+    "mcp/things-shortcuts/**/*.py",
+    "mcp/things-native/**/*.py",
     "hooks/wagents-hook.py",
 ]
 extend-exclude = ["skills/**/evals/**"]
@@ -104,19 +108,53 @@ select = ["E", "F", "I", "UP", "B", "SIM", "C4", "RUF", "TC", "PT", "RET"]
 "tests/test_nerdbot*.py" = ["E402"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["wagents", "nerdbot"]
+known-first-party = [
+    "wagents",
+    "nerdbot",
+    "things_common",
+    "things_core",
+    "things_shortcuts",
+    "things_native",
+]
 
 # Keep Ty explicitly declared for config discovery, scoped checks, and tooling detection.
 [tool.ty.environment]
 python-version = "3.13"
-root = [".", "skills/nerdbot/src", "mcp/source-url-health"]
-extra-paths = ["skills/skill-creator/scripts", "skills/nerdbot/scripts", "mcp/source-url-health"]
+root = [
+    ".",
+    "skills/nerdbot/src",
+    "mcp/source-url-health",
+    "packages/things-common",
+    "mcp/things-core",
+    "mcp/things-shortcuts",
+    "mcp/things-native",
+]
+extra-paths = [
+    "skills/skill-creator/scripts",
+    "skills/nerdbot/scripts",
+    "mcp/source-url-health",
+    "packages/things-common",
+    "mcp/things-core",
+    "mcp/things-shortcuts",
+    "mcp/things-native",
+]
 
 [tool.ty.analysis]
 allowed-unresolved-imports = ["audit", "progress", "package", "asset_toolkit.**", "kb_bootstrap", "kb_inventory", "kb_lint", "PIL", "PIL.**"]
 
 [tool.ty.src]
-include = ["wagents", "scripts", "tests", "skills/nerdbot/src", "skills/nerdbot/scripts", "mcp/source-url-health"]
+include = [
+    "wagents",
+    "scripts",
+    "tests",
+    "skills/nerdbot/src",
+    "skills/nerdbot/scripts",
+    "mcp/source-url-health",
+    "packages/things-common",
+    "mcp/things-core",
+    "mcp/things-shortcuts",
+    "mcp/things-native",
+]
 # scripts/validate uses runtime sys.path bootstrap (ruff E402 ignored); exclude from ty.
 exclude = ["scripts/validate/**", "tests/docs_ui/**"]
 
@@ -129,4 +167,4 @@ possibly-unresolved-reference = "warn"
 error-on-warning = true
 
 [tool.uv.workspace]
-members = ["mcp/mcphub", "mcp/skill-catalog", "mcp/agent-catalog", "mcp/docs-index", "mcp/repo-readonly", "mcp/source-url-health", "mcp/eval-results", "mcp/template-smoke", "mcp/ci-artifacts", "mcp/release-provenance", "mcp/workflow-status", "mcp/docs-graph", "mcp/oauth-reference", "mcp/registry-publisher", "mcp/sandbox-profiles", "mcp/changelog-digest"]
+members = ["mcp/mcphub", "mcp/skill-catalog", "mcp/agent-catalog", "mcp/docs-index", "mcp/repo-readonly", "mcp/source-url-health", "mcp/eval-results", "mcp/template-smoke", "mcp/ci-artifacts", "mcp/release-provenance", "mcp/workflow-status", "mcp/docs-graph", "mcp/oauth-reference", "mcp/registry-publisher", "mcp/sandbox-profiles", "mcp/changelog-digest", "packages/things-common", "mcp/things-core", "mcp/things-shortcuts", "mcp/things-native"]

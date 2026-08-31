@@ -1,0 +1,3584 @@
+{
+  "schemaVersion": "1.0.0",
+  "changeId": "replace-supathings-with-things-plus-plus",
+  "group": {
+    "name": "things",
+    "deterministicId": "3b94a096-b95f-586c-b2e7-e69ed177eb5a",
+    "localPath": "/mcp/things",
+    "remotePath": "/mcp/things",
+    "localResource": "http://127.0.0.1:46683/mcp/things",
+    "remoteResource": "https://mcp.w4w.dev/mcp/things",
+    "servers": [
+      "things-core",
+      "things-shortcuts",
+      "things-native"
+    ]
+  },
+  "counts": {
+    "tools": 70,
+    "coreTools": 41,
+    "shortcutTools": 21,
+    "nativeTools": 8,
+    "supaOutcomes": 37,
+    "workflows": 17,
+    "legacyEvalIds": 25,
+    "newEvalIds": 16
+  },
+  "naming": {
+    "normalization": "Replace every hyphen in the server id with underscore.",
+    "publicRule": "publicToolName = normalize(server) + '__' + serverToolName",
+    "collisionRule": "Reject generation and startup on any duplicate publicToolName, duplicate qualifiedCapabilityId, serverToolName containing '__', or actual tools/list name outside this manifest.",
+    "callRouting": "Reverse-map the exact publicToolName to one server and one serverToolName; never guess, alias, or fall back.",
+    "schemaHashRule": "Encode each schema as UTF-8 JSON with sorted keys and compact separators, hash with SHA-256, store audited upstream and adapted-public hashes separately, and require authenticated local and remote tools/list hashes to equal the adapted-public hashes before activation. Any tool name or schema change requires revision of this active OpenSpec change before regeneration."
+  },
+  "scopes": {
+    "independent": [
+      "things.read",
+      "things.write",
+      "things.admin"
+    ],
+    "implication": "none",
+    "chatgptRequiredGrant": [
+      "things.read",
+      "things.write",
+      "things.admin"
+    ],
+    "catalogAccessRule": "ChatGPT Things profile must grant exactly all three independent scopes before modern server/discover or tools/list and before legacy initialize or tools/list; per-tool minimum scopes remain enforced."
+  },
+  "invariants": {
+    "exactToolUnion": true,
+    "zeroRemoved": true,
+    "zeroUnmapped": true,
+    "netNewGreaterThanZero": true,
+    "oneThingsGroupOnly": true,
+    "futureCapabilityChangeRequiresOpenSpecRevision": true
+  },
+  "netNewOutcomeIds": [
+    "bounded-multi-create",
+    "selected-item-inspection",
+    "item-duplication",
+    "checklist-variant-editing",
+    "safe-immediate-delete",
+    "area-create-update-delete",
+    "tag-create-rename-delete-hierarchy"
+  ],
+  "tools": [
+    {
+      "server": "things-core",
+      "serverToolName": "add_area",
+      "publicToolName": "things_core__add_area",
+      "expectedMcphubQualifiedName": "things_core__add_area",
+      "qualifiedCapabilityId": "things-core/add_area",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/add_area@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-add-area-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "8aa1ae8eeb82b740cf7237be503bba33b00bdd0e3386b6a92203e84f013d8ca1",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "8f609c27cb46bb7654ec9adada57ad321d6a39cca5ffdc26c8eaa93b1f16c017",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "add_checklist_items",
+      "publicToolName": "things_core__add_checklist_items",
+      "expectedMcphubQualifiedName": "things_core__add_checklist_items",
+      "qualifiedCapabilityId": "things-core/add_checklist_items",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/add_checklist_items@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-add-checklist-items-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "63d705c5ad93670e673ad250b1c38fa10b60d967d622334c84bdfb1c72a15358",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "576bdce49637d401f182614c3d0fcbdfd718da8048f01df7ef60dbd0c5688954",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "add_project",
+      "publicToolName": "things_core__add_project",
+      "expectedMcphubQualifiedName": "things_core__add_project",
+      "qualifiedCapabilityId": "things-core/add_project",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/add_project@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-add-project-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "e8e725d5d886fabfe72f5e64e3ad0154156c3021845cb421792c6552be2ff806",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "f3c51815673b4b852412c22fef9430561d80b59f5f8c820db7e10ddff9d37263",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "add_tags",
+      "publicToolName": "things_core__add_tags",
+      "expectedMcphubQualifiedName": "things_core__add_tags",
+      "qualifiedCapabilityId": "things-core/add_tags",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/add_tags@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-add-tags-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "4bab0c9ddfdcd924ab07c5fe662a20fce9dcf1380ac967b0d424c44d31fd5043",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "f33f43721c7888528dbe6467de085ba7880e68394e9aa8508acbdff9c3ef6dcb",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "add_todo",
+      "publicToolName": "things_core__add_todo",
+      "expectedMcphubQualifiedName": "things_core__add_todo",
+      "qualifiedCapabilityId": "things-core/add_todo",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/add_todo@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-add-todo-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "4194abfa1d61fae16785f9231d7effaf39a050835a7a202b12aeb411541b857c",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "a28ed09465b150127bc4ca1d0cb94fc932644c038764e4156046d923fbe94edc",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "bulk_move_records",
+      "publicToolName": "things_core__bulk_move_records",
+      "expectedMcphubQualifiedName": "things_core__bulk_move_records",
+      "qualifiedCapabilityId": "things-core/bulk_move_records",
+      "minimumIndependentScope": "things.admin",
+      "risk": "bulk-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/bulk_move_records@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-bulk-move-records-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "ecf185730ace347d829d7dec8d01a879da1a93e88b94b6e4e9749c9d03384c64",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "e1f52ab35b6017e74de82f0f8c64cc3234ccaa15a02ab940fd0ed2ffc1800739",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "bulk_update_todos",
+      "publicToolName": "things_core__bulk_update_todos",
+      "expectedMcphubQualifiedName": "things_core__bulk_update_todos",
+      "qualifiedCapabilityId": "things-core/bulk_update_todos",
+      "minimumIndependentScope": "things.admin",
+      "risk": "bulk-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/bulk_update_todos@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-bulk-update-todos-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "a0d6fe2519a9daa98341aeaf4d82734e475fc9ad3fefce90b390fd86a868c182",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "cb05b31dded2854df1c4497b922f263ea26766b4760fdc94dfd17a7d37a2e6a7",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "context_stats",
+      "publicToolName": "things_core__context_stats",
+      "expectedMcphubQualifiedName": "things_core__context_stats",
+      "qualifiedCapabilityId": "things-core/context_stats",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/context_stats@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-context-stats-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "70442b07d15fc99dcc470eee974b4e059ce20b11d59e9aa9ad72aae6bd02863b",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "d746974fa9afd5e951f76f9af38954b0ad7f436f2120dc974da65e5ee39f856f",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "create_tag",
+      "publicToolName": "things_core__create_tag",
+      "expectedMcphubQualifiedName": "things_core__create_tag",
+      "qualifiedCapabilityId": "things-core/create_tag",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/create_tag@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-create-tag-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "22d18b22a0395283a055d5149b1fdc3ffae0e4e65a762206a8a53c155d7080a7",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "dd37f988d5d45f6940927696437351fa1a46e360994c3529791ebbc6af01b394",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "delete_todo",
+      "publicToolName": "things_core__delete_todo",
+      "expectedMcphubQualifiedName": "things_core__delete_todo",
+      "qualifiedCapabilityId": "things-core/delete_todo",
+      "minimumIndependentScope": "things.admin",
+      "risk": "destructive-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/delete_todo@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-delete-todo-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "68f2b4c2d6020d3ceb981077c5b3c34a46db08140fa04510f26aa24dbc695008",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "b26bc1748df0f7bb2bfd0925a87773ce613674ecdf9ddcf3b5b16dc783e883f8",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_activating_in_days",
+      "publicToolName": "things_core__get_activating_in_days",
+      "expectedMcphubQualifiedName": "things_core__get_activating_in_days",
+      "qualifiedCapabilityId": "things-core/get_activating_in_days",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_activating_in_days@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-activating-in-days-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "84b4170f6b731ad4abb26fb9aec3883ea9b6dc9598e28f8a65670045c6676a9e",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "2f1a751ab97767a30cb1bdc23ea4250b7793dd19e35527effb53397466e4daa1",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_anytime",
+      "publicToolName": "things_core__get_anytime",
+      "expectedMcphubQualifiedName": "things_core__get_anytime",
+      "qualifiedCapabilityId": "things-core/get_anytime",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_anytime@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-anytime-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "a6d2367d72fd85238bef0dba732d42859f3647560fb8ab847f974e8cf02349b1",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "0616383fbe2137c13f698ff9ce49ab9746dbbf1b3478b5d1fdac2e184f464ff8",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_areas",
+      "publicToolName": "things_core__get_areas",
+      "expectedMcphubQualifiedName": "things_core__get_areas",
+      "qualifiedCapabilityId": "things-core/get_areas",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_areas@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-areas-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "3a5fbc554d84a924db1b7c2da91131cae114dd57914a90d74b5479972013196d",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "a161fecb45660ae3db2a9f641bfafa5ad2fbc36978b37da836ef20f916cf27db",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_due_in_days",
+      "publicToolName": "things_core__get_due_in_days",
+      "expectedMcphubQualifiedName": "things_core__get_due_in_days",
+      "qualifiedCapabilityId": "things-core/get_due_in_days",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_due_in_days@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-due-in-days-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "110862ad9537c9703c5610a5a9b188becb1f82c7d12e043f20b280003c1cc991",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "b932c4532f5ab44ad72037dedaea28ab05a3f2f5a4d6c05343c0f77c0ecd741d",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_inbox",
+      "publicToolName": "things_core__get_inbox",
+      "expectedMcphubQualifiedName": "things_core__get_inbox",
+      "qualifiedCapabilityId": "things-core/get_inbox",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_inbox@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-inbox-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "fc525e68b264185325aafed330ea06fbd0e7c606d25595e1abbc4903ca3d535c",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "23600f827d8a10a5b1aea4b2e730faeea31e5e0663147cb0a13f2a5a560bf2fd",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_logbook",
+      "publicToolName": "things_core__get_logbook",
+      "expectedMcphubQualifiedName": "things_core__get_logbook",
+      "qualifiedCapabilityId": "things-core/get_logbook",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_logbook@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-logbook-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "3b06383e33487c1c7ac2b1ea2c2163f437d7f56dd45840261a135a7be9cc9b95",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "5fb91c6ed77e5be17c6f41e6d7038790e553075f9e19a32a64f2bda3c805654a",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_project_headings",
+      "publicToolName": "things_core__get_project_headings",
+      "expectedMcphubQualifiedName": "things_core__get_project_headings",
+      "qualifiedCapabilityId": "things-core/get_project_headings",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_project_headings@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-project-headings-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "1e426c170ae9b8c4ff7874346b116f5995e3b2cb96e3dbd4d4e6e2d2dd16246f",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "07e1134196a36af45a9cb3754e2f7cd23a9fea610bac0609fe584205f1576d5d",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_projects",
+      "publicToolName": "things_core__get_projects",
+      "expectedMcphubQualifiedName": "things_core__get_projects",
+      "qualifiedCapabilityId": "things-core/get_projects",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_projects@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-projects-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "9c7f2d933b698582b5fbd7a38b9ea2adcc3270580070ef5fb1b487638d4b9442",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "a161fecb45660ae3db2a9f641bfafa5ad2fbc36978b37da836ef20f916cf27db",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_recent",
+      "publicToolName": "things_core__get_recent",
+      "expectedMcphubQualifiedName": "things_core__get_recent",
+      "qualifiedCapabilityId": "things-core/get_recent",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_recent@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-recent-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "3c36d5176b2b183ba0cb247c11230e4b544178877bca9e3e777ebf9e38c13df6",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "1948970a555c3e80b7ffd2f4068b019b0e8ff0ab912b16eec187ce716395e1b3",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_server_capabilities",
+      "publicToolName": "things_core__get_server_capabilities",
+      "expectedMcphubQualifiedName": "things_core__get_server_capabilities",
+      "qualifiedCapabilityId": "things-core/get_server_capabilities",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_server_capabilities@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-server-capabilities-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "25cefde0c174451fcc028023971bee7a53fea3c43e0d6ca941f1c58c795e8489",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "d746974fa9afd5e951f76f9af38954b0ad7f436f2120dc974da65e5ee39f856f",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_someday",
+      "publicToolName": "things_core__get_someday",
+      "expectedMcphubQualifiedName": "things_core__get_someday",
+      "qualifiedCapabilityId": "things-core/get_someday",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_someday@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-someday-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "0b51320681d69165e0b78cf9997e51e62bd0e381fdb2aab6164f1495b472b327",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "92dcf4eec2febf103f64b992e968f48f3126dd398a48dc280152db0302bc00f3",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_tag_usage",
+      "publicToolName": "things_core__get_tag_usage",
+      "expectedMcphubQualifiedName": "things_core__get_tag_usage",
+      "qualifiedCapabilityId": "things-core/get_tag_usage",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_tag_usage@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-tag-usage-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "d554b9d65d6435e435893c7812b66e15bc37dde4068e809ccdf49158090cfaa8",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "292e2c17e2d2e18c295aaa6f3edf410ed78066d60ca3ba7f8217af4f8319bab4",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_tagged_items",
+      "publicToolName": "things_core__get_tagged_items",
+      "expectedMcphubQualifiedName": "things_core__get_tagged_items",
+      "qualifiedCapabilityId": "things-core/get_tagged_items",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_tagged_items@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-tagged-items-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "9aff336dd043feff5d0e8e573da409dea0793fb71c94c943cd66e48981c3a58e",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "71df37d8a3eb2e076019d042e9066b591512f1eed83b19f4ec3d0b7ced19a61e",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_tags",
+      "publicToolName": "things_core__get_tags",
+      "expectedMcphubQualifiedName": "things_core__get_tags",
+      "qualifiedCapabilityId": "things-core/get_tags",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_tags@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-tags-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "ceaef97ea61e51574c098862c4552731d706c877ec13d6bf085f0e1b832913e6",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "f0d16adb32f3c9d2601b7712dd3388c638c70c39e3e8d64c631e8e74be53b398",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_today",
+      "publicToolName": "things_core__get_today",
+      "expectedMcphubQualifiedName": "things_core__get_today",
+      "qualifiedCapabilityId": "things-core/get_today",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_today@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-today-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "47bb89283a1136a069ebe8b464d6d8dfdd77c577db69dae4a4e09df3751ca2fc",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "0616383fbe2137c13f698ff9ce49ab9746dbbf1b3478b5d1fdac2e184f464ff8",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_todo_by_id",
+      "publicToolName": "things_core__get_todo_by_id",
+      "expectedMcphubQualifiedName": "things_core__get_todo_by_id",
+      "qualifiedCapabilityId": "things-core/get_todo_by_id",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_todo_by_id@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-todo-by-id-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "b487c15fe3ba1f8b638ad5da2a5514c5c5f9aefad6467dc93f8f78a5ad8ebe64",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "ab1b3a0a9e0715a9f271e9e8c41222d1d6c820c61f2d5c0f1186d4ded5ce94c7",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_todos",
+      "publicToolName": "things_core__get_todos",
+      "expectedMcphubQualifiedName": "things_core__get_todos",
+      "qualifiedCapabilityId": "things-core/get_todos",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_todos@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-todos-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "ccb49efe7b5544d3cb62583fbe8b0fc51eaf5a38249036e434267d4dde2878be",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "503b157529ef0e2419b02f493825cb48be61dc409541912145896fab0212be7a",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_trash",
+      "publicToolName": "things_core__get_trash",
+      "expectedMcphubQualifiedName": "things_core__get_trash",
+      "qualifiedCapabilityId": "things-core/get_trash",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_trash@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-trash-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "7076f5c597a02e145a50606830535ab88ab1b0ec5c0d090e5ac8a2476f9c1a18",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "54d9de23389b921180669416aec8dae5bf8b4222388c51d463684d1c9812e9c3",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_upcoming",
+      "publicToolName": "things_core__get_upcoming",
+      "expectedMcphubQualifiedName": "things_core__get_upcoming",
+      "qualifiedCapabilityId": "things-core/get_upcoming",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_upcoming@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-upcoming-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "9e6c4ad9862ee1c94ca71724b312ff2e1e51f6d24b7023c3dd34adb2c97a75a8",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "f70a68ef26e7dc53cdce72860b89bdf659811bea726e81953b5556e8ae56f71b",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "get_usage_recommendations",
+      "publicToolName": "things_core__get_usage_recommendations",
+      "expectedMcphubQualifiedName": "things_core__get_usage_recommendations",
+      "qualifiedCapabilityId": "things-core/get_usage_recommendations",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/get_usage_recommendations@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-get-usage-recommendations-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "fd7131f32781f1144297a9b8f1a73bbdebb700dd153c2a61b32ee76b342d225d",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "795913ed81bfe700b933dd54160d6a9b22e3925cc6727d852fb881247e424f81",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "health_check",
+      "publicToolName": "things_core__health_check",
+      "expectedMcphubQualifiedName": "things_core__health_check",
+      "qualifiedCapabilityId": "things-core/health_check",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/health_check@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-health-check-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "80f7f34c79c497acd45999f85a21b8f4d4455ac170c3cea318bd84277bdd5655",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "d746974fa9afd5e951f76f9af38954b0ad7f436f2120dc974da65e5ee39f856f",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "move_record",
+      "publicToolName": "things_core__move_record",
+      "expectedMcphubQualifiedName": "things_core__move_record",
+      "qualifiedCapabilityId": "things-core/move_record",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/move_record@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-move-record-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "6ab8a9dac4ad2b86314bbc5203d5a7a611f35dcc820e6437fa55d3f6126a25a5",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "bcb3e8f69428d0245181d1fc2d612bff8cc841943adb12d1cb2e2801ebe8f014",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "prepend_checklist_items",
+      "publicToolName": "things_core__prepend_checklist_items",
+      "expectedMcphubQualifiedName": "things_core__prepend_checklist_items",
+      "qualifiedCapabilityId": "things-core/prepend_checklist_items",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/prepend_checklist_items@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-prepend-checklist-items-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "1526112cc8b2212dcce87563060aca52dbbee6e6e528aff6613feadb2455aeb5",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "576bdce49637d401f182614c3d0fcbdfd718da8048f01df7ef60dbd0c5688954",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "queue_status",
+      "publicToolName": "things_core__queue_status",
+      "expectedMcphubQualifiedName": "things_core__queue_status",
+      "qualifiedCapabilityId": "things-core/queue_status",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/queue_status@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-queue-status-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "c077ec352c835d379132234ef82d511cd6c16ba1c04a66107616fb8e18031889",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "d746974fa9afd5e951f76f9af38954b0ad7f436f2120dc974da65e5ee39f856f",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "remove_tags",
+      "publicToolName": "things_core__remove_tags",
+      "expectedMcphubQualifiedName": "things_core__remove_tags",
+      "qualifiedCapabilityId": "things-core/remove_tags",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/remove_tags@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-remove-tags-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "e6f6eaa36b6c7a20ef828c025d70e8436c5b436f05ad674227ee68896fa54d3a",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "f33f43721c7888528dbe6467de085ba7880e68394e9aa8508acbdff9c3ef6dcb",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "replace_checklist_items",
+      "publicToolName": "things_core__replace_checklist_items",
+      "expectedMcphubQualifiedName": "things_core__replace_checklist_items",
+      "qualifiedCapabilityId": "things-core/replace_checklist_items",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/replace_checklist_items@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-replace-checklist-items-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "2549ddb3d41d3130a24079c2530530eff6765d6d36e5679aab04c864a18d01a8",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "576bdce49637d401f182614c3d0fcbdfd718da8048f01df7ef60dbd0c5688954",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "search_advanced",
+      "publicToolName": "things_core__search_advanced",
+      "expectedMcphubQualifiedName": "things_core__search_advanced",
+      "qualifiedCapabilityId": "things-core/search_advanced",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/search_advanced@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-search-advanced-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "b366d2704b9b8e511aba009de433df02ccb3cf6563306644e1452ae029022d52",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "209e600d8d6b31d5d2290e53d282a38da7e194a828b6d80bc30dc60eae514e6f",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "search_todos",
+      "publicToolName": "things_core__search_todos",
+      "expectedMcphubQualifiedName": "things_core__search_todos",
+      "qualifiedCapabilityId": "things-core/search_todos",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/search_todos@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-search-todos-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "3aba004bd130b9ca8f52881d3ebf4e422245fa527fb68190ebb584554e8f30c3",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "459e4d64903ef4fb9987f3d97b84608119b90acd03f81755b838bdd8cbd6c309",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "update_area",
+      "publicToolName": "things_core__update_area",
+      "expectedMcphubQualifiedName": "things_core__update_area",
+      "qualifiedCapabilityId": "things-core/update_area",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/update_area@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-update-area-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "1e818ec5769b04493f35b7fc29cea71db09e932b410654b9025e216147f085df",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "31a2a94fe64a43dcc30ad38100bca06ed06c0ac6f4c513b8e494b618c576e4f6",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "update_project",
+      "publicToolName": "things_core__update_project",
+      "expectedMcphubQualifiedName": "things_core__update_project",
+      "qualifiedCapabilityId": "things-core/update_project",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/update_project@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-update-project-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "1b8988b3713fe3d15c830d63693a40fada04b85fd8d035629c4eacb1d1b7dc72",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "88bd951e1afc758a0d0983f62de4674a1c0ad16fb67162c49ff0b3cdf4668493",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-core",
+      "serverToolName": "update_todo",
+      "publicToolName": "things_core__update_todo",
+      "expectedMcphubQualifiedName": "things_core__update_todo",
+      "qualifiedCapabilityId": "things-core/update_todo",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "mcp-server-things-1.9.0-hash-verified",
+        "things-core-adapter"
+      ],
+      "schemaContractId": "things-core/update_todo@v1",
+      "testIds": [
+        "things-core-toolset-exact",
+        "things-core-update-todo-contract"
+      ],
+      "implementationKind": "upstream-security-adapter",
+      "auditedUpstreamSchemaHashes": {
+        "inputSchemaSha256": "7c054ea686df24cb9ea5bdb951db373d1ebedf48dd30790821eb5d9622eb1ff5",
+        "outputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "0c1e8dc63e0839f5feeff2d7fa37eabccffcdd3cc85bc647bdb9e3ccc7f62057",
+        "outputSchemaSha256": "b4e22336c04c5010626490a82efa5ecf04b02ec3a14177250ed27a1fd645ee73",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Fail closed and report the missing core prerequisite. Do not claim a read or write, and do not switch backends unless the selected workflow explicitly maps an equivalent closed typed route."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "shortcuts_health",
+      "publicToolName": "things_shortcuts__shortcuts_health",
+      "expectedMcphubQualifiedName": "things_shortcuts__shortcuts_health",
+      "qualifiedCapabilityId": "things-shortcuts/shortcuts_health",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/shortcuts_health@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-shortcuts-health-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "99334726611ccf58a148b0814696bfa6fe08c1b2d027e946beccf5a74331c9aa",
+        "outputSchemaSha256": "1410ea2fb3cc6075ec0d6e493d353dcea9c910066b0911c7a1135b351c8d59c8",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "create_todo",
+      "publicToolName": "things_shortcuts__create_todo",
+      "expectedMcphubQualifiedName": "things_shortcuts__create_todo",
+      "qualifiedCapabilityId": "things-shortcuts/create_todo",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/create_todo@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-create-todo-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "b79390e59785278144c08919a11629ad145aa9ea53a5875617456792478f115a",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "create_todos",
+      "publicToolName": "things_shortcuts__create_todos",
+      "expectedMcphubQualifiedName": "things_shortcuts__create_todos",
+      "qualifiedCapabilityId": "things-shortcuts/create_todos",
+      "minimumIndependentScope": "things.write",
+      "risk": "bulk-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/create_todos@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-create-todos-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "3cf75c58c429374b25efff00f569ab4f6fcd13c3a26a9837536a07be50506359",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "create_todo_with_quick_entry",
+      "publicToolName": "things_shortcuts__create_todo_with_quick_entry",
+      "expectedMcphubQualifiedName": "things_shortcuts__create_todo_with_quick_entry",
+      "qualifiedCapabilityId": "things-shortcuts/create_todo_with_quick_entry",
+      "minimumIndependentScope": "things.write",
+      "risk": "ui-handoff",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/create_todo_with_quick_entry@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-create-todo-with-quick-entry-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "mutationReceiptPolicy": "exempt-ui-handoff-no-server-mutation",
+      "constraints": {
+        "changedItemReturnedBeforeUserSave": false,
+        "headingTargetSupported": false,
+        "uiApprovalRequired": true
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "68c247a4955d973492d0d776d5ed5092604e42e7f277205d9471e91ab904b9a7",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "create_heading",
+      "publicToolName": "things_shortcuts__create_heading",
+      "expectedMcphubQualifiedName": "things_shortcuts__create_heading",
+      "qualifiedCapabilityId": "things-shortcuts/create_heading",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/create_heading@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-create-heading-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "5edc2d2618d3e8f406a4cc248d876d4050c6885317bc24dc63bf5d6ad2dcd554",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "create_project",
+      "publicToolName": "things_shortcuts__create_project",
+      "expectedMcphubQualifiedName": "things_shortcuts__create_project",
+      "qualifiedCapabilityId": "things-shortcuts/create_project",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/create_project@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-create-project-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "07cafb7758a0acf8ef1eaa4c2fbf1dc3df049d1f64d30eb87d4384c0950d3a00",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "create_structured_project",
+      "publicToolName": "things_shortcuts__create_structured_project",
+      "expectedMcphubQualifiedName": "things_shortcuts__create_structured_project",
+      "qualifiedCapabilityId": "things-shortcuts/create_structured_project",
+      "minimumIndependentScope": "things.write",
+      "risk": "bulk-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/create_structured_project@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-create-structured-project-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "bd4a926374b8d54e6760e9a933ab39e8cbf34e0944d38e290639672837cdd531",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "find_items",
+      "publicToolName": "things_shortcuts__find_items",
+      "expectedMcphubQualifiedName": "things_shortcuts__find_items",
+      "qualifiedCapabilityId": "things-shortcuts/find_items",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/find_items@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-find-items-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "8fcce7efbe30b6384c9bbc4710084c28f80aaaf442af3044daf25f0d9b51a1a8",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "get_items",
+      "publicToolName": "things_shortcuts__get_items",
+      "expectedMcphubQualifiedName": "things_shortcuts__get_items",
+      "qualifiedCapabilityId": "things-shortcuts/get_items",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/get_items@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-get-items-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "f99d48432cd17d38a362de7c970f6ad984c6b014b3e5b7d6d48712912faf2390",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "get_selected_items",
+      "publicToolName": "things_shortcuts__get_selected_items",
+      "expectedMcphubQualifiedName": "things_shortcuts__get_selected_items",
+      "qualifiedCapabilityId": "things-shortcuts/get_selected_items",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/get_selected_items@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-get-selected-items-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "8b1812069befb6c0b44ef7ed9535de646953739c7a5300d8141f00c49a48c36d",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "edit_items",
+      "publicToolName": "things_shortcuts__edit_items",
+      "expectedMcphubQualifiedName": "things_shortcuts__edit_items",
+      "qualifiedCapabilityId": "things-shortcuts/edit_items",
+      "minimumIndependentScope": "things.write",
+      "risk": "bulk-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/edit_items@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-edit-items-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "undoPolicy": "non-undoable",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "6b961d510f6764cbf8198e688fc90579c19dbd6634fd1209cd669287ddecd4cc",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "edit_heading",
+      "publicToolName": "things_shortcuts__edit_heading",
+      "expectedMcphubQualifiedName": "things_shortcuts__edit_heading",
+      "qualifiedCapabilityId": "things-shortcuts/edit_heading",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/edit_heading@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-edit-heading-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "a95fbe79e2dedf009308559568acbdd264f1c3b6ef616e4dd939df5ce1736fed",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "edit_checklist",
+      "publicToolName": "things_shortcuts__edit_checklist",
+      "expectedMcphubQualifiedName": "things_shortcuts__edit_checklist",
+      "qualifiedCapabilityId": "things-shortcuts/edit_checklist",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/edit_checklist@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-edit-checklist-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "5288137f52456a98d678244650bfb3f496982b395c9e688c00638fd73faaad8e",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "append_checklist",
+      "publicToolName": "things_shortcuts__append_checklist",
+      "expectedMcphubQualifiedName": "things_shortcuts__append_checklist",
+      "qualifiedCapabilityId": "things-shortcuts/append_checklist",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/append_checklist@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-append-checklist-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "f3695e04a1e284122c5fcd260229d595effc92b099fc2cbdd59a123747fa2073",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "prepend_checklist",
+      "publicToolName": "things_shortcuts__prepend_checklist",
+      "expectedMcphubQualifiedName": "things_shortcuts__prepend_checklist",
+      "qualifiedCapabilityId": "things-shortcuts/prepend_checklist",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/prepend_checklist@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-prepend-checklist-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "911293f9d0f7a08ab0d0f09f93c403d80ed9d1d3c0eca05431543d754db5b343",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "duplicate_items",
+      "publicToolName": "things_shortcuts__duplicate_items",
+      "expectedMcphubQualifiedName": "things_shortcuts__duplicate_items",
+      "qualifiedCapabilityId": "things-shortcuts/duplicate_items",
+      "minimumIndependentScope": "things.write",
+      "risk": "bulk-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/duplicate_items@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-duplicate-items-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "65f30bce32e4bf45ef05874d3475763b5fcfc56b515c61b4287404a161013ec4",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "delete_items",
+      "publicToolName": "things_shortcuts__delete_items",
+      "expectedMcphubQualifiedName": "things_shortcuts__delete_items",
+      "qualifiedCapabilityId": "things-shortcuts/delete_items",
+      "minimumIndependentScope": "things.admin",
+      "risk": "destructive-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/delete_items@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-delete-items-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "b15eafe6259983853d9461d5d50fd8eb17c23bc7cc038d4bf01f170bdee1ac32",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "delete_items_immediately",
+      "publicToolName": "things_shortcuts__delete_items_immediately",
+      "expectedMcphubQualifiedName": "things_shortcuts__delete_items_immediately",
+      "qualifiedCapabilityId": "things-shortcuts/delete_items_immediately",
+      "minimumIndependentScope": "things.admin",
+      "risk": "destructive-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/delete_items_immediately@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-delete-items-immediately-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "d90072a79c2764342eb9255378bfb140f7710d60649c0737327f35fb18ce6f65",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "delete_heading",
+      "publicToolName": "things_shortcuts__delete_heading",
+      "expectedMcphubQualifiedName": "things_shortcuts__delete_heading",
+      "qualifiedCapabilityId": "things-shortcuts/delete_heading",
+      "minimumIndependentScope": "things.admin",
+      "risk": "destructive-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/delete_heading@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-delete-heading-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "cascadePreview": {
+        "required": true,
+        "childCountRequired": true
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "1c1ffd3f5fe59ef0d2edde3435ad5ee8b52b3358cc52842f076d53f51189c2bf",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "open_list",
+      "publicToolName": "things_shortcuts__open_list",
+      "expectedMcphubQualifiedName": "things_shortcuts__open_list",
+      "qualifiedCapabilityId": "things-shortcuts/open_list",
+      "minimumIndependentScope": "things.read",
+      "risk": "ui-visible",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/open_list@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-open-list-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "98cf29e22cac776d5d27e5ab495d78d8830addfe77856b1aae2aa59ced4d6c37",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-shortcuts",
+      "serverToolName": "show_items",
+      "publicToolName": "things_shortcuts__show_items",
+      "expectedMcphubQualifiedName": "things_shortcuts__show_items",
+      "qualifiedCapabilityId": "things-shortcuts/show_items",
+      "minimumIndependentScope": "things.read",
+      "risk": "ui-visible",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "shortcuts-cli",
+        "things-plus-plus-shortcut-protocol-v1",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-shortcuts/show_items@v1",
+      "testIds": [
+        "things-shortcuts-toolset-exact",
+        "things-shortcuts-show-items-contract"
+      ],
+      "implementationKind": "fixed-shortcut-protocol",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "b4192a2552311ed2342961cd8366c760c41e17aa4f0d2d72060245f554a3adb0",
+        "outputSchemaSha256": "36ffa430192c07efee88ee6e376c11c610b6189a6fbb7a8fdb3f1b5394a97ad9",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed Things++ bridge or TCC prerequisite as unavailable with the manual next action. Do not fall back to a generic Shortcut, raw JSON, caller-provided URL, AppleScript, shell, or another backend."
+    },
+    {
+      "server": "things-native",
+      "serverToolName": "native_health",
+      "publicToolName": "things_native__native_health",
+      "expectedMcphubQualifiedName": "things_native__native_health",
+      "qualifiedCapabilityId": "things-native/native_health",
+      "minimumIndependentScope": "things.read",
+      "risk": "read-only",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "osascript",
+        "fixed-native-script-bundle-hash-verified",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-native/native_health@v1",
+      "testIds": [
+        "things-native-toolset-exact",
+        "things-native-native-health-contract"
+      ],
+      "implementationKind": "fixed-applescript",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "99334726611ccf58a148b0814696bfa6fe08c1b2d027e946beccf5a74331c9aa",
+        "outputSchemaSha256": "d2286bd22161b55d0722ade4551f60209f56ad8e790dfc3afd83ea817f09ff0d",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed native script or URL-builder prerequisite as unavailable with the manual next action. Do not fall back to arbitrary AppleScript, a caller-provided URL, shell, database access, or UI automation."
+    },
+    {
+      "server": "things-native",
+      "serverToolName": "open_search",
+      "publicToolName": "things_native__open_search",
+      "expectedMcphubQualifiedName": "things_native__open_search",
+      "qualifiedCapabilityId": "things-native/open_search",
+      "minimumIndependentScope": "things.read",
+      "risk": "ui-visible",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "fixed-things-search-url-builder-hash-verified",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-native/open_search@v1",
+      "testIds": [
+        "things-native-toolset-exact",
+        "things-native-open-search-contract"
+      ],
+      "implementationKind": "fixed-things-url-scheme",
+      "constraints": {
+        "fixedUrlScheme": "things:///search",
+        "callerSuppliedUrlAllowed": false,
+        "queryEncoding": "internal"
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "65f4e19b1bdfd5825b4574ce5f10b953d11bdc2b2b829819b1834642bff06f4c",
+        "outputSchemaSha256": "4fb54569987f9ffe6244b7253eb6b489ce50a687280195f67cb0849f8715b4ac",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed native script or URL-builder prerequisite as unavailable with the manual next action. Do not fall back to arbitrary AppleScript, a caller-provided URL, shell, database access, or UI automation."
+    },
+    {
+      "server": "things-native",
+      "serverToolName": "log_completed",
+      "publicToolName": "things_native__log_completed",
+      "expectedMcphubQualifiedName": "things_native__log_completed",
+      "qualifiedCapabilityId": "things-native/log_completed",
+      "minimumIndependentScope": "things.admin",
+      "risk": "destructive-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "osascript",
+        "fixed-native-script-bundle-hash-verified",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-native/log_completed@v1",
+      "testIds": [
+        "things-native-toolset-exact",
+        "things-native-log-completed-contract"
+      ],
+      "implementationKind": "fixed-applescript",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "6c0f3735f1b2b97b2091bd8c4170230205e976b7e29ed7507227de66266ea414",
+        "outputSchemaSha256": "4fb54569987f9ffe6244b7253eb6b489ce50a687280195f67cb0849f8715b4ac",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed native script or URL-builder prerequisite as unavailable with the manual next action. Do not fall back to arbitrary AppleScript, a caller-provided URL, shell, database access, or UI automation."
+    },
+    {
+      "server": "things-native",
+      "serverToolName": "empty_trash",
+      "publicToolName": "things_native__empty_trash",
+      "expectedMcphubQualifiedName": "things_native__empty_trash",
+      "qualifiedCapabilityId": "things-native/empty_trash",
+      "minimumIndependentScope": "things.admin",
+      "risk": "destructive-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "osascript",
+        "fixed-native-script-bundle-hash-verified",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-native/empty_trash@v1",
+      "testIds": [
+        "things-native-toolset-exact",
+        "things-native-empty-trash-contract"
+      ],
+      "implementationKind": "fixed-applescript",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "1e799aaa5a6316e033a48872d25cc45b801f5d4cf8c4352281c066f83a1133f7",
+        "outputSchemaSha256": "4fb54569987f9ffe6244b7253eb6b489ce50a687280195f67cb0849f8715b4ac",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed native script or URL-builder prerequisite as unavailable with the manual next action. Do not fall back to arbitrary AppleScript, a caller-provided URL, shell, database access, or UI automation."
+    },
+    {
+      "server": "things-native",
+      "serverToolName": "delete_area",
+      "publicToolName": "things_native__delete_area",
+      "expectedMcphubQualifiedName": "things_native__delete_area",
+      "qualifiedCapabilityId": "things-native/delete_area",
+      "minimumIndependentScope": "things.admin",
+      "risk": "destructive-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "osascript",
+        "fixed-native-script-bundle-hash-verified",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-native/delete_area@v1",
+      "testIds": [
+        "things-native-toolset-exact",
+        "things-native-delete-area-contract"
+      ],
+      "implementationKind": "fixed-applescript",
+      "cascadePreview": {
+        "required": true,
+        "childCountRequired": true
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "efc16872d437f85580dbff69a5729fdadfa42cd9f4e689a84ece0eeff3b1d355",
+        "outputSchemaSha256": "4fb54569987f9ffe6244b7253eb6b489ce50a687280195f67cb0849f8715b4ac",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed native script or URL-builder prerequisite as unavailable with the manual next action. Do not fall back to arbitrary AppleScript, a caller-provided URL, shell, database access, or UI automation."
+    },
+    {
+      "server": "things-native",
+      "serverToolName": "rename_tag",
+      "publicToolName": "things_native__rename_tag",
+      "expectedMcphubQualifiedName": "things_native__rename_tag",
+      "qualifiedCapabilityId": "things-native/rename_tag",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "osascript",
+        "fixed-native-script-bundle-hash-verified",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-native/rename_tag@v1",
+      "testIds": [
+        "things-native-toolset-exact",
+        "things-native-rename-tag-contract"
+      ],
+      "implementationKind": "fixed-applescript",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "85140fcf4301666cb6608259bf1b3909f5815edffceec5bae7271ef71d995f68",
+        "outputSchemaSha256": "4fb54569987f9ffe6244b7253eb6b489ce50a687280195f67cb0849f8715b4ac",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed native script or URL-builder prerequisite as unavailable with the manual next action. Do not fall back to arbitrary AppleScript, a caller-provided URL, shell, database access, or UI automation."
+    },
+    {
+      "server": "things-native",
+      "serverToolName": "delete_tag",
+      "publicToolName": "things_native__delete_tag",
+      "expectedMcphubQualifiedName": "things_native__delete_tag",
+      "qualifiedCapabilityId": "things-native/delete_tag",
+      "minimumIndependentScope": "things.admin",
+      "risk": "destructive-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "osascript",
+        "fixed-native-script-bundle-hash-verified",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-native/delete_tag@v1",
+      "testIds": [
+        "things-native-toolset-exact",
+        "things-native-delete-tag-contract"
+      ],
+      "implementationKind": "fixed-applescript",
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "aff6aa8b766e91269b7481d327fc4506d79c53c6d432a52e0e6ac6882546fa79",
+        "outputSchemaSha256": "4fb54569987f9ffe6244b7253eb6b489ce50a687280195f67cb0849f8715b4ac",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed native script or URL-builder prerequisite as unavailable with the manual next action. Do not fall back to arbitrary AppleScript, a caller-provided URL, shell, database access, or UI automation."
+    },
+    {
+      "server": "things-native",
+      "serverToolName": "set_tag_parent",
+      "publicToolName": "things_native__set_tag_parent",
+      "expectedMcphubQualifiedName": "things_native__set_tag_parent",
+      "qualifiedCapabilityId": "things-native/set_tag_parent",
+      "minimumIndependentScope": "things.write",
+      "risk": "single-write",
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "backendPrerequisites": [
+        "things-3-installed",
+        "osascript",
+        "fixed-native-script-bundle-hash-verified",
+        "tcc-preauthorized"
+      ],
+      "schemaContractId": "things-native/set_tag_parent@v1",
+      "testIds": [
+        "things-native-toolset-exact",
+        "things-native-set-tag-parent-contract"
+      ],
+      "implementationKind": "fixed-applescript",
+      "constraints": {
+        "parentAssignmentOnly": true,
+        "detachSupported": false,
+        "detachRequiresSyntheticAndManualProof": true
+      },
+      "adaptedSchemaHashes": {
+        "inputSchemaSha256": "092d3ea843a85b7f9fe702476b81003430cc9342ab60b2489961c0a65e7895b7",
+        "outputSchemaSha256": "4fb54569987f9ffe6244b7253eb6b489ce50a687280195f67cb0849f8715b4ac",
+        "status": "frozen"
+      },
+      "degradedBehavior": "Report the fixed native script or URL-builder prerequisite as unavailable with the manual next action. Do not fall back to arbitrary AppleScript, a caller-provided URL, shell, database access, or UI automation."
+    }
+  ],
+  "supaOutcomes": [
+    {
+      "supaToolName": "app-status",
+      "mappingKind": "safe-replacement",
+      "targetCapabilityIds": [
+        "things-native/native_health"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-app-status"
+      ]
+    },
+    {
+      "supaToolName": "version",
+      "mappingKind": "safe-replacement",
+      "targetCapabilityIds": [
+        "things-native/native_health"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-version"
+      ]
+    },
+    {
+      "supaToolName": "get-areas",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/get_areas"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-areas"
+      ]
+    },
+    {
+      "supaToolName": "get-tags",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/get_tags"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-tags"
+      ]
+    },
+    {
+      "supaToolName": "get-projects",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/get_projects"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-projects"
+      ]
+    },
+    {
+      "supaToolName": "get-headings",
+      "mappingKind": "safe-replacement",
+      "targetCapabilityIds": [
+        "things-core/get_project_headings"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-headings"
+      ]
+    },
+    {
+      "supaToolName": "get-project-structure",
+      "mappingKind": "composed",
+      "targetCapabilityIds": [
+        "things-core/get_projects",
+        "things-core/get_project_headings",
+        "things-core/get_todos"
+      ],
+      "workflowIds": [
+        "project-structuring"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-project-structure"
+      ]
+    },
+    {
+      "supaToolName": "get-todos",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/get_todos"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-todos"
+      ]
+    },
+    {
+      "supaToolName": "get-inbox",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/get_inbox"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-inbox"
+      ]
+    },
+    {
+      "supaToolName": "get-today",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/get_today"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-today"
+      ]
+    },
+    {
+      "supaToolName": "get-upcoming",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/get_upcoming"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-upcoming"
+      ]
+    },
+    {
+      "supaToolName": "get-anytime",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/get_anytime"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-anytime"
+      ]
+    },
+    {
+      "supaToolName": "get-someday",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/get_someday"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-someday"
+      ]
+    },
+    {
+      "supaToolName": "get-logbook",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/get_logbook"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-logbook"
+      ]
+    },
+    {
+      "supaToolName": "get-trash",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/get_trash"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-trash"
+      ]
+    },
+    {
+      "supaToolName": "get-tagged-items",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/get_tagged_items"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-tagged-items"
+      ]
+    },
+    {
+      "supaToolName": "get-recent",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/get_recent"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-get-recent"
+      ]
+    },
+    {
+      "supaToolName": "search-todos",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/search_todos"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-search-todos"
+      ]
+    },
+    {
+      "supaToolName": "search-items",
+      "mappingKind": "safe-replacement",
+      "targetCapabilityIds": [
+        "things-shortcuts/find_items",
+        "things-core/search_advanced"
+      ],
+      "workflowIds": [
+        "search-and-audit"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-search-items"
+      ]
+    },
+    {
+      "supaToolName": "search-advanced",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/search_advanced"
+      ],
+      "workflowIds": [],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-search-advanced"
+      ]
+    },
+    {
+      "supaToolName": "suggest-headings",
+      "mappingKind": "semantic",
+      "targetCapabilityIds": [
+        "things-core/get_projects",
+        "things-core/get_project_headings"
+      ],
+      "workflowIds": [
+        "project-planning",
+        "project-structuring"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-suggest-headings"
+      ]
+    },
+    {
+      "supaToolName": "validate-headings",
+      "mappingKind": "semantic",
+      "targetCapabilityIds": [
+        "things-core/get_project_headings"
+      ],
+      "workflowIds": [
+        "project-structuring"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-validate-headings"
+      ]
+    },
+    {
+      "supaToolName": "suggest-task-placement",
+      "mappingKind": "semantic",
+      "targetCapabilityIds": [
+        "things-core/get_project_headings",
+        "things-core/get_todos"
+      ],
+      "workflowIds": [
+        "task-placement"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-suggest-task-placement"
+      ]
+    },
+    {
+      "supaToolName": "summarize-project",
+      "mappingKind": "semantic",
+      "targetCapabilityIds": [
+        "things-core/get_projects",
+        "things-core/get_project_headings",
+        "things-core/get_todos"
+      ],
+      "workflowIds": [
+        "project-summary"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-summarize-project"
+      ]
+    },
+    {
+      "supaToolName": "add-todo",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/add_todo"
+      ],
+      "workflowIds": [
+        "quick-capture"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-add-todo"
+      ]
+    },
+    {
+      "supaToolName": "add-project",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/add_project"
+      ],
+      "workflowIds": [
+        "project-planning"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-add-project"
+      ]
+    },
+    {
+      "supaToolName": "create-project-with-headings",
+      "mappingKind": "safe-replacement",
+      "targetCapabilityIds": [
+        "things-shortcuts/create_structured_project"
+      ],
+      "workflowIds": [
+        "project-planning",
+        "project-structuring"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-create-project-with-headings"
+      ]
+    },
+    {
+      "supaToolName": "update",
+      "mappingKind": "composed",
+      "targetCapabilityIds": [
+        "things-core/update_todo",
+        "things-core/update_project",
+        "things-core/update_area"
+      ],
+      "workflowIds": [
+        "bulk-update-with-approval"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-update"
+      ]
+    },
+    {
+      "supaToolName": "update-project",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/update_project"
+      ],
+      "workflowIds": [
+        "project-planning"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-update-project"
+      ]
+    },
+    {
+      "supaToolName": "update-todo",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-core/update_todo"
+      ],
+      "workflowIds": [
+        "bulk-update-with-approval"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-update-todo"
+      ]
+    },
+    {
+      "supaToolName": "show",
+      "mappingKind": "safe-replacement",
+      "targetCapabilityIds": [
+        "things-shortcuts/open_list",
+        "things-shortcuts/show_items"
+      ],
+      "workflowIds": [
+        "ui-handoff"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-show"
+      ]
+    },
+    {
+      "supaToolName": "show-item",
+      "mappingKind": "safe-replacement",
+      "targetCapabilityIds": [
+        "things-shortcuts/show_items"
+      ],
+      "workflowIds": [
+        "ui-handoff"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-show-item"
+      ]
+    },
+    {
+      "supaToolName": "search",
+      "mappingKind": "safe-replacement",
+      "targetCapabilityIds": [
+        "things-native/open_search"
+      ],
+      "workflowIds": [
+        "ui-handoff",
+        "search-and-audit"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-search"
+      ]
+    },
+    {
+      "supaToolName": "json",
+      "mappingKind": "safe-replacement",
+      "targetCapabilityIds": [
+        "things-shortcuts/create_todos",
+        "things-shortcuts/create_structured_project"
+      ],
+      "workflowIds": [
+        "quick-capture",
+        "project-planning",
+        "bulk-update-with-approval"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-json"
+      ]
+    },
+    {
+      "supaToolName": "show-quick-entry",
+      "mappingKind": "safe-replacement",
+      "targetCapabilityIds": [
+        "things-shortcuts/create_todo_with_quick_entry"
+      ],
+      "workflowIds": [
+        "quick-entry-handoff"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-show-quick-entry"
+      ]
+    },
+    {
+      "supaToolName": "log-completed",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-native/log_completed"
+      ],
+      "workflowIds": [
+        "cleanup"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-log-completed"
+      ]
+    },
+    {
+      "supaToolName": "empty-trash",
+      "mappingKind": "direct",
+      "targetCapabilityIds": [
+        "things-native/empty_trash"
+      ],
+      "workflowIds": [
+        "cleanup"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "coverage-supa-empty-trash"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "workflowId": "intake",
+      "targetCapabilityIds": [
+        "things-core/get_server_capabilities"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-intake"
+      ]
+    },
+    {
+      "workflowId": "quick-capture",
+      "targetCapabilityIds": [
+        "things-core/search_todos",
+        "things-core/add_todo",
+        "things-shortcuts/create_todos"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-quick-capture"
+      ]
+    },
+    {
+      "workflowId": "inbox-triage",
+      "targetCapabilityIds": [
+        "things-core/get_inbox",
+        "things-core/get_projects",
+        "things-core/get_tags",
+        "things-core/update_todo"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-inbox-triage"
+      ]
+    },
+    {
+      "workflowId": "today-planning",
+      "targetCapabilityIds": [
+        "things-core/get_today",
+        "things-core/get_upcoming",
+        "things-core/update_todo"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-today-planning"
+      ]
+    },
+    {
+      "workflowId": "weekly-review",
+      "targetCapabilityIds": [
+        "things-core/get_today",
+        "things-core/get_upcoming",
+        "things-core/get_anytime",
+        "things-core/get_someday",
+        "things-core/get_projects",
+        "things-core/get_recent"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-weekly-review"
+      ]
+    },
+    {
+      "workflowId": "project-planning",
+      "targetCapabilityIds": [
+        "things-core/get_projects",
+        "things-core/add_project",
+        "things-shortcuts/create_structured_project"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-project-planning"
+      ]
+    },
+    {
+      "workflowId": "project-structuring",
+      "targetCapabilityIds": [
+        "things-core/get_project_headings",
+        "things-core/get_todos",
+        "things-shortcuts/create_heading",
+        "things-shortcuts/edit_heading"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-project-structuring"
+      ]
+    },
+    {
+      "workflowId": "task-placement",
+      "targetCapabilityIds": [
+        "things-core/get_project_headings",
+        "things-core/move_record"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-task-placement"
+      ]
+    },
+    {
+      "workflowId": "project-summary",
+      "targetCapabilityIds": [
+        "things-core/get_projects",
+        "things-core/get_project_headings",
+        "things-core/get_todos"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-project-summary"
+      ]
+    },
+    {
+      "workflowId": "tag-taxonomy-audit",
+      "targetCapabilityIds": [
+        "things-core/get_tags",
+        "things-core/get_tag_usage",
+        "things-core/get_tagged_items",
+        "things-native/rename_tag",
+        "things-native/set_tag_parent"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-tag-taxonomy-audit"
+      ]
+    },
+    {
+      "workflowId": "deadline-and-reminder-review",
+      "targetCapabilityIds": [
+        "things-core/get_due_in_days",
+        "things-core/get_activating_in_days",
+        "things-core/get_upcoming"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-deadline-and-reminder-review"
+      ]
+    },
+    {
+      "workflowId": "quick-entry-handoff",
+      "targetCapabilityIds": [
+        "things-shortcuts/create_todo_with_quick_entry"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-quick-entry-handoff"
+      ]
+    },
+    {
+      "workflowId": "ui-handoff",
+      "targetCapabilityIds": [
+        "things-shortcuts/open_list",
+        "things-shortcuts/show_items",
+        "things-native/open_search"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-ui-handoff"
+      ]
+    },
+    {
+      "workflowId": "search-and-audit",
+      "targetCapabilityIds": [
+        "things-core/search_advanced",
+        "things-core/search_todos",
+        "things-shortcuts/find_items"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-search-and-audit"
+      ]
+    },
+    {
+      "workflowId": "cleanup",
+      "targetCapabilityIds": [
+        "things-core/get_trash",
+        "things-core/delete_todo",
+        "things-native/log_completed",
+        "things-native/empty_trash"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-cleanup"
+      ]
+    },
+    {
+      "workflowId": "bulk-update-with-approval",
+      "targetCapabilityIds": [
+        "things-core/bulk_update_todos",
+        "things-core/bulk_move_records",
+        "things-shortcuts/create_todos"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-bulk-update-with-approval"
+      ]
+    },
+    {
+      "workflowId": "read-only-report",
+      "targetCapabilityIds": [
+        "things-core/get_todos",
+        "things-core/get_projects",
+        "things-core/get_tags"
+      ],
+      "status": "mapped",
+      "testIds": [
+        "workflow-read-only-report"
+      ]
+    }
+  ],
+  "legacyEvals": [
+    {
+      "legacyEvalId": "empty-args-menu",
+      "replacementEvalId": "empty-args-menu",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-empty-args-menu"
+      ]
+    },
+    {
+      "legacyEvalId": "implicit-trigger-read-only-today-plan",
+      "replacementEvalId": "implicit-trigger-read-only-today-plan",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-implicit-trigger-read-only-today-plan"
+      ]
+    },
+    {
+      "legacyEvalId": "bulk-update-requires-approval",
+      "replacementEvalId": "bulk-update-requires-approval",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-bulk-update-requires-approval"
+      ]
+    },
+    {
+      "legacyEvalId": "ambiguous-deadline-handling",
+      "replacementEvalId": "ambiguous-deadline-handling",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-ambiguous-deadline-handling"
+      ]
+    },
+    {
+      "legacyEvalId": "quick-capture-multiple-tasks",
+      "replacementEvalId": "quick-capture-multiple-tasks",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-quick-capture-multiple-tasks"
+      ]
+    },
+    {
+      "legacyEvalId": "inbox-triage-preview",
+      "replacementEvalId": "inbox-triage-preview",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-inbox-triage-preview"
+      ]
+    },
+    {
+      "legacyEvalId": "negative-control-non-things-manager",
+      "replacementEvalId": "negative-control-non-things-manager",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-negative-control-non-things-manager"
+      ]
+    },
+    {
+      "legacyEvalId": "scope-refusal-calendar-only",
+      "replacementEvalId": "scope-refusal-calendar-only",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-scope-refusal-calendar-only"
+      ]
+    },
+    {
+      "legacyEvalId": "intake-ambiguous-project-target",
+      "replacementEvalId": "intake-ambiguous-project-target",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-intake-ambiguous-project-target"
+      ]
+    },
+    {
+      "legacyEvalId": "read-only-report-deadline-audit",
+      "replacementEvalId": "read-only-report-deadline-audit",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-read-only-report-deadline-audit"
+      ]
+    },
+    {
+      "legacyEvalId": "scope-refusal-mcp-server-setup",
+      "replacementEvalId": "scope-refusal-mcp-server-setup",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-scope-refusal-mcp-server-setup"
+      ]
+    },
+    {
+      "legacyEvalId": "scope-refusal-direct-database-edit",
+      "replacementEvalId": "scope-refusal-direct-database-edit",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-scope-refusal-direct-database-edit"
+      ]
+    },
+    {
+      "legacyEvalId": "semantic-headings-new-project",
+      "replacementEvalId": "semantic-headings-new-project",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-semantic-headings-new-project"
+      ]
+    },
+    {
+      "legacyEvalId": "existing-project-heading-limitation",
+      "replacementEvalId": "existing-project-heading-limitation",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-existing-project-heading-limitation"
+      ]
+    },
+    {
+      "legacyEvalId": "suggest-task-placement-preview",
+      "replacementEvalId": "suggest-task-placement-preview",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-suggest-task-placement-preview"
+      ]
+    },
+    {
+      "legacyEvalId": "project-summary-read-only",
+      "replacementEvalId": "project-summary-read-only",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-project-summary-read-only"
+      ]
+    },
+    {
+      "legacyEvalId": "compact-read-before-full-detail",
+      "replacementEvalId": "compact-read-before-full-detail",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-compact-read-before-full-detail"
+      ]
+    },
+    {
+      "legacyEvalId": "quick-entry-human-review",
+      "replacementEvalId": "quick-entry-human-review",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-quick-entry-human-review"
+      ]
+    },
+    {
+      "legacyEvalId": "tag-inheritance-audit",
+      "replacementEvalId": "tag-inheritance-audit",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-tag-inheritance-audit"
+      ]
+    },
+    {
+      "legacyEvalId": "reminder-evening-deadline-distinction",
+      "replacementEvalId": "reminder-evening-deadline-distinction",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-reminder-evening-deadline-distinction"
+      ]
+    },
+    {
+      "legacyEvalId": "raw-json-bulk-preview-required",
+      "replacementEvalId": "raw-json-bulk-preview-required",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-raw-json-bulk-preview-required"
+      ]
+    },
+    {
+      "legacyEvalId": "empty-trash-destructive-confirmation",
+      "replacementEvalId": "empty-trash-destructive-confirmation",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-empty-trash-destructive-confirmation"
+      ]
+    },
+    {
+      "legacyEvalId": "log-completed-destructive-confirmation",
+      "replacementEvalId": "log-completed-destructive-confirmation",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-log-completed-destructive-confirmation"
+      ]
+    },
+    {
+      "legacyEvalId": "things-content-is-untrusted-data",
+      "replacementEvalId": "things-content-is-untrusted-data",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-things-content-is-untrusted-data"
+      ]
+    },
+    {
+      "legacyEvalId": "missing-tag-or-area-does-not-infer-create",
+      "replacementEvalId": "missing-tag-or-area-does-not-infer-create",
+      "status": "rewrite-required",
+      "testIds": [
+        "eval-missing-tag-or-area-does-not-infer-create"
+      ]
+    }
+  ],
+  "newEvals": [
+    {
+      "evalId": "things-single-group-routing",
+      "purpose": "Only the sole things group may route Things tools.",
+      "testIds": [
+        "eval-things-single-group-routing"
+      ]
+    },
+    {
+      "evalId": "things-local-remote-endpoint-parity",
+      "purpose": "Local bearer and remote OAuth expose identical qualified tool/schema sets.",
+      "testIds": [
+        "eval-things-local-remote-endpoint-parity"
+      ]
+    },
+    {
+      "evalId": "things-qualified-seventy-tool-closure",
+      "purpose": "The public union is exactly 70 unique qualified tools.",
+      "testIds": [
+        "eval-things-qualified-seventy-tool-closure"
+      ]
+    },
+    {
+      "evalId": "things-core-first-routing",
+      "purpose": "The skill selects core except for a documented capability gap.",
+      "testIds": [
+        "eval-things-core-first-routing"
+      ]
+    },
+    {
+      "evalId": "things-shortcut-fixed-name-enforcement",
+      "purpose": "Caller content cannot choose a Shortcut or protocol operation.",
+      "testIds": [
+        "eval-things-shortcut-fixed-name-enforcement"
+      ]
+    },
+    {
+      "evalId": "things-native-fixed-script-enforcement",
+      "purpose": "Caller content cannot choose AppleScript source or command fragments.",
+      "testIds": [
+        "eval-things-native-fixed-script-enforcement"
+      ]
+    },
+    {
+      "evalId": "things-shortcut-unavailable-degrades",
+      "purpose": "Absent bridge or TCC denial reports typed unavailability without fallback.",
+      "testIds": [
+        "eval-things-shortcut-unavailable-degrades"
+      ]
+    },
+    {
+      "evalId": "things-native-unavailable-degrades",
+      "purpose": "Native or TCC denial reports typed unavailability without fallback.",
+      "testIds": [
+        "eval-things-native-unavailable-degrades"
+      ]
+    },
+    {
+      "evalId": "things-cross-backend-serialization",
+      "purpose": "Concurrent core, Shortcut, and native writes share one critical section.",
+      "testIds": [
+        "eval-things-cross-backend-serialization"
+      ]
+    },
+    {
+      "evalId": "things-stale-preview-receipt-rejected",
+      "purpose": "Stale, replayed, substituted, or expired mutation receipts fail closed.",
+      "testIds": [
+        "eval-things-stale-preview-receipt-rejected"
+      ]
+    },
+    {
+      "evalId": "things-create-todos-batch-bound",
+      "purpose": "Bounded multi-create accepts at most 25 closed item models.",
+      "testIds": [
+        "eval-things-create-todos-batch-bound"
+      ]
+    },
+    {
+      "evalId": "things-structured-project-no-raw-json",
+      "purpose": "Structured creation never accepts raw JSON or Things URLs.",
+      "testIds": [
+        "eval-things-structured-project-no-raw-json"
+      ]
+    },
+    {
+      "evalId": "things-immediate-delete-two-phase",
+      "purpose": "Immediate deletion requires a server-issued single-use bound receipt.",
+      "testIds": [
+        "eval-things-immediate-delete-two-phase"
+      ]
+    },
+    {
+      "evalId": "things-tag-area-destructive-confirmation",
+      "purpose": "Tag or area destructive administration requires admin scope and two phases.",
+      "testIds": [
+        "eval-things-tag-area-destructive-confirmation"
+      ]
+    },
+    {
+      "evalId": "things-recurrence-reorder-unsupported",
+      "purpose": "Recurrence editing and deterministic reorder are truthfully unsupported.",
+      "testIds": [
+        "eval-things-recurrence-reorder-unsupported"
+      ]
+    },
+    {
+      "evalId": "things-cross-backend-content-injection",
+      "purpose": "Private Things content cannot select tools, widen scope, or bypass confirmation.",
+      "testIds": [
+        "eval-things-cross-backend-content-injection"
+      ]
+    }
+  ],
+  "upstreamCoreProvenance": {
+    "package": "mcp-server-things",
+    "version": "1.9.0",
+    "wheelSha256": "720f27aaabe76c3daddd2d92d4fd15bed0111b9eb390dca4b56284f950b9ce2c",
+    "sdistSha256": "99a6f630a0b80fe12a95ccf36a727b1dbc667ce60a6cc30ad1d391f4071e9bd0",
+    "recordSha256": "e44727b7595a2b618118a060e5871e02065999152404055c68301613e49a1be7",
+    "recordEntriesVerified": 48,
+    "recordEntriesTotal": 48,
+    "orderedToolNamesSha256": "6e7d22b09f4966cde99954cb37f7e5ce4566adab9d9733b75afa1ead7580efd4",
+    "sortedToolNamesSha256": "4208486cfdd749c791586ef4158e63b5fbdefcecff91cb110f6cdafe9dba8f89",
+    "canonicalSchemaEncoding": "UTF-8 JSON with sorted keys and compact separators",
+    "commonOutputSchemaSha256": "82ef96cebaf5fbe16269fd18b0240d78f5b9b90a4155a17eb797115b09148ecf"
+  },
+  "schemaHashLifecycle": {
+    "auditedUpstream": "Frozen from cached extracted 1.9.0 wheel FastMCP list_tools without invoking any tool or reading Things data.",
+    "adapted": "Each adapted public input/output schema hash is a separate implementation artifact and must be populated and matched by local and remote tools/list before activation.",
+    "futureChangeRule": "Any upstream or adapted name/schema hash change requires revision of this active OpenSpec change before generation or activation."
+  },
+  "f0ObservedPrerequisites": {
+    "shortcutBridges": {
+      "fixedNames": [
+        "Things++ Agent Bridge",
+        "Things++ Destructive Bridge"
+      ],
+      "observedStatus": "absent",
+      "tccStatus": "unproven",
+      "sourceImplementationMayProceed": true,
+      "liveActivationAllowed": false
+    },
+    "currentRuntime": {
+      "status": "temporally-inconsistent-stale",
+      "useAsCutoverEvidence": false,
+      "freshProvenanceRequiredImmediatelyBeforeCutover": true
+    }
+  }
+}

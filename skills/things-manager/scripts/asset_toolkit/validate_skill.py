@@ -14,6 +14,8 @@ if str(_SCRIPT_ROOT) not in sys.path:
 
 from asset_toolkit.common import KEBAB_CASE_PATTERN, find_repo_root, parse_frontmatter
 
+PORTABLE_FIELDS = frozenset({"name", "description", "license", "compatibility", "allowed-tools", "metadata"})
+
 
 def validate_skill_file(skill_file: Path) -> list[dict[str, str]]:
     errors: list[dict[str, str]] = []
@@ -25,6 +27,10 @@ def validate_skill_file(skill_file: Path) -> list[dict[str, str]]:
         content = skill_file.read_text(encoding="utf-8")
         frontmatter, body = parse_frontmatter(content)
         skill_dir = skill_file.parent
+
+        unknown_fields = sorted(set(frontmatter) - PORTABLE_FIELDS)
+        if unknown_fields:
+            add_error(f"unsupported portable frontmatter fields: {', '.join(unknown_fields)}")
 
         if "name" not in frontmatter:
             add_error("missing required field 'name'")
@@ -45,6 +51,24 @@ def validate_skill_file(skill_file: Path) -> list[dict[str, str]]:
                 add_error("description cannot be empty")
             elif len(str(frontmatter["description"])) > 1024:
                 add_error("description exceeds 1024 characters")
+
+        for field in ("license", "allowed-tools"):
+            if field in frontmatter and not isinstance(frontmatter[field], str):
+                add_error(f"field '{field}' must be a string")
+
+        if "compatibility" in frontmatter:
+            compatibility = frontmatter["compatibility"]
+            if not isinstance(compatibility, str):
+                add_error("field 'compatibility' must be a string")
+            elif len(compatibility) > 500:
+                add_error("compatibility exceeds 500 characters")
+
+        metadata = frontmatter.get("metadata")
+        if metadata is not None and (
+            not isinstance(metadata, dict)
+            or not all(isinstance(key, str) and isinstance(value, str) for key, value in metadata.items())
+        ):
+            add_error("metadata must map string keys to string values")
 
         if not body:
             add_error("body cannot be empty")

@@ -34,6 +34,10 @@ KNOWN_HOOK_EVENTS = {
     "WorktreeRemove",
     "PreCompact",
     "SessionEnd",
+    "AfterFileEdit",
+    "BeforeReadFile",
+    "BeforeShellExecution",
+    "BeforeMCPExecution",
 }
 
 

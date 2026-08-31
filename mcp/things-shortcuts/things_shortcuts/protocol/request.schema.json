@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcp.w4w.dev/schemas/things-plus-plus/shortcut-request-v1.json",
+  "title": "Things++ Shortcut Request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocolVersion",
+    "bridgeIdentity",
+    "requestSchemaSha256",
+    "responseSchemaSha256",
+    "requestId",
+    "operation",
+    "payload"
+  ],
+  "properties": {
+    "protocolVersion": {"const": "1"},
+    "bridgeIdentity": {
+      "enum": ["Things++ Agent Bridge", "Things++ Destructive Bridge"]
+    },
+    "requestSchemaSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "responseSchemaSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "requestId": {"type": "string", "pattern": "^[a-f0-9]{32}$"},
+    "operation": {
+      "enum": [
+        "protocol_health",
+        "create_todo",
+        "create_todos",
+        "create_todo_with_quick_entry",
+        "create_heading",
+        "create_project",
+        "create_structured_project",
+        "find_items",
+        "get_items",
+        "get_selected_items",
+        "edit_items",
+        "edit_heading",
+        "edit_checklist",
+        "append_checklist",
+        "prepend_checklist",
+        "duplicate_items",
+        "delete_items",
+        "delete_items_immediately",
+        "delete_heading",
+        "open_list",
+        "show_items"
+      ]
+    },
+    "payload": {"type": "object", "maxProperties": 32}
+  }
+}
