@@ -2,24 +2,25 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MCPHUB_PACKAGE_VERSION="${MCPHUB_PACKAGE_VERSION:-1.0.24}"
-MCPHUB_BIND_HOST="${MCPHUB_BIND_HOST:-127.0.0.1}"
+# shellcheck source=common.sh
+source "${SCRIPT_DIR}/common.sh"
 
-case "${MCPHUB_BIND_HOST}" in
-  127.0.0.1|::1|localhost) ;;
-  *)
-    printf 'MCPHUB_BIND_HOST must be loopback-only, got %s\n' "${MCPHUB_BIND_HOST}" >&2
-    exit 1
-    ;;
-esac
-
-if [[ ! "${MCPHUB_PACKAGE_VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+([+-][0-9A-Za-z.-]+)?$ ]]; then
-  printf 'MCPHUB_PACKAGE_VERSION must be an exact version, got %s\n' "${MCPHUB_PACKAGE_VERSION}" >&2
+if [[ $# -ne 0 ]]; then
+  printf 'start-server.sh accepts no runtime arguments\n' >&2
+  exit 2
+fi
+if [[ -n "${NODE_OPTIONS:-}" || -n "${NODE_PATH:-}" ]]; then
+  printf 'Node preload and module-path overrides are forbidden for MCPHub\n' >&2
   exit 1
 fi
 
-export MCPHUB_BIND_HOST MCPHUB_PACKAGE_VERSION
-export MCPHUB_PARENT_NODE_OPTIONS="${NODE_OPTIONS:-}"
-export NODE_OPTIONS="--require=\"${SCRIPT_DIR}/bind-loopback.cjs\"${NODE_OPTIONS:+ ${NODE_OPTIONS}}"
+mcphub_load_env
+mcphub_resolve_remote_mode
+mcphub_require_token
+if ! mcphub_distribution_is_selected; then
+  printf 'no verified content-addressed MCPHub downstream is selected\n' >&2
+  exit 1
+fi
 
-exec npx -y "@samanhappy/mcphub@${MCPHUB_PACKAGE_VERSION}" "$@"
+exec node --disallow-code-generation-from-strings "${MCPHUB_DOWNSTREAM_LAUNCHER}" \
+  --runtime-root "${MCPHUB_DOWNSTREAM_RUNTIME_ROOT}"

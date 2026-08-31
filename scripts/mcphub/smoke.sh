@@ -2,21 +2,14 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=scripts/mcphub/common.sh
+# shellcheck source=common.sh
 source "${SCRIPT_DIR}/common.sh"
 
 readonly CURL_CONNECT_TIMEOUT_SECONDS=5
 readonly CURL_MAX_TIME_SECONDS=120
 readonly MCP_INITIALIZE_ID=1
 readonly MCP_TOOLS_LIST_ID=2
-readonly -a DDGS_EXPECTED_TOOLS=(
-  "ddgs-extract_content"
-  "ddgs-search_books"
-  "ddgs-search_images"
-  "ddgs-search_news"
-  "ddgs-search_text"
-  "ddgs-search_videos"
-)
+readonly MCP_PROTOCOL_VERSION=2025-11-25
 
 for required_command in curl uv; do
   if ! command -v "${required_command}" >/dev/null 2>&1; then
@@ -28,7 +21,12 @@ done
 mcphub_load_env
 mcphub_require_token
 "${SCRIPT_DIR}/ensure-running.sh"
+if ! mcphub_local_route_is_ready; then
+  printf 'MCPHub smoke failed: authenticated exact-route readiness did not pass\n' >&2
+  exit 1
+fi
 
+readonly ENDPOINT="${MCPHUB_BASE_URL}/mcp/things"
 readonly -a CURL_ARGS=(
   --fail
   --silent
@@ -40,85 +38,79 @@ readonly -a CURL_ARGS=(
 temp_dir="$(mktemp -d)"
 trap 'rm -rf "${temp_dir}"' EXIT
 
-curl "${CURL_ARGS[@]}" "$(mcphub_health_url)" >/dev/null
+initialize_headers="${temp_dir}/initialize.headers"
+initialize_body="${temp_dir}/initialize.body"
+tools_headers="${temp_dir}/tools.headers"
+tools_body="${temp_dir}/tools.body"
 
-smoke_endpoint() {
-  local endpoint_url="$1"
-  local endpoint_label="$2"
-  local assertion_mode="$3"
-  shift 3
-  local -a expected_tools=("$@")
-  local initialize_headers="${temp_dir}/${endpoint_label}-initialize.headers"
-  local initialize_body="${temp_dir}/${endpoint_label}-initialize.body"
-  local tools_headers="${temp_dir}/${endpoint_label}-tools.headers"
-  local tools_body="${temp_dir}/${endpoint_label}-tools.body"
-  local session_id protocol_version notification_status
+curl "${CURL_ARGS[@]}" \
+  -D "${initialize_headers}" \
+  -o "${initialize_body}" \
+  -H "Authorization: Bearer ${MCPHUB_BEARER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "MCP-Protocol-Version: ${MCP_PROTOCOL_VERSION}" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25","capabilities":{},"clientInfo":{"name":"mcphub-things-smoke","version":"1.0.0"}}}' \
+  "${ENDPOINT}"
 
-  curl "${CURL_ARGS[@]}" \
-    -D "${initialize_headers}" \
-    -o "${initialize_body}" \
-    -H "Authorization: Bearer ${MCPHUB_BEARER_TOKEN}" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json, text/event-stream" \
-    -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"mcphub-smoke","version":"1.0.0"}}}' \
-    "${endpoint_url}"
+protocol_version="$(
+  uv run python "${SCRIPT_DIR}/mcp_response.py" protocol-version \
+    --headers "${initialize_headers}" \
+    --body "${initialize_body}" \
+    --response-id "${MCP_INITIALIZE_ID}"
+)"
+if [[ "${protocol_version}" != "${MCP_PROTOCOL_VERSION}" ]]; then
+  printf 'MCPHub smoke failed: initialize negotiated unexpected protocol %s\n' "${protocol_version}" >&2
+  exit 1
+fi
 
-  session_id="$(
-    uv run python "${SCRIPT_DIR}/mcp_response.py" session-id \
-      --headers "${initialize_headers}"
-  )"
-  protocol_version="$(
-    uv run python "${SCRIPT_DIR}/mcp_response.py" protocol-version \
-      --headers "${initialize_headers}" \
-      --body "${initialize_body}" \
-      --response-id "${MCP_INITIALIZE_ID}"
-  )"
+curl "${CURL_ARGS[@]}" \
+  -D "${tools_headers}" \
+  -o "${tools_body}" \
+  -H "Authorization: Bearer ${MCPHUB_BEARER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "MCP-Protocol-Version: ${MCP_PROTOCOL_VERSION}" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}' \
+  "${ENDPOINT}"
 
-  notification_status="$(
-    curl "${CURL_ARGS[@]}" \
-      -o /dev/null \
-      --write-out '%{http_code}' \
-      -H "Authorization: Bearer ${MCPHUB_BEARER_TOKEN}" \
-      -H "Mcp-Session-Id: ${session_id}" \
-      -H "MCP-Protocol-Version: ${protocol_version}" \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json, text/event-stream" \
-      -d '{"jsonrpc":"2.0","method":"notifications/initialized","params":{}}' \
-      "${endpoint_url}"
-  )"
-  if [[ "${notification_status}" != "202" ]]; then
-    printf 'MCPHub smoke failed: %s initialized notification returned HTTP %s, expected 202\n' \
-      "${endpoint_label}" "${notification_status}" >&2
-    return 1
-  fi
+uv run python - \
+  "${SCRIPT_DIR}" \
+  "${initialize_headers}" \
+  "${tools_headers}" \
+  "${tools_body}" \
+  "${MCPHUB_SETTING_PATH}" \
+  "${MCP_TOOLS_LIST_ID}" <<'PY'
+from __future__ import annotations
 
-  curl "${CURL_ARGS[@]}" \
-    -D "${tools_headers}" \
-    -o "${tools_body}" \
-    -H "Authorization: Bearer ${MCPHUB_BEARER_TOKEN}" \
-    -H "Mcp-Session-Id: ${session_id}" \
-    -H "MCP-Protocol-Version: ${protocol_version}" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json, text/event-stream" \
-    -d '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}' \
-    "${endpoint_url}"
+import json
+import sys
+from pathlib import Path
 
-  local -a validation_args=(
-    assert-tools
-    --headers "${tools_headers}"
-    --body "${tools_body}"
-    --response-id "${MCP_TOOLS_LIST_ID}"
-    --mode "${assertion_mode}"
-  )
-  local expected_tool
-  for expected_tool in "${expected_tools[@]}"; do
-    validation_args+=(--expect "${expected_tool}")
-  done
-  uv run python "${SCRIPT_DIR}/mcp_response.py" "${validation_args[@]}"
-}
+script_dir, initialize_headers, tools_headers, tools_body, settings_path, response_id = sys.argv[1:]
+sys.path.insert(0, script_dir)
+from mcp_response import parse_final_headers, parse_tool_names  # noqa: E402
 
-smoke_endpoint "${MCPHUB_BASE_URL%/}/mcp" "all" "contains"
-smoke_endpoint "${MCPHUB_BASE_URL%/}/mcp/ddgs" "ddgs" "exact" "${DDGS_EXPECTED_TOOLS[@]}"
-smoke_endpoint "${MCPHUB_BASE_URL%/}/mcp/harness" "harness" "contains" "${DDGS_EXPECTED_TOOLS[@]}"
+for header_path in (initialize_headers, tools_headers):
+    headers = parse_final_headers(Path(header_path).read_bytes())
+    if "mcp-session-id" in headers:
+        raise SystemExit("MCPHub smoke failed: legacy stateless response created a session")
 
-printf 'MCPHub smoke passed (all + ddgs + harness; DDGS six-tool surface verified)\n'
+names = parse_tool_names(
+    Path(tools_headers).read_bytes(),
+    Path(tools_body).read_bytes(),
+    response_id=int(response_id),
+)
+settings = json.loads(Path(settings_path).read_text(encoding="utf-8"))
+contract = settings.get("thingsContract")
+if not isinstance(contract, dict):
+    raise SystemExit("MCPHub smoke failed: runtime settings omit thingsContract")
+rows = contract.get("tools")
+if not isinstance(rows, list):
+    raise SystemExit("MCPHub smoke failed: thingsContract.tools is not a list")
+expected = [row.get("publicToolName") for row in rows if isinstance(row, dict)]
+if len(expected) != 70 or len(set(expected)) != 70 or set(names) != set(expected):
+    raise SystemExit("MCPHub smoke failed: tools/list is not the exact 70-tool contract")
+PY
+
+printf 'MCPHub smoke passed (authenticated /mcp/things; legacy stateless; exact 70-tool contract)\n'

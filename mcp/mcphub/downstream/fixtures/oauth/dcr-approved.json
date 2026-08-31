@@ -1,0 +1,14 @@
+{
+  "client_name": "ChatGPT Things Connector",
+  "grant_types": [
+    "authorization_code",
+    "refresh_token"
+  ],
+  "redirect_uris": [
+    "https://chatgpt.com/connector_platform_oauth_redirect"
+  ],
+  "response_types": [
+    "code"
+  ],
+  "token_endpoint_auth_method": "client_secret_basic"
+}

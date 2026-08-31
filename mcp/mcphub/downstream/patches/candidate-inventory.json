@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "status": "candidate-unsealed",
+  "activationAllowed": false,
+  "legacyBaseline": {
+    "wholeReplacements": 6,
+    "guardedPatches": 5,
+    "baselineOnly": true,
+    "entryDetailsFrozen": false
+  },
+  "authorizationState": {
+    "status": "build-time-corrections-authorized-reseal-required",
+    "authorizedTransformations": [
+      "mcphub-ssrf-rfc6598-cgnat-range-v1",
+      "mcphub-transport-construction-isolation-v1"
+    ],
+    "productionLoaderTransformations": [],
+    "priorSealReusable": false,
+    "revocationRegistry": "src/materializer/revocations.mjs",
+    "revokedDistributionDigests": [
+      "sha256-7369fbfd45eebe415500d41cbb9de5c55b2d95338932344ed09820d7e72a7262",
+      "sha256-bda99d286dd44377d37a7c9500fea8d3f9005c426c59ce92b4a0018bebce0182"
+    ],
+    "selectorAndLauncherRevocationEnforced": true,
+    "fullSettingsTopologyPreserved": true
+  },
+  "currentLiveLoaderEvidenceRole": "schema-v1 evidence origins; each entry now authorizes only the exact deterministic build transformation described below and never a production-loader patch",
+  "currentLiveLoaderEvidence": [
+    {
+      "kind": "deterministic-build-transformation",
+      "name": "mcphub-ssrf-rfc6598-cgnat-range-v1",
+      "target": "dist/utils/ssrf.js",
+      "upstreamPreimageSha256": "d7fc7ac44dd23e74f599538c1bb92e698f5280311cfa6ed7582695abdd423e0e",
+      "purpose": "Replace malformed inclusive bounds [0x64000000, 0x657fffff] (100.0.0.0-101.127.255.255) with exact RFC 6598 bounds [0x64400000, 0x647fffff] (100.64.0.0-100.127.255.255)",
+      "requiredAnchorCount": 1,
+      "buildTimeAuthorization": true,
+      "productionAuthorization": false,
+      "productionLoaderTransformation": false,
+      "requiresFreshTransformEventAndReseal": true
+    },
+    {
+      "kind": "deterministic-build-transformation",
+      "name": "mcphub-transport-construction-isolation-v1",
+      "target": "dist/services/mcpService.js",
+      "upstreamPreimageSha256": "e7a8f7d0b566ff4fb3988add3fa01bd7f6a058b0ad2e4fcdabc5ea5cd894f87e",
+      "purpose": "Contain an awaited per-server URL/transport-preflight failure as an enabled-but-disconnected server with sanitized error and empty capability lists, then continue without constructing or dispatching the rejected transport",
+      "requiredAnchorCount": 1,
+      "buildTimeAuthorization": true,
+      "productionAuthorization": false,
+      "productionLoaderTransformation": false,
+      "topologyEffect": "none; preserve every configured server and group and keep all Things list/call routing in the sole things group",
+      "requiresFreshTransformEventAndReseal": true
+    }
+  ],
+  "requiredFreshInventoryClasses": [
+    "public protocol boundary",
+    "private v1 backend client",
+    "OAuth state and metadata",
+    "ingress and route policy",
+    "runtime entrypoint and process control",
+    "security common modules",
+    "production assets and dynamic imports"
+  ],
+  "finalSeal": {
+    "owner": "TPP-S2-01",
+    "requiresBothF2Joins": true,
+    "requiredArtifacts": [
+      "provenance/owned-sources.json",
+      "provenance/patch-manifest.json",
+      "provenance/materialized-output-inventory.json",
+      "provenance/audit-manifest.json",
+      "provenance/distribution-digest.json"
+    ],
+    "requiredPostCorrectionGates": [
+      "frozen-offline-build-and-tests",
+      "revoked-digest-selector-launcher-fail-closed-tests",
+      "fresh-reseal-all-provenance-and-output-receipts",
+      "isolated-rematerialization-and-materializer-check",
+      "startup-scope-and-transport-containment-tests",
+      "no-bind-preselection-receipt",
+      "fresh-full-topology-local-live-gates"
+    ],
+    "note": "The historical 6+5 count is a migration baseline, never a completeness threshold. The two named corrections are authorized only as exact-preimage deterministic build transformations. Candidate and prior-seal artifacts do not authorize activation. Final activation requires exact entry details plus every freshly inventoried production-loaded module, transform event, anchor, postimage, output, receipt, and aggregate digest; productionLoaderTransformations remains empty."
+  }
+}

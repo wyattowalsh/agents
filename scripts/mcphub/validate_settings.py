@@ -14,6 +14,13 @@ from scripts.mcphub.group_validation import (
     validate_enabled_registry_group,
     validate_group_server_entries,
 )
+from wagents.mcphub.things_contract import (
+    THINGS_GROUP,
+    THINGS_SERVERS,
+    ThingsContractError,
+    assert_things_registry_contract,
+    render_things_contract,
+)
 
 SECRET_KEY_RE = re.compile(r"(TOKEN|SECRET|PASSWORD|API_KEY|AUTH_KEY|JWT)", re.I)
 PLACEHOLDER_RE = re.compile(r"^\$\{[A-Z_][A-Z0-9_]*\}$")
@@ -26,6 +33,13 @@ def load_json(path: Path) -> dict[str, Any]:
 
 def validate_settings(settings: dict[str, Any], registry: dict[str, Any]) -> list[str]:
     errors: list[str] = []
+    things_manifest: dict[str, Any] | None = None
+    mcphub_config = registry.get("mcphub")
+    if isinstance(mcphub_config, dict) and "things_contract" in mcphub_config:
+        try:
+            things_manifest = assert_things_registry_contract(registry)
+        except ThingsContractError as exc:
+            errors.extend(exc.errors)
     registry_servers = registry.get("servers", {})
     if not isinstance(registry_servers, dict):
         registry_servers = {}
@@ -117,10 +131,50 @@ def validate_settings(settings: dict[str, Any], registry: dict[str, Any]) -> lis
             if expected_servers != settings_servers:
                 errors.append(f"group {group_name} server membership drift vs registry")
 
+    if things_manifest is not None:
+        expected_contract = render_things_contract(things_manifest)
+        if settings.get("thingsContract") != expected_contract:
+            errors.append("thingsContract drift vs frozen capability manifest")
+        settings_things_group = groups.get(THINGS_GROUP)
+        if not isinstance(settings_things_group, dict):
+            errors.append("generated settings are missing the Things group")
+        else:
+            things_members = settings_things_group.get("servers")
+            if isinstance(things_members, list) and any(
+                isinstance(member, dict) and "alias" in member for member in things_members
+            ):
+                errors.append("Things group server aliases are forbidden")
+            expected_marker = {
+                "groupId": expected_contract["groupId"],
+                "normalizedCatalogSha256": expected_contract["normalizedCatalogSha256"],
+                "toolCount": expected_contract["counts"]["tools"],
+                "approvalPolicy": expected_contract["approvalPolicy"],
+            }
+            if settings_things_group.get("id") != expected_contract["groupId"]:
+                errors.append("Things group deterministic id drift")
+            if settings_things_group.get("contract") != expected_marker:
+                errors.append("Things group contract marker drift")
+        if isinstance(servers, dict):
+            registry_server_entries = registry.get("servers", {})
+            for server_name in THINGS_SERVERS:
+                settings_server = servers.get(server_name)
+                registry_server = registry_server_entries.get(server_name)
+                if not isinstance(settings_server, dict) or not isinstance(registry_server, dict):
+                    errors.append(f"Things server {server_name} is missing from settings or registry")
+                    continue
+                if settings_server.get("groupOnly") is not True:
+                    errors.append(f"Things server {server_name} must remain groupOnly")
+                if settings_server.get("tools") != registry_server.get("tools"):
+                    errors.append(f"Things server {server_name} tool allowlist drift")
+                if settings_server.get("toolApprovals") != registry_server.get("tool_approvals"):
+                    errors.append(f"Things server {server_name} approval mapping drift")
+
     system_config = settings.get("systemConfig", {})
     if not isinstance(system_config, dict):
         errors.append("systemConfig must be an object")
         system_config = {}
+    if system_config.get("nameSeparator") != "-":
+        errors.append("systemConfig.nameSeparator must be '-'")
 
     smart_routing = system_config.get("smartRouting", {})
     if isinstance(smart_routing, dict) and smart_routing.get("enabled") is not False:

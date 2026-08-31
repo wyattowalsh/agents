@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schemaVersion": 1,
+  "evidenceStatus": "f2a-exact-lock-candidate",
+  "lockfile": {
+    "path": "mcp/mcphub/downstream/pnpm-lock.yaml",
+    "formatVersion": "9.0",
+    "sha256": "c02382b244aa7ecdfd396e245460f87d42af211cf886bd16de8f345ef7e60b1a",
+    "packageRecordCount": 468,
+    "edgeSource": "The exact package records, peer contexts, snapshots, and dependency edges are frozen in the hash-bound pnpm lockfile."
+  },
+  "runtime": {
+    "nodeRange": ">=24.0.0",
+    "moduleType": "module",
+    "packageManager": "pnpm@11.22.0"
+  },
+  "installPolicy": {
+    "command": "pnpm install --frozen-lockfile --frozen-store --offline --ignore-workspace --ignore-scripts --package-import-method=copy --verify-store-integrity --config.cache-dir=<verified-pnpm-cache>",
+    "lifecycleScriptsAllowed": false,
+    "packagePolicy": "The mandatory frozen/offline install command includes --ignore-scripts, uses an owner-validated existing metadata cache, and preserves pnpm v11's default 24-hour minimum release age; no deprecated package-level build allowlist is relied upon.",
+    "activationBlocker": "Any production native artifact still required after replacements must be separately inventoried, hash-bound, and built by an explicitly audited offline step before S2 sealing."
+  },
+  "directDependencies": {
+    "production": {
+      "@cfworker/json-schema": "4.1.1",
+      "@modelcontextprotocol/sdk": "1.29.0",
+      "@modelcontextprotocol/server": "2.0.0",
+      "@samanhappy/mcphub": "1.0.32"
+    },
+    "development": {
+      "@types/node": "26.3.0",
+      "rolldown": "1.2.6",
+      "typescript": "7.0.2",
+      "vitest": "4.1.11"
+    }
+  },
+  "protocolIsolation": {
+    "publicEdge": {
+      "package": "@modelcontextprotocol/server",
+      "version": "2.0.0",
+      "transitiveCore": "@modelcontextprotocol/core@2.0.0",
+      "forbiddenDirectPackages": [
+        "@modelcontextprotocol/node"
+      ]
+    },
+    "privateBackendClient": {
+      "package": "@modelcontextprotocol/sdk",
+      "version": "1.29.0",
+      "publicProtocolImportsForbidden": true
+    },
+    "constraints": [
+      "src/protocol may not import @modelcontextprotocol/sdk or upstream MCPHub transport modules",
+      "the private backend client may not parse or serve public HTTP",
+      "all production and development specifiers are exact versions",
+      "the materialized runtime may not resolve packages from a registry or mutable cache"
+    ]
+  },
+  "closure": {
+    "phase": "candidate",
+    "finalOwner": "TPP-S2-01",
+    "reason": "Protocol, OAuth, ingress, policy, security, and runtime sources are concurrent inputs. The final owned-source, patch, output, and aggregate dependency closure is sealed only after both F2 joins."
+  }
+}

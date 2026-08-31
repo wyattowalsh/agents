@@ -8,34 +8,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/common.sh"
 
 mcphub_load_env
-mkdir -p "${MCPHUB_RUN_DIR}"
+mcphub_prepare_run_directory
 printf '%s\n' "$$" >"${MCPHUB_PID_FILE}"
-
-launchctl setenv MCPHUB_BASE_URL "${MCPHUB_BASE_URL}" >/dev/null 2>&1 || true
-launchctl setenv MCPHUB_BIND_HOST "${MCPHUB_BIND_HOST}" >/dev/null 2>&1 || true
-if [[ -n "${MCPHUB_PUBLIC_URL:-}" ]]; then
-  launchctl setenv MCPHUB_PUBLIC_URL "${MCPHUB_PUBLIC_URL}" >/dev/null 2>&1 || true
-fi
-if [[ -n "${MCPHUB_BEARER_TOKEN:-}" ]]; then
-  launchctl setenv MCPHUB_BEARER_TOKEN "${MCPHUB_BEARER_TOKEN}" >/dev/null 2>&1 || true
-fi
-launchctl setenv REPO_ROOT "${REPO_ROOT:-${MCPHUB_REPO_ROOT}}" >/dev/null 2>&1 || true
-
-MCPHUB_CHILD_PID=""
-
-cleanup() {
-  mcphub_stop_process_tree "${MCPHUB_CHILD_PID}"
-  mcphub_stop_tunnel
-  rm -f "${MCPHUB_PID_FILE}" "${MCPHUB_CHILD_PID_FILE}"
-}
-trap cleanup EXIT INT TERM
-
 cd "${MCPHUB_REPO_ROOT}"
-export REPO_ROOT="${REPO_ROOT:-${MCPHUB_REPO_ROOT}}"
-bash "${SCRIPT_DIR}/start-server.sh" &
-MCPHUB_CHILD_PID="$!"
-printf '%s\n' "${MCPHUB_CHILD_PID}" >"${MCPHUB_CHILD_PID_FILE}"
-if mcphub_wait_healthy; then
-  mcphub_start_tunnel
-fi
-wait "${MCPHUB_CHILD_PID}"
+exec bash "${SCRIPT_DIR}/start-server.sh"

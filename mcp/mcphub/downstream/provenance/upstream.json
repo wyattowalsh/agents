@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schemaVersion": 1,
+  "evidenceStatus": "verified-from-official-registry-bytes",
+  "retrievedAt": "2026-08-27T19:32:37Z",
+  "package": {
+    "name": "@samanhappy/mcphub",
+    "version": "1.0.32",
+    "registryVersionManifestSha256": "1b1daf6bf5b5d6c40a19cf02f970d60e93c132c8fa23e84a83c39f50fcc6203e",
+    "tarballUrl": "https://registry.npmjs.org/@samanhappy/mcphub/-/mcphub-1.0.32.tgz",
+    "npmIntegrity": "sha512-k0csMxsrZZOmh1Cef4WF/KGwFBtusJGPhCq5d1xTlhTfxy6qd61sGzU9ImoagquJZnnIaGp5SOWBv3xASNT5Tw==",
+    "npmSha1": "ba035b96295c6b782e9e46469e978fecccde7793",
+    "tarballSha256": "4cb58d4cb11c7d036bde169504f0ddbe9849159e40fe764950ad62853d1502bb",
+    "fileCount": 469,
+    "unpackedSize": 9706506,
+    "license": "Apache-2.0",
+    "nodeRange": "^18.0.0 || >=20.0.0",
+    "moduleType": "module",
+    "binaryEntryPoint": "bin/cli.js",
+    "libraryEntryPoint": "dist/index.js"
+  },
+  "signature": {
+    "verified": true,
+    "algorithm": "ecdsa-sha2-nistp256",
+    "signedMessage": "@samanhappy/mcphub@1.0.32:sha512-k0csMxsrZZOmh1Cef4WF/KGwFBtusJGPhCq5d1xTlhTfxy6qd61sGzU9ImoagquJZnnIaGp5SOWBv3xASNT5Tw==",
+    "keyId": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+    "signatureBase64": "MEUCIE4wBPBLywNsc45NXX6HDrkTrSeW+Rn43y6QY67qeauBAiEA5vLlZj/eKCHFyciZzAYlU6fUcmFkEZJyr8/WpUWsuZ8=",
+    "publicKeySpkiBase64": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEY6Ya7W++7aUPzvMTrezH6Ycx3c+HOKYCcNGybJZSCJq/fd7Qa8uuAKtdIkUQtQiEKERhAmE5lMMJhP8OkDOa2g==",
+    "publicKeyRecordSha256": "0c9dec93a384397ee1766e4310604c7f5e6f7ad061d7105d4d65e512cdc76df1",
+    "publicKeyExpiresAt": null,
+    "keysEndpoint": "https://registry.npmjs.org/-/npm/v1/keys"
+  },
+  "archiveInventory": {
+    "regularFiles": 469,
+    "regularFileBytes": 9706506,
+    "canonicalInventorySha256": "de78c552b9e90a9a46e78bf10974eb0861cd270f4ca05c7bfdbeb73677de04fe",
+    "extensions": {
+      "<none>": 1,
+      "css": 1,
+      "html": 1,
+      "ico": 1,
+      "js": 229,
+      "json": 3,
+      "map": 228,
+      "md": 3,
+      "png": 2
+    }
+  },
+  "intakePolicy": {
+    "lifecycleScriptsExecuted": false,
+    "tarballExecuted": false,
+    "networkUse": "official registry metadata, signing keys, and tarball download only"
+  },
+  "sourceLimitations": {
+    "typescriptSourcesIncluded": false,
+    "fullDependencyLockIncluded": false,
+    "compiledJavaScriptIncluded": true,
+    "sourceMapsIncluded": true,
+    "note": "The public archive contains compiled JavaScript and source maps but no TypeScript source tree or complete dependency lock. It is verified intake evidence, not sufficient source-completeness proof by itself."
+  }
+}

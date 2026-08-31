@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "group": "things",
+  "path": "/mcp/things",
+  "resources": [
+    "http://127.0.0.1:46683/mcp/things",
+    "https://mcp.w4w.dev/mcp/things"
+  ],
+  "orderedServerCounts": {
+    "things-core": 41,
+    "things-shortcuts": 21,
+    "things-native": 8
+  },
+  "toolCount": 70,
+  "equalFields": [
+    "name",
+    "description",
+    "inputSchema",
+    "outputSchema",
+    "annotations",
+    "_meta"
+  ],
+  "modernEnvelopeOnlyFields": [
+    "resultType",
+    "ttlMs",
+    "cacheScope"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@wyattowalsh/mcphub-downstream",
+  "version": "0.0.0-private",
+  "private": true,
+  "description": "Audited, content-addressed MCPHub downstream runtime",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "build": "node src/materializer/gate.mjs build",
+    "seal": "node src/materializer/gate.mjs seal",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:distribution": "node src/materializer/gate.mjs distribution",
+    "test:protocol": "node src/materializer/gate.mjs protocol",
+    "test:oauth": "node src/materializer/gate.mjs oauth",
+    "test:ingress": "node test/ingress/gate.mjs",
+    "test": "pnpm run test:distribution && pnpm run test:protocol && pnpm run test:oauth && pnpm run test:ingress"
+  },
+  "dependencies": {
+    "@cfworker/json-schema": "4.1.1",
+    "@modelcontextprotocol/sdk": "1.29.0",
+    "@modelcontextprotocol/server": "2.0.0",
+    "@samanhappy/mcphub": "1.0.32"
+  },
+  "devDependencies": {
+    "@types/node": "26.3.0",
+    "rolldown": "1.2.6",
+    "typescript": "7.0.2",
+    "vitest": "4.1.11"
+  },
+  "packageManager": "pnpm@11.22.0"
+}

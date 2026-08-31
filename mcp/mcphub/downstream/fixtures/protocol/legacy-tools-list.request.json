@@ -1,0 +1,13 @@
+{
+  "headers": {
+    "accept": "application/json, text/event-stream",
+    "content-type": "application/json",
+    "mcp-protocol-version": "2025-11-25"
+  },
+  "body": {
+    "jsonrpc": "2.0",
+    "id": 11,
+    "method": "tools/list",
+    "params": {}
+  }
+}

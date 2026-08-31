@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "id": "method-mismatch",
+      "status": 400,
+      "code": -32020,
+      "sdkDispatch": false,
+      "providerDispatch": false
+    },
+    {
+      "id": "name-mismatch",
+      "status": 400,
+      "code": -32020,
+      "sdkDispatch": false,
+      "providerDispatch": false
+    },
+    {
+      "id": "missing-client-capabilities",
+      "status": 400,
+      "code": -32021,
+      "sdkDispatch": false,
+      "providerDispatch": false
+    },
+    {
+      "id": "unsupported-version",
+      "status": 400,
+      "code": -32022,
+      "sdkDispatch": false,
+      "providerDispatch": false
+    },
+    {
+      "id": "unknown-modern-method",
+      "status": 404,
+      "code": -32601,
+      "sdkDispatch": true,
+      "providerDispatch": false
+    },
+    {
+      "id": "parse-error",
+      "status": 400,
+      "code": -32700,
+      "sdkDispatch": false,
+      "providerDispatch": false
+    }
+  ]
+}

@@ -5,143 +5,226 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=common.sh
 source "${SCRIPT_DIR}/common.sh"
 
-mcphub_load_env
-doctor_status=0
+mcphub_cloudflared_process_state() {
+  if ! command -v pgrep >/dev/null 2>&1; then
+    printf 'inspection-unavailable\n'
+    return 2
+  fi
 
-printf 'settings: '
-"${SCRIPT_DIR}/validate-settings.sh" >/dev/null
-printf 'ok\n'
+  local pids="" pgrep_status=0 pid managed=0 unmanaged=0
+  if pids="$(pgrep -x cloudflared 2>/dev/null)"; then
+    pgrep_status=0
+  else
+    pgrep_status=$?
+  fi
+  if [[ "${pgrep_status}" -eq 1 && -z "${pids}" ]]; then
+    printf 'absent\n'
+    return 0
+  fi
+  if [[ "${pgrep_status}" -ne 0 || -z "${pids}" ]]; then
+    printf 'inspection-failed\n'
+    return 2
+  fi
 
-printf 'node: '
-if command -v node >/dev/null 2>&1 && command -v npx >/dev/null 2>&1; then
-  printf 'available\n'
-else
-  printf 'missing node or npx\n'
+  while IFS= read -r pid; do
+    if [[ ! "${pid}" =~ ^[0-9]+$ ]]; then
+      printf 'inspection-failed\n'
+      return 2
+    fi
+    if mcphub_is_managed_tunnel_pid "${pid}"; then
+      managed=1
+    else
+      unmanaged=1
+    fi
+  done <<<"${pids}"
+
+  if [[ "${managed}" -eq 1 && "${unmanaged}" -eq 1 ]]; then
+    printf 'managed-and-unmanaged-present\n'
+  elif [[ "${managed}" -eq 1 ]]; then
+    printf 'managed-present\n'
+  else
+    printf 'unmanaged-present\n'
+  fi
+  return 1
+}
+
+if [[ "${MCPHUB_DOCTOR_LIBRARY_ONLY:-false}" == "true" ]]; then
+  return 0
 fi
 
-printf 'health: '
-health_body="$(curl -fsS --max-time 2 "$(mcphub_health_url)" 2>/dev/null || true)"
-if [[ -n "${health_body}" ]]; then
-  health_status="$(printf '%s' "${health_body}" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("status","unknown"))' 2>/dev/null || printf 'unknown')"
-  case "${health_status}" in
-    healthy)
-      printf 'healthy\n'
-      ;;
-    degraded)
-      connected="$(printf '%s' "${health_body}" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("connected","?"))' 2>/dev/null || printf '?')"
-      total="$(printf '%s' "${health_body}" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("total","?"))' 2>/dev/null || printf '?')"
-      printf 'degraded (%s/%s servers connected)\n' "${connected}" "${total}"
-      ;;
-    unhealthy)
-      printf 'unhealthy\n'
-      ;;
-    *)
-      if mcphub_is_healthy; then
-        printf 'healthy (legacy response)\n'
-      else
-        printf 'not running\n'
-      fi
-      ;;
-  esac
+mcphub_load_env
+doctor_status=0
+if ! mcphub_resolve_remote_mode; then
+  doctor_status=1
+fi
+
+printf 'settings: '
+if "${SCRIPT_DIR}/validate-settings.sh" >/dev/null 2>&1; then
+  printf 'valid\n'
 else
-  if mcphub_is_healthy; then
-    printf 'healthy\n'
+  printf 'invalid\n'
+  doctor_status=1
+fi
+
+printf 'node: '
+if command -v node >/dev/null 2>&1; then
+  printf 'available\n'
+else
+  printf 'missing\n'
+  doctor_status=1
+fi
+
+printf 'selected distribution: '
+if mcphub_distribution_is_selected; then
+  printf 'verified\n'
+else
+  printf 'absent or invalid\n'
+  doctor_status=1
+fi
+
+printf 'runtime pid: '
+pid="$(mcphub_read_pid_file "${MCPHUB_PID_FILE}" 2>/dev/null || true)"
+if [[ -z "${pid}" ]]; then
+  printf 'absent\n'
+elif mcphub_pid_file_managed_running "${MCPHUB_PID_FILE}"; then
+  printf 'selected-running (%s)\n' "${pid}"
+else
+  printf 'unmanaged-or-stale (%s)\n' "${pid}"
+  doctor_status=1
+fi
+
+printf 'local listener: '
+if mcphub_listener_is_loopback "${PORT}"; then
+  printf '127.0.0.1:46683\n'
+else
+  printf 'absent or noncanonical\n'
+fi
+
+printf 'local Things route: '
+if mcphub_local_route_is_ready; then
+  printf 'authenticated 405/Allow POST readiness passed\n'
+elif [[ -n "${pid}" ]]; then
+  printf 'not ready\n'
+  doctor_status=1
+else
+  printf 'not running\n'
+fi
+
+printf 'remote mode: %s\n' "${MCPHUB_REMOTE_MODE}"
+printf 'remote listener: '
+if mcphub_listener_is_loopback "${MCPHUB_REMOTE_PORT}"; then
+  if [[ "${MCPHUB_REMOTE_MODE}" == "disabled" ]]; then
+    printf 'unexpected while remote mode is disabled\n'
+    doctor_status=1
   else
-    printf 'not running\n'
+    printf '127.0.0.1:46684\n'
+  fi
+else
+  if [[ "${MCPHUB_REMOTE_MODE}" == "disabled" ]]; then
+    printf 'disabled and absent\n'
+  else
+    printf 'required by mode but absent\n'
+    doctor_status=1
   fi
 fi
 
-printf 'listener: '
-if command -v lsof >/dev/null 2>&1 && lsof -nP -iTCP:"${PORT}" -sTCP:LISTEN >/dev/null 2>&1; then
-  if mcphub_listener_is_loopback; then
-    printf 'loopback-only on %s:%s\n' "${MCPHUB_BIND_HOST}" "${PORT}"
+printf 'remote public readiness: '
+if mcphub_remote_public_ready; then
+  printf 'stamped and dispatch-enabled\n'
+else
+  printf 'fail-closed\n'
+fi
+
+printf 'remote activation receipt: '
+activation_mode=""
+if [[ -e "${MCPHUB_REMOTE_ACTIVATION_RECEIPT_PATH}" \
+  || -L "${MCPHUB_REMOTE_ACTIVATION_RECEIPT_PATH}" ]]; then
+  if activation_mode="$(mcphub_remote_activation_mode 2>/dev/null)"; then
+    printf 'verified (%s)\n' "${activation_mode}"
+    if [[ "${MCPHUB_REMOTE_MODE}" == "disabled" ]]; then
+      printf 'stale remote activation receipt is present while remote mode is disabled\n' >&2
+      doctor_status=1
+    fi
+  elif [[ "${MCPHUB_REMOTE_MODE}" == "disabled" ]]; then
+    printf 'invalid (ignored; remote disabled)\n'
   else
-    printf 'unsafe non-loopback listener on %s (%s)\n' "${PORT}" "$(mcphub_listener_endpoints | paste -sd, -)"
+    printf 'invalid\n'
     doctor_status=1
   fi
 else
-  printf 'not listening on %s\n' "${PORT}"
+  printf 'absent\n'
+  if [[ "${MCPHUB_REMOTE_MODE}" != "disabled" ]]; then
+    doctor_status=1
+  fi
 fi
 
-printf 'wrapper pid: '
-if mcphub_pid_running; then
-  pid="$(mcphub_read_pid_file "${MCPHUB_PID_FILE}" 2>/dev/null || true)"
-  if mcphub_pid_file_managed_running "${MCPHUB_PID_FILE}"; then
-    printf 'managed-running (%s)\n' "${pid}"
+if [[ "${MCPHUB_REMOTE_MODE}" == "disabled" ]]; then
+  printf 'cloudflared process: '
+  cloudflared_state=""
+  if cloudflared_state="$(mcphub_cloudflared_process_state)"; then
+    printf '%s\n' "${cloudflared_state}"
   else
-    if [[ -n "${pid}" ]]; then
-      printf 'running-unmanaged (%s)\n' "${pid}"
+    printf '%s\n' "${cloudflared_state}"
+    doctor_status=1
+  fi
+
+  printf 'tunnel pid receipt: '
+  if [[ -e "${MCPHUB_TUNNEL_PID_FILE}" || -L "${MCPHUB_TUNNEL_PID_FILE}" \
+    || -e "${MCPHUB_TUNNEL_IDENTITY_FILE}" || -L "${MCPHUB_TUNNEL_IDENTITY_FILE}" ]]; then
+    printf 'unexpected while remote mode is disabled\n'
+    doctor_status=1
+  else
+    printf 'absent\n'
+  fi
+
+fi
+
+printf 'activation expiry guard: '
+if [[ "${MCPHUB_REMOTE_MODE}" == "capture" || "${MCPHUB_REMOTE_MODE}" == "public" ]]; then
+  receipt_digest="$(mcphub_activation_receipt_digest 2>/dev/null || true)"
+  if [[ "${receipt_digest}" =~ ^[0-9a-f]{64}$ ]] \
+    && mcphub_activation_guard_pid_running "${receipt_digest}"; then
+    printf 'identity-bound and active\n'
+  else
+    printf 'missing or invalid\n'
+    doctor_status=1
+  fi
+elif mcphub_assert_activation_guard_absent; then
+  printf 'absent\n'
+else
+  printf 'unexpected while remote mode is disabled\n'
+  doctor_status=1
+fi
+
+printf 'tunnel: '
+case "${MCPHUB_REMOTE_MODE}" in
+  capture)
+    if mcphub_remote_capture_ready && mcphub_tunnel_pid_running; then
+      printf 'restricted capture running for https://mcp.w4w.dev/mcp/things (tool dispatch disabled)\n'
     else
-      printf 'invalid\n'
+      printf 'capture requested but gated off\n'
+      doctor_status=1
     fi
-  fi
-else
-  printf 'absent\n'
-fi
-
-printf 'child pid: '
-if mcphub_pid_file_running "${MCPHUB_CHILD_PID_FILE}"; then
-  child_pid="$(mcphub_read_pid_file "${MCPHUB_CHILD_PID_FILE}" 2>/dev/null || true)"
-  if [[ -n "${child_pid}" ]] && mcphub_is_managed_local_pid "${child_pid}"; then
-    printf 'managed-running (%s)\n' "${child_pid}"
-  elif [[ -n "${child_pid}" ]]; then
-    printf 'running-unmanaged (%s)\n' "${child_pid}"
-  else
-    printf 'invalid\n'
-  fi
-else
-  printf 'absent\n'
-fi
-
-if ! mcphub_is_healthy && { mcphub_pid_running || mcphub_pid_file_running "${MCPHUB_CHILD_PID_FILE}"; }; then
-  printf 'state: stale-or-wedged pid present while health check fails\n'
-fi
+    ;;
+  public)
+    if mcphub_remote_public_ready && mcphub_tunnel_pid_running; then
+      printf 'public and running for https://mcp.w4w.dev/mcp/things\n'
+    else
+      printf 'public requested but gated off\n'
+      doctor_status=1
+    fi
+    ;;
+  disabled)
+    printf 'disabled\n'
+    ;;
+esac
 
 printf 'MCPHUB_BEARER_TOKEN: '
-if [[ -n "${MCPHUB_BEARER_TOKEN:-}" && "${MCPHUB_BEARER_TOKEN}" != replace-with-local-* ]]; then
+if mcphub_require_token >/dev/null 2>&1; then
   printf 'set\n'
 else
   printf 'missing\n'
-fi
-
-printf 'MCPHub tunnel: '
-if mcphub_tunnel_enabled; then
-  if mcphub_pid_file_running "${MCPHUB_TUNNEL_PID_FILE}"; then
-    printf 'enabled and running'
-  else
-    printf 'enabled but not running'
-  fi
-  if [[ -n "${MCPHUB_PUBLIC_URL:-}" ]]; then
-    printf ' (%s)' "${MCPHUB_PUBLIC_URL}"
-  fi
-  printf '\n'
-else
-  printf 'disabled\n'
-fi
-
-printf 'Zapier handoff: '
-if [[ -n "${MCPHUB_ZAPIER_WEBHOOK_URL:-}" ]]; then
-  printf 'configured\n'
-else
-  printf 'not configured\n'
-fi
-
-printf 'SMART_ROUTING_ENABLED: %s\n' "${SMART_ROUTING_ENABLED:-false}"
-printf 'Local exposure note: UI, health, and OAuth metadata may be public; loopback-only binding is required.\n'
-
-launcher="${SCRIPT_DIR}/package-version-check-mcp.sh"
-printf 'package-version-check-mcp launcher: '
-if [[ -x "${launcher}" ]]; then
-  start_ms="$(python3 -c 'import time; print(int(time.time()*1000))')"
-  if "${launcher}" --help >/dev/null 2>&1; then
-    end_ms="$(python3 -c 'import time; print(int(time.time()*1000))')"
-    elapsed="$((end_ms - start_ms))"
-    printf 'ok (%ss)\n' "$((elapsed / 1000))"
-  else
-    printf 'present but --help failed\n'
-  fi
-else
-  printf 'missing or not executable\n'
+  doctor_status=1
 fi
 
 exit "${doctor_status}"

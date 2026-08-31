@@ -1,0 +1,7 @@
+{
+  "client_id": "https://chatgpt.com/oauth/client.json",
+  "redirect_uris": [
+    "https://chatgpt.com/connector_platform_oauth_redirect"
+  ],
+  "token_endpoint_auth_method": "none"
+}

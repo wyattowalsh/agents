@@ -15,7 +15,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -33,7 +33,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -57,7 +57,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -93,9 +93,13 @@
       "auth_policy": "oauth",
       "owner": "admin",
       "url": "https://mcp.context7.com/mcp/oauth",
+      "oauth": {
+        "enabled": true,
+        "redirectUri": "http://127.0.0.1:46683/oauth/callback"
+      },
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -110,7 +114,7 @@
       "url": "https://mcp.deepwiki.com/mcp",
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -125,7 +129,7 @@
       "args": [],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -143,7 +147,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -161,7 +165,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -179,7 +183,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -221,7 +225,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -254,7 +258,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -271,7 +275,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "browse_subreddit",
@@ -294,7 +298,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -312,7 +316,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -330,7 +334,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -339,38 +343,251 @@
       "platform_overrides": {},
       "tools_allow_all": true
     },
-    "supathings": {
+    "things-core": {
+      "transport": "stdio",
+      "command": "${REPO_ROOT}/scripts/mcphub/things-core-stdio.sh",
+      "args": [],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 240,
+      "timeout_ms": 600000,
+      "tools": [
+        "add_area",
+        "add_checklist_items",
+        "add_project",
+        "add_tags",
+        "add_todo",
+        "bulk_move_records",
+        "bulk_update_todos",
+        "context_stats",
+        "create_tag",
+        "delete_todo",
+        "get_activating_in_days",
+        "get_anytime",
+        "get_areas",
+        "get_due_in_days",
+        "get_inbox",
+        "get_logbook",
+        "get_project_headings",
+        "get_projects",
+        "get_recent",
+        "get_server_capabilities",
+        "get_someday",
+        "get_tag_usage",
+        "get_tagged_items",
+        "get_tags",
+        "get_today",
+        "get_todo_by_id",
+        "get_todos",
+        "get_trash",
+        "get_upcoming",
+        "get_usage_recommendations",
+        "health_check",
+        "move_record",
+        "prepend_checklist_items",
+        "queue_status",
+        "remove_tags",
+        "replace_checklist_items",
+        "search_advanced",
+        "search_todos",
+        "update_area",
+        "update_project",
+        "update_todo"
+      ],
+      "tool_approvals": {
+        "add_area": "per-call",
+        "add_checklist_items": "per-call",
+        "add_project": "per-call",
+        "add_tags": "per-call",
+        "add_todo": "per-call",
+        "bulk_move_records": "per-call",
+        "bulk_update_todos": "per-call",
+        "context_stats": "never",
+        "create_tag": "per-call",
+        "delete_todo": "per-call",
+        "get_activating_in_days": "never",
+        "get_anytime": "never",
+        "get_areas": "never",
+        "get_due_in_days": "never",
+        "get_inbox": "never",
+        "get_logbook": "never",
+        "get_project_headings": "never",
+        "get_projects": "never",
+        "get_recent": "never",
+        "get_server_capabilities": "never",
+        "get_someday": "never",
+        "get_tag_usage": "never",
+        "get_tagged_items": "never",
+        "get_tags": "never",
+        "get_today": "never",
+        "get_todo_by_id": "never",
+        "get_todos": "never",
+        "get_trash": "never",
+        "get_upcoming": "never",
+        "get_usage_recommendations": "never",
+        "health_check": "never",
+        "move_record": "per-call",
+        "prepend_checklist_items": "per-call",
+        "queue_status": "never",
+        "remove_tags": "per-call",
+        "replace_checklist_items": "per-call",
+        "search_advanced": "never",
+        "search_todos": "never",
+        "update_area": "per-call",
+        "update_project": "per-call",
+        "update_todo": "per-call"
+      },
+      "platform_overrides": {},
+      "tools_allow_all": false,
+      "group_only": true,
+      "description": "Audited mcp-server-things 1.9.0 security adapter; reachable only through the Things MCPHub group."
+    },
+    "things-shortcuts": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--project",
+        "${REPO_ROOT}",
+        "--package",
+        "mcp-things-shortcuts",
+        "--offline",
+        "--frozen",
+        "--no-sync",
+        "--no-env-file",
+        "--managed-python",
+        "--no-python-downloads",
+        "--python",
+        "3.12",
+        "python",
+        "${REPO_ROOT}/mcp/things-shortcuts/server.py"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 240,
+      "timeout_ms": 600000,
+      "tools": [
+        "shortcuts_health",
+        "create_todo",
+        "create_todos",
+        "create_todo_with_quick_entry",
+        "create_heading",
+        "create_project",
+        "create_structured_project",
+        "find_items",
+        "get_items",
+        "get_selected_items",
+        "edit_items",
+        "edit_heading",
+        "edit_checklist",
+        "append_checklist",
+        "prepend_checklist",
+        "duplicate_items",
+        "delete_items",
+        "delete_items_immediately",
+        "delete_heading",
+        "open_list",
+        "show_items"
+      ],
+      "tool_approvals": {
+        "shortcuts_health": "never",
+        "create_todo": "per-call",
+        "create_todos": "per-call",
+        "create_todo_with_quick_entry": "per-call",
+        "create_heading": "per-call",
+        "create_project": "per-call",
+        "create_structured_project": "per-call",
+        "find_items": "never",
+        "get_items": "never",
+        "get_selected_items": "never",
+        "edit_items": "per-call",
+        "edit_heading": "per-call",
+        "edit_checklist": "per-call",
+        "append_checklist": "per-call",
+        "prepend_checklist": "per-call",
+        "duplicate_items": "per-call",
+        "delete_items": "per-call",
+        "delete_items_immediately": "per-call",
+        "delete_heading": "per-call",
+        "open_list": "per-call",
+        "show_items": "per-call"
+      },
+      "platform_overrides": {},
+      "tools_allow_all": false,
+      "group_only": true,
+      "description": "Fixed-name typed Things Shortcuts bridge; reachable only through the Things MCPHub group."
+    },
+    "things-native": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--project",
+        "${REPO_ROOT}",
+        "--package",
+        "mcp-things-native",
+        "--offline",
+        "--frozen",
+        "--no-sync",
+        "--no-env-file",
+        "--managed-python",
+        "--no-python-downloads",
+        "--python",
+        "3.12",
+        "python",
+        "${REPO_ROOT}/mcp/things-native/server.py"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 240,
+      "timeout_ms": 600000,
+      "tools": [
+        "native_health",
+        "open_search",
+        "log_completed",
+        "empty_trash",
+        "delete_area",
+        "rename_tag",
+        "delete_tag",
+        "set_tag_parent"
+      ],
+      "tool_approvals": {
+        "native_health": "never",
+        "open_search": "per-call",
+        "log_completed": "per-call",
+        "empty_trash": "per-call",
+        "delete_area": "per-call",
+        "rename_tag": "per-call",
+        "delete_tag": "per-call",
+        "set_tag_parent": "per-call"
+      },
+      "platform_overrides": {},
+      "tools_allow_all": false,
+      "group_only": true,
+      "description": "Fixed Things native health, search, and administration tools; reachable only through the Things MCPHub group."
+    },
+    "tavily": {
       "transport": "stdio",
       "command": "npx",
       "args": [
         "-y",
-        "supathings-mcp"
+        "tavily-mcp"
       ],
-      "env": {},
+      "env": {
+        "TAVILY_API_KEY": {
+          "env_var": "TAVILY_API_KEY"
+        }
+      },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
       ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "tools_allow_all": true
-    },
-    "tavily": {
-      "transport": "streamable-http",
-      "auth_policy": "oauth",
-      "url": "https://mcp.tavily.com/mcp/",
-      "env": {},
-      "enabled": true,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [
-        "*"
-      ],
-      "tool_approvals": {},
-      "platform_overrides": {},
-      "tools_allow_all": true
+      "tools_allow_all": true,
+      "description": "Tavily web search via local tavily-mcp stdio (avoids SSRF block on mcp.tavily.com CGNAT A records)."
     },
     "trafilatura": {
       "transport": "stdio",
@@ -384,7 +601,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -402,7 +619,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -419,7 +636,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -444,7 +661,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -455,36 +672,39 @@
     },
     "creative-thinking": {
       "transport": "stdio",
-      "command": "${REPO_ROOT}/scripts/mcp_tools/run_mcp_thinking.sh",
-      "args": [],
+      "command": "node",
+      "args": [
+        "${REPO_ROOT}/mcp/servers/creative-thinking/dist/index.js"
+      ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
       ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "tools_allow_all": true
+      "tools_allow_all": true,
+      "description": "Local creative-thinking MCP checkout (stdio)."
     },
     "deep-lucid-3d": {
       "transport": "stdio",
-      "command": "npx",
+      "command": "node",
       "args": [
-        "-y",
-        "github:mushroomfleet/deeplucid3d-mcp"
+        "${REPO_ROOT}/mcp/servers/DeepLucid3D-MCP/build/index.js"
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
       ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "tools_allow_all": true
+      "tools_allow_all": true,
+      "description": "Local DeepLucid3D MCP checkout (stdio); avoids npm github: EALLOWGIT."
     },
     "duckduckgo-search": {
       "transport": "stdio",
@@ -494,7 +714,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -512,7 +732,7 @@
       "auth_policy": "none",
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -527,7 +747,7 @@
       "url": "https://mcp.exa.ai/mcp",
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -545,7 +765,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -562,7 +782,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -579,7 +799,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 120,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -597,7 +817,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -615,7 +835,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -645,7 +865,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 120,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -662,7 +882,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -679,7 +899,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -697,7 +917,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -711,18 +931,19 @@
       "command": "npx",
       "args": [
         "-y",
-        "github:aaronsb/think-strategies"
+        "think-strategies@0.9.1"
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
       ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "tools_allow_all": true
+      "tools_allow_all": true,
+      "description": "think-strategies via published npm package (not github: which is blocked by EALLOWGIT)."
     },
     "wayback": {
       "transport": "stdio",
@@ -734,7 +955,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -753,7 +974,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -777,8 +998,8 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_agents",
@@ -803,8 +1024,8 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_reports",
@@ -830,8 +1051,8 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "eval_list",
@@ -857,8 +1078,8 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_allowed_prefixes",
@@ -884,8 +1105,8 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_skills",
@@ -911,8 +1132,8 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "check_url_health",
@@ -936,8 +1157,8 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "mcp_layout_validate",
@@ -963,8 +1184,8 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_ci_artifacts",
@@ -990,8 +1211,8 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_provenance_manifests",
@@ -1017,8 +1238,8 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_workflows",
@@ -1044,8 +1265,8 @@
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "docs_graph_snapshot",
@@ -1073,7 +1294,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "generate_bar_chart"
@@ -1094,7 +1315,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "axiom_get_catalog"
@@ -1111,7 +1332,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "search_icons"
@@ -1129,7 +1350,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_chart_types"
@@ -1147,7 +1368,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "generate_dashboard"
@@ -1168,7 +1389,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "get_preflight_brief"
@@ -1186,7 +1407,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 45,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "geo_schema_validate"
@@ -1217,15 +1438,15 @@
           "value": "true"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_prompts"
       ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled credentialed Langfuse observability MCP example; read-only mode is the tracked default."
+      "description": "Credentialed Langfuse observability MCP example; read-only mode is the tracked default."
     },
     "mcp-dashboards": {
       "source_url": "https://github.com/KyuRish/mcp-dashboards",
@@ -1243,7 +1464,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 45,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "render_bar_chart"
@@ -1264,7 +1485,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "read_diagram_guide"
@@ -1286,7 +1507,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "mobile_list_available_devices"
@@ -1303,7 +1524,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "search_providers"
@@ -1321,7 +1542,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "openspec_list_changes"
@@ -1352,7 +1573,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "search_papers"
@@ -1365,15 +1586,16 @@
       "transport": "streamable-http",
       "url": "https://doxa.papersflow.ai/mcp",
       "env": {},
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled hosted Papersflow research MCP example; account/OAuth boundary required before use.",
+      "description": "Hosted Papersflow research MCP example; account/OAuth boundary required before use.",
       "oauth": {
-        "enabled": false
+        "enabled": true,
+        "redirectUri": "http://127.0.0.1:46683/oauth/callback"
       }
     },
     "prompt-to-asset": {
@@ -1388,7 +1610,7 @@
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "asset_doctor"
@@ -1405,13 +1627,13 @@
         "@remotion/mcp@latest"
       ],
       "env": {},
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled official Remotion documentation MCP example."
+      "description": "Official Remotion documentation MCP example."
     },
     "semiotic": {
       "source_url": "https://github.com/nteract/semiotic",
@@ -1422,7 +1644,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "suggestChart"
@@ -1441,7 +1663,7 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 120,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -1473,6 +1695,283 @@
       "embedding_provider_env_var": "SMART_ROUTING_EMBEDDING_PROVIDER",
       "embedding_model_env_var": "SMART_ROUTING_EMBEDDING_MODEL"
     },
+    "things_contract": {
+      "version": 1,
+      "manifest_path": "openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.json",
+      "manifest_schema_path": "openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.schema.json",
+      "group": "things",
+      "group_id": "3b94a096-b95f-586c-b2e7-e69ed177eb5a",
+      "local_resource": "http://127.0.0.1:46683/mcp/things",
+      "remote_loopback_resource": "http://127.0.0.1:46684/mcp/things",
+      "public_resource": "https://mcp.w4w.dev/mcp/things",
+      "normalized_catalog_sha256": "0c48616453e929a8f9d287bb7a4bb59f0d587df3e7008506bfdd7c52472b066e",
+      "counts": {
+        "tools": 70,
+        "coreTools": 41,
+        "shortcutTools": 21,
+        "nativeTools": 8,
+        "supaOutcomes": 37,
+        "workflows": 17,
+        "legacyEvalIds": 25,
+        "newEvalIds": 16
+      },
+      "approval_policy": {
+        "default": "per-call",
+        "read_only_risk": "never",
+        "otherwise": "per-call"
+      }
+    },
+    "retired_projections": {
+      "version": 1,
+      "entries": [
+        {
+          "id": "supathings",
+          "scope": "repo-and-home",
+          "targets": [
+            "all"
+          ]
+        },
+        {
+          "id": "mcphub_server_supathings",
+          "scope": "repo-and-home",
+          "targets": [
+            "all"
+          ]
+        },
+        {
+          "id": "things",
+          "scope": "home",
+          "targets": [
+            "codex"
+          ]
+        }
+      ]
+    },
+    "profile_policy": {
+      "version": 1,
+      "profiles": {
+        "portable": {
+          "artifact_kind": "portable",
+          "transport": "streamable-http",
+          "states": {
+            "default": {
+              "groups": [
+                "harness"
+              ],
+              "endpoint_source": "local"
+            },
+            "opt-in": {
+              "groups": [],
+              "endpoint_source": "local"
+            },
+            "approval-required": {
+              "groups": [],
+              "endpoint_source": "local",
+              "reason": "Portable Agent Plugins packages do not define client-native approval surfaces.",
+              "risk_class": "client-native-policy",
+              "approval_scope": "profile-activation"
+            },
+            "remote-only": {
+              "groups": [],
+              "endpoint_source": "public",
+              "reason": "Portable Agent Plugins MCP does not encode the separately managed remote route."
+            },
+            "unsupported": {
+              "groups": [
+                "account-backed",
+                "accounts",
+                "browser",
+                "candidate-corpus",
+                "coding",
+                "credentialed",
+                "daily",
+                "data",
+                "design",
+                "docs",
+                "experimental",
+                "heavy",
+                "live-browser",
+                "media",
+                "media-work",
+                "nlm",
+                "notebooks",
+                "personal-work",
+                "productivity",
+                "reasoning",
+                "reasoning-lab",
+                "references",
+                "release",
+                "repo",
+                "research",
+                "review",
+                "shared-read",
+                "things",
+                "tunnel",
+                "web-read",
+                "web-search"
+              ],
+              "reason": "The portable package exposes only the bounded common harness profile."
+            }
+          }
+        },
+        "local-native": {
+          "artifact_kind": "native",
+          "transport": "streamable-http",
+          "states": {
+            "default": {
+              "groups": [
+                "harness"
+              ],
+              "endpoint_source": "local"
+            },
+            "opt-in": {
+              "groups": [
+                "candidate-corpus",
+                "coding",
+                "daily",
+                "docs",
+                "media",
+                "media-work",
+                "nlm",
+                "reasoning",
+                "references",
+                "release",
+                "repo",
+                "research",
+                "review",
+                "shared-read",
+                "things",
+                "web-read",
+                "web-search"
+              ],
+              "endpoint_source": "local"
+            },
+            "approval-required": {
+              "groups": [
+                "account-backed",
+                "accounts",
+                "browser",
+                "credentialed",
+                "data",
+                "design",
+                "experimental",
+                "heavy",
+                "live-browser",
+                "notebooks",
+                "personal-work",
+                "productivity",
+                "reasoning-lab"
+              ],
+              "endpoint_source": "local",
+              "reason": "This profile can reach account state, live automation, local execution, heavy processing, or experimental capabilities.",
+              "risk_class": "elevated-capability",
+              "approval_scope": "profile-activation"
+            },
+            "remote-only": {
+              "groups": [],
+              "endpoint_source": "public",
+              "reason": "Local native artifacts do not project remote MCPHub routes."
+            },
+            "unsupported": {
+              "groups": [
+                "tunnel"
+              ],
+              "reason": "The reviewed ChatGPT tunnel surface is owned by the registered-app artifact."
+            }
+          }
+        },
+        "registered-app": {
+          "artifact_kind": "registered-app",
+          "transport": "streamable-http",
+          "states": {
+            "default": {
+              "groups": [],
+              "endpoint_source": "local"
+            },
+            "opt-in": {
+              "groups": [],
+              "endpoint_source": "local"
+            },
+            "approval-required": {
+              "groups": [],
+              "endpoint_source": "local",
+              "reason": "Registered-app authorization remains an external deployment and consent operation.",
+              "risk_class": "external-registration",
+              "approval_scope": "profile-activation"
+            },
+            "remote-only": {
+              "groups": [
+                "things"
+              ],
+              "endpoint_source": "public",
+              "reason": "ChatGPT reaches Things++ only through the reviewed OAuth-protected public Things group route."
+            },
+            "unsupported": {
+              "groups": [
+                "account-backed",
+                "accounts",
+                "browser",
+                "candidate-corpus",
+                "coding",
+                "credentialed",
+                "daily",
+                "data",
+                "design",
+                "docs",
+                "experimental",
+                "harness",
+                "heavy",
+                "live-browser",
+                "media",
+                "media-work",
+                "nlm",
+                "notebooks",
+                "personal-work",
+                "productivity",
+                "reasoning",
+                "reasoning-lab",
+                "references",
+                "release",
+                "repo",
+                "research",
+                "review",
+                "shared-read",
+                "tunnel",
+                "web-read",
+                "web-search"
+              ],
+              "reason": "The registered-app template exposes only the reviewed remote Things++ profile."
+            }
+          }
+        }
+      },
+      "targets": {
+        "portable": {
+          "profile": "portable"
+        },
+        "codex-native": {
+          "profile": "local-native"
+        },
+        "chatgpt-app": {
+          "profile": "registered-app"
+        },
+        "claude-native": {
+          "profile": "local-native"
+        },
+        "cursor-native": {
+          "profile": "local-native"
+        },
+        "grok-compatible": {
+          "profile": "local-native"
+        },
+        "opencode-native": {
+          "profile": "local-native"
+        },
+        "vscode-native": {
+          "profile": "local-native"
+        }
+      }
+    },
     "groups": {
       "harness": {
         "description": "Default local harness bundle: highest-value tools with bounded schema/context cost.",
@@ -1499,6 +1998,99 @@
           "package-version-check-mcp",
           "chrome-devtools",
           "penpot"
+        ]
+      },
+      "things": {
+        "id": "3b94a096-b95f-586c-b2e7-e69ed177eb5a",
+        "description": "Complete Things++ surface: 41 audited core tools, 21 fixed Shortcuts tools, and 8 fixed native tools.",
+        "enabled": true,
+        "tools_allow_all": false,
+        "servers": [
+          {
+            "name": "things-core",
+            "tools": [
+              "add_area",
+              "add_checklist_items",
+              "add_project",
+              "add_tags",
+              "add_todo",
+              "bulk_move_records",
+              "bulk_update_todos",
+              "context_stats",
+              "create_tag",
+              "delete_todo",
+              "get_activating_in_days",
+              "get_anytime",
+              "get_areas",
+              "get_due_in_days",
+              "get_inbox",
+              "get_logbook",
+              "get_project_headings",
+              "get_projects",
+              "get_recent",
+              "get_server_capabilities",
+              "get_someday",
+              "get_tag_usage",
+              "get_tagged_items",
+              "get_tags",
+              "get_today",
+              "get_todo_by_id",
+              "get_todos",
+              "get_trash",
+              "get_upcoming",
+              "get_usage_recommendations",
+              "health_check",
+              "move_record",
+              "prepend_checklist_items",
+              "queue_status",
+              "remove_tags",
+              "replace_checklist_items",
+              "search_advanced",
+              "search_todos",
+              "update_area",
+              "update_project",
+              "update_todo"
+            ]
+          },
+          {
+            "name": "things-shortcuts",
+            "tools": [
+              "shortcuts_health",
+              "create_todo",
+              "create_todos",
+              "create_todo_with_quick_entry",
+              "create_heading",
+              "create_project",
+              "create_structured_project",
+              "find_items",
+              "get_items",
+              "get_selected_items",
+              "edit_items",
+              "edit_heading",
+              "edit_checklist",
+              "append_checklist",
+              "prepend_checklist",
+              "duplicate_items",
+              "delete_items",
+              "delete_items_immediately",
+              "delete_heading",
+              "open_list",
+              "show_items"
+            ]
+          },
+          {
+            "name": "things-native",
+            "tools": [
+              "native_health",
+              "open_search",
+              "log_completed",
+              "empty_trash",
+              "delete_area",
+              "rename_tag",
+              "delete_tag",
+              "set_tag_parent"
+            ]
+          }
         ]
       },
       "tunnel": {
@@ -1637,7 +2229,6 @@
         "servers": [
           "gmail",
           "linkedin",
-          "supathings",
           "penpot"
         ]
       },
@@ -1768,9 +2359,7 @@
       "productivity": {
         "description": "Productivity tooling.",
         "enabled": true,
-        "servers": [
-          "supathings"
-        ]
+        "servers": []
       },
       "accounts": {
         "description": "Account-backed connectors.",
@@ -1848,7 +2437,6 @@
         "servers": [
           "gmail",
           "linkedin",
-          "supathings",
           "penpot"
         ]
       },
@@ -2013,7 +2601,8 @@
         "included_groups": [
           "harness",
           "candidate-corpus",
-          "nlm"
+          "nlm",
+          "things"
         ],
         "enabled_endpoint_kinds": [
           "group"
@@ -2035,7 +2624,8 @@
         "included_groups": [
           "harness",
           "candidate-corpus",
-          "nlm"
+          "nlm",
+          "things"
         ],
         "enabled_endpoint_kinds": [
           "group"
@@ -2057,7 +2647,8 @@
         "included_groups": [
           "harness",
           "candidate-corpus",
-          "nlm"
+          "nlm",
+          "things"
         ],
         "enabled_endpoint_kinds": [
           "group"
@@ -2079,7 +2670,8 @@
         "included_groups": [
           "harness",
           "candidate-corpus",
-          "nlm"
+          "nlm",
+          "things"
         ],
         "enabled_endpoint_kinds": [
           "group"
@@ -2094,19 +2686,19 @@
       },
       "chatgpt": {
         "transport": "remote-http",
-        "auth": "bearer_token_env_var",
+        "auth": "oauth",
         "url_source": "public",
         "included_endpoint_kinds": [
           "group"
         ],
         "included_groups": [
-          "tunnel"
+          "things"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "tunnel"
+          "things"
         ],
         "enable_server_endpoints": false
       },

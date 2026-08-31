@@ -1,0 +1,22 @@
+{
+  "headers": {
+    "content-type": "application/json",
+    "mcp-method": "server/discover",
+    "mcp-protocol-version": "2026-07-28"
+  },
+  "body": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "server/discover",
+    "params": {
+      "_meta": {
+        "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+        "io.modelcontextprotocol/clientCapabilities": {},
+        "io.modelcontextprotocol/clientInfo": {
+          "name": "things-conformance",
+          "version": "1.0.0"
+        }
+      }
+    }
+  }
+}
