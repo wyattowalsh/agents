@@ -1,0 +1,25 @@
+{
+  "$schema": "./bundle.schema.json",
+  "schemaVersion": "2.0.0",
+  "bundleId": "things-plus-plus-chatgpt-reference",
+  "kind": "static-registration-reference",
+  "secretFree": true,
+  "createsChatGptState": false,
+  "files": {
+    "readme": "README.md",
+    "appSetup": "APP_SETUP.md",
+    "registrationReference": "registration-reference.json",
+    "projectInstructions": "PROJECT_INSTRUCTIONS.md",
+    "safety": "SAFETY.md",
+    "testPrompts": "TEST_PROMPTS.md",
+    "observedWireTemplate": "observed-wire-record.template.json",
+    "generatedCapabilityMatrix": "CAPABILITY_MATRIX.md"
+  },
+  "generatedFiles": {
+    "CAPABILITY_MATRIX.md": {
+      "source": "skills/things-manager/references/capabilities.md",
+      "generator": "skills/things-manager/scripts/render_capabilities.py",
+      "status": "generated-at-serialized-docs-barrier"
+    }
+  }
+}

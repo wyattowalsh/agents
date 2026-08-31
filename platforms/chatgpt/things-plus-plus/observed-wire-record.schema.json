@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w4w.dev/schemas/things-plus-plus-observed-wire-record.schema.json",
+  "title": "Redacted Things++ ChatGPT observed-wire record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "status",
+    "capturedAt",
+    "expiresAt",
+    "publicResource",
+    "registrationMode",
+    "redirectUri",
+    "redirectUriSha256",
+    "mcpProtocolVersion",
+    "modernDiscoveryObserved",
+    "requiredIndependentScopes",
+    "offlineAccessRequested",
+    "offlineAccessSemantics",
+    "resourceIndicatorObserved",
+    "pkceS256Observed",
+    "captureReceiptSha256",
+    "routeStatuses",
+    "secretFree",
+    "redactionsVerified",
+    "prohibitedDataAbsent",
+    "evidenceDigestSha256"
+  ],
+  "properties": {
+    "$schema": { "const": "./observed-wire-record.schema.json" },
+    "schemaVersion": { "const": "1.1.0" },
+    "status": { "enum": ["not-observed", "observed-pass", "observed-fail"] },
+    "capturedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Finalized capture time inside the bound capture-receipt runtime window."
+    },
+    "expiresAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Observed-wire freshness expiry, at most 24 hours after capturedAt; it may outlive the at-most-30-minute capture receipt."
+    },
+    "publicResource": { "const": "https://mcp.w4w.dev/mcp/things" },
+    "registrationMode": {
+      "enum": [null, "client-id-metadata-document", "dynamic-client-registration"],
+      "description": "Public evidence mapping: runtime cimd -> client-id-metadata-document; runtime dcr -> dynamic-client-registration."
+    },
+    "redirectUri": { "type": ["string", "null"], "format": "uri" },
+    "redirectUriSha256": {
+      "anyOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      ]
+    },
+    "mcpProtocolVersion": { "enum": [null, "2026-07-28", "2025-11-25"] },
+    "modernDiscoveryObserved": { "type": "boolean" },
+    "requiredIndependentScopes": {
+      "type": "array",
+      "prefixItems": [
+        { "const": "things.read" },
+        { "const": "things.write" },
+        { "const": "things.admin" }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "offlineAccessRequested": { "type": "boolean" },
+    "offlineAccessSemantics": { "const": "refresh-only-no-things-authorization" },
+    "resourceIndicatorObserved": { "type": "boolean" },
+    "pkceS256Observed": { "type": "boolean" },
+    "captureReceiptSha256": {
+      "anyOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      ]
+    },
+    "routeStatuses": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mcp",
+        "protectedResourceMetadata",
+        "authorizationServerMetadata",
+        "authorization",
+        "registration"
+      ],
+      "properties": {
+        "mcp": { "enum": [null, 401] },
+        "protectedResourceMetadata": { "enum": [null, 200] },
+        "authorizationServerMetadata": { "enum": [null, 200] },
+        "authorization": { "enum": [null, 503] },
+        "registration": { "enum": [null, 503] }
+      }
+    },
+    "secretFree": { "const": true },
+    "redactionsVerified": { "type": "boolean" },
+    "prohibitedDataAbsent": { "type": "boolean" },
+    "evidenceDigestSha256": {
+      "description": "SHA-256 of canonical JSON for this exact record with evidenceDigestSha256 omitted.",
+      "anyOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "not-observed" } } },
+      "then": {
+        "properties": {
+          "capturedAt": { "const": null },
+          "expiresAt": { "const": null },
+          "registrationMode": { "const": null },
+          "redirectUri": { "const": null },
+          "redirectUriSha256": { "const": null },
+          "mcpProtocolVersion": { "const": null },
+          "modernDiscoveryObserved": { "const": false },
+          "offlineAccessRequested": { "const": false },
+          "resourceIndicatorObserved": { "const": false },
+          "pkceS256Observed": { "const": false },
+          "captureReceiptSha256": { "const": null },
+          "routeStatuses": {
+            "const": {
+              "mcp": null,
+              "protectedResourceMetadata": null,
+              "authorizationServerMetadata": null,
+              "authorization": null,
+              "registration": null
+            }
+          },
+          "redactionsVerified": { "const": false },
+          "evidenceDigestSha256": { "const": null }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "status": { "const": "observed-pass" } } },
+      "then": {
+        "properties": {
+          "capturedAt": { "type": "string" },
+          "expiresAt": { "type": "string" },
+          "registrationMode": { "type": "string" },
+          "redirectUri": { "type": "string" },
+          "redirectUriSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "mcpProtocolVersion": { "type": "string" },
+          "offlineAccessRequested": { "const": true },
+          "resourceIndicatorObserved": { "const": true },
+          "pkceS256Observed": { "const": true },
+          "captureReceiptSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "routeStatuses": {
+            "properties": {
+              "mcp": { "const": 401 },
+              "protectedResourceMetadata": { "const": 200 },
+              "authorizationServerMetadata": { "const": 200 },
+              "authorization": { "const": 503 }
+            }
+          },
+          "redactionsVerified": { "const": true },
+          "prohibitedDataAbsent": { "const": true },
+          "evidenceDigestSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": { "const": "observed-pass" },
+          "registrationMode": { "const": "client-id-metadata-document" }
+        },
+        "required": ["status", "registrationMode"]
+      },
+      "then": {
+        "properties": {
+          "routeStatuses": {
+            "properties": { "registration": { "const": null } }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": { "const": "observed-pass" },
+          "registrationMode": { "const": "dynamic-client-registration" }
+        },
+        "required": ["status", "registrationMode"]
+      },
+      "then": {
+        "properties": {
+          "routeStatuses": {
+            "properties": { "registration": { "const": 503 } }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": { "const": "observed-pass" },
+          "mcpProtocolVersion": { "const": "2026-07-28" }
+        },
+        "required": ["status", "mcpProtocolVersion"]
+      },
+      "then": {
+        "properties": { "modernDiscoveryObserved": { "const": true } }
+      }
+    }
+  ]
+}

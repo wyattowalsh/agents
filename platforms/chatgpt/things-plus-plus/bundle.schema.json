@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w4w.dev/schemas/things-plus-plus-chatgpt-bundle.schema.json",
+  "title": "Things++ ChatGPT static reference bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "bundleId",
+    "kind",
+    "secretFree",
+    "createsChatGptState",
+    "files",
+    "generatedFiles"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "const": "./bundle.schema.json" },
+    "schemaVersion": { "type": "string", "const": "2.0.0" },
+    "bundleId": { "type": "string", "const": "things-plus-plus-chatgpt-reference" },
+    "kind": { "type": "string", "const": "static-registration-reference" },
+    "secretFree": { "type": "boolean", "const": true },
+    "createsChatGptState": { "type": "boolean", "const": false },
+    "files": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "readme",
+        "appSetup",
+        "registrationReference",
+        "projectInstructions",
+        "safety",
+        "testPrompts",
+        "observedWireTemplate",
+        "generatedCapabilityMatrix"
+      ],
+      "properties": {
+        "readme": { "const": "README.md" },
+        "appSetup": { "const": "APP_SETUP.md" },
+        "registrationReference": { "const": "registration-reference.json" },
+        "projectInstructions": { "const": "PROJECT_INSTRUCTIONS.md" },
+        "safety": { "const": "SAFETY.md" },
+        "testPrompts": { "const": "TEST_PROMPTS.md" },
+        "observedWireTemplate": { "const": "observed-wire-record.template.json" },
+        "generatedCapabilityMatrix": { "const": "CAPABILITY_MATRIX.md" }
+      }
+    },
+    "generatedFiles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["CAPABILITY_MATRIX.md"],
+      "properties": {
+        "CAPABILITY_MATRIX.md": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source", "generator", "status"],
+          "properties": {
+            "source": { "const": "skills/things-manager/references/capabilities.md" },
+            "generator": { "const": "skills/things-manager/scripts/render_capabilities.py" },
+            "status": { "const": "generated-at-serialized-docs-barrier" }
+          }
+        }
+      }
+    }
+  }
+}

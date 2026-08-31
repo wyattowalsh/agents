@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w4w.dev/schemas/things-plus-plus-chatgpt-registration-reference.schema.json",
+  "title": "Things++ ChatGPT registration reference",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "appName", "artifactKind", "connector", "oauth", "activation"],
+  "properties": {
+    "$schema": { "type": "string", "const": "./registration-reference.schema.json" },
+    "schemaVersion": { "type": "string", "const": "1.0.0" },
+    "appName": { "type": "string", "const": "Things++" },
+    "artifactKind": { "type": "string", "const": "non-secret-registration-reference" },
+    "connector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "group",
+        "publicResource",
+        "localBearerResource",
+        "remoteOAuthOrigin",
+        "toolCount",
+        "backendToolCounts",
+        "alternateThingsRoutesAllowed"
+      ],
+      "properties": {
+        "group": { "const": "things" },
+        "publicResource": { "const": "https://mcp.w4w.dev/mcp/things" },
+        "localBearerResource": { "const": "http://127.0.0.1:46683/mcp/things" },
+        "remoteOAuthOrigin": { "const": "http://127.0.0.1:46684/mcp/things" },
+        "toolCount": { "const": 70 },
+        "backendToolCounts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["things-core", "things-shortcuts", "things-native"],
+          "properties": {
+            "things-core": { "const": 41 },
+            "things-shortcuts": { "const": 21 },
+            "things-native": { "const": 8 }
+          }
+        },
+        "alternateThingsRoutesAllowed": { "const": false }
+      }
+    },
+    "oauth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resource",
+        "protectedResourceMetadata",
+        "authorizationServerMetadata",
+        "requiredIndependentScopes",
+        "scopeImplication",
+        "refreshCapabilityScope",
+        "refreshCapabilityRequirement",
+        "refreshCapabilitySemantics",
+        "pkceCodeChallengeMethods",
+        "resourceIndicatorsRequired",
+        "authorizationResponseIssuerRequired",
+        "registration"
+      ],
+      "properties": {
+        "resource": { "const": "https://mcp.w4w.dev/mcp/things" },
+        "protectedResourceMetadata": {
+          "const": "https://mcp.w4w.dev/.well-known/oauth-protected-resource/mcp/things"
+        },
+        "authorizationServerMetadata": {
+          "const": "https://mcp.w4w.dev/.well-known/oauth-authorization-server"
+        },
+        "requiredIndependentScopes": {
+          "type": "array",
+          "prefixItems": [
+            { "const": "things.read" },
+            { "const": "things.write" },
+            { "const": "things.admin" }
+          ],
+          "items": false,
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "scopeImplication": { "const": "none" },
+        "refreshCapabilityScope": { "const": "offline_access" },
+        "refreshCapabilityRequirement": {
+          "const": "required-for-durable-chatgpt-profile"
+        },
+        "refreshCapabilitySemantics": { "const": "refresh-only-no-things-authorization" },
+        "pkceCodeChallengeMethods": {
+          "type": "array",
+          "prefixItems": [{ "const": "S256" }],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "resourceIndicatorsRequired": { "const": true },
+        "authorizationResponseIssuerRequired": { "const": true },
+        "registration": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "primary",
+            "fallback",
+            "observedMode",
+            "documentedCimdClientIdCandidate",
+            "documentedRedirectUriCandidate",
+            "candidateApprovalStatus"
+          ],
+          "properties": {
+            "primary": { "const": "client-id-metadata-document" },
+            "fallback": { "const": "dynamic-client-registration-only-after-observation" },
+            "observedMode": { "type": "null" },
+            "documentedCimdClientIdCandidate": { "const": "https://chatgpt.com/oauth/client.json" },
+            "documentedRedirectUriCandidate": {
+              "const": "https://chatgpt.com/connector_platform_oauth_redirect"
+            },
+            "candidateApprovalStatus": { "const": "not-observed-not-approved" }
+          }
+        }
+      }
+    },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "remoteDefault",
+        "toolDispatchDefault",
+        "observedWireStatus",
+        "mayCreateChatGptApp",
+        "mayEnablePublicIngress",
+        "requiredBeforeEnablement"
+      ],
+      "properties": {
+        "remoteDefault": { "const": "disabled" },
+        "toolDispatchDefault": { "const": "disabled" },
+        "observedWireStatus": { "const": "not-observed" },
+        "mayCreateChatGptApp": { "const": false },
+        "mayEnablePublicIngress": { "const": false },
+        "requiredBeforeEnablement": {
+          "type": "array",
+          "minItems": 6,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

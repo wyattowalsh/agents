@@ -1,0 +1,59 @@
+{
+  "$schema": "./registration-reference.schema.json",
+  "schemaVersion": "1.0.0",
+  "appName": "Things++",
+  "artifactKind": "non-secret-registration-reference",
+  "connector": {
+    "group": "things",
+    "publicResource": "https://mcp.w4w.dev/mcp/things",
+    "localBearerResource": "http://127.0.0.1:46683/mcp/things",
+    "remoteOAuthOrigin": "http://127.0.0.1:46684/mcp/things",
+    "toolCount": 70,
+    "backendToolCounts": {
+      "things-core": 41,
+      "things-shortcuts": 21,
+      "things-native": 8
+    },
+    "alternateThingsRoutesAllowed": false
+  },
+  "oauth": {
+    "resource": "https://mcp.w4w.dev/mcp/things",
+    "protectedResourceMetadata": "https://mcp.w4w.dev/.well-known/oauth-protected-resource/mcp/things",
+    "authorizationServerMetadata": "https://mcp.w4w.dev/.well-known/oauth-authorization-server",
+    "requiredIndependentScopes": [
+      "things.read",
+      "things.write",
+      "things.admin"
+    ],
+    "scopeImplication": "none",
+    "refreshCapabilityScope": "offline_access",
+    "refreshCapabilityRequirement": "required-for-durable-chatgpt-profile",
+    "refreshCapabilitySemantics": "refresh-only-no-things-authorization",
+    "pkceCodeChallengeMethods": ["S256"],
+    "resourceIndicatorsRequired": true,
+    "authorizationResponseIssuerRequired": true,
+    "registration": {
+      "primary": "client-id-metadata-document",
+      "fallback": "dynamic-client-registration-only-after-observation",
+      "observedMode": null,
+      "documentedCimdClientIdCandidate": "https://chatgpt.com/oauth/client.json",
+      "documentedRedirectUriCandidate": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "candidateApprovalStatus": "not-observed-not-approved"
+    }
+  },
+  "activation": {
+    "remoteDefault": "disabled",
+    "toolDispatchDefault": "disabled",
+    "observedWireStatus": "not-observed",
+    "mayCreateChatGptApp": false,
+    "mayEnablePublicIngress": false,
+    "requiredBeforeEnablement": [
+      "passing-offline-dual-era-protocol-oauth-ingress-conformance",
+      "passing-local-read-only-tools-list-closure",
+      "redacted-current-observed-wire-record",
+      "exact-callback-and-registration-mode-approval",
+      "digest-bound-unexpired-final-conformance-stamp",
+      "explicit-user-approval-for-remote-apply"
+    ]
+  }
+}
