@@ -1,0 +1,244 @@
+name: Frontier Radar Deterministic Substrate
+
+on:
+  schedule:
+    # Two UTC candidates per Eastern-time slot. The router converts the nominal
+    # cron time through America/New_York and suppresses the DST-mismatched run.
+    - cron: "30 6 * * *"
+    - cron: "30 7 * * *"
+    - cron: "30 0 * * 1"
+    - cron: "30 1 * * 1"
+    - cron: "0 7 * * 1"
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+    inputs:
+      lane:
+        description: Deterministic lane to execute
+        required: true
+        default: w0
+        type: choice
+        options:
+          - w0
+          - freshness
+          - control
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  # Keep the paired EDT/EST cron candidates independent so the later
+  # DST-suppressed candidate cannot cancel a still-running valid lane.
+  group: frontier-radar-${{ github.event_name }}-${{ github.event.schedule || inputs.lane }}
+  cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  FRONTIER_ISSUE_NUMBER: "5"
+  FRONTIER_TIMEZONE: America/New_York
+
+jobs:
+  route-and-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Resolve the DST-safe lane
+        id: route
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+          REQUESTED_LANE: ${{ inputs.lane }}
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import os
+          from datetime import UTC, datetime
+          from zoneinfo import ZoneInfo
+
+          event_name = os.environ["EVENT_NAME"]
+          requested = os.environ.get("REQUESTED_LANE", "").strip()
+          schedule = os.environ.get("EVENT_SCHEDULE", "").strip()
+          lane = ""
+          local_label = "manual"
+
+          if event_name == "workflow_dispatch":
+              lane = requested
+          else:
+              fields = schedule.split()
+              if len(fields) != 5:
+                  raise SystemExit(f"unexpected cron expression: {schedule!r}")
+              minute, hour = int(fields[0]), int(fields[1])
+              now = datetime.now(UTC)
+              nominal = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+              local = nominal.astimezone(ZoneInfo("America/New_York"))
+              local_label = local.isoformat()
+              local_hm = local.strftime("%H:%M")
+
+              if local_hm == "02:30":
+                  lane = "w0"
+              elif local.weekday() == 6 and local_hm == "20:30":
+                  lane = "freshness"
+              elif local.weekday() == 0 and local.day <= 7 and local_hm == "03:00":
+                  lane = "control"
+
+          should_run = "true" if lane else "false"
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"lane={lane}\n")
+              output.write(f"local_label={local_label}\n")
+              output.write(f"should_run={should_run}\n")
+          PY
+
+      - name: Record a suppressed DST candidate
+        if: steps.route.outputs.should_run != 'true'
+        run: |
+          printf '%s\n' \
+            "### Frontier Radar" \
+            "Suppressed the DST-mismatched cron candidate." \
+            "Nominal local time: ${{ steps.route.outputs.local_label }}" \
+            >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check out the repository
+        if: steps.route.outputs.should_run == 'true'
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Set up the uv workspace
+        if: steps.route.outputs.should_run == 'true'
+        uses: ./.github/actions/setup-uv
+
+      - name: Prepare evidence directory
+        if: steps.route.outputs.should_run == 'true'
+        run: mkdir -p artifacts/frontier-radar/github-actions
+
+      - name: Detect Frontier Radar CLI
+        if: steps.route.outputs.should_run == 'true'
+        id: frontier
+        run: |
+          if uv run wagents frontier --help >/dev/null 2>&1; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run deterministic W0 lane
+        if: steps.route.outputs.should_run == 'true' && steps.route.outputs.lane == 'w0'
+        env:
+          FRONTIER_AVAILABLE: ${{ steps.frontier.outputs.available }}
+        run: |
+          set -euo pipefail
+          session_id="gha-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          if [[ "$FRONTIER_AVAILABLE" == "true" ]]; then
+            uv run wagents frontier init --format json \
+              | tee artifacts/frontier-radar/github-actions/init.json
+            uv run wagents frontier verify --format json \
+              | tee artifacts/frontier-radar/github-actions/verify.json
+            uv run wagents frontier doctor --format json \
+              | tee artifacts/frontier-radar/github-actions/doctor.json
+            uv run wagents frontier w0 \
+              --execute \
+              --session-id "$session_id" \
+              --format json \
+              | tee artifacts/frontier-radar/github-actions/w0.json
+          else
+            root="artifacts/frontier-radar/${session_id}/wave0"
+            mkdir -p "$root"
+            uv run python skills/harness-master/scripts/discovery/inventory_scan.py \
+              --repo-root . -o "$root/inventory.json"
+            uv run python skills/harness-master/scripts/discovery/mcp_scan.py \
+              --repo-root . -o "$root/mcp.json"
+            uv run python skills/harness-master/scripts/discovery/plugin_scan.py \
+              --repo-root . -o "$root/plugins.json"
+            uv run python skills/harness-master/scripts/discovery/hook_scan.py \
+              --repo-root . -o "$root/hooks.json"
+            uv run python skills/harness-master/scripts/discovery/invoke_surfaces.py \
+              --repo-root . -o "$root/surfaces.json"
+            uv run python skills/harness-master/scripts/discovery/gap_engine.py \
+              --taxonomy skills/harness-master/data/discovery/discovery-taxonomy.json \
+              --inventory "$root/inventory.json" \
+              --mcp "$root/mcp.json" \
+              --plugins "$root/plugins.json" \
+              --harness "$root/surfaces.json" \
+              --hooks "$root/hooks.json" \
+              -o "$root/gap-report.json"
+            uv run python skills/harness-master/scripts/discovery/validate_session.py \
+              "$root/gap-report.json"
+            uv run python skills/harness-master/scripts/discovery/parity_check.py
+          fi
+
+      - name: Run freshness substrate
+        if: steps.route.outputs.should_run == 'true' && steps.route.outputs.lane == 'freshness'
+        env:
+          FRONTIER_AVAILABLE: ${{ steps.frontier.outputs.available }}
+        run: |
+          set -euo pipefail
+          uv run wagents validate
+          uv run python scripts/check_agent_stack.py
+          if [[ "$FRONTIER_AVAILABLE" == "true" ]]; then
+            uv run wagents frontier init --format json \
+              | tee artifacts/frontier-radar/github-actions/init.json
+            uv run wagents frontier verify --format json \
+              | tee artifacts/frontier-radar/github-actions/verify.json
+            uv run wagents frontier doctor --format json \
+              | tee artifacts/frontier-radar/github-actions/doctor.json
+          fi
+
+      - name: Run monthly control substrate
+        if: steps.route.outputs.should_run == 'true' && steps.route.outputs.lane == 'control'
+        env:
+          FRONTIER_AVAILABLE: ${{ steps.frontier.outputs.available }}
+        run: |
+          set -euo pipefail
+          uv run wagents validate
+          uv run wagents hooks validate --harness all
+          if compgen -G 'tests/test_frontier_*.py' >/dev/null; then
+            uv run pytest tests/test_frontier_*.py
+          fi
+          if [[ "$FRONTIER_AVAILABLE" == "true" ]]; then
+            uv run wagents frontier init --format json \
+              | tee artifacts/frontier-radar/github-actions/init.json
+            uv run wagents frontier verify --format json \
+              | tee artifacts/frontier-radar/github-actions/verify.json
+            uv run wagents frontier rebuild --format json \
+              | tee artifacts/frontier-radar/github-actions/rebuild.json
+          fi
+
+      - name: Summarize the executed lane
+        if: success() && steps.route.outputs.should_run == 'true'
+        run: |
+          printf '%s\n' \
+            "### Frontier Radar deterministic substrate" \
+            "- Lane: \`${{ steps.route.outputs.lane }}\`" \
+            "- Nominal local time: \`${{ steps.route.outputs.local_label }}\`" \
+            "- Frontier CLI available: \`${{ steps.frontier.outputs.available }}\`" \
+            "- Authority: read-only scans, validation, and ephemeral evidence only" \
+            >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload deterministic evidence
+        if: always() && steps.route.outputs.should_run == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: frontier-radar-${{ steps.route.outputs.lane }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/frontier-radar
+          if-no-files-found: warn
+          retention-days: 30
+          compression-level: 9
+
+      - name: Report a failed recurring lane
+        if: failure() && steps.route.outputs.should_run == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LANE: ${{ steps.route.outputs.lane }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          body=$(cat <<EOF
+          ## Frontier Radar recurring lane failed
+
+          - Lane: \`$LANE\`
+          - Run: $RUN_URL
+          - Trigger: \`${{ github.event_name }}\`
+          - Nominal local time: \`${{ steps.route.outputs.local_label }}\`
+
+          No candidate installation, activation, push, merge, release, or deployment was attempted.
+          EOF
+          )
+          gh issue comment "$FRONTIER_ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
