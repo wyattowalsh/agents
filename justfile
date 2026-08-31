@@ -122,6 +122,16 @@ verify-opencode:
 validate:
     uv run wagents validate
 
+[doc("Validate the portable Agent Plugin at the repository root")]
+[group("checks")]
+plugin-validate:
+    uv run wagents plugin validate . --target portable
+
+[doc("Hermetically check all plugin artifact recipes without publishing")]
+[group("checks")]
+plugin-build-check:
+    uv run wagents plugin build --target all --check
+
 [doc("Run test suite")]
 [group("checks")]
 test:
@@ -195,19 +205,18 @@ verify-fast:
     uv run ruff check
     uv run pytest tests/test_skills_catalog_schemas.py tests/test_catalog_index_parity.py tests/test_skill_index.py tests/test_authoring_sync.py -q --tb=line
 
-[doc("Docs-focused check: generate + lint + build")]
+[doc("Web-focused check: generate + lint + build")]
 [group("checks")]
-verify-docs:
-    uv run wagents docs generate --no-installed --check
+verify-web:
+    uv run wagents web generate --no-installed --check
     uv run wagents catalog index --check
-    uv run wagents docs lint
-    uv run wagents docs build
+    uv run wagents web lint
+    uv run wagents web build
 
-[doc("Full pre-PR check: verify-fast + verify-docs + ci-check")]
+[doc("Full pre-PR check: verify-fast + verify-web + ci-check")]
 [group("checks")]
-verify-all: verify-fast verify-docs ci-check
+verify-all: verify-fast verify-web ci-check
     uv run wagents openspec validate
-
 
 [doc("Diagnose Cursor Agent CLI binaries and config key presence")]
 [group("checks")]
@@ -234,11 +243,41 @@ openspec-update:
     uv run wagents openspec update
 
 # ---------------------------------------------------------------------------- #
-#                                     DOCS                                     #
+#                                      WEB                                     #
 # ---------------------------------------------------------------------------- #
 
+[doc("Install web/ (Fumadocs) dependencies")]
+[group("web")]
+web-init:
+    uv run wagents web init
+
+[doc("Generate Fumadocs MDX into web/content")]
+[group("web")]
+web-generate:
+    uv run wagents web generate --no-installed
+
+[doc("Generate + fail when web content is stale")]
+[group("web")]
+web-generate-check:
+    uv run wagents web generate --no-installed --check
+
+[doc("Lint generated web content")]
+[group("web")]
+web-lint:
+    uv run wagents web lint
+
+[doc("Build the Fumadocs production site")]
+[group("web")]
+web-build:
+    uv run wagents web build
+
+[doc("Run Next.js dev server for web/")]
+[group("web")]
+web-dev:
+    uv run wagents web dev
+
 [doc("Regenerate README.md")]
-[group("docs")]
+[group("web")]
 readme:
     uv run wagents readme
 
@@ -246,7 +285,7 @@ readme:
 #                                    MCPHUB                                    #
 # ---------------------------------------------------------------------------- #
 
-[doc("Start local MCPHub control plane with npx")]
+[doc("Start the selected content-addressed MCPHub on the exact local Things route")]
 [group("mcphub")]
 mcphub-up:
     scripts/mcphub/up.sh
@@ -256,12 +295,17 @@ mcphub-up:
 mcphub-down:
     scripts/mcphub/down.sh
 
+[doc("Clean one stale tracked MCPHub PID receipt; never scan unrelated processes")]
+[group("mcphub")]
+mcphub-reap-strays:
+    scripts/mcphub/reap-strays.sh
+
 [doc("Tail local MCPHub logs")]
 [group("mcphub")]
 mcphub-logs:
     scripts/mcphub/logs.sh
 
-[doc("Check local MCPHub prerequisites and health")]
+[doc("Check selected distribution, same-PID listeners, and exact-route readiness")]
 [group("mcphub")]
 mcphub-doctor:
     scripts/mcphub/doctor.sh
@@ -286,29 +330,41 @@ mcphub-validate:
 mcphub-openapi:
     scripts/mcphub/export-openapi.sh
 
-[doc("Sync runtime settings, warm package-version-check-mcp, restart LaunchAgent")]
+[doc("Reconcile private MCPHub settings; restart only with explicit --restart")]
 [group("mcphub")]
 [positional-arguments]
 mcphub-reconcile-runtime *FLAGS:
     scripts/mcphub/reconcile-runtime.sh "$@"
 
-[doc("Run MCPHub health and tools/list smoke test")]
+[doc("Smoke the authenticated stateless /mcp/things route and exact 70-tool group")]
 [group("mcphub")]
 mcphub-smoke:
     scripts/mcphub/smoke.sh
 
-[doc("Install local LaunchAgent template")]
+[doc("Atomically install the local LaunchAgent plist without starting it")]
 [group("mcphub")]
 mcphub-install-launch-agent:
+    uv run python scripts/mcphub/install_launch_agent.py
+
+[doc("Check the installed local LaunchAgent plist without starting it")]
+[group("mcphub")]
+mcphub-install-launch-agent-check:
+    uv run python scripts/mcphub/install_launch_agent.py --check
+
+[doc("Explicitly bootstrap the already-installed MCPHub LaunchAgent")]
+[group("mcphub")]
+mcphub-start-launch-agent:
     #!/usr/bin/env bash
     set -euo pipefail
-    repo_root="$(pwd)"
-    mkdir -p "$HOME/Library/LaunchAgents"
-    sed "s|/path/to/agents|${repo_root}|g" config/launchd/com.wyattowalsh.mcphub.plist \
-        > "$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist"
-    launchctl bootout "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist" >/dev/null 2>&1 || true
-    launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist"
-    launchctl kickstart -k "gui/$(id -u)/com.wyattowalsh.mcphub"
+    service="gui/$(id -u)/com.wyattowalsh.mcphub"
+    live_plist="$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist"
+    if launchctl print "${service}" >/dev/null 2>&1; then
+        printf 'LaunchAgent %s is already loaded; refusing an implicit restart\n' "${service}" >&2
+        exit 1
+    fi
+    plutil -lint "${live_plist}" >/dev/null
+    launchctl bootstrap "gui/$(id -u)" "${live_plist}"
+    launchctl print "${service}" >/dev/null
 
 [doc("Uninstall local LaunchAgent")]
 [group("mcphub")]
