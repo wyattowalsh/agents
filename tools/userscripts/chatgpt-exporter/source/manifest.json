@@ -1,0 +1,27 @@
+{
+  "name": "chatgpt-exporter-for-agents-source",
+  "version": "1.0.0",
+  "format": "base64-split-tar-xz",
+  "archive_sha256": "d2a48597e564e3f118d6a74fb088788246531893299da38b5db0dcc84fe5b1fc",
+  "archive_size_bytes": 47016,
+  "parts": [
+    "payload.part00",
+    "payload.part01",
+    "payload.part02",
+    "payload.part03",
+    "payload.part04",
+    "payload.part05",
+    "payload.part06"
+  ],
+  "production_install_url": "https://chatgpt-export-local.vercel.app/chatgpt-exporter.user.js",
+  "production_update_url": "https://chatgpt-export-local.vercel.app/chatgpt-exporter.meta.js",
+  "staged_from_commit": "265a3a4bbe251250a77dbf5f5ebc71405d816dcf",
+  "validation": {
+    "unit_tests": 20,
+    "scriptcat_checker_warnings": 0,
+    "scriptcat_checker_failures": 0,
+    "secret_scan_findings": 0,
+    "browser_viewports": 5,
+    "large_conversation_messages": 750
+  }
+}
