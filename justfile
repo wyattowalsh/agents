@@ -246,12 +246,12 @@ openspec-update:
 #                                      WEB                                     #
 # ---------------------------------------------------------------------------- #
 
-[doc("Install web/ (Fumadocs) dependencies")]
+[doc("Install docs/ (Astro) dependencies")]
 [group("web")]
 web-init:
     uv run wagents web init
 
-[doc("Generate Fumadocs MDX into web/content")]
+[doc("Generate docs MDX into docs/src/content")]
 [group("web")]
 web-generate:
     uv run wagents web generate --no-installed
@@ -266,12 +266,12 @@ web-generate-check:
 web-lint:
     uv run wagents web lint
 
-[doc("Build the Fumadocs production site")]
+[doc("Build the Astro production site")]
 [group("web")]
 web-build:
     uv run wagents web build
 
-[doc("Run Next.js dev server for web/")]
+[doc("Run the Astro dev server for docs/")]
 [group("web")]
 web-dev:
     uv run wagents web dev

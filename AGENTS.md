@@ -276,7 +276,7 @@ Third-party skills stay **out of** `skills/` unless you are authoring a new repo
 **Catalog semantics:**
 
 - **Human SSOT:** Flat per-skill files under `docs/src/authoring/skills/*.mdx` with YAML frontmatter (`skills-catalog-authoring.schema.json`: `name`, `description`, `source_kind` (`custom` | `curated-external`), `install_command`, `install_source`, `trust_tier`, `status` / `curated_status`, `target_agents`, provenance fields, `risk_notes`, `promotion_policy`, `provenance_evidence`, `notes`, …) plus a markdown body for audit notes and evidence.
-- **Machine SSOT:** `wagents web generate` (default `--no-installed`) emits `web/public/generated-registries/skills-catalog-index.json` (`skills-catalog-index.schema.json`). Runtime consumers (`skill_index`, `external_skills`, catalog rows, `site_model`, validate quarantine, `wagents skills sync`) read the index and/or authoring MDX only.
+- **Machine SSOT:** `wagents web generate` (default `--no-installed`) emits `docs/public/generated-registries/skills-catalog-index.json` (`skills-catalog-index.schema.json`). Runtime consumers (`skill_index`, `external_skills`, catalog rows, `site_model`, validate quarantine, `wagents skills sync`) read the index and/or authoring MDX only.
 - **Bucket B (registries):** MCP, hooks, `sync-manifest.json`, harness-surface-registry, tool policy, and related `config/` entries stay machine-first under `config/` and are outside this catalog authoring model.
 
 **Maintainer loop:** Edit `docs/src/authoring/skills/<id>.mdx` → `uv run wagents web generate --no-installed` → `uv run wagents skills sync --dry-run` → optional research waves. Repo-owned customs typically flow `skills/*/SKILL.md` → authoring sync → `*.mdx`. Never hand-edit the index or generated catalog pages.
@@ -284,7 +284,7 @@ Third-party skills stay **out of** `skills/` unless you are authoring a new repo
 | Surface | Role |
 | --- | --- |
 | `docs/src/authoring/skills/*.mdx` | Human SSOT for Bucket A (custom + curated-external catalog entries via frontmatter + body) |
-| `web/public/generated-registries/skills-catalog-index.json` | Committed generated machine bundle (index + metadata; emitted by web generate; SSOT for code) |
+| `docs/public/generated-registries/skills-catalog-index.json` | Committed generated machine bundle (index + metadata; emitted by web generate; SSOT for code) |
 | `planning/manifests/security-quarantine-register.json` | Hard-quarantine blocklist enforced by `wagents validate` |
 | Generated `/skills/catalog/...` pages | Public catalog (generated from index + research; do not hand-edit) |
 | `wagents skills sync` | Additive reconciliation across harnesses (consumes catalog index + authoring) |
@@ -299,8 +299,8 @@ Third-party skills stay **out of** `skills/` unless you are authoring a new repo
 6. **Preview installs** — `uv run wagents skills sync --dry-run` (optionally `-a <harness>`). Do **not** run `wagents skills sync --apply` or live `npx skills add ...` unless the maintainer explicitly requests live installs.
 7. **Regenerate public surfaces** — `uv run wagents web generate` (emits skills-catalog-index.json + catalog MDX under `web/`; repo-owned default for CI/pre-commit), then `uv run wagents readme` (if catalog inputs affect it), then `uv run wagents web build` for production build. Use `--include-installed` only for maintainer previews of local inventory.
 
-Do not hand-edit generated `web/content/docs/skills/catalog/custom/*.mdx`,
-`web/content/docs/skills/catalog/external/*.mdx`, or the emitted `skills-catalog-index.json` / install-script indexes. Do not expose machine-local absolute paths as public source labels.
+Do not hand-edit generated `docs/src/content/docs/skills/catalog/custom/*.mdx`,
+`docs/src/content/docs/skills/catalog/external/*.mdx`, or the emitted `skills-catalog-index.json` / install-script indexes. Do not expose machine-local absolute paths as public source labels.
 
 ## 2.8 Fleet Hooks
 
@@ -358,7 +358,7 @@ wagents readme --check       # Exits 1 if README is stale
 
 # Documentation site
 wagents web init                        # One-time: pnpm install in web/
-wagents web generate                    # Generate Fumadocs MDX into web/content (repo-only default)
+wagents web generate                    # Generate Astro MDX into docs/src/content (repo-only default)
 wagents web generate --include-installed  # Opt-in to installed skills from the normalized harness inventory
 wagents web generate --include-drafts   # Include skills with TODO descriptions
 wagents web generate --check            # Fail when generated web artifacts are stale
@@ -498,7 +498,7 @@ RTK owns local hooks and `~/.config/opencode/plugins/rtk.ts`; keep RTK out of `o
 | Claude-only pruner | Compare winner for Claude layer + user sign-off |
 | New OSS token tool | Research compare complete; no stacking without `rtk gain` + DCP evidence |
 
-Full maintainer hub: public site `/harness-config/token-efficacy/` (generated under `web/content/docs/harness-config/token-efficacy.mdx`).
+Full maintainer hub: public site `/harness-config/token-efficacy/` (generated under `docs/src/content/docs/harness-config/token-efficacy.mdx`).
 
 ---
 

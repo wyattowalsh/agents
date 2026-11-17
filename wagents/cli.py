@@ -3476,14 +3476,14 @@ def readme(
         "| `wagents install <name>` | Install specific skill to all agents |",
         "| `wagents install <name> -a <agent>` | Install specific skill to specific agents |",
         "| `wagents update` | Refresh installed skills from their recorded sources |",
-        "| `wagents web init` | One-time setup: install web/ (Fumadocs) dependencies |",
-        "| `wagents web generate` | Generate Fumadocs MDX content pages into web/content |",
+        "| `wagents web init` | One-time setup: install docs/ (Astro) dependencies |",
+        "| `wagents web generate` | Generate MDX content pages into docs/src/content |",
         (
             "| `wagents web generate --include-installed` | Include installed "
             "skills discovered from the normalized harness inventory in generated pages |"
         ),
         "| `wagents web generate --check` | Fail when generated web artifacts are stale |",
-        "| `wagents web dev` | Generate + launch Next.js dev server |",
+        "| `wagents web dev` | Generate + launch the Astro dev server |",
         "| `wagents web build` | Generate + production build |",
         "| `wagents web preview` | Generate + build + preview server |",
         "| `wagents web clean` | Remove generated content pages |",

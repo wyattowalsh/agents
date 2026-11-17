@@ -167,13 +167,13 @@ def _mcp_overview_badge_stale_reason() -> str | None:
     expected_badge = f'<Badge text="{count} configured servers"'
     if not match:
         return (
-            "web/content/docs/mcp/index.mdx MCP badge is missing or malformed; "
+            "docs/src/content/docs/mcp/index.mdx MCP badge is missing or malformed; "
             f"update hand-maintained badge to `{expected_badge} ...`"
         )
     badge_count = int(match.group(1))
     if badge_count != count:
         return (
-            f"web/content/docs/mcp/index.mdx MCP badge shows {badge_count} servers but "
+            f"docs/src/content/docs/mcp/index.mdx MCP badge shows {badge_count} servers but "
             f"the MCP registry defines {count}; update the hand-maintained badge"
         )
     return None
@@ -898,7 +898,7 @@ def write_reference_page() -> None:
         "",
         '<Aside type="note" title="Generated data">',
         "Machine-readable public artifacts live under `docs/public/generated-*` and generated ESM modules under "
-        "`web/src/generated-*`. Regenerate them with `uv run wagents web generate --no-installed`.",
+        "`docs/src/generated-*`. Regenerate them with `uv run wagents web generate --no-installed`.",
         "</Aside>",
         "",
     ]
@@ -953,7 +953,7 @@ def write_cli_page() -> None:
     parts.append("description: wagents CLI commands and usage")
     parts.append("---")
     parts.append("")
-    # Fumadocs injects Tabs/CardGrid/etc via getMDXComponents — no bare import.
+    # Starlight MDX pages import Tabs and CardGrid explicitly when those components are used.
     # Serve illustration from public/ (static URL); do not use Astro-style asset imports.
     parts.append(
         "`wagents` is the repo control plane for skills, agents, MCP servers, and generated docs. "
@@ -1038,7 +1038,7 @@ def write_cli_page() -> None:
         "and build isolated target artifacts |"
     )
     parts.append("| `wagents package <name>` | Build portable ZIP packages for sharing or release |")
-    parts.append("| `wagents web <subcommand>` | Generate, serve, build, preview, or clean the Fumadocs web site |")
+    parts.append("| `wagents web <subcommand>` | Generate, serve, build, preview, or clean the Astro docs site |")
     parts.append("| `wagents hooks <subcommand>` | List and validate lifecycle hooks |")
     parts.append("| `wagents eval <subcommand>` | List, validate, and check eval coverage |")
     parts.append("| `wagents media <subcommand>` | Image optimize and related media helpers |")
@@ -1772,28 +1772,28 @@ def write_cli_page() -> None:
     parts.append("")
 
     # --- wagents web ---
-    parts.append("### `wagents web` -- Public Web Site (Fumadocs)")
+    parts.append("### `wagents web` -- Public Docs Site (Astro)")
     parts.append("")
     parts.append(
-        "Manage the [Fumadocs](https://fumadocs.dev/)/Next.js public site under `web/` "
-        "at [agents.w4w.dev](https://agents.w4w.dev)."
+        "Manage the Astro Starlight public site under `docs/` "
+        "at [agents.w4w.dev](https://agents.w4w.dev). `wagents docs` is the same command group."
     )
     parts.append("")
     parts.append("<Tabs>")
     parts.append('  <TabItem label="init">')
     parts.append("")
-    parts.append("One-time setup to install web dependencies:")
+    parts.append("One-time setup to install docs site dependencies:")
     parts.append("")
     parts.append("```bash")
     parts.append("wagents web init")
     parts.append("```")
     parts.append("")
-    parts.append("This runs `pnpm install --ignore-workspace` in the `web/` directory.")
+    parts.append("This runs `pnpm install --ignore-workspace` in the `docs/` directory.")
     parts.append("")
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="generate">')
     parts.append("")
-    parts.append("Generate Fumadocs MDX content pages, registries, and indexes from repository assets:")
+    parts.append("Generate Astro MDX content pages, registries, and indexes from repository assets:")
     parts.append("")
     parts.append("```bash")
     parts.append("wagents web generate")
@@ -1821,14 +1821,14 @@ def write_cli_page() -> None:
     parts.append(
         "By default, generation is deterministic and repository-only (`--no-installed`). "
         "Opt in with `--include-installed` for local harness inventory rows. The generator creates "
-        "individual pages for each skill, agent, and MCP server under `web/content/docs/`, plus "
-        "category index pages and machine registries under `web/public/`."
+        "individual pages for each skill, agent, and MCP server under `docs/src/content/docs/`, plus "
+        "category index pages and machine registries under `docs/public/`."
     )
     parts.append("")
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="dev">')
     parts.append("")
-    parts.append("Generate content and start the Next.js development server with hot reload:")
+    parts.append("Generate content and start the Astro development server with hot reload:")
     parts.append("")
     parts.append("```bash")
     parts.append("wagents web dev")
@@ -1837,13 +1837,13 @@ def write_cli_page() -> None:
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="build">')
     parts.append("")
-    parts.append("Generate content and produce a production Next.js build:")
+    parts.append("Generate content and produce a production Astro build:")
     parts.append("")
     parts.append("```bash")
     parts.append("wagents web build")
     parts.append("```")
     parts.append("")
-    parts.append("Output goes to `web/.next/` (Vercel-compatible Next.js build).")
+    parts.append("Output goes to `docs/dist/` (static Astro build; admin routes use the Vercel adapter).")
     parts.append("")
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="preview">')
@@ -1876,7 +1876,7 @@ def write_cli_page() -> None:
     parts.append('<Aside type="tip" title="Typical web workflow">')
     parts.append(
         "For day-to-day development, `wagents web dev` is the most common command "
-        "-- it regenerates all content and launches a hot-reloading Next.js server in one step."
+        "-- it regenerates all content and launches a hot-reloading Astro server in one step."
     )
     parts.append("</Aside>")
     parts.append("")
@@ -2095,13 +2095,10 @@ def write_cli_page() -> None:
     parts.append("    - pyproject.toml")
     parts.append("    - fastmcp.json")
     parts.append("  - servers/ (ignored local third-party installs)")
-    parts.append("- web/ (Fumadocs / Next.js public site)")
-    parts.append("  - content/")
-    parts.append("    - docs/ (generated and hand-maintained MDX pages)")
-    parts.append("  - lib/")
-    parts.append("    - generated-sidebar.mjs")
-    parts.append("- docs/")
+    parts.append("- docs/ (Astro Starlight public site)")
     parts.append("  - src/")
+    parts.append("    - content/docs/ (generated and hand-maintained MDX pages)")
+    parts.append("    - generated-sidebar.mjs")
     parts.append("    - authoring/ (catalog authoring SSOT)")
     parts.append("- wagents/")
     parts.append("  - \\_\\_init\\_\\_.py")
