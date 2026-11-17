@@ -20,7 +20,6 @@ from wagents import (
     CONTENT_DIR,
     DOCS_DIR,
     ROOT,
-    WEB_DIR,
 )
 
 # Authoring SSOT + catalog index (W3)
@@ -212,10 +211,10 @@ def write_site_data(nodes: list, external_entries: list[ExternalSkillEntry] | No
         has_mcp_overview=_has_mcp_overview_page(),
         external_skills=external_entries,
     )
-    # DOCS_DIR aliases WEB_DIR (tests monkeypatch DOCS_DIR to a temp package root).
-    lib_dir = DOCS_DIR / "lib"
-    lib_dir.mkdir(parents=True, exist_ok=True)
-    (lib_dir / "generated-site-data.mjs").write_text(render_site_data_module(data), encoding="utf-8")
+    # Astro imports these from docs/src. Tests monkeypatch DOCS_DIR to a temp root.
+    generated_dir = DOCS_DIR / "src"
+    generated_dir.mkdir(parents=True, exist_ok=True)
+    (generated_dir / "generated-site-data.mjs").write_text(render_site_data_module(data), encoding="utf-8")
     public_index_dir = DOCS_DIR / "public" / "generated-skill-indexes"
     public_index_dir.mkdir(parents=True, exist_ok=True)
     for stale in ("custom.json", "external.json", "all.json", "installed.json"):
@@ -225,9 +224,12 @@ def write_site_data(nodes: list, external_entries: list[ExternalSkillEntry] | No
     (public_index_dir / "install-scripts.json").write_text(
         json.dumps(data["skillInstallScripts"], indent=2, sort_keys=True), encoding="utf-8"
     )
-    (lib_dir / "generated-skill-indexes.mjs").write_text(render_skill_indexes_module(data), encoding="utf-8")
+    (generated_dir / "generated-skill-indexes.mjs").write_text(
+        render_skill_indexes_module(data),
+        encoding="utf-8",
+    )
     update_research_manifest()
-    (lib_dir / "generated-visual-assets.css").write_text(render_visual_assets_css(), encoding="utf-8")
+    (generated_dir / "generated-visual-assets.css").write_text(render_visual_assets_css(), encoding="utf-8")
 
 
 def public_landing_stats(counts: dict[str, int | str], *, mcps: list, has_mcp_overview: bool) -> list[str]:
@@ -2747,7 +2749,7 @@ def write_skill_research_pages(nodes: list) -> None:
 
 
 def render_sidebar_module(nodes: list) -> str:
-    """Render web/src/generated-sidebar.mjs content without writing to disk."""
+    """Render docs/src/generated-sidebar.mjs content without writing to disk."""
     agents = [n for n in nodes if n.kind == "agent"]
     mcps = [n for n in nodes if n.kind == "mcp"]
     mcp_overview_path = CONTENT_DIR / "mcp" / "index.mdx"
@@ -2865,8 +2867,8 @@ def render_sidebar_module(nodes: list) -> str:
 
 
 def write_sidebar(nodes: list) -> None:
-    """Write web/lib/generated-sidebar.mjs with dynamic sidebar config."""
-    sidebar_path = DOCS_DIR / "lib" / "generated-sidebar.mjs"
+    """Write docs/src/generated-sidebar.mjs with dynamic sidebar config."""
+    sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
     sidebar_path.parent.mkdir(parents=True, exist_ok=True)
     content = render_sidebar_module(nodes)
     tmp_path = sidebar_path.with_suffix(".mjs.tmp")
@@ -3002,7 +3004,7 @@ def _clean_content_subdir(d: Path) -> bool:
 # web subcommand group (canonical; formerly `docs`)
 # ---------------------------------------------------------------------------
 
-web_app = typer.Typer(help="Public web site management (Fumadocs under web/)")
+web_app = typer.Typer(help="Public docs site management (Astro site under docs/)")
 # Back-compat symbol for internal imports during migration; not registered on CLI.
 docs_app = web_app
 
@@ -3010,7 +3012,7 @@ DOCS_GENERATE_LOCK_MAX_AGE_S = 2 * 60 * 60
 
 
 def _docs_generate_lock_path() -> Path:
-    return WEB_DIR / ".wagents-web-generate.lock"
+    return DOCS_DIR / ".wagents-web-generate.lock"
 
 
 @contextmanager
@@ -3053,14 +3055,14 @@ def _docs_generate_lock():
 
 @web_app.command("init")
 def docs_init():
-    """One-time setup: install web dependencies."""
-    if not (WEB_DIR / "package.json").exists():
-        typer.echo("Error: web/package.json not found. Is the scaffold committed?", err=True)
+    """One-time setup: install docs site dependencies."""
+    if not (DOCS_DIR / "package.json").exists():
+        typer.echo("Error: docs/package.json not found. Is the docs site scaffold committed?", err=True)
         raise typer.Exit(code=1)
-    typer.echo("Installing web dependencies...")
+    typer.echo("Installing docs site dependencies...")
     result = subprocess.run(
         ["pnpm", "install", "--ignore-workspace"],
-        cwd=str(WEB_DIR),
+        cwd=str(DOCS_DIR),
     )
     if result.returncode != 0:
         typer.echo("Error: pnpm install failed", err=True)
@@ -3090,60 +3092,68 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
         external_skills=external_entries,
     )
     expected_site = render_site_data_module(expected_data)
-    site_path = DOCS_DIR / "lib" / "generated-site-data.mjs"
+    site_path = DOCS_DIR / "src" / "generated-site-data.mjs"
     if not site_path.exists():
-        reasons.append("web/lib/generated-site-data.mjs missing; run `uv run wagents web generate --no-installed`")
+        reasons.append("docs/src/generated-site-data.mjs missing; run `uv run wagents web generate --no-installed`")
     elif site_path.read_text(encoding="utf-8") != expected_site:
-        reasons.append("web/lib/generated-site-data.mjs is stale; run `uv run wagents web generate --no-installed`")
+        reasons.append("docs/src/generated-site-data.mjs is stale; run `uv run wagents web generate --no-installed`")
 
     expected_skill_indexes = render_skill_indexes_module(expected_data)
-    skill_indexes_path = DOCS_DIR / "lib" / "generated-skill-indexes.mjs"
+    skill_indexes_path = DOCS_DIR / "src" / "generated-skill-indexes.mjs"
     if not skill_indexes_path.exists():
-        reasons.append("web/lib/generated-skill-indexes.mjs missing; run `uv run wagents web generate --no-installed`")
+        reasons.append(
+            "docs/src/generated-skill-indexes.mjs missing; run `uv run wagents web generate --no-installed`"
+        )
     elif skill_indexes_path.read_text(encoding="utf-8") != expected_skill_indexes:
-        reasons.append("web/lib/generated-skill-indexes.mjs is stale; run `uv run wagents web generate --no-installed`")
+        reasons.append(
+            "docs/src/generated-skill-indexes.mjs is stale; run `uv run wagents web generate --no-installed`"
+        )
 
     expected_sidebar = render_sidebar_module(nodes)
-    sidebar_path = DOCS_DIR / "lib" / "generated-sidebar.mjs"
+    sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
     if not sidebar_path.exists():
-        reasons.append("web/lib/generated-sidebar.mjs missing; run `uv run wagents web generate --no-installed`")
+        reasons.append("docs/src/generated-sidebar.mjs missing; run `uv run wagents web generate --no-installed`")
     elif sidebar_path.read_text(encoding="utf-8") != expected_sidebar:
-        reasons.append("web/lib/generated-sidebar.mjs is stale; run `uv run wagents web generate --no-installed`")
+        reasons.append("docs/src/generated-sidebar.mjs is stale; run `uv run wagents web generate --no-installed`")
 
     expected_install_scripts = json.dumps(expected_data["skillInstallScripts"], indent=2, sort_keys=True)
     install_scripts_path = DOCS_DIR / "public" / "generated-skill-indexes" / "install-scripts.json"
     if not install_scripts_path.exists():
         reasons.append(
-            "web/public/generated-skill-indexes/install-scripts.json missing; "
+            "docs/public/generated-skill-indexes/install-scripts.json missing; "
             "run `uv run wagents web generate --no-installed`"
         )
     elif install_scripts_path.read_text(encoding="utf-8") != expected_install_scripts + "\n":
         actual = install_scripts_path.read_text(encoding="utf-8").strip()
         if actual != expected_install_scripts.strip():
             reasons.append(
-                "web/public/generated-skill-indexes/install-scripts.json is stale; "
+                "docs/public/generated-skill-indexes/install-scripts.json is stale; "
                 "run `uv run wagents web generate --no-installed`"
             )
 
     expected_visual_css = render_visual_assets_css()
-    visual_css_path = DOCS_DIR / "lib" / "generated-visual-assets.css"
+    visual_css_path = DOCS_DIR / "src" / "generated-visual-assets.css"
     if not visual_css_path.exists():
-        reasons.append("web/lib/generated-visual-assets.css missing; run `uv run wagents web generate --no-installed`")
+        reasons.append(
+            "docs/src/generated-visual-assets.css missing; run `uv run wagents web generate --no-installed`"
+        )
     elif visual_css_path.read_text(encoding="utf-8") != expected_visual_css:
-        reasons.append("web/lib/generated-visual-assets.css is stale; run `uv run wagents web generate --no-installed`")
+        reasons.append(
+            "docs/src/generated-visual-assets.css is stale; run `uv run wagents web generate --no-installed`"
+        )
 
     from wagents.skill_research import MANIFEST_PATH as research_manifest_path
 
     expected_manifest = render_research_manifest()
     if not research_manifest_path.exists():
         reasons.append(
-            "web/src/generated-skill-research-index.mjs missing; run `uv run wagents web generate --no-installed`"
+            "docs/src/generated-skill-research-index.mjs missing; run `uv run wagents web generate --no-installed`"
         )
     else:
         actual_manifest = research_manifest_path.read_text(encoding="utf-8")
         if actual_manifest != expected_manifest:
             reasons.append(
-                "web/src/generated-skill-research-index.mjs is stale; run `uv run wagents web generate --no-installed`"
+                "docs/src/generated-skill-research-index.mjs is stale; run `uv run wagents web generate --no-installed`"
             )
 
     reasons.extend(reports_stale_reasons())
@@ -3352,7 +3362,7 @@ def docs_build():
     if result.returncode != 0:
         typer.echo("Error: build failed", err=True)
         raise typer.Exit(code=1)
-    typer.echo("Build complete. Output in web/.next/")
+    typer.echo("Build complete. Output in docs/dist/")
 
 
 @docs_app.command("preview")
@@ -3856,10 +3866,16 @@ def docs_clean():
     if external_path.exists():
         external_path.unlink()
         cleaned = True
-    sidebar_path = DOCS_DIR / "lib" / "generated-sidebar.mjs"
-    if sidebar_path.exists():
-        sidebar_path.unlink()
-        cleaned = True
+    for name in (
+        "generated-sidebar.mjs",
+        "generated-site-data.mjs",
+        "generated-skill-indexes.mjs",
+        "generated-visual-assets.css",
+    ):
+        artifact = DOCS_DIR / "src" / name
+        if artifact.exists():
+            artifact.unlink()
+            cleaned = True
     if cleaned:
         typer.echo("Cleaned generated content pages")
     else:

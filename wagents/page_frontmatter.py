@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from datetime import date
 from typing import TYPE_CHECKING, Any
@@ -132,6 +133,52 @@ def render_composed_frontmatter_block(node: CatalogNode, *, wave_id: str) -> str
         + "\n---\n\n"
         + "{/* GENERATED-COMPOSED — regenerable by wagents docs generate */}\n"
     )
+
+
+DOCS_SITE_ORIGIN = "https://agents.w4w.dev"
+
+
+def render_collection_json_ld_script(
+    *,
+    title: str,
+    description: str,
+    url: str,
+    items: list[tuple[str, str]],
+) -> list[str]:
+    """Return MDX lines for a CollectionPage JSON-LD script."""
+
+    def absolute(href: str) -> str:
+        if href.startswith("https://") or href.startswith("http://"):
+            return href
+        if not href.startswith("/"):
+            href = f"/{href}"
+        return f"{DOCS_SITE_ORIGIN}{href}"
+
+    payload = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": title,
+        "description": description,
+        "url": absolute(url),
+        "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": index,
+                    "name": name,
+                    "url": absolute(href),
+                }
+                for index, (name, href) in enumerate(items, start=1)
+            ],
+        },
+    }
+    return [
+        '<script type="application/ld+json">',
+        json.dumps(payload, indent=2, ensure_ascii=True),
+        "</script>",
+        "",
+    ]
 
 
 def enrich_rich_hand_frontmatter(

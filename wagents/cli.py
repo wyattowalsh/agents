@@ -16,8 +16,25 @@ import typer
 
 from wagents import KEBAB_CASE_PATTERN, ROOT, VERSION
 from wagents.catalog import CatalogNode
-from wagents.commands.plugin import plugin_app
 from wagents.commands.validate import register_validate_commands, validate_name
+
+try:
+    from wagents.commands.plugin import plugin_app
+except ModuleNotFoundError as exc:
+    plugin_app = typer.Typer(help="Agent plugin maintenance (command module missing)")
+    _PLUGIN_IMPORT_ERROR = exc
+
+    @plugin_app.callback(invoke_without_command=True)
+    def _plugin_unavailable() -> None:
+        typer.echo(
+            "Error: wagents plugin commands are unavailable because "
+            "wagents.commands.plugin is not in this checkout "
+            f"({_PLUGIN_IMPORT_ERROR}).",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+else:
+    _PLUGIN_IMPORT_ERROR = None
 from wagents.context import (
     REPO_ROOT_ENV,
     bootstrap_cli_context,
@@ -151,6 +168,7 @@ new_app = typer.Typer(help="Create new assets from reference templates")
 app.add_typer(new_app, name="new")
 app.add_typer(plugin_app, name="plugin")
 app.add_typer(web_app, name="web")
+app.add_typer(web_app, name="docs")
 hooks_app = typer.Typer(help="Manage hooks across skills and agents")
 app.add_typer(hooks_app, name="hooks")
 media_app = typer.Typer(help="Optimize model-bound media inputs")

@@ -179,7 +179,9 @@ def _sync_module_paths(repo_root: Path) -> None:
 
     wagents.ROOT = repo_root
     wagents.DOCS_DIR = repo_root / "docs"
+    wagents.WEB_DIR = wagents.DOCS_DIR
     wagents.CONTENT_DIR = wagents.DOCS_DIR / "src" / "content" / "docs"
+    wagents.AUTHORING_SKILLS_DIR = wagents.DOCS_DIR / "src" / "authoring" / "skills"
 
 
 def detect_install_mode() -> str:
