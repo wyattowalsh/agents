@@ -1,6 +1,6 @@
 # Proposal
 
-> Wave 0 is done, and the maintainer then moved the pin. `wagents` imports, docs writes target `docs/src`, and the accidental warning path is gone. The enforced Cursor Task slug is `grok-4.7-xhigh` (Grok 4.7 extra high; 500k is that model's context window, not a separate slug). Waves 1–4 below are still open. The problem statement records the state this plan started from.
+> Cleanup is finished. `wagents` imports, docs write to `docs/src`, the Cursor pin is `grok-4.7-xhigh`, the unused 22 MB index and planning scratch are gone, and 24 finished changes are archived. Do not continue this as a program. The problem statement below is the record of what we started from. What remains is normal product work, listed in `tasks.md`.
 
 ## Problem
 
@@ -20,19 +20,9 @@ June's cleanup ledger (`planning/manifests/repo-cleanup-review-findings.md`) is 
 
 ## Intent
 
-Publish one sequenced plan that says what to archive, what to delete, what to tighten, and what to leave alone. Later waves implement it. This change does not perform the overhaul.
+The useful cleanup is already on `main`. Stop there.
 
-Recommended order:
-
-1. **P0 — Make `wagents` import.** Remove or add the missing `plugin` Typer, export the symbols `docs.py` imports, and register the docs command under the name CI already calls (`docs`). Do this before any generate or validate step.
-2. **P0 — Make Task launches work.** The maintainer set the pin to `grok-4.7-xhigh`. That slug is in the spec, the hook, `cursor.py`, the Cursor rule, and `.cursor/agents/`. `cursor-grok-high-pin` stays superseded. There is no 500k slug.
-3. **P0 — Repair the docs writer path** so generate updates `docs/src/`, which Astro already imports. Do this before any attempt to delete generated files.
-4. **P1 — Archive finished OpenSpec changes** after a short spot-check, counting both `- [x]` and `1. [x]` lists. Do not archive `integrate-ideas-backlog` while its 20 `[~]` rows and 1 open box remain. Do not archive `replace-supathings-with-things-plus-plus` until `capability-manifest.json` is moved out of that change directory: `config/schemas/mcp-registry.schema.json` pins that path.
-5. **P1 — Stop shipping the unused 22.2 MB skill-index module** after an import search and a docs check confirm the catalog still builds from the JSON indexes. `planning/tmp/` and `planning/workspaces/` can go in the same wave after the seven-session deferral sentences are copied into the findings ledger. Leave the July corpus, including `runtime-activation-assurance.json`, which `wagents/docs.py` reads.
-6. **P1 — Reconcile hook tier text.** `hook_perf.tier` is already `bundle`. Update the hooks spec to say that, and close `fleet-hooks-promotion` without re-running its task list. Do not start that change.
-7. **P2 — Tell the truth in contracts** (`AGENTS.md` vs missing `skill-adapters.json`; instruction projections vs `instructions/global.md`). Cursor and Claude rule copies are hand pastes. `sync_agent_stack.py` does not regenerate them. Replace the full `**/*` bodies with pointers. Do not strip skill frontmatter in this program.
-8. **P2 — Finish in-flight product work that is still true.** Things++ stays open until the manifest moves and retired `supathings` client routes are gone. Harness retirement, token efficacy, and RV skill/docs contracts stay their own changes. Remove the repo-default `opencode-claude-auth@latest` plugin, or record an exception: quarantine row EXT-017 forbids that default.
-9. **P3 — Collapse thin `skill-*` report skills** only after catalog URLs have a redirect story and `sync_skill_portability.py` no longer expects a toolkit copy in each deleted skill. Keep `skill-creator` and `skill-router`. Keep all 20 agent names; orchestrator allowlists and tests bind them. `mcp-template-maintainer` is not a scaffold.
+Do not collapse skills, rewrite instruction files, or run another docs regeneration as part of this change. The only follow-up that is still real is moving the Things++ manifest out of its OpenSpec directory the next time that feature is edited. Everything else still under `openspec/changes/` is ordinary product work.
 
 ## Scope
 
