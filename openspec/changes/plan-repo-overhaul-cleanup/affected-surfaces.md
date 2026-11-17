@@ -9,7 +9,11 @@ This change adds plan documents only. The rows below are the surfaces later wave
 | `openspec/changes/plan-repo-overhaul-cleanup/` | now | This plan. |
 | `openspec/changes/*` (50 active) | 1 | Archive, finish, or give tasks. Do not edit `openspec/changes/archive/**` history. |
 | `openspec/specs/cursor-harness/spec.md` | 0 | Still requires `cursor-grok-4.6-xhigh` while the hook forces a dead slug. |
+| `wagents/cli.py`, `wagents/docs.py`, `wagents/__init__.py` | 0 | Missing `plugin` module and missing `WEB_DIR` / `AUTHORING_SKILLS_DIR` exports. CI calls `wagents docs`. |
 | `wagents/hooks/policies/cursor_task_model_pin.py` | 0 | `CURSOR_PINNED_MODEL = "cursor-grok-4.5-high"`. |
+| `config/tooling-policy.json` | 1 | `hook_perf.tier` is already `bundle`. Spec text still says `legacy`. |
+| `config/mcp-registry.json`, `config/schemas/mcp-registry.schema.json` | 1 | Things++ manifest path is inside the open change. `supathings` id remains. |
+| `opencode.json` | 1 | `opencode-claude-auth@latest` contradicts quarantine EXT-017. |
 | `wagents/platforms/cursor.py` | 0 | `CURSOR_DEFAULT_MODEL = "cursor-grok-4.6-xhigh"`. |
 | `.cursor/rules/cursor-models.mdc` | 0 | Always-apply rule still names 4.5-high. |
 | `.cursor/agents/*.md` | 0 | Frontmatter `model: cursor-grok-4.5-high` on every projected agent. |

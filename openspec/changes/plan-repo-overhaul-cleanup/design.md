@@ -8,24 +8,19 @@ The June 2026 ledger stays as history. RV-RC-006's "archive only when an owner c
 
 ### Wave 0 — Unblock (P0)
 
-**Model pin.** Finish inside `openspec/changes/cursor-grok-high-pin/`, do not start a sibling change. That change is 29/32. The three open boxes are operator-owned (`W2-L1`, `W2-L2`, and the local verify that repeats them). Repo code has already drifted past the change text: the task list still says the writer default became `cursor-grok-4.5-high`, but `wagents/platforms/cursor.py` now says `cursor-grok-4.6-xhigh`, and the spec agrees with `cursor.py`. The hook and the Cursor rule do not.
+**CLI import.** Before any `wagents` command in later waves:
 
-Pick one slug and write it everywhere the pin is read:
+- `wagents/cli.py` line 19 imports `plugin_app` from `wagents.commands.plugin`. That module is absent. `wagents/commands/` contains `__init__.py` and `validate.py` only. Drop the import and the `plugin` Typer until a real module exists, and drop `just` recipes that call it.
+- `wagents/docs.py` imports `WEB_DIR` and `AUTHORING_SKILLS_DIR` from `wagents`. `__init__.py` defines `ROOT`, `DOCS_DIR`, and `CONTENT_DIR` only. `AUTHORING_SKILLS_DIR` already lives in `wagents/skill_index.py`. Stop importing `WEB_DIR`. There is no `web/package.json`. The site is `docs/`.
+- CI (`.github/workflows/ci.yml` and `maintenance-freshness.yml`) calls `uv run wagents docs`. The Typer group is registered as `web` only. Register it as `docs`.
 
-| Copy | Current value | Allowed here? |
-| --- | --- | --- |
-| Hook `CURSOR_PINNED_MODEL` | `cursor-grok-4.5-high` | No. Task rewrite fails. |
-| `.cursor/rules/cursor-models.mdc` and `.cursor/agents/*.md` | `cursor-grok-4.5-high` | No. |
-| Spec and `CURSOR_DEFAULT_MODEL` | `cursor-grok-4.6-xhigh` | Yes. |
-| Maintainer request for this session | `grok-4.7-xhigh` | Yes. Extra high. No 500k slug exists. |
+**Model pin.** Do not finish `cursor-grok-high-pin`. Its open boxes and its completed task text still target `cursor-grok-4.5-high`. Applying them would move the spec backward. `AGENTS.md`, `openspec/specs/cursor-harness/spec.md`, and `CURSOR_DEFAULT_MODEL` already say `cursor-grok-4.6-xhigh`, and that slug is accepted here. Close the change as superseded.
 
-**Recommendation:** set the single constant to `grok-4.7-xhigh`, and change the spec scenario to that slug in the same commit. The hook's job is to force a slug the catalog accepts. A pin the catalog rejects is worse than a pin one generation behind.
+Repair only the copies that still force the dead slug: `CURSOR_PINNED_MODEL`, `config/cursor-agents.json`, `config/schemas/cursor-agents.schema.json`, hook-registry pin text, `.cursor/rules/cursor-models.mdc`, and `.cursor/agents/*.md`. One constant, same string as the spec.
 
-**Rejected alternative:** keep the spec on `cursor-grok-4.6-xhigh` and only repair the hook to match it. Choose this if the maintainer wants no model move. Do not choose "leave the hook on 4.5".
+`grok-4.7-xhigh` is the extra-high Grok 4.7 Task slug in this environment. There is no 500k slug. Use it only if the maintainer explicitly moves the spec. This plan does not.
 
-Close the operator boxes by moving them into the spec as SHOULD, then archive `cursor-grok-high-pin` in wave 1.
-
-**Docs writer path.** `write_site_data()` in `wagents/docs.py` sets `lib_dir = DOCS_DIR / "lib"` with `DOCS_DIR = ROOT / "docs"`. Tracked files and Astro imports live under `docs/src/`. Point the writer and the staleness checks at `docs/src/` (the directory tests already use). Do not regenerate the 22.2 MB module until wave 2 decides its fate.
+**Docs writer path.** `write_site_data()` in `wagents/docs.py` sets `lib_dir = DOCS_DIR / "lib"` with `DOCS_DIR = ROOT / "docs"`. Tracked files and Astro imports live under `docs/src/`. Point the writer and the staleness checks at `docs/src/` (the directory tests already use). Do not regenerate the 22.2 MB module until wave 2 decides its fate. Stale-check strings that say `web/lib` and `wagents web generate` get the same correction.
 
 **Junk paths.** Delete the tracked 49-byte file whose name is the git error `warning: could not open directory 'platforms/copilot/': No such file or directory`, and the untracked directory `warning: could not open directory 'platforms`. `platforms/copilot/` is already gone; this is the leftover message, not a harness.
 
@@ -43,7 +38,6 @@ Archive-ready now (every box checked). Spot-check, then archive. Do not re-imple
 | `fleet-hooks-performance` | 139/139 |
 | `grill-me-harness-routing` | 12/12 |
 | `integrate-candidate-corpus-jul2026` | 63/63 |
-| `integrate-ideas-backlog` | 126/126 |
 | `integrate-starlight-plugin-stack` | 9/9 |
 | `prefer-grok-tier-t-trivial-offload` | 6/6 |
 | `reconcile-harness-plugins-skills` | 15/15 |
@@ -52,8 +46,18 @@ Archive-ready now (every box checked). Spot-check, then archive. Do not re-imple
 | `replace-ddgs-mcp-adapter` | 10/10 |
 | `replace-package-version-check-mcp` | 12/12 |
 | `skill-portability-decouple` | 9/9 |
+| `add-new-project-skill` | numbered 14/14 |
+| `consolidate-review-skill` | numbered 15/15 |
+| `upgrade-design-skill` | numbered 20/20 |
+| `enhance-skill-creator-lifecycle` | numbered 12/12 |
+| `enforce-unique-eval-prompts` | numbered 8/8 |
+| `repair-ci-agent-stack-check` | numbered 3/3 |
+| `grok-delegate-auth-self-contained` | numbered 8/9; last box is operator `grok login` |
+| `integrate-custom-media-pentest-skills` | no `tasks.md`; `skills/ffmpeg`, `yt-dlp`, and `pentest` exist |
 
-`skill-portability-decouple` is about portable ZIP paths and CI, not about removing frontmatter keys. Archiving it does not authorize a frontmatter strip.
+The first inventory only matched lines that start with `- [x]`. Numbered `1. [x]` lists are done too. `integrate-ideas-backlog` is not in this table: it has 127 `[x]` rows, 1 open box, and 20 `[~]` deferrals. Archiving it would hide that.
+
+`skill-portability-decouple` is about portable ZIP paths and CI, not about removing frontmatter keys. Archiving it does not authorize a frontmatter strip. Deleting a `skill-*` directory later must update that sync list, because each skill still vendors `scripts/asset_toolkit/`.
 
 `integrate-candidate-corpus-jul2026` being done means the intake change can archive. It does not mean the JSON corpus can leave git.
 
@@ -63,10 +67,11 @@ Finish-then-archive (one to six boxes left, or a last-mile product change). Do n
 
 - MCP adds at 10/11 or 11/12: `add-jupyter-mcp-server`, `add-scrapling-mcp`, `add-open-websearch-mcp-skill`, `add-reddit-mcp-buddy`.
 - `add-lm-studio-harness` 29/30.
-- `fleet-hooks-parity` 84/90. Archive `fleet-hooks-performance` and `fleet-hooks-guard-expansion` first. Start `fleet-hooks-promotion` (0/24) only after parity is archived. Do not collapse the four hook changes into one.
+- `fleet-hooks-parity` 84/90. Archive `fleet-hooks-performance` and `fleet-hooks-guard-expansion` after the spot-check. Do not collapse the four hook changes into one.
+- `fleet-hooks-promotion` is not unstarted work. `config/tooling-policy.json` already sets `hook_perf.tier` to `bundle`, and `fleet-pre-tool-enforce` is already in the hook registry. The unchecked task list would redo that flip. Close the change after the hooks spec stops saying the default tier is `legacy`. Do not run its task list.
 - `harden-docs-site-findings-jul2026` 28/29, `integrate-rtk-harness-fleet` 40/41, `mcphub-qsv-data-group` 13/14, `optimize-harness-image-inputs` 35/36.
 - `kill-agent-attribution` 5/7.
-- `replace-supathings-with-things-plus-plus` 23/31. Finish it. Recent commits already sealed Things++ and the exporter. Do not revert those commits.
+- `replace-supathings-with-things-plus-plus` stays open. Recent commits sealed the local Things++ runtime and the exporter. Do not revert them. Do not archive this change until `capability-manifest.json` moves to a durable path: `config/mcp-registry.json` and `config/schemas/mcp-registry.schema.json` both `const` that file inside the change directory. `supathings` is still a server id in the registry beside `things`. Remove those retired client routes in the same change. A checked task names `config/skill-adapters.json` as its output; that file is not in the tree now, so do not treat the checkbox as proof the adapter file exists.
 
 Keep open as their own programs, even though they are young:
 
@@ -76,11 +81,13 @@ Keep open as their own programs, even though they are young:
 - `activate-candidate-corpus-runtime-jul2026` (7/37) — runtime receipts. Do not "simplify" by deleting evidence it measures.
 - `fleet-skill-projection-assurance` (6/15), `integrate-apm-package-manager` (27/35), `integrate-mcphub-control-plane` (11/16), `compose-harness-catalog-pages` (2/7).
 
-Proposal-only (no `tasks.md`). One sitting each: write tasks or archive as not started. Do not implement them during that sitting.
+Still needs a real task list or an explicit kill, not an archive-as-done:
 
-`add-new-project-skill`, `consolidate-review-skill`, `enforce-unique-eval-prompts`, `enhance-skill-creator-lifecycle`, `grok-delegate-auth-self-contained`, `harden-nerdbot-source-health-skill-tooling`, `integrate-custom-media-pentest-skills`, `public-release-prod-readiness`, `remediate-rv-mcp`, `repair-ci-agent-stack-check`, `upgrade-design-skill`.
+- `harden-nerdbot-source-health-skill-tooling` has no `tasks.md`.
+- `remediate-rv-mcp` is a closure note whose DDGS pin (`ddgs-mcp-server==0.5.1`) is not what shipped (`ddgs[mcp]==9.14.4` in `scripts/mcphub/ddgs-stdio.sh`). Kill it. Do not archive it as current truth.
+- `public-release-prod-readiness` already has tasks 1–10, all open. Leave it. It is the release gate after the CLI imports and the RV contracts move. Do not invent a second task list.
 
-`public-release-prod-readiness` is the right home for a later release gate. Give it tasks that point at the validation matrix. Do not delete it as noise.
+`remove-gemini-antigravity-copilot` stays a real change. `config/tooling-policy.json` still has `copilot` and `gemini` model-default keys, and `token-efficacy-program` still names those harnesses in its RTK apply list. Do not apply token-efficacy's platform list until the retirement change decides they are gone. `agents/README.md` still claims a Copilot agent directory that is not in the tree.
 
 ### Wave 2 — Generated weight (P1)
 
@@ -92,21 +99,23 @@ After wave 0's writer path fix:
 4. Add `linguist-generated` in a new `.gitattributes` for the generated files that stay (`docs/src/generated-site-data.mjs`, catalog JSON). No LFS. No history rewrite.
 5. Leave the 14.6 MB catalog index. A size budget belongs to a catalog change, not a delete.
 
-`planning/workspaces/justfile-workspace/harness-sync-dry-run.json` (0.94 MB) is a dry-run dump. Delete it only when `rg` shows no test reads it. Same rule for `planning/manifests/harness-reconciliation.json` (2.67 MB).
+`planning/tmp/` and `planning/workspaces/` have no readers under `tests/`, `wagents/`, `scripts/validate/`, or `docs/`. Delete them after copying the seven-session sentences from `planning/workspaces/seven-session-resume/ledger.md` into `planning/manifests/repo-cleanup-review-findings.md` (the "145" quarantine residual and "S6 cleanup closed light"). Then gitignore both directories. Keep `planning/manifests/harness-reconciliation.json`; tests use it. Keep `runtime-activation-assurance.json`; `wagents/docs.py` errors if it is missing.
+
+`platforms/chatgpt/dev-harness/` is an abandoned gateway: it starts scripts that are not in the tree. Remove it only after confirming LaunchAgent `com.wyatt.agents.chatgpt-dev-harness` is not loaded. Do not touch the Things++ bundle beside it.
 
 ### Wave 3 — Contract honesty (P2)
 
 - Rewrite the `AGENTS.md` skill-key paragraph so it describes the tree: those keys are still in `SKILL.md`, and `config/skill-adapters.json` is not a file. Do not invent the adapter file in this wave.
-- Diff `instructions/global.md` against `.cursor/rules/global.mdc` and the Codex/OpenCode copies. If sync regenerates a byte-identical projection, mark the projection generated. If the copies have drifted, fix the writer, do not hand-merge three 12 KB files in a cleanup commit.
+- `.cursor/rules/global.mdc` is a hand paste and is missing Trust Boundary bullets that are in `instructions/global.md`. `.cursor/rules/codex.mdc` and `.claude/rules/codex.md` are missing those bullets and the MCPHub preflight section. `sync_agent_stack.py` does not regenerate these files. Replace the full `globs: "**/*"` bodies with one-line pointers at the hand files, the same shape as `claude-code.mdc`. Do not delete the rule files. Highest duplicate is the second full copy of global inside the Codex rules, then the 13 KB OpenCode rule (OpenCode already loads `instructions/opencode-global.md`).
 - Do not start a parallel trim of `instructions/global.md`. File the trim list as input to `token-efficacy-program`.
 
 ### Wave 4 — Refine products that are actually thin (P3)
 
 Skill meta family, measured body lines: `skill-token-budget-linter` 37, `skill-quality-dashboard` 38, `skill-bundle-curator` 39, `skill-compat-matrix` 47, `skill-install-dry-run-planner` 47, `skill-lifecycle-manager` 48, `skill-trace-debugger` 48, `skill-eval-scaffolder` 49, `skill-tag-taxonomist` 50. `skill-creator` is 259 lines and `skill-router` is 140. All 67 skills have an `evals/` directory, so "no evals" is not a deletion reason.
 
-Target shape, only after catalog URL redirects exist: keep `skill-creator` and `skill-router`; fold the report-shaped skills into `wagents` subcommands plus one maintainer skill. Until that redirect exists, leave the skills in place. Niche product skills (draw-thing, things-manager, nerdbot, pentest, and the rest) stay. Overlap among research / host-panel / wargame and among shell-scripter / shell-conventions / justfile is real and is **keep-distinct**. Their descriptions already draw NOT-for boundaries.
+Target shape, only after catalog URL redirects exist and the portability sync list drops those directories: keep `skill-creator` and `skill-router`; fold the nine report skills into `wagents eval` / `audit` commands. `skill-package-manifest-enricher` becomes `wagents package enrich`, then the skill can go. Until the redirect exists, leave the skills in place. Niche product skills stay. Research, host-panel, and wargame stay distinct. Shell-conventions, shell-scripter, and justfile stay distinct, except one routing fix: `shell-scripter` still has a Justfile mode while `justfile/references/when-not-just.md` says that work belongs to `/justfile`. Move that mode. Do not merge the skills.
 
-Scaffold agents stay in `agents/` until a wave-4 decision per name: implement, or mark non-public and stop emitting a public docs page. Do not delete a name that `config/opencode-agents.json` or `.cursor/agents/` still projects. Candidates whose bodies say planned or scaffold: `agent-permission-simulator`, `agent-registry-publisher`, `agent-transpiler`, `prompt-optimizer`. `mcp-template-maintainer` matched the word scaffold; re-read it before hiding it.
+Keep all 20 agent names. `config/agent-delegation-policy.json`, OpenCode task allowlists, Cursor overlays, and `tests/test_agent_eval_manifests.py` bind them. The four self-described scaffolds (`agent-permission-simulator`, `agent-registry-publisher`, `agent-transpiler`, `prompt-optimizer`) stay until a change updates those allowlists in the same commit. `mcp-template-maintainer` is a real `acceptEdits` agent, not a scaffold. Do not hide it. Eight core agents have no `evals/agents/` manifest; that gap is not a test failure. Do not add live LLM evals.
 
 ### Leave alone
 
@@ -116,21 +125,22 @@ Scaffold agents stay in `agents/` until a wave-4 decision per name: implement, o
 - Things++ (`mcp/things-core`, `things-native`, `things-shortcuts`, `packages/things-common`) and `tools/userscripts/chatgpt-exporter`.
 - Candidate-corpus manifests required by tests.
 - `README.md` generation and `START-HERE.md`.
-- Security quarantine register and `skills/pentest` policy boundaries. No exploit-procedure cleanup in this plan.
+- The eight quarantine rows. Do not delete them to go green. `opencode.json` still enables `opencode-claude-auth@latest` while EXT-017 says that plugin must not be a repo default. Remove the default or write the exception. Do not clear the row.
+- `skills/pentest` policy boundaries. No exploit-procedure cleanup in this plan.
 - `skills/nerdbot/uv.lock` (0.92 MB) until the nerdbot change says whether the skill vendors its own environment on purpose.
 
 ## Data And Control Flow
 
 ```text
-wave 0 pin + docs path
+wave 0 CLI import, pin matches 4.6 spec, docs path
         |
         v
-wave 1 archive checked changes, finish one-box changes, triage proposal-only
+wave 1 archive checked changes; do not archive ideas or Things++ yet
         |
-        +----> fleet-hooks-promotion waits on parity archive
+        +----> close fleet-hooks-promotion as already applied
         |
         v
-wave 2 drop unused skill-index module, linguist-generated marks
+wave 2 drop unused skill-index module, planning/tmp, planning/workspaces
         |
         v
 wave 3 contract text matches the tree; token trim handed to token-efficacy-program
