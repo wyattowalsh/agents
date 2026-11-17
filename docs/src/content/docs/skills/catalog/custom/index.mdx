@@ -3,7 +3,7 @@ title: Custom Skills
 description: Browse repo-owned AI agent skills
 ---
 
-import { CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';
+import { Aside, Badge, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 import InstallCommand from '../../../../../components/InstallCommand.astro';
 import CatalogSkillFilter from '../../../../../components/CatalogSkillFilter.astro';
 import { installCommands } from '../../../../../generated-site-data.mjs';
@@ -102,7 +102,7 @@ Every card here corresponds to one tracked `skills/<name>/SKILL.md` file.
   <LinkCard title="skill-trace-debugger" href="/skills/catalog/custom/skill-trace-debugger/" description="Inspect eval manifests and portable validators for trace-friendly skill signals. Use when debugging skill invocation gaps. NOT for live LLM trace capture." />
   <LinkCard title="tech-debt-analyzer" href="/skills/catalog/custom/tech-debt-analyzer/" description="Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time." />
   <LinkCard title="test-architect" href="/skills/catalog/custom/test-architect/" description="Test strategy, coverage analysis, edge case identification, flaky test diagnosis. Use when designing test suites." />
-  <LinkCard title="things-manager" href="/skills/catalog/custom/things-manager/" description="Use when reviewing/managing Things 3 via SupaThings MCP: tasks, projects, headings, tags, deadlines, triage, capture, cleanup, and GTD." />
+  <LinkCard title="things-manager" href="/skills/catalog/custom/things-manager/" description="Use when reviewing or managing Things 3 through the sole Things++ MCPHub group `things`: capture, triage, planning, projects, headings, tags, dates,…" />
   <LinkCard title="trafilatura" href="/skills/catalog/custom/trafilatura/" description="Extract clean article text and metadata from URLs or HTML with trafilatura CLI. Use for single-page extraction, piped/local HTML, bounded discovery." />
   <LinkCard title="wargame" href="/skills/catalog/custom/wargame/" description="Strategic decision analysis and wargaming. Auto-classifies complexity for analysis or simulation. Use for decisions under uncertainty." />
   <LinkCard title="yt-dlp" href="/skills/catalog/custom/yt-dlp/" description="Probe, transcript, and download video/audio with yt-dlp CLI on supported hosts. Use when you need metadata, captions, or local media." />
@@ -142,3 +142,419 @@ npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent clau
 <Aside type="tip" title="Creating your own skills">
 Want to build a custom skill? Use the [skill-creator](/skills/catalog/custom/skill-creator/) to scaffold, develop, audit, and package skills following proven structural patterns. Or run `wagents new skill my-skill` from the [CLI](/cli/).
 </Aside>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Custom Skills",
+  "description": "Browse repo-owned AI agent skills",
+  "url": "https://agents.w4w.dev/skills/catalog/custom/",
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "add-badges",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/add-badges/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "agent-conventions",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/agent-conventions/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "agent-runtime-governance",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/agent-runtime-governance/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "api-designer",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/api-designer/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "name": "changelog-writer",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/changelog-writer/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "name": "cross-agent-install-smoke",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/cross-agent-install-smoke/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 7,
+        "name": "data-pipeline-architect",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/data-pipeline-architect/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 8,
+        "name": "data-wizard",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/data-wizard/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 9,
+        "name": "database-architect",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/database-architect/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 10,
+        "name": "design",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/design/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 11,
+        "name": "devops-engineer",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/devops-engineer/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 12,
+        "name": "docling-graph",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/docling-graph/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 13,
+        "name": "docs-steward",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/docs-steward/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 14,
+        "name": "draw-thing",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/draw-thing/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 15,
+        "name": "email-whiz",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/email-whiz/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 16,
+        "name": "event-driven-architect",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/event-driven-architect/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 17,
+        "name": "ffmpeg",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/ffmpeg/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 18,
+        "name": "files-buddy",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/files-buddy/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 19,
+        "name": "git-workflow",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/git-workflow/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 20,
+        "name": "grok-delegate",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/grok-delegate/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 21,
+        "name": "harness-master",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/harness-master/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 22,
+        "name": "host-panel",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/host-panel/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 23,
+        "name": "i18n-localization",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/i18n-localization/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 24,
+        "name": "incident-response-engineer",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/incident-response-engineer/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 25,
+        "name": "infrastructure-coder",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/infrastructure-coder/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 26,
+        "name": "javascript-conventions",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/javascript-conventions/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 27,
+        "name": "justfile",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/justfile/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 28,
+        "name": "learn",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 29,
+        "name": "mcp-creator",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/mcp-creator/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 30,
+        "name": "mcphub-operator",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/mcphub-operator/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 31,
+        "name": "namer",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/namer/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 32,
+        "name": "nerdbot",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/nerdbot/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 33,
+        "name": "new-project",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/new-project/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 34,
+        "name": "observability-advisor",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/observability-advisor/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 35,
+        "name": "opencode-ensemble",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/opencode-ensemble/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 36,
+        "name": "openspec-workflow",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/openspec-workflow/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 37,
+        "name": "orchestrator",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/orchestrator/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 38,
+        "name": "pentest",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/pentest/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 39,
+        "name": "performance-profiler",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/performance-profiler/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 40,
+        "name": "prompt-engineer",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/prompt-engineer/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 41,
+        "name": "python-conventions",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/python-conventions/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 42,
+        "name": "reasoning-router",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/reasoning-router/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 43,
+        "name": "release-pipeline-architect",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/release-pipeline-architect/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 44,
+        "name": "research",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/research/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 45,
+        "name": "review",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/review/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 46,
+        "name": "schema-evolution-planner",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/schema-evolution-planner/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 47,
+        "name": "security-scanner",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/security-scanner/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 48,
+        "name": "shell-conventions",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/shell-conventions/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 49,
+        "name": "shell-scripter",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/shell-scripter/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 50,
+        "name": "skill-bundle-curator",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/skill-bundle-curator/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 51,
+        "name": "skill-compat-matrix",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/skill-compat-matrix/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 52,
+        "name": "skill-creator",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/skill-creator/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 53,
+        "name": "skill-eval-scaffolder",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/skill-eval-scaffolder/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 54,
+        "name": "skill-install-dry-run-planner",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/skill-install-dry-run-planner/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 55,
+        "name": "skill-lifecycle-manager",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/skill-lifecycle-manager/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 56,
+        "name": "skill-package-manifest-enricher",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/skill-package-manifest-enricher/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 57,
+        "name": "skill-quality-dashboard",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/skill-quality-dashboard/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 58,
+        "name": "skill-router",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/skill-router/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 59,
+        "name": "skill-tag-taxonomist",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/skill-tag-taxonomist/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 60,
+        "name": "skill-token-budget-linter",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/skill-token-budget-linter/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 61,
+        "name": "skill-trace-debugger",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/skill-trace-debugger/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 62,
+        "name": "tech-debt-analyzer",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/tech-debt-analyzer/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 63,
+        "name": "test-architect",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/test-architect/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 64,
+        "name": "things-manager",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/things-manager/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 65,
+        "name": "trafilatura",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/trafilatura/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 66,
+        "name": "wargame",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/wargame/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 67,
+        "name": "yt-dlp",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/yt-dlp/"
+      }
+    ]
+  }
+}
+</script>

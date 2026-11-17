@@ -21,5 +21,44 @@ Browse repo-owned skills and curated external skills. Detail pages live under `/
 </CardGrid>
 
 <Aside type="note" title="Generation modes">
-Public docs default to repo-owned custom skills plus curated external catalog entries (`wagents docs generate --no-installed`). Use `--include-installed` locally to add harness-discovered rows. See [Harness Support](/harness-support/) for per-harness validation and sync coverage.
+Public docs default to repo-owned custom skills plus curated external catalog entries (`wagents web generate --no-installed`). Use `--include-installed` locally to add harness-discovered rows. See [Harness Support](/harness-support/) for per-harness validation and sync coverage.
 </Aside>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Skill Catalog",
+  "description": "Browse custom and external agent skills",
+  "url": "https://agents.w4w.dev/skills/catalog/",
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Custom Skills (67)",
+        "url": "https://agents.w4w.dev/skills/catalog/custom/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "External Skills (1759)",
+        "url": "https://agents.w4w.dev/skills/catalog/external/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Install Scripts",
+        "url": "https://agents.w4w.dev/skills/install/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "Harness Support",
+        "url": "https://agents.w4w.dev/harness-support/"
+      }
+    ]
+  }
+}
+</script>

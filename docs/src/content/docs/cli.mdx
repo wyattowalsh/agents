@@ -46,9 +46,9 @@ Run repo-scoped commands inside a clone, or set `WAGENTS_REPO_ROOT` / `--repo-ro
    uv run wagents validate
    ```
 
-4. Start the docs site when you need to inspect generated output:
+4. Start the public web site when you need to inspect generated output:
    ```bash
-   uv run wagents docs dev
+   uv run wagents web dev
    ```
 
 </Steps>
@@ -70,8 +70,9 @@ Examples below omit the `uv run` prefix for brevity. Use `wagents ...` after `uv
 | `wagents install` | Install repo skills into supported agent platforms |
 | `wagents update` | Refresh installed skills from their recorded sources |
 | `wagents skills <subcommand>` | Inventory, sync, search, read, and diagnose local skills on demand |
+| `wagents plugin <subcommand>` | Reconcile strict skills, validate plugin contracts, and build isolated target artifacts |
 | `wagents package <name>` | Build portable ZIP packages for sharing or release |
-| `wagents docs <subcommand>` | Generate, serve, build, preview, or clean the docs site |
+| `wagents web <subcommand>` | Generate, serve, build, preview, or clean the Astro docs site |
 | `wagents hooks <subcommand>` | List and validate lifecycle hooks |
 | `wagents eval <subcommand>` | List, validate, and check eval coverage |
 | `wagents media <subcommand>` | Image optimize and related media helpers |
@@ -346,6 +347,23 @@ wagents grok plannotator sync
 
 Grok home sync enables Plannotator hooks and skill overlays by default. Pass `--no-plannotator-hooks` to `sync_agent_stack.py` to skip hook refresh.
 
+</details>
+
+
+<details class="cli-command-ref">
+<summary>`wagents cursor-cli plannotator install` — Plannotator for Cursor</summary>
+
+
+Install the Plannotator CLI and sync home-only Cursor plan-review hooks (`CreatePlan` / `SwitchMode` plus `~/.cursor/hooks/plannotator-plan-hook.py`). Does not mirror Grok skills; Cursor skills stay on `-a cursor`. Do not install these hooks into project `.cursor/hooks.json`.
+
+```bash
+wagents cursor-cli plannotator install
+wagents cursor-cli plannotator install --no-hooks
+wagents cursor-cli plannotator sync
+```
+
+Cursor home sync enables Plannotator hooks by default. Pass `--no-plannotator-hooks` to `sync_agent_stack.py` to skip both Grok and Cursor Plannotator rows.
+
 
 </details>
 
@@ -548,6 +566,75 @@ Each result includes `name`, `path`, `source`, `trust_tier`, `score`, matched fi
 
 
 <details class="cli-command-ref">
+<summary>`wagents plugin` — Agent Plugin Maintenance</summary>
+
+
+Maintain the strict portable Agent Plugins source and deterministic client-native adapters without installing them into a live harness.
+
+<Tabs>
+  <TabItem label="reconcile-skills">
+
+Check the strict skill corpus against `config/skill-adapters.json` and the parity receipt:
+
+```bash
+wagents plugin reconcile-skills
+```
+
+If the check reports drift, atomically refresh the repo-owned generated adapter and parity receipt:
+
+```bash
+wagents plugin reconcile-skills --apply
+```
+
+The apply path writes only `config/skill-adapters.json` and `planning/manifests/agent-plugin-skill-parity.json`. It does not install skills or mutate client/home configuration.
+
+  </TabItem>
+  <TabItem label="validate">
+
+Validate the portable root discovery boundary without writing an artifact:
+
+```bash
+wagents plugin validate . --target portable
+```
+
+  </TabItem>
+  <TabItem label="build/check">
+
+Hermetically double-render and compare every supported isolated target recipe:
+
+```bash
+wagents plugin build --target all --check
+```
+
+`--target all --check` freezes one union source snapshot, derives one family source identity and fingerprint, validates every direct target child in a temporary family, reverifies the source union, and discards the family. Passing `--out` with `--check` compares an existing artifact for drift; it never materializes a missing output.
+
+For one target, `--out` names that target's direct artifact root, for example `--target portable --out dist/portable`. For `--target all`, it names the family container and each recipe becomes a direct `<out>/<target>/` child. The repository-local family form is:
+
+```bash
+wagents plugin build --target all --out dist --release-version X.Y.Z
+```
+
+The family publishes once only after every target validates and the source union is unchanged. A late render failure, source mutation, or existing/mixed destination publishes no partial target. JSON output uses redacted `outputPath`, `sourceSnapshotSha256`, and `artifactOutputPaths`; external destinations appear as `<external-output>` and failed families expose no output paths.
+
+Source manifests remain versionless. The closed `releasePolicy` fixes source identity to `source-versionless`, requires source manifest versions to be omitted, accepts one SemVer identity for tagged/release materialization, injects it into staged artifacts only, applies it to every supported version field, and forbids source mutation. An explicit non-check build with `--release-version` materializes that identity only in its isolated artifact; it does not authorize publication.
+
+<Aside type="note" title="Artifact evidence">
+A persistent target directory contains a deterministic CycloneDX 1.6 `sbom.cdx.json` and a closed `manifest.json`. The manifest records source commit and dirty state under a `recorded-not-rejected` policy, standards-lock and schema digests, the normalized build environment, target capabilities, the tree digest, and per-file checksum, mode, license, provenance, file kind, runtime dependency, and side-effect classification. Runtime dependencies identify only the interpreter or platform needed to launch a file; they are not a resolved package graph and do not authorize lookup, installation, or execution.
+</Aside>
+
+Regular resources contained by each skill, including `references/`, `scripts/`, and `assets/`, are inventoried and staged. Native hook policy can be attested while executable hooks are deliberately omitted because no self-contained target hook adapter is rendered; native rules are likewise omitted without a recipe-declared rule source. Manifest interface metadata, logos, and screenshots are not recipe-declared artifact inputs.
+
+<Aside type="caution" title="Retrospective rollback boundary">
+The tracked rollback set recovers `131/131` entries with zero blockers. It does not supply a contemporaneous pre-migration behavior golden or retroactively perform the immediate rollback that was missed at cutover.
+</Aside>
+
+  </TabItem>
+</Tabs>
+
+</details>
+
+
+<details class="cli-command-ref">
 <summary>`wagents package` — Package Skills</summary>
 
 
@@ -580,65 +667,68 @@ The `release-skills.yml` CI workflow automatically packages and releases all ski
 
 
 <details class="cli-command-ref">
-<summary>`wagents docs` — Documentation Site</summary>
+<summary>`wagents web` — Public Docs Site (Astro)</summary>
 
 
-Manage the [Starlight](https://starlight.astro.build/)-powered documentation site at [agents.w4w.dev](https://agents.w4w.dev).
+Manage the Astro Starlight public site under `docs/` at [agents.w4w.dev](https://agents.w4w.dev). `wagents docs` is the same command group.
 
 <Tabs>
   <TabItem label="init">
 
-One-time setup to install documentation dependencies:
+One-time setup to install docs site dependencies:
 
 ```bash
-wagents docs init
+wagents web init
 ```
 
-This runs `pnpm install` in the `docs/` directory.
+This runs `pnpm install --ignore-workspace` in the `docs/` directory.
 
   </TabItem>
   <TabItem label="generate">
 
-Generate MDX content pages, sidebar, and index pages from repository assets:
+Generate Astro MDX content pages, registries, and indexes from repository assets:
 
 ```bash
-wagents docs generate
+wagents web generate
 ```
 
 **Options:**
 
 ```bash
 # Default: repository-only catalog (CI parity)
-wagents docs generate --no-installed
+wagents web generate --no-installed
 
 # Include installed skills from local agent skill directories (~/.config/opencode/skills/, ~/.agents/skills/, ~/.claude/skills/)
-wagents docs generate --include-installed
+wagents web generate --include-installed
 
 # Include skills with TODO descriptions
-wagents docs generate --include-drafts
+wagents web generate --include-drafts
+
+# Fail when generated artifacts are stale
+wagents web generate --check
 ```
 
-By default, generation is deterministic and repository-only (`--no-installed`). Opt in with `--include-installed` for local harness inventory rows. The generator creates individual pages for each skill, agent, and MCP server, plus category index pages and the sidebar navigation.
+By default, generation is deterministic and repository-only (`--no-installed`). Opt in with `--include-installed` for local harness inventory rows. The generator creates individual pages for each skill, agent, and MCP server under `docs/src/content/docs/`, plus category index pages and machine registries under `docs/public/`.
 
   </TabItem>
   <TabItem label="dev">
 
-Generate content and start the development server with hot reload:
+Generate content and start the Astro development server with hot reload:
 
 ```bash
-wagents docs dev
+wagents web dev
 ```
 
   </TabItem>
   <TabItem label="build">
 
-Generate content and produce a static build:
+Generate content and produce a production Astro build:
 
 ```bash
-wagents docs build
+wagents web build
 ```
 
-Output goes to `docs/dist/`.
+Output goes to `docs/dist/` (static Astro build; admin routes use the Vercel adapter).
 
   </TabItem>
   <TabItem label="preview">
@@ -646,7 +736,7 @@ Output goes to `docs/dist/`.
 Generate, build, and start a preview server for the production build:
 
 ```bash
-wagents docs preview
+wagents web preview
 ```
 
   </TabItem>
@@ -655,7 +745,7 @@ wagents docs preview
 Remove generated content pages while preserving hand-maintained files:
 
 ```bash
-wagents docs clean
+wagents web clean
 ```
 
 Intentional hand hubs (`start-here`, `hooks/index`, `mcp/index`, harness-config prose) with `HAND-MAINTAINED` are preserved. Catalog *detail* pages under `skills/catalog/{custom,external}/`, `agents/`, and `mcp/` always regenerate from SSOT and are cleaned even if marked composed.
@@ -663,8 +753,8 @@ Intentional hand hubs (`start-here`, `hooks/index`, `mcp/index`, harness-config 
   </TabItem>
 </Tabs>
 
-<Aside type="tip" title="Typical docs workflow">
-For day-to-day development, `wagents docs dev` is the most common command -- it regenerates all content and launches a hot-reloading dev server in one step.
+<Aside type="tip" title="Typical web workflow">
+For day-to-day development, `wagents web dev` is the most common command -- it regenerates all content and launches a hot-reloading Astro server in one step.
 </Aside>
 
 </details>
@@ -792,9 +882,9 @@ Commands supporting `--format`: `validate`, `doctor`, `hooks list`, `hooks valid
    wagents validate
    ```
 
-4. Preview the docs page:
+4. Preview the web page:
    ```bash
-   wagents docs dev
+   wagents web dev
    ```
 
 5. Package for distribution:
@@ -810,7 +900,7 @@ Commands supporting `--format`: `validate`, `doctor`, `hooks list`, `hooks valid
 
 1. Regenerate all docs:
    ```bash
-   wagents docs generate
+   wagents web generate
    ```
 
 2. Rebuild the README:
@@ -862,11 +952,11 @@ Commands supporting `--format`: `validate`, `doctor`, `hooks list`, `hooks valid
     - pyproject.toml
     - fastmcp.json
   - servers/ (ignored local third-party installs)
-- docs/ (this site)
+- docs/ (Astro Starlight public site)
   - src/
-    - content/
-      - docs/ (generated MDX pages)
+    - content/docs/ (generated and hand-maintained MDX pages)
     - generated-sidebar.mjs
+    - authoring/ (catalog authoring SSOT)
 - wagents/
   - \_\_init\_\_.py
   - cli.py

@@ -807,6 +807,7 @@ def write_runtimes_page() -> None:
         "description: Compatibility truth for supported agent runtimes",
         "---",
         "",
+        *_mdx_import_lines(starlight=("CardGrid", "LinkCard", "Badge", "Aside")),
         "",
         "Runtimes are host environments that consume repo-managed surfaces through native support, "
         "generated projections, plugin manifests, MCPHub endpoints, or Skills CLI installs.",
@@ -884,6 +885,7 @@ def write_reference_page() -> None:
         "description: Factual lookup pages for generated registries, schemas, CLI, and runtime compatibility",
         "---",
         "",
+        *_mdx_import_lines(starlight=("CardGrid", "LinkCard", "Aside")),
         "",
         "Reference pages are lookup surfaces. Operational process lives under [Contributing](/contributing/).",
         "",

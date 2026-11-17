@@ -33,11 +33,11 @@ const baseSiteData = {
   "counts": {
     "additionalIntegrationSurfaces": 4,
     "bundledAgents": 20,
-    "customMcp": 16,
+    "customMcp": 19,
     "customSkills": 67,
-    "externalMcp": 69,
+    "externalMcp": 71,
     "externalSkills": 1759,
-    "mcpTools": 85,
+    "mcpTools": 90,
     "skills": 1826,
     "skillsCliNativeHarnesses": 5,
     "supportedHarnesses": 6

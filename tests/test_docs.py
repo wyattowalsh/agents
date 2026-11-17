@@ -23,6 +23,8 @@ from wagents.docs import (
     write_harness_support_page,
     write_index_page,
     write_mcp_index,
+    write_reference_page,
+    write_runtimes_page,
     write_sidebar,
     write_skill_install_scripts_page,
     write_skill_research_pages,
@@ -207,6 +209,19 @@ class TestWriteCliPage:
         assert "`wagents skills cleanup`" in text
         assert "wagents skills cleanup --dry-run --format json" in text
         assert "`skills cleanup`" in text
+
+
+class TestWriteRuntimeReferencePages:
+    def test_runtime_and_reference_pages_import_starlight_components(self, tmp_repo):
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        write_runtimes_page()
+        write_reference_page()
+        runtimes = (content_dir / "runtimes.mdx").read_text()
+        reference = (content_dir / "reference.mdx").read_text()
+        assert "import { CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';" in runtimes
+        assert "import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';" in reference
+        assert "wagents web generate --no-installed" in reference
 
 
 # ---------------------------------------------------------------------------
