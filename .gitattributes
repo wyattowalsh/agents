@@ -1,0 +1,7 @@
+docs/src/generated-site-data.mjs linguist-generated
+docs/src/generated-sidebar.mjs linguist-generated
+docs/src/generated-skill-research-index.mjs linguist-generated
+docs/src/generated-visual-assets.css linguist-generated
+docs/public/generated-registries/** linguist-generated
+docs/public/generated-reports/** linguist-generated
+docs/public/generated-skill-indexes/** linguist-generated

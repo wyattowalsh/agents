@@ -22,7 +22,6 @@ GENERATED_EXACT_PATHS = frozenset({
     "README.md",
     "docs/src/generated-sidebar.mjs",
     "docs/src/generated-site-data.mjs",
-    "docs/src/generated-skill-indexes.mjs",
     "docs/src/generated-skill-research-index.mjs",
     "docs/src/generated-visual-assets.css",
     "docs/src/content/docs/architecture/instruction-loading.mdx",

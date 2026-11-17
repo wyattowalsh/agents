@@ -40,7 +40,6 @@ from wagents.site_model import (
     agent_flags,
     build_install_command,
     render_site_data_module,
-    render_skill_indexes_module,
     render_visual_assets_css,
     site_data,
     skill_source_counts,
@@ -224,7 +223,6 @@ def write_site_data(nodes: list, external_entries: list[ExternalSkillEntry] | No
     (public_index_dir / "install-scripts.json").write_text(
         json.dumps(data["skillInstallScripts"], indent=2, sort_keys=True), encoding="utf-8"
     )
-    (lib_dir / "generated-skill-indexes.mjs").write_text(render_skill_indexes_module(data), encoding="utf-8")
     update_research_manifest()
     (lib_dir / "generated-visual-assets.css").write_text(render_visual_assets_css(), encoding="utf-8")
 
@@ -3094,19 +3092,6 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
         reasons.append("docs/src/generated-site-data.mjs missing; run `uv run wagents docs generate --no-installed`")
     elif site_path.read_text(encoding="utf-8") != expected_site:
         reasons.append("docs/src/generated-site-data.mjs is stale; run `uv run wagents docs generate --no-installed`")
-
-    expected_skill_indexes = render_skill_indexes_module(expected_data)
-    skill_indexes_path = DOCS_DIR / "src" / "generated-skill-indexes.mjs"
-    if not skill_indexes_path.exists():
-        reasons.append(
-            "docs/src/generated-skill-indexes.mjs missing; "
-            "run `uv run wagents docs generate --no-installed`"
-        )
-    elif skill_indexes_path.read_text(encoding="utf-8") != expected_skill_indexes:
-        reasons.append(
-            "docs/src/generated-skill-indexes.mjs is stale; "
-            "run `uv run wagents docs generate --no-installed`"
-        )
 
     expected_sidebar = render_sidebar_module(nodes)
     sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
