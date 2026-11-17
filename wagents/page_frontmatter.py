@@ -173,9 +173,11 @@ def render_collection_json_ld_script(
             ],
         },
     }
+    # Keep `<` out of the raw script body so a name cannot close the element.
+    body = json.dumps(payload, indent=2, ensure_ascii=True).replace("<", "\\u003c")
     return [
         '<script type="application/ld+json">',
-        json.dumps(payload, indent=2, ensure_ascii=True),
+        body,
         "</script>",
         "",
     ]
