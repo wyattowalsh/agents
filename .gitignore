@@ -12,6 +12,8 @@ apm_modules/
 .vscode/settings.json
 docs/dist/
 docs/.wagents-docs-generate.lock
+/planning/tmp/
+/planning/workspaces/
 docs/.astro/
 docs/.starlight-icons/
 docs/node_modules/

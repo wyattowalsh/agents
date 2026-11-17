@@ -198,10 +198,10 @@ verify-fast:
 [doc("Web-focused check: generate + lint + build")]
 [group("checks")]
 verify-web:
-    uv run wagents web generate --no-installed --check
+    uv run wagents docs generate --no-installed --check
     uv run wagents catalog index --check
-    uv run wagents web lint
-    uv run wagents web build
+    uv run wagents docs lint
+    uv run wagents docs build
 
 [doc("Full pre-PR check: verify-fast + verify-web + ci-check")]
 [group("checks")]
@@ -236,35 +236,35 @@ openspec-update:
 #                                      WEB                                     #
 # ---------------------------------------------------------------------------- #
 
-[doc("Install web/ (Fumadocs) dependencies")]
+[doc("Install docs/ (Astro Starlight) dependencies")]
 [group("web")]
 web-init:
-    uv run wagents web init
+    uv run wagents docs init
 
-[doc("Generate Fumadocs MDX into web/content")]
+[doc("Generate Starlight content from repo assets")]
 [group("web")]
 web-generate:
-    uv run wagents web generate --no-installed
+    uv run wagents docs generate --no-installed
 
-[doc("Generate + fail when web content is stale")]
+[doc("Generate and fail when docs content is stale")]
 [group("web")]
 web-generate-check:
-    uv run wagents web generate --no-installed --check
+    uv run wagents docs generate --no-installed --check
 
-[doc("Lint generated web content")]
+[doc("Lint generated docs content")]
 [group("web")]
 web-lint:
-    uv run wagents web lint
+    uv run wagents docs lint
 
-[doc("Build the Fumadocs production site")]
+[doc("Build the Starlight site")]
 [group("web")]
 web-build:
-    uv run wagents web build
+    uv run wagents docs build
 
-[doc("Run Next.js dev server for web/")]
+[doc("Run the docs dev server")]
 [group("web")]
 web-dev:
-    uv run wagents web dev
+    uv run wagents docs dev
 
 [doc("Regenerate README.md")]
 [group("web")]

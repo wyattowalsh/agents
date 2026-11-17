@@ -8,15 +8,15 @@ This change adds plan documents only. The rows below are the surfaces later wave
 | --- | --- | --- |
 | `openspec/changes/plan-repo-overhaul-cleanup/` | now | This plan. |
 | `openspec/changes/*` (50 active) | 1 | Archive, finish, or give tasks. Do not edit `openspec/changes/archive/**` history. |
-| `openspec/specs/cursor-harness/spec.md` | 0 | Still requires `cursor-grok-4.6-xhigh` while the hook forces a dead slug. |
+| `openspec/specs/cursor-harness/spec.md` | done | Requires `grok-4.7-xhigh`. 500k is the context window, not a second slug. |
 | `wagents/cli.py`, `wagents/docs.py`, `wagents/__init__.py` | 0 | Missing `plugin` module and missing `WEB_DIR` / `AUTHORING_SKILLS_DIR` exports. CI calls `wagents docs`. |
-| `wagents/hooks/policies/cursor_task_model_pin.py` | 0 | `CURSOR_PINNED_MODEL = "cursor-grok-4.5-high"`. |
+| `wagents/hooks/policies/cursor_task_model_pin.py` | done | `CURSOR_PINNED_MODEL = "grok-4.7-xhigh"`. |
 | `config/tooling-policy.json` | 1 | `hook_perf.tier` is already `bundle`. Spec text still says `legacy`. |
 | `config/mcp-registry.json`, `config/schemas/mcp-registry.schema.json` | 1 | Things++ manifest path is inside the open change. `supathings` id remains. |
 | `opencode.json` | 1 | `opencode-claude-auth@latest` contradicts quarantine EXT-017. |
-| `wagents/platforms/cursor.py` | 0 | `CURSOR_DEFAULT_MODEL = "cursor-grok-4.6-xhigh"`. |
+| `wagents/platforms/cursor.py` | done | `CURSOR_DEFAULT_MODEL = "grok-4.7-xhigh"`. |
 | `.cursor/rules/cursor-models.mdc` | 0 | Always-apply rule still names 4.5-high. |
-| `.cursor/agents/*.md` | 0 | Frontmatter `model: cursor-grok-4.5-high` on every projected agent. |
+| `.cursor/agents/*.md` | done | Frontmatter `model: grok-4.7-xhigh` on every projected agent. |
 | `wagents/docs.py` (`write_site_data`) | 0 | Writes `docs/lib/...`; site imports `docs/src/...`. |
 | `AGENTS.md` | 3 | Points at missing `config/skill-adapters.json`. |
 | `instructions/global.md` | 3 | Canonical shared instructions (11.8 KB). Trim stays owned by `token-efficacy-program`. |

@@ -205,12 +205,15 @@ def skills_cli_install_source_from_command(command: str) -> str:
 
 
 def sync_apply_pin_satisfied(*, install_command: str, audited_head: str = "") -> bool:
-    """Return whether curated install-now apply has pin or audited-head evidence."""
-    if str(audited_head or "").strip():
-        return True
+    """Return whether a curated install command carries an explicit ``@ref`` pin.
+
+    ``audited_head`` records what was reviewed. It does not pin the command
+    that ``npx skills add`` will execute, so a floating source stays blocked.
+    """
+    del audited_head
     source = skills_cli_install_source_from_command(install_command)
     if not source:
-        return True
+        return False
     return install_source_spec_has_pin(source)
 
 

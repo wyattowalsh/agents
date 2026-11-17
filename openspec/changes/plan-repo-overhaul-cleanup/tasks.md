@@ -26,7 +26,7 @@ Implementation of the overhaul is intentionally not done in this change. Boxes b
 - [ ] 2.1 Re-run the import search for `generated-skill-indexes.mjs` after the writer path fix. Expected: catalog UI uses `skills-catalog-browser-index.json`, not the module.
 - [ ] 2.2 Stop writing the module. `git rm docs/src/generated-skill-indexes.mjs`. Forward commit only.
 - [ ] 2.3 `[P]` Add `.gitattributes` `linguist-generated` for generated docs that remain. No Git LFS. No history rewrite.
-- [ ] 2.4 `[P]` Copy the seven-session deferral sentences into `repo-cleanup-review-findings.md`, then `git rm -r planning/tmp planning/workspaces` and gitignore both. Do not delete `planning/manifests/candidate-corpus-jul2026/` or `harness-reconciliation.json`.
+- [x] 2.4 `[P]` Copy the seven-session deferral sentences into `repo-cleanup-review-findings.md`, then `git rm -r planning/tmp planning/workspaces` and gitignore both. Do not delete `planning/manifests/candidate-corpus-jul2026/` or `harness-reconciliation.json`.
 - [ ] 2.5 Run wave 2 validation rows, including `catalog index --check` and `docs generate --no-installed --check`.
 
 ## Wave 3 — Contract honesty

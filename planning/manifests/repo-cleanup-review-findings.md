@@ -18,6 +18,13 @@ Generated: 2026-06-29 (W2 judge merge)
 | RV-RC-010 | P4 | — | **wontfix** | `kb/raw/**`, `openspec/changes/archive/**` | Historical captures referencing legacy MD; not runtime |
 | RV-RC-011 | P4 | — | **wontfix** | `openspec/changes/integrate-apm-package-manager/audit/*` | Planning audit artifacts; update when APM change closes |
 
+## Later session notes kept before scratch deletion
+
+Copied from `planning/workspaces/seven-session-resume/ledger.md` (2026-08-04) before that workspace was removed:
+
+- Unresolved 145 remains a permanent non-blocking quarantine residual.
+- S6 cleanup closed light: dirty map and canaries, no mass archive.
+
 ## Seed verification
 
 | Seed | Result |

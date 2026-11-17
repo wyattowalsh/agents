@@ -13,9 +13,9 @@ def test_install_source_spec_has_pin_detects_github_ref() -> None:
     assert not install_source_spec_has_pin("")
 
 
-def test_sync_apply_pin_satisfied_accepts_audited_head_without_at_ref() -> None:
+def test_sync_apply_pin_satisfied_rejects_audited_head_without_at_ref() -> None:
     cmd = "npx skills add owner/repo --skill demo -y -g -a codex"
-    assert sync_apply_pin_satisfied(install_command=cmd, audited_head="deadbeef")
+    assert not sync_apply_pin_satisfied(install_command=cmd, audited_head="deadbeef")
     assert not sync_apply_pin_satisfied(install_command=cmd, audited_head="")
 
 

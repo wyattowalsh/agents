@@ -10,9 +10,9 @@ from scripts.sync_agent_stack import SyncContext, sync_cursor_home_allowlisted_r
 from wagents.platforms import cursor as cursor_platform
 
 
-def test_cursor_home_rules_allowlist_includes_models_and_python_quality() -> None:
-    assert "cursor-models.mdc" in sync_agent_stack.CURSOR_HOME_RULES_ALLOWLIST
-    assert "python-quality.mdc" in sync_agent_stack.CURSOR_HOME_RULES_ALLOWLIST
+def test_cursor_home_rules_allowlist_is_the_model_pin_only() -> None:
+    """Home sync copies the pin rule and leaves other rules user-owned."""
+    assert sync_agent_stack.CURSOR_HOME_RULES_ALLOWLIST == frozenset({"cursor-models.mdc"})
 
 
 def test_sync_cursor_home_allowlisted_rules_copies_models_and_keeps_orphans(

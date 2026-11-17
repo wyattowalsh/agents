@@ -164,7 +164,8 @@ def test_cursor_cloud_agent_repo_evidence_surfaces_exist() -> None:
     rendered = adapter.render_hooks(hook_registry)
     assert rendered is not None
     guard_command = _cursor_hook_command(rendered, "cursor-destructive-shell-guard")
-    assert "$CURSOR_PROJECT_DIR" in guard_command
+    assert '${CURSOR_PROJECT_DIR:-${PWD}}' in guard_command
+    assert "run-wagents-hook" in guard_command
 
 
 def test_opencode_agents_on_disk_contract() -> None:

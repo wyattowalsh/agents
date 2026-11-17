@@ -3001,7 +3001,7 @@ def _clean_content_subdir(d: Path) -> bool:
 # web subcommand group (canonical; formerly `docs`)
 # ---------------------------------------------------------------------------
 
-web_app = typer.Typer(help="Public web site management (Fumadocs under web/)")
+web_app = typer.Typer(help="Astro Starlight site under docs/")
 # Back-compat symbol for internal imports during migration; not registered on CLI.
 docs_app = web_app
 
@@ -3009,7 +3009,7 @@ DOCS_GENERATE_LOCK_MAX_AGE_S = 2 * 60 * 60
 
 
 def _docs_generate_lock_path() -> Path:
-    return DOCS_DIR / ".wagents-web-generate.lock"
+    return DOCS_DIR / ".wagents-docs-generate.lock"
 
 
 @contextmanager
