@@ -65,6 +65,7 @@ See `config/sync-manifest.json` for which outputs are generated vs merged. Refre
 
 
 
+
 ## Client snippets
 
 Example MCP client blocks for commonly referenced servers:
@@ -134,7 +135,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -152,7 +153,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -176,7 +177,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -185,31 +186,24 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "platform_overrides": {},
       "exclude_from_harnesses": [
         "claude-code",
-        "gemini-cli",
-        "github-copilot-web",
         "vscode"
       ],
       "ownership": {
         "plugin": [
           "claude-code",
-          "github-copilot-web",
           "vscode"
         ],
-        "extension": [
-          "gemini-cli"
-        ],
+        "extension": [],
         "repo_mcp": [
           "claude-desktop",
           "chatgpt",
           "codex",
-          "github-copilot-cli",
           "opencode",
           "cursor",
           "grok",
-          "antigravity",
           "perplexity-desktop",
           "cherry-studio",
-          "lm-studio"
+          "crush"
         ]
       },
       "tools_allow_all": true
@@ -219,9 +213,13 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "auth_policy": "oauth",
       "owner": "admin",
       "url": "https://mcp.context7.com/mcp/oauth",
+      "oauth": {
+        "enabled": true,
+        "redirectUri": "http://127.0.0.1:46683/oauth/callback"
+      },
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -236,7 +234,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "url": "https://mcp.deepwiki.com/mcp",
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -251,7 +249,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "args": [],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -269,7 +267,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -287,7 +285,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -305,7 +303,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -347,7 +345,40 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "qsv": {
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/qsv-stdio.sh"
+      ],
+      "env": {
+        "QSV_MCP_BIN_PATH": {
+          "env_var": "QSV_MCP_BIN_PATH"
+        },
+        "QSV_MCP_ALLOWED_DIRS": {
+          "env_var": "QSV_MCP_ALLOWED_DIRS"
+        },
+        "QSV_MCP_WORKING_DIR": {
+          "env_var": "QSV_MCP_WORKING_DIR"
+        },
+        "QSV_MCP_CHECK_UPDATES_ON_STARTUP": {
+          "value": "false"
+        },
+        "QSV_MCP_OPERATION_TIMEOUT_MS": {
+          "value": "600000"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -357,7 +388,6 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "tools_allow_all": true
     },
     "reddit-mcp-buddy": {
-      "description": "Read-only Reddit browse/search/user tools (anonymous works; optional OAuth via local .env.mcphub).",
       "transport": "stdio",
       "command": "bash",
       "args": [
@@ -365,14 +395,18 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
-        "*"
+        "browse_subreddit",
+        "search_reddit",
+        "get_post_details",
+        "user_analysis",
+        "reddit_explain"
       ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "tools_allow_all": true
+      "description": "Opt-in anonymous Reddit research MCP; excluded from default harness and tunnel groups."
     },
     "repomix": {
       "transport": "stdio",
@@ -384,7 +418,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -402,7 +436,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -420,7 +454,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -429,38 +463,251 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "platform_overrides": {},
       "tools_allow_all": true
     },
-    "supathings": {
+    "things-core": {
+      "transport": "stdio",
+      "command": "${REPO_ROOT}/scripts/mcphub/things-core-stdio.sh",
+      "args": [],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 240,
+      "timeout_ms": 600000,
+      "tools": [
+        "add_area",
+        "add_checklist_items",
+        "add_project",
+        "add_tags",
+        "add_todo",
+        "bulk_move_records",
+        "bulk_update_todos",
+        "context_stats",
+        "create_tag",
+        "delete_todo",
+        "get_activating_in_days",
+        "get_anytime",
+        "get_areas",
+        "get_due_in_days",
+        "get_inbox",
+        "get_logbook",
+        "get_project_headings",
+        "get_projects",
+        "get_recent",
+        "get_server_capabilities",
+        "get_someday",
+        "get_tag_usage",
+        "get_tagged_items",
+        "get_tags",
+        "get_today",
+        "get_todo_by_id",
+        "get_todos",
+        "get_trash",
+        "get_upcoming",
+        "get_usage_recommendations",
+        "health_check",
+        "move_record",
+        "prepend_checklist_items",
+        "queue_status",
+        "remove_tags",
+        "replace_checklist_items",
+        "search_advanced",
+        "search_todos",
+        "update_area",
+        "update_project",
+        "update_todo"
+      ],
+      "tool_approvals": {
+        "add_area": "per-call",
+        "add_checklist_items": "per-call",
+        "add_project": "per-call",
+        "add_tags": "per-call",
+        "add_todo": "per-call",
+        "bulk_move_records": "per-call",
+        "bulk_update_todos": "per-call",
+        "context_stats": "never",
+        "create_tag": "per-call",
+        "delete_todo": "per-call",
+        "get_activating_in_days": "never",
+        "get_anytime": "never",
+        "get_areas": "never",
+        "get_due_in_days": "never",
+        "get_inbox": "never",
+        "get_logbook": "never",
+        "get_project_headings": "never",
+        "get_projects": "never",
+        "get_recent": "never",
+        "get_server_capabilities": "never",
+        "get_someday": "never",
+        "get_tag_usage": "never",
+        "get_tagged_items": "never",
+        "get_tags": "never",
+        "get_today": "never",
+        "get_todo_by_id": "never",
+        "get_todos": "never",
+        "get_trash": "never",
+        "get_upcoming": "never",
+        "get_usage_recommendations": "never",
+        "health_check": "never",
+        "move_record": "per-call",
+        "prepend_checklist_items": "per-call",
+        "queue_status": "never",
+        "remove_tags": "per-call",
+        "replace_checklist_items": "per-call",
+        "search_advanced": "never",
+        "search_todos": "never",
+        "update_area": "per-call",
+        "update_project": "per-call",
+        "update_todo": "per-call"
+      },
+      "platform_overrides": {},
+      "tools_allow_all": false,
+      "group_only": true,
+      "description": "Audited mcp-server-things 1.9.0 security adapter; reachable only through the Things MCPHub group."
+    },
+    "things-shortcuts": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--project",
+        "${REPO_ROOT}",
+        "--package",
+        "mcp-things-shortcuts",
+        "--offline",
+        "--frozen",
+        "--no-sync",
+        "--no-env-file",
+        "--managed-python",
+        "--no-python-downloads",
+        "--python",
+        "3.12",
+        "python",
+        "${REPO_ROOT}/mcp/things-shortcuts/server.py"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 240,
+      "timeout_ms": 600000,
+      "tools": [
+        "shortcuts_health",
+        "create_todo",
+        "create_todos",
+        "create_todo_with_quick_entry",
+        "create_heading",
+        "create_project",
+        "create_structured_project",
+        "find_items",
+        "get_items",
+        "get_selected_items",
+        "edit_items",
+        "edit_heading",
+        "edit_checklist",
+        "append_checklist",
+        "prepend_checklist",
+        "duplicate_items",
+        "delete_items",
+        "delete_items_immediately",
+        "delete_heading",
+        "open_list",
+        "show_items"
+      ],
+      "tool_approvals": {
+        "shortcuts_health": "never",
+        "create_todo": "per-call",
+        "create_todos": "per-call",
+        "create_todo_with_quick_entry": "per-call",
+        "create_heading": "per-call",
+        "create_project": "per-call",
+        "create_structured_project": "per-call",
+        "find_items": "never",
+        "get_items": "never",
+        "get_selected_items": "never",
+        "edit_items": "per-call",
+        "edit_heading": "per-call",
+        "edit_checklist": "per-call",
+        "append_checklist": "per-call",
+        "prepend_checklist": "per-call",
+        "duplicate_items": "per-call",
+        "delete_items": "per-call",
+        "delete_items_immediately": "per-call",
+        "delete_heading": "per-call",
+        "open_list": "per-call",
+        "show_items": "per-call"
+      },
+      "platform_overrides": {},
+      "tools_allow_all": false,
+      "group_only": true,
+      "description": "Fixed-name typed Things Shortcuts bridge; reachable only through the Things MCPHub group."
+    },
+    "things-native": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--project",
+        "${REPO_ROOT}",
+        "--package",
+        "mcp-things-native",
+        "--offline",
+        "--frozen",
+        "--no-sync",
+        "--no-env-file",
+        "--managed-python",
+        "--no-python-downloads",
+        "--python",
+        "3.12",
+        "python",
+        "${REPO_ROOT}/mcp/things-native/server.py"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 240,
+      "timeout_ms": 600000,
+      "tools": [
+        "native_health",
+        "open_search",
+        "log_completed",
+        "empty_trash",
+        "delete_area",
+        "rename_tag",
+        "delete_tag",
+        "set_tag_parent"
+      ],
+      "tool_approvals": {
+        "native_health": "never",
+        "open_search": "per-call",
+        "log_completed": "per-call",
+        "empty_trash": "per-call",
+        "delete_area": "per-call",
+        "rename_tag": "per-call",
+        "delete_tag": "per-call",
+        "set_tag_parent": "per-call"
+      },
+      "platform_overrides": {},
+      "tools_allow_all": false,
+      "group_only": true,
+      "description": "Fixed Things native health, search, and administration tools; reachable only through the Things MCPHub group."
+    },
+    "tavily": {
       "transport": "stdio",
       "command": "npx",
       "args": [
         "-y",
-        "supathings-mcp"
+        "tavily-mcp"
       ],
-      "env": {},
+      "env": {
+        "TAVILY_API_KEY": {
+          "env_var": "TAVILY_API_KEY"
+        }
+      },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
       ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "tools_allow_all": true
-    },
-    "tavily": {
-      "transport": "streamable-http",
-      "auth_policy": "oauth",
-      "url": "https://mcp.tavily.com/mcp/",
-      "env": {},
-      "enabled": true,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [
-        "*"
-      ],
-      "tool_approvals": {},
-      "platform_overrides": {},
-      "tools_allow_all": true
+      "tools_allow_all": true,
+      "description": "Tavily web search via local tavily-mcp stdio (avoids SSRF block on mcp.tavily.com CGNAT A records)."
     },
     "trafilatura": {
       "transport": "stdio",
@@ -474,7 +721,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -492,7 +739,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -509,7 +756,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -534,7 +781,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -545,36 +792,39 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
     },
     "creative-thinking": {
       "transport": "stdio",
-      "command": "${REPO_ROOT}/scripts/mcp_tools/run_mcp_thinking.sh",
-      "args": [],
+      "command": "node",
+      "args": [
+        "${REPO_ROOT}/mcp/servers/creative-thinking/dist/index.js"
+      ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
       ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "tools_allow_all": true
+      "tools_allow_all": true,
+      "description": "Local creative-thinking MCP checkout (stdio)."
     },
     "deep-lucid-3d": {
       "transport": "stdio",
-      "command": "npx",
+      "command": "node",
       "args": [
-        "-y",
-        "github:mushroomfleet/deeplucid3d-mcp"
+        "${REPO_ROOT}/mcp/servers/DeepLucid3D-MCP/build/index.js"
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
       ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "tools_allow_all": true
+      "tools_allow_all": true,
+      "description": "Local DeepLucid3D MCP checkout (stdio); avoids npm github: EALLOWGIT."
     },
     "duckduckgo-search": {
       "transport": "stdio",
@@ -584,7 +834,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -595,17 +845,14 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
     },
     "ddgs": {
       "transport": "stdio",
-      "command": "uvx",
+      "command": "bash",
       "args": [
-        "--from",
-        "ddgs[mcp]",
-        "ddgs",
-        "mcp"
+        "${REPO_ROOT}/scripts/mcphub/ddgs-stdio.sh"
       ],
       "auth_policy": "none",
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -620,7 +867,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "url": "https://mcp.exa.ai/mcp",
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -638,7 +885,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -655,7 +902,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -672,7 +919,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 120,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -690,7 +937,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -708,7 +955,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -738,7 +985,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         }
       },
       "enabled": true,
-      "startup_timeout_sec": 120,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -755,7 +1002,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -772,7 +1019,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -790,7 +1037,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -804,18 +1051,19 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "command": "npx",
       "args": [
         "-y",
-        "github:aaronsb/think-strategies"
+        "think-strategies@0.9.1"
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
       ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "tools_allow_all": true
+      "tools_allow_all": true,
+      "description": "think-strategies via published npm package (not github: which is blocked by EALLOWGIT)."
     },
     "wayback": {
       "transport": "stdio",
@@ -827,7 +1075,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -846,7 +1094,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "*"
@@ -870,8 +1118,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_agents",
@@ -896,8 +1144,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_reports",
@@ -923,8 +1171,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "eval_list",
@@ -950,8 +1198,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_allowed_prefixes",
@@ -977,8 +1225,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_skills",
@@ -1004,8 +1252,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "check_url_health",
@@ -1029,8 +1277,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "mcp_layout_validate",
@@ -1056,8 +1304,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_ci_artifacts",
@@ -1083,8 +1331,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_provenance_manifests",
@@ -1110,8 +1358,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "list_workflows",
@@ -1137,8 +1385,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "value": "${REPO_ROOT}"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [
         "docs_graph_snapshot",
@@ -1150,10 +1398,9 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
     },
     "antv-chart": {
       "transport": "stdio",
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "@antv/mcp-server-chart@0.9.10"
+        "mcp-server-chart"
       ],
       "env": {
         "VIS_REQUEST_SERVER": {
@@ -1166,147 +1413,136 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "env_var": "ANTV_CHART_DISABLED_TOOLS"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "generate_bar_chart"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled external chart-rendering MCP example from antvis/mcp-server-chart; opt in only after local network/rendering review."
+      "description": "Audited chart-rendering MCP from antvis/mcp-server-chart; only generate_bar_chart is exposed."
     },
     "axiom-mcp": {
       "transport": "stdio",
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "axiom-mcp@27.0.0-beta.22"
+        "axiom-mcp"
       ],
       "env": {
         "AXIOM_MCP_MODE": {
           "value": "production"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "axiom_get_catalog"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled Apple/Xcode automation MCP from CharlesWiltgen/Axiom; keep inert until a project-scoped binary-execution and signing review is approved."
+      "description": "Managed Axiom Apple-platform catalog MCP; destructive project-generation tools are not exposed."
     },
     "better-icons": {
       "transport": "stdio",
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "better-icons@1.0.4",
-        "mcp"
+        "better-icons"
       ],
       "env": {},
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "search_icons"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled external icon lookup MCP example from better-auth/better-icons; opt in per project before writing icon assets."
+      "description": "Audited icon lookup MCP from better-auth/better-icons; only search_icons is exposed."
     },
     "charted": {
       "transport": "stdio",
-      "command": "uvx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-uv-tool",
       "args": [
-        "--from",
-        "charted[mcp]==1.2.1",
+        "charted",
         "charted-mcp"
       ],
       "env": {},
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "list_chart_types"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled local chart generation MCP example from marzukia/charted."
+      "description": "Audited local chart generation MCP from marzukia/charted."
     },
     "csvglow": {
       "transport": "stdio",
-      "command": "uvx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-uv-tool",
       "args": [
-        "--from",
-        "csvglow==0.1.0",
         "csvglow",
-        "--mcp"
+        "csvglow"
       ],
       "env": {},
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "generate_dashboard"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled local CSV and spreadsheet visualization MCP from Ratnaditya-J/csvglow; constrain input and output paths before enabling."
+      "description": "Managed CSVGlow MCP for local CSV-to-dashboard generation; browser opening is not allowed by the tracked canary."
     },
     "designer-skill-mcp": {
       "transport": "stdio",
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "designer-skill-mcp@0.14.0"
+        "designer-skill-mcp"
       ],
       "env": {
         "NO_UPDATE_NOTIFIER": {
           "value": "1"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "get_preflight_brief"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled local design workflow MCP from Pythoughts-labs/designer-skill; opt in per project after file-write and update-check review."
+      "description": "Managed designer-skill MCP with update checks suppressed."
     },
     "geo-mcp": {
       "transport": "stdio",
-      "command": "uvx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-uv-tool",
       "args": [
-        "--from",
-        "geo-optimizer-skill[mcp]==4.15.0",
+        "geo-optimizer-skill",
         "geo-mcp"
       ],
-      "env": {
-        "GEO_LLM_PROVIDER": {
-          "env_var": "GEO_LLM_PROVIDER"
-        },
-        "GEO_LLM_API_KEY": {
-          "env_var": "GEO_LLM_API_KEY"
-        },
-        "PERPLEXITY_API_KEY": {
-          "env_var": "PERPLEXITY_API_KEY"
-        },
-        "OPENAI_API_KEY": {
-          "env_var": "OPENAI_API_KEY"
-        },
-        "ANTHROPIC_API_KEY": {
-          "env_var": "ANTHROPIC_API_KEY"
-        },
-        "GROQ_API_KEY": {
-          "env_var": "GROQ_API_KEY"
-        }
-      },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "geo_schema_validate"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled GEO audit MCP from Auriti-Labs/geo-optimizer-skill; basic audits are keyless and optional provider credentials remain user-owned."
+      "description": "Audited GEO optimizer MCP; only local schema validation is exposed."
     },
     "langfuse-mcp": {
+      "source_url": "https://github.com/avivsinai/langfuse-mcp",
       "transport": "stdio",
-      "command": "uvx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-uv-tool",
       "args": [
-        "langfuse-mcp==0.10.0"
+        "langfuse-mcp",
+        "langfuse-mcp"
       ],
       "env": {
         "LANGFUSE_PUBLIC_KEY": {
@@ -1322,110 +1558,125 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "value": "true"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "list_prompts"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled credentialed Langfuse observability MCP example from https://github.com/avivsinai/langfuse-mcp; read-only mode is the tracked default."
+      "description": "Credentialed Langfuse observability MCP example; read-only mode is the tracked default."
+    },
+    "mcp-dashboards": {
+      "source_url": "https://github.com/KyuRish/mcp-dashboards",
+      "transport": "stdio",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
+      "args": [
+        "mcp-dashboards"
+      ],
+      "env": {
+        "MCP_DASHBOARDS_DISABLE_PREVIEW": {
+          "value": "1"
+        },
+        "MCP_DASHBOARDS_RETAIN_DAYS": {
+          "value": "0"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 240,
+      "timeout_ms": 600000,
+      "tools": [
+        "render_bar_chart"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "description": "Audited dashboard MCP with preview and artifact retention disabled."
     },
     "mcp-excalidraw": {
       "transport": "stdio",
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "mcp-excalidraw-server@1.1.0"
+        "mcp-excalidraw-server"
       ],
       "env": {
         "EXCALIDRAW_NO_AUTOSTART": {
           "value": "1"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
-      "tool_approvals": {},
-      "platform_overrides": {},
-      "description": "Disabled local Excalidraw canvas MCP example from yctimlin/mcp_excalidraw."
-    },
-    "mcp-dashboards": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-dashboards@2.4.0",
-        "--stdio"
+      "tools": [
+        "read_diagram_guide"
       ],
-      "env": {},
-      "enabled": false,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled interactive dashboard MCP example from https://github.com/KyuRish/mcp-dashboards; opt in only after chart export, browser preview, and local-file handling review."
+      "description": "Audited local Excalidraw guidance MCP with canvas auto-start disabled."
     },
     "mobile-mcp": {
+      "source_url": "https://github.com/mobile-next/mobile-mcp",
       "transport": "stdio",
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "@mobilenext/mobile-mcp@0.0.62"
+        "mcp-server-mobile"
       ],
       "env": {
         "MOBILEMCP_DISABLE_TELEMETRY": {
           "value": "1"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "mobile_list_available_devices"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled mobile device automation MCP example from https://github.com/mobile-next/mobile-mcp; requires explicit device, simulator, signing, privacy, and destructive-action review before use."
+      "description": "Managed mobile device MCP with telemetry disabled; only read-only device discovery is exposed."
     },
     "nullcost": {
       "transport": "stdio",
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "nullcost-plugin@0.1.6",
-        "mcp-server"
+        "nullcost-plugin"
       ],
       "env": {},
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "search_providers"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled external cost-estimation MCP example from https://github.com/johnvouros/nullcost-plugin; opt in only after provider/pricing review."
+      "description": "Audited cost-estimation MCP; only provider search is exposed."
     },
     "openspec-mcp": {
+      "source_url": "https://github.com/Lumiaqian/openspec-mcp",
       "transport": "stdio",
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "openspec-mcp@0.4.2",
-        "${REPO_ROOT}"
+        "openspec-mcp"
       ],
       "env": {},
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "openspec_list_changes"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled external OpenSpec MCP compatibility example from https://github.com/Lumiaqian/openspec-mcp; repo-native wagents OpenSpec remains the default."
+      "description": "Audited OpenSpec MCP compatibility surface; repo-native wagents OpenSpec remains the default."
     },
     "paper-search-mcp": {
       "transport": "stdio",
-      "command": "uvx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-uv-tool",
       "args": [
-        "paper-search-mcp==0.1.4"
+        "paper-search-mcp",
+        "paper-search-mcp"
       ],
       "env": {
         "PAPER_SEARCH_MCP_CORE_API_KEY": {
@@ -1441,120 +1692,52 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "env_var": "UNPAYWALL_EMAIL"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "search_papers"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled academic paper search MCP example; opt in with provider ToS and credential review."
+      "description": "Audited academic paper search MCP; provider credentials remain optional and user-owned."
     },
     "papersflow": {
       "transport": "streamable-http",
       "url": "https://doxa.papersflow.ai/mcp",
       "env": {},
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled hosted Papersflow research MCP example; account/OAuth boundary required before use.",
+      "description": "Hosted Papersflow research MCP example; account/OAuth boundary required before use.",
       "oauth": {
-        "enabled": false
+        "enabled": true,
+        "redirectUri": "http://127.0.0.1:46683/oauth/callback"
       }
     },
     "prompt-to-asset": {
       "transport": "stdio",
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "prompt-to-asset@0.5.1"
+        "p2a"
       ],
       "env": {
-        "PROMPT_TO_BUNDLE_TRANSPORT": {
-          "value": "stdio"
-        },
         "PROMPT_TO_BUNDLE_DRY_RUN": {
           "value": "1"
-        },
-        "OPENAI_API_KEY": {
-          "env_var": "OPENAI_API_KEY"
-        },
-        "IDEOGRAM_API_KEY": {
-          "env_var": "IDEOGRAM_API_KEY"
-        },
-        "RECRAFT_API_KEY": {
-          "env_var": "RECRAFT_API_KEY"
-        },
-        "BFL_API_KEY": {
-          "env_var": "BFL_API_KEY"
-        },
-        "GEMINI_API_KEY": {
-          "env_var": "GEMINI_API_KEY"
-        },
-        "STABILITY_API_KEY": {
-          "env_var": "STABILITY_API_KEY"
-        },
-        "HORDE_API_KEY": {
-          "env_var": "HORDE_API_KEY"
-        },
-        "GOOGLE_API_KEY": {
-          "env_var": "GOOGLE_API_KEY"
-        },
-        "TOGETHER_API_KEY": {
-          "env_var": "TOGETHER_API_KEY"
-        },
-        "LEONARDO_API_KEY": {
-          "env_var": "LEONARDO_API_KEY"
-        },
-        "FAL_API_KEY": {
-          "env_var": "FAL_API_KEY"
-        },
-        "FAL_KEY": {
-          "env_var": "FAL_KEY"
-        },
-        "FREEPIK_API_KEY": {
-          "env_var": "FREEPIK_API_KEY"
-        },
-        "PIXAZO_API_KEY": {
-          "env_var": "PIXAZO_API_KEY"
-        },
-        "PIXAZO_SUBSCRIPTION_KEY": {
-          "env_var": "PIXAZO_SUBSCRIPTION_KEY"
-        },
-        "HF_TOKEN": {
-          "env_var": "HF_TOKEN"
-        },
-        "HUGGINGFACE_API_KEY": {
-          "env_var": "HUGGINGFACE_API_KEY"
-        },
-        "CLOUDFLARE_API_TOKEN": {
-          "env_var": "CLOUDFLARE_API_TOKEN"
-        },
-        "CLOUDFLARE_ACCOUNT_ID": {
-          "env_var": "CLOUDFLARE_ACCOUNT_ID"
-        },
-        "NVIDIA_API_KEY": {
-          "env_var": "NVIDIA_API_KEY"
-        },
-        "NIM_API_KEY": {
-          "env_var": "NIM_API_KEY"
-        },
-        "REPLICATE_API_TOKEN": {
-          "env_var": "REPLICATE_API_TOKEN"
-        },
-        "REPLICATE_API_KEY": {
-          "env_var": "REPLICATE_API_KEY"
         }
       },
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "asset_doctor"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled asset-generation MCP from MohamedAbdallah-14/prompt-to-asset; provider credentials are optional and user-owned, with copyright, brand, likeness, and provenance review required before use."
+      "description": "Managed Prompt-to-Asset MCP in dry-run mode; only the diagnostic asset_doctor tool is exposed."
     },
     "remotion-docs": {
       "transport": "stdio",
@@ -1564,30 +1747,51 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "@remotion/mcp@latest"
       ],
       "env": {},
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
       "tools": [],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled official Remotion documentation MCP example."
+      "description": "Official Remotion documentation MCP example."
     },
     "semiotic": {
+      "source_url": "https://github.com/nteract/semiotic",
       "transport": "stdio",
-      "command": "npx",
+      "command": "${REPO_ROOT}/scripts/mcphub/wrappers/candidate-node",
       "args": [
-        "-y",
-        "--package=semiotic@3.7.5",
         "semiotic-mcp"
       ],
       "env": {},
-      "enabled": false,
-      "startup_timeout_sec": 90,
+      "enabled": true,
+      "startup_timeout_sec": 240,
       "timeout_ms": 600000,
-      "tools": [],
+      "tools": [
+        "suggestChart"
+      ],
       "tool_approvals": {},
       "platform_overrides": {},
-      "description": "Disabled Semiotic visualization MCP example from https://github.com/nteract/semiotic; keep HTTP/cloud modes local opt-in only."
+      "description": "Audited Semiotic visualization MCP; HTTP and cloud modes remain disabled."
+    },
+    "notebooklm": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "notebooklm-py[mcp]==0.8.0b5",
+        "notebooklm-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 240,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true,
+      "description": "Unofficial Google NotebookLM / Gemini Notebook automation (teng-lin/notebooklm-py MCP, beta pin 0.8.0b5)."
     }
   },
   "mcphub": {
@@ -1599,8 +1803,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
     "tool_timeout_sec": 90,
     "projection_adapters": {
       "grok": "http",
-      "opencode": "http",
-      "lm-studio": "remote-stdio"
+      "opencode": "http"
     },
     "settings_path": "mcp/mcphub/mcp_settings.json",
     "openapi_export_path": "mcp/mcphub/openapi.json",
@@ -1611,6 +1814,283 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "database_url_env_var": "DB_URL",
       "embedding_provider_env_var": "SMART_ROUTING_EMBEDDING_PROVIDER",
       "embedding_model_env_var": "SMART_ROUTING_EMBEDDING_MODEL"
+    },
+    "things_contract": {
+      "version": 1,
+      "manifest_path": "openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.json",
+      "manifest_schema_path": "openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.schema.json",
+      "group": "things",
+      "group_id": "3b94a096-b95f-586c-b2e7-e69ed177eb5a",
+      "local_resource": "http://127.0.0.1:46683/mcp/things",
+      "remote_loopback_resource": "http://127.0.0.1:46684/mcp/things",
+      "public_resource": "https://mcp.w4w.dev/mcp/things",
+      "normalized_catalog_sha256": "0c48616453e929a8f9d287bb7a4bb59f0d587df3e7008506bfdd7c52472b066e",
+      "counts": {
+        "tools": 70,
+        "coreTools": 41,
+        "shortcutTools": 21,
+        "nativeTools": 8,
+        "supaOutcomes": 37,
+        "workflows": 17,
+        "legacyEvalIds": 25,
+        "newEvalIds": 16
+      },
+      "approval_policy": {
+        "default": "per-call",
+        "read_only_risk": "never",
+        "otherwise": "per-call"
+      }
+    },
+    "retired_projections": {
+      "version": 1,
+      "entries": [
+        {
+          "id": "supathings",
+          "scope": "repo-and-home",
+          "targets": [
+            "all"
+          ]
+        },
+        {
+          "id": "mcphub_server_supathings",
+          "scope": "repo-and-home",
+          "targets": [
+            "all"
+          ]
+        },
+        {
+          "id": "things",
+          "scope": "home",
+          "targets": [
+            "codex"
+          ]
+        }
+      ]
+    },
+    "profile_policy": {
+      "version": 1,
+      "profiles": {
+        "portable": {
+          "artifact_kind": "portable",
+          "transport": "streamable-http",
+          "states": {
+            "default": {
+              "groups": [
+                "harness"
+              ],
+              "endpoint_source": "local"
+            },
+            "opt-in": {
+              "groups": [],
+              "endpoint_source": "local"
+            },
+            "approval-required": {
+              "groups": [],
+              "endpoint_source": "local",
+              "reason": "Portable Agent Plugins packages do not define client-native approval surfaces.",
+              "risk_class": "client-native-policy",
+              "approval_scope": "profile-activation"
+            },
+            "remote-only": {
+              "groups": [],
+              "endpoint_source": "public",
+              "reason": "Portable Agent Plugins MCP does not encode the separately managed remote route."
+            },
+            "unsupported": {
+              "groups": [
+                "account-backed",
+                "accounts",
+                "browser",
+                "candidate-corpus",
+                "coding",
+                "credentialed",
+                "daily",
+                "data",
+                "design",
+                "docs",
+                "experimental",
+                "heavy",
+                "live-browser",
+                "media",
+                "media-work",
+                "nlm",
+                "notebooks",
+                "personal-work",
+                "productivity",
+                "reasoning",
+                "reasoning-lab",
+                "references",
+                "release",
+                "repo",
+                "research",
+                "review",
+                "shared-read",
+                "things",
+                "tunnel",
+                "web-read",
+                "web-search"
+              ],
+              "reason": "The portable package exposes only the bounded common harness profile."
+            }
+          }
+        },
+        "local-native": {
+          "artifact_kind": "native",
+          "transport": "streamable-http",
+          "states": {
+            "default": {
+              "groups": [
+                "harness"
+              ],
+              "endpoint_source": "local"
+            },
+            "opt-in": {
+              "groups": [
+                "candidate-corpus",
+                "coding",
+                "daily",
+                "docs",
+                "media",
+                "media-work",
+                "nlm",
+                "reasoning",
+                "references",
+                "release",
+                "repo",
+                "research",
+                "review",
+                "shared-read",
+                "things",
+                "web-read",
+                "web-search"
+              ],
+              "endpoint_source": "local"
+            },
+            "approval-required": {
+              "groups": [
+                "account-backed",
+                "accounts",
+                "browser",
+                "credentialed",
+                "data",
+                "design",
+                "experimental",
+                "heavy",
+                "live-browser",
+                "notebooks",
+                "personal-work",
+                "productivity",
+                "reasoning-lab"
+              ],
+              "endpoint_source": "local",
+              "reason": "This profile can reach account state, live automation, local execution, heavy processing, or experimental capabilities.",
+              "risk_class": "elevated-capability",
+              "approval_scope": "profile-activation"
+            },
+            "remote-only": {
+              "groups": [],
+              "endpoint_source": "public",
+              "reason": "Local native artifacts do not project remote MCPHub routes."
+            },
+            "unsupported": {
+              "groups": [
+                "tunnel"
+              ],
+              "reason": "The reviewed ChatGPT tunnel surface is owned by the registered-app artifact."
+            }
+          }
+        },
+        "registered-app": {
+          "artifact_kind": "registered-app",
+          "transport": "streamable-http",
+          "states": {
+            "default": {
+              "groups": [],
+              "endpoint_source": "local"
+            },
+            "opt-in": {
+              "groups": [],
+              "endpoint_source": "local"
+            },
+            "approval-required": {
+              "groups": [],
+              "endpoint_source": "local",
+              "reason": "Registered-app authorization remains an external deployment and consent operation.",
+              "risk_class": "external-registration",
+              "approval_scope": "profile-activation"
+            },
+            "remote-only": {
+              "groups": [
+                "things"
+              ],
+              "endpoint_source": "public",
+              "reason": "ChatGPT reaches Things++ only through the reviewed OAuth-protected public Things group route."
+            },
+            "unsupported": {
+              "groups": [
+                "account-backed",
+                "accounts",
+                "browser",
+                "candidate-corpus",
+                "coding",
+                "credentialed",
+                "daily",
+                "data",
+                "design",
+                "docs",
+                "experimental",
+                "harness",
+                "heavy",
+                "live-browser",
+                "media",
+                "media-work",
+                "nlm",
+                "notebooks",
+                "personal-work",
+                "productivity",
+                "reasoning",
+                "reasoning-lab",
+                "references",
+                "release",
+                "repo",
+                "research",
+                "review",
+                "shared-read",
+                "tunnel",
+                "web-read",
+                "web-search"
+              ],
+              "reason": "The registered-app template exposes only the reviewed remote Things++ profile."
+            }
+          }
+        }
+      },
+      "targets": {
+        "portable": {
+          "profile": "portable"
+        },
+        "codex-native": {
+          "profile": "local-native"
+        },
+        "chatgpt-app": {
+          "profile": "registered-app"
+        },
+        "claude-native": {
+          "profile": "local-native"
+        },
+        "cursor-native": {
+          "profile": "local-native"
+        },
+        "grok-compatible": {
+          "profile": "local-native"
+        },
+        "opencode-native": {
+          "profile": "local-native"
+        },
+        "vscode-native": {
+          "profile": "local-native"
+        }
+      }
     },
     "groups": {
       "harness": {
@@ -1638,6 +2118,99 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "package-version-check-mcp",
           "chrome-devtools",
           "penpot"
+        ]
+      },
+      "things": {
+        "id": "3b94a096-b95f-586c-b2e7-e69ed177eb5a",
+        "description": "Complete Things++ surface: 41 audited core tools, 21 fixed Shortcuts tools, and 8 fixed native tools.",
+        "enabled": true,
+        "tools_allow_all": false,
+        "servers": [
+          {
+            "name": "things-core",
+            "tools": [
+              "add_area",
+              "add_checklist_items",
+              "add_project",
+              "add_tags",
+              "add_todo",
+              "bulk_move_records",
+              "bulk_update_todos",
+              "context_stats",
+              "create_tag",
+              "delete_todo",
+              "get_activating_in_days",
+              "get_anytime",
+              "get_areas",
+              "get_due_in_days",
+              "get_inbox",
+              "get_logbook",
+              "get_project_headings",
+              "get_projects",
+              "get_recent",
+              "get_server_capabilities",
+              "get_someday",
+              "get_tag_usage",
+              "get_tagged_items",
+              "get_tags",
+              "get_today",
+              "get_todo_by_id",
+              "get_todos",
+              "get_trash",
+              "get_upcoming",
+              "get_usage_recommendations",
+              "health_check",
+              "move_record",
+              "prepend_checklist_items",
+              "queue_status",
+              "remove_tags",
+              "replace_checklist_items",
+              "search_advanced",
+              "search_todos",
+              "update_area",
+              "update_project",
+              "update_todo"
+            ]
+          },
+          {
+            "name": "things-shortcuts",
+            "tools": [
+              "shortcuts_health",
+              "create_todo",
+              "create_todos",
+              "create_todo_with_quick_entry",
+              "create_heading",
+              "create_project",
+              "create_structured_project",
+              "find_items",
+              "get_items",
+              "get_selected_items",
+              "edit_items",
+              "edit_heading",
+              "edit_checklist",
+              "append_checklist",
+              "prepend_checklist",
+              "duplicate_items",
+              "delete_items",
+              "delete_items_immediately",
+              "delete_heading",
+              "open_list",
+              "show_items"
+            ]
+          },
+          {
+            "name": "things-native",
+            "tools": [
+              "native_health",
+              "open_search",
+              "log_completed",
+              "empty_trash",
+              "delete_area",
+              "rename_tag",
+              "delete_tag",
+              "set_tag_parent"
+            ]
+          }
         ]
       },
       "tunnel": {
@@ -1688,7 +2261,8 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "package-version-check-mcp",
           "ossinsight",
           "chrome-devtools",
-          "jupyter-mcp-server"
+          "jupyter-mcp-server",
+          "qsv"
         ]
       },
       "research": {
@@ -1721,7 +2295,17 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
               "read_cell"
             ]
           },
-          "reddit-mcp-buddy"
+          "qsv",
+          {
+            "name": "reddit-mcp-buddy",
+            "tools": [
+              "browse_subreddit",
+              "search_reddit",
+              "get_post_details",
+              "user_analysis",
+              "reddit_explain"
+            ]
+          }
         ]
       },
       "review": {
@@ -1765,7 +2349,6 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "servers": [
           "gmail",
           "linkedin",
-          "supathings",
           "penpot"
         ]
       },
@@ -1879,6 +2462,13 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "jupyter-mcp-server"
         ]
       },
+      "data": {
+        "description": "Tabular data wrangling and local CSV/Excel/JSONL/Parquet analysis via qsv.",
+        "enabled": true,
+        "servers": [
+          "qsv"
+        ]
+      },
       "design": {
         "description": "Design tooling.",
         "enabled": true,
@@ -1889,9 +2479,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
       "productivity": {
         "description": "Productivity tooling.",
         "enabled": true,
-        "servers": [
-          "supathings"
-        ]
+        "servers": []
       },
       "accounts": {
         "description": "Account-backed connectors.",
@@ -1939,7 +2527,16 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
               "get"
             ]
           },
-          "reddit-mcp-buddy"
+          {
+            "name": "reddit-mcp-buddy",
+            "tools": [
+              "browse_subreddit",
+              "search_reddit",
+              "get_post_details",
+              "user_analysis",
+              "reddit_explain"
+            ]
+          }
         ]
       },
       "credentialed": {
@@ -1960,7 +2557,6 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "servers": [
           "gmail",
           "linkedin",
-          "supathings",
           "penpot"
         ]
       },
@@ -1998,9 +2594,121 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "creative-thinking",
           "deep-lucid-3d",
           "lotus-wisdom-mcp",
+          {
+            "name": "reddit-mcp-buddy",
+            "tools": [
+              "browse_subreddit",
+              "search_reddit",
+              "get_post_details",
+              "user_analysis",
+              "reddit_explain"
+            ]
+          },
           "shannon-thinking",
-          "think-strategies",
-          "reddit-mcp-buddy"
+          "think-strategies"
+        ]
+      },
+      "candidate-corpus": {
+        "description": "Audited July 2026 candidate MCPs with one bounded tool per server; credentialed Langfuse and hosted Papersflow remain excluded.",
+        "enabled": true,
+        "servers": [
+          {
+            "name": "antv-chart",
+            "tools": [
+              "generate_bar_chart"
+            ]
+          },
+          {
+            "name": "axiom-mcp",
+            "tools": [
+              "axiom_get_catalog"
+            ]
+          },
+          {
+            "name": "better-icons",
+            "tools": [
+              "search_icons"
+            ]
+          },
+          {
+            "name": "charted",
+            "tools": [
+              "list_chart_types"
+            ]
+          },
+          {
+            "name": "csvglow",
+            "tools": [
+              "generate_dashboard"
+            ]
+          },
+          {
+            "name": "designer-skill-mcp",
+            "tools": [
+              "get_preflight_brief"
+            ]
+          },
+          {
+            "name": "geo-mcp",
+            "tools": [
+              "geo_schema_validate"
+            ]
+          },
+          {
+            "name": "mcp-dashboards",
+            "tools": [
+              "render_bar_chart"
+            ]
+          },
+          {
+            "name": "mcp-excalidraw",
+            "tools": [
+              "read_diagram_guide"
+            ]
+          },
+          {
+            "name": "mobile-mcp",
+            "tools": [
+              "mobile_list_available_devices"
+            ]
+          },
+          {
+            "name": "nullcost",
+            "tools": [
+              "search_providers"
+            ]
+          },
+          {
+            "name": "openspec-mcp",
+            "tools": [
+              "openspec_list_changes"
+            ]
+          },
+          {
+            "name": "paper-search-mcp",
+            "tools": [
+              "search_papers"
+            ]
+          },
+          {
+            "name": "prompt-to-asset",
+            "tools": [
+              "asset_doctor"
+            ]
+          },
+          {
+            "name": "semiotic",
+            "tools": [
+              "suggestChart"
+            ]
+          }
+        ]
+      },
+      "nlm": {
+        "description": "NotebookLM (Gemini Notebook) via teng-lin/notebooklm-py (single server).",
+        "enabled": true,
+        "servers": [
+          "notebooklm"
         ]
       }
     },
@@ -2011,13 +2719,18 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "server"
         ],
         "included_groups": [
-          "harness"
+          "harness",
+          "candidate-corpus",
+          "nlm",
+          "things"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness"
+          "harness",
+          "candidate-corpus",
+          "nlm"
         ],
         "enable_server_endpoints": true
       },
@@ -2029,13 +2742,18 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "server"
         ],
         "included_groups": [
-          "harness"
+          "harness",
+          "candidate-corpus",
+          "nlm",
+          "things"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness"
+          "harness",
+          "candidate-corpus",
+          "nlm"
         ],
         "enable_server_endpoints": true
       },
@@ -2047,13 +2765,18 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "server"
         ],
         "included_groups": [
-          "harness"
+          "harness",
+          "candidate-corpus",
+          "nlm",
+          "things"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness"
+          "harness",
+          "candidate-corpus",
+          "nlm"
         ],
         "enable_server_endpoints": true
       },
@@ -2065,52 +2788,39 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
           "server"
         ],
         "included_groups": [
-          "harness"
+          "harness",
+          "candidate-corpus",
+          "nlm",
+          "things"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "harness"
+          "harness",
+          "candidate-corpus",
+          "nlm"
         ],
         "enable_server_endpoints": true,
         "server_endpoint_name_style": "base"
       },
       "chatgpt": {
         "transport": "remote-http",
-        "auth": "bearer_token_env_var",
+        "auth": "oauth",
         "url_source": "public",
         "included_endpoint_kinds": [
           "group"
         ],
         "included_groups": [
-          "tunnel"
+          "things"
         ],
         "enabled_endpoint_kinds": [
           "group"
         ],
         "enabled_groups": [
-          "tunnel"
+          "things"
         ],
         "enable_server_endpoints": false
-      },
-      "lm-studio": {
-        "transport": "stdio",
-        "auth": "env_var",
-        "included_endpoint_kinds": [
-          "group",
-          "server"
-        ],
-        "included_groups": [
-          "harness"
-        ],
-        "enabled_endpoint_kinds": [
-          "group"
-        ],
-        "enabled_groups": [
-          "harness"
-        ],
-        "enable_server_endpoints": true
       },
       "stdio_bridge": {
         "transport": "stdio",
@@ -2118,9 +2828,6 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
         "clients": [
           "claude-desktop",
           "cursor",
-          "gemini-cli",
-          "antigravity",
-          "github-copilot-cli",
           "crush",
           "chatgpt"
         ]

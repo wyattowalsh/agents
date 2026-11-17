@@ -8,18 +8,18 @@ import { Card, CardGrid, Badge, Aside, Steps, LinkCard } from '@astrojs/starligh
 
 > Hand-maintained overview of MCP configuration. Prefer the registry SSOT and first-party package pages for accuracy.
 
-<Badge text="69 configured servers" variant="note" size="large" />
+<Badge text="71 configured servers" variant="note" size="large" />
 
 <Aside type="tip" title="What is MCP?">
 The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standard for connecting AI agents to external tools and data sources. Each server below exposes one or more tools that agents can invoke during a session.
 </Aside>
 
 <Aside type="note" title="Source of truth">
-**Authoring SSOT:** `config/mcp-registry.json` (69 top-level server keys). Edit once there, regenerate MCPHub settings, and project clients via stack sync. Root `mcp.json` is an MCPHub **projection** (group/server proxies + bearer), not the catalog authoring surface. First-party packages live under `mcp/<name>/` with matching docs at `/mcp/<name>/`.
+**Authoring SSOT:** `config/mcp-registry.json` (71 top-level server keys, all enabled). Edit once there, regenerate MCPHub settings, and project clients via stack sync. Root `mcp.json` is an MCPHub **projection** (group/server proxies + bearer), not the catalog authoring surface. First-party packages live under `mcp/<name>/` with matching docs at `/mcp/<name>/`.
 </Aside>
 
 <Aside type="caution" title="Candidate runtime overlay">
-The July 2026 corpus verifies 17 pinned MCP artifacts. All are disabled in the registry and excluded from default groups; configuration and package presence do not imply activation. See `planning/manifests/candidate-corpus-jul2026/non-skill-install-assurance.json` for per-target pins, auth variable names, probe method, and activation state.
+The July 2026 corpus lists 17 pinned MCP artifacts. All 71 registry servers are enabled, and the `candidate-corpus` group (15 servers) is on the default client. The runtime ledger still marks all 17 MCP artifacts incomplete, so an enabled registry row is not an accepted activation receipt. See `planning/manifests/candidate-corpus-jul2026/runtime-activation-assurance.json`.
 </Aside>
 
 <Aside type="caution" title="Partial inventory below">
@@ -35,6 +35,9 @@ Category cards below are a human-oriented subset and may lag the full registry. 
   <LinkCard title="docs-index" href="/mcp/docs-index/" description="Docs search / index MCP." />
   <LinkCard title="docs-graph" href="/mcp/docs-graph/" description="Docs graph MCP." />
   <LinkCard title="Registry publisher" href="/mcp/registry-publisher/" description="Catalog publish helpers." />
+  <LinkCard title="things-core" href="/mcp/things-core/" description="Things++ security adapter for the audited Things toolset." />
+  <LinkCard title="things-shortcuts" href="/mcp/things-shortcuts/" description="Things++ Shortcut bridge." />
+  <LinkCard title="things-native" href="/mcp/things-native/" description="Things++ native bridge." />
 </CardGrid>
 
 ## Managed client sync coverage
