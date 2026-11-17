@@ -357,12 +357,12 @@ wagents readme               # Fully regenerates README.md from repo contents
 wagents readme --check       # Exits 1 if README is stale
 
 # Documentation site
-wagents web init                        # One-time: pnpm install in web/
+wagents web init                        # One-time: pnpm install in docs/
 wagents web generate                    # Generate Astro MDX into docs/src/content (repo-only default)
 wagents web generate --include-installed  # Opt-in to installed skills from the normalized harness inventory
 wagents web generate --include-drafts   # Include skills with TODO descriptions
 wagents web generate --check            # Fail when generated web artifacts are stale
-wagents web dev                         # Generate + launch Next.js dev server
+wagents web dev                         # Generate + launch the Astro dev server
 wagents web build                       # Generate + production build
 wagents web preview                     # Generate + build + preview server
 wagents web clean                       # Remove generated content pages

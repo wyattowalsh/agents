@@ -36,11 +36,46 @@ This repo is packaged as one cross-agent bundle with native plugin adapters and 
 
 | Target | Path | Update behavior |
 | ------ | ---- | --------------- |
-| Claude Code | `.claude-plugin/plugin.json` + `.claude-plugin/marketplace.json` | Git-hosted plugin updates resolve from the latest commit because the plugin version is intentionally unpinned |
-| Codex | `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` | Codex can load the Git-backed plugin bundle and bundled skills from the repository root |
-| OpenCode | `opencode.json` + `.opencode/` | Repo-managed npm runtime plugin specs use `@latest`; OCX-managed components stay copied under `.opencode/` with `.ocx/` receipts; restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale |
+| Agent Plugins 1.0 | `plugin.json` + `skills/` + `mcp.json` | Versionless portable source package; validate it with `uv run wagents plugin validate . --target portable` and build only into an explicit isolated output |
+| Claude Code | `.claude-plugin/plugin.json` + `.claude-plugin/marketplace.json` + `.claude-plugin/mcp.json` | Git-hosted native updates resolve from the latest commit; the target-local MCP config never reuses portable root `mcp.json` |
+| Codex | `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` + `.mcp.json` | Codex loads the Git-backed native bundle with target-local MCP configuration; portable root `mcp.json` remains independently valid |
+| OpenCode | `.opencode-plugin/plugin.json` + `opencode.json` + `.opencode/` | The native manifest delegates runtime and MCP ownership to `opencode.json`; repo-managed npm plugin specs use `@latest`, while OCX-managed components retain `.ocx/` receipts |
 | Other agents | `npx skills add github:wyattowalsh/agents ...` | `wagents update` refreshes recorded sources, and `wagents skills sync` additively reconciles repo + curated external skills across harnesses |
 | OpenSpec | `openspec/` + `uv run wagents openspec ...` | Spec/change workflow with JSON wrappers and local downstream AI tool artifact generation |
+
+### Deterministic plugin maintenance
+
+Check the strict skill corpus against the typed native overlay and parity receipt before validating or building artifacts:
+
+```bash
+uv run wagents plugin reconcile-skills
+uv run wagents plugin validate . --target portable
+uv run wagents plugin build --target all --check
+```
+
+`--target all --check` freezes one union source snapshot, derives one family source identity and fingerprint, validates every direct target child in a temporary family, reverifies the source union, and discards the family. Adding `--out` to `--check` compares an existing artifact for drift but never materializes a missing output.
+
+When reconciliation reports drift, the repo-only apply path atomically refreshes `config/skill-adapters.json` and `planning/manifests/agent-plugin-skill-parity.json`; it does not install skills or write client or home configuration:
+
+```bash
+uv run wagents plugin reconcile-skills --apply
+```
+
+For one target, `--out` names that target's direct artifact root, for example `--target portable --out dist/portable`. For `--target all`, it names the family container and each recipe becomes a direct `<out>/<target>/` child. The repository-local family form is:
+
+```bash
+uv run wagents plugin build --target all --out dist --release-version X.Y.Z
+```
+
+The family publishes once only after every target validates and the source union is unchanged. A late render failure, source mutation, or existing/mixed destination publishes no partial target. JSON output uses redacted `outputPath`, `sourceSnapshotSha256`, and `artifactOutputPaths` fields; external destinations appear as `<external-output>` and failed families expose no output paths.
+
+Source manifests remain versionless. The closed `releasePolicy` fixes source identity to `source-versionless`, requires source manifest versions to be omitted, accepts one SemVer identity for tagged/release materialization, injects it into staged artifacts only, applies it to every supported version field, and forbids source mutation. The command above materializes that identity only in the isolated family; it does not authorize a release or publication.
+
+Each persisted target includes a deterministic CycloneDX 1.6 `sbom.cdx.json` and closed `manifest.json` with source revision and dirty-state policy, standards/schema digests, normalized build environment, target capabilities, tree integrity, and per-file checksum, mode, license, provenance, runtime, and side-effect evidence. Runtime dependencies identify interpreters or platform requirements only; they are not a resolved package graph and do not install or execute code.
+
+Regular resources contained by each skill, including `references/`, `scripts/`, and `assets/`, are inventoried and staged. Native hook policy can be attested while executable hooks are deliberately omitted because no self-contained target hook adapter is rendered; native rules are likewise omitted without a recipe-declared rule source. Manifest interface metadata, logos, and screenshots are not recipe-declared artifact inputs.
+
+The tracked retrospective rollback set recovers `131/131` entries with zero blockers, but it does not supply a contemporaneous pre-migration behavior golden or retroactively perform the immediate rollback that was missed at cutover.
 
 ## 🤝 Contributing
 
@@ -54,7 +89,7 @@ Security-sensitive reports and secret-handling rules are documented in [SECURITY
 
 | 📦 **Portable** | 🧩 **Composable** | 🌐 **Open Source** |
 | :--- | :--- | :--- |
-| Use skills across Claude Code, Cursor, Copilot, and more. | Combine simple skills into complex, multi-agent workflows. | Extensible, readable, and community-driven. |
+| Use skills across the managed agent families. | Combine simple skills into complex, multi-agent workflows. | Extensible, readable, and community-driven. |
 
 ## 🧰 Skills
 
@@ -125,7 +160,7 @@ Reusable actions and knowledge bases for AI agents.
 | skill-trace-debugger | Inspect eval manifests and portable validators for trace-friendly skill signals. Use when debugging skill invocation gaps. NOT for live LLM trace capture. |
 | tech-debt-analyzer | Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (review) or refactoring. |
 | test-architect | Test strategy, coverage analysis, edge case identification, flaky test diagnosis. Use when designing test suites. NOT for running tests (devops-engineer), TDD, or code review (review). |
-| things-manager | Use when reviewing/managing Things 3 via SupaThings MCP: tasks, projects, headings, tags, deadlines, triage, capture, cleanup, and GTD. NOT for calendars, Gmail, database edits, MCP setup, or secrets. |
+| things-manager | Use when reviewing or managing Things 3 through the sole Things++ MCPHub group `things`: capture, triage, planning, projects, headings, tags, dates, checklists, UI handoffs, cleanup, and reports. NOT for calendars, email, other task managers, MCP setup, direct database/raw automation, or secrets. |
 | trafilatura | Extract clean article text and metadata from URLs or HTML with trafilatura CLI. Use for single-page extraction, piped/local HTML, bounded discovery. NOT for research synthesis (research), PDFs (docling), raw fetch (fetch), video (yt-dlp). |
 | wargame | Strategic decision analysis and wargaming. Auto-classifies complexity for analysis or simulation. Use for decisions under uncertainty. NOT for simple pros/cons or code review. |
 | yt-dlp | Probe, transcript, and download video/audio with yt-dlp CLI on supported hosts. Use when you need metadata, captions, or local media. Transcript-first (probe, transcript, download). NOT for static HTML (Fetch MCP), research, or ffmpeg transforms. |
@@ -159,7 +194,7 @@ System prompts and context definitions for AI agents.
 
 ## 🔌 MCP Servers
 
-First-party MCP servers authored in this repository (see `AGENTS.md` §2). Curated external servers are configured in `config/mcp-registry.json` and rendered into MCPHub settings; disabled entries remain unavailable until explicit enablement and group assignment.
+First-party MCP servers authored in this repository (see `AGENTS.md` §2). Curated external servers are configured in `config/mcp-registry.json` and exposed via MCPHub.
 
 | Name | Description |
 | ---- | ----------- |
@@ -178,6 +213,9 @@ First-party MCP servers authored in this repository (see `AGENTS.md` §2). Curat
 | mcp-skill-catalog | Read-only MCP server exposing the repo skill catalog (skills/, docs/public/generated-registries/skills-catalog-index.json) |
 | mcp-source-url-health | Read-only MCP server that checks the reachability of skill/agent/mcp source URLs over HTTP |
 | mcp-template-smoke | Read-only MCP server for dry-run MCP scaffold and layout validation |
+| mcp-things-core | Security adapter for the audited mcp-server-things toolset |
+| mcp-things-native | Fixed official Things AppleScript and search MCP tools |
+| mcp-things-shortcuts | Typed fixed-name Things Shortcuts MCP bridge |
 | mcp-workflow-status | Read-only MCP server summarizing .github/workflows YAML files |
 
 ## 🛠️ Development
@@ -194,7 +232,7 @@ First-party MCP servers authored in this repository (see `AGENTS.md` §2). Curat
 | `wagents skills sync --dry-run` | Preview additive cross-harness skill sync from the normalized inventory |
 | `wagents skills search <query>` | Search local repo, installed, and plugin skills on demand |
 | `wagents skills context <query>` | Build a compact context packet for matching skills |
-| `just typecheck` | Run ty across `wagents/` and `scripts/` |
+| `just typecheck` | Run ty on gated sources from pyproject.toml `[tool.ty.src]` |
 | `wagents readme` | Regenerate this README |
 | `wagents package <name>` | Package a skill into portable ZIP |
 | `wagents package --all` | Package all skills |
@@ -203,13 +241,14 @@ First-party MCP servers authored in this repository (see `AGENTS.md` §2). Curat
 | `wagents install <name>` | Install specific skill to all agents |
 | `wagents install <name> -a <agent>` | Install specific skill to specific agents |
 | `wagents update` | Refresh installed skills from their recorded sources |
-| `wagents docs init` | One-time setup: install docs dependencies |
-| `wagents docs generate` | Generate MDX content pages from assets |
-| `wagents docs generate --include-installed` | Include installed skills discovered from the normalized harness inventory in generated docs |
-| `wagents docs dev` | Generate + launch dev server |
-| `wagents docs build` | Generate + production build |
-| `wagents docs preview` | Generate + build + preview server |
-| `wagents docs clean` | Remove generated content pages |
+| `wagents web init` | One-time setup: install docs/ (Astro) dependencies |
+| `wagents web generate` | Generate MDX content pages into docs/src/content |
+| `wagents web generate --include-installed` | Include installed skills discovered from the normalized harness inventory in generated pages |
+| `wagents web generate --check` | Fail when generated web artifacts are stale |
+| `wagents web dev` | Generate + launch the Astro dev server |
+| `wagents web build` | Generate + production build |
+| `wagents web preview` | Generate + build + preview server |
+| `wagents web clean` | Remove generated content pages |
 
 Third-party skill collections can be installed directly with `npx skills add <source> --skill <name> -y -g --agent <agent>`. Repeat `--skill` and `--agent` to target a curated subset.
 
