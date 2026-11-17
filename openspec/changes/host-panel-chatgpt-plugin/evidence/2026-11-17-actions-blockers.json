@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "purpose": "Read-only acceptance evidence for Host Panel PR #8",
+  "repository": "wyattowalsh/agents",
+  "pull_request": 8,
+  "observed_date_utc": "2026-11-17",
+  "head_sha": "daff0779fdc22101c802c3ad4a7364206169042c",
+  "classification": "Account-level infrastructure blocker before job execution",
+  "exact_error_annotation": "The job was not started because your account is locked due to a billing issue.",
+  "annotation_coverage": "Directly observed for all 11 failed jobs across the four workflow summary pages",
+  "other_annotation": "Informational notice about the ubuntu-latest migration to Ubuntu 26; not the failure cause",
+  "totals": {
+    "jobs": 13,
+    "failure": 11,
+    "skipped": 2,
+    "failed_jobs_with_observed_empty_steps": 11
+  },
+  "runs": [
+    {
+      "name": "CI",
+      "id": 44044130922,
+      "url": "https://github.com/wyattowalsh/agents/actions/runs/44044130922",
+      "status": "completed",
+      "conclusion": "failure",
+      "summary_page_directly_observed": true,
+      "job_counts": {
+        "total": 9,
+        "failure": 8,
+        "skipped": 1
+      },
+      "jobs": [
+        {
+          "id": 133905522425,
+          "name": "wagents-wheel",
+          "status": "completed",
+          "conclusion": "failure",
+          "steps": []
+        },
+        {
+          "id": 133905522622,
+          "name": "typecheck",
+          "status": "completed",
+          "conclusion": "failure",
+          "steps": []
+        },
+        {
+          "id": 133905522668,
+          "name": "validate",
+          "status": "completed",
+          "conclusion": "failure",
+          "steps": []
+        },
+        {
+          "id": 133905522697,
+          "name": "test",
+          "status": "completed",
+          "conclusion": "failure",
+          "steps": []
+        },
+        {
+          "id": 133905522730,
+          "name": "lint",
+          "status": "completed",
+          "conclusion": "failure",
+          "steps": []
+        },
+        {
+          "id": 133905522751,
+          "name": "workflows",
+          "status": "completed",
+          "conclusion": "failure",
+          "steps": []
+        },
+        {
+          "id": 133905522880,
+          "name": "apm",
+          "status": "completed",
+          "conclusion": "failure",
+          "steps": []
+        },
+        {
+          "id": 133905522925,
+          "name": "docs",
+          "status": "completed",
+          "conclusion": "failure",
+          "steps": []
+        },
+        {
+          "id": 133905524516,
+          "name": "hook-perf",
+          "status": "completed",
+          "conclusion": "skipped",
+          "steps_observation": "Not separately fetched"
+        }
+      ]
+    },
+    {
+      "name": "Release Skills",
+      "id": 44044131161,
+      "url": "https://github.com/wyattowalsh/agents/actions/runs/44044131161",
+      "status": "completed",
+      "conclusion": "failure",
+      "summary_page_directly_observed": true,
+      "job_counts": {
+        "total": 2,
+        "failure": 1,
+        "skipped": 1
+      },
+      "jobs": [
+        {
+          "id": 133905523313,
+          "name": "validate",
+          "status": "completed",
+          "conclusion": "failure",
+          "steps": []
+        },
+        {
+          "id": 133905540539,
+          "name": "package-and-release",
+          "status": "completed",
+          "conclusion": "skipped",
+          "steps_observation": "Not separately fetched"
+        }
+      ]
+    },
+    {
+      "name": "Dependency Review",
+      "id": 44044131069,
+      "url": "https://github.com/wyattowalsh/agents/actions/runs/44044131069",
+      "status": "completed",
+      "conclusion": "failure",
+      "summary_page_directly_observed": true,
+      "job_counts": {
+        "total": 1,
+        "failure": 1,
+        "skipped": 0
+      },
+      "jobs": [
+        {
+          "id": 133905522739,
+          "name": "dependency-review",
+          "status": "completed",
+          "conclusion": "failure",
+          "steps": []
+        }
+      ]
+    },
+    {
+      "name": "IDEAS Quality Gates",
+      "id": 44044131741,
+      "url": "https://github.com/wyattowalsh/agents/actions/runs/44044131741",
+      "status": "completed",
+      "conclusion": "failure",
+      "summary_page_directly_observed": true,
+      "job_counts": {
+        "total": 1,
+        "failure": 1,
+        "skipped": 0
+      },
+      "jobs": [
+        {
+          "id": 133905525165,
+          "name": "ideas-quality-gates",
+          "status": "completed",
+          "conclusion": "failure",
+          "steps": []
+        }
+      ]
+    }
+  ],
+  "evidence_methods": {
+    "connected_github_api": "Workflow jobs, steps for all 11 failed jobs, and head-commit check runs; failed jobs recorded 1–2 second durations and two annotations each",
+    "head_check_runs_url": "https://api.github.com/repos/wyattowalsh/agents/commits/daff0779fdc22101c802c3ad4a7364206169042c/check-runs?per_page=100",
+    "browser": "Read-only public GitHub Actions pages; no sign-in; all four run summary URLs above were directly observed",
+    "additional_directly_observed_page": "https://github.com/wyattowalsh/agents/actions/runs/44044130922/job/133905522425",
+    "representative_log_job_ids": [
+      133905522425,
+      133905523313,
+      133905522739,
+      133905525165
+    ],
+    "representative_log_result": "All four log requests returned 404 BlobNotFound"
+  },
+  "limits": [
+    "This records observations from the completed investigation; no fresh remote state was fetched when saving this receipt.",
+    "No job steps ran according to the explicit billing-lock annotation and empty step arrays; these runs neither demonstrate a Host Panel regression nor establish that CI would pass after the lock is resolved.",
+    "Direct check-run annotation endpoints were unsupported by the connected GitHub fetch route, and the alternate GitHub MCP check-run method returned an invalid-session error; exact annotation text was verified in the public UI.",
+    "Skipped jobs are recorded without claiming a separately verified reason for skipping.",
+    "Billing details and underlying account history were not inspected; the diagnosis is limited to GitHub's displayed error.",
+    "No CI reruns, workflow edits, account or permission changes, source modifications, merges, or Vercel investigation were performed."
+  ]
+}

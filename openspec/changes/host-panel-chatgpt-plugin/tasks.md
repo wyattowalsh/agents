@@ -13,4 +13,9 @@
 - [x] Build and inspect the release archive after canonical source changes settle.
 - [x] Save the private plugin and read back its source and generated compatibility manifest.
 - [x] Record controlled Chat-baseline prompt trials separately from actual product-session tests.
+- [x] Verify the saved plugin in both current-runtime skill catalogs and compare all loaded resources with canonical bytes.
+- [x] Record direct evidence-integrity and cloud-loaded human-opinion boundary trials with their actual loading routes.
+- [x] Check premise branching, in-chat JSON checkpointing, and a single-perspective resume with separately delivered live turns using the saved cloud skill.
 - [ ] Record observed Chat discovery and invocation separately from package checks before claiming live availability.
+
+The remaining checkbox concerns a fresh client session and its actual plugin-picker or @-mention route. Current-runtime catalog loading and controlled cloud-skill trials are recorded separately above.

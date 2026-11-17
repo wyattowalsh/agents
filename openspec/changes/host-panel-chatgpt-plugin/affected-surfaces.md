@@ -8,10 +8,13 @@
 | `skills/host-panel/references/*.md` | Detailed grounding, formats, moderation, synthesis, and interaction rules |
 | `skills/host-panel/evals/evals.json` | Retained scenarios plus Chat, evidence, continuation, and interruption cases |
 | `skills/host-panel/evals/runs/2026-11-17-chat-baseline.json` | Observed controlled trial responses and explicit limits; not an installed-session benchmark |
+| `skills/host-panel/evals/runs/2026-11-17-resource-loading.json` | Current-runtime cloud and executor catalog observations and all 16 canonical resource comparisons |
+| `skills/host-panel/evals/runs/2026-11-17-targeted-acceptance.json` | Verbatim targeted trials, actual loading routes, interaction limits, and assistant review |
 | `config/plugins/host-panel.json` | Versionless portable plugin metadata; no MCP, app, dependency, or policy configuration |
 | `scripts/build_host_panel_plugin.py` | Narrow, deterministic release ZIP exporter |
 | `tests/test_host_panel_plugin.py` | Exporter behavior, source preservation, input/output boundaries, and reproducibility |
 | `openspec/changes/host-panel-chatgpt-plugin/` | Change design, preservation mapping, tasks, requirement delta, and verification record |
+| `openspec/changes/host-panel-chatgpt-plugin/evidence/2026-11-17-actions-blockers.json` | Read-only evidence of the account-level blocker affecting the original source commit's workflow runs |
 
 ## Generated And External Surfaces
 
