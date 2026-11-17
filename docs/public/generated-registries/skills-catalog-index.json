@@ -126986,7 +126986,7 @@
       "author": "",
       "credentialBehavior": "",
       "dedupeNotes": "",
-      "description": "Facilitate research-grounded panels in roundtable, Oxford, and Socratic formats. Use when exploring contested topics from multiple angles. NOT for Q&A, code review, or real human opinion simulation.",
+      "description": "Host research-grounded roundtable, Oxford, or Socratic panels on contested questions and practical decisions. Use when the user asks for a panel, structured debate, competing perspectives, or continuation of a panel, including a topic already in the conversation. Works in ordinary Chat without a terminal or separate agents. Not for ordinary Q&A, code review, or predicting real people's opinions.",
       "displaySource": "github:wyattowalsh/agents",
       "executableSurface": "",
       "fileAccess": "",
@@ -127003,7 +127003,7 @@
         "resourceLinks": [],
         "scripts": [],
         "templates": [],
-        "wordCount": 1391
+        "wordCount": 1904
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -131611,7 +131611,7 @@
       "author": "",
       "credentialBehavior": "",
       "dedupeNotes": "",
-      "description": "Facilitate research-grounded panels in roundtable, Oxford, and Socratic formats. Use when exploring contested topics from multiple angles. NOT for Q&A, code review, or real human opinion simulation.",
+      "description": "Host research-grounded roundtable, Oxford, or Socratic panels on contested questions and practical decisions. Use when the user asks for a panel, structured debate, competing perspectives, or continuation of a panel, including a topic already in the conversation. Works in ordinary Chat without a terminal or separate agents. Not for ordinary Q&A, code review, or predicting real people's opinions.",
       "displaySource": "github:wyattowalsh/agents",
       "executableSurface": "",
       "fileAccess": "",
@@ -131628,7 +131628,7 @@
         "resourceLinks": [],
         "scripts": [],
         "templates": [],
-        "wordCount": 1391
+        "wordCount": 1904
       },
       "license": "MIT",
       "licenseStatus": "",

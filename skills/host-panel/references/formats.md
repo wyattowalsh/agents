@@ -1,150 +1,118 @@
 # Panel Discussion Formats
 
-Each format is a deliberation protocol, not a performance style. Use the topic
-gate and source ledger to decide which format is legitimate.
+Use the topic gate and evidence to choose a legitimate protocol. Complete its
+phases and final synthesis by default; pause between phases only on request.
+A stop or end-panel request overrides this default and ends the panel immediately.
+No format requires shell access or a separate agent runtime.
 
-## Shared Phase 0: Framing
+## Shared Framing and Budget
 
-Every format starts with:
+Begin with the question, scope and false-balance decision; evidence status and
+limits; a compact map of traditions, tensions, and uncertainty; and why the roster
+uses different methods. Disclose actual execution. Use simulated ordered openings
+in one context, or separate openings only when peer answers were actually withheld.
+Never present the panel as real human opinion.
 
-1. Topic class and false-balance decision.
-2. Source status and evidence limits.
-3. Terrain map: traditions, tensions, and uncertainty.
-4. Roster rationale: why these panelists differ methodologically.
-5. Reminder: the panel simulates intellectual positions, not real human opinion.
+Default to four perspectives within a range of two through six. Run one opening
+pass, one critique pass containing the format's challenge phases, updates, and
+synthesis. Allow only one targeted extension for a consequential, resolvable crux
+when new evidence or a concrete test could alter the conclusion. Do not expand
+round counts just because the presentation is longer.
 
 ## Roundtable
 
-Use for open exploration, policy trade-offs, decision-critical topics, and
-multi-perspective mapping.
+Use for open exploration, policy trade-offs, practical decisions, or mapping
+multiple legitimate approaches. Success means exposing the consequential cruxes
+without forcing a winner.
 
-### Success Criteria
+1. **Opening Positions.** Each perspective gives its initial claim, evidence
+   standard, uncertainty, strongest self-objection, and change condition before
+   cross-talk. Label the actual degree of separation.
+2. **Cross-Pollination.** Respond to exact opening claims. Connect related threads
+   and avoid repeated restatement or generic agreement.
+3. **Crux Test.** Within the same critique pass, examine the most important
+   disagreement. Identify the evidence or value trade-off that could change it.
+4. **Update and Residuals.** State what changed, why, and what remains unresolved;
+   then synthesize. Do not force consensus.
 
-- The panel maps multiple traditions without forcing a winner.
-- The moderator identifies cruxes and evidence gaps.
-- Convergence is tested rather than celebrated.
+Stop when the central crux is clear, claims repeat without new support, or missing
+evidence becomes the binding constraint. Repair brainstorming without evidence
+status, role collapse, and polite summaries that never identify a crux. Supported
+agreement is acceptable after checking omitted objections.
 
-### Phase Structure
-
-**Phase 1 - Independent Positions.** Each panelist states their initial claim,
-evidence standard, uncertainty, and strongest self-objection before cross-talk.
-
-**Phase 2 - Cross-Pollination.** Panelists respond to specific claims from Phase 1.
-The moderator links threads and prevents repeated restatement.
-
-**Phase 3 - Crux Test.** Focus on the most important disagreement. Ask what
-evidence or value trade-off would change each position.
-
-**Phase 4 - Update and Residuals.** Each panelist states what changed, what did
-not, and what remains unresolved. Do not force consensus.
-
-### Stop Conditions
-
-- The central crux has been named.
-- Claims repeat without new evidence.
-- Source gaps, not disagreement, are now the binding constraint.
-
-### Failure Modes
-
-- Generic agreement across all panelists.
-- Brainstorming without source status.
-- Polite summary instead of crux identification.
+With two perspectives, use direct structured dialogue, not a simulated crowd.
 
 ## Oxford-Style
 
-Use for genuinely contestable binary propositions. Do not use Oxford to stage a
-false balance around settled factual questions.
+Use only for a clear, genuinely contestable binary motion with defensible
+arguments on both sides. Verify factual premises and label value commitments.
+Never assign one side to deny a settled fact or imply equal evidential support
+where the source record is asymmetric.
 
-### Eligibility
+Assign proposition and opposition as advocacy roles, not personal beliefs. With
+two perspectives, use direct proposition/opposition. With three, use a swing
+perspective. With four through six, include an explicitly conditional or reluctant
+advocate who tests its assigned side's limits without inventing a personal belief.
 
-The motion must pass all topic-gate checks:
+1. **Motion Statement.** State the motion, stakes, source limits, and the practical
+   meaning of adopting or rejecting it. A vote is not required.
+2. **Opening Cases.** Present the strongest defensible cases, evidence standards,
+   and self-objections before rebuttal, with truthful execution labels.
+3. **Direct Rebuttal.** Alternate sides in one critique pass. Identify the claim
+   challenged and why its evidence, logic, scope, or value premise is incomplete.
+4. **Moderator Questions.** As part of that pass, probe hidden assumptions, loaded
+   terms, evidence gaps, and the strongest opposing evidence.
+5. **Closing With Concessions.** Each side acknowledges the strongest opposing
+   point and states remaining conditions before the final synthesis.
 
-1. Clear proposition.
-2. Defensible proposition and opposition.
-3. No settled-fact denial as one side.
-4. Source ledger can support both the motion and opposition.
-
-### Team Assignment
-
-Divide panelists into proposition and opposition sides. For 3 experts, use one
-swing panelist. For 4-6 experts, assign at least one reluctant advocate who can
-steelman the side that is not their natural conclusion.
-
-### Phase Structure
-
-**Phase 1 - Motion Statement.** State the motion, stakes, source status, and what
-a vote for or against would imply.
-
-**Phase 2 - Independent Openings.** Each side gives its strongest case, evidence
-standard, and self-objection before hearing rebuttal.
-
-**Phase 3 - Direct Rebuttal.** Alternate sides. Address exact claims using:
-"The previous speaker claimed X; this fails or is incomplete because Y."
-
-**Phase 4 - Moderator Questions.** Probe unstated assumptions, evidence gaps,
-loaded terms, and the strongest opposing evidence.
-
-**Phase 5 - Closing With Concessions.** Each side acknowledges the strongest
-opposing point before closing.
-
-### Stop Conditions
-
-- The decisive crux is clear.
-- The debate becomes a values trade-off rather than a factual disagreement.
-- One side lacks source-backed support and must be downgraded.
-
-### Failure Modes
-
-- Fake balance.
-- Winning by rhetoric.
-- Last-round majority voting.
-- Treating an assigned side as the panelist's true belief.
+Stop when the decisive crux is clear, the remaining disagreement is a value
+choice, or one side lacks support and must be downgraded. Record which of these
+occurred. Reject rhetorical winners, last-round majority verdicts, and claims
+that an assigned side reveals a participant's real belief.
 
 ## Socratic
 
-Use for conceptual, definitional, or assumption-heavy topics. The moderator asks
-more than asserts. The goal is clearer inquiry, not victory.
+Use for definitions, conceptual boundaries, and assumption-heavy questions.
+The moderator asks more than asserts. Produce a clearer inquiry or framework,
+not victory or unresolved mystery.
 
-### Question Taxonomy
+| Question type | Purpose |
+|---|---|
+| Clarifying | Define a term, give an example, identify exclusions |
+| Assumption | Identify what must hold for a claim to follow |
+| Evidence | Test support and whether it also fits another account |
+| Implication | Examine what follows and counterexamples |
+| Meta | Test the framing and identify a change condition |
 
-- **Clarifying.** What do you mean by X? Can you give an example?
-- **Assumption.** What must be true for that to hold?
-- **Evidence.** What evidence supports this, and could it support another view?
-- **Implication.** If true, what follows?
-- **Meta.** Are we asking the right question? What would change your mind?
+1. **Define.** Each perspective states the central concept, exclusions, uncertainty,
+   and a substantive limitation before responding to other definitions.
+2. **Examine.** Probe the strongest definition or claim for hidden assumptions
+   and missing support.
+3. **Deconstruct.** In the same challenge pass, test contradictions and whether
+   apparently incompatible claims can coexist under clearer definitions.
+4. **Reconstruct.** Build the sharper question or framework warranted by the
+   inquiry, retain residual disagreements, and synthesize.
 
-### Phase Structure
+Stop when the ambiguity is identified, questions repeat the same distinction,
+or further progress requires outside evidence. Avoid a lecturing moderator,
+unsupported philosophical authority, or questioning without a useful result.
+With two perspectives, use paired inquiry and phase-transition moderation.
+Reserve the convergence assessment for synthesis instead of interrupting each
+question to demand agreement or disagreement.
 
-**Phase 1 - Define.** Each panelist defines the central concept and names what
-their definition excludes.
+## Presentation Density
 
-**Phase 2 - Examine.** Probe the strongest definition or claim for hidden
-assumptions and source gaps.
+| Density | Keep visible |
+|---|---|
+| `compact` | Brief framing/status, short roster or role labels, distinct opening claims, one consequential exchange, updates, and a complete concise synthesis |
+| `standard` | Concise framing and evidence summary, small roster, the chosen format's substantive phases, and an answer with cruxes and limits |
+| `expanded` | More source context, methodology cards, detailed claim exchanges and position changes, plus full synthesis and useful verified reading |
 
-**Phase 3 - Deconstruct.** Surface contradictions and ask whether both claims can
-stand together.
+Combine headings and shorten turns to fit density. Do not remove research limits,
+actual execution provenance, a material objection, or the synthesis to save space.
+Do not print every diagnostic as an administrative section. Expanded presentation
+is not permission for extra rounds or automatic persistence.
 
-**Phase 4 - Reconstruct.** Build a more robust question or framework that
-incorporates what the inquiry revealed.
-
-### Stop Conditions
-
-- The core ambiguity has been named.
-- Further questioning repeats the same distinction.
-- The remaining issue requires evidence outside the session.
-
-### Failure Modes
-
-- The moderator lectures instead of asks.
-- Panelists perform philosophy without grounding.
-- The output ends with mystery rather than a sharper question.
-
-## Condensed Panels
-
-For condensed output:
-
-1. Keep Phase 0, source status, and roster rationale.
-2. Run one independent-position pass.
-3. Include one direct challenge round.
-4. Produce full final synthesis.
-5. Omit repeated openings and decorative dialogue.
+For user controls and changed-premise branches, apply
+[moderator rules](moderator-rules.md). Build the final product using
+[synthesis](synthesis.md), unless the user has stopped the panel.

@@ -1,8 +1,9 @@
 # Methodology Cards and Archetypes
 
-Use archetypes as starting points for methodology cards. Do not copy them
-verbatim. Each panelist represents a reasoning tradition, evidence standard,
-and crux, not a theatrical character.
+Use archetypes as starting points after the topic gate and source grounding.
+Select four perspectives by default, within the supported range of two through
+six. Each represents a method, evidence standard, and disconfirmation condition.
+Do not copy these examples mechanically or assign conclusions in advance.
 
 ## Methodology Card Schema
 
@@ -10,15 +11,21 @@ Each panelist must have:
 
 | Field | Requirement |
 |---|---|
-| `name` | Plausible synthetic name; do not impersonate real living people |
+| `label` | Clear role label, optionally a stable `P1` ID; no invented credentials or real-person impersonation |
 | `domain` | Specific domain or discipline |
 | `tradition` | Intellectual school, profession, or research program |
 | `evidence_standard` | What counts as valid support |
-| `likely_claim` | Initial claim before cross-talk |
+| `inquiry` | The distinct question this method investigates, without a preferred answer |
 | `blind_spot` | Where the tradition can fail |
-| `strongest_self_objection` | Best argument against this panelist's own position |
-| `crux` | What would change the panelist's mind |
+| `strongest_self_objection` | Methodological limitation initially; strongest objection to the actual position in its opening |
+| `disconfirmation` | What evidence or counterexample could overturn its eventual claim; make this specific in the opening |
 | `voice_constraints` | Vocabulary and reasoning style, not accent or stereotype |
+
+Do not prefill a `likely_claim`. Let the opening analysis produce a conclusion
+from the evidence packet. Oxford advocacy is the explicit exception: assign an
+argumentative side and label it as a role, never as a belief. Synthetic names are
+optional decoration, not expertise. Describe community perspectives through
+documented concerns; do not invent testimony or lived experience.
 
 ## Anti-Clustering Matrix
 
@@ -33,7 +40,9 @@ Before finalizing the roster, check:
 | Power | Include at least one perspective that asks who benefits and who bears risk |
 | Culture/context | For normative topics, avoid universalizing one local context |
 
-If two panelists share tradition, method, and likely conclusion, merge or replace one.
+If two perspectives duplicate method, evidence standard, and inquiry, merge or
+replace one. Different methods may legitimately reach the same conclusion;
+agreement is not a roster defect.
 
 ## Technology Archetypes
 
@@ -150,9 +159,11 @@ For specialized topics:
 1. Start from the terrain map, not from generic job titles.
 2. Identify real communities that reason differently about the topic.
 3. Assign each panelist a distinct evidence standard and crux.
-4. Include one contrarian who differs methodologically, not just rhetorically.
+4. Include a method capable of testing the dominant premise; do not require it
+   to disagree when the evidence supports agreement.
 5. Include one bridge figure only if they have a real method, not a compromise personality.
-6. Avoid naming real living scholars unless the user explicitly asks and sources are verified.
+6. If the user requests a real scholar's view, summarize verified published work
+   with attribution rather than impersonating the person or inventing an opinion.
 
 ## Roster Quality Gate
 
@@ -160,7 +171,11 @@ Do not proceed until the roster passes all checks:
 
 - At least two evidence standards are represented.
 - At least one panelist can challenge the user's premise.
-- At least one panelist names a non-obvious self-objection.
+- Each perspective can name a substantive self-objection and disconfirmation
+  condition; at least one exposes a non-obvious limitation.
 - No panelist exists only to be defeated.
 - No panelist is a generic "balanced moderate."
 - The roster maps to the source ledger and topic gate.
+
+Display abbreviated cards in compact or standard output. Expanded output may
+show the full cards. Give short public rationales, not hidden chains of thought.
