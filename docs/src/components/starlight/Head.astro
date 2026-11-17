@@ -9,7 +9,7 @@ const socialCard = visualAssets.find((asset) => asset.id === 'social-card')?.src
 // high-volume generated prefix; fall back to the static social card.
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 const pageId = pathname === '/' ? 'index' : pathname.replace(/^\//, '').replace(/\/$/, '');
-const highVolumeOgPrefixes = ['skill-research/', 'skills/catalog/external/candidate-corpus-'];
+const highVolumeOgPrefixes = ['skill-research/', 'skills/catalog/external/'];
 const usePageOg = pageId !== 'index' && !highVolumeOgPrefixes.some((prefix) => pageId.startsWith(prefix));
 const pageOgPath = usePageOg ? `/og/${pageId}.png` : socialCard;
 const ogImageUrl = Astro.site ? new URL(pageOgPath, Astro.site).href : pageOgPath;

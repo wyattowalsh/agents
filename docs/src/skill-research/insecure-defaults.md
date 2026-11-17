@@ -16,7 +16,7 @@ Security/config audit agents.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Broad applicability leads to context-dependent findings; low direct exec surface but config changes could be sensitive. policy=Inspect source/hooks/dedupe.; evidence=trailofbits/skills batch + https://github.com/trailofbits/skills/plugins/insecure-defaults .
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Broad applicability leads to context-dependent findings; low direct exec surface but config changes could be sensitive. policy=Inspect source/hooks/dedupe.; evidence=trailofbits/skills batch + https://github.com/trailofbits/skills/tree/main/plugins/insecure-defaults .
 
 ## Install Prerequisites
 

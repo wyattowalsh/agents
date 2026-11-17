@@ -166,13 +166,13 @@ def _mcp_overview_badge_stale_reason() -> str | None:
     expected_badge = f'<Badge text="{count} configured servers"'
     if not match:
         return (
-            "web/content/docs/mcp/index.mdx MCP badge is missing or malformed; "
+            "docs/src/content/docs/mcp/index.mdx MCP badge is missing or malformed; "
             f"update hand-maintained badge to `{expected_badge} ...`"
         )
     badge_count = int(match.group(1))
     if badge_count != count:
         return (
-            f"web/content/docs/mcp/index.mdx MCP badge shows {badge_count} servers but "
+            f"docs/src/content/docs/mcp/index.mdx MCP badge shows {badge_count} servers but "
             f"the MCP registry defines {count}; update the hand-maintained badge"
         )
     return None
@@ -211,9 +211,9 @@ def write_site_data(nodes: list, external_entries: list[ExternalSkillEntry] | No
         external_skills=external_entries,
     )
     # Tests monkeypatch DOCS_DIR. Astro imports these modules from docs/src.
-    lib_dir = DOCS_DIR / "src"
-    lib_dir.mkdir(parents=True, exist_ok=True)
-    (lib_dir / "generated-site-data.mjs").write_text(render_site_data_module(data), encoding="utf-8")
+    generated_dir = DOCS_DIR / "src"
+    generated_dir.mkdir(parents=True, exist_ok=True)
+    (generated_dir / "generated-site-data.mjs").write_text(render_site_data_module(data), encoding="utf-8")
     public_index_dir = DOCS_DIR / "public" / "generated-skill-indexes"
     public_index_dir.mkdir(parents=True, exist_ok=True)
     for stale in ("custom.json", "external.json", "all.json", "installed.json"):
@@ -224,7 +224,7 @@ def write_site_data(nodes: list, external_entries: list[ExternalSkillEntry] | No
         json.dumps(data["skillInstallScripts"], indent=2, sort_keys=True), encoding="utf-8"
     )
     update_research_manifest()
-    (lib_dir / "generated-visual-assets.css").write_text(render_visual_assets_css(), encoding="utf-8")
+    (generated_dir / "generated-visual-assets.css").write_text(render_visual_assets_css(), encoding="utf-8")
 
 
 def public_landing_stats(counts: dict[str, int | str], *, mcps: list, has_mcp_overview: bool) -> list[str]:
@@ -314,7 +314,13 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     parts.append("      icon: right-arrow")
     parts.append("---")
     parts.append("")
-    parts.append("import { installCommands } from '@/lib/generated-site-data.mjs';")
+    parts.extend(
+        _mdx_import_lines(
+            starlight=("Aside", "CardGrid", "LinkCard"),
+            components=(("InstallCommand", "InstallCommand.astro"),),
+            site_data=("installCommands",),
+        )
+    )
     parts.append("")
 
     has_mcp_overview = _has_mcp_overview_page()
@@ -330,7 +336,7 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
 
     parts.append('<div class="hero-badge-row">')
     parts.append(
-        '  <a href="https://github.com/wyattowalsh/agents/stargazers">'
+        '  <a href="https://github.com/wyattowalsh/agents">'
         '<img src="https://img.shields.io/github/stars/wyattowalsh/agents?style=flat-square&label=stars&color=0f766e" '
         'alt="GitHub stars" /></a>'
     )
@@ -529,7 +535,7 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
             "Repo-owned catalog pages are generated from `skills/`, `agents/`, and `mcp/` via "
             "`wagents web generate`. Curated external catalog rows use authoring SSOT under "
             "`docs/src/authoring/skills/*.mdx` (machine index: "
-            "`web/public/generated-registries/skills-catalog-index.json`). "
+            "`docs/public/generated-registries/skills-catalog-index.json`). "
             f"The MCP overview summarizes {external_mcp} configured tools from "
             "`config/mcp-registry.json`; portable root `mcp.json` exposes only the secret-free "
             "MCPHub `harness` default, while native targets use target-local projections. "
@@ -560,7 +566,11 @@ def write_install_page() -> None:
         "description: Intent-based install paths for wagents surfaces and runtimes",
         "---",
         "",
-        "import { installCommands } from '@/lib/generated-site-data.mjs';",
+        *_mdx_import_lines(
+            starlight=("CardGrid", "LinkCard", "Steps", "Aside"),
+            components=(("InstallCommand", "InstallCommand.astro"),),
+            site_data=("installCommands",),
+        ),
         "",
         "Use this page to choose the shortest safe path. Live install/apply commands are explicit; "
         "preview commands are safe first passes.",
@@ -792,6 +802,7 @@ def write_runtimes_page() -> None:
         "description: Compatibility truth for supported agent runtimes",
         "---",
         "",
+        *_mdx_import_lines(starlight=("CardGrid", "LinkCard", "Badge", "Aside")),
         "",
         "Runtimes are host environments that consume repo-managed surfaces through native support, "
         "generated projections, plugin manifests, MCPHub endpoints, or Skills CLI installs.",
@@ -869,6 +880,7 @@ def write_reference_page() -> None:
         "description: Factual lookup pages for generated registries, schemas, CLI, and runtime compatibility",
         "---",
         "",
+        *_mdx_import_lines(starlight=("CardGrid", "LinkCard", "Aside")),
         "",
         "Reference pages are lookup surfaces. Operational process lives under [Contributing](/contributing/).",
         "",
@@ -893,7 +905,7 @@ def write_reference_page() -> None:
         "",
         '<Aside type="note" title="Generated data">',
         "Machine-readable public artifacts live under `docs/public/generated-*` and generated ESM modules under "
-        "`web/src/generated-*`. Regenerate them with `uv run wagents web generate --no-installed`.",
+        "`docs/src/generated-*`. Regenerate them with `uv run wagents web generate --no-installed`.",
         "</Aside>",
         "",
     ]
@@ -948,8 +960,13 @@ def write_cli_page() -> None:
     parts.append("description: wagents CLI commands and usage")
     parts.append("---")
     parts.append("")
-    # Fumadocs injects Tabs/CardGrid/etc via getMDXComponents — no bare import.
-    # Serve illustration from public/ (static URL); do not use Astro-style asset imports.
+    parts.extend(
+        _mdx_import_lines(
+            starlight=("Tabs", "TabItem", "Steps", "FileTree", "CardGrid", "LinkCard", "Aside", "Badge"),
+        )
+    )
+    parts.append("import harnessMatrixArt from '../../assets/illustrations/harness-matrix.webp';")
+    parts.append("")
     parts.append(
         "`wagents` is the repo control plane for skills, agents, MCP servers, and generated docs. "
         "Use it to scaffold new assets, validate the repo, publish docs, and package skills for release."
@@ -957,8 +974,7 @@ def write_cli_page() -> None:
     parts.append("")
     parts.append('<figure class="visual-panel">')
     parts.append(
-        f'  <img src="/illustrations/harness-matrix.webp" '
-        f'alt="{escape_attr(VISUAL_ASSET_BY_ID["harness-matrix"].alt)}" />'
+        f'  <img src={{harnessMatrixArt.src}} alt="{escape_attr(VISUAL_ASSET_BY_ID["harness-matrix"].alt)}" />'
     )
     parts.append("  <figcaption>")
     parts.append(f"    <strong>{escape_attr(VISUAL_ASSET_BY_ID['harness-matrix'].title)}</strong>")
@@ -1033,7 +1049,7 @@ def write_cli_page() -> None:
         "and build isolated target artifacts |"
     )
     parts.append("| `wagents package <name>` | Build portable ZIP packages for sharing or release |")
-    parts.append("| `wagents web <subcommand>` | Generate, serve, build, preview, or clean the Fumadocs web site |")
+    parts.append("| `wagents web <subcommand>` | Generate, serve, build, preview, or clean the Astro docs site |")
     parts.append("| `wagents hooks <subcommand>` | List and validate lifecycle hooks |")
     parts.append("| `wagents eval <subcommand>` | List, validate, and check eval coverage |")
     parts.append("| `wagents media <subcommand>` | Image optimize and related media helpers |")
@@ -1767,28 +1783,28 @@ def write_cli_page() -> None:
     parts.append("")
 
     # --- wagents web ---
-    parts.append("### `wagents web` -- Public Web Site (Fumadocs)")
+    parts.append("### `wagents web` -- Public Docs Site (Astro)")
     parts.append("")
     parts.append(
-        "Manage the [Fumadocs](https://fumadocs.dev/)/Next.js public site under `web/` "
-        "at [agents.w4w.dev](https://agents.w4w.dev)."
+        "Manage the Astro Starlight public site under `docs/` "
+        "at [agents.w4w.dev](https://agents.w4w.dev). `wagents docs` is the same command group."
     )
     parts.append("")
     parts.append("<Tabs>")
     parts.append('  <TabItem label="init">')
     parts.append("")
-    parts.append("One-time setup to install web dependencies:")
+    parts.append("One-time setup to install docs site dependencies:")
     parts.append("")
     parts.append("```bash")
     parts.append("wagents web init")
     parts.append("```")
     parts.append("")
-    parts.append("This runs `pnpm install --ignore-workspace` in the `web/` directory.")
+    parts.append("This runs `pnpm install --ignore-workspace` in the `docs/` directory.")
     parts.append("")
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="generate">')
     parts.append("")
-    parts.append("Generate Fumadocs MDX content pages, registries, and indexes from repository assets:")
+    parts.append("Generate Astro MDX content pages, registries, and indexes from repository assets:")
     parts.append("")
     parts.append("```bash")
     parts.append("wagents web generate")
@@ -1816,14 +1832,14 @@ def write_cli_page() -> None:
     parts.append(
         "By default, generation is deterministic and repository-only (`--no-installed`). "
         "Opt in with `--include-installed` for local harness inventory rows. The generator creates "
-        "individual pages for each skill, agent, and MCP server under `web/content/docs/`, plus "
-        "category index pages and machine registries under `web/public/`."
+        "individual pages for each skill, agent, and MCP server under `docs/src/content/docs/`, plus "
+        "category index pages and machine registries under `docs/public/`."
     )
     parts.append("")
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="dev">')
     parts.append("")
-    parts.append("Generate content and start the Next.js development server with hot reload:")
+    parts.append("Generate content and start the Astro development server with hot reload:")
     parts.append("")
     parts.append("```bash")
     parts.append("wagents web dev")
@@ -1832,13 +1848,13 @@ def write_cli_page() -> None:
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="build">')
     parts.append("")
-    parts.append("Generate content and produce a production Next.js build:")
+    parts.append("Generate content and produce a production Astro build:")
     parts.append("")
     parts.append("```bash")
     parts.append("wagents web build")
     parts.append("```")
     parts.append("")
-    parts.append("Output goes to `web/.next/` (Vercel-compatible Next.js build).")
+    parts.append("Output goes to `docs/dist/` (static Astro build; admin routes use the Vercel adapter).")
     parts.append("")
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="preview">')
@@ -1871,7 +1887,7 @@ def write_cli_page() -> None:
     parts.append('<Aside type="tip" title="Typical web workflow">')
     parts.append(
         "For day-to-day development, `wagents web dev` is the most common command "
-        "-- it regenerates all content and launches a hot-reloading Next.js server in one step."
+        "-- it regenerates all content and launches a hot-reloading Astro server in one step."
     )
     parts.append("</Aside>")
     parts.append("")
@@ -2090,13 +2106,10 @@ def write_cli_page() -> None:
     parts.append("    - pyproject.toml")
     parts.append("    - fastmcp.json")
     parts.append("  - servers/ (ignored local third-party installs)")
-    parts.append("- web/ (Fumadocs / Next.js public site)")
-    parts.append("  - content/")
-    parts.append("    - docs/ (generated and hand-maintained MDX pages)")
-    parts.append("  - lib/")
-    parts.append("    - generated-sidebar.mjs")
-    parts.append("- docs/")
+    parts.append("- docs/ (Astro Starlight public site)")
     parts.append("  - src/")
+    parts.append("    - content/docs/ (generated and hand-maintained MDX pages)")
+    parts.append("    - generated-sidebar.mjs")
     parts.append("    - authoring/ (catalog authoring SSOT)")
     parts.append("- wagents/")
     parts.append("  - \\_\\_init\\_\\_.py")
@@ -2139,6 +2152,27 @@ def _src_import_prefix(*, under_content_docs: str = "") -> str:
     return "../" * (len(segments) + 2)
 
 
+def _mdx_import_lines(
+    *,
+    under_content_docs: str = "",
+    starlight: tuple[str, ...] = (),
+    components: tuple[tuple[str, str], ...] = (),
+    site_data: tuple[str, ...] = (),
+) -> list[str]:
+    """Return MDX imports that resolve to docs/src, matching the committed pages."""
+    prefix = _src_import_prefix(under_content_docs=under_content_docs)
+    lines: list[str] = []
+    if starlight:
+        names = ", ".join(starlight)
+        lines.append(f"import {{ {names} }} from '@astrojs/starlight/components';")
+    for binding, filename in components:
+        lines.append(f"import {binding} from '{prefix}components/{filename}';")
+    if site_data:
+        names = ", ".join(site_data)
+        lines.append(f"import {{ {names} }} from '{prefix}generated-site-data.mjs';")
+    return lines
+
+
 _LINKABLE_SKILL_ID = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 
 
@@ -2177,6 +2211,10 @@ def write_catalog_index(nodes: list) -> None:
         "description: Browse custom and external agent skills",
         "---",
         "",
+        *_mdx_import_lines(
+            under_content_docs=SKILL_CATALOG_PREFIX,
+            starlight=("CardGrid", "LinkCard", "Aside"),
+        ),
         "",
         "Browse repo-owned skills and curated external skills. Detail pages live under "
         f"`/{SKILL_CATALOG_PREFIX}/custom/<name>/` and `/{SKILL_CATALOG_PREFIX}/external/<name>/`.",
@@ -2235,7 +2273,15 @@ def write_catalog_custom_index(nodes: list) -> None:
         "description: Browse repo-owned AI agent skills",
         "---",
         "",
-        "import { installCommands } from '@/lib/generated-site-data.mjs';",
+        *_mdx_import_lines(
+            under_content_docs=f"{SKILL_CATALOG_PREFIX}/custom",
+            starlight=("Aside", "Badge", "Card", "CardGrid", "LinkCard"),
+            components=(
+                ("InstallCommand", "InstallCommand.astro"),
+                ("CatalogSkillFilter", "CatalogSkillFilter.astro"),
+            ),
+            site_data=("installCommands",),
+        ),
         "",
         "These are the repo-owned skills in `./skills/`. Detail pages live under "
         f"`/{SKILL_CATALOG_PREFIX}/custom/<name>/`. See [Skill Catalog](/skills/catalog/) for external skills.",
@@ -2394,6 +2440,18 @@ def write_catalog_external_index(nodes: list) -> None:
         lanes.setdefault(_external_lane(node), []).append(node)
 
     use_catalog_browser = len(external) >= CATALOG_BROWSER_THRESHOLD
+    if use_catalog_browser:
+        external_imports = _mdx_import_lines(
+            under_content_docs=f"{SKILL_CATALOG_PREFIX}/external",
+            starlight=("Aside",),
+            components=(("CatalogBrowser", "CatalogBrowser.astro"),),
+        )
+    else:
+        external_imports = _mdx_import_lines(
+            under_content_docs=f"{SKILL_CATALOG_PREFIX}/external",
+            starlight=("Aside", "Card", "CardGrid", "LinkCard"),
+            components=(("CatalogSkillFilter", "CatalogSkillFilter.astro"),),
+        )
 
     parts = [
         "---",
@@ -2401,8 +2459,10 @@ def write_catalog_external_index(nodes: list) -> None:
         "description: Curated and installed external agent skills",
         "---",
         "",
+        *external_imports,
+        "",
         "External skills are authored in `docs/src/authoring/skills/*.mdx` and emitted to "
-        "`web/public/generated-registries/skills-catalog-index.json`. With `--include-installed`, "
+        "`docs/public/generated-registries/skills-catalog-index.json`. With `--include-installed`, "
         "local harness inventory may add rows.",
         "",
         '<Aside type="note" title="Trust and provenance">',
@@ -2479,7 +2539,11 @@ def write_skill_install_scripts_page() -> None:
         "description: Copyable install commands for custom and external skills",
         "---",
         "",
-        "import { skillInstallScripts } from '@/lib/generated-site-data.mjs';",
+        *_mdx_import_lines(
+            under_content_docs="skills",
+            components=(("InstallScripts", "InstallScripts.astro"),),
+            site_data=("skillInstallScripts",),
+        ),
         "",
         "The canonical portable install path is `npx skills add`. `uv run wagents ...` commands are repo-local "
         "control-plane commands for validation and reconciliation, not a replacement for Skills CLI installation.",
@@ -2500,6 +2564,7 @@ def write_agents_index(nodes: list) -> None:
     parts.append("description: Browse all available AI agent configurations")
     parts.append("---")
     parts.append("")
+    parts.extend(_mdx_import_lines(under_content_docs="agents", starlight=("CardGrid", "LinkCard")))
     parts.append("")
     parts.append(
         "> Specialized agent configurations with tools, permissions,"
@@ -2551,6 +2616,7 @@ def write_mcp_index(nodes: list) -> None:
     parts.append("description: Browse all available MCP servers")
     parts.append("---")
     parts.append("")
+    parts.extend(_mdx_import_lines(under_content_docs="mcp", starlight=("Aside", "CardGrid", "LinkCard")))
     parts.append("")
     parts.append("> Model Context Protocol servers providing tools and data to AI agents.")
     parts.append("")
@@ -2596,8 +2662,6 @@ def write_mcp_index(nodes: list) -> None:
 
 def write_harness_support_page() -> None:
     """Generate public harness support honesty matrix."""
-    import json
-
     harness_registry = json.loads((ROOT / "config" / "harness-surface-registry.json").read_text(encoding="utf-8"))
     fixture_support = json.loads((ROOT / "planning/manifests/harness-fixture-support.json").read_text(encoding="utf-8"))
     support_by_id = {record["harness_id"]: record for record in fixture_support.get("records", [])}
@@ -2608,6 +2672,7 @@ def write_harness_support_page() -> None:
         "description: Honest support tiers and fixture status for each agent harness",
         "---",
         "",
+        *_mdx_import_lines(starlight=("Aside", "Badge")),
         "",
         "{/* Auto-generated by wagents web generate - do not edit */}",
         "",
@@ -2744,7 +2809,7 @@ def write_skill_research_pages(nodes: list) -> None:
 
 
 def render_sidebar_module(nodes: list) -> str:
-    """Render web/src/generated-sidebar.mjs content without writing to disk."""
+    """Render docs/src/generated-sidebar.mjs content without writing to disk."""
     agents = [n for n in nodes if n.kind == "agent"]
     mcps = [n for n in nodes if n.kind == "mcp"]
     mcp_overview_path = CONTENT_DIR / "mcp" / "index.mdx"
@@ -3050,11 +3115,11 @@ def _docs_generate_lock():
 
 @web_app.command("init")
 def docs_init():
-    """One-time setup: install web dependencies."""
+    """One-time setup: install docs site dependencies."""
     if not (DOCS_DIR / "package.json").exists():
-        typer.echo("Error: docs/package.json not found. Is the scaffold committed?", err=True)
+        typer.echo("Error: docs/package.json not found. Is the docs site scaffold committed?", err=True)
         raise typer.Exit(code=1)
-    typer.echo("Installing docs dependencies...")
+    typer.echo("Installing docs site dependencies...")
     result = subprocess.run(
         ["pnpm", "install", "--ignore-workspace"],
         cwd=str(DOCS_DIR),
@@ -3349,7 +3414,7 @@ def docs_build():
     if result.returncode != 0:
         typer.echo("Error: build failed", err=True)
         raise typer.Exit(code=1)
-    typer.echo("Build complete. Output in web/.next/")
+    typer.echo("Build complete. Output in docs/dist/")
 
 
 @docs_app.command("preview")

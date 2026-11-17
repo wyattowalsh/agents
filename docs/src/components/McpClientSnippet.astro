@@ -18,10 +18,10 @@ const {
   opencodeCommand,
   copilotCommand,
   aitkCommand,
-  chromeRepoPath = '<repo>',
+  chromeRepoPath,
 } = Astro.props;
 
-const isChrome = !!chromeRepoPath || serverKey === 'chrome-devtools' || !pkg;
+const isChrome = Boolean(chromeRepoPath) || serverKey === 'chrome-devtools' || !pkg;
 const repoPath = chromeRepoPath || '<repo>';
 const scriptPath = `${repoPath}/scripts/mcphub/chrome-devtools-browser-url.sh`;
 

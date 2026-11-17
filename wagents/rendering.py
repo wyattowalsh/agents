@@ -103,8 +103,15 @@ def escape_mdx_line(line: str) -> str:
         if line[i : i + 4] == "<!--":
             end = line.find("-->", i + 4)
             if end != -1:
-                content = line[i + 4 : end].strip()
-                out.append("{/* " + content + " */}")
+                content = line[i + 4 : end]
+                content = (
+                    content.replace("*/", "* /")
+                    .replace("<", "&lt;")
+                    .replace(">", "&gt;")
+                    .replace("{", "\\{")
+                    .replace("}", "\\}")
+                )
+                out.append("{/* " + content.strip() + " */}")
                 i = end + 3
                 continue
         if line[i] in "{}":
@@ -185,10 +192,15 @@ def scaffold_doc_page(node: CatalogNode) -> None:
     typer.echo(f"Created {rel}")
 
 
+def normalize_fence_text(content: str) -> str:
+    """Treat carriage returns as line breaks before measuring or embedding fences."""
+    return content.replace("\r\n", "\n").replace("\r", "\n")
+
+
 def safe_outer_fence(content: str) -> str:
     """Return a backtick fence longer than any fence inside *content*."""
     max_fence = 3
-    for line in content.split("\n"):
+    for line in normalize_fence_text(content).split("\n"):
         stripped = line.lstrip()
         if stripped.startswith("```") or stripped.startswith("~~~"):
             fence_len = len(stripped) - len(stripped.lstrip(stripped[0]))
@@ -281,14 +293,14 @@ def _render_skill_page_header(node: CatalogNode, fm: dict, *, density: PageDensi
             usage += f" {fm['argument-hint']}"
     badge_props = _skill_header_badge_props(node, fm, density=density)
     badge_jsx = ", ".join(f'{{ text: "{escape_attr(text)}", variant: "{variant}" }}' for text, variant in badge_props)
-    safe_install = install_command.replace("`", "\\`")
+    safe_install = json.dumps(install_command)
     return [
         f"import SkillPageHeader from '{prefix}components/SkillPageHeader.astro';",
         "",
         "<SkillPageHeader",
         f'  name="{escape_attr(node.id)}"',
         f'  description="{escape_attr(truncate_sentence(node.description, 200))}"',
-        f"  installCommand={{`{safe_install}`}}",
+        f"  installCommand={{{safe_install}}}",
         f'  installLabel="{escape_attr(install_label)}"',
         f'  usage="{escape_attr(usage)}"',
         f"  badges={{[{badge_jsx}]}}",
@@ -1027,12 +1039,13 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     # Skills show raw SKILL.md behind a disclosure widget (install-and-use artifacts).
     # Agents show system prompts inline (read-to-understand artifacts). This is intentional.
     if not is_stub:
-        outer_fence = safe_outer_fence(raw_content)
+        fenced = normalize_fence_text(raw_content)
+        outer_fence = safe_outer_fence(fenced)
         parts.append('<details class="source-disclosure">')
         parts.append("<summary>View Full SKILL.md</summary>")
         parts.append("")
         parts.append(f"{outer_fence}yaml")
-        parts.append(raw_content)
+        parts.append(fenced)
         parts.append(outer_fence)
         parts.append("")
         if node.source == "custom":
@@ -1211,12 +1224,13 @@ def render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         parts.append(_catalog_prose(shift_headings(node.body, 1)))
         parts.append("")
 
-    outer_fence = safe_outer_fence(raw_content)
+    fenced = normalize_fence_text(raw_content)
+    outer_fence = safe_outer_fence(fenced)
     parts.append("<details>")
     parts.append("<summary>View Full Agent File</summary>")
     parts.append("")
     parts.append(f"{outer_fence}yaml")
-    parts.append(raw_content)
+    parts.append(fenced)
     parts.append(outer_fence)
     parts.append("")
     parts.append("</details>")

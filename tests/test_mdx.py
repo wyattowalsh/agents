@@ -44,6 +44,12 @@ class TestEscapeMdxLine:
         result = escape_mdx_line("before <!-- comment --> after")
         assert result == "before {/* comment */} after"
 
+    def test_html_comment_cannot_close_jsx_comment(self):
+        result = escape_mdx_line("<!-- break */ <img> {x} -->")
+        assert "*/" not in result.split("{/*", 1)[1].rsplit("*/", 1)[0]
+        assert "&lt;img&gt;" in result
+        assert "\\{x\\}" in result
+
     def test_import_line_escaped(self):
         result = escape_mdx_line("import React from 'react'")
         assert result == "\\import React from 'react'"
@@ -164,3 +170,7 @@ class TestSafeOuterFence:
         content = "```\ncode\n```\n`````\nmore\n`````"
         result = safe_outer_fence(content)
         assert result == "``````"
+
+    def test_carriage_return_exposes_inner_fence(self):
+        content = "intro\r````\rcode"
+        assert safe_outer_fence(content) == "`````"

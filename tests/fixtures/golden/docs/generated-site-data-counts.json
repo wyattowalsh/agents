@@ -1,10 +1,12 @@
 {
+  "additionalIntegrationSurfaces": 4,
   "bundledAgents": 20,
-  "customMcp": 16,
-  "customSkills": 69,
-  "externalMcp": 69,
+  "customMcp": 19,
+  "customSkills": 67,
+  "externalMcp": 71,
   "externalSkills": 1759,
-  "mcpTools": 85,
-  "skills": 1828,
-  "supportedHarnesses": 9
+  "mcpTools": 90,
+  "skills": 1826,
+  "skillsCliNativeHarnesses": 5,
+  "supportedHarnesses": 6
 }

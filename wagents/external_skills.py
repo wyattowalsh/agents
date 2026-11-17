@@ -157,6 +157,20 @@ class ExternalSkillCatalogError(RuntimeError):
     """Raised when curated external skill catalog data cannot be loaded safely."""
 
 
+def is_valid_install_skill_name(name: str) -> bool:
+    """Return whether *name* is a kebab skill id or colon-separated kebab selector."""
+    from wagents import KEBAB_CASE_PATTERN
+
+    if not isinstance(name, str) or not name or len(name) > 64:
+        return False
+    return all(bool(segment) and KEBAB_CASE_PATTERN.fullmatch(segment) is not None for segment in name.split(":"))
+
+
+def normalize_install_skill_name(name: str) -> str:
+    """Map a logical selector onto the catalog store name (`opsx:tdd` -> `opsx-tdd`)."""
+    return str(name or "").replace(":", "-")
+
+
 def is_skills_cli_install_command(command: str) -> bool:
     """Return whether *command* is a Skills CLI install command."""
     try:

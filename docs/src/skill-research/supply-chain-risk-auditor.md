@@ -16,7 +16,7 @@ Security / audit / supply chain agents.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Depends on gh auth + public data quality; holistic flags not exhaustive CVE scanner; network calls via gh. policy=Inspect.; evidence=trailofbits batch + https://github.com/trailofbits/skills/plugins/supply-chain-risk-auditor .
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Depends on gh auth + public data quality; holistic flags not exhaustive CVE scanner; network calls via gh. policy=Inspect.; evidence=trailofbits batch + https://github.com/trailofbits/skills/tree/main/plugins/supply-chain-risk-auditor .
 
 ## Install Prerequisites
 

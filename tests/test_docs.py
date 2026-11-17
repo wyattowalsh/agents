@@ -23,6 +23,8 @@ from wagents.docs import (
     write_harness_support_page,
     write_index_page,
     write_mcp_index,
+    write_reference_page,
+    write_runtimes_page,
     write_sidebar,
     write_skill_install_scripts_page,
     write_skill_research_pages,
@@ -96,6 +98,9 @@ class TestWriteIndexPage:
         assert 'title="Install Guide"' in text
         assert 'href="/surfaces/instructions/"' in text
         assert "installCommands.all" in text
+        assert "import { installCommands } from '../../generated-site-data.mjs';" in text
+        assert "import InstallCommand from '../../components/InstallCommand.astro';" in text
+        assert "@/lib/" not in text
         assert "OpenCode" in text
         assert 'href="/skills/catalog/custom/review/"' in text
         assert text.count("openspec-workflow") == 0
@@ -151,12 +156,18 @@ class TestWriteIndexPage:
         mcp_dir.mkdir(parents=True, exist_ok=True)
         (mcp_dir / "index.mdx").write_text("---\ntitle: MCP\n---\n")
         (tmp_repo / "mcp.json").write_text('{"mcpServers": {"alpha": {}, "beta": {}}}')
+        (tmp_repo / "config" / "mcp-registry.json").write_text(
+            '{"servers": {"alpha": {}, "beta": {}}}',
+            encoding="utf-8",
+        )
 
         write_index_page([_make_node("skill")])
 
         text = (content_dir / "index.mdx").read_text()
         assert 'href="/mcp/"' in text
         assert "## MCP Servers" not in text
+        assert "docs/public/generated-registries/skills-catalog-index.json" in text
+        assert "web/public/generated-registries" not in text
 
 
 # ---------------------------------------------------------------------------
@@ -181,10 +192,13 @@ class TestWriteCliPage:
         assert "wagents eval coverage" in text
         assert "## See also" in text
         assert "<FileTree>" in text
-        assert "wagents docs generate --include-installed" in text
+        assert "wagents web generate --include-installed" in text
         assert "local agent skill directories" in text
         assert "~/.config/opencode/skills/" in text
-        assert "wagents docs generate --no-installed" in text
+        assert "wagents web generate --no-installed" in text
+        assert "import harnessMatrixArt from '../../assets/illustrations/harness-matrix.webp';" in text
+        assert "src={harnessMatrixArt.src}" in text
+        assert 'src="/illustrations/harness-matrix.webp"' not in text
         assert "Bundle Manifest" in text
         assert "current bundle surface and generated docs inputs" in text
         assert "wagents skills sync --apply" in text
@@ -195,6 +209,19 @@ class TestWriteCliPage:
         assert "`wagents skills cleanup`" in text
         assert "wagents skills cleanup --dry-run --format json" in text
         assert "`skills cleanup`" in text
+
+
+class TestWriteRuntimeReferencePages:
+    def test_runtime_and_reference_pages_import_starlight_components(self, tmp_repo):
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        write_runtimes_page()
+        write_reference_page()
+        runtimes = (content_dir / "runtimes.mdx").read_text()
+        reference = (content_dir / "reference.mdx").read_text()
+        assert "import { CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';" in runtimes
+        assert "import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';" in reference
+        assert "wagents web generate --no-installed" in reference
 
 
 # ---------------------------------------------------------------------------
@@ -216,6 +243,7 @@ class TestWriteCatalogIndexes:
         assert "/skills/catalog/external/" in text
         assert "/harness-support/" in text
         assert "authoring MDX" in text
+        assert "import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';" in text
 
     def test_creates_custom_index(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -228,7 +256,9 @@ class TestWriteCatalogIndexes:
         assert "User-Invocable Skills (1)" in text
         assert "## Skill Lanes" in text
         assert "/skills/catalog/custom/test-skill/" in text
-        assert "generated-site-data.mjs" in text
+        assert "import { installCommands } from '../../../../../generated-site-data.mjs';" in text
+        assert "import CatalogSkillFilter from '../../../../../components/CatalogSkillFilter.astro';" in text
+        assert "@/lib/" not in text
         assert "npx skills add github:wyattowalsh/agents --skill review -y -g" in text
 
     def test_custom_index_excludes_external(self, tmp_repo):
@@ -266,6 +296,9 @@ class TestWriteCatalogIndexes:
         assert '"href": "/skills/catalog/external/ext-0-skill/"' in text
         assert '"lane": "inspect"' in text
         assert "<CatalogBrowser" in text
+        assert "docs/public/generated-registries/skills-catalog-index.json" in text
+        assert "web/public/generated-registries" not in text
+        assert "import CatalogBrowser from '../../../../../components/CatalogBrowser.astro';" in text
         assert "generated-skill-indexes.mjs" not in text
         assert "CatalogSkillFilter" not in text
         assert "<LinkCard" not in text
@@ -277,7 +310,9 @@ class TestWriteCatalogIndexes:
         text = (content_dir / "skills" / "install.mdx").read_text()
         assert "Skill Install Scripts" in text
         assert "canonical portable install path is `npx skills add`" in text
+        assert "import InstallScripts from '../../../components/InstallScripts.astro';" in text
         assert "import { skillInstallScripts } from '../../../generated-site-data.mjs';" in text
+        assert "@/lib/" not in text
         assert (
             '<InstallScripts src="/generated-skill-indexes/install-scripts.json" scripts={skillInstallScripts} />'
             in text
@@ -473,6 +508,7 @@ class TestWriteAgentsIndex:
         assert idx.exists()
         text = idx.read_text()
         assert "1 agents available" in text
+        assert "import { CardGrid, LinkCard } from '@astrojs/starlight/components';" in text
 
 
 # ---------------------------------------------------------------------------
@@ -497,6 +533,7 @@ class TestWriteMcpIndex:
         assert idx.exists()
         text = idx.read_text()
         assert "1 MCP servers available" in text
+        assert "import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';" in text
 
 
 # ---------------------------------------------------------------------------
@@ -746,7 +783,8 @@ class TestOgRoutes:
         text = route.read_text(encoding="utf-8")
 
         assert "shouldPrerenderOgPage" in text
-        assert "skills/catalog/external/candidate-corpus-" in text
+        assert "skills/catalog/external/" in text
+        assert "skill-research/" in text
         assert ".filter(({ id }) => shouldPrerenderOgPage(id))" in text
 
 

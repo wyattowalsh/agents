@@ -12,4 +12,6 @@ VERSION = importlib.metadata.version("wagents")
 KEBAB_CASE_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 GITHUB_BASE = "https://github.com/wyattowalsh/agents/blob/main"
 DOCS_DIR = ROOT / "docs"
+WEB_DIR = DOCS_DIR
 CONTENT_DIR = DOCS_DIR / "src" / "content" / "docs"
+AUTHORING_SKILLS_DIR = DOCS_DIR / "src" / "authoring" / "skills"

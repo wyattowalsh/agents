@@ -22,7 +22,7 @@ Edit source-of-truth files first, then regenerate derived output. Do not hand-ed
 | MCP | `config/mcp-registry.json`, `mcp.json`, `mcp/` | `uv run python scripts/sync_agent_stack.py --targets repo --check` |
 | Docs pages and indexes | `wagents/docs.py`, `wagents/rendering.py`, `wagents/site_model.py`, `docs/src/content/docs/` | `uv run pytest tests/test_site_model.py tests/test_docs.py` |
 | README | `wagents/cli.py` and catalog inputs | `uv run wagents readme --check` |
-| External skills | `docs/src/authoring/skills/*.mdx`, `docs/public/generated-registries/skills-catalog-index.json`, `wagents/external_skills.py` | `uv run wagents docs generate --no-installed`; `uv run wagents skills sync --dry-run` |
+| External skills | `docs/src/authoring/skills/*.mdx`, `docs/public/generated-registries/skills-catalog-index.json`, `wagents/external_skills.py` | `uv run wagents web generate --no-installed`; `uv run wagents skills sync --dry-run` |
 | Distribution | `agent-bundle.json`, plugin manifests, `opencode.json`, harness config sources | `uv run pytest tests/test_distribution_metadata.py` |
 | Non-trivial workflow changes | `openspec/changes/<change>/` | `uv run wagents openspec validate` |
 
@@ -47,7 +47,7 @@ Edit source-of-truth files first, then regenerate derived output. Do not hand-ed
 4. Regenerate only the affected public surfaces.
 
    ```bash
-   uv run wagents docs generate --no-installed
+   uv run wagents web generate --no-installed
    uv run wagents readme
    ```
 

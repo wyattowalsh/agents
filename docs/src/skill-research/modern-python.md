@@ -16,7 +16,7 @@ Python dev / setup agents. Includes hooks/.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Legacy cmd hook can surprise users expecting direct python/pip (exits non-zero with guidance); broad devtooling surface; migration alters lockfiles/envs. Respect user legacy if requested. policy=Inspect.; evidence=trailofbits batch in config + https://github.com/trailofbits/skills/plugins/modern-python (full SKILL.md + refs).
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Legacy cmd hook can surprise users expecting direct python/pip (exits non-zero with guidance); broad devtooling surface; migration alters lockfiles/envs. Respect user legacy if requested. policy=Inspect.; evidence=trailofbits batch in config + https://github.com/trailofbits/skills/tree/main/plugins/modern-python (full SKILL.md + refs).
 
 ## Install Prerequisites
 

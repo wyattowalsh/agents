@@ -8,7 +8,7 @@ source "${SCRIPT_DIR}/common.sh"
 mcphub_load_env
 
 CHROME_BIN="${CHROME_DEVTOOLS_MCP_CHROME_BIN:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
-PROFILE_DIR="${CHROME_DEVTOOLS_MCP_PROFILE_DIR:-/Users/ww/.cache/chrome-devtools-mcp-login}"
+PROFILE_DIR="${CHROME_DEVTOOLS_MCP_PROFILE_DIR:-${HOME}/.cache/chrome-devtools-mcp-login}"
 DEBUG_HOST="${CHROME_DEVTOOLS_MCP_DEBUG_HOST:-127.0.0.1}"
 DEBUG_PORT="${CHROME_DEVTOOLS_MCP_DEBUG_PORT:-9333}"
 DEBUG_URL="http://${DEBUG_HOST}:${DEBUG_PORT}"

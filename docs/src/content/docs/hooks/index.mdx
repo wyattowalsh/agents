@@ -1,6 +1,6 @@
 ---
 title: "Hooks"
-description: "Repo-managed lifecycle hooks for agent harnesses (Claude, Codex, Copilot, Gemini, etc)."
+description: "Repo-managed lifecycle hooks for Claude Code, Codex, and Cursor."
 page_kind: "hooks-hub"
 source_kind: "registry"
 composed: true
@@ -14,15 +14,15 @@ import { Card, CardGrid, Badge, Aside, LinkCard } from '@astrojs/starlight/compo
 
 > Repo-managed, portable lifecycle hooks declared in `config/hook-registry.json`. These provide safety, context, formatting, lint, research guards, and audit surfaces across harnesses. Hand-maintained catalog pages (composed).
 
-<Badge text="32 hooks" variant="note" size="large" />
+<Badge text="30 hooks" variant="note" size="large" />
 
 <Aside type="tip" title="Source of truth">
 All hooks are defined in `config/hook-registry.json`. Use `wagents hooks list` and `wagents hooks validate` to inspect at runtime. Individual hook pages live under `/hooks/<id>/`.
 </Aside>
 
-## Core (github-copilot baseline)
+## Shell scripts outside the registry
 
-These run for the GitHub Copilot harness via direct shell handlers.
+`session-start`, `prompt-log`, `post-edit-format`, and `post-edit-lint` still have shell files under `hooks/`. They are not entries in `config/hook-registry.json`. The registry harnesses are `claude-code`, `codex`, and `cursor`.
 
 <CardGrid>
   <Card title="session-start">
@@ -130,7 +130,7 @@ Security Enforce guards stay **fail-closed** (RV-004). Do not harden pin hooks t
 
 ## Cross-harness safety & optimization
 
-Tier B policies that span codex, claude-code, cursor, github-copilot, and gemini-cli via the shared dispatcher. Grok consumes them through the fleet deny adapter (`~/.grok/hooks/wagents-fleet.json`).
+Tier B policies span `codex`, `claude-code`, and `cursor` via the shared dispatcher. Grok consumes them through the fleet deny adapter (`~/.grok/hooks/wagents-fleet.json`).
 
 <CardGrid>
   <Card title="git-commit-push-guard">
@@ -159,7 +159,7 @@ Claude Code uses Stop / SubagentStop quality gates wired through `.claude/settin
 
 ## Research guards (multi-harness)
 
-Activated by research prompts. Span **codex, claude-code, cursor, github-copilot, gemini-cli**. Use state machine + ledger for invariants. Detail pages: `/hooks/<id>/`.
+Activated by research prompts. Span **codex, claude-code, and cursor**. Use state machine + ledger for invariants. Detail pages: `/hooks/<id>/`.
 
 <CardGrid>
   <LinkCard title="research-prompt-triage-context" href="/hooks/research-prompt-triage-context/" description="UserPromptSubmit · context — Detects research intent, activates state, injects method reminders." />
@@ -171,8 +171,7 @@ Activated by research prompts. Span **codex, claude-code, cursor, github-copilot
 
 ## Dispatcher & Implementation Notes
 
-- GitHub Copilot direct `.sh` handlers under `./hooks/`.
-- Codex, Cursor + multi-harness policies use `hooks/wagents-hook.py <policy-id> --harness <name>`. Payload normalization, state, ledger, and degraded modes live here.
+- Codex, Claude Code, and Cursor policies use `hooks/wagents-hook.py <policy-id> --harness <name>`. Payload normalization, state, ledger, and degraded modes live here.
 - Cursor native events (`beforeReadFile`, `beforeShellExecution`, `beforeMCPExecution`, `afterFileEdit`, `subagentStart`) are rendered into the flat `.cursor/hooks.json` shape; enforce-tier pre-execution guards are fail-closed except the Task rewrite and subagent allowlist pin hooks (`failClosed: false`).
 - Decision logic is being migrated into pure modules under `wagents/hooks/policies/` (e.g. `git_commit_push_guard`, `before_read_file_guard`, `before_mcp_execution`, `subagent_start`, `grok_deny_adapter`) so the dispatcher stays thin and unit-testable.
 - Grok consumes the dispatcher-backed fleet via a deny adapter (`render_grok_hooks` → `~/.grok/hooks/wagents-fleet.json`); OpenCode bridges enforce-tier PreToolUse guards through `platforms/opencode/plugins/wagents-hook-bridge.ts`.

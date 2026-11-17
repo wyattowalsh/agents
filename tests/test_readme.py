@@ -34,7 +34,7 @@ def test_readme_contains_skills_table(tmp_repo):
     assert "## 🧰 Skills" in readme_text
     assert "hello-world" in readme_text
     assert "Greets the world" in readme_text
-    assert "wagents docs generate --include-installed" in readme_text
+    assert "wagents web generate --include-installed" in readme_text
     assert "normalized harness inventory" in readme_text
     assert "wagents skills sync --dry-run" in readme_text
     assert "wagents skills search <query>" in readme_text
