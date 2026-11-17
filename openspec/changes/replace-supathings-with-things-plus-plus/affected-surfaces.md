@@ -43,7 +43,7 @@
 - Public provenance generated from `mcp/mcphub/downstream/provenance/{upstream,dependency-graph,owned-sources,patch-manifest,audit-manifest}.json`, including exact signed-package identity, source limitations, dependency/patch closure, materialized digest, and reproducible verification commands without local absolute paths or secrets.
 - `docs/src/authoring/skills/things-manager.mdx` and `docs/src/skill-research/things-manager.md` when the generator/authoring contract requires source refresh.
 - `web/content/docs/**` generated/current public surfaces; do not hand-edit generated catalog/index pages.
-- `openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.json` and `capability-manifest.schema.json` — exact 70-tool, 37-outcome, 17-workflow, 25-legacy-eval, and 16-new-eval closure contract.
+- `config/things-plus-plus/capability-manifest.json` and `capability-manifest.schema.json` — exact 70-tool, 37-outcome, 17-workflow, 25-legacy-eval, and 16-new-eval closure contract.
 - `openspec/changes/replace-supathings-with-things-plus-plus/**` — this tracked change and eight delta specifications.
 
 ## Generated Outputs

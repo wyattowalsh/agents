@@ -22,7 +22,7 @@ DOWNSTREAM = ROOT / "mcp" / "mcphub" / "downstream"
 PROTOCOL_SOURCE = DOWNSTREAM / "src" / "protocol"
 PROTOCOL_FIXTURES = DOWNSTREAM / "fixtures" / "protocol"
 CAPABILITY_MANIFEST = (
-    ROOT / "openspec" / "changes" / "replace-supathings-with-things-plus-plus" / "capability-manifest.json"
+    ROOT / "config" / "things-plus-plus" / "capability-manifest.json"
 )
 REPORT_SCHEMA = ROOT / "config" / "schemas" / "mcphub-downstream-conformance.schema.json"
 SHA256_PATTERN = re.compile(r"^[a-f0-9]{64}$")

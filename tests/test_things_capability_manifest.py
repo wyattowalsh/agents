@@ -18,9 +18,8 @@ if TYPE_CHECKING:
     from types import ModuleType
 
 ROOT = Path(__file__).resolve().parents[1]
-CHANGE = ROOT / "openspec" / "changes" / "replace-supathings-with-things-plus-plus"
-SOURCE = CHANGE / "capability-manifest.json"
-SCHEMA = CHANGE / "capability-manifest.schema.json"
+SOURCE = ROOT / "config" / "things-plus-plus" / "capability-manifest.json"
+SCHEMA = ROOT / "config" / "things-plus-plus" / "capability-manifest.schema.json"
 SKILL = ROOT / "skills" / "things-manager"
 CAPABILITIES = SKILL / "references" / "capabilities.json"
 CAPABILITIES_MD = SKILL / "references" / "capabilities.md"

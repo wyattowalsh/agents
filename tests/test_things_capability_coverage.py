@@ -9,8 +9,9 @@ from typing import Any
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-CHANGE_ROOT = REPO_ROOT / "openspec" / "changes" / "replace-supathings-with-things-plus-plus"
-MANIFEST = json.loads((CHANGE_ROOT / "capability-manifest.json").read_text(encoding="utf-8"))
+MANIFEST = json.loads(
+    (REPO_ROOT / "config" / "things-plus-plus" / "capability-manifest.json").read_text(encoding="utf-8")
+)
 EVAL_DOCUMENT = json.loads(
     (REPO_ROOT / "skills" / "things-manager" / "evals" / "evals.json").read_text(encoding="utf-8")
 )

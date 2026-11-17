@@ -19,4 +19,4 @@ The cleanup is done. Do not open another wave for it.
 
 ## Later, only when that product work is touched
 
-- [ ] When Things++ is next edited, move `capability-manifest.json` to a normal config path and update the schema. Remove leftover `supathings` client routes in that same change.
+- [x] Moved `capability-manifest.json` to `config/things-plus-plus/` and pointed the registry schema at it. Removed the live `/mcp/supathings` client entries from `mcp.json`, `opencode.json`, Codex, and Grok config. The change stays open. `/mcp/supathings` remains on the ingress deny list.

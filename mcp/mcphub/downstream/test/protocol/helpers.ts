@@ -32,7 +32,7 @@ import {
 } from "../../src/protocol/index.js";
 
 const CAPABILITY_MANIFEST_RELATIVE_PATH =
-  "openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.json";
+  "config/things-plus-plus/capability-manifest.json";
 
 export async function readCapabilityManifest(): Promise<Record<string, unknown>> {
   const sourceDirectory = dirname(fileURLToPath(import.meta.url));

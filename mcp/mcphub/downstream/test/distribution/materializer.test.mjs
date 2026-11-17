@@ -256,7 +256,7 @@ async function fixture({ entrySource: suppliedEntrySource } = {}) {
     inventorySha256: sha256Bytes(Buffer.from(canonicalJson(lockedDependencyClosurePayload))),
   };
   const assets = [{
-    sourcePath: "openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.json",
+    sourcePath: "config/things-plus-plus/capability-manifest.json",
     sourceSha256: capabilityFile.sha256,
     outputPath: capabilityFile.sourcePath,
     outputSha256: capabilityFile.sha256,
@@ -906,7 +906,7 @@ test("JSON Schema relativePath pattern is exactly aligned with safeRelativePath"
 });
 
 test("seal rejects duplicated capability rows and wrong Things group servers", async () => {
-  const capabilityPath = path.join(REPO_ROOT, "openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.json");
+  const capabilityPath = path.join(REPO_ROOT, "config/things-plus-plus/capability-manifest.json");
   const canonical = JSON.parse(await readFile(capabilityPath, "utf8"));
   assert.equal(validateCapabilityManifest(canonical), canonical);
   const duplicate = structuredClone(canonical);

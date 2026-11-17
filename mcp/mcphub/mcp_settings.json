@@ -1572,9 +1572,9 @@
     "version": 1,
     "group": "things",
     "groupId": "3b94a096-b95f-586c-b2e7-e69ed177eb5a",
-    "manifestPath": "openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.json",
+    "manifestPath": "config/things-plus-plus/capability-manifest.json",
     "manifestSha256": "d4e6b4aa7bc19973aaf5b4af135e67e3b864fc430fdee9aa3ef073e73e592b8d",
-    "manifestSchemaPath": "openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.schema.json",
+    "manifestSchemaPath": "config/things-plus-plus/capability-manifest.schema.json",
     "manifestSchemaSha256": "1c71f6a18cb0c2970bf502d4f31d5f6397f17ae95cafe3f25e78d83f9b93c126",
     "normalizedCatalogSha256": "0c48616453e929a8f9d287bb7a4bb59f0d587df3e7008506bfdd7c52472b066e",
     "counts": {

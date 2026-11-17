@@ -16,7 +16,7 @@ import {
 import { readSafeRegularFile } from "./safe-file.mjs";
 import { assertSelfContainedModule, SEALED_MODULE_POLICY_SHA256 } from "./sealed-module.mjs";
 
-const CAPABILITY_SOURCE = "openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.json";
+const CAPABILITY_SOURCE = "config/things-plus-plus/capability-manifest.json";
 const CAPABILITY_OUTPUT = "dist/things-capability-manifest.json";
 const ENTRY_SOURCE = "dist/runtime/main.mjs";
 const FINAL_RECEIPTS = Object.freeze([

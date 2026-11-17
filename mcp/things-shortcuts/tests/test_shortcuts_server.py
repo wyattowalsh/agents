@@ -62,7 +62,7 @@ EXPECTED_TOOLS = {
 REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
 MANUAL_BRIDGE_ROOT = REPOSITORY_ROOT / "shortcuts" / "things-plus-plus"
 CAPABILITY_MANIFEST = (
-    REPOSITORY_ROOT / "openspec" / "changes" / "replace-supathings-with-things-plus-plus" / "capability-manifest.json"
+    REPOSITORY_ROOT / "config" / "things-plus-plus" / "capability-manifest.json"
 )
 
 

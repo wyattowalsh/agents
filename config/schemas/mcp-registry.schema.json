@@ -415,10 +415,10 @@
               "const": 1
             },
             "manifest_path": {
-              "const": "openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.json"
+              "const": "config/things-plus-plus/capability-manifest.json"
             },
             "manifest_schema_path": {
-              "const": "openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.schema.json"
+              "const": "config/things-plus-plus/capability-manifest.schema.json"
             },
             "group": {
               "const": "things"

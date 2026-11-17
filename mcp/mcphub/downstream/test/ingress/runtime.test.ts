@@ -154,7 +154,7 @@ test("modern and legacy catalogs remain the exact same seventy tools", async () 
     readFile(
       path.resolve(
         process.cwd(),
-        "../../../openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.json",
+        "../../../config/things-plus-plus/capability-manifest.json",
       ),
       "utf8",
     ),
@@ -300,7 +300,7 @@ test("runtime binds startup to generated group-only settings contract", async ()
   try {
     const manifestSource = path.resolve(
       process.cwd(),
-      "../../../openspec/changes/replace-supathings-with-things-plus-plus/capability-manifest.json",
+      "../../../config/things-plus-plus/capability-manifest.json",
     );
     const settingsSource = path.resolve(process.cwd(), "../mcp_settings.json");
     const [manifestBytes, settingsBytes] = await Promise.all([

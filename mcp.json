@@ -448,13 +448,6 @@
       ],
       "disabled": true
     },
-    "mcphub_server_supathings": {
-      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
-      "args": [
-        "http://127.0.0.1:46683/mcp/supathings"
-      ],
-      "disabled": true
-    },
     "mcphub_server_tavily": {
       "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [

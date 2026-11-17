@@ -15,7 +15,7 @@ from typing import Any, cast
 SKILL_DIR = Path(__file__).resolve().parent.parent
 REPO_ROOT = SKILL_DIR.parent.parent
 SOURCE_PATH = (
-    REPO_ROOT / "openspec" / "changes" / "replace-supathings-with-things-plus-plus" / "capability-manifest.json"
+    REPO_ROOT / "config" / "things-plus-plus" / "capability-manifest.json"
 )
 SOURCE_SCHEMA_PATH = SOURCE_PATH.with_suffix(".schema.json")
 CAPABILITIES_JSON = SKILL_DIR / "references" / "capabilities.json"
