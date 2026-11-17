@@ -16,11 +16,11 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command (web-audited SKILL.md + repo); risks=Standard curated gating; some sources note pending registry/provenance details or API key prerequisites (e.g. RENDER_API_KEY, Stripe). Review before bulk use. policy=Install only after trust gate; re-audit on promotion.
+trust_tier=curated-trust-gated; status=inspect-then-install; provenance=verified-install-command (web-audited SKILL.md + repo); risks=Standard curated gating; some sources note pending registry/provenance details or API key prerequisites (e.g. RENDER_API_KEY, Stripe). Review before bulk use. policy=Install only after trust gate; re-audit on promotion.
 
 ## Install Prerequisites
 
-Install: `npx skills add shopify/shopify-ai-toolkit --skill shopify-dev -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=install-now-after-trust-gate; selector=named
+Install: `npx skills add shopify/shopify-ai-toolkit --skill shopify-dev -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=inspect-then-install; selector=named
 
 ## Upstream Maintainer
 

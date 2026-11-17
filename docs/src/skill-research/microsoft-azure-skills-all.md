@@ -16,11 +16,11 @@ global-only per policy.
 
 ## Trust And Risks
 
-trust_tier unspecified in row; status=keep-global-only-or-avoid (per catalog); official Microsoft but scope is very large (hundreds of ref files); risk of over-broad exposure or duplication with focused skills. Massive size noted.
+trust_tier unspecified in row; status=global-only-or-avoid (per catalog); official Microsoft but scope is very large (hundreds of ref files); risk of over-broad exposure or duplication with focused skills. Massive size noted.
 
 ## Install Prerequisites
 
-npx skills add microsoft/azure-skills (but keep global-only; avoid bulk in curated install-now); status=keep-global-only-or-avoid.
+npx skills add microsoft/azure-skills (but keep global-only; avoid bulk in curated install-now); status=global-only-or-avoid.
 
 ## Upstream Maintainer
 

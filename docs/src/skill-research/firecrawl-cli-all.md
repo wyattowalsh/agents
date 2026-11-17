@@ -16,7 +16,7 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection (global-only/avoid per catalog); status=global-only or avoid; provenance=verified-install-command; source=firecrawl (web scraping startup); provides live internet access to agents (cost, rate limits, ToS, potential data exfil or untrusted content injection risks). Rationale for global-only/avoid likely: broad web surface can be abused or incur unexpected usage; prefer scoped per-project install or explicit opt-in. Evidence: firecrawl.dev blog posts, GitHub firecrawl/cli, skill registry listings, CLI docs.
+trust_tier=needs-inspection (global-only/avoid per catalog); status=global-only-or-avoid or avoid; provenance=verified-install-command; source=firecrawl (web scraping startup); provides live internet access to agents (cost, rate limits, ToS, potential data exfil or untrusted content injection risks). Rationale for global-only/avoid likely: broad web surface can be abused or incur unexpected usage; prefer scoped per-project install or explicit opt-in. Evidence: firecrawl.dev blog posts, GitHub firecrawl/cli, skill registry listings, CLI docs.
 
 ## Install Prerequisites
 

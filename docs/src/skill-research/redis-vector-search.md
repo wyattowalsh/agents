@@ -16,11 +16,11 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate (for core/vec/sem); provenance=verified-install-command. Web-aug: github.com/redis/agent-skills (MIT, official Redis, ~71 stars, TS/JS, active, includes plugins for Claude/Cursor, AGENTS.md, references). Redis surface (connections, data); official.
+trust_tier=curated-trust-gated; status=inspect-then-install (for core/vec/sem); provenance=verified-install-command. Web-aug: github.com/redis/agent-skills (MIT, official Redis, ~71 stars, TS/JS, active, includes plugins for Claude/Cursor, AGENTS.md, references). Redis surface (connections, data); official.
 
 ## Install Prerequisites
 
-Install (core example): `npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` ; additional for vec/sem via bundle. status=install-now-after-trust-gate; selector=named
+Install (core example): `npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` ; additional for vec/sem via bundle. status=inspect-then-install; selector=named
 
 ## Upstream Maintainer
 
