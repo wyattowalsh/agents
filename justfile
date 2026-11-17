@@ -122,16 +122,6 @@ verify-opencode:
 validate:
     uv run wagents validate
 
-[doc("Validate the portable Agent Plugin at the repository root")]
-[group("checks")]
-plugin-validate:
-    uv run wagents plugin validate . --target portable
-
-[doc("Hermetically check all plugin artifact recipes without publishing")]
-[group("checks")]
-plugin-build-check:
-    uv run wagents plugin build --target all --check
-
 [doc("Run test suite")]
 [group("checks")]
 test:

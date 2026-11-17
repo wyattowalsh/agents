@@ -4,12 +4,12 @@ Implementation of the overhaul is intentionally not done in this change. Boxes b
 
 ## Wave 0 — Unblock
 
-- [ ] 0.1 Make `wagents` import. Remove the `wagents.commands.plugin` import and the `plugin` Typer until that module exists. Stop importing `WEB_DIR`. Import `AUTHORING_SKILLS_DIR` from `wagents.skill_index` or define it on the package. Register the docs Typer group as `docs`, which `.github/workflows/ci.yml` already calls.
-- [ ] 0.2 Point the hook, `config/cursor-agents.json`, its schema `const`, `.cursor/rules/cursor-models.mdc`, and `.cursor/agents/*.md` at `cursor-grok-4.6-xhigh`. Do not edit the spec unless a test still expects 4.5. Do not set `grok-4.7-xhigh` in this task.
-- [ ] 0.3 Close `cursor-grok-high-pin` as superseded. Do not check off its remaining 4.5 tasks. Do not write `~/.cursor/cli-config.json` or `state.vscdb`.
-- [ ] 0.4 Point `wagents/docs.py` site-data writes and staleness checks at `docs/src/`, matching Astro imports and `tests/test_docs.py`. Replace `web/lib` and `wagents web generate` strings in those checks. Do not regenerate the skill-index module in this task.
-- [ ] 0.5 `[P]` Delete the tracked 49-byte file named `warning: could not open directory 'platforms/copilot/': No such file or directory` and the accidental root directory `warning: could not open directory 'platforms`.
-- [ ] 0.6 Run the wave 0 rows in `validation-matrix.md`, including a one-line `wagents --help` after the import fix.
+- [x] 0.1 Make `wagents` import. Remove the `wagents.commands.plugin` import and the `plugin` Typer until that module exists. Stop importing `WEB_DIR`. Import `AUTHORING_SKILLS_DIR` from `wagents.skill_index` or define it on the package. Register the docs Typer group as `docs`, which `.github/workflows/ci.yml` already calls.
+- [x] 0.2 Point the hook, `config/cursor-agents.json`, its schema `const`, `.cursor/rules/cursor-models.mdc`, and `.cursor/agents/*.md` at `cursor-grok-4.6-xhigh`. Do not edit the spec unless a test still expects 4.5. Do not set `grok-4.7-xhigh` in this task.
+- [x] 0.3 Close `cursor-grok-high-pin` as superseded. Do not check off its remaining 4.5 tasks. Do not write `~/.cursor/cli-config.json` or `state.vscdb`.
+- [x] 0.4 Point `wagents/docs.py` site-data writes and staleness checks at `docs/src/`, matching Astro imports and `tests/test_docs.py`. Replace `web/lib` and `wagents web generate` strings in those checks. Do not regenerate the skill-index module in this task.
+- [x] 0.5 `[P]` Delete the tracked 49-byte file named `warning: could not open directory 'platforms/copilot/': No such file or directory` and the accidental root directory `warning: could not open directory 'platforms`.
+- [x] 0.6 Run the wave 0 rows in `validation-matrix.md`, including a one-line `wagents --help` after the import fix. Pin and selector tests passed. Full pytest and `docs generate --check` stay for later waves.
 
 ## Wave 1 — Close the books
 

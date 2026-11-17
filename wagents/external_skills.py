@@ -166,6 +166,20 @@ def is_skills_cli_install_command(command: str) -> bool:
     return len(parts) >= 4 and parts[:3] == ["npx", "skills", "add"]
 
 
+def is_valid_install_skill_name(name: str) -> bool:
+    """Return whether a Skills CLI selector is colon-separated kebab segments."""
+    if not isinstance(name, str) or not name or len(name) > 64:
+        return False
+    from wagents import KEBAB_CASE_PATTERN
+
+    return all(KEBAB_CASE_PATTERN.fullmatch(part) for part in name.split(":"))
+
+
+def normalize_install_skill_name(name: str) -> str:
+    """Map a namespaced selector onto the catalog store directory name."""
+    return str(name or "").replace(":", "-")
+
+
 def install_source_spec_has_pin(spec: str) -> bool:
     """Return whether a Skills CLI install source token includes an explicit @ref pin."""
     token = str(spec or "").strip()

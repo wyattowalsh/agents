@@ -2,7 +2,7 @@
 name: code-reviewer
 description: Review changes for correctness, risk, and maintainability without editing
   code.
-model: cursor-grok-4.5-high
+model: cursor-grok-4.6-xhigh
 readonly: true
 ---
 

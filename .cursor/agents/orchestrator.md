@@ -2,7 +2,7 @@
 name: orchestrator
 description: Coordinate multi-step work by decomposing, delegating, and synthesizing
   results.
-model: cursor-grok-4.5-high
+model: cursor-grok-4.6-xhigh
 readonly: false
 ---
 

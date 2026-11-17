@@ -2,7 +2,7 @@
 name: researcher
 description: Investigate a technical question deeply and return a concise evidence-backed
   summary.
-model: cursor-grok-4.5-high
+model: cursor-grok-4.6-xhigh
 readonly: true
 ---
 

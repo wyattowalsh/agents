@@ -1,4 +1,4 @@
-"""Cursor agent renderer defaults model to cursor-grok-4.5-high."""
+"""Cursor agent renderer defaults model to cursor-grok-4.6-xhigh."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from wagents.platforms.cursor import (
 
 
 def test_cursor_default_model_constant_is_grok_high() -> None:
-    assert CURSOR_DEFAULT_MODEL == "cursor-grok-4.5-high"
+    assert CURSOR_DEFAULT_MODEL == "cursor-grok-4.6-xhigh"
 
 
 def test_render_cursor_agent_defaults_model_when_overlay_omits_model(tmp_path) -> None:
@@ -32,7 +32,7 @@ def test_render_cursor_agent_defaults_model_when_overlay_omits_model(tmp_path) -
     rendered = _render_cursor_agent(agent_path, overlay)
     data = yaml.safe_load(rendered.split("---\n", 2)[1])
 
-    assert data["model"] == "cursor-grok-4.5-high"
+    assert data["model"] == "cursor-grok-4.6-xhigh"
     assert data["model"] == CURSOR_DEFAULT_MODEL
     assert CURSOR_MANAGED_AGENT_MARKER in rendered
 
@@ -54,7 +54,7 @@ def test_render_cursor_agent_ignores_overlay_fast_model(tmp_path) -> None:
     data = yaml.safe_load(rendered.split("---\n", 2)[1])
 
     assert data["model"] == CURSOR_DEFAULT_MODEL
-    assert data["model"] == "cursor-grok-4.5-high"
+    assert data["model"] == "cursor-grok-4.6-xhigh"
 
 
 def test_render_cursor_agent_ignores_overlay_inherit_model(tmp_path) -> None:
@@ -74,7 +74,7 @@ def test_render_cursor_agent_ignores_overlay_inherit_model(tmp_path) -> None:
     data = yaml.safe_load(rendered.split("---\n", 2)[1])
 
     assert data["model"] == CURSOR_DEFAULT_MODEL
-    assert data["model"] == "cursor-grok-4.5-high"
+    assert data["model"] == "cursor-grok-4.6-xhigh"
 
 
 def test_render_cursor_agents_defaults_model_when_overlay_omits_model(
@@ -105,5 +105,5 @@ def test_render_cursor_agents_defaults_model_when_overlay_omits_model(
     rendered = _render_cursor_agents()
     assert set(rendered) == {"pin-demo.md"}
     data = yaml.safe_load(rendered["pin-demo.md"].split("---\n", 2)[1])
-    assert data["model"] == "cursor-grok-4.5-high"
+    assert data["model"] == "cursor-grok-4.6-xhigh"
     assert data["readonly"] is True

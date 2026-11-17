@@ -1,7 +1,7 @@
 ---
 name: agent-registry-publisher
 description: Scaffold for publishing agent catalog registry artifacts (planned).
-model: cursor-grok-4.5-high
+model: cursor-grok-4.6-xhigh
 readonly: true
 ---
 

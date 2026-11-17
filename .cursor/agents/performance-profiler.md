@@ -2,7 +2,7 @@
 name: performance-profiler
 description: Investigate performance bottlenecks and recommend the highest-leverage
   fixes.
-model: cursor-grok-4.5-high
+model: cursor-grok-4.6-xhigh
 readonly: true
 ---
 

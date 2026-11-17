@@ -2,7 +2,7 @@
 name: release-manager
 description: Prepare release notes, versioning, and ship-readiness checks with cautious
   permissions.
-model: cursor-grok-4.5-high
+model: cursor-grok-4.6-xhigh
 readonly: false
 ---
 

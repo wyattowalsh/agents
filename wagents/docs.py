@@ -16,11 +16,9 @@ import typer
 from typer.models import OptionInfo
 
 from wagents import (
-    AUTHORING_SKILLS_DIR,
     CONTENT_DIR,
     DOCS_DIR,
     ROOT,
-    WEB_DIR,
 )
 
 # Authoring SSOT + catalog index (W3)
@@ -55,6 +53,7 @@ from wagents.skill_docs import (
     skill_detail_href,
 )
 from wagents.skill_index import (
+    AUTHORING_SKILLS_DIR,
     build_catalog_index,
     load_authoring_entries,
 )
@@ -212,8 +211,8 @@ def write_site_data(nodes: list, external_entries: list[ExternalSkillEntry] | No
         has_mcp_overview=_has_mcp_overview_page(),
         external_skills=external_entries,
     )
-    # DOCS_DIR aliases WEB_DIR (tests monkeypatch DOCS_DIR to a temp package root).
-    lib_dir = DOCS_DIR / "lib"
+    # Tests monkeypatch DOCS_DIR. Astro imports these modules from docs/src.
+    lib_dir = DOCS_DIR / "src"
     lib_dir.mkdir(parents=True, exist_ok=True)
     (lib_dir / "generated-site-data.mjs").write_text(render_site_data_module(data), encoding="utf-8")
     public_index_dir = DOCS_DIR / "public" / "generated-skill-indexes"
@@ -2865,8 +2864,8 @@ def render_sidebar_module(nodes: list) -> str:
 
 
 def write_sidebar(nodes: list) -> None:
-    """Write web/lib/generated-sidebar.mjs with dynamic sidebar config."""
-    sidebar_path = DOCS_DIR / "lib" / "generated-sidebar.mjs"
+    """Write docs/src/generated-sidebar.mjs with dynamic sidebar config."""
+    sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
     sidebar_path.parent.mkdir(parents=True, exist_ok=True)
     content = render_sidebar_module(nodes)
     tmp_path = sidebar_path.with_suffix(".mjs.tmp")
@@ -3010,7 +3009,7 @@ DOCS_GENERATE_LOCK_MAX_AGE_S = 2 * 60 * 60
 
 
 def _docs_generate_lock_path() -> Path:
-    return WEB_DIR / ".wagents-web-generate.lock"
+    return DOCS_DIR / ".wagents-web-generate.lock"
 
 
 @contextmanager
@@ -3054,13 +3053,13 @@ def _docs_generate_lock():
 @web_app.command("init")
 def docs_init():
     """One-time setup: install web dependencies."""
-    if not (WEB_DIR / "package.json").exists():
-        typer.echo("Error: web/package.json not found. Is the scaffold committed?", err=True)
+    if not (DOCS_DIR / "package.json").exists():
+        typer.echo("Error: docs/package.json not found. Is the scaffold committed?", err=True)
         raise typer.Exit(code=1)
-    typer.echo("Installing web dependencies...")
+    typer.echo("Installing docs dependencies...")
     result = subprocess.run(
         ["pnpm", "install", "--ignore-workspace"],
-        cwd=str(WEB_DIR),
+        cwd=str(DOCS_DIR),
     )
     if result.returncode != 0:
         typer.echo("Error: pnpm install failed", err=True)
@@ -3090,60 +3089,73 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
         external_skills=external_entries,
     )
     expected_site = render_site_data_module(expected_data)
-    site_path = DOCS_DIR / "lib" / "generated-site-data.mjs"
+    site_path = DOCS_DIR / "src" / "generated-site-data.mjs"
     if not site_path.exists():
-        reasons.append("web/lib/generated-site-data.mjs missing; run `uv run wagents web generate --no-installed`")
+        reasons.append("docs/src/generated-site-data.mjs missing; run `uv run wagents docs generate --no-installed`")
     elif site_path.read_text(encoding="utf-8") != expected_site:
-        reasons.append("web/lib/generated-site-data.mjs is stale; run `uv run wagents web generate --no-installed`")
+        reasons.append("docs/src/generated-site-data.mjs is stale; run `uv run wagents docs generate --no-installed`")
 
     expected_skill_indexes = render_skill_indexes_module(expected_data)
-    skill_indexes_path = DOCS_DIR / "lib" / "generated-skill-indexes.mjs"
+    skill_indexes_path = DOCS_DIR / "src" / "generated-skill-indexes.mjs"
     if not skill_indexes_path.exists():
-        reasons.append("web/lib/generated-skill-indexes.mjs missing; run `uv run wagents web generate --no-installed`")
+        reasons.append(
+            "docs/src/generated-skill-indexes.mjs missing; "
+            "run `uv run wagents docs generate --no-installed`"
+        )
     elif skill_indexes_path.read_text(encoding="utf-8") != expected_skill_indexes:
-        reasons.append("web/lib/generated-skill-indexes.mjs is stale; run `uv run wagents web generate --no-installed`")
+        reasons.append(
+            "docs/src/generated-skill-indexes.mjs is stale; "
+            "run `uv run wagents docs generate --no-installed`"
+        )
 
     expected_sidebar = render_sidebar_module(nodes)
-    sidebar_path = DOCS_DIR / "lib" / "generated-sidebar.mjs"
+    sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
     if not sidebar_path.exists():
-        reasons.append("web/lib/generated-sidebar.mjs missing; run `uv run wagents web generate --no-installed`")
+        reasons.append("docs/src/generated-sidebar.mjs missing; run `uv run wagents docs generate --no-installed`")
     elif sidebar_path.read_text(encoding="utf-8") != expected_sidebar:
-        reasons.append("web/lib/generated-sidebar.mjs is stale; run `uv run wagents web generate --no-installed`")
+        reasons.append("docs/src/generated-sidebar.mjs is stale; run `uv run wagents docs generate --no-installed`")
 
     expected_install_scripts = json.dumps(expected_data["skillInstallScripts"], indent=2, sort_keys=True)
     install_scripts_path = DOCS_DIR / "public" / "generated-skill-indexes" / "install-scripts.json"
     if not install_scripts_path.exists():
         reasons.append(
-            "web/public/generated-skill-indexes/install-scripts.json missing; "
-            "run `uv run wagents web generate --no-installed`"
+            "docs/public/generated-skill-indexes/install-scripts.json missing; "
+            "run `uv run wagents docs generate --no-installed`"
         )
     elif install_scripts_path.read_text(encoding="utf-8") != expected_install_scripts + "\n":
         actual = install_scripts_path.read_text(encoding="utf-8").strip()
         if actual != expected_install_scripts.strip():
             reasons.append(
-                "web/public/generated-skill-indexes/install-scripts.json is stale; "
-                "run `uv run wagents web generate --no-installed`"
+                "docs/public/generated-skill-indexes/install-scripts.json is stale; "
+                "run `uv run wagents docs generate --no-installed`"
             )
 
     expected_visual_css = render_visual_assets_css()
-    visual_css_path = DOCS_DIR / "lib" / "generated-visual-assets.css"
+    visual_css_path = DOCS_DIR / "src" / "generated-visual-assets.css"
     if not visual_css_path.exists():
-        reasons.append("web/lib/generated-visual-assets.css missing; run `uv run wagents web generate --no-installed`")
+        reasons.append(
+            "docs/src/generated-visual-assets.css missing; "
+            "run `uv run wagents docs generate --no-installed`"
+        )
     elif visual_css_path.read_text(encoding="utf-8") != expected_visual_css:
-        reasons.append("web/lib/generated-visual-assets.css is stale; run `uv run wagents web generate --no-installed`")
+        reasons.append(
+            "docs/src/generated-visual-assets.css is stale; "
+            "run `uv run wagents docs generate --no-installed`"
+        )
 
     from wagents.skill_research import MANIFEST_PATH as research_manifest_path
 
     expected_manifest = render_research_manifest()
     if not research_manifest_path.exists():
         reasons.append(
-            "web/src/generated-skill-research-index.mjs missing; run `uv run wagents web generate --no-installed`"
+            "docs/src/generated-skill-research-index.mjs missing; run `uv run wagents docs generate --no-installed`"
         )
     else:
         actual_manifest = research_manifest_path.read_text(encoding="utf-8")
         if actual_manifest != expected_manifest:
             reasons.append(
-                "web/src/generated-skill-research-index.mjs is stale; run `uv run wagents web generate --no-installed`"
+                "docs/src/generated-skill-research-index.mjs is stale; "
+                "run `uv run wagents docs generate --no-installed`"
             )
 
     reasons.extend(reports_stale_reasons())
@@ -3151,9 +3163,9 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
     for path, expected in render_catalog_page_artifacts(nodes=nodes).items():
         display_path = path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
         if not path.exists():
-            reasons.append(f"{display_path} missing; run `uv run wagents web generate --no-installed`")
+            reasons.append(f"{display_path} missing; run `uv run wagents docs generate --no-installed`")
         elif path.read_text(encoding="utf-8") != expected:
-            reasons.append(f"{display_path} is stale; run `uv run wagents web generate --no-installed`")
+            reasons.append(f"{display_path} is stale; run `uv run wagents docs generate --no-installed`")
 
     return reasons
 
@@ -3856,7 +3868,7 @@ def docs_clean():
     if external_path.exists():
         external_path.unlink()
         cleaned = True
-    sidebar_path = DOCS_DIR / "lib" / "generated-sidebar.mjs"
+    sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
     if sidebar_path.exists():
         sidebar_path.unlink()
         cleaned = True

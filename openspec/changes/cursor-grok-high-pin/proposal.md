@@ -1,5 +1,7 @@
 # Change: Cursor Grok 4.5 High Pin
 
+> Superseded on 2026-11-17. Do not apply the remaining tasks. They still name `cursor-grok-4.5-high`, which this catalog rejects and which would roll `openspec/specs/cursor-harness` backward. The live pin is `cursor-grok-4.6-xhigh` (spec, `wagents/platforms/cursor.py`, hook policy, Cursor rule, and `.cursor/agents/`). See `openspec/changes/plan-repo-overhaul-cleanup/`.
+
 ## Why
 
 Cursor custom agents are already overlay-pinned to `cursor-grok-4.5-high`, but soft

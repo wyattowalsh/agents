@@ -1,6 +1,6 @@
 ---
 title: "cursor-subagent-model-allowlist"
-description: "Deny Cursor subagent starts that specify a model outside cursor-grok-4.5-high."
+description: "Deny Cursor subagent starts that specify a model outside cursor-grok-4.6-xhigh."
 page_kind: "hook"
 source_kind: "registry"
 asset_id: "cursor-subagent-model-allowlist"
@@ -16,7 +16,7 @@ import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 <Badge text="SubagentStart" variant="caution" /> <Badge text="enforce" variant="tip" /> <Badge text="cursor" variant="default" />
 
-> Deny Cursor subagent starts that specify a model outside cursor-grok-4.5-high.
+> Deny Cursor subagent starts that specify a model outside cursor-grok-4.6-xhigh.
 
 ## Registry Entry
 
@@ -39,7 +39,7 @@ import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
 ```json title="config/hook-registry.json (entry)"
 {
   "id": "cursor-subagent-model-allowlist",
-  "description": "Deny Cursor subagent starts that specify a model outside cursor-grok-4.5-high.",
+  "description": "Deny Cursor subagent starts that specify a model outside cursor-grok-4.6-xhigh.",
   "logical_event": "SubagentStart",
   "logical_policy": "cursor-subagent-model-allowlist",
   "mode": "enforce",

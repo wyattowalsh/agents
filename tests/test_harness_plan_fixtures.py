@@ -199,13 +199,13 @@ def test_cursor_cloud_subagent_repo_evidence_and_overlay_alignment() -> None:
     sample = managed_agents[0]
     frontmatter = re.search(r"^---\n(.*?)\n---", sample.read_text(encoding="utf-8"), re.DOTALL)
     assert frontmatter is not None
-    assert "model: cursor-grok-4.5-high" in frontmatter.group(1)
+    assert "model: cursor-grok-4.6-xhigh" in frontmatter.group(1)
     assert "readonly:" in frontmatter.group(1)
     overlay_by_name = {
         entry["name"]: entry
         for entry in json.loads(overlay_path.read_text(encoding="utf-8"))["agents"]
     }
-    assert overlay_by_name[sample.stem]["model"] == "cursor-grok-4.5-high"
+    assert overlay_by_name[sample.stem]["model"] == "cursor-grok-4.6-xhigh"
     assert "readonly" in overlay_by_name[sample.stem]
 
 

@@ -1,7 +1,7 @@
 ---
 name: security-auditor
 description: Audit code and configuration for security risks without making changes.
-model: cursor-grok-4.5-high
+model: cursor-grok-4.6-xhigh
 readonly: true
 ---
 

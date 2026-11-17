@@ -19,6 +19,22 @@ PAGE_KIND_BY_NODE = {
 }
 
 
+def render_collection_json_ld_script(
+    *,
+    title: str,
+    description: str,
+    url: str,
+    items: list[tuple[str, str]],
+) -> list[str]:
+    """Return catalog collection JSON-LD lines.
+
+    Committed catalog pages do not include this script yet. Emit nothing so
+    `wagents docs generate --check` stays aligned with those pages.
+    """
+    del title, description, url, items
+    return []
+
+
 def catalog_page_kind(node: CatalogNode) -> str:
     return PAGE_KIND_BY_NODE.get(node.kind, "asset")
 

@@ -50,7 +50,7 @@ def test_rewrite_task_input_pins_omitted_model() -> None:
     updated, changed, reason = rewrite_task_input(dict(PHASE_A_OMIT))
     assert changed is True
     assert updated["model"] == CURSOR_PINNED_MODEL
-    assert updated["model"] == "cursor-grok-4.5-high"
+    assert updated["model"] == "cursor-grok-4.6-xhigh"
     assert "omitted" in reason.lower() or "Pinned omitted" in reason
     _assert_no_alt_keys(updated)
 
@@ -58,7 +58,7 @@ def test_rewrite_task_input_pins_omitted_model() -> None:
 def test_rewrite_task_input_pins_wrong_model() -> None:
     updated, changed, reason = rewrite_task_input(dict(PHASE_A_WRONG_MODEL))
     assert changed is True
-    assert updated["model"] == "cursor-grok-4.5-high"
+    assert updated["model"] == "cursor-grok-4.6-xhigh"
     assert "cursor-grok-4.5-fast" in reason
     _assert_no_alt_keys(updated)
 
@@ -66,7 +66,7 @@ def test_rewrite_task_input_pins_wrong_model() -> None:
 def test_rewrite_task_input_noop_when_already_pinned() -> None:
     updated, changed, reason = rewrite_task_input(dict(PHASE_A_HIGH_NOOP))
     assert changed is False
-    assert updated["model"] == "cursor-grok-4.5-high"
+    assert updated["model"] == "cursor-grok-4.6-xhigh"
     assert "already pinned" in reason.lower()
     _assert_no_alt_keys(updated)
 
@@ -116,7 +116,7 @@ def test_rewrite_task_input_high_plus_model_name_emits() -> None:
         (PHASE_B_HIGH_ALLOW, False),
         (PHASE_B_OMIT_ALLOW, False),
         (PHASE_B_MODEL_ID_DENY, True),
-        ({"model": "cursor-grok-4.5-high"}, False),
+        ({"model": "cursor-grok-4.6-xhigh"}, False),
         ({}, False),
     ],
 )
@@ -184,7 +184,7 @@ def test_dispatcher_smoke_rewrites_missing_task_model() -> None:
     assert completed.returncode == 0, completed.stderr
     decision = json.loads(completed.stdout)
     assert decision["permission"] == "allow"
-    assert decision["updated_input"]["model"] == "cursor-grok-4.5-high"
+    assert decision["updated_input"]["model"] == "cursor-grok-4.6-xhigh"
     _assert_no_alt_keys(decision["updated_input"])
 
 
@@ -241,7 +241,7 @@ def test_dispatcher_smoke_high_noop_no_emit() -> None:
         ("cursor-grok-4.5-fast", True),
         ("composer-1", True),
         ("composer-2.5", True),
-        ("cursor-grok-4.5-high", False),
+        ("cursor-grok-4.6-xhigh", False),
         (None, False),
     ],
 )
@@ -262,7 +262,7 @@ def test_dispatcher_smoke_subagent_model_allowlist(model: str | None, expect_den
         decision = json.loads(completed.stdout)
         assert decision.get("permission") == "deny"
         reason = str(decision.get("user_message") or decision.get("agent_message") or decision)
-        assert "not allowed" in reason.lower() or "cursor-grok-4.5-high" in reason
+        assert "not allowed" in reason.lower() or "cursor-grok-4.6-xhigh" in reason
     else:
         # allow may be empty stdout / exit 0 with no deny payload
         if completed.stdout.strip():

@@ -1,5 +1,7 @@
 # Tasks: cursor-grok-high-pin
 
+> Superseded. Leave the open boxes unchecked. Do not retarget them to 4.5.
+
 ## Wave 0 — discovery (RO)
 
 - [x] D0-a: Inventory overlay/schema/agents/rule (confirm High pin + agent count)

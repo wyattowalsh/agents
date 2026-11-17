@@ -1,5 +1,7 @@
 # Proposal
 
+> Wave 0 is done: `wagents` imports, the Cursor pin is `cursor-grok-4.6-xhigh`, docs writes target `docs/src`, and the accidental warning path is gone. Waves 1–4 below are still open. The problem statement records the state this plan started from.
+
 ## Problem
 
 The repository is not short of features. It is carrying three kinds of weight at once, and one of them breaks current Cursor work.

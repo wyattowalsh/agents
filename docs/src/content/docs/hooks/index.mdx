@@ -74,9 +74,9 @@ Codex harness uses the Python dispatcher (`wagents-hook.py`) for richer policy +
 
 Cursor uses the Python dispatcher (`wagents-hook.py`) plus its own native lifecycle events (`beforeReadFile`, `beforeShellExecution`, `beforeMCPExecution`, `afterFileEdit`, `subagentStart`). Enforce-tier pre-execution guards are rendered fail-closed, except explicit fail-open pin hooks (`failClosed: false` on `cursor-task-model-pin-rewrite` and `cursor-subagent-model-allowlist`).
 
-### Cursor Grok 4.5 High pin — layer matrix (SSOT)
+### Cursor Grok 4.6 Extra High pin — layer matrix (SSOT)
 
-Canonical slug: `cursor-grok-4.5-high`. Soft rule (agents must not omit `model`) differs from Phase B (omit allowed so the High parent inherits). Operators SHOULD set user-owned `~/.cursor/cli-config.json` `exploreSubagentModel: "inherit"` and the IDE picker to Grok 4.5 High; sync SHALL NOT write `cli-config` or live `state.vscdb`.
+Canonical slug: `cursor-grok-4.6-xhigh`. Soft rule (agents must not omit `model`) differs from Phase B (omit allowed so the High parent inherits). Operators SHOULD set user-owned `~/.cursor/cli-config.json` `exploreSubagentModel: "inherit"` and the IDE picker to Grok 4.6 Extra High; sync SHALL NOT write `cli-config` or live `state.vscdb`.
 
 | Layer | Mechanism | Omit `model` | Wrong/fast model | Hook crash |
 | --- | --- | --- | --- | --- |
@@ -121,7 +121,7 @@ Security Enforce guards stay **fail-closed** (RV-004). Do not harden pin hooks t
     <Badge text="SubagentStart" variant="success" /> <Badge text="context" variant="tip" /> Inject repo conventions + session context when a subagent starts.
   </Card>
   <Card title="cursor-task-model-pin-rewrite">
-    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> <Badge text="fail-open" variant="note" /> Rewrite Task launches to `cursor-grok-4.5-high` via `updated_input` (`failClosed: false`).
+    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> <Badge text="fail-open" variant="note" /> Rewrite Task launches to `cursor-grok-4.6-xhigh` via `updated_input` (`failClosed: false`).
   </Card>
   <Card title="cursor-subagent-model-allowlist">
     <Badge text="SubagentStart" variant="caution" /> <Badge text="enforce" variant="tip" /> <Badge text="fail-open" variant="note" /> Deny explicit non-High subagent models; omit/inherit stays allowed (`failClosed: false`).
