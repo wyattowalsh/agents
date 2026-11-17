@@ -372,7 +372,9 @@ def write_catalog_platforms_index(skills_index: dict[str, Any], *, writer: MdxWr
             custom_count = len(skill_ids) - external_count
             href = f"/skills/catalog/external/?platform={quote(platform, safe='')}"
             description = (
-                f"{len(skill_ids)} skills ({external_count} external, {custom_count} custom) for {platform}"
+                f"{external_count} external skills in this filter"
+                + (f"; {custom_count} custom skills are on the custom hub" if custom_count else "")
+                + f" ({platform})"
             )
             body.append(
                 f'  <LinkCard title="{escape_attr(label)}" href="{href}" '
