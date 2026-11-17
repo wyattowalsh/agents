@@ -7,7 +7,7 @@ const visualAssetById = Object.fromEntries(visualAssets.map((asset) => [asset.id
 const localAssetPath = (src: string) => (src.startsWith('/src/') ? `.${src}` : `./public${src}`);
 const highVolumeGeneratedOgPrefixes = [
   'skill-research/',
-  'skills/catalog/external/candidate-corpus-',
+  'skills/catalog/external/',
 ];
 const shouldPrerenderOgPage = (id: string) =>
   !highVolumeGeneratedOgPrefixes.some((prefix) => id.startsWith(prefix));

@@ -316,7 +316,10 @@ def write_catalog_tags_index(skills_index: dict[str, Any], *, writer: MdxWriter 
             description = (
                 f"{total} skills ({counts['external']} external, {counts['custom']} custom) — e.g. {sample}"
             )
-            href = f"/skills/catalog/external/?tag={quote(tag, safe='')}"
+            if counts["custom"] and not counts["external"]:
+                href = "/skills/catalog/custom/"
+            else:
+                href = f"/skills/catalog/external/?tag={quote(tag, safe='')}"
             body.append(
                 f'  <LinkCard title="{escape_attr(tag)}" href="{href}" '
                 f'description="{escape_attr(description)}" />'
