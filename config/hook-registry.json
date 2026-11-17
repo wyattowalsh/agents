@@ -228,7 +228,7 @@
     },
     {
       "id": "cursor-task-model-pin-rewrite",
-      "description": "Rewrite Cursor Task model launches to cursor-grok-4.6-xhigh via updated_input.",
+      "description": "Rewrite Cursor Task model launches to grok-4.7-xhigh via updated_input.",
       "status_message": "Pinning Task model",
       "mode": "enforce",
       "logical_policy": "cursor-task-model-pin-rewrite",
@@ -242,7 +242,7 @@
     },
     {
       "id": "cursor-subagent-model-allowlist",
-      "description": "Deny Cursor subagent starts that specify a model outside cursor-grok-4.6-xhigh.",
+      "description": "Deny Cursor subagent starts that specify a model outside grok-4.7-xhigh.",
       "status_message": "Checking subagent model",
       "mode": "enforce",
       "logical_policy": "cursor-subagent-model-allowlist",

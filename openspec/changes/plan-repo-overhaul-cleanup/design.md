@@ -14,11 +14,7 @@ The June 2026 ledger stays as history. RV-RC-006's "archive only when an owner c
 - `wagents/docs.py` imports `WEB_DIR` and `AUTHORING_SKILLS_DIR` from `wagents`. `__init__.py` defines `ROOT`, `DOCS_DIR`, and `CONTENT_DIR` only. `AUTHORING_SKILLS_DIR` already lives in `wagents/skill_index.py`. Stop importing `WEB_DIR`. There is no `web/package.json`. The site is `docs/`.
 - CI (`.github/workflows/ci.yml` and `maintenance-freshness.yml`) calls `uv run wagents docs`. The Typer group is registered as `web` only. Register it as `docs`.
 
-**Model pin.** Do not finish `cursor-grok-high-pin`. Its open boxes and its completed task text still target `cursor-grok-4.5-high`. Applying them would move the spec backward. `AGENTS.md`, `openspec/specs/cursor-harness/spec.md`, and `CURSOR_DEFAULT_MODEL` already say `cursor-grok-4.6-xhigh`, and that slug is accepted here. Close the change as superseded.
-
-Repair only the copies that still force the dead slug: `CURSOR_PINNED_MODEL`, `config/cursor-agents.json`, `config/schemas/cursor-agents.schema.json`, hook-registry pin text, `.cursor/rules/cursor-models.mdc`, and `.cursor/agents/*.md`. One constant, same string as the spec.
-
-`grok-4.7-xhigh` is the extra-high Grok 4.7 Task slug in this environment. There is no 500k slug. Use it only if the maintainer explicitly moves the spec. This plan does not.
+**Model pin.** Do not finish `cursor-grok-high-pin`. Its open boxes still target `cursor-grok-4.5-high`. The maintainer set the live pin to `grok-4.7-xhigh` (Grok 4.7 extra high). There is no separate 500k slug; 500k is that model's context window. The spec, hook, `CURSOR_DEFAULT_MODEL`, Cursor rule, overlays, and `.cursor/agents/` use that one string.
 
 **Docs writer path.** `write_site_data()` in `wagents/docs.py` sets `lib_dir = DOCS_DIR / "lib"` with `DOCS_DIR = ROOT / "docs"`. Tracked files and Astro imports live under `docs/src/`. Point the writer and the staleness checks at `docs/src/` (the directory tests already use). Do not regenerate the 22.2 MB module until wave 2 decides its fate. Stale-check strings that say `web/lib` and `wagents web generate` get the same correction.
 

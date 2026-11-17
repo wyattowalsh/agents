@@ -1,5 +1,7 @@
 # RV MCP Findings Closure
 
+> Killed as a live change on 2026-11-17. This note is a 2026-07-06 snapshot. RV-004's `ddgs-mcp-server==0.5.1` pin is not the shipped adapter (`ddgs[mcp]==9.14.4` in `scripts/mcphub/ddgs-stdio.sh`). Do not treat this file as current closure.
+
 Completed: 2026-07-06
 
 ## Finding closure matrix

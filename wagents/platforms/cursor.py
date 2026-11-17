@@ -45,7 +45,7 @@ PLANNOTATOR_PLAN_HOOK_PY_REL = Path("scripts") / "cursor" / "plannotator-plan-ho
 PLANNOTATOR_PLAN_HOOK_PY_PATH = get_repo_root() / PLANNOTATOR_PLAN_HOOK_PY_REL
 PLANNOTATOR_PLAN_HOOK_HOME_NAME = PLANNOTATOR_CURSOR_PLAN_HOOK_HOME_NAME
 CURSOR_MANAGED_AGENT_MARKER = "<!-- Managed by wagents. Source: agents/"
-CURSOR_DEFAULT_MODEL = "cursor-grok-4.6-xhigh"
+CURSOR_DEFAULT_MODEL = "grok-4.7-xhigh"
 
 # Skills CLI universal store → Cursor home projection (not repo `.cursor/skills/repo`).
 DEFAULT_CURSOR_SKILL_STORE = Path(".agents") / "skills"

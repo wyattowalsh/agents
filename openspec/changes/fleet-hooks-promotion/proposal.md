@@ -1,5 +1,7 @@
 # Proposal
 
+> Superseded on 2026-11-17. Do not run this task list. `config/tooling-policy.json` already sets `hook_perf.tier` to `bundle`. `resolve_hook_perf_tier` still falls back to `legacy` only when that policy key is missing, and the hooks spec keeps that fallback. Re-running these tasks would try to flip a tier that is already bundle.
+
 ## Why
 
 `fleet-hooks-performance` delivered bundle collapse, dispatcher caches, and staged

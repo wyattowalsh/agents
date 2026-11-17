@@ -1,6 +1,6 @@
 # Proposal
 
-> Wave 0 is done: `wagents` imports, the Cursor pin is `cursor-grok-4.6-xhigh`, docs writes target `docs/src`, and the accidental warning path is gone. Waves 1–4 below are still open. The problem statement records the state this plan started from.
+> Wave 0 is done, and the maintainer then moved the pin. `wagents` imports, docs writes target `docs/src`, and the accidental warning path is gone. The enforced Cursor Task slug is `grok-4.7-xhigh` (Grok 4.7 extra high; 500k is that model's context window, not a separate slug). Waves 1–4 below are still open. The problem statement records the state this plan started from.
 
 ## Problem
 
@@ -25,7 +25,7 @@ Publish one sequenced plan that says what to archive, what to delete, what to ti
 Recommended order:
 
 1. **P0 — Make `wagents` import.** Remove or add the missing `plugin` Typer, export the symbols `docs.py` imports, and register the docs command under the name CI already calls (`docs`). Do this before any generate or validate step.
-2. **P0 — Make Task launches work.** Point the hook, the Cursor rule, and `.cursor/agents/` at `cursor-grok-4.6-xhigh`, which is what `openspec/specs/cursor-harness/spec.md`, `AGENTS.md`, and `wagents/platforms/cursor.py` already say. Close `cursor-grok-high-pin` as superseded. Do not finish its remaining tasks; they still name `cursor-grok-4.5-high`. Move the pin to `grok-4.7-xhigh` only if the maintainer wants a model change. There is no 500k slug.
+2. **P0 — Make Task launches work.** The maintainer set the pin to `grok-4.7-xhigh`. That slug is in the spec, the hook, `cursor.py`, the Cursor rule, and `.cursor/agents/`. `cursor-grok-high-pin` stays superseded. There is no 500k slug.
 3. **P0 — Repair the docs writer path** so generate updates `docs/src/`, which Astro already imports. Do this before any attempt to delete generated files.
 4. **P1 — Archive finished OpenSpec changes** after a short spot-check, counting both `- [x]` and `1. [x]` lists. Do not archive `integrate-ideas-backlog` while its 20 `[~]` rows and 1 open box remain. Do not archive `replace-supathings-with-things-plus-plus` until `capability-manifest.json` is moved out of that change directory: `config/schemas/mcp-registry.schema.json` pins that path.
 5. **P1 — Stop shipping the unused 22.2 MB skill-index module** after an import search and a docs check confirm the catalog still builds from the JSON indexes. `planning/tmp/` and `planning/workspaces/` can go in the same wave after the seven-session deferral sentences are copied into the findings ledger. Leave the July corpus, including `runtime-activation-assurance.json`, which `wagents/docs.py` reads.
@@ -74,7 +74,7 @@ None in this change. Later waves that edit registries or skill/agent sources mus
 | --- | --- |
 | Archiving a change whose boxes are checked but whose behavior is absent | Spot-check one observable claim from `proposal.md` before `openspec archive`. Reopen instead of archiving on failure. `replace-package-version-check-mcp` is 12/12 while `config/mcp-registry.json` still has that server id. |
 | Deleting the 22.2 MB module while a generator or test still expects the path | Wave 2 deletes only after the writer path is fixed and `rg` plus `wagents docs generate --check` show no runtime import. `tests/test_docs.py` currently asserts the catalog page does **not** name the module. |
-| Finishing `cursor-grok-high-pin` writes `cursor-grok-4.5-high` back over the spec | Close that change as superseded. Repair the hook and the rule to `cursor-grok-4.6-xhigh`. A later move to `grok-4.7-xhigh` is a separate maintainer decision. |
+| Finishing `cursor-grok-high-pin` writes `cursor-grok-4.5-high` back over the spec | That change stays superseded. The live pin is `grok-4.7-xhigh`. |
 | Archiving Things++ deletes the manifest the schema requires | Move `capability-manifest.json` to a durable path and update the schema `const` before archive. Also remove stale `supathings` client routes. |
 | Corpus tests break if evidence JSON is "cleaned up" | Delete only `planning/tmp/` and `planning/workspaces/` after copying the seven-session deferral sentences into `repo-cleanup-review-findings.md`. |
 | Instruction dedup deletes files sync will not recreate | `sync_agent_stack.py` does not write `.cursor/rules/` except the home copy of `cursor-models.mdc`. Replace duplicated bodies with pointers. Do not delete the rule files. |

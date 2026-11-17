@@ -177,7 +177,7 @@
       ],
       "caveats": [
         "Repo sync writes project-local .cursor surfaces; home sync also projects allowlisted rules to ~/.cursor/rules/ (orphans preserved) and managed-marker agents to ~/.cursor/agents/.",
-        "Soft always-on rule .cursor/rules/cursor-models.mdc plus hard hooks cursor-task-model-pin-rewrite (preToolUse Task rewrite, fail-open) and cursor-subagent-model-allowlist (subagentStart) pin cursor-grok-4.6-xhigh.",
+        "Soft always-on rule .cursor/rules/cursor-models.mdc plus hard hooks cursor-task-model-pin-rewrite (preToolUse Task rewrite, fail-open) and cursor-subagent-model-allowlist (subagentStart) pin grok-4.7-xhigh.",
         "IDE model picker owns the parent chat model (Grok 4.5 High); repo sync does not write live state.vscdb."
       ]
     },
@@ -278,7 +278,7 @@
       ],
       "caveats": [
         "Cloud subagents can use project subagent files, but Cloud Agent MCP and secrets come from Cursor dashboard/team settings.",
-        "Repo overlay pins projected agents to cursor-grok-4.6-xhigh; Cloud dashboard may still override runtime model selection."
+        "Repo overlay pins projected agents to grok-4.7-xhigh; Cloud dashboard may still override runtime model selection."
       ]
     },
     {
@@ -325,7 +325,7 @@
       ],
       "caveats": [
         "ACP runs through the Cursor `agent acp` CLI path; this repo does not create editor, OAuth, or dashboard state.",
-        "ACP inherits Cursor CLI/agent model posture; keep exploreSubagentModel=inherit in local CLI config and pass cursor-grok-4.6-xhigh on Task launches."
+        "ACP inherits Cursor CLI/agent model posture; keep exploreSubagentModel=inherit in local CLI config and pass grok-4.7-xhigh on Task launches."
       ]
     },
     {

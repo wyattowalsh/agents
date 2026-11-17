@@ -112,12 +112,12 @@ def test_cursor_adapter_sync_home_writes_managed_agents_preserves_unmarked(
 
     user_agent = agents_dir / "my-custom.md"
     user_agent.write_text(
-        "---\nname: my-custom\ndescription: User owned.\nmodel: cursor-grok-4.6-xhigh\n---\n\nCustom.\n",
+        "---\nname: my-custom\ndescription: User owned.\nmodel: grok-4.7-xhigh\n---\n\nCustom.\n",
         encoding="utf-8",
     )
     stale_managed = agents_dir / "stale-managed.md"
     stale_managed.write_text(
-        "---\nname: stale-managed\ndescription: Old managed.\nmodel: cursor-grok-4.6-xhigh\n---\n\n"
+        "---\nname: stale-managed\ndescription: Old managed.\nmodel: grok-4.7-xhigh\n---\n\n"
         f"{cursor_platform.CURSOR_MANAGED_AGENT_MARKER}stale-managed.md -->\n\nGone.\n",
         encoding="utf-8",
     )
@@ -130,7 +130,7 @@ def test_cursor_adapter_sync_home_writes_managed_agents_preserves_unmarked(
         "_render_cursor_agents",
         lambda: {
             "planner.md": (
-                "---\nname: planner\ndescription: Plan.\nmodel: cursor-grok-4.6-xhigh\n"
+                "---\nname: planner\ndescription: Plan.\nmodel: grok-4.7-xhigh\n"
                 "readonly: true\n---\n\n"
                 f"{cursor_platform.CURSOR_MANAGED_AGENT_MARKER}planner.md -->\n\nPlan body.\n"
             )
@@ -146,7 +146,7 @@ def test_cursor_adapter_sync_home_writes_managed_agents_preserves_unmarked(
     managed = agents_dir / "planner.md"
     assert managed.is_file()
     assert cursor_platform.CURSOR_MANAGED_AGENT_MARKER in managed.read_text(encoding="utf-8")
-    assert "model: cursor-grok-4.6-xhigh" in managed.read_text(encoding="utf-8")
+    assert "model: grok-4.7-xhigh" in managed.read_text(encoding="utf-8")
     assert user_agent.is_file()
     assert user_agent.read_text(encoding="utf-8").startswith("---\nname: my-custom")
     assert not stale_managed.exists()

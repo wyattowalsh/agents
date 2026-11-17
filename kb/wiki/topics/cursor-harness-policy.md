@@ -16,7 +16,7 @@ source_count: 3
 
 ## Summary
 
-Cursor uses `AGENTS.md` as the home instruction bridge plus independent `.cursor/rules/*.mdc` scoped rules (not mirrored from Claude rules). Subagent names are projected via `config/cursor-agents.json` (20 agents, `model: cursor-grok-4.6-xhigh`). Always-on pin rule: `.cursor/rules/cursor-models.mdc` (quotes layer matrix SSOT). Home sync copies allowlisted rules to `~/.cursor/rules/` (preserve orphans) and managed-marker agents to `~/.cursor/agents/`. Model enforcement layers: soft rule (agents must not omit) + `cursor-task-model-pin-rewrite` (preToolUse Task rewrite, fail-open) + `cursor-subagent-model-allowlist` (subagentStart; omit allowed, deny explicit non-High). Operators SHOULD set user-owned `~/.cursor/cli-config.json` `exploreSubagentModel=inherit` and IDE picker to Grok 4.6 Extra High; sync SHALL NOT write `cli-config` or live `state.vscdb`. Fleet hooks run through `wagents-hook.py`.
+Cursor uses `AGENTS.md` as the home instruction bridge plus independent `.cursor/rules/*.mdc` scoped rules (not mirrored from Claude rules). Subagent names are projected via `config/cursor-agents.json` (20 agents, `model: grok-4.7-xhigh`). Always-on pin rule: `.cursor/rules/cursor-models.mdc` (quotes layer matrix SSOT). Home sync copies allowlisted rules to `~/.cursor/rules/` (preserve orphans) and managed-marker agents to `~/.cursor/agents/`. Model enforcement layers: soft rule (agents must not omit) + `cursor-task-model-pin-rewrite` (preToolUse Task rewrite, fail-open) + `cursor-subagent-model-allowlist` (subagentStart; omit allowed, deny explicit non-High). Operators SHOULD set user-owned `~/.cursor/cli-config.json` `exploreSubagentModel=inherit` and IDE picker to Grok 4.7 Extra High; sync SHALL NOT write `cli-config` or live `state.vscdb`. Fleet hooks run through `wagents-hook.py`.
 
 ## Layer matrix (SSOT)
 
@@ -35,7 +35,7 @@ Security Enforce guards stay **fail-closed** (RV-004). Pin hooks stay **fail-ope
 |---------|------|
 | `AGENTS.md` | Shared standards |
 | `.cursor/rules/*.mdc` | Path-conditional Cursor rules (incl. always-on `cursor-models.mdc`) |
-| `config/cursor-agents.json` | Subagent registry (20 agents, `cursor-grok-4.6-xhigh`) |
+| `config/cursor-agents.json` | Subagent registry (20 agents, `grok-4.7-xhigh`) |
 | `config/hook-registry.json` | Cursor hook IDs (`cursor-task-model-pin-rewrite`, `cursor-subagent-model-allowlist`, …) |
 | `~/.cursor/rules/` | Home allowlisted rule projection (orphans preserved) |
 | `~/.cursor/agents/` | Home managed-marker agent projection |
@@ -58,4 +58,4 @@ Multiple Cursor harness IDs in `harness-fixture-support.json` (`cursor-acp`, `cu
 |-------|--------|-------|
 | Registry + hooks | `kb/raw/captures/cursor-harness-policy-capture-w21.md` | Wave 21 |
 | External docs | `kb/raw/sources/cursor-docs-capture-w10.md` | Context only |
-| Grok 4.6 Extra High pin | `.cursor/rules/cursor-models.mdc`; `config/cursor-agents.json`; hook registry; hooks hub layer matrix | 2026-11-17 |
+| Grok 4.7 Extra High pin | `.cursor/rules/cursor-models.mdc`; `config/cursor-agents.json`; hook registry; hooks hub layer matrix | 2026-11-17 |

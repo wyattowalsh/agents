@@ -1,11 +1,11 @@
 ---
-description: Pin Task/subagent model launches to Cursor Grok 4.6 Extra High
+description: Pin Task/subagent model launches to Cursor Grok 4.7 Extra High
 alwaysApply: true
 ---
 
 # Cursor Model Pin
 
-When calling `Task` or launching subagents, **always** set `model` to `cursor-grok-4.6-xhigh`.
+When calling `Task` or launching subagents, **always** set `model` to `grok-4.7-xhigh`.
 
 Do **not**:
 
@@ -13,7 +13,7 @@ Do **not**:
 - Pass `inherit`, a retired Grok 4.5 slug, `composer-*`, Claude, GPT, Terra, or Sol slugs
 - Rely on Explore’s faster default — operators SHOULD set CLI `exploreSubagentModel: "inherit"` in user-owned `~/.cursor/cli-config.json` (sync SHALL NOT write `cli-config` or live `state.vscdb`)
 
-Custom agents under `.cursor/agents/` (and managed home agents) are pinned to `cursor-grok-4.6-xhigh`.
+Custom agents under `.cursor/agents/` (and managed home agents) are pinned to `grok-4.7-xhigh`.
 
 ## Layer matrix (SSOT)
 

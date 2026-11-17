@@ -32,7 +32,7 @@
             "type": "boolean"
           },
           "model": {
-            "const": "cursor-grok-4.6-xhigh"
+            "const": "grok-4.7-xhigh"
           },
           "is_background": {
             "type": "boolean"

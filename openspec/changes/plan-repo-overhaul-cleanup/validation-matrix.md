@@ -8,7 +8,7 @@ Landing **this plan** only requires the first row. Later rows are the gates for 
 | This plan | `git diff --check` | Exit 0 | No whitespace errors. |
 | Wave 0 pin | `rg -n "cursor-grok-4.5-high" --glob '!openspec/changes/archive/**' --glob '!planning/**'` | No matches in source, hooks, rules, or active spec | Archive and planning history may still mention 4.5. |
 | Wave 0 CLI | `uv run wagents --help` | Exit 0 and a `docs` command is listed | Fails today on `wagents.commands.plugin` and on `WEB_DIR` / `AUTHORING_SKILLS_DIR`. |
-| Wave 0 pin | Focused pytest for cursor pin / hook policy | Pass | Expected slug is `cursor-grok-4.6-xhigh`, matching the spec. |
+| Wave 0 pin | Focused pytest for cursor pin / hook policy | Pass | Expected slug is `grok-4.7-xhigh`. |
 | Wave 0 docs path | `rg -n 'DOCS_DIR / "lib"' wagents/docs.py` | No writer or staleness check still targets `docs/lib` for generated site modules | Astro imports `docs/src/generated-site-data.mjs`. |
 | Wave 0 junk | `git ls-files` | No path whose name starts with `warning:` | |
 | Wave 1 archive | `uv run wagents openspec validate` | Exit 0 after each archive batch | Spot-check one proposal claim before each archive. |

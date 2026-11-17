@@ -5,102 +5,102 @@
     {
       "name": "code-reviewer",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "docs-writer",
       "readonly": false,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "orchestrator",
       "readonly": false,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "performance-profiler",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "planner",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "release-manager",
       "readonly": false,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "researcher",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "security-auditor",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "agent-change-recorder",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "agent-eval-runner",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "agent-permission-simulator",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "agent-registry-publisher",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "agent-transpiler",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "bridge-consistency-checker",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "mcp-capability-mapper",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "mcp-template-maintainer",
       "readonly": false,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "permission-policy-auditor",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "prompt-optimizer",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "skill-author",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     },
     {
       "name": "triage-lead",
       "readonly": true,
-      "model": "cursor-grok-4.6-xhigh"
+      "model": "grok-4.7-xhigh"
     }
   ]
 }

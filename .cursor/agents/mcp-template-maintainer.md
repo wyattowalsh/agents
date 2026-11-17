@@ -2,7 +2,7 @@
 name: mcp-template-maintainer
 description: Maintain FastMCP v3 MCP scaffolds in mcp/; align templates with repo
   conventions.
-model: cursor-grok-4.6-xhigh
+model: grok-4.7-xhigh
 readonly: false
 ---
 

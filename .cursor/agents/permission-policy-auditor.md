@@ -2,7 +2,7 @@
 name: permission-policy-auditor
 description: Audit agent permissionMode, tool allowlists, and OpenCode permission
   overlays for least privilege.
-model: cursor-grok-4.6-xhigh
+model: grok-4.7-xhigh
 readonly: true
 ---
 

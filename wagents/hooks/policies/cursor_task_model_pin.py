@@ -1,4 +1,4 @@
-"""Pin Cursor Task / subagent launches to ``cursor-grok-4.6-xhigh``.
+"""Pin Cursor Task / subagent launches to ``grok-4.7-xhigh``.
 
 Phase A (``preToolUse`` / Task): rewrite ``model`` via ``updated_input`` (fail-open).
 Phase B (``subagentStart``): deny when an explicit model is outside the allowlist.
@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-CURSOR_PINNED_MODEL = "cursor-grok-4.6-xhigh"
+CURSOR_PINNED_MODEL = "grok-4.7-xhigh"
 CURSOR_MODEL_ALLOWLIST = frozenset({CURSOR_PINNED_MODEL})
 
 _TASK_TOOL_NAMES = frozenset({"task"})

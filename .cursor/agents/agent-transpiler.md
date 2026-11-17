@@ -2,7 +2,7 @@
 name: agent-transpiler
 description: Scaffold for transpiling portable agent frontmatter across harness projections
   (planned).
-model: cursor-grok-4.6-xhigh
+model: grok-4.7-xhigh
 readonly: true
 ---
 

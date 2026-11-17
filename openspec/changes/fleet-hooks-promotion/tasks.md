@@ -1,5 +1,7 @@
 # Tasks
 
+> Superseded. Leave these boxes unchecked. The committed tier is already `bundle`.
+
 Canonical task graph for Hooks Bundle Promotion v2. Format: `ID — lane — [P] — done_when`.
 
 ## W0 — OpenSpec scaffold (gate: `uv run wagents openspec validate`)
