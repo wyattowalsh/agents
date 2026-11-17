@@ -335,7 +335,7 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
 
     parts.append('<div class="hero-badge-row">')
     parts.append(
-        '  <a href="https://github.com/wyattowalsh/agents/stargazers">'
+        '  <a href="https://github.com/wyattowalsh/agents">'
         '<img src="https://img.shields.io/github/stars/wyattowalsh/agents?style=flat-square&label=stars&color=0f766e" '
         'alt="GitHub stars" /></a>'
     )
