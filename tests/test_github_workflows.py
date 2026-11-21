@@ -9,9 +9,20 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS_DIR = ROOT / ".github" / "workflows"
-WORKFLOW_FILES = ("ci.yml", "release-skills.yml")
+WORKFLOW_FILES = (
+    "ci.yml",
+    "dependency-review.yml",
+    "frontier-radar-deterministic.yml",
+    "ideas-quality-gates.yml",
+    "install-smoke-phase3.yml",
+    "maintenance-freshness.yml",
+    "release-skills.yml",
+    "reusable-validate.yml",
+)
+SETUP_UV_ACTION = ROOT / ".github" / "actions" / "setup-uv" / "action.yml"
 SHA_PIN_RE = re.compile(r"^[0-9a-f]{40}$")
-CHECKOUT_REF = "11bd71901bbe5b1635ceea3d9b4d4f8b53728782"
+CHECKOUT_REF = "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
+SETUP_UV_REF = "08807647e7069bb48b6ef5acd8ec9567f424441b"
 
 
 def _load_workflow(name: str) -> dict:
@@ -82,3 +93,14 @@ def test_checkout_actions_use_canonical_ref() -> None:
                 uses = step.get("uses", "")
                 ref = _action_ref(uses)
                 assert ref == CHECKOUT_REF, f"{name} job '{job_name}' uses non-canonical checkout ref '{ref}'"
+
+
+def test_setup_uv_action_uses_canonical_ref() -> None:
+    action = yaml.safe_load(SETUP_UV_ACTION.read_text(encoding="utf-8"))
+    assert isinstance(action, dict), "setup-uv action root must be a mapping"
+    steps = action.get("runs", {}).get("steps", [])
+    setup_steps = [step for step in steps if str(step.get("uses", "")).startswith("astral-sh/setup-uv@")]
+    assert len(setup_steps) == 1, "setup-uv composite must contain exactly one astral-sh/setup-uv step"
+    ref = _action_ref(setup_steps[0]["uses"])
+    assert SHA_PIN_RE.match(ref), f"setup-uv composite uses unpinned action ref '{ref}'"
+    assert ref == SETUP_UV_REF, f"setup-uv composite uses non-canonical ref '{ref}'"

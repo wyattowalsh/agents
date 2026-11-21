@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "timezone": "America/New_York",
+  "persistent_inbox": {
+    "kind": "github_issue",
+    "repository": "wyattowalsh/agents",
+    "issue_number": 5,
+    "append_only": true
+  },
+  "rollout": {
+    "shadow_mode_start": "2026-08-22",
+    "expanded_mode_start": "2026-08-30",
+    "shadow_tasks": [
+      "official-delta",
+      "weekly-synthesis",
+      "frontier-curator"
+    ]
+  },
+  "chatgpt_scheduled_tasks": [
+    {
+      "id": "official-delta",
+      "mode": "monitor",
+      "prompt": "prompts/frontier-radar/01-chatgpt-work-official-delta.md",
+      "schedule": "weekdays 07:45",
+      "start_on": "2026-08-24",
+      "handoff": "append material observations to GitHub issue #5 and retain exact source references"
+    },
+    {
+      "id": "ecosystem-delta",
+      "mode": "monitor",
+      "prompt": "prompts/frontier-radar/02-chatgpt-work-ecosystem-delta.md",
+      "schedule": "Tuesday and Thursday 12:15",
+      "start_on": "2026-09-01",
+      "handoff": "append material observations to GitHub issue #5 and retain exact source references"
+    },
+    {
+      "id": "paradigm-scout",
+      "mode": "recurring",
+      "prompt": "prompts/frontier-radar/03-chatgpt-work-paradigm-scout.md",
+      "schedule": "Wednesday 16:00",
+      "start_on": "2026-09-02",
+      "handoff": "append material observations to GitHub issue #5 and retain exact source references"
+    },
+    {
+      "id": "weekly-synthesis",
+      "mode": "recurring",
+      "prompt": "prompts/frontier-radar/04-chatgpt-work-weekly-synthesis.md",
+      "schedule": "Sunday 17:00",
+      "start_on": "2026-08-23",
+      "handoff": "append the ranked queue, missing-run warnings, and exact Deep Research packets to GitHub issue #5"
+    },
+    {
+      "id": "monthly-landscape",
+      "mode": "recurring",
+      "prompt": "prompts/frontier-radar/05-chatgpt-work-monthly-landscape.md",
+      "schedule": "first Saturday of each month 09:00",
+      "start_on": "2026-09-05",
+      "handoff": "append the landscape delta, source failures, and top Deep Research packets to GitHub issue #5"
+    },
+    {
+      "id": "quarterly-horizon",
+      "mode": "recurring",
+      "prompt": "prompts/frontier-radar/06-chatgpt-work-quarterly-horizon.md",
+      "schedule": "first Saturday of January, April, July, and October 10:00",
+      "start_on": "2026-10-03",
+      "handoff": "append the architecture thesis and OpenSpec research questions to GitHub issue #5"
+    }
+  ],
+  "codex_automations": [
+    {
+      "id": "frontier-curator",
+      "prompt": "prompts/frontier-radar/08-codex-curator.md",
+      "schedule": "daily 02:30",
+      "start_on": "2026-08-22",
+      "command_surface": "uv run wagents frontier",
+      "authority": "frontier artifacts, planning manifests, and policy-gated isolated OpenSpec drafts only"
+    },
+    {
+      "id": "freshness-policy-audit",
+      "prompt": "prompts/frontier-radar/09-codex-freshness-audit.md",
+      "schedule": "Sunday 20:30",
+      "start_on": "2026-08-30",
+      "command_surface": "uv run wagents frontier",
+      "authority": "read-only except frontier artifacts and planning manifests"
+    },
+    {
+      "id": "monthly-control-audit",
+      "prompt": "prompts/frontier-radar/10-codex-control-audit.md",
+      "schedule": "first Monday of each month 03:00",
+      "start_on": "2026-09-07",
+      "command_surface": "uv run wagents frontier",
+      "authority": "audit artifacts and OpenSpec issue drafts only"
+    }
+  ],
+  "human_gates": [
+    {
+      "id": "promoted-deep-research-review",
+      "schedule": "Sunday 18:00",
+      "start_on": "2026-08-23",
+      "purpose": "run maximum-depth Deep Research only for candidates promoted by weekly synthesis",
+      "reserve_fraction": 0.1,
+      "approval_scope": "research only"
+    }
+  ],
+  "github_actions": [
+    {
+      "id": "frontier-w0",
+      "workflow": ".github/workflows/frontier-radar-deterministic.yml",
+      "schedule": "daily 02:30",
+      "purpose": "execute the read-only deterministic W0 substrate and retain job evidence"
+    },
+    {
+      "id": "frontier-freshness-substrate",
+      "workflow": ".github/workflows/frontier-radar-deterministic.yml",
+      "schedule": "Sunday 20:30",
+      "purpose": "run repository validation, projection drift checks, and frontier verification when available"
+    },
+    {
+      "id": "frontier-control-substrate",
+      "workflow": ".github/workflows/frontier-radar-deterministic.yml",
+      "schedule": "first Monday of each month 03:00",
+      "purpose": "run deterministic control-plane tests and event-ledger verification when available"
+    }
+  ]
+}
