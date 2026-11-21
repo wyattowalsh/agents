@@ -1,74 +1,76 @@
 # Final Synthesis
 
-The final synthesis is not a summary and not a vote. It is a trajectory-aware
-account of what the panel learned, what remains unresolved, and what evidence
-would change the result.
+Synthesize what the completed discussion supports, how claims changed, and what
+remains unresolved. Do not use a vote, a polished closing statement, or agreement
+alone as the answer. Normal completion requires synthesis; an explicit stop or
+end-panel request overrides it. A request to synthesize now uses completed work
+without adding another phase.
 
-## Required Sections
+## Required Substance
 
-| Section | Requirement |
+Preserve these elements at every density, combining them into concise prose or
+a small table when separate headings would be excessive:
+
+| Element | Requirement |
 |---|---|
-| `Factual Claims` | List the factual claims that survived, with source IDs or uncertainty labels |
-| `Interpretive Disagreements` | Separate values, methods, definitions, and forecasts from factual disputes |
-| `Central Cruxes` | Name the assumptions that would change the disagreement if resolved |
-| `Evidence Gaps` | State what evidence is missing or thin |
-| `Position Map` | Map positions structurally, not as "A thinks X, B thinks Y" |
-| `Decision Implications` | If the user has a practical choice, show trade-offs and risk posture |
-| `What Would Change This` | Identify evidence, experiments, observations, or legal/policy changes |
-| `Model-Limit Caveat` | State that this is simulated deliberation, not human opinion or proof |
-| `Key Takeaways` | Give 3-5 concise takeaways |
-| `Further Reading` | Include only verified works or omit specific citations |
+| Supported conclusion | Answer the question directly, conditionally when needed; mark incomplete work |
+| Factual claims | Connect consequential factual claims to sources and claim-level support status |
+| Interpretive disagreements | Separate values, definitions, methods, and forecasts from factual disputes |
+| Central cruxes | Name the assumptions or claims whose resolution would change the answer |
+| Evidence gaps | Identify missing, thin, conflicting, stale, or unavailable support |
+| Position map and trajectory | Explain the structure of disagreement and material changes, including a surviving minority objection |
+| Decision implications | For a practical choice, compare options, trade-offs, constraints, and risk posture |
+| Change conditions | Identify the most informative evidence, observation, experiment, or expert input |
+| Model limits | State actual execution and that simulated agreement is neither human opinion nor proof |
 
-## Trajectory-Aware Synthesis
+Give a few clear takeaways when useful. Expanded output may separate all elements
+and include three to five takeaways; compact output may cover them in a short
+conclusion and its essential qualifications. Do not repeat a caveat already stated
+unless its omission would mislead about the final claim.
 
-Track how claims changed:
+## Trace Updates
 
-- Which claims became more precise?
-- Which claims lost support?
-- Which disagreements moved from factual to normative?
-- Which panelists updated because of evidence rather than pressure?
-- Which minority positions remain important?
+Identify claims that became more precise, lost support, or moved from factual to
+normative disagreement. Explain observable reasons for changes without inferring
+unseen social or psychological causes. Preserve important minority objections and
+state why they remain material or why evidence resolves them. Do not manufacture
+dissent when agreement withstands the convergence check.
 
-Do not use last-round agreement as the answer.
+For a changed premise, label the revised brief/branch and distinguish its result
+from the earlier conclusion. Retain unchanged evidence with its original dates;
+recheck affected or mutable claims. Do not silently rewrite the old positions.
 
-## Source-Aware Language
+## Evidence-Calibrated Language
 
-Use language that matches the source status:
+Use [research integrity](research-integrity.md) for claim-level status. `Verified`
+means inspected support at the stated scope, not an infallible result. Describe
+`thin` support as provisional, `supplied-unverified` assertions as supplied,
+`unverified-training-knowledge` as unverified, and `contested` claims with the
+actual conflict. Use a `mixed` aggregate when needed. Explicitly distinguish an
+inference from a source finding and a value choice from an empirical conclusion.
 
-| Source Status | Allowed Language |
-|---|---|
-| `verified` | "The available sources support..." |
-| `thin` | "The limited sources suggest..." |
-| `unverified-training-knowledge` | "A tradition-level account would frame this as..." |
+Avoid saying evidence proves something beyond its scope. Further reading must
+contain only verified works; omit specific citations that cannot be substantiated.
+An unavailable source is a limitation, not a license to invent a substitute.
 
-Avoid "the evidence proves" unless the source ledger is strong enough.
+## Practical Decisions and Follow-Ups
 
-## Decision Implications
+When a choice is at stake, state the available options, what each optimizes, its
+risks, the uncertainty that matters most, and the smallest informative next check.
+Keep this as analysis; a recommendation does not authorize external action.
 
-When the user is making a decision, include:
+Offer follow-ups only when useful or requested. Tie each to an actual crux, source
+gap, perspective, or implication. Expanded output may offer two or three concrete
+options, such as a sharper reframe, source check, scenario branch, or decision
+memo. Do not add a generic menu or routine closing question to a finished compact
+panel. Never add follow-up work after a stop request.
 
-1. The practical options surfaced by the panel.
-2. What each option optimizes for.
-3. What each option risks.
-4. Which uncertainty matters most.
-5. What small test, data point, or expert consultation would reduce risk.
+## Final Checks
 
-## Failure Checks
-
-Before finalizing, check:
-
-- Did the synthesis separate facts from interpretations?
-- Did it preserve uncertainty instead of smoothing it away?
-- Did it avoid fake consensus?
-- Did it avoid fake citations?
-- Did it name the model-limit caveat?
-- Did it say what would change the answer?
-
-## Follow-Up Options
-
-After synthesis, generate 3-4 numbered follow-up options.
-
-- Each option must reference a specific crux, source gap, panelist, or implication.
-- Do not use generic options like "ask more questions."
-- If the panel exposed a weak topic, offer sharper reframings.
-- If the panel was decision-critical, offer concrete next tests or decision memos.
+- Facts, inferences, assumptions, values, and forecasts remain distinguishable.
+- Sources support the claims attributed to them; shared lineage is not double-counted.
+- The final confidence does not exceed the evidence or the actual execution.
+- Material objections and missing/failed work remain visible.
+- The output explains what changed and what would change the conclusion next.
+- The stopping reason and available continuation state are clear when relevant.
+- No hidden chain of thought, invented participant, or unobserved action is presented.

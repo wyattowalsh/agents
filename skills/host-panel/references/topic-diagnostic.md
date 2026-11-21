@@ -1,68 +1,74 @@
 # Topic Diagnostic
 
-Run this before personas. The diagnostic decides whether to proceed, reframe,
-ask a clarifying question, or decline a false-balance panel.
+Diagnose the question before selecting perspectives. Use the relevant current
+conversation and explicit constraints; accept natural language without quotes,
+slash syntax, a shell, or an argument parser. Ask only when a missing distinction
+would materially change the panel. For bare invocation without usable context,
+give brief help and ask for the topic.
 
-## Outputs
+## Compact Topic Gate
 
-Return a compact `Topic Gate` before the panel:
+State the question or motion, its scope, the selected format, and any consequential
+premise correction. Add research and actual execution status. Combine these into
+ordinary prose when a separate diagnostic table would obscure the discussion.
 
-| Field | Required Value |
+| Field | Values or purpose |
 |---|---|
-| `topic_class` | `settled-factual`, `open-value`, `controversial-factual`, `speculative`, `thin-evidence`, `decision-critical`, or `casual-experiential` |
-| `action` | `proceed`, `reframe`, `clarify`, or `decline-false-balance` |
-| `format` | `roundtable`, `oxford`, or `socratic` |
-| `reason` | One sentence naming the decisive signal |
-| `research_status` | `verified`, `thin`, or `unverified-training-knowledge` |
+| Topic class | `settled-factual`, `open-value`, `controversial-factual`, `speculative`, `thin-evidence`, `decision-critical`, or `casual-experiential` |
+| Action | `proceed`, `reframe`, `clarify`, or `decline-false-balance` |
+| Format | `roundtable`, `oxford`, or `socratic` |
+| Rationale | The decisive signal, in one sentence |
+| Research status | Claim-level statuses and a `mixed` aggregate when support differs; see [research integrity](research-integrity.md) |
 
-## Classification Gate
+## Classification and Scope
 
-| Topic Class | Signal | Default Action | Format Bias |
-|---|---|---|---|
-| `settled-factual` | Mostly closed empirical question or consensus fact | Reframe or decline false-balance | Avoid Oxford |
-| `open-value` | Normative trade-off, priorities, rights, incentives, goals | Proceed | Roundtable or Oxford |
-| `controversial-factual` | Live empirical disagreement with real evidence on multiple sides | Proceed with source ledger | Roundtable or Oxford |
-| `speculative` | Future-facing, uncertain, scenario-like, theory-building | Proceed with uncertainty labels | Roundtable |
-| `thin-evidence` | Sparse, early, niche, or under-studied literature | Proceed only with explicit gaps | Socratic or roundtable |
-| `decision-critical` | User is making a practical choice with consequences | Proceed with decision implications | Roundtable |
-| `casual-experiential` | Lived, practical, or taste-heavy topic | Match register and avoid fake scholarship | Roundtable |
+| Topic class | Signal | Default handling |
+|---|---|---|
+| `settled-factual` | Mostly closed empirical question | Answer the fact or reframe toward live implications; do not stage denial as a credible side |
+| `open-value` | Priorities, rights, incentives, goals, or moral trade-offs | Proceed; identify values separately from empirical support |
+| `controversial-factual` | Credible sources support competing empirical accounts | Proceed with claim-level source support and disagreement |
+| `speculative` | Future scenarios or theory building | Proceed with explicit assumptions and uncertainty |
+| `thin-evidence` | Sparse, indirect, or early literature | Proceed only with visible gaps and bounded claims |
+| `decision-critical` | A practical choice with consequences | Preserve options, constraints, and decision implications |
+| `casual-experiential` | Taste, practical experience, or everyday choices | Match the register; do not invent scholarship or lived experience |
+
+Do not turn ordinary Q&A, code review, one-on-one conversation, or a request to
+measure real human opinion into a panel. Redirect to the appropriate interaction.
+An architecture or conceptual trade-off may qualify; reviewing code itself does
+not. A simulated panel cannot stand in for interviews, polling, or human research.
 
 ## Diagnostic Signals
 
-| Signal | Test | Action |
-|---|---|---|
-| Too broad | Topic can swallow many disciplines, timescales, or stakeholders | Ask for one concrete decision, population, or example |
-| Too narrow | Cannot support 2-6 distinct positions | Reduce panel size or broaden the question |
-| Loaded premise | User asks the panel to prove or validate a preferred answer | Challenge the premise before continuing |
-| False balance | One side is mostly misinformation or a closed factual dispute | Reframe around implementation, uncertainty, values, or boundaries |
-| Evidence asymmetry | One side has much stronger evidence, but values remain contested | Do not balance evidence; debate the values or trade-offs |
-| Currentness needed | Topic changes on days/months timescale | Use fresh sources or label unverified |
-| Cultural/normative scope | Topic depends on community, place, law, or tradition | Name the scope; do not universalize one context |
+| Signal | Response |
+|---|---|
+| Too broad | Use a scope already established in context; otherwise offer 2-3 concrete framings and ask the smallest necessary question |
+| Too narrow | Use fewer perspectives within 2-6, or answer directly if distinct methods add nothing |
+| Loaded premise | Separate the user's premise from supported facts; state a neutral question before proceeding |
+| False balance | Reframe around implementation, values, boundaries, or genuine uncertainty |
+| Evidence asymmetry | Preserve the asymmetry; differing values do not make factual support equal |
+| Currentness matters | Inspect fresh primary evidence when available; otherwise identify unsupported current claims |
+| Cultural or institutional scope | Name the relevant place, population, institution, or tradition; do not universalize one context |
 
-## Format Auto-Selection
+Do not require a confirmation merely because a useful, faithful neutral reframe
+was needed. Ask when the reframe would materially change the user's objective.
 
-| Topic Shape | Select | Rule |
-|---|---|---|
-| Binary, contestable proposition | `oxford` | Only if both sides can be argued without false balance |
-| Open exploration or policy trade-off | `roundtable` | Map perspectives and cruxes rather than choose a winner |
-| Definitional or conceptual dispute | `socratic` | Use questions to expose assumptions |
-| User omits format | inferred | State the choice in the `Topic Gate` |
+## Format and Count
 
-## Oxford Eligibility
+- Select **roundtable** for open exploration, multi-party trade-offs, or decisions.
+- Select **Oxford** for a genuinely contestable binary proposition.
+- Select **Socratic** for definitions, conceptual distinctions, or hidden assumptions.
+- Honor the requested format when legitimate; explain a necessary reframe briefly.
+- Default to four analytical perspectives. Support two through six; do not add
+  participants merely to fill a quota when fewer methods cover the question.
+- For an explicit invalid count or format, explain the supported range or formats
+  and resolve it without silently claiming to have honored the request.
 
-Use Oxford only when all are true:
+Oxford requires a clear motion, defensible arguments on both sides, and no
+settled-fact denial. Verify its factual premises; label its normative premises.
+Explain that assigned advocacy tests arguments and does not represent beliefs or
+a truth guarantee. If eligibility fails, use a legitimate roundtable or Socratic
+question instead.
 
-1. The motion can be phrased as a clear proposition.
-2. Both sides have defensible arguments under the source ledger.
-3. The opposition is not a settled-fact denial.
-4. The user understands that the output is a structured test of arguments, not a truth guarantee.
-
-If any test fails, reframe to roundtable or Socratic.
-
-## Reframe Rules
-
-- For settled factual topics, reframe toward "what follows?", "what should be done?", or "where are the live uncertainties?"
-- For too-broad topics, propose 2-3 narrower versions and wait.
-- For loaded premises, name the premise and offer a neutral question.
-- For thin-evidence topics, proceed only if the output labels evidence gaps and avoids specific citations unless verified.
-- For practical decisions, preserve the decision context and make trade-offs explicit in synthesis.
+Run the complete panel by default. Density controls presentation, not permission
+to skip synthesis or truthfulness. Use phase-by-phase interaction only when the
+user requests it. Honor the controls in [moderator rules](moderator-rules.md).

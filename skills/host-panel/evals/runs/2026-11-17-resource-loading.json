@@ -1,0 +1,133 @@
+{
+  "date": "2026-11-17",
+  "plugin_version": "0.1.0",
+  "skill_version": "1.1.0",
+  "source_commit": "daff0779fdc22101c802c3ad4a7364206169042c",
+  "observed_catalogs": [
+    "cloud",
+    "executor"
+  ],
+  "resource_reads": [
+    {
+      "reader": "cloud",
+      "path": "references/archetypes.md",
+      "bytes": 8017,
+      "sha256": "d8ab07f89cfde034c4bc4329885b3db7de0b1175b296409b0f9384095debfb67",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "cloud",
+      "path": "references/debate-research.md",
+      "bytes": 7828,
+      "sha256": "cb16a9802cba56ab8aafe5e969e31af5fbc10c71168acf473fca111d72615447",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "cloud",
+      "path": "references/formats.md",
+      "bytes": 6554,
+      "sha256": "197f5c7568bc8152192afefc989deb85714912165f498900f9ac49674d8f69e8",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "cloud",
+      "path": "references/moderator-rules.md",
+      "bytes": 5815,
+      "sha256": "24895c55b066a67dc83e251d3862682cf942fc66a02c543119e2b089d9c0b615",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "cloud",
+      "path": "references/research-integrity.md",
+      "bytes": 6236,
+      "sha256": "803ab35fa8a75f87201b5a65546f19c03a64378ba4942e0b9929c803611ffa1b",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "cloud",
+      "path": "references/synthesis.md",
+      "bytes": 4443,
+      "sha256": "c80bff02711e74a527b9fdae4f6630c149e0aa378ce2d430288023aec2c6231a",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "cloud",
+      "path": "references/topic-diagnostic.md",
+      "bytes": 4736,
+      "sha256": "f2ed6d713b2e584c0e3d1b377dd68702d1fe78d1f7d3d0d44719e94e814b5cae",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "executor",
+      "path": "references/archetypes.md",
+      "bytes": 8017,
+      "sha256": "d8ab07f89cfde034c4bc4329885b3db7de0b1175b296409b0f9384095debfb67",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "executor",
+      "path": "references/debate-research.md",
+      "bytes": 7828,
+      "sha256": "cb16a9802cba56ab8aafe5e969e31af5fbc10c71168acf473fca111d72615447",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "executor",
+      "path": "references/formats.md",
+      "bytes": 6554,
+      "sha256": "197f5c7568bc8152192afefc989deb85714912165f498900f9ac49674d8f69e8",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "executor",
+      "path": "references/moderator-rules.md",
+      "bytes": 5815,
+      "sha256": "24895c55b066a67dc83e251d3862682cf942fc66a02c543119e2b089d9c0b615",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "executor",
+      "path": "references/research-integrity.md",
+      "bytes": 6236,
+      "sha256": "803ab35fa8a75f87201b5a65546f19c03a64378ba4942e0b9929c803611ffa1b",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "executor",
+      "path": "references/synthesis.md",
+      "bytes": 4443,
+      "sha256": "c80bff02711e74a527b9fdae4f6630c149e0aa378ce2d430288023aec2c6231a",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "executor",
+      "path": "references/topic-diagnostic.md",
+      "bytes": 4736,
+      "sha256": "f2ed6d713b2e584c0e3d1b377dd68702d1fe78d1f7d3d0d44719e94e814b5cae",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "cloud",
+      "path": "SKILL.md",
+      "bytes": 13604,
+      "sha256": "14461afd1799b884e7cd6386c38076e67cf849bb2b2bc0252d23f2192266a4a5",
+      "matches_canonical_bytes": true
+    },
+    {
+      "reader": "executor",
+      "path": "SKILL.md",
+      "bytes": 13604,
+      "sha256": "14461afd1799b884e7cd6386c38076e67cf849bb2b2bc0252d23f2192266a4a5",
+      "matches_canonical_bytes": true
+    }
+  ],
+  "limitations": [
+    "Catalog discovery and resource loading were observed in this conversation runtime.",
+    "No claim of mobile picker UI, all product modes, or independent model execution follows from these observations.",
+    "The generic plugin search did not return this private plugin, while both skill catalogs did.",
+    "An older standalone host-panel skill also remains exposed; identify the plugin by its package provenance."
+  ],
+  "plugin_name": "host-panel",
+  "catalog_entry_name": "host-panel:host-panel",
+  "locator_policy": "Account-specific plugin identifiers and absolute executor locators are omitted from this public receipt. Each observation retains its reader, bundle-relative path, byte length, and canonical SHA-256."
+}

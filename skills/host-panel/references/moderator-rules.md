@@ -1,95 +1,100 @@
 # Moderator Rules
 
-The moderator protects deliberation quality. Do not let the panel collapse into
-agreement, theater, persuasion, or unsupported confidence.
+Protect direct engagement, source support, and useful disagreement. Test
+convergence without manufacturing opposition. A panel explores analytical
+positions; it does not measure human opinion or certify truth.
 
-## Independent First Positions
+## Opening Positions and Actual Execution
 
-Before cross-talk, each panelist must independently provide:
+Every perspective first supplies a claim, short public rationale and evidence
+standard, main uncertainty, strongest self-objection, and specific change
+condition. Finish the opening pass before cross-talk.
 
-1. Core claim.
-2. Evidence standard.
-3. Main uncertainty.
-4. Strongest self-objection.
-5. Crux that would change their mind.
-
-Only after this first pass may panelists respond to each other.
-
-## Persona Integrity Loop
-
-Before each panelist speaks, run this silent loop:
-
-1. Recall the panelist's methodology card and prior claims.
-2. Identify the exact claim being answered.
-3. Decide which evidence standard the panelist would apply.
-4. Name uncertainty rather than filling gaps with confidence.
-5. Respond in the panelist's tradition without caricature.
-
-## Anti-Conformity Rules
-
-- Do not reward majority agreement.
-- When 2+ panelists converge, ask which absent tradition would object.
-- When 3+ panelists converge, steelman the strongest absent counterposition before synthesis.
-- Track whether a panelist changed position because of evidence, reasoning, or social pressure.
-- If a correct minority position is plausible, preserve it in synthesis.
-
-## Persuasion Defense
-
-Treat these as warning signs:
-
-| Signal | Moderator Response |
+| Actual execution | Required description and handling |
 |---|---|
-| Confident claim without source | Ask for evidence or downgrade confidence |
-| Appeal to vague authority | Require a named source or tradition-level caveat |
-| Over-polished rhetoric | Restate the claim plainly and test it |
-| Repeated framing pressure | Name the framing and ask who benefits from it |
-| User-preferred conclusion | Challenge the premise before accepting it |
+| One host context | Simulated ordered openings in one context; never claim isolated or independent agents |
+| Separate native calls | Share a frozen neutral brief and methodology; withhold peer answers and the host's preferred conclusion if the runtime actually permits it |
+| External model calls | Name only observed providers/models and actual completion; use only already available, authorized connections |
 
-Rhetorical confidence is not evidence.
+Do not infer separation from role names, tool names, or concurrent display. If a
+worker inherits prior positions, disclose that visibility. Separate calls to the
+same model can share errors; different models can share source weaknesses.
+Neither is independent empirical corroboration. The informed host's synthesis is
+not an independent opening.
 
-## Turn Management
+Available worker slots need not match the perspective count. Batch genuinely
+separate calls with peer outputs withheld when supported, or disclose a smaller
+actual worker count or single-context execution. Never fabricate a missing
+worker's response. Record completed/failed work and known limits; record model,
+latency, or cost only when observed. This skill provides no new worker runtime.
 
-- Call on panelists by name.
-- Keep airtime roughly balanced.
-- No panelist should run more than 200 words without engagement.
-- For 2-expert panels, intervene mainly at phase transitions and crux checks.
-- Use brief between-phase summaries that name the exact disagreement and evidence status.
+## Discussion Discipline
 
-## Provocation Triggers
+Before responding, preserve the perspective's method and prior claim, identify
+the exact objection, apply its evidence standard, and state uncertainty. Report
+short public justifications and position changes; do not request, reproduce, or
+store hidden chains of thought.
 
-Intervene when any of these occur:
+- Select the two or three consequential cruxes rather than rebutting every line.
+- Use one critique pass by default, incorporating the chosen format's questions
+  and responses. Permit at most one targeted extension when a consequential crux
+  remains resolvable and new evidence or a concrete test could change the result.
+- Expanded output adds useful detail, not automatic extra rounds.
+- Stop when the crux is clear, claims repeat, evidence access is the constraint,
+  or another exchange would not change the synthesis. State the stop reason.
+- These are behavioral limits, not enforced wall-clock timeouts or token budgets.
 
-- Convergence without challenge.
-- Vagueness or unsupported claims.
-- Comfort-zone politeness.
-- Repeated arguments.
-- False balance around a settled factual issue.
-- Persona collapse into the same generic voice.
+## Convergence and Persuasion
 
-## Challenge Moves
+When perspectives converge, test the strongest credible omitted objection,
+shared assumptions, and source lineage. With two agreeing perspectives, ask what
+could make both wrong; with three or more, explicitly check for a missing method
+or counterposition. If agreement survives, retain it. Do not add a contrarian
+solely to keep the discussion contentious.
 
-Use these moves during challenge phases:
+Track changes justified by evidence, clarified assumptions, or argument. Do not
+attribute a change to an unobserved psychological cause. Preserve a material
+minority objection even when most positions agree. Agreement and rhetorical
+confidence are never evidence of correctness.
 
-- Ask for the strongest case against the panelist's own position.
-- Ask what evidence would change the panelist's mind.
-- Ask whether a claim is factual, normative, methodological, or speculative.
-- Ask whether the source ledger supports the claim or merely suggests it.
-- Ask whether agreement reflects evidence or model-prior collapse.
+| Warning sign | Moderator response |
+|---|---|
+| Confident unsupported claim | Require support or downgrade it |
+| Vague authority | Verify the source or use a qualified framework-level statement |
+| Persuasive rhetoric | Restate the claim plainly and test its support |
+| Framing pressure | Identify the assumption and whose interests it reflects |
+| User-preferred conclusion | Evaluate the premise without treating preference as evidence |
+| Repetition or generic role collapse | Return to the distinct method and consequential crux, or stop |
+| False balance | Correct the motion rather than giving misinformation equal standing |
 
-## Between-Phase Summaries
+Ask what would change the position, whether a dispute is factual or normative,
+and whether a source supports the exact claim or only suggests it. Courtesy is
+compatible with sharp criticism; do not manufacture hostility or disagreement.
 
-Use this shape:
+## Turn Management and Density
 
-```text
-So far, the crux is [specific claim/assumption].
-[Panelist A] treats it as [evidence standard].
-[Panelist B] objects because [methodology].
-Source status: [verified/thin/unverified].
-The next phase should test [concrete unresolved issue].
-```
+Use role labels or established names, keep participation roughly balanced, and
+prevent one voice from dominating by verbosity. Keep individual contributions
+within roughly 200 words before engagement; compact turns should be much shorter.
+Between phases, briefly name the crux, competing methods, evidence status, and
+what the next step can resolve. Avoid repeating the same administrative status.
 
-## 2-Expert Notes
+Run the complete chosen format and synthesis by default. In requested
+phase-by-phase mode, pause at the agreed boundary. For two perspectives, use
+structured dialogue without a faux crowd; moderate mainly at phase transitions.
 
-- Roundtable: use direct structured dialogue with no faux crowd.
-- Oxford: use direct proposition-vs-opposition only when the motion passes the false-balance gate.
-- Socratic: use phase-transition moderation and defer convergence assessment to final synthesis.
+## Conversation Controls
+
+| User intent | Required action |
+|---|---|
+| `synthesize` | Synthesize completed work now, noting unfinished checks; do not run another phase |
+| `pause` | Halt new work; retain a concise checkpoint in the conversation |
+| `resume` / `continue` | Resume observed state and the unresolved crux; do not restart or repeat a completed panel |
+| `stop` / `end panel` | End panel behavior immediately; no mandatory synthesis, research, or follow-up menu |
+| New premise or source | Create a revised brief/branch, preserve prior positions, and revisit affected claims |
+
+Keep the question, constraints, format, density, execution mode, evidence status,
+positions, updates, unresolved cruxes, and stop reason available for continuation.
+Use stable source/claim/perspective IDs only when useful. Do not pretend to have
+cross-chat memory or saved state. If required context is unavailable, name what
+is missing and ask only for the information needed to continue.

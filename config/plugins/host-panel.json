@@ -1,0 +1,22 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "host-panel",
+  "description": "Host research-grounded panels in ChatGPT Chat and compatible skill-capable modes, with honest execution labels and evidence-aware synthesis.",
+  "author": {
+    "name": "Wyatt Walsh"
+  },
+  "license": "MIT",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Host Panel",
+        "shortDescription": "Research-grounded panels",
+        "longDescription": "Host research-grounded roundtable, Oxford, and Socratic panels with explicit evidence limits, competing perspectives, and practical synthesis.",
+        "developerName": "Wyatt Walsh",
+        "category": "Productivity",
+        "capabilities": [],
+        "defaultPrompt": "Host a researched panel on the question or proposal in this conversation."
+      }
+    }
+  }
+}

@@ -1,63 +1,85 @@
 # Debate Research
 
-Use this file as the authority layer for panel mechanics. The panel is a
-deliberation protocol inspired by multi-agent debate research; it is not proof
-that the final synthesis is true and not evidence of real human group behavior.
+Use this as evidence and provenance for design choices, not as a truth guarantee
+or evidence that a synthetic panel behaves like a human group. The current
+research entries below were checked against their primary publication records on
+2026-11-17. This is a focused update, not a systematic review. Recheck a source
+before attributing additional or current claims to it in a user's panel.
 
-## Research-to-Rule Matrix
+## Current Research-to-Rule Mapping
 
-| Finding | Design Rule | Failure Prevented | Source |
-|---|---|---|---|
-| Multi-agent debate can improve factuality and reasoning when agents critique across rounds. | Require independent first positions, then bounded critique rounds. | One model's first answer dominating the panel. | Du et al., 2023, "Improving Factuality and Reasoning in Language Models through Multiagent Debate", https://arxiv.org/abs/2305.14325 |
-| Debate can encourage divergent thinking compared with self-reflection, but needs controlled adversarial tension. | Use challenge rounds and adaptive stopping; do not run endless debate. | Repetitive self-reflection and theatrical disagreement. | Liang et al., 2024, "Encouraging Divergent Thinking in Large Language Models through Multi-Agent Debate", https://aclanthology.org/2024.emnlp-main.992/ |
-| Self-correction and debate do not guarantee better answers under equal budgets. | Never claim that a panel improves truth by default; label it as exploratory synthesis. | Overclaiming panel reliability. | Huang et al., 2024, "Large Language Models Cannot Self-Correct Reasoning Yet", https://openreview.net/pdf?id=IkmD3fKBPQ |
-| Majority voting and last-round consensus can propagate errors. | Synthesize by trajectory, cruxes, and evidence, not by majority vote. | False consensus and conformity bias. | Free-MAD, 2025/2026, "Consensus-Free Multi-Agent Debate", https://arxiv.org/abs/2509.11035 |
-| Adaptive stability can stop judge debates before wasteful rounds. | Stop when cruxes stabilize, evidence runs out, or positions repeat. | Token-heavy circular panels. | Hu et al., 2025, "Multi-Agent Debate for LLM Judges with Adaptive Stability Detection", https://openreview.net/forum?id=Vusd1Hw2D9 |
-| Persuasive adversarial agents can lower accuracy and increase incorrect consensus. | Treat rhetorical confidence as non-evidence and test persuasive claims. | Confident falsehood steering the panel. | Kraidia et al., 2026, "When collaboration fails", https://www.nature.com/articles/s41598-026-42705-7 |
-| Strong long-form synthesis starts with perspective discovery and source-grounded questioning. | Map sources, traditions, and questions before persona creation. | Persona-first hallucination and shallow synthesis. | Shao et al., 2024, STORM, https://aclanthology.org/2024.naacl-long.347/ |
-| Multi-agent evaluators depend on defined roles and structured discussion. | Give each panelist a role, evidence standard, critique duty, and crux. | Vague "expert" labels with no functional difference. | Chan et al., 2023, ChatEval, https://arxiv.org/abs/2308.07201 |
-| Role-playing quality requires explicit role profiles and evaluation dimensions. | Use methodology cards instead of theatrical biographies. | Vivid but unreliable personas. | RoleLLM, https://arxiv.org/abs/2310.00746; CharacterEval, https://arxiv.org/abs/2401.01275; RPLA Survey, https://arxiv.org/abs/2404.18231 |
-| User framing can induce agreement-seeking behavior. | Challenge loaded premises and preferred answers before staging a panel. | Sycophancy toward the user's view. | Anthropic, "Towards Understanding Sycophancy in Language Models", https://www.anthropic.com/research/towards-understanding-sycophancy-in-language-models |
-| Debate is a scalable oversight idea, not a free-standing truth oracle. | Include a model-limit caveat and explain what evidence would change the answer. | Treating debate as authority. | Irving et al., 2018, "AI Safety via Debate", https://arxiv.org/abs/1805.00899 |
+| Evidence and scope | Design implication | What it does not establish |
+|---|---|---|
+| **Debate or Vote**, NeurIPS 2025, separates voting from inter-agent discussion. Across its seven benchmarks, voting accounts for most reported gains; targeted interventions can improve debate. | Retain opening answers and compare a full panel against a strong sourced answer and separate answers with direct synthesis. Spend critique on consequential errors or gaps. | Its stochastic model is assumption-dependent; it does not prove debate never helps, or justify majority voting on open value questions. |
+| **A Diagnostic Study of Multi-Agent LLMs for Real-World Debates**, ICML 2026, studies engagement, responsiveness, influence asymmetry, balance, stability, and utility. Its process diagnostics align more closely with human judgments in the studied settings than outcome-only proxies. | Check whether objections receive answers, one voice dominates, and updates have identifiable reasons. Track the process alongside the final conclusion. | A good diagnostic score is not a correctness certificate, and this skill has not reproduced the study. |
+| **DEBATE**, arXiv v7, 2026-10-19, compares role-playing LLM groups with human discussions and reports stronger convergence in zero-shot simulated groups. The record states acceptance at NeurIPS 2026 Evaluations and Datasets. | Label analytical perspectives accurately, test convergence, and never treat their agreement as a poll or prediction of human group opinion. | Simulated personas are not validated digital substitutes for people or communities. |
+| **CONSENSAGENT**, Findings of ACL 2025, evaluates sycophancy across six reasoning datasets and three models, and reports gains from dynamically refining prompts based on interactions. | Address reinforcement without engagement, ambiguity, and stagnation with specific challenge and stopping rules. | A generic instruction to be critical does not reproduce its optimization method or reported results. |
 
-## Mechanics Derived From Research
+### Verified Publication Records
 
-Apply these mechanics in every substantive panel:
+1. Choi, Hyeong Kyu; Zhu, Xiaojin; Li, Sharon. [Debate or Vote: Which Yields Better Decisions in Multi-Agent Large Language Models?](https://proceedings.nips.cc/paper_files/paper/2025/hash/934252acd87f254d5d4672fbde283bd2-Abstract-Conference.html). NeurIPS 2025.
+2. Pitre, Priya; Srivastava, Gaurav; Zhang, Lu; Wang, Le; Ramakrishnan, Naren; Wang, Xuan. [A Diagnostic Study of Multi-Agent LLMs for Real-World Debates](https://proceedings.mlr.press/v306/pitre26a.html). ICML 2026, PMLR 306:99003-99017.
+3. Chuang, Yun-Shiuan, et al. [DEBATE: A Large-Scale Benchmark for Evaluating Opinion Dynamics in Role-Playing LLM Agents](https://arxiv.org/abs/2510.25110v7). Version 7, October 19, 2026; use this version when referring to this mapping.
+4. Pitre, Priya; Ramakrishnan, Naren; Wang, Xuan. [CONSENSAGENT: Towards Efficient and Effective Consensus in Multi-Agent LLM Interactions Through Sycophancy Mitigation](https://aclanthology.org/2025.findings-acl.1141/). Findings of ACL 2025, pages 22112-22133.
 
-1. **Independent first positions.** Each panelist states a claim, evidence standard, uncertainty, and self-objection before reading other panelists.
-2. **Bounded critique.** Run only enough cross-talk to expose cruxes. Stop when positions repeat, evidence is exhausted, or the synthesis target is clear.
-3. **Anti-conformity.** Do not summarize agreement as correctness. When 2+ panelists converge, ask what would make that convergence wrong.
-4. **Trajectory synthesis.** Track how claims changed across phases; do not use last-round majority vote.
-5. **Evidence weighting.** Source-backed claims outrank fluent claims, even when the fluent claim sounds more expert.
-6. **Premise challenge.** Treat the user's framing as a hypothesis, not a command to validate.
-7. **Role reliability.** A panelist is defined by methodology, evidence standard, and crux, not by a colorful biography.
+## Operational Rules Informed by the Evidence
 
-## Limits to State Explicitly
+1. **Research before roster.** Map the question, sources, uncertainty, and missing
+   methods before constructing analytical perspectives.
+2. **Truthful openings.** In one context, use simulated ordered openings. Claim
+   separate first passes only when the runtime actually withheld peer answers;
+   keep the moderator's preferred conclusion out of the frozen input packet.
+3. **Bounded critique.** Use one critique pass by default. Allow at most one
+   targeted extension for a consequential, resolvable crux; stop when support is
+   exhausted, positions repeat, or the useful synthesis is clear.
+4. **Test convergence.** Check omitted objections and common assumptions. Retain
+   supported agreement; do not force disagreement or reward majority pressure.
+5. **Track trajectory.** Explain which claim changed, what evidence or argument
+   changed it, and which minority objection still matters.
+6. **Weight support.** Specific source support and sound argument outrank fluent
+   rhetoric. Citation counts, self-reported confidence, and votes are not truth.
+7. **Challenge framing.** Treat a preferred conclusion as a premise to examine,
+   without gratuitously opposing the user.
+8. **Use methods, not characters.** Specify inquiry, evidence standard,
+   self-objection, and disconfirmation; do not preassign a likely conclusion.
 
-- The panel simulates intellectual positions, not real people.
-- The panel is not a poll, forecast, or empirical social simulation.
-- The panel can expose cruxes and uncertainty; it cannot create missing evidence.
-- More panelists or rounds do not automatically improve reliability.
-- A persuasive panelist can be wrong; rhetoric is never evidence.
+Four perspectives, the two-to-six range, one critique pass, and three output
+sizes are product defaults. The literature does not establish their universal
+optimality. Distinguish implemented behavior, design judgment, and measured
+results. Do not claim a quality improvement until a relevant comparison supports
+it at a disclosed budget.
 
-## Application Checklist
+## Earlier Design Provenance
 
-Before running the discussion, confirm:
+The earlier skill cited the following work for debate, source discovery,
+self-correction, role definition, persuasion, sycophancy, and oversight. Preserve
+these links as provenance. They were not all reverified in this focused refresh;
+verify the exact record, version, and claim before using one as active evidence.
+The current operating safeguards remain binding without assuming these works
+prove that a particular prompting recipe works.
 
-1. The topic gate did not classify the prompt as false balance.
-2. The source ledger is strong enough for any named works.
-3. Panelists have distinct methods, not merely distinct labels.
-4. Initial positions are written before cross-talk.
-5. The moderator has a planned convergence challenge.
-6. The final synthesis will track trajectory, not majority vote.
+- Multi-round debate: [Improving Factuality and Reasoning in Language Models through Multiagent Debate](https://arxiv.org/abs/2305.14325).
+- Divergent thinking: [Encouraging Divergent Thinking in Large Language Models through Multi-Agent Debate](https://aclanthology.org/2024.emnlp-main.992/).
+- Self-correction limits: [Large Language Models Cannot Self-Correct Reasoning Yet](https://openreview.net/pdf?id=IkmD3fKBPQ).
+- Consensus-free methods: [Free-MAD](https://arxiv.org/abs/2509.11035).
+- Stopping methods: [Multi-Agent Debate for LLM Judges with Adaptive Stability Detection](https://openreview.net/forum?id=Vusd1Hw2D9).
+- Persuasion failure: [When collaboration fails](https://www.nature.com/articles/s41598-026-42705-7).
+- Perspective discovery and source-grounded synthesis: [STORM](https://aclanthology.org/2024.naacl-long.347/).
+- Defined evaluator roles: [ChatEval](https://arxiv.org/abs/2308.07201).
+- Role-play evaluation: [RoleLLM](https://arxiv.org/abs/2310.00746), [CharacterEval](https://arxiv.org/abs/2401.01275), and the [RPLA survey](https://arxiv.org/abs/2404.18231).
+- User-framing effects: [Towards Understanding Sycophancy in Language Models](https://www.anthropic.com/research/towards-understanding-sycophancy-in-language-models).
+- Oversight foundations: [AI Safety via Debate](https://arxiv.org/abs/1805.00899).
 
-## Do Not Infer
+## Limits and Application Check
 
-Do not infer these from the research:
+The panel can expose cruxes and missing evidence; it cannot create that evidence.
+More participants or rounds do not automatically improve reliability. Retrieval
+does not itself prevent persuasive falsehood, source misuse, or prompt injection.
+A user-requested motion still needs the topic and false-balance gates.
 
-- That multi-agent debate always improves truth.
-- That more agents are always better.
-- That a confident agent is more reliable.
-- That synthetic panel behavior predicts human group behavior.
-- That retrieved text automatically protects against persuasion attacks.
-- That a debate motion is valid merely because the user requested it.
+Before running, check legitimate framing, adequate support for named works,
+distinct methods, truthful opening provenance, a useful convergence check, and
+trajectory-aware synthesis. Preserve uncertainty and substantive objections.
+Neither a persuasive speaker, a last-round majority, nor a polished synthesis is
+a substitute for external evidence. Never infer real human opinion, calibrated
+forecasting ability, or a benchmark pass from the panel alone.
