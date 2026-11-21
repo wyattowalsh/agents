@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wyattowalsh.github.io/agents/files-buddy/plan.schema.json",
+  "title": "Files Buddy exact local plan v2",
+  "description": "Structural contract. Runtime additionally checks canonical paths, scope, identity, duplicate/cyclic mappings, digest and fresh filesystem evidence. This document never grants permission.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_version",
+    "plan_id",
+    "created_at",
+    "intent",
+    "source_roots",
+    "destination_roots",
+    "local_only_attested",
+    "hash_algorithm",
+    "failure_policy",
+    "operations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "2.0"
+    },
+    "policy_version": {
+      "const": "local-regular-v1"
+    },
+    "plan_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,79}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "intent": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_roots": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1000,
+      "items": {
+        "$ref": "#/$defs/root"
+      }
+    },
+    "destination_roots": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1000,
+      "items": {
+        "$ref": "#/$defs/root"
+      }
+    },
+    "local_only_attested": {
+      "const": true
+    },
+    "hash_algorithm": {
+      "const": "sha256"
+    },
+    "failure_policy": {
+      "const": "stop"
+    },
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1000,
+      "items": {
+        "$ref": "#/$defs/operation"
+      }
+    }
+  },
+  "$defs": {
+    "root": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "device",
+        "inode",
+        "provider"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^/",
+          "minLength": 1
+        },
+        "device": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inode": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "provider": {
+          "const": "local-declared"
+        }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "device",
+        "inode"
+      ],
+      "properties": {
+        "device": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inode": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "device",
+        "inode",
+        "size_bytes",
+        "mode",
+        "uid",
+        "gid",
+        "nlink",
+        "mtime_ns",
+        "ctime_ns",
+        "sha256"
+      ],
+      "properties": {
+        "kind": {
+          "const": "regular"
+        },
+        "device": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inode": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mode": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "uid": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "gid": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nlink": {
+          "const": 1
+        },
+        "mtime_ns": {
+          "type": "integer"
+        },
+        "ctime_ns": {
+          "type": "integer"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id",
+        "type",
+        "source",
+        "destination",
+        "before",
+        "source_parent",
+        "destination_parent",
+        "recovery"
+      ],
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{0,79}$"
+        },
+        "type": {
+          "enum": [
+            "copy",
+            "move",
+            "rename"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "pattern": "^/",
+          "minLength": 1
+        },
+        "destination": {
+          "type": "string",
+          "pattern": "^/",
+          "minLength": 1
+        },
+        "before": {
+          "$ref": "#/$defs/snapshot"
+        },
+        "source_parent": {
+          "$ref": "#/$defs/identity"
+        },
+        "destination_parent": {
+          "$ref": "#/$defs/identity"
+        },
+        "recovery": {
+          "enum": [
+            "quarantine-copy",
+            "reverse-move"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "copy"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "recovery": {
+                "const": "quarantine-copy"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "recovery": {
+                "const": "reverse-move"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

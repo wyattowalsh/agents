@@ -1,66 +1,72 @@
 # Offload Recommendations
 
-Offload planning frees local Mac storage while keeping data recoverable elsewhere.
-Offload is not deletion. Any action that removes the only copy is cleanup/archive, not offload.
+## Contents
 
-## Scoring Model
+1. Eligibility and ranking
+2. Provider handling
+3. Recommendation fields
+4. Stop conditions
 
-Score each candidate 0-5 for:
+## Eligibility and Ranking
 
-| Factor | Higher score means |
-|--------|--------------------|
-| Local bytes saved | More local disk reclaimed |
-| Coldness | Older and less accessed |
-| Regeneration cost | Lower re-download/rebuild burden |
-| Cloud quota fit | Enough remote quota and no duplicate billing surprise |
-| Importance risk | Less likely to be critical or app-managed |
-| Restore friction | Easy to re-download/materialize/mount |
-| Verification confidence | Provider state and checks are machine-readable |
+Plan local storage release while preserving a verified recoverable copy. Evaluate
+eligibility before ranking bytes. Exclude app-managed packages, active projects,
+unsynced content, unknown owners, unsupported provider state, and unique data
+without independent recovery evidence.
 
-Recommend offload only when local savings are meaningful and restore confidence is medium or high.
+Rank eligible candidates by evidenced allocated storage, user-selected coldness,
+restore friction, remote quota, and offline requirements. Do not manufacture
+0–5 importance scores or rebuild/download times from filenames. Unknown quota,
+allocated size, or ownership remains unknown and produces a review recommendation.
 
 ## Provider Handling
 
-### iCloud Drive
+| Provider/workflow | Evidence needed | Action boundary |
+| --- | --- | --- |
+| iCloud Drive | Provider state for the exact file, uploaded content, local residency, offline needs | Review Finder Remove Download; no generic CLI eviction |
+| Google Drive Stream | Confirmed Stream setting, object identity, upload and residency state | Provider-native local release after approval |
+| Google Drive Mirror | Confirmed Mirror setting and intended local retention | Explain settings/native workflow; do not delete mirrored paths to offload |
+| rclone copy | Explicit remote, object mapping, supported hashes, transfer/restore evidence | Copy and verify separately from any later local source release |
+| Backup destination | Existing configured destination, successful backup and restore drill | Recovery evidence; backup creation alone does not authorize source release |
 
-- Detect `~/Library/Mobile Documents/com~apple~CloudDocs`.
-- Use `brctl status` and `fileproviderctl` where available; commands are macOS-version sensitive.
-- `brctl evict <path>` or `fileproviderctl evict <path>` frees local bytes only when the file is fully synced.
-- Never evict files with unsynced changes, package bundles, or app libraries without explicit path-level approval.
+Inspect `references/cloud-drives.md` for namespace effects. A move out of a synced
+root can propagate deletion; local staging does not make it safe. Copying or
+hashing a placeholder can download it. Report the expected hydration and space
+cost before requesting content-read approval.
 
-### Google Drive Desktop
+## Recommendation Fields
 
-- Detect `~/Library/CloudStorage/GoogleDrive-*`.
-- Distinguish **Stream files** (on-demand, local bytes can be freed) from **Mirror files** (full local copy by design).
-- Use Drive UI/provider state for final action when CLI state is ambiguous.
-- Google Drive allows duplicate names; use `rclone dedupe --dry-run` only for duplicate-name review.
-
-### rclone Remotes
-
-- Use `rclone lsjson remote:path --recursive --hash` for inventory.
-- Use `rclone copy --dry-run`, `rclone check`, and then approved copy/move flows.
-- Prefer copy + verify + local trash staging over direct move for important data.
-
-## Required Output
+Use the report contract's canonical `local_bytes` and `cloud_bytes`
+fields in recommendation rows. `local_bytes` is the candidate estimate, never
+verified reclaimed space. Use null for unknowns; include evidence and limits.
 
 ```json
 {
-  "action": "offload",
-  "provider": "icloud|gdrive|rclone:<remote>",
-  "path": "/absolute/path",
-  "local_bytes_saved": 123,
-  "cloud_bytes_added": 0,
-  "prerequisites": ["provider reports synced"],
-  "verification": ["brctl status shows no pending upload"],
-  "repercussions": ["first open will re-download the file"],
-  "restore_path": "open file or fileproviderctl materialize <path>",
-  "approval_tier": "High"
+  "action": "review",
+  "provider": "icloud",
+  "path": "~/Documents/example.dat",
+  "local_bytes": null,
+  "cloud_bytes": null,
+  "risk": "Unknown",
+  "prerequisites": ["Confirm exact object upload and residency state"],
+  "verification": ["Provider-native per-object evidence required"],
+  "repercussions": ["Later access may require download; offline access changes"],
+  "restore_path": null,
+  "recovery_class": "unknown"
 }
 ```
 
-## Hard Stops
+Only a supported, verified operation supplies completed/verified metrics. A
+provider's displayed logical file size is not automatically reclaimable space.
 
-- Provider reports unsynced files.
-- User wants deletion from cloud rather than local eviction but asks for offload.
-- Offload target is app-managed or a package bundle with unclear provider behavior.
-- Local disk lacks space to materialize files required for verification.
+## Stop Conditions
+
+Stop at review/native handoff when upload state, provider semantics, quota,
+materialization, exact remote identity, or restore capability is unknown.
+Size-only `rclone check` success is not content equality. A synced remote is not
+necessarily an independent backup. Preserve sources until the user separately
+approves a qualified source-release plan with recovery evidence.
+
+Sources: [Apple iCloud management](https://support.apple.com/en-ie/guide/mac-help/mchl1a02d711/27/mac/27),
+[Google Drive modes](https://support.google.com/drive/answer/13401938?hl=en),
+[rclone verification](https://rclone.org/commands/rclone_check/).

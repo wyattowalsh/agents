@@ -1,0 +1,47 @@
+[project]
+name = "files-buddy"
+version = "2.0.0"
+description = "Portable, evidence-bound storage audit and file operation helpers"
+requires-python = ">=3.13"
+license = "MIT"
+dependencies = [
+    "pyyaml>=6.0.3,<7",
+]
+
+[tool.uv]
+package = false
+
+# This portable skill is independently installable outside the asset repository.
+[tool.uv.workspace]
+members = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 120
+exclude = ["scripts/asset_toolkit"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "C4", "RUF", "TC", "PT", "RET"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "PT004", "PT007", "FBT", "RUF069"]
+"scripts/**" = ["E402", "E501"]
+
+[tool.ty.environment]
+python-version = "3.13"
+extra-paths = ["scripts"]
+
+[tool.ty.src]
+include = ["scripts"]
+exclude = ["scripts/asset_toolkit"]
+
+[dependency-groups]
+dev = [
+    "jsonschema>=4.25,<5",
+    "pytest>=8,<10",
+    "ruff>=0.15.2",
+    "ty==0.0.52",
+]

@@ -1,94 +1,116 @@
-# Organization Strategies Reference
+# Organization Strategies
 
-Rules and templates for `organize` and `watch` mode. Prefer deterministic rules, preview with `organize sim`, then execute with `organize run`.
+Start from a bounded proposal. Preserve ownership/dependency units and leave
+unmatched files in place. Future files do not inherit approval from a previous
+successful preview.
 
-## Workflow
+## Contents
 
-1. Start from the user's intent: type buckets, date buckets, project buckets, or a custom review queue.
-2. Generate YAML for a single target root. Do not let a rule move files outside the scope-pinned directory unless the user explicitly asked for that destination.
-3. Run `organize sim <config>` and capture the planned moves.
-4. Check collisions, case-only renames, and hidden-file handling before execution.
-5. Keep unmatched files in place or route them to `Review/` — never guess destructive rules.
+1. Rule safety
+2. Supported literal proposals
+3. Projects, sidecars, and collisions
+4. Bounded watch observations
+5. Future automation gates
 
-## Common Strategies
+## Rule Safety
 
-| Strategy | Best For | Core Rule Shape |
-|----------|----------|-----------------|
-| Type buckets | Messy Downloads/Desktop folders | `extension -> destination subfolder` |
-| Date buckets | Photos, scans, statements | `modified date -> YYYY/YYYY-MM` |
-| Project buckets | Work folders with mixed artifacts | detect project root, move by project name |
-| Review queue | Unknown file sets | matched files move, everything else stays |
+`organize sim` is not an unconditional safety boundary. organize 3.4.0 permits a
+shell action with `run_in_simulation: true`; custom Python or template logic can
+also be executable. Never feed arbitrary imported YAML directly into sim or run.
 
-## Extension-to-Category Map
+The bundled validator accepts a deliberately small proposal language:
 
-Use broad, predictable buckets first. Add narrower subfolders only when the user asks.
+- One explicitly named scope root per rule.
+- A literal extension-list filter.
+- One move/copy **proposal** with a destination inside that root.
+- Only `{name}` and `{extension}` placeholders; no expressions or format access.
 
-| Category | Extensions |
-|----------|------------|
-| Images | `jpg`, `jpeg`, `png`, `gif`, `webp`, `heic`, `svg`, `tif`, `tiff` |
-| Video | `mp4`, `mov`, `mkv`, `avi`, `webm` |
-| Audio | `mp3`, `m4a`, `wav`, `flac`, `aac` |
-| Documents | `pdf`, `doc`, `docx`, `txt`, `rtf`, `md`, `pages` |
-| Spreadsheets | `csv`, `xls`, `xlsx`, `numbers` |
-| Archives | `zip`, `tar`, `gz`, `bz2`, `xz`, `zst`, `rar`, `7z` |
-| Code / Projects | `py`, `js`, `ts`, `tsx`, `go`, `rs`, `java`, `c`, `cpp`, `sh` |
+It rejects shell, Python, custom or deletion actions, custom filters, extra
+settings, expression/escaped-brace templates, traversal, extra locations, and
+symlink destination directories. It does not launch organize, simulate an
+arbitrary program, or confer permission to execute the resulting proposals.
 
-## YAML Templates
+```bash
+python scripts/storage-audit.py validate-rules rules.yml --root "$HOME/Downloads"
+```
 
-### Type Buckets
+JSON requires no extra parser dependency. YAML uses declared PyYAML `safe_load`,
+then the same closed allowlist. Passing YAML syntax validation alone is not
+passing the rule safety boundary.
+
+## Supported Literal Proposals
+
+Replace `/Users/example/Downloads` with the exact selected root:
 
 ```yaml
 rules:
-  - locations:
-      - ~/Downloads
+  - name: Images for review
+    locations:
+      - /Users/example/Downloads
     filters:
-      - extension: [jpg, jpeg, png, gif, webp]
+      - extension: [jpg, jpeg, png, webp]
     actions:
-      - move: ~/Downloads/Images/{name}.{extension}
-
-  - locations:
-      - ~/Downloads
+      - move: Images/{name}.{extension}
+  - name: Documents for review
+    locations:
+      - /Users/example/Downloads
     filters:
-      - extension: [pdf, doc, docx, txt]
+      - extension: [pdf, txt, docx]
     actions:
-      - move: ~/Downloads/Documents/{name}.{extension}
+      - move: Documents/{name}.{extension}
 ```
 
-### Date Buckets
+The validator emits normalized rules with `execution_allowed: false`. Resolve
+rules against the bounded metadata inventory, preserve dependency exclusions,
+construct exact mappings, and check destinations before proposing an executor
+plan. Date buckets require an explicit mapping derived from known metadata;
+arbitrary `{created.year}` expressions are outside this restricted language.
 
-```yaml
-rules:
-  - locations:
-      - ~/Scans
-    filters:
-      - extension: [pdf, jpg, png]
-    actions:
-      - move: ~/Scans/{created.year}/{created.month}/{name}.{extension}
+Broad category suggestions are useful for an inbox: images, video, audio,
+documents, spreadsheets, and archives. They are not a reason to reorganize
+code, DAW projects, libraries, model stores, or app-owned folders by extension.
+
+## Projects, Sidecars, and Collisions
+
+Treat a directory as a project/dependency unit when metadata markers include
+`.git`, `pyproject.toml`, `package.json`, `Cargo.toml`, `go.mod`, or
+`CMakeLists.txt`. Preserve Photos/Music libraries, Logic/DAW packages, sample
+libraries, VM bundles, and associated sidecars. A `.env` marker signals
+sensitive context; do not inspect its contents to classify it.
+
+Check existing destinations and duplicate mappings, including case and Unicode
+collisions. No overwrite is allowed. If suffixes are needed, show their exact
+final names in the reviewed plan. Do not choose a new suffix after approval or
+silently pull new files into an old count-based preview.
+
+## Bounded Watch Observations
+
+The implemented watch mode is a finite foreground metadata observer:
+
+```bash
+python scripts/storage-audit.py watch "$HOME/Downloads" \
+  --database "$HOME/.files-buddy/runs/inbox-watch/inventory.sqlite" \
+  --cycles 3 --interval 2
 ```
 
-### Project Buckets
+It records changed-entry counts and identifies eligible files with unchanged
+object/version metadata in at least two consecutive snapshots, then exits. It does
+not launch a daemon, run organizing rules, move files, install `watchexec` or
+`pueue`, or persist standing mutation approval. Budgets, cloud/hidden policy,
+non-following paths, dependency exclusions, and partial coverage are identical
+to the normal scanner. Each pass revalidates file metadata. Settled candidates are review proposals,
+not executable plans. If exported rows are capped, settlement coverage is
+explicitly partial and unseen files are never called settled. A file that
+appears stable in two observations still needs fresh preconditions before any
+later approved operation.
 
-Treat a directory as a project root when it contains one of:
+## Future Automation Gates
 
-- `pyproject.toml`, `requirements.txt`
-- `package.json`, `tsconfig.json`
-- `go.mod`, `Cargo.toml`
-- `.git/`
+An autonomous watcher is a separate capability. Before enabling it, require an
+explicit standing policy with exact roots, allowed rule/version digest, file/
+byte budgets, expiry, revocation, settled-file criteria, collision handling,
+stop/resume behavior, and common-executor ownership of each mutation. A prior
+simulation cannot authorize arbitrary future paths or modified rules. Keep it
+proposal-only until those controls and native acceptance evidence exist.
 
-When multiple signals exist, keep the directory intact instead of splitting it by file type.
-
-## Collision Handling
-
-1. Never overwrite.
-2. Detect case-only collisions on case-insensitive filesystems before execution.
-3. Prefer deterministic suffixes like `-1`, `-2`, `-3`.
-4. Show collisions in the preview summary so the user can change the rule if needed.
-5. Preserve relative ordering for numbered files (`IMG_001`, `IMG_002`, ...).
-
-## Watch Mode Guidance
-
-- Restrict watchers to hot folders like `~/Downloads` or inbox-style scan folders.
-- Use explicit extension filters in `watchexec` to limit noise.
-- Reuse the same organize YAML that passed `organize sim`.
-- Log every watcher-driven move to the manifest just like manual runs.
-- Stop and recreate the watcher when rules change; do not mutate a live watcher in place.
+The source-reviewed hazard is documented in [organize v3.4.0 shell action](https://github.com/tfeldmann/organize/blob/v3.4.0/organize/actions/shell.py).

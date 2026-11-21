@@ -8,6 +8,7 @@ Produces docs/src/authoring/skills/{id}.mdx with:
 
 from __future__ import annotations
 
+import json
 from typing import TYPE_CHECKING
 
 from wagents.skill_docs import collect_repo_skill_nodes
@@ -40,10 +41,15 @@ def _render_frontmatter(fm: dict) -> str:
         d = str(desc).replace('"', '\\"')
         lines.append(f'description: "{d}"')
     # Optional common fields if present in SKILL.md frontmatter
+    metadata = fm.get("metadata")
     for key in ("license", "model", "version", "author"):
-        if key in fm and fm[key] not in (None, ""):
-            val = str(fm[key]).replace('"', '\\"')
-            lines.append(f'{key}: "{val}"')
+        value = fm.get(key)
+        if value in (None, "") and key in {"version", "author"} and isinstance(metadata, dict):
+            candidate = metadata.get(key)
+            if isinstance(candidate, str) and candidate.strip():
+                value = candidate
+        if value not in (None, ""):
+            lines.append(f"{key}: {json.dumps(str(value), ensure_ascii=False)}")
     # Explicit authoring marker + repo-owned catalog contract
     lines.append('source_kind: "custom"')
     lines.append('trust_tier: "repo-owned"')

@@ -1,0 +1,18 @@
+[
+  {
+    "Path": "archive.zip",
+    "Name": "archive.zip",
+    "Size": 4096,
+    "MimeType": "application/zip",
+    "ModTime": "2026-11-20T12:00:00Z",
+    "IsDir": false,
+    "ID": "example-object-id"
+  },
+  {
+    "Path": "directory",
+    "Name": "directory",
+    "Size": -1,
+    "ModTime": "2026-11-20T12:00:00Z",
+    "IsDir": true
+  }
+]

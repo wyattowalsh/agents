@@ -25,28 +25,36 @@ label each surface with action class, savings potential, dependencies, and reper
 
 | Need | Command |
 |------|---------|
-| Top-level usage | `dust -j <path>` or `du -sk <path>` fallback |
-| Large files | `fd -t f --size +1g <path>` |
-| Old files | `fd -t f --changed-before 1y <path>` |
+| Top-level usage | Version-qualified `dust -j <path>` (one root node, formatted sizes); metadata scanner for byte accounting |
+| Large files | `fd -0 -t f --size +1g . "$scope"` |
+| Old files | `fd -0 -t f --changed-before 1y . "$scope"` |
 | APFS snapshots | `tmutil listlocalsnapshots /` |
 | Docker usage | `docker system df --format json` or `docker system df -v` |
-| Cloud list | `rclone lsjson remote:path --recursive --hash` |
+| Cloud list | Bounded `rclone lsjson remote:path` for an explicitly chosen configured remote; omit content hashes by default |
 | Xcode simulators | `xcrun simctl list devices` and `xcrun simctl list runtimes` |
+
+The fd expression is the pattern and the following argument is the search root.
+Choose and report hidden/ignore rules explicitly; default fd output excludes some
+hidden/ignored paths. NUL-delimited names require a NUL-aware consumer. Do not
+pipe output into mutation commands. Command outputs are evidence of occupancy,
+not proof of reclaimable physical bytes or permission to prune.
 
 ## Action Classes
 
-- **Safe trash:** obvious temp files after dry-run and approval.
+- **Trash candidate:** exact selected files after dependency review and approval;
+  Trash retains bytes until removal and is not implemented as a generic cleanup fallback.
 - **Exact duplicate:** content-identical duplicates with keeper evidence.
 - **Similar media review:** perceptual matches only; user chooses.
 - **Archive:** cold user files where restore path and archive integrity are clear.
 - **Offload:** cold files kept in cloud/remote/archive while freeing local bytes.
-- **Cache prune:** regenerable caches with command, rebuild cost, and dependency checks.
+- **Cache review:** owner-native cleanup proposal with evidence of rebuild cost and
+  dependencies; the helper does not execute arbitrary prune commands.
 - **Report-only:** app-managed libraries, snapshots, VM internals, and protected stores.
 
 ## Do Not Proceed If
 
 - The path is hard-blocked or crosses the scope pin.
 - A cloud operation could delete synced data instead of freeing only local bytes.
-- The recommendation lacks a restore path.
+- The recommendation claims actionable recovery without a verified restore path.
 - The dependency owner cannot be identified for app-managed or cache data.
-- Dry-run output is missing, stale, or materially different from execution scope.
+- Preview evidence is missing/stale, or any mapped input differs from the approved plan.

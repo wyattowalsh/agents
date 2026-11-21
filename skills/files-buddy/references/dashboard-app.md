@@ -1,81 +1,103 @@
-# Dashboard App
+# Dashboard
 
-The dashboard is a modern operational interface. The source design contract is React
-with shadcn/ui component patterns, Tailwind CSS v4 tokens, and Recharts charts. The
-packaged template remains self-contained so the skill works without installing Node or
-loading network CDNs.
+## Contents
 
-## Aesthetic Direction
+1. [Implementation](#implementation)
+2. [Render a report](#render-a-report)
+3. [Panels and semantics](#panels-and-semantics)
+4. [Accessibility and lifecycle](#accessibility-and-lifecycle)
+5. [Validation](#validation)
 
-- Dark-first Mac ops console with precise cards, dense tables, and restrained gradients.
-- Distinctive typography: display headings use a geometric/square system; mono values use SF Mono or Monaspace when available.
-- Use high-contrast semantic colors: reclaimable green, warning amber, critical red, cloud blue, review violet.
-- Avoid generic SaaS dashboards: emphasize local bytes, risk, restore path, and approval state.
+## Implementation
 
-## Tailwind v4 Tokens
+`templates/dashboard.html` is the maintained, self-contained HTML/CSS/JavaScript
+implementation. It has no React build, CDN, network dependency, or mutation
+controls. The renderer embeds validated data and the report schema. A restrictive
+content security policy disables network connections, external resources, forms,
+and base-URL changes.
 
-Use CSS-first tokens in source builds:
+The visual design uses a dark or light system theme, restrained green accents,
+dense evidence tables, binary byte units, and explicit unknown values. No chart
+color or inferred default substitutes for risk evidence. Directory sizes appear
+in a table. Category bars have adjacent textual values.
 
-```css
-@import "tailwindcss";
+## Render a Report
 
-@theme {
-  --color-background: oklch(13% 0.025 260);
-  --color-card: oklch(18% 0.028 260);
-  --color-border: oklch(28% 0.03 260);
-  --color-primary: oklch(70% 0.16 245);
-  --color-success: oklch(70% 0.17 150);
-  --color-warning: oklch(78% 0.16 80);
-  --color-danger: oklch(66% 0.2 28);
-  --radius-xl: 1rem;
-}
+Run from the installed skill directory:
 
-@custom-variant dark (&:where(.dark, .dark *));
+```bash
+python scripts/dashboard-renderer.py --data report.json
+python scripts/dashboard-renderer.py --data report.json --output new-report.html
+python scripts/dashboard-renderer.py --data report.json --progress progress.json --open
 ```
 
-## Component Contract
+Default output is a unique file under
+`~/.files-buddy/runs/<run-id>/dashboard-<unique-id>.html`. Explicit output paths
+must not exist. Reports are created with owner-only permissions and existing
+files are never overwritten. Default state directories reject symlinks and must
+belong to the current user. Explicit destinations are caller-selected. Successful stdout includes the output path, run ID,
+normalized source digest, actual browser-open result, and refresh mode.
 
-| Component | shadcn/ui primitives | Recharts usage |
-|-----------|----------------------|----------------|
-| `StorageCommandCenter` | Card, Tabs, ScrollArea | coordinates panels |
-| `RunStatusHero` | Card, Badge, Progress, Alert | none |
-| `SavingsFunnelChart` | Card, Tooltip | FunnelChart or BarChart fallback |
-| `ReclaimableByCategory` | Card, Tabs | BarChart/PieChart |
-| `RiskMatrix` | Card, Badge, Table | ScatterChart optional |
-| `TreemapPanel` | Card, Tooltip | Treemap |
-| `DuplicateClusterExplorer` | Accordion, Table, Badge | none |
-| `RecommendationCards` | Card, Button, Badge, Separator | mini bars |
-| `CacheImpactPanel` | Card, Table | BarChart |
-| `CloudOffloadBoard` | Card, Badge, Alert | PieChart |
-| `ProgressTimeline` | Card, Progress | none |
-| `ManifestExplorer` | Table, Accordion | none |
+`--progress` records a suggested source path for the reader; it does not grant
+browser access or start polling. `--open` is opt-in. `--template` is for an
+explicitly trusted local template containing the three required data, progress
+configuration, and schema placeholders. Malformed input fails before output is
+created. JSON inside script elements and all displayed text are escaped.
 
-## Data Inputs
+## Panels and Semantics
 
-Support both final report and live progress snapshots:
+| Panel | Evidence shown |
+| --- | --- |
+| Summary | Inventoried logical bytes, candidate estimate, verified reclaimed bytes, observed free-space delta |
+| Run and coverage | Status, captured time, stale state, exact scope, phase, source digest, omissions and normalization warnings |
+| Storage accounting | Independent metrics, including retained quarantine/Trash and historical ambiguous values |
+| Category observations | Reported category sizes with textual values |
+| Recommendation risk | Supplied recommendation counts and known estimates, including Unknown risk |
+| Recommendations | Explicit action, local estimate, dependency evidence, repercussions and recovery |
+| Directory sizes | Reported logical/allocated estimates without claiming a proportional treemap |
+| Duplicate review | Exact/similar/unknown kind, paths, keeper evidence and risk; never fabricated actions |
+| Cache impact | Owner, dependency evidence, regeneration and recovery |
+| Cloud offload | Consistent `local_bytes`/`cloud_bytes` fields for rows and totals |
+| Inventory | Supplied paths, object kind, category, size and eligibility |
+| Progress timeline | Producer events with timestamps |
+| Manifest evidence | Structured manifest path/status and recorded operations |
 
-- Legacy: `files`, `duplicates`, `directories`, `operations`, `cloud`, `summary`, `generated`.
-- v1.1: `schema_version`, `run_id`, `status`, `phase`, `counts`, `savings`, `categories`, `recommendations`, `events`, `manifest`.
+A missing metric displays **Unknown**. Explicit zero stays zero. Unknown
+recommendation totals remain unknown if any contributing row lacks the metric.
+The dashboard does not infer reclaimable physical space from logical size,
+completed operations, staging, Trash, or exact content equality.
 
-## Packaged Template Requirements
+## Accessibility and Lifecycle
 
-- Self-contained HTML, CSS, and JavaScript.
-- No network or CDN by default.
-- Same panel names and visual hierarchy as the React source contract.
-- Accessible chart fallbacks as tables or text summaries.
-- Reduced-motion safe; no required animation for comprehension.
+- Semantic headings, table captions, scoped table headers, and a keyboard skip link.
+- Explicit labels for file import, search and sort; native buttons and selects.
+- Visible focus treatment and keyboard-focusable scroll regions for wide tables.
+- Narrow-screen stacking, wrapped long paths, system color themes and reduced-motion CSS.
+- Textual chart values, Unknown risk labels and accessible import/error status.
+- Filter and sort controls retain focus while report sections update.
 
-## Smoke Data
+See `progress-reporting.md` for the bounded file-handle refresh lifecycle.
+Import failures retain the last valid snapshot. The browser never executes
+manifest operations, starts a watcher, or requests network access.
 
-Use this minimal shape for renderer checks:
+## Validation
 
-```json
-{
-  "schema_version": "1.1",
-  "run_id": "smoke",
-  "status": "completed",
-  "savings": {"recommended_local_bytes": 1073741824},
-  "categories": [{"name": "Duplicates", "bytes": 1073741824, "risk": "Low"}],
-  "recommendations": [{"action": "dedupe", "path": "~/Downloads/a.zip", "local_bytes": 1073741824, "risk": "Low", "restore_path": "manifest undo"}]
-}
+The synthetic report fixture is `tests/fixtures/reports/storage-audit.json`.
+It includes zero verified bytes despite completed work, unknown cloud risk,
+partial coverage, a structured manifest, cache uncertainty, and long Unicode paths.
+
+```bash
+uv run python -m pytest tests/test_reporting.py -q
+node tests/dashboard-behavior.cjs
+node tests/dashboard-browser.cjs
 ```
+
+The first two commands verify serialization, normalization, markup and event
+behavior. The optional browser command needs an existing Playwright/Chromium
+runtime. It uses Playwright's bundled Chromium by default; set
+`FILES_BUDDY_BROWSER_PATH` to an installed browser when needed. Set
+`FILES_BUDDY_PLAYWRIGHT_MODULE` to the installed Node module path when it is
+outside Node's normal resolution path (CI uses the locked Python Playwright
+package's `driver/package`).
+It returns exit 2 when browser launch is blocked. Report actual rendered evidence
+separately from static or simulated-DOM checks.

@@ -672,6 +672,8 @@ class TestWriteSkillResearchPages:
         write_skill_research_pages([node])
 
         text = (content_dir / "skill-research" / "alpha.mdx").read_text(encoding="utf-8")
+        assert "import { Aside } from '@astrojs/starlight/components';" in text
+        assert text.index("import { Aside }") < text.index("<Aside")
         aside_close = text.index("</Aside>")
         nav = text.index("[Back to catalog page](/skills/catalog/custom/alpha/)")
         assert aside_close < nav

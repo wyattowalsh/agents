@@ -3,208 +3,195 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>files-buddy Storage Command Center</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Files Buddy · Storage evidence</title>
 <style>
-:root {
-  color-scheme: dark;
-  --bg: #080b12;
-  --fg: #eef4ff;
-  --muted: #91a1b8;
-  --card: rgba(20, 26, 40, 0.86);
-  --card-strong: rgba(28, 36, 54, 0.96);
-  --border: rgba(144, 161, 185, 0.22);
-  --primary: #7cc7ff;
-  --success: #74e3a4;
-  --warning: #ffd166;
-  --danger: #ff7a90;
-  --violet: #c7a7ff;
-  --cloud: #76a9ff;
-  --shadow: 0 24px 80px rgba(0,0,0,0.34);
-  --radius: 20px;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  background:
-    radial-gradient(circle at 12% 8%, rgba(124,199,255,.2), transparent 34rem),
-    radial-gradient(circle at 84% 4%, rgba(199,167,255,.18), transparent 30rem),
-    linear-gradient(180deg, #090d16 0%, #080b12 52%, #0d111a 100%);
-  color: var(--fg);
-  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  line-height: 1.5;
-}
-main { width: min(1480px, calc(100vw - 32px)); margin: 0 auto; padding: 28px 0 44px; }
-h1, h2, h3 { margin: 0; letter-spacing: -0.035em; }
-h1 { font-size: clamp(2rem, 4vw, 4.6rem); line-height: .92; max-width: 900px; }
-h2 { font-size: 1.04rem; color: #dce7f8; }
-h3 { font-size: .92rem; color: #dce7f8; }
-p { margin: 0; color: var(--muted); }
-button { font: inherit; }
-.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
-.hero { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(320px, .65fr); gap: 18px; margin-bottom: 18px; }
-.hero-copy, .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); backdrop-filter: blur(18px); }
-.hero-copy { padding: clamp(24px, 4vw, 48px); position: relative; overflow: hidden; }
-.hero-copy:after { content:""; position:absolute; inset:auto -15% -40% 45%; height:260px; background: radial-gradient(circle, rgba(116,227,164,.16), transparent 64%); pointer-events:none; }
-.eyebrow { color: var(--primary); font-size: .78rem; text-transform: uppercase; letter-spacing: .22em; font-weight: 800; margin-bottom: 18px; }
-.subhead { max-width: 760px; margin-top: 18px; font-size: 1.05rem; }
-.meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
-.badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: 999px; padding: 7px 11px; color: #dce7f8; background: rgba(255,255,255,.035); font-size: .78rem; font-weight: 700; }
-.badge.success { color: var(--success); border-color: rgba(116,227,164,.36); }
-.badge.warning { color: var(--warning); border-color: rgba(255,209,102,.38); }
-.badge.danger { color: var(--danger); border-color: rgba(255,122,144,.38); }
-.status-card { padding: 22px; display: flex; flex-direction: column; justify-content: space-between; min-height: 320px; }
-.phase { color: var(--muted); font-size: .9rem; margin-top: 8px; }
-.progress-track { width: 100%; height: 12px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; margin: 18px 0 10px; }
-.progress-bar { height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--primary), var(--success)); width: 0%; }
-.grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
-.card { padding: 20px; }
-.span-3 { grid-column: span 3; }
-.span-4 { grid-column: span 4; }
-.span-5 { grid-column: span 5; }
-.span-6 { grid-column: span 6; }
-.span-7 { grid-column: span 7; }
-.span-8 { grid-column: span 8; }
-.span-12 { grid-column: span 12; }
-.stat-value { font-size: clamp(1.6rem, 3vw, 3rem); line-height: 1; font-weight: 900; letter-spacing: -.06em; margin: 12px 0 4px; }
-.stat-label { font-size: .8rem; color: var(--muted); text-transform: uppercase; letter-spacing: .14em; font-weight: 800; }
-.chart-bars { display: grid; gap: 12px; margin-top: 16px; }
-.bar-row { display: grid; grid-template-columns: minmax(110px, 180px) 1fr auto; gap: 12px; align-items: center; }
-.bar-label { color: #dce7f8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.bar-shell { height: 13px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; }
-.bar-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--primary), var(--violet)); width: 0%; }
-.treemap { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 16px; }
-.tile { min-height: 112px; border-radius: 16px; padding: 13px; border: 1px solid rgba(255,255,255,.12); background: linear-gradient(135deg, rgba(124,199,255,.26), rgba(199,167,255,.14)); display:flex; flex-direction:column; justify-content:space-between; overflow:hidden; }
-.tile strong { word-break: break-word; }
-.recommendations { display: grid; gap: 12px; margin-top: 16px; }
-.rec { border: 1px solid var(--border); border-radius: 16px; padding: 14px; background: rgba(255,255,255,.035); }
-.rec-top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
-.rec-path { color: #dce7f8; word-break: break-word; }
-.rec-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: .88rem; }
-th, td { padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,.08); text-align: start; vertical-align: top; }
-th { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .13em; }
-.timeline { margin-top: 16px; display: grid; gap: 10px; }
-.event { border-inline-start: 2px solid var(--primary); padding-inline-start: 12px; color: var(--muted); }
-.empty { padding: 24px; border: 1px dashed var(--border); border-radius: 16px; color: var(--muted); text-align: center; }
-.footer { color: var(--muted); margin-top: 22px; text-align:center; font-size:.82rem; }
-@media (max-width: 980px) {
-  .hero, .grid { display: block; }
-  .card, .status-card { margin-top: 16px; }
-  .bar-row { grid-template-columns: 1fr; gap: 6px; }
-}
-@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+:root{color-scheme:dark;--bg:#101519;--card:#182127;--line:#34454e;--text:#e9f0ee;--muted:#aebdbd;--accent:#a9ddc4;--warn:#ffd18a;--danger:#ffada8;--radius:16px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:1500px;margin:auto;padding:28px 30px 44px}h1,h2,h3,p{margin:0}h1{font-size:clamp(2rem,4vw,3.6rem);letter-spacing:-.045em;line-height:1.1}h2{font-size:1.1rem;letter-spacing:-.02em}h3{font-size:.95rem}p{color:var(--muted)}button,input,select{font:inherit}button,select,input[type=search]{color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;min-height:42px}button{cursor:pointer}button:disabled{opacity:.5;cursor:default}button:hover:enabled{border-color:var(--accent)}:focus-visible{outline:3px solid var(--accent);outline-offset:3px}a{color:var(--accent)}.skip{position:absolute;left:12px;top:-80px;background:var(--bg);padding:12px;z-index:2}.skip:focus{top:12px}.eyebrow{text-transform:uppercase;font-size:.75rem;letter-spacing:.2em;color:var(--accent);margin-bottom:13px}.hero{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:22px}.hero p{margin-top:12px;max-width:740px}.badge{display:inline-block;padding:3px 9px;border:1px solid var(--line);border-radius:99px;font-size:.8rem;white-space:nowrap}.risk-low{color:var(--accent)}.risk-medium{color:var(--warn)}.risk-high,.risk-critical{color:var(--danger)}.muted{color:var(--muted)}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.88em;overflow-wrap:anywhere}.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:16px;border:1px solid var(--line);border-radius:var(--radius);margin-bottom:10px}.toolbar label{display:flex;align-items:center;gap:8px}.toolbar input[type=search]{width:240px}.toolbar .spacer{flex:1}.toolbar-note{font-size:.85rem;margin:0 0 20px}.error{padding:14px;border:1px solid var(--danger);color:var(--danger);margin:12px 0;border-radius:10px}.error[hidden]{display:none}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;min-width:0}.span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-6{grid-column:span 6}.span-8{grid-column:span 8}.span-12{grid-column:span 12}.stat-label{text-transform:uppercase;letter-spacing:.08em;font-size:.73rem;color:var(--muted)}.stat-value{font-size:clamp(1.6rem,2.5vw,2.65rem);letter-spacing:-.035em;font-weight:650;margin:8px 0}.stat-note{font-size:.8rem}.table-wrap{overflow:auto;margin-top:12px;border-radius:8px}table{width:100%;border-collapse:collapse;font-size:.86rem}caption{text-align:left;color:var(--muted);padding-bottom:10px}th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:10px 9px;overflow-wrap:anywhere}th{color:var(--muted);font-weight:600}tbody tr:last-child td{border-bottom:0}td.path{min-width:160px;max-width:440px;word-break:break-word}td.number{white-space:nowrap;font-variant-numeric:tabular-nums}.empty{padding:20px 0;color:var(--muted)}.inline-meta{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.notes{margin:10px 0 0;padding-left:20px;color:var(--muted)}.status-grid{display:grid;grid-template-columns:140px minmax(0,1fr);gap:8px 12px;margin-top:14px}.status-grid dt{color:var(--muted)}.status-grid dd{margin:0;overflow-wrap:anywhere}.bar-row{display:grid;grid-template-columns:minmax(100px,1fr) 2fr auto;gap:12px;align-items:center;padding:9px 0}.bar{height:8px;background:var(--line);border-radius:5px;overflow:hidden}.bar span{display:block;height:100%;background:var(--accent)}.timeline{padding:0;list-style:none;margin:12px 0 0}.timeline li{border-left:2px solid var(--line);padding:3px 0 10px 14px}.footer{margin-top:22px;font-size:.8rem;color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:1050px){.span-3{grid-column:span 6}.span-4,.span-8{grid-column:span 12}.hero{display:block}.hero>.badge{margin-top:15px}}
+@media(max-width:700px){main{padding:20px 14px}.span-6,.span-3{grid-column:span 12}.card{padding:16px}.toolbar{align-items:stretch}.toolbar label{width:100%;flex-wrap:wrap}.toolbar input[type=search],.toolbar select{width:100%}.status-grid{grid-template-columns:1fr;gap:2px}.status-grid dd{margin-bottom:10px}.bar-row{grid-template-columns:1fr auto}.bar{grid-column:1/-1;grid-row:2}.hero h1{font-size:2.3rem}}
+@media(prefers-color-scheme:light){:root{color-scheme:light;--bg:#f4f6f3;--card:#fff;--line:#cbd5cf;--text:#18352c;--muted:#4e655b;--accent:#176546;--warn:#805200;--danger:#a4312a}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
+<a class="skip" href="#report-content">Skip to report</a>
 <script id="data" type="application/json">{}</script>
 <script id="progress-config" type="application/json">{}</script>
-<main id="app"></main>
+<script id="report-schema" type="application/json">{}</script>
+<main>
+<header class="hero"><div><p class="eyebrow">Files Buddy / Storage evidence</p><h1>Know what occupies space.<br>Keep the evidence in view.</h1><p>Candidate estimates, verified outcomes, and remaining unknowns are shown separately. This report does not approve or execute file operations.</p></div><span class="badge">Offline · read-only</span></header>
+<section class="toolbar" aria-label="Report controls">
+<button id="choose-file" type="button">Import snapshot</button><input id="file-input" class="sr-only" type="file" accept="application/json,.json" aria-label="Choose a Files Buddy report JSON">
+<button id="refresh-file" type="button" disabled>Refresh selected file</button><button id="auto-refresh" type="button" disabled aria-pressed="false">Start auto refresh</button>
+<span class="spacer"></span><label for="filter">Filter paths <input type="search" id="filter" placeholder="Path, action, category"></label>
+<label for="sort">Sort <select id="sort"><option value="path">Path</option><option value="size">Bytes, largest first</option><option value="risk">Risk, highest first</option></select></label>
+</section>
+<p class="toolbar-note" id="refresh-status" role="status" aria-live="polite">Embedded snapshot. Import newer JSON to refresh. No network connection or filesystem execution.</p>
+<div id="error" class="error" role="alert" hidden></div>
+<div id="report-content" tabindex="-1"><div class="empty">Loading embedded report…</div></div>
+<p class="footer">Self-contained HTML, CSS, and JavaScript. Each table displays up to 200 supplied rows; filtering and sorting use all supplied rows. Logical and allocated bytes do not establish reclaimable APFS space. Trash and quarantine retain storage.</p>
+</main>
 <script>
-(function(){
-  function esc(value){ return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]; }); }
-  function num(value){ return (typeof value === 'number' && isFinite(value)) ? value : 0; }
-  function fmtBytes(bytes){
-    bytes = num(bytes);
-    var units = ['B','KB','MB','GB','TB','PB']; var i = 0; var v = Math.abs(bytes);
-    while(v >= 1024 && i < units.length - 1){ v /= 1024; i++; }
-    return (bytes < 0 ? '-' : '') + v.toFixed(i === 0 ? 0 : 1) + ' ' + units[i];
+(function () {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const collections = ['files','directories','duplicates','recommendations','categories','events','operations','cloud','caches'];
+  const ranks = {critical:4,high:3,medium:2,low:1,unknown:0};
+  const metrics = [
+    ['logical_bytes','Inventoried logical bytes'],['allocated_bytes','Allocated estimate'],['eligible_bytes','Eligible estimate'],['candidate_bytes','Candidate estimate'],
+    ['selected_bytes','Selected in a plan'],['acted_bytes','Bytes acted on'],['quarantined_bytes','Retained in quarantine'],
+    ['trash_retained_bytes','Retained in Trash'],['verified_reclaimed_bytes','Verified reclaimed'],
+    ['observed_free_space_delta_bytes','Observed free-space delta'],['cloud_bytes_affected','Cloud bytes affected'],
+    ['legacy_verified_local_bytes','Legacy verified or moved (ambiguous)']
+  ];
+  const schema = JSON.parse($('report-schema').textContent);
+  const config = JSON.parse($('progress-config').textContent);
+  let report = null, fileHandle = null, refreshTimer = null, autoStarted = 0, loading = false;
+
+  function bytes(value) {
+    if (value === null || value === undefined) return 'Unknown';
+    if (!Number.isSafeInteger(value)) return 'Invalid';
+    const units = ['B','KiB','MiB','GiB','TiB','PiB'];
+    let amount = Math.abs(value), i = 0;
+    while (amount >= 1024 && i < units.length - 1) { amount /= 1024; i++; }
+    return (value < 0 ? '−' : '') + amount.toFixed(i ? 1 : 0) + ' ' + units[i];
   }
-  function fmtDate(value){ if(!value) return 'unknown'; var d = new Date(value); return isNaN(d) ? String(value) : d.toLocaleString(); }
-  function riskClass(risk){ risk = String(risk || '').toLowerCase(); if(risk.indexOf('critical') >= 0 || risk.indexOf('high') >= 0) return 'danger'; if(risk.indexOf('medium') >= 0) return 'warning'; return 'success'; }
-  function parseJson(id){ try { return JSON.parse(document.getElementById(id).textContent || '{}'); } catch(e) { return {}; } }
-
-  var raw = parseJson('data');
-  var progressConfig = parseJson('progress-config');
-  var files = raw.files || [];
-  var directories = raw.directories || raw.treemap || [];
-  var duplicates = raw.duplicates || raw.duplicate_clusters || [];
-  var recommendations = raw.recommendations || [];
-  var events = raw.events || [];
-  var categories = raw.categories || [];
-  var summary = raw.summary || {};
-  var savings = raw.savings || {};
-  var status = raw.status || summary.status || 'report';
-  var phase = raw.phase || {};
-  var generated = raw.updated_at || raw.generated || new Date().toISOString();
-
-  if(categories.length === 0 && summary.file_types){
-    categories = Object.keys(summary.file_types).map(function(name){ return {name:name, count:summary.file_types[name], bytes:0, risk:'Low'}; });
+  function text(value) { return value === null || value === undefined || value === '' ? 'Unknown' : Array.isArray(value) ? value.join('; ') : typeof value === 'object' ? JSON.stringify(value) : String(value); }
+  function risk(value) { const label = Object.hasOwn(ranks, value) ? value : 'unknown'; return '<span class="badge risk-' + label + '">' + esc(label.charAt(0).toUpperCase() + label.slice(1)) + '</span>'; }
+  function date(value) { return value ? new Date(value).toLocaleString() : 'Unknown'; }
+  function sum(rows, key) { if(rows.some(row => row[key] == null)) return null; const total=rows.reduce((value,row) => value + row[key], 0); return Number.isSafeInteger(total) ? total : null; }
+  function table(headers, rows, caption) {
+    if (!rows.length) return '<p class="empty">No matching rows supplied.</p>';
+    return '<div class="table-wrap" tabindex="0" role="region" aria-label="' + esc(caption) + '"><table><caption>' + esc(caption) + '</caption><thead><tr>' + headers.map(h => '<th scope="col">'+esc(h)+'</th>').join('') + '</tr></thead><tbody>' + rows.slice(0,200).map(row => '<tr>'+row.map((cell,i) => '<td class="'+(i === 0 ? 'path' : '')+'">'+cell+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
   }
-  if(recommendations.length === 0 && duplicates.length){
-    recommendations = duplicates.slice(0, 8).map(function(group){ return {action:'dedupe', path:(group.paths || group.files || []).join(', '), local_bytes:num(group.reclaimable || group.size), risk:'Low', restore_path:'manifest undo after approved execution'}; });
+  function card(title, content, width) { return '<section class="card span-'+(width||6)+'"><h2>'+esc(title)+'</h2>'+content+'</section>'; }
+  function filtered(rows) {
+    const query = $('filter').value.toLocaleLowerCase();
+    const result = rows.filter(row => !query || JSON.stringify(row).toLocaleLowerCase().includes(query));
+    const sort = $('sort').value;
+    return result.sort((a,b) => sort === 'size' ? (b.local_bytes ?? b.size ?? b.bytes ?? b.candidate_bytes ?? -1) - (a.local_bytes ?? a.size ?? a.bytes ?? a.candidate_bytes ?? -1) : sort === 'risk' ? (ranks[b.risk] ?? 0) - (ranks[a.risk] ?? 0) : String(a.path ?? a.name ?? '').localeCompare(String(b.path ?? b.name ?? '')));
   }
-
-  var totalFiles = num(summary.total_files) || files.length || num(raw.counts && raw.counts.files_seen);
-  var totalSize = num(summary.total_size) || files.reduce(function(sum, file){ return sum + num(file.size); }, 0) || num(savings.discovered_bytes);
-  var recommended = num(savings.recommended_local_bytes) || num(summary.reclaimable) || recommendations.reduce(function(sum, rec){ return sum + num(rec.local_bytes || rec.bytes); }, 0);
-  var verified = num(savings.verified_local_bytes || savings.completed_local_bytes);
-  var cloudBytes = num(savings.cloud_bytes_affected || summary.cloud_bytes_affected);
-  var phasePct = phase.total ? Math.max(0, Math.min(100, Math.round(num(phase.index) / num(phase.total) * 100))) : (status === 'completed' ? 100 : 0);
-
-  var maxCategoryBytes = Math.max(1, categories.reduce(function(max, item){ return Math.max(max, num(item.bytes)); }, 0));
-  var maxDirectoryBytes = Math.max(1, directories.reduce(function(max, item){ return Math.max(max, num(item.size || item.bytes)); }, 0));
-
-  function stat(label, value, tone){ return '<section class="card span-3"><div class="stat-label">'+esc(label)+'</div><div class="stat-value" style="color:var(--'+tone+')">'+esc(value)+'</div></section>'; }
-  function badge(label, cls){ return '<span class="badge '+(cls||'')+'">'+esc(label)+'</span>'; }
-
-  var html = '';
-  html += '<section class="hero">';
-  html += '<div class="hero-copy"><div class="eyebrow">files-buddy storage command center</div><h1>Local bytes, cloud risk, and cleanup decisions in one place.</h1>';
-  html += '<p class="subhead">A self-contained report for macOS storage audits, duplicate review, cache impact, cloud offload planning, manifests, and live run progress.</p>';
-  html += '<div class="meta-row">'+badge('status: '+status, status === 'completed' ? 'success' : 'warning')+badge('generated '+fmtDate(generated))+badge(progressConfig.progress_path ? 'live source: '+progressConfig.progress_path : 'embedded report')+'</div></div>';
-  html += '<aside class="card status-card"><div><h2>Run Status</h2><p class="phase">'+esc(phase.message || phase.name || 'Static report loaded')+'</p><div class="progress-track"><div class="progress-bar" style="width:'+phasePct+'%"></div></div><p>'+phasePct+'% through tracked phases</p></div><div class="meta-row">'+badge('approved '+fmtBytes(savings.approved_local_bytes), 'warning')+badge('verified '+fmtBytes(verified), verified ? 'success' : '')+'</div></aside>';
-  html += '</section>';
-
-  html += '<section class="grid">';
-  html += stat('Files Seen', totalFiles.toLocaleString(), 'primary');
-  html += stat('Bytes Discovered', fmtBytes(totalSize), 'violet');
-  html += stat('Recommended Local Savings', fmtBytes(recommended), 'success');
-  html += stat('Cloud Bytes Affected', fmtBytes(cloudBytes), 'cloud');
-
-  html += '<section class="card span-5"><h2>Savings Funnel</h2><div class="chart-bars">';
-  [
-    ['Discovered', savings.discovered_bytes || totalSize, 'primary'],
-    ['Eligible', savings.eligible_bytes, 'violet'],
-    ['Recommended', recommended, 'success'],
-    ['Approved', savings.approved_local_bytes, 'warning'],
-    ['Verified', verified, 'success']
-  ].forEach(function(row){ var width = totalSize ? Math.min(100, num(row[1]) / totalSize * 100) : 0; html += '<div class="bar-row"><div class="bar-label">'+esc(row[0])+'</div><div class="bar-shell"><div class="bar-fill" style="width:'+width+'%;background:linear-gradient(90deg,var(--'+row[2]+'),var(--primary))"></div></div><div class="mono">'+fmtBytes(row[1])+'</div></div>'; });
-  html += '</div></section>';
-
-  html += '<section class="card span-7"><h2>Reclaimable By Category</h2>';
-  if(categories.length){ html += '<div class="chart-bars">'; categories.slice(0, 12).forEach(function(item){ var width = Math.max(3, num(item.bytes) / maxCategoryBytes * 100); html += '<div class="bar-row"><div class="bar-label">'+esc(item.name)+'</div><div class="bar-shell"><div class="bar-fill" style="width:'+width+'%"></div></div><div class="mono">'+esc(item.bytes ? fmtBytes(item.bytes) : (item.count || 0).toLocaleString())+'</div></div>'; }); html += '</div>'; }
-  else { html += '<div class="empty">No category data yet.</div>'; }
-  html += '</section>';
-
-  html += '<section class="card span-6"><h2>Disk Usage Treemap</h2>';
-  if(directories.length){ html += '<div class="treemap">'; directories.slice(0, 12).forEach(function(item){ var alpha = Math.max(.16, num(item.size || item.bytes) / maxDirectoryBytes); html += '<div class="tile" style="background:linear-gradient(135deg,rgba(124,199,255,'+alpha+'),rgba(199,167,255,.16))"><strong>'+esc(item.path || item.name || 'unknown')+'</strong><span class="mono">'+fmtBytes(item.size || item.bytes)+'</span></div>'; }); html += '</div>'; }
-  else { html += '<div class="empty">No directory treemap data yet.</div>'; }
-  html += '</section>';
-
-  html += '<section class="card span-6"><h2>Risk Matrix</h2><table><thead><tr><th>Risk</th><th>Items</th><th>Bytes</th></tr></thead><tbody>';
-  ['Low','Medium','High','Critical'].forEach(function(risk){ var items = recommendations.filter(function(rec){ return String(rec.risk || rec.approval_tier || 'Low').toLowerCase().indexOf(risk.toLowerCase()) >= 0; }); var bytes = items.reduce(function(sum, rec){ return sum + num(rec.local_bytes || rec.bytes); }, 0); html += '<tr><td>'+badge(risk, riskClass(risk))+'</td><td>'+items.length+'</td><td class="mono">'+fmtBytes(bytes)+'</td></tr>'; });
-  html += '</tbody></table></section>';
-
-  html += '<section class="card span-8"><h2>Recommendation Cards</h2>';
-  if(recommendations.length){ html += '<div class="recommendations">'; recommendations.slice(0, 12).forEach(function(rec){ html += '<article class="rec"><div class="rec-top"><div><h3>'+esc(rec.action || 'review')+'</h3><p class="rec-path mono">'+esc(rec.path || rec.target || 'unknown path')+'</p></div>'+badge(rec.risk || rec.approval_tier || 'Review', riskClass(rec.risk || rec.approval_tier))+'</div><div class="rec-meta">'+badge(fmtBytes(rec.local_bytes || rec.bytes || rec.local_bytes_saved)+' local')+badge('restore: '+(rec.restore_path || 'required'))+'</div><p style="margin-top:10px">'+esc((rec.repercussions || rec.repercussion || []).join ? (rec.repercussions || rec.repercussion || []).join('; ') : (rec.repercussions || rec.repercussion || 'Review dependency evidence before approval.'))+'</p></article>'; }); html += '</div>'; }
-  else { html += '<div class="empty">No recommendations in this snapshot.</div>'; }
-  html += '</section>';
-
-  html += '<section class="card span-4"><h2>Duplicate Clusters</h2><table><thead><tr><th>Group</th><th>Count</th><th>Bytes</th></tr></thead><tbody>';
-  duplicates.slice(0, 8).forEach(function(group, index){ html += '<tr><td>#'+(index+1)+'</td><td>'+esc(group.count || (group.paths || group.files || []).length || 0)+'</td><td class="mono">'+fmtBytes(group.reclaimable || group.size || group.file_len)+'</td></tr>'; });
-  if(!duplicates.length) html += '<tr><td colspan="3">No duplicate groups.</td></tr>';
-  html += '</tbody></table></section>';
-
-  html += '<section class="card span-6"><h2>Progress Timeline</h2>';
-  if(events.length){ html += '<div class="timeline">'; events.slice(-12).forEach(function(event){ html += '<div class="event"><strong>'+esc(event.level || 'info')+'</strong> <span class="mono">'+esc(fmtDate(event.time))+'</span><br>'+esc(event.message || '')+'</div>'; }); html += '</div>'; }
-  else { html += '<div class="empty">No progress events yet.</div>'; }
-  html += '</section>';
-
-  html += '<section class="card span-6"><h2>Manifest Explorer</h2><table><tbody><tr><th>Run ID</th><td class="mono">'+esc(raw.run_id || 'n/a')+'</td></tr><tr><th>Manifest</th><td class="mono">'+esc(raw.manifest || (raw.manifest && raw.manifest.path) || 'not created')+'</td></tr><tr><th>Mode</th><td>'+esc(raw.mode || 'report')+'</td></tr><tr><th>Progress File</th><td class="mono">'+esc(progressConfig.progress_path || 'embedded only')+'</td></tr></tbody></table></section>';
-
-  html += '</section><p class="footer">Built for files-buddy. Source design contract: shadcn/ui components, Tailwind CSS v4 tokens, and Recharts visualizations; packaged as a self-contained static dashboard.</p>';
-  document.getElementById('app').innerHTML = html;
+  function details(rows) { return rows.map(row => [esc(row.path ?? row.name ?? 'Unknown'),esc(text(row.action)),risk(row.risk),esc(bytes(row.local_bytes)),esc(text(row.dependency_evidence)),esc(text(row.repercussions ?? row.repercussion)),esc(text(row.restore_path))]); }
+  function validate(value, rule, path) {
+    if (rule.$ref) { const target = rule.$ref.split('/').slice(1).reduce((node,key) => node[key],schema); return validate(value,target,path); }
+    if (Object.hasOwn(rule,'const') && value !== rule.const) throw Error(path+' has an unsupported value');
+    if (rule.enum && !rule.enum.includes(value)) throw Error(path+' has an unsupported value');
+    if (rule.type) {
+      const types = Array.isArray(rule.type) ? rule.type : [rule.type];
+      const valid = types.some(type => type==='null' ? value===null : type==='object' ? value!==null && typeof value==='object' && !Array.isArray(value) : type==='array' ? Array.isArray(value) : type==='integer' ? Number.isSafeInteger(value) : typeof value===type);
+      if (!valid) throw Error(path+' has an invalid type');
+    }
+    if (value === null) return;
+    if (typeof value === 'number' && (!Number.isFinite(value) || (rule.minimum!==undefined && value<rule.minimum) || (rule.maximum!==undefined && value>rule.maximum))) throw Error(path+' is outside its allowed range');
+    if (typeof value === 'string') {
+      if (rule.pattern && !(new RegExp(rule.pattern)).test(value)) throw Error(path+' has an invalid format');
+      if (rule.format === 'date-time' && (!/T.*(?:Z|[+-]\d\d:\d\d)$/.test(value) || Number.isNaN(Date.parse(value)))) throw Error(path+' must include a valid date and timezone');
+    }
+    if (Array.isArray(value)) {
+      if (rule.maxItems!==undefined && value.length>rule.maxItems) throw Error(path+' has too many rows');
+      if (rule.items) value.forEach((item,i) => validate(item,rule.items,path+'['+i+']'));
+    } else if (typeof value === 'object') {
+      (rule.required||[]).forEach(key => { if (!Object.hasOwn(value,key)) throw Error(path+'.'+key+' is required'); });
+      Object.entries(value).forEach(([key,item]) => {
+        let matched = false;
+        if (rule.properties && Object.hasOwn(rule.properties,key)) { validate(item,rule.properties[key],path+'.'+key); matched=true; }
+        Object.entries(rule.patternProperties||{}).forEach(([pattern,child]) => { if ((new RegExp(pattern)).test(key)) { validate(item,child,path+'.'+key); matched=true; } });
+        if (!matched && rule.additionalProperties===false) throw Error(path+'.'+key+' is unsupported');
+        if (!matched && rule.additionalProperties && typeof rule.additionalProperties==='object') validate(item,rule.additionalProperties,path+'.'+key);
+      });
+    }
+  }
+  function render() {
+    const savings = report.savings;
+    const recommendations = report.recommendations || [];
+    const cloud = report.cloud?.length ? report.cloud : recommendations.filter(row => row.action === 'offload');
+    const caches = report.caches?.length ? report.caches : recommendations.filter(row => row.action === 'cache-prune' || row.category === 'cache');
+    const stale = ['running','executing'].includes(report.status) && (!report.updated_at || Date.now() - Date.parse(report.updated_at)>300000);
+    let html = '<section class="grid">';
+    for (const [key,label,note] of [['logical_bytes','Logical bytes','Observed file lengths'],['candidate_bytes','Candidate estimate','Requires dependency and recovery review'],['verified_reclaimed_bytes','Verified reclaimed','Explicit outcome evidence only'],['observed_free_space_delta_bytes','Free-space delta','Observation; attribution may be uncertain']]) {
+      html += '<section class="card span-3"><h2 class="stat-label">'+label+'</h2><p class="stat-value">'+esc(bytes(savings[key]))+'</p><p class="stat-note">'+note+'</p></section>';
+    }
+    html += card('Run and coverage','<div class="inline-meta"><span class="badge">'+esc(report.status)+'</span><span class="badge">Coverage: '+esc(report.coverage.status)+'</span>'+(stale?'<span class="badge risk-medium">Snapshot is stale</span>':'')+'</div><dl class="status-grid"><dt>Run</dt><dd class="mono">'+esc(report.run_id)+'</dd><dt>Captured</dt><dd>'+esc(date(report.updated_at))+'</dd><dt>Scope</dt><dd class="mono">'+esc(report.scope.join('; ')||'Unknown')+'</dd><dt>Phase</dt><dd>'+esc(text(report.phase?.message ?? report.phase?.name))+'</dd><dt>Source digest</dt><dd class="mono">'+esc(text(report.source_digest))+'</dd><dt>Progress source</dt><dd class="mono">'+esc(config.progress_path || 'Embedded snapshot; import to update')+'</dd></dl><ul class="notes">'+[...(report.coverage.omissions||[]),...(report.normalization_warnings||[])].map(item => '<li>'+esc(item)+'</li>').join('')+'</ul>');
+    html += card('Storage accounting',table(['Evidence','Bytes'],metrics.map(([key,label])=>[esc(label),esc(bytes(savings[key]))]),'These measures are separate; do not add them together.'));
+    const categories = filtered(report.categories||[]);
+    const maximum = Math.max(0,...categories.map(row=>row.bytes||0));
+    html += card('Category observations',categories.length ? categories.slice(0,20).map(row => '<div class="bar-row"><span>'+esc(row.name||'Unknown')+'</span><span class="bar" aria-hidden="true"><span style="width:'+(maximum && row.bytes ? Math.min(100,row.bytes/maximum*100) : 0)+'%"></span></span><span>'+esc(bytes(row.bytes))+'</span></div>').join('') : '<p class="empty">No category observations supplied.</p>');
+    html += card('Recommendation risk',table(['Risk','Supplied rows','Candidate local bytes'],['critical','high','medium','low','unknown'].map(label=>{const rows=recommendations.filter(row=>(row.risk||'unknown')===label);return [risk(label),String(rows.length),esc(bytes(sum(rows,'local_bytes')))];}),'Risk comes from the planner; missing risk stays Unknown.'));
+    html += card('Recommendations',table(['Path','Action','Risk','Local estimate','Dependency evidence','Repercussions','Recovery'],details(filtered(recommendations)),'Estimates and reviewed actions supplied by the planner.'),12);
+    html += card('Directory sizes',table(['Directory','Logical bytes','Allocated estimate'],filtered(report.directories||[]).map(row=>[esc(row.path??row.name??'Unknown'),esc(bytes(row.size??row.bytes)),esc(bytes(row.allocated_bytes))]),'Reported directory sizes and allocation estimates.'));
+    html += card('Duplicate review',table(['Group','Kind','Files','Candidate bytes','Keeper','Risk'],filtered(report.duplicates||[]).map((row,i)=>[esc(row.id??String(i+1)),esc(text(row.kind)),esc(text(row.files??row.paths)),esc(bytes(row.candidate_bytes??row.reclaimable)),esc(text(row.keeper)),risk(row.risk)]),'Exact and perceptual observations require separate review. No actions are synthesized.'));
+    html += card('Cache impact',table(['Path','Owner','Candidate bytes','Dependency evidence','Regeneration','Recovery'],filtered(caches).map(row=>[esc(row.path??'Unknown'),esc(text(row.owner)),esc(bytes(row.local_bytes??row.candidate_bytes)),esc(text(row.dependency_evidence)),esc(text(row.regeneration??row.repercussions)),esc(text(row.restore_path))]),'Cache age alone does not establish disposability.'));
+    html += card('Cloud offload', '<p class="muted">Supplied local estimate: '+esc(bytes(sum(cloud,'local_bytes')))+' · Cloud impact: '+esc(bytes(sum(cloud,'cloud_bytes')))+'</p>'+table(['Path','Provider / mode','Local estimate','Cloud bytes','Risk','Recovery'],filtered(cloud).map(row=>[esc(row.path??'Unknown'),esc(text(row.provider??row.mode)),esc(bytes(row.local_bytes)),esc(bytes(row.cloud_bytes)),risk(row.risk),esc(text(row.restore_path))]),'Moving a synced file can propagate deletion; eviction is a different operation.'));
+    html += card('Inventory',table(['Path','Kind / category','Logical bytes','Allocated estimate','Eligibility'],filtered(report.files||[]).map(row=>[esc(row.path??'Unknown'),esc([row.kind,row.category].filter(Boolean).join(' / ')||'Unknown'),esc(bytes(row.size??row.size_bytes)),esc(bytes(row.allocated_bytes)),esc(text(row.eligibility))]),'Supplied inventory rows; consult coverage omissions and scan counts.'),12);
+    const events = (report.events||[]).slice(-20);
+    html += card('Progress timeline',events.length ? '<ol class="timeline">'+events.map(row=>'<li><strong>'+esc(row.level??'Event')+'</strong> <span class="muted">'+esc(date(row.time))+'</span><br>'+esc(row.message??'')+'</li>').join('')+'</ol>' : '<p class="empty">No events supplied.</p>');
+    const manifest = report.manifest;
+    html += card('Manifest evidence','<dl class="status-grid"><dt>Path</dt><dd class="mono">'+esc(text(manifest?.path))+'</dd><dt>Status</dt><dd>'+esc(text(manifest?.status))+'</dd><dt>Mode</dt><dd>'+esc(report.mode||'report')+'</dd></dl>'+table(['Operation','Source','Destination','Status'],filtered(report.operations||[]).map(row=>[esc(text(row.type)),esc(text(row.source)),esc(text(row.destination)),esc(text(row.status))]),'Recorded evidence only; this dashboard has no execution controls.'));
+    html += '</section>';
+    $('report-content').innerHTML = html;
+  }
+  function showError(error) { $('error').textContent = 'Snapshot was not replaced: '+error.message; $('error').hidden=false; }
+  function accept(candidate) {
+    validate(candidate,schema,'report');
+    collections.forEach(key=>{if(candidate[key]===undefined) candidate[key]=[];});
+    report = candidate;
+    $('error').hidden=true;
+    render();
+  }
+  async function importFile(file) {
+    if (file.size > 16777216) throw Error('Report exceeds 16 MiB; export a capped summary.');
+    const raw = await file.text();
+    const candidate = JSON.parse(raw);
+    accept(candidate);
+    $('refresh-status').textContent = 'Imported '+file.name+' at '+new Date().toLocaleTimeString()+'. Captured '+date(report.updated_at)+'. '+(fileHandle?'Read access is limited to this selected file.':'Select the file again for a newer snapshot.');
+  }
+  function pause(reason) {
+    if (refreshTimer) window.clearInterval(refreshTimer);
+    refreshTimer=null;
+    $('auto-refresh').textContent='Start auto refresh';
+    $('auto-refresh').setAttribute('aria-pressed','false');
+    if(reason) $('refresh-status').textContent=reason;
+  }
+  async function refresh() {
+    if (loading || !fileHandle) return;
+    loading=true;
+    try { await importFile(await fileHandle.getFile()); }
+    catch(error) { pause('Auto refresh paused after an error. The last valid snapshot is retained.');showError(error); }
+    finally { loading=false; }
+  }
+  $('choose-file').addEventListener('click',async()=>{
+    pause();
+    if (typeof window.showOpenFilePicker==='function') {
+      try {
+        const handles=await window.showOpenFilePicker({multiple:false,types:[{description:'Files Buddy JSON snapshot',accept:{'application/json':['.json']}}]});
+        fileHandle=handles[0];
+        await refresh();
+        $('refresh-file').disabled=false;$('auto-refresh').disabled=false;
+      } catch(error) { if(error.name!=='AbortError') showError(error); }
+    } else { $('file-input').value='';$('file-input').click(); }
+  });
+  $('file-input').addEventListener('change',async event=>{
+    const file=event.target.files[0];if(!file)return;
+    fileHandle=null;$('refresh-file').disabled=true;$('auto-refresh').disabled=true;
+    try{await importFile(file);}catch(error){showError(error);}
+  });
+  $('refresh-file').addEventListener('click',refresh);
+  $('auto-refresh').addEventListener('click',()=>{
+    if(refreshTimer){pause('Auto refresh paused. The last valid snapshot is retained.');return;}
+    if(!fileHandle)return;
+    autoStarted=Date.now();
+    $('auto-refresh').textContent='Pause auto refresh';$('auto-refresh').setAttribute('aria-pressed','true');
+    $('refresh-status').textContent='Refreshing the selected file every 3 seconds, for at most one hour. Hiding this tab pauses refresh.';
+    refreshTimer=window.setInterval(()=>{if(Date.now()-autoStarted>=3600000)pause('Auto refresh stopped after one hour.');else refresh();},3000);
+  });
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&refreshTimer)pause('Auto refresh paused because the tab is hidden.');});
+  window.addEventListener('beforeunload',()=>pause());
+  $('filter').addEventListener('input',()=>{if(report)render();});
+  $('sort').addEventListener('change',()=>{if(report)render();});
+  try { accept(JSON.parse($('data').textContent)); }
+  catch(error) { $('report-content').innerHTML='<p class="empty">No valid report could be displayed.</p>';showError(error); }
 })();
 </script>
 </body>

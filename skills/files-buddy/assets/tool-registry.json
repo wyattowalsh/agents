@@ -1,0 +1,290 @@
+{
+  "schema_version": "1.0",
+  "reviewed_at": "2026-11-20",
+  "qualification": "Fixture-compatible parsing and narrow argv contracts; native macOS runs require separate qualification.",
+  "tools": {
+    "mole": {
+      "executable": "mo",
+      "fixture_versions": [
+        "1.73.0"
+      ],
+      "version_argv": [
+        "--version"
+      ],
+      "source": "https://github.com/tw93/Mole/tree/V1.73.0",
+      "license": "GPL-3.0",
+      "operations": {
+        "analyze": {
+          "execute": true,
+          "accepted_exit_codes": [
+            0
+          ],
+          "parser_version": "mole-analyze-1",
+          "side_effects": {
+            "source_mutation": false,
+            "content_reads": false,
+            "network": "upstream preflight/update behavior may vary; no file upload requested",
+            "auxiliary_writes": "Mole cache/log/build state may be written"
+          },
+          "scope": "explicit local directory; no overview default"
+        },
+        "status": {
+          "execute": true,
+          "accepted_exit_codes": [
+            0
+          ],
+          "parser_version": "mole-status-1",
+          "side_effects": {
+            "source_mutation": false,
+            "content_reads": false,
+            "network": "no file transfer requested",
+            "auxiliary_writes": "Mole collector/cache state may be written"
+          },
+          "scope": "system telemetry, process command details excluded from import"
+        },
+        "history": {
+          "execute": true,
+          "accepted_exit_codes": [
+            0
+          ],
+          "parser_version": "mole-history-1",
+          "side_effects": {
+            "source_mutation": false,
+            "content_reads": "Mole operation and deletion logs",
+            "network": false,
+            "auxiliary_writes": "upstream initialization may write configuration"
+          },
+          "scope": "1..200 history entries; supplementary evidence only"
+        }
+      }
+    },
+    "fclones": {
+      "executable": "fclones",
+      "fixture_versions": [
+        "0.35.0"
+      ],
+      "version_argv": [
+        "--version"
+      ],
+      "source": "https://github.com/pkolaczk/fclones/blob/v0.35.0/fclones/src/report.rs",
+      "license": "MIT",
+      "operations": {
+        "group": {
+          "execute": false,
+          "accepted_exit_codes": [
+            0
+          ],
+          "parser_version": "fclones-group-1",
+          "side_effects": {
+            "source_mutation": false,
+            "content_reads": true,
+            "network": false,
+            "auxiliary_writes": "optional upstream hash cache; not invoked by importer"
+          },
+          "scope": "reviewed local file set; JSON import only"
+        }
+      }
+    },
+    "dust": {
+      "executable": "dust",
+      "fixture_versions": [
+        "1.2.7"
+      ],
+      "version_argv": [
+        "--version"
+      ],
+      "source": "https://github.com/bootandy/dust/blob/v1.2.7/src/display_node.rs",
+      "license": "Apache-2.0",
+      "operations": {
+        "tree": {
+          "execute": false,
+          "accepted_exit_codes": [
+            0
+          ],
+          "parser_version": "dust-display-tree-1",
+          "side_effects": {
+            "source_mutation": false,
+            "content_reads": false,
+            "network": false,
+            "auxiliary_writes": "caller-owned report"
+          },
+          "scope": "display tree import; rounded sizes are not byte accounting"
+        }
+      }
+    },
+    "f2": {
+      "executable": "f2",
+      "fixture_versions": [
+        "2.2.2"
+      ],
+      "version_argv": [
+        "--version"
+      ],
+      "source": "https://github.com/ayoisaiah/f2/tree/v2.2.2",
+      "license": "MIT",
+      "operations": {
+        "preview": {
+          "execute": false,
+          "accepted_exit_codes": [
+            0
+          ],
+          "parser_version": "f2-preview-1",
+          "side_effects": {
+            "source_mutation": false,
+            "content_reads": "metadata/hash variables may read content and hydrate placeholders",
+            "network": false,
+            "auxiliary_writes": "tool-dependent; only imported reports are handled"
+          },
+          "scope": "default preview --json only; no native exec or undo"
+        }
+      }
+    },
+    "rclone": {
+      "executable": "rclone",
+      "fixture_versions": [
+        "1.76.0"
+      ],
+      "version_argv": [
+        "version"
+      ],
+      "source": "https://github.com/rclone/rclone/tree/v1.76.0",
+      "license": "MIT",
+      "operations": {
+        "lsjson": {
+          "execute": true,
+          "accepted_exit_codes": [
+            0
+          ],
+          "parser_version": "rclone-lsjson-1",
+          "side_effects": {
+            "source_mutation": false,
+            "content_reads": "remote listing metadata only; no --hash",
+            "network": "explicit configured remote; uses existing credentials",
+            "auxiliary_writes": "token refresh or upstream logs may write configured local state"
+          },
+          "scope": "one explicitly selected configured remote:path; nonrecursive listing"
+        }
+      }
+    },
+    "fd": {
+      "executable": "fd",
+      "fixture_versions": [],
+      "source_reviewed_version": "10.5.2",
+      "version_argv": [],
+      "source": "https://github.com/sharkdp/fd/tree/v10.5.2",
+      "license": "MIT OR Apache-2.0",
+      "operations": {},
+      "qualification": "optional operator workflow; no runtime adapter or mutation support claimed"
+    },
+    "gdu": {
+      "executable": "gdu",
+      "fixture_versions": [],
+      "source_reviewed_version": "5.39.0",
+      "version_argv": [],
+      "source": "https://github.com/dundee/gdu/tree/v5.39.0",
+      "license": "MIT",
+      "operations": {},
+      "qualification": "optional operator workflow; no runtime adapter or mutation support claimed"
+    },
+    "ncdu": {
+      "executable": "ncdu",
+      "fixture_versions": [],
+      "source_reviewed_version": "2.9.2",
+      "version_argv": [],
+      "source": "https://dev.yorhel.nl/ncdu",
+      "license": "MIT",
+      "operations": {},
+      "qualification": "optional operator workflow; no runtime adapter or mutation support claimed"
+    },
+    "restic": {
+      "executable": "restic",
+      "fixture_versions": [],
+      "source_reviewed_version": "0.20.0",
+      "version_argv": [],
+      "source": "https://github.com/restic/restic/tree/v0.20.0",
+      "license": "BSD-2-Clause",
+      "operations": {},
+      "qualification": "optional operator workflow; no runtime adapter or mutation support claimed"
+    },
+    "kopia": {
+      "executable": "kopia",
+      "fixture_versions": [],
+      "source_reviewed_version": "0.23.1",
+      "version_argv": [],
+      "source": "https://github.com/kopia/kopia/tree/v0.23.1",
+      "license": "Apache-2.0",
+      "operations": {},
+      "qualification": "optional operator workflow; no runtime adapter or mutation support claimed"
+    },
+    "gomi": {
+      "executable": "gomi",
+      "fixture_versions": [],
+      "source_reviewed_version": "1.11.0",
+      "version_argv": [],
+      "source": "https://github.com/babarot/gomi/tree/v1.11.0",
+      "license": "MIT",
+      "operations": {},
+      "qualification": "optional operator workflow; no runtime adapter or mutation support claimed"
+    },
+    "czkawka": {
+      "executable": "czkawka_cli",
+      "fixture_versions": [],
+      "source_reviewed_version": "12.0.2",
+      "version_argv": [],
+      "source": "https://github.com/qarmin/czkawka/tree/12.0.2",
+      "license": "MIT (CLI/core)",
+      "operations": {},
+      "qualification": "optional operator workflow; no runtime adapter or mutation support claimed"
+    },
+    "rmlint": {
+      "executable": "rmlint",
+      "fixture_versions": [],
+      "source_reviewed_version": "2.11.0",
+      "version_argv": [],
+      "source": "https://github.com/sahib/rmlint/tree/v2.11.0",
+      "license": "GPL-3.0",
+      "operations": {},
+      "qualification": "optional operator workflow; no runtime adapter or mutation support claimed"
+    },
+    "organize": {
+      "executable": "organize",
+      "fixture_versions": [],
+      "source_reviewed_version": "3.4.0",
+      "version_argv": [],
+      "source": "https://github.com/tfeldmann/organize/tree/v3.4.0",
+      "license": "MIT",
+      "operations": {},
+      "qualification": "optional operator workflow; no runtime adapter or mutation support claimed"
+    },
+    "ouch": {
+      "executable": "ouch",
+      "fixture_versions": [],
+      "source_reviewed_version": "0.8.3",
+      "version_argv": [],
+      "source": "https://github.com/ouch-org/ouch/tree/0.8.3",
+      "license": "MIT",
+      "operations": {},
+      "qualification": "optional operator workflow; no runtime adapter or mutation support claimed"
+    },
+    "exiftool": {
+      "executable": "exiftool",
+      "fixture_versions": [],
+      "source_reviewed_version": null,
+      "version_argv": [],
+      "source": "https://exiftool.org/",
+      "license": "Artistic-1.0-Perl OR GPL-1.0-or-later",
+      "operations": {},
+      "qualification": "optional operator workflow; no runtime adapter or mutation support claimed"
+    },
+    "ffprobe": {
+      "executable": "ffprobe",
+      "fixture_versions": [],
+      "source_reviewed_version": null,
+      "version_argv": [],
+      "source": "https://ffmpeg.org/ffprobe.html",
+      "license": "build-dependent LGPL/GPL",
+      "operations": {},
+      "qualification": "optional operator workflow; no runtime adapter or mutation support claimed"
+    }
+  }
+}

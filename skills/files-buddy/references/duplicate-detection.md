@@ -1,106 +1,116 @@
-# Duplicate Detection Reference
+# Duplicate Detection
 
-Rules for `dedupe`, `clean`, and `cleanup-plan` modes. Combine `fclones` for true duplicate groups, `rmlint` for filesystem lint, `czkawka_cli` for broad media/similarity detection, and `rclone dedupe --dry-run` for cloud remotes that allow duplicate names.
+Content equality is evidence for review. It does not establish that either copy
+is disposable, select a keeper, or authorize a move, link, or deletion.
 
-## Engine Policy
+## Contents
 
-| Engine | Use For | Safe Default | Never Do |
-|--------|---------|--------------|----------|
-| `fclones` | Fast exact duplicates by content hash | `fclones group --format json <path>` | Run remove/link/dedupe without approved plan |
-| `rmlint` | Exact duplicates plus empty files/dirs, broken links, bad IDs | `rmlint -o json:<file> <path>` | Execute generated shell script blindly |
-| `czkawka_cli dup` | Exact duplicates when user wants Czkawka reports/cache | `czkawka_cli dup -d <path> --json-pretty` | Use delete methods before approval |
-| `czkawka_cli image/video/music` | Similar images, videos, and music | report file only | Treat perceptual matches as safe duplicates |
-| `rclone dedupe` | Duplicate names and remote hash checks | `--dry-run --dedupe-mode list` | Let default interactive/delete behavior run unattended |
-| dupeGuru / Video Duplicate Finder | GUI or specialist review queue | export/report only | Automate deletions from fuzzy groups |
-| `imagededup` | Advanced image near-duplicate analysis | report hashes/clusters | Auto-trash similar images |
-| `jdupes` / `rdfind` / `duff` | Fallback exact duplicate tools | report/list only | `jdupes --quick`, partial-only checks, or shell piping to delete |
+1. Exact local workflow
+2. External engines
+3. Keeper and dependency review
+4. Similar media and cloud
+5. Accounting and verification
 
-## Local Duplicate Workflow
+## Exact Local Workflow
 
-1. Run `fclones group --format json <path>` to discover content-identical files.
-2. Run `rmlint -o json:<file> <path>` to find empty files, empty dirs, broken links, and duplicate metadata.
-3. Optionally run `czkawka_cli dup` when Czkawka is installed and the user wants a second exact engine.
-4. Normalize outputs into one report grouped by issue type.
-5. Present reclaimable bytes, keeper rationale, dependency impact, and restore path before any trash action.
-6. Only trash after confirmation. Never pipe directly into a delete command.
-
-## Similar Media Workflow
-
-1. Use `czkawka_cli image`, `czkawka_cli video`, or `czkawka_cli music` for perceptual candidate groups.
-2. Treat every group as **review only**. Similar does not mean duplicate.
-3. Preserve originals by default. Suggested keepers may consider resolution, bitrate, duration, path intent, and edit metadata.
-4. Produce contact-sheet paths or report files when practical; ask the user to choose keepers.
-5. Never mix similar-media reclaimable bytes into exact-duplicate savings without a separate label.
-
-## fclones Group Parsing
-
-Use the JSON shape documented in `references/tool-integrations.md`.
-
-| Field | Meaning | How to Use |
-|-------|---------|------------|
-| `stats.groups` | Duplicate groups found | High-level summary |
-| `stats.redundant_bytes` | Reclaimable bytes | Blast-radius summary |
-| `groups[].file_len` | Size of each duplicate set | Table sorting |
-| `groups[].hash` | Content hash | Stable group identifier |
-| `groups[].files[].path` | Candidate file path | Keeper / trash selection |
-
-## Keeper Heuristics
-
-Keep heuristics conservative. If a group is ambiguous, present the options instead of guessing.
-
-1. Ignore hardlink clusters: same `st_ino` + `st_nlink > 1` means one file with multiple names, not multiple copies.
-2. Prefer a non-conflict filename over obvious sync-conflict copies like `file (1).txt` or `copy of file.txt`.
-3. Prefer files already inside the user's intended canonical folder over temporary inbox folders.
-4. Prefer local, materialized files over cloud placeholders when hashes or sizes are uncertain.
-5. If no clear keeper emerges, ask the user which copy to retain.
-
-## rmlint Lint Types
-
-| Lint Type | Meaning | Safe Default |
-|-----------|---------|--------------|
-| `duplicate_file` | Same content, one original + duplicates | Keep original, preview duplicates |
-| `emptyfile` | Zero-byte file | Show separately; often safe to trash |
-| `emptydir` | Empty directory | Remove only after parent operations finish |
-| `badlink` | Broken symlink | Show as lint, do not auto-fix |
-
-Use `rmlint` for lint reporting, not blind execution. Review the JSON output rather than relying on generated shell scripts.
-
-## Cloud Duplicate Handling
-
-Google Drive-style remotes can contain files with the same name in one directory. Use:
+First collect metadata with `storage-audit.py scan`. Then obtain explicit consent
+for content reads of eligible local files:
 
 ```bash
-rclone dedupe --dry-run --dedupe-mode list remote:path
+python scripts/storage-audit.py dedupe \
+  --database "$HOME/.files-buddy/runs/downloads/inventory.sqlite" \
+  --read-content --max-bytes 2147483648 --max-seconds 60
 ```
 
-Recommended modes:
+This emits exact SHA-256 review groups only. It does not create an execution
+plan or choose a keeper. Every group includes the algorithm, digest, paths,
+logical candidate bytes, dependency evidence, `review_only: true`, and unknown
+risk. A stable alphabetical `keeper_candidate` is a display aid; `keeper`
+remains null until the user makes a choice.
 
-- `list` / dry-run first for inspection
-- `rename` when the user wants to preserve all variants
-- `newest`, `oldest`, `largest`, `smallest` only after explicit confirmation
-- `--by-hash` only when the backend supports reliable hashes and the user approved hash-based remote review
+Only owned regular local files with eligible metadata enter size pre-groups.
+Files with the same `(device,inode)` are one object. Multi-link files, symlinks,
+placeholders, known cloud paths, sparse/flagged objects, project/app-managed
+stores, and sidecar families remain excluded from built-in content reads.
+Zero-byte files remain inventory observations, not cleanup candidates.
 
-## Edge Cases
+Each content candidate is opened using non-following descriptors, checked
+against its stored per-file fingerprint, checked for fresh ancestor/project
+and companion-sidecar markers, hashed in bounded chunks, and checked again. Resume caches never rely on a parent directory timestamp. Changes or
+byte/time limits produce partial coverage. Unchecked cached rows cannot make
+an interrupted hash pass look complete.
 
-| Issue | Why It Matters | Mitigation |
-|-------|----------------|------------|
-| Zero-byte files | Fast to detect but often intentional placeholders | Report separately from hash-based duplicates |
-| NFC / NFD paths | Visually identical names can compare differently | Normalize paths before presenting groups |
-| Case-insensitive volumes | `Photo.jpg` vs `photo.jpg` may collide on move | Check rename plan before execution |
-| Evicted cloud files | Placeholder size/hash data can be wrong | Materialize before hash-based comparison |
-| Hardlinks | Look like duplicates by path count | Compare inode and link count before trashing |
-| Similar media | Looks redundant but may differ in quality or edits | Review queue only, no auto-trash |
-| Package bundles | Directory looks like a file in Finder | Treat as app-managed until dependency owner is clear |
+## External Engines
 
-## Presentation Shape
+| Tool | Role | Supported surface | Boundary |
+| --- | --- | --- | --- |
+| fclones 0.35.0 | Primary optional exact engine | Versioned JSON import | No remove/link/dedupe execution |
+| rmlint | Filesystem lint and optional cross-check | Operator-reviewed JSON | Never execute generated shell scripts |
+| Czkawka | Optional exact/media review | Operator-reviewed reports | Similarity is never deletion evidence |
+| rclone | Remote object/name review | Versioned metadata listing | Names/sizes do not prove content equality |
+| dupeGuru / Video Duplicate Finder | Interactive specialist review | User-selected workflow | No automated keeper/deletion policy |
 
-Show duplicate groups as:
+A separate tool is useful when it resolves a concrete evidence gap, not merely
+because another duplicate engine exists. Native commands can read content,
+hydrate cloud placeholders, and write caches. Record those effects before use.
 
-- keeper candidate
-- duplicate count
-- total reclaimable bytes
-- paths in the group
+### fclones Parser
 
-Then show lint issues (`emptydir`, `badlink`, `emptyfile`) in a separate section so the user can confirm them independently.
+Use `header.stats`, not a top-level stats object. Current statistic names are
+`group_count`, `total_file_count`, `total_file_size`, `redundant_file_count`,
+`redundant_file_size`, `missing_file_count`, and `missing_file_size`. Null stats
+mean incomplete evidence. Groups have `file_len`, `file_hash`, and an array of
+string paths in `files`. See the tagged serializer in `tool-integrations.md`.
 
-Exact duplicate groups and similar-media groups must be rendered in separate dashboard sections and require separate approvals.
+An imported fclones hash retains an unspecified upstream algorithm label unless
+the recorded command proves which algorithm was used. Before mutation, the
+common executor must collect its own supported algorithm-labelled evidence.
+Do not reinterpret historical BLAKE3 values as SHA-256.
+
+## Keeper and Dependency Review
+
+For each exact group:
+
+1. Confirm content and stable object identity independently of path names.
+2. Identify canonical project/app ownership, sidecars, metadata, permissions,
+   cloud provider IDs, and active references. Similar names are only hints.
+3. Preserve Git projects, DAW/Logic bundles, sample libraries, model stores, and
+   app-managed libraries as dependency units.
+4. Ask the user to select a keeper when intended canonical location is unclear.
+5. Build exact source/destination mappings only for selected eligible files.
+6. Preview collisions, repercussions, retained bytes, and the supported restore
+   path. Require approval bound to that plan's digest before execution.
+
+Do not normalize or rewrite filesystem paths merely for display. NFC/NFD or
+case-folded text can help flag a potential collision, but the original path
+bytes/strings remain the operation identity. Files on separate devices can
+share inode numbers; compare both device and inode.
+
+## Similar Media and Cloud
+
+Czkawka image/video/music, dupeGuru, and similar tools produce review queues.
+Separate them from exact groups in every table and report. Never include their
+potential savings in exact duplicate totals or auto-trash a perceptual match.
+Metadata enrichment via ExifTool/ffprobe is opt-in and scoped to selected local
+materialized files; it may read content. Preserve originals and associated
+sidecars. Czkawka cache writes, exit-11 findings behavior, and ffmpeg video
+requirements are version-specific and need native qualification.
+
+For cloud paths, start with metadata-only listing. Hashing/copying a placeholder
+can download it. Materialization needs a separate decision explaining network
+and local-space cost. Distinguish equal names, equal sizes, provider hash
+comparisons, local content equality, and provider sync completion. None are
+interchangeable. Unknown provider state stays report-only.
+
+## Accounting and Verification
+
+`candidate_bytes` means logical bytes in possible redundant copies, before keeper
+selection and dependency checks. It is not physical APFS reclaimability.
+`verified_reclaimed_bytes` remains unknown unless a qualified workflow supplies
+actual evidence. Quarantine and Trash retain storage; cloud quota and local
+bytes are separate metrics.
+
+Lint findings such as empty files/directories and broken links are separate
+review classes. Empty objects may be intentional sentinels or placeholders.
+No finding is piped into deletion, and no external preview replaces the exact
+approved mapping, fresh object checks, and manifest-backed recovery contract.

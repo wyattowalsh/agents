@@ -135,11 +135,22 @@ def _extract_heading_section(body: str, heading_re: str) -> str:
 
 
 def _dispatch_table_rows(body: str) -> list[str]:
-    """Return data rows from the first $ARGUMENTS dispatch table."""
+    """Return rows from the first legacy or portable input/action dispatch table."""
     rows: list[str] = []
     in_table = False
+    in_dispatch = False
     for line in body.splitlines():
-        if "$ARGUMENTS" in line and "|" in line:
+        heading = re.match(r"^#{1,6}\s+(.+)$", line)
+        if heading:
+            in_dispatch = bool(re.match(r"dispatch(?:\s+table)?\b", heading.group(1), re.I))
+        cells = [re.sub(r"[`*]", "", cell).strip().lower() for cell in line.strip().strip("|").split("|")]
+        portable_header = (
+            in_dispatch
+            and len(cells) >= 2
+            and cells[0] in {"input", "arguments", "command"}
+            and any(cell in {"action", "mode"} for cell in cells[1:])
+        )
+        if "|" in line and ("$ARGUMENTS" in line or portable_header):
             in_table = True
             continue
         if not in_table:
@@ -300,7 +311,7 @@ def _has_state_management_structure(body: str) -> bool:
     heading_re = r"^#+\s*(state\s+management|progress|journal|resume)\b"
     section = _extract_heading_section(body, heading_re)
     scope = section or body
-    has_state_path = bool(re.search(r"~\/\.\{[^}]+\}\/[a-z0-9._-]+\/", scope))
+    has_state_path = bool(re.search(r"~/\.(?:\{[^}]+\}|[a-z0-9][a-z0-9._-]*)(?:/[a-z0-9._-]+)*/", scope))
     has_state_contract = any(
         marker in scope.lower()
         for marker in ["state-dir", "resume", "list", "read/write", "persist", "progress.py", "filename:"]
@@ -506,7 +517,7 @@ def score_dispatch_table(body: str) -> dict:
     s, f = 0, []
     table_rows = _dispatch_table_rows(body)
     if not table_rows:
-        f.append("No dispatch table with $ARGUMENTS found")
+        f.append("No dispatch table with a supported input/action header found")
         return {
             "name": "Dispatch Table",
             "id": "dispatch-table",
@@ -516,7 +527,7 @@ def score_dispatch_table(body: str) -> dict:
             "findings": f,
         }
     s += 4
-    f.append("Dispatch table with $ARGUMENTS found")
+    f.append("Dispatch table with a supported input/action header found")
     rows = len(table_rows)
     if rows >= 3:
         s += 3

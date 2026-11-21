@@ -1,93 +1,86 @@
 # Cloud Drive Detection and Safety
 
-## Detection
+## Contents
 
-### macOS
+1. Detection and uncertainty
+2. Operation semantics
+3. Provider handoffs
+4. Verification and content reads
 
-| Provider | Path | Detection |
-|----------|------|-----------|
-| iCloud Drive | ~/Library/Mobile Documents/com~apple~CloudDocs/ | Check dir exists |
-| Google Drive | ~/Library/CloudStorage/GoogleDrive-<email>/ | Glob GoogleDrive-* |
-| Dropbox | ~/Library/CloudStorage/Dropbox-*/ | Glob Dropbox* |
-| OneDrive | ~/Library/CloudStorage/OneDrive-*/ | Glob OneDrive-* |
-| Box | ~/Library/CloudStorage/Box-*/ | Glob Box-* |
+## Detection and Uncertainty
 
-All File Provider providers use ~/Library/CloudStorage/ except iCloud.
+| Surface | Discovery hint | Limits |
+| --- | --- | --- |
+| iCloud Drive | `~/Library/Mobile Documents/com~apple~CloudDocs` | Desktop/Documents may also be managed; path alone cannot prove sync completion |
+| File Provider domains | `~/Library/CloudStorage/*` | Provider names, account layout, and state vary |
+| Google Drive | A GoogleDrive-prefixed provider domain or configured custom root | The root does not prove Stream versus Mirror |
+| Dropbox, OneDrive, Box | Known domains plus user-declared sync roots | Custom/legacy roots may not be automatically detectable |
+| rclone | An explicitly selected configured remote | Do not enumerate credentials or assume a remote is a backup |
 
-Detection code:
+Path classification is a conservative observation, not authoritative provider
+state. An unknown provider or unknown materialization/sync state means review
+only. The local executor rejects known cloud paths and requires the trusted
+caller to establish that its scope is local. It cannot detect every custom sync
+client. Do not represent that attestation as an automated proof.
 
-```python
-from pathlib import Path
+## Operation Semantics
 
-cloud_storage = Path.home() / "Library/CloudStorage"
-if cloud_storage.exists():
-    for entry in cloud_storage.iterdir():
-        # match provider by prefix
-```
+| Operation | Local effect | Remote implication |
+| --- | --- | --- |
+| Provider-native Remove Download / eviction | Can release cached local content | Intended to preserve the cloud object, subject to provider state |
+| Copy outside a sync root | Creates another local copy | Usually leaves the source namespace intact; copying may hydrate it |
+| Move outside a sync root | Removes the path from the synced namespace | Can propagate deletion to the cloud and other devices |
+| Move within a sync root | Changes its path; usually retains local data | Syncs the rename/move and can break references |
+| Trash/delete a synced path | Removes the synced path | Can propagate remote deletion |
+| Local quarantine | Retains bytes at another location | Does not cancel any source-side sync deletion |
 
-files-buddy is macOS-only. Non-macOS cloud mount notes are intentionally out of scope.
+A `.files-buddy-trash` directory is not a cloud safety mechanism. Outside the
+sync root it does not prevent source deletion from syncing; inside it, it remains
+part of that provider's namespace. Neither case establishes local bytes reclaimed.
 
----
+## Provider Handoffs
 
-## iCloud Specifics
+### iCloud Drive
 
-### brctl Commands
+Inspect Finder's provider state and use the documented **Remove Download**
+action when the user has approved local eviction of fully uploaded content.
+Keep cloud deletion and eviction as distinct plans. Do not automate undocumented
+`brctl` or `fileproviderctl` mutations from generic recipes: command presence is
+not a qualified provider contract. A version-specific adapter would need native
+fixtures for pending upload, pinned content, package bundles, offline state, and
+post-action materialization before it could enter the executor.
 
-| Command | Purpose |
-|---------|---------|
-| brctl download <path> | Materialize evicted file |
-| brctl evict <path> | Evict file (keep in cloud) |
-| brctl status | Unsynced items |
-| brctl quota | Available space |
-| brctl monitor | Real-time sync |
+### Google Drive Desktop
 
-### fileproviderctl
+Confirm **Stream files** versus **Mirror files** using Drive settings/provider
+state. Stream files can be fetched on demand; Mirror intentionally retains local
+copies. Use the provider UI when local release is ambiguous. Google Drive can
+have multiple remote objects with the same name, so retain remote IDs and do not
+assume a path string uniquely identifies the object to keep or remove.
 
-| Command | Purpose |
-|---------|---------|
-| fileproviderctl materialize <path> | Download file |
-| fileproviderctl evict <path> | Evict file |
+### rclone
 
-### Evicted File Detection
+Use an explicitly configured remote for bounded metadata listings. Start without
+`--hash`, which may add expensive provider work or content reads. A later
+operator-approved copy workflow is copy, verify, restore proof, then a separate
+source-release plan. Never substitute `move`, `sync`, `delete`, or `purge` for
+that sequence. Review `rclone check`'s actual hash support; size-only success does
+not prove equal contents. See `references/extension-workflows.md`.
 
-- macOS 14+ (Sonoma): Files keep original names ("dataless files"). Use `mdls` or NSMetadataQuery.
-- Pre-Sonoma: Hidden `.filename.ext.icloud` stub files.
+## Verification and Content Reads
 
----
+1. Record provider/account identity without secrets, object IDs where available,
+   root, mode, sync/materialization status, capture time, and unknowns.
+2. Metadata logical size and allocated estimates are different. Do not open a
+   placeholder to obtain a hash or “correct” its size without informed consent.
+3. Before approved hydration, show potential download/local-space impact and
+   confirm available space. Hashing, copying, media probes, and duplicate tools
+   can hydrate files even when described as read-only.
+4. Verify the specific copied/evicted objects. A quiet generic status command
+   alone is insufficient to establish all object-level postconditions.
+5. Record recoverability, offline consequences, and retention limits. A synced
+   copy is not automatically an independent backup.
 
-## Google Drive Specifics
-
-- Stream mode: files fetched on demand, standard tools trigger download
-- Mirror mode: files are intentionally stored locally; offload recommendations should suggest changing Drive settings or using provider UI rather than deleting mirrored data
-- Duplicate filenames: GDrive allows identical names in same folder
-- `rclone dedupe gdrive:path` modes: newest, oldest, largest, smallest, rename, list
-- `rclone lsjson gdrive:path` for structured listing
-- File IDs are opaque, not paths
-
----
-
-## Safety Rules for Cloud Operations
-
-1. NEVER auto-delete -- stage cloud removals into local `.files-buddy-trash/` so deletion never syncs to all devices
-2. Materialize evicted files before size/hash analysis (dust/fclones report wrong sizes on placeholders)
-3. Warn before bulk ops about sync implications
-4. Rate-limit batch ops: `pueue parallel 2` for cloud (vs 8 for local)
-5. Detect conflict copies: patterns `(1)`, `(conflict)`, ` 2.txt`
-6. Cloud ops always at least Medium friction tier
-7. After batch ops, suggest waiting for sync: `brctl status` / `rclone check`
-8. Offload is local-byte eviction only; if the action removes cloud copies, classify it as deletion/cleanup, not offload
-9. Verify enough local free space before materializing placeholders for hashing
-
----
-
-## Gotchas
-
-| Issue | Impact | Mitigation |
-|-------|--------|------------|
-| Placeholder files | 0-byte size reports | Materialize first |
-| Sync conflicts | Duplicate files created | Detect conflict patterns |
-| Rate limiting | API throttle on bulk ops | pueue with delays |
-| Deletion syncs | File lost on all devices | Local staging first |
-| Sync lag | Changes not immediate | Wait + verify |
-| xattr stripping | iCloud strips non-syncable xattrs | Don't rely on xattrs |
-| Drive Stream vs Mirror | Same path shape can mean different local-byte behavior | Detect/report mode; ask user if ambiguous |
+Sources: [Apple iCloud file management](https://support.apple.com/en-ie/guide/mac-help/mchl1a02d711/27/mac/27),
+[Google Drive streaming and mirroring](https://support.google.com/drive/answer/13401938?hl=en),
+[rclone check](https://rclone.org/commands/rclone_check/).

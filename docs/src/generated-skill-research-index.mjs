@@ -14,7 +14,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.74,
@@ -30,7 +30,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.73,
@@ -54,7 +54,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.72,
@@ -118,7 +118,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.76,
@@ -278,7 +278,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.72,
@@ -526,7 +526,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.78,
@@ -534,7 +534,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.78,
@@ -542,7 +542,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.73,
@@ -614,7 +614,7 @@ export const skillResearchIndex = [
     "research_tier": "standard",
     "researched_at": "2026-06-22T07:43:12Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.78,
@@ -622,7 +622,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.76,
@@ -646,7 +646,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.78,
@@ -654,7 +654,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.78,
@@ -662,7 +662,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.75,
@@ -702,7 +702,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.74,
@@ -726,7 +726,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.73,
@@ -790,13 +790,13 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-07-02T00:00:00Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.78,
     "name": "files-buddy",
     "research_tier": "quick",
-    "researched_at": "2026-06-16T01:14:01Z",
+    "researched_at": "2026-11-21T01:09:53Z",
     "source_type": "custom",
     "stale": false
   },
@@ -934,7 +934,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.73,
@@ -1150,7 +1150,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.74,
@@ -1166,7 +1166,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.75,
@@ -1182,7 +1182,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.78,
@@ -1198,7 +1198,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.73,
@@ -1214,7 +1214,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.75,
@@ -1270,7 +1270,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.74,
@@ -1414,7 +1414,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.77,
@@ -1486,7 +1486,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.72,
@@ -1534,7 +1534,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.75,
@@ -1582,7 +1582,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.72,
@@ -1614,7 +1614,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.77,
@@ -1686,7 +1686,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.76,
@@ -1742,7 +1742,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-22T07:58:35Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.78,
@@ -1750,7 +1750,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.78,
@@ -1758,7 +1758,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.72,
@@ -1798,7 +1798,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-07-02T00:00:00Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.78,
@@ -1806,7 +1806,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.77,
@@ -1982,7 +1982,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.72,
@@ -2038,7 +2038,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.72,
@@ -2062,7 +2062,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.72,
@@ -2118,7 +2118,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.76,
@@ -2158,7 +2158,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-23T22:12:37Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.86,
@@ -2166,7 +2166,7 @@ export const skillResearchIndex = [
     "research_tier": "comprehensive",
     "researched_at": "2026-06-22T07:55:00Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.73,
@@ -2222,7 +2222,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.74,
@@ -2270,7 +2270,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.75,
@@ -2334,7 +2334,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.78,
@@ -2342,7 +2342,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.75,
@@ -2390,7 +2390,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.78,
@@ -2398,7 +2398,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.72,
@@ -2566,7 +2566,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.78,
@@ -2630,7 +2630,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.75,
@@ -2649,10 +2649,10 @@ export const skillResearchIndex = [
     "stale": true
   },
   {
-    "mean_confidence": 0.78,
+    "mean_confidence": 0.96,
     "name": "things-manager",
     "research_tier": "quick",
-    "researched_at": "2026-06-16T01:14:01Z",
+    "researched_at": "2026-08-27T00:00:00Z",
     "source_type": "custom",
     "stale": false
   },
@@ -2822,7 +2822,7 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   },
   {
     "mean_confidence": 0.77,
@@ -2862,6 +2862,6 @@ export const skillResearchIndex = [
     "research_tier": "quick",
     "researched_at": "2026-07-02T00:00:00Z",
     "source_type": "custom",
-    "stale": false
+    "stale": true
   }
 ];

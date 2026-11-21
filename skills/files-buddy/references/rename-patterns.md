@@ -1,59 +1,87 @@
-# Rename Patterns Reference
+# Rename Patterns
 
-Rules for `rename` mode using `f2`. Preview first, then execute with `-x`. Use native undo support (`f2 -u` in the installed version) when reversing a rename batch.
+F2 supplies a preview. Files Buddy owns the selected exact mapping, approval,
+collision checks, manifest, and recovery. Native F2 history is supplementary
+and is not a second undo authority.
 
-## Workflow
+## Contents
 
-1. Translate the user's intent into an `f2` expression or replacement pattern.
-2. Run `f2` in preview mode (default) and capture the before/after table.
-3. Check for collisions, case-only renames, and directory escapes before execution.
-4. Present the diff to the user.
-5. Execute with `-x` only after confirmation.
-6. Prefer `f2 -u` for undo when the rename batch maps cleanly to a single native undo record.
+1. Preview workflow
+2. Versioned patterns
+3. Collision and metadata checks
+4. Execution boundary
 
-## Pattern Catalog
+## Preview Workflow
 
-| Intent | Example Command Shape | Notes |
-|--------|------------------------|-------|
-| Replace noisy text | `f2 -f 'FINAL' -r '' <path>` | Good for removing suffix clutter |
-| Normalize separators | `f2 -f '[ _]+' -r '-' <path>` | Preview case-only collisions on APFS |
-| Add sequence numbers | `f2 -f '^' -r '{nr}-' <path>` | Use `{nr}` for stable ordering |
-| Prefix with parent dir | `f2 -f '^' -r '{p}-' <path>` | Useful after flattening |
-| Rebuild from EXIF | `f2 -f '.*' -r '{xt.date}-{xt.make}-{nr}.{.ext}' <path>` | Preview long filenames |
-| Rebuild from ID3 | `f2 -f '.*' -r '{id3.artist} - {id3.title}.{.ext}' <path>` | Great for messy music folders |
-| Hash-based names | `f2 -f '.*' -r '{hash.blake3}.{.ext}' <path>` | Useful for collision-proof archival names |
+1. Identify the specific local files and their project/sidecar ownership.
+2. Capture the installed F2 version. The current parser fixture is 2.2.2.
+3. Preview with F2's default non-executing behavior and `--json`; do not add
+   `--exec`, `--allow-overwrites`, `--clean`, or `--undo`.
+4. Import the report:
 
-## Supported Variable Families
+```bash
+python scripts/storage-audit.py observe f2 preview \
+  --version 2.2.2 --input rename-preview.json
+```
 
-Use only variables verified in the installed `f2` version and mirrored in `references/tool-integrations.md`.
+5. Resolve `base_dir`/`source` and `target_dir`/`target` into absolute mappings.
+6. Verify every destination, case/Unicode collision, dependency, and source
+   fingerprint. Select exact operations and review their restore behavior.
+7. Use only a supported common-executor operation after approval of its digest.
 
-| Family | Examples | Best For |
-|--------|----------|----------|
-| Built-in | `{.ext}`, `{nr}`, `{p}` | numbering, extension preservation, parent naming |
-| EXIF | `{xt.make}`, `{xt.model}`, `{xt.date}` | photos and scans |
-| ID3 | `{id3.artist}`, `{id3.title}`, `{id3.album}` | music files |
-| Hash | `{hash.blake3}` | canonical archival names |
+The importer never launches F2 or changes files. Unknown versions and malformed
+shapes fail explicitly. Non-ok/unchanged statuses and duplicate destination
+strings remain conflicts. A relative mapping is not yet an executable plan.
 
-## CSV / Batch Review
+## Versioned Patterns
 
-If the rename set is large or sensitive:
+These are **preview shapes** for the source-reviewed F2 2.2.2 grammar:
 
-1. Export the preview to CSV if the installed `f2` version supports it.
-2. Let the user review the mapping outside the terminal.
-3. Re-run with the reviewed mapping.
+| Intent | Example | Notes |
+| --- | --- | --- |
+| Remove noisy text | `f2 --json -f 'FINAL' -r '' "$scope"` | Review every resulting name |
+| Normalize separators | `f2 --json -f '[ _]+' -r '-' "$scope"` | Check case/Unicode collisions separately |
+| Add sequence numbers | `f2 --json -f '^' -r '{%03d}-' "$scope"` | `%03d` is the index syntax, not `{nr}` |
+| Prefix parent name | `f2 --json -f '^' -r '{p}-' "$scope"` | Avoid flattening project structure |
+| ID3 labels | `f2 --json -f '.*' -r '{id3.artist} - {id3.title}.{ext}' "$scope"` | Content/metadata reads require consent |
+| Content hash names | `f2 --json -f '.*' -r '{hash.sha256}.{ext}' "$scope"` | Content reads; no BLAKE3 variable in this grammar |
 
-When CSV export is unavailable, keep the terminal preview as the source of truth and limit the batch size shown at once.
+`{ext}` is the extension variable; `{.ext}` is not. The index family uses
+`{%d}`/`{%03d}`. Built-in EXIF variables use `x.*` or `exif.*`; for example
+`{x.make}` and `{x.cdt.YYYY}`. `xt.*` requests ExifTool fields and can require
+that external executable. ID3 variables such as `{id3.artist}` and
+`{id3.title}` are supported. Hash variables in this tagged grammar are sha1,
+sha256, sha512, md5, xxh32, and xxh64; do not claim `{hash.blake3}` support.
 
-## Conflict Handling
+Metadata/hash patterns can read file content and hydrate cloud placeholders.
+They are not appropriate for a broad metadata-only scan. Preserve extensions
+according to the actual preview, including compound-extension edge cases.
 
-- Never overwrite an existing file.
-- Prefer `--fix-conflicts-pattern` when the user wants automatic suffixes.
-- On case-insensitive filesystems, treat case-only changes as collisions unless the operation is serialized carefully.
-- When two source files map to the same destination, stop and ask the user which naming scheme to keep.
+## Collision and Metadata Checks
 
-## Safety Notes
+Never overwrite existing files. Also detect duplicate targets within the same
+plan, directories used as destinations, case-only renames on a case-insensitive
+volume, Unicode-normalized lookalikes, and names that escape approved roots.
+A tool's `status: ok` is not a substitute for fresh checks at execution time.
 
-- Rename within the same scope-pinned directory unless the user explicitly asks for a move.
-- Materialize cloud placeholders before metadata-driven patterns.
-- Keep previews NUL-safe and path-safe when filenames contain spaces, newlines, or leading dashes.
-- For very large batches, show a sampled preview plus summary counts before execution.
+`--fix-conflicts-pattern` only specifies a suffix format; it does not itself
+turn on conflict fixing. If the user wants suffixes, generate and review the
+resulting final mapping. Never let a later rescan silently choose new suffixes
+or include additional files under an earlier approval.
+
+CSV workflows are optional input formats, not authorization. A sampled preview
+may help a human navigate a large batch, but the exact complete mapping and
+its digest must remain reviewable. New files are excluded from the approved
+set; changed inputs block their affected operations.
+
+## Execution Boundary
+
+The common executor supports only its explicitly qualified local operations.
+Unknown provider state, unqualified metadata, special files, cross-volume or
+case-only semantics require a report/manual handoff until qualified. Reverse
+plans verify current destinations and refuse occupied original paths. Do not
+run `f2 -u` behind the manifest manager's back.
+
+Primary grammar: [F2 v2.2.2 variable expressions](https://github.com/ayoisaiah/f2/blob/v2.2.2/replace/variables/variable_regex.go).
+The tagged help fixture can retain an older printed version banner; qualify
+actual installed `--version` output instead of copying that banner as evidence.

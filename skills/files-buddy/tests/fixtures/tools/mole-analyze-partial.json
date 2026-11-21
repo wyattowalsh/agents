@@ -1,0 +1,23 @@
+{
+  "scan_status": "partial",
+  "path": "/Users/example/Downloads",
+  "overview": false,
+  "entries": [
+    {
+      "scan_status": "partial",
+      "name": "Cache",
+      "path": "/Users/example/Downloads/Cache",
+      "size": 4096,
+      "is_dir": true,
+      "cleanable": true
+    },
+    {
+      "scan_status": "unavailable",
+      "name": "Private",
+      "path": "/Users/example/Downloads/Private",
+      "size": 0,
+      "is_dir": true
+    }
+  ],
+  "total_size": 4096
+}

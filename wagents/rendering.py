@@ -543,6 +543,40 @@ def _catalog_prose(text: str) -> str:
     return sanitize_catalog_links(escape_mdx(text), fence_aware=True)
 
 
+def _portable_dispatch_table(body: str) -> str:
+    """Extract an Input/Mode table only within an explicit Dispatch section."""
+    lines = body.splitlines()
+    fence = FenceTracker()
+    dispatch_level = 0
+    for index, line in enumerate(lines):
+        if fence.update(line) or fence.inside_fence:
+            continue
+        stripped = line.strip()
+        heading = re.fullmatch(r"(#{1,6})\s+(.+?)(?:\s+#+)?", stripped)
+        if heading:
+            level = len(heading.group(1))
+            if heading.group(2).casefold() == "dispatch":
+                dispatch_level = level
+            elif level <= dispatch_level:
+                dispatch_level = 0
+            continue
+        if not dispatch_level or not stripped.startswith("|"):
+            continue
+        cells = [cell.strip().strip("`").casefold() for cell in stripped.strip("|").split("|")]
+        if cells[:2] != ["input", "mode"] or index + 1 >= len(lines):
+            continue
+        separators = lines[index + 1].strip().strip("|").split("|")
+        if len(separators) != len(cells) or not all(re.fullmatch(r"\s*:?-{3,}:?\s*", cell) for cell in separators):
+            continue
+        table_lines = [line]
+        for following in lines[index + 1 :]:
+            if not following.strip().startswith("|"):
+                break
+            table_lines.append(following)
+        return "\n".join(table_lines)
+    return ""
+
+
 def _extract_body_sections(body: str) -> dict[str, str]:
     """Extract named sections from SKILL.md body.
 
@@ -886,8 +920,8 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         parts.append("")
 
     # Extract dispatch table if present
-    dispatch_table = ""
-    if node.body:
+    dispatch_table = _portable_dispatch_table(node.body) if node.body else ""
+    if node.body and not dispatch_table:
         body_lines = node.body.split("\n")
         table_lines = []
         in_table = False

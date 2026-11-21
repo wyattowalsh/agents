@@ -1,0 +1,18 @@
+[
+  {
+    "base_dir": "/Users/example/Downloads",
+    "target_dir": "/Users/example/Downloads",
+    "source": "file with spaces.txt",
+    "target": "file_with_spaces.txt",
+    "status": "ok",
+    "is_dir": false
+  },
+  {
+    "base_dir": "/Users/example/Downloads",
+    "target_dir": "/Users/example/Downloads",
+    "source": "file.txt",
+    "target": "existing.txt",
+    "status": "overwriting",
+    "is_dir": false
+  }
+]

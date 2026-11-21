@@ -1,5 +1,7 @@
 """Tests for wagents.rendering — page renderers and utilities."""
 
+import pytest
+
 from wagents.catalog import CatalogEdge, CatalogNode
 from wagents.rendering import (
     read_raw_content,
@@ -102,6 +104,35 @@ class TestRenderPage:
 
 
 class TestRenderSkillPage:
+    @pytest.mark.parametrize("heading", ["## Dispatch", "### Dispatch", "## Dispatch ##"])
+    def test_portable_dispatch_table_renders_modes(self, tmp_repo, heading):
+        table = "| Input | Mode | Boundary |\n| --- | --- | --- |\n| `audit <path>` | Inspect | Read-only |"
+        node = _make_node("skill", body=f"# Test\n\n{heading}\n\nParse user input.\n\n{table}\n")
+        result = render_skill_page(node, [], [node])
+        assert "## Modes\n\n| Input | Mode | Boundary |" in result
+        assert "| `audit <path>` | Inspect | Read-only |" in result
+
+    @pytest.mark.parametrize(
+        "prefix",
+        [
+            "## Workflow\n\n",
+            "## Dispatch\n\n## Reference\n\n",
+            "## Dispatch\n\n```markdown\n",
+            "```markdown\n## Dispatch\n```\n\n",
+        ],
+    )
+    def test_input_mode_table_outside_dispatch_is_not_modes(self, tmp_repo, prefix):
+        table = "| Input | Mode |\n| --- | --- |\n| value | mode |\n"
+        node = _make_node("skill", body=f"# Test\n\n{prefix}{table}")
+        assert "## Modes" not in render_skill_page(node, [], [node])
+
+    def test_legacy_argument_table_still_renders_modes(self, tmp_repo):
+        table = "| Argument | Action |\n| --- | --- |\n| `$ARGUMENTS` | Review |\n"
+        node = _make_node("skill", body=f"# Test\n\n{table}")
+        result = render_skill_page(node, [], [node])
+        assert "## Modes\n\n| Argument | Action |" in result
+        assert "| `$ARGUMENTS` | Review |" in result
+
     def test_basic_output(self, tmp_repo):
         node = _make_node("skill")
         skill_dir = tmp_repo / "skills" / "test-skill"

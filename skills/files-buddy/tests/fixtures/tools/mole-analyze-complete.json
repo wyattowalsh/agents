@@ -1,0 +1,16 @@
+{
+  "scan_status": "complete",
+  "path": "/Users/example/Downloads",
+  "overview": false,
+  "entries": [
+    {
+      "scan_status": "complete",
+      "name": "archive.zip",
+      "path": "/Users/example/Downloads/archive.zip",
+      "size": 4096,
+      "is_dir": false
+    }
+  ],
+  "total_size": 4096,
+  "total_files": 1
+}

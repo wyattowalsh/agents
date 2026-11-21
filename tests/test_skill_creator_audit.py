@@ -144,6 +144,54 @@ def test_pattern_detection_requires_structural_evidence(tmp_path: Path):
     assert "stop-hooks" in result["patterns_found"]
 
 
+def test_portable_dispatch_and_harness_neutral_state_are_recognized(tmp_path: Path):
+    skill = _write_skill(
+        tmp_path,
+        "portable-input",
+        """
+        # Portable Input
+
+        ## Dispatch
+
+        | Input | Mode | Boundary |
+        | --- | --- | --- |
+        | inspect | Review | Read only |
+        | plan | Plan | No execution |
+        | Empty | Help | No inference |
+
+        ## State Management
+
+        Persist state under `~/.portable-input/`; use `--state-dir` for isolated runs.
+        """,
+    )
+    result = audit_skill(str(skill))
+    assert _dimension(result, "dispatch-table")["score"] == 10
+    assert "state-management" in result["patterns_found"]
+
+
+def test_unrelated_input_table_does_not_supply_dispatch(tmp_path: Path):
+    skill = _write_skill(
+        tmp_path,
+        "input-documentation",
+        """
+        # Input Documentation
+
+        ## Reference
+
+        | Input | Mode |
+        | --- | --- |
+        | one | Field |
+        | two | Field |
+        | Empty | Field |
+
+        Notes refer to `~/.cache/` but define no state management contract.
+        """,
+    )
+    result = audit_skill(str(skill))
+    assert _dimension(result, "dispatch-table")["score"] == 0
+    assert "state-management" not in result["patterns_found"]
+
+
 def test_pattern_catalog_reports_status_buckets_and_dimension_contract(tmp_path: Path):
     skill_dir = _write_skill(
         tmp_path,

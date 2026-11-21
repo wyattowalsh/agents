@@ -1,0 +1,33 @@
+{
+  "header": {
+    "version": "0.35.0",
+    "timestamp": "2026-11-20T12:00:00Z",
+    "command": [
+      "fclones",
+      "group",
+      "--format",
+      "json",
+      "/Users/example/Downloads"
+    ],
+    "base_dir": "/Users/example/Downloads",
+    "stats": {
+      "group_count": 1,
+      "total_file_count": 2,
+      "total_file_size": 8192,
+      "redundant_file_count": 1,
+      "redundant_file_size": 4096,
+      "missing_file_count": 0,
+      "missing_file_size": 0
+    }
+  },
+  "groups": [
+    {
+      "file_len": 4096,
+      "file_hash": "49165422e775f631cca3b09124f8ee89",
+      "files": [
+        "/Users/example/Downloads/a.txt",
+        "/Users/example/Downloads/b.txt"
+      ]
+    }
+  ]
+}

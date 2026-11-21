@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inject JSON data into the dashboard HTML template and optionally open it."""
+"""Validate a report and render a self-contained, explicitly refreshed dashboard."""
 
 from __future__ import annotations
 
@@ -7,140 +7,130 @@ import argparse
 import json
 import os
 import sys
-from datetime import UTC, datetime
+import uuid
+from contextlib import suppress
 from pathlib import Path
 
-
-def get_agent_dir(skill_name: str) -> Path:
-    """Get the base directory for a skill based on the active agent."""
-    agent = os.environ.get("AGENT_NAME", "").lower()
-    for cli, folder in [("CODEX_CLI", ".codex")]:
-        if os.environ.get(cli) == "1" or folder.strip(".") in agent:
-            return Path.home() / folder / skill_name
-    return Path.home() / ".claude" / skill_name
-
-
-def error_exit(msg: str) -> None:
-    """Print an error JSON object and exit with code 1."""
-    print(json.dumps({"error": msg}))
-    sys.exit(1)
+from files_buddy_report import MAX_REPORT_BYTES, ReportError, load_report
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Render a files-buddy dashboard")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--data", required=True, help='JSON report path, or "-" for stdin')
+    parser.add_argument("--output", help="New HTML path; an existing file is never overwritten")
     parser.add_argument(
-        "--data",
-        required=True,
-        help='Path to JSON file, or "-" for stdin',
+        "--open", action="store_true", dest="open_browser", help="Open the completed report in a browser"
     )
-    parser.add_argument(
-        "--output",
-        default=None,
-        help="Output HTML path (default: ~/.claude/files-buddy/{date}-dashboard.html)",
-    )
-    parser.add_argument(
-        "--open",
-        action="store_true",
-        dest="open_browser",
-        help="Open the rendered dashboard in the default browser",
-    )
-    parser.add_argument(
-        "--template",
-        default=None,
-        help="Path to the HTML template (default: ../templates/dashboard.html)",
-    )
-    parser.add_argument(
-        "--progress",
-        default=None,
-        help="Optional progress JSON path to embed for live-refresh dashboards",
-    )
+    parser.add_argument("--template", help="Use an explicitly trusted local template")
+    parser.add_argument("--progress", help="Progress JSON path to display for explicit file import; it is not polled")
     return parser.parse_args(argv)
 
 
-def resolve_template(template_arg: str | None) -> Path:
-    if template_arg:
-        return Path(template_arg)
-    return Path(__file__).resolve().parent.parent / "templates" / "dashboard.html"
-
-
-def resolve_output(output_arg: str | None) -> Path:
-    if output_arg:
-        return Path(output_arg)
-    today = datetime.now(tz=UTC).strftime("%Y-%m-%d")
-    return get_agent_dir("files-buddy") / f"{today}-dashboard.html"
+def render_script(identifier: str, data: object) -> str:
+    """Encode JSON without allowing data to terminate its script element."""
+    encoded = json.dumps(data, ensure_ascii=True, allow_nan=False)
+    encoded = encoded.replace("&", "\\u0026").replace("<", "\\u003c").replace(">", "\\u003e")
+    return f'<script id="{identifier}" type="application/json">{encoded}</script>'
 
 
 def render_data_script(data: object) -> str:
-    """Encode JSON safely for embedding inside a script tag."""
-    safe_json = (
-        json
-        .dumps(data)
-        .replace("&", "\\u0026")
-        .replace("<", "\\u003c")
-        .replace(">", "\\u003e")
-        .replace("\u2028", "\\u2028")
-        .replace("\u2029", "\\u2029")
-    )
-    return f'<script id="data" type="application/json">{safe_json}</script>'
+    return render_script("data", data)
 
 
 def render_progress_script(progress_path: str | None) -> str:
-    payload = {"progress_path": str(Path(progress_path).expanduser())} if progress_path else {}
-    safe_json = json.dumps(payload).replace("&", "\\u0026").replace("<", "\\u003c").replace(">", "\\u003e")
-    return f'<script id="progress-config" type="application/json">{safe_json}</script>'
-
-
-def main(argv: list[str] | None = None) -> None:
-    args = parse_args(argv)
-
-    # --- template ---
-    template_path = resolve_template(args.template)
-    if not template_path.is_file():
-        error_exit(f"Template not found: {template_path}")
-    template_html = template_path.read_text(encoding="utf-8")
-
-    # --- data ---
-    if args.data == "-":
-        raw = sys.stdin.read()
-    else:
-        data_path = Path(args.data)
-        if not data_path.is_file():
-            error_exit(f"Data file not found: {data_path}")
-        raw = data_path.read_text(encoding="utf-8")
-
-    try:
-        data = json.loads(raw)
-    except json.JSONDecodeError as exc:
-        error_exit(f"Invalid JSON: {exc}")
-
-    # --- render ---
-    placeholder = '<script id="data" type="application/json">{}</script>'
-    if placeholder not in template_html:
-        error_exit("Template missing dashboard data placeholder")
-    rendered = template_html.replace(
-        placeholder,
-        render_data_script(data),
+    return render_script(
+        "progress-config", {"progress_path": str(Path(progress_path).expanduser()) if progress_path else None}
     )
-    progress_placeholder = '<script id="progress-config" type="application/json">{}</script>'
-    if progress_placeholder in rendered:
-        rendered = rendered.replace(progress_placeholder, render_progress_script(args.progress))
 
-    # --- write ---
-    output_path = resolve_output(args.output)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(rendered, encoding="utf-8")
 
-    # --- open ---
-    opened = False
-    if args.open_browser:
-        import subprocess
+def create_output(output: Path, *, default_output: bool) -> int:
+    """Create a private new report, pinning default state directories without symlinks."""
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW
+    if not default_output:
+        # An explicit destination is caller-selected; its existing target is never overwritten.
+        output.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+        return os.open(output, flags, 0o600)
+    directory_flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+    directory_fd = os.open(Path.home().resolve(strict=True), directory_flags)
+    try:
+        for part in (".files-buddy", "runs", output.parent.name):
+            with suppress(FileExistsError):
+                os.mkdir(part, mode=0o700, dir_fd=directory_fd)
+            child_fd = os.open(part, directory_flags, dir_fd=directory_fd)
+            os.close(directory_fd)
+            directory_fd = child_fd
+            if os.fstat(directory_fd).st_uid != os.getuid():
+                raise ReportError("Default report directories must belong to the current user")
+        return os.open(output.name, flags, 0o600, dir_fd=directory_fd)
+    finally:
+        os.close(directory_fd)
 
-        cmd = "open" if sys.platform == "darwin" else "xdg-open"
-        subprocess.run([cmd, str(output_path)], check=False)
-        opened = True
 
-    print(json.dumps({"output": str(output_path), "opened": opened}))
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv)
+    try:
+        if args.data == "-":
+            raw = sys.stdin.read(MAX_REPORT_BYTES + 1)
+        else:
+            with Path(args.data).expanduser().open(encoding="utf-8") as handle:
+                raw = handle.read(MAX_REPORT_BYTES + 1)
+        data = load_report(raw)
+        template_path = (
+            Path(args.template).expanduser()
+            if args.template
+            else Path(__file__).resolve().parent.parent / "templates" / "dashboard.html"
+        )
+        template = template_path.read_text(encoding="utf-8")
+        replacements = {
+            '<script id="data" type="application/json">{}</script>': render_data_script(data),
+            '<script id="progress-config" type="application/json">{}</script>': render_progress_script(args.progress),
+            '<script id="report-schema" type="application/json">{}</script>': render_script(
+                "report-schema",
+                json.loads(
+                    (Path(__file__).resolve().parent.parent / "assets" / "report.schema.json").read_text(
+                        encoding="utf-8"
+                    )
+                ),
+            ),
+        }
+        for placeholder, replacement in replacements.items():
+            if template.count(placeholder) != 1:
+                raise ReportError(
+                    "Template must contain exactly one data, progress-config and report-schema placeholder"
+                )
+            template = template.replace(placeholder, replacement)
+        output = (
+            Path(args.output).expanduser()
+            if args.output
+            else Path.home() / ".files-buddy" / "runs" / data["run_id"] / f"dashboard-{uuid.uuid4().hex}.html"
+        )
+        output = output.absolute()
+        descriptor = create_output(output, default_output=args.output is None)
+        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+            handle.write(template)
+            handle.flush()
+            os.fsync(handle.fileno())
+        opened = False
+        if args.open_browser:
+            import webbrowser
+
+            opened = webbrowser.open(output.as_uri())
+        print(
+            json.dumps(
+                {
+                    "output": str(output),
+                    "run_id": data["run_id"],
+                    "source_digest": data["source_digest"],
+                    "opened": opened,
+                    "refresh": "explicit-file-import",
+                }
+            )
+        )
+        return 0
+    except (OSError, UnicodeError, ReportError, ValueError) as exc:
+        print(json.dumps({"error": str(exc)}))
+        return 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

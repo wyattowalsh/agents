@@ -1,0 +1,11 @@
+{
+  "name": "Downloads",
+  "size": "1.0G",
+  "children": [
+    {
+      "name": "archive.zip",
+      "size": "512M",
+      "children": []
+    }
+  ]
+}

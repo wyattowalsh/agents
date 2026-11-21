@@ -1,0 +1,12 @@
+{
+  "kind": "Synthetic minimal contract fixtures derived from tagged source; not recordings of native CLI runs. No upstream implementation is vendored.",
+  "sources": {
+    "mole": "https://github.com/tw93/Mole/blob/V1.73.0/skills/mole/references/macos.md",
+    "mole_status": "https://github.com/tw93/Mole/blob/V1.73.0/cmd/status/metrics.go",
+    "mole_history": "https://github.com/tw93/Mole/blob/V1.73.0/lib/core/history.sh",
+    "fclones": "https://github.com/pkolaczk/fclones/blob/v0.35.0/fclones/src/report.rs",
+    "dust": "https://github.com/bootandy/dust/blob/v1.2.7/src/display_node.rs",
+    "f2": "https://github.com/ayoisaiah/f2/blob/v2.2.2/report/report_test/testdata/report_file_status_in_JSON_stdout.golden",
+    "rclone": "https://rclone.org/commands/rclone_lsjson/"
+  }
+}

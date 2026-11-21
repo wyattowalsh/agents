@@ -1,0 +1,120 @@
+{
+  "schema_version": "2.0",
+  "run_id": "fixture-storage-audit",
+  "mode": "storage-audit",
+  "updated_at": "2026-11-20T18:00:00Z",
+  "status": "completed",
+  "scope": [
+    "/Users/example/Downloads"
+  ],
+  "coverage": {
+    "status": "partial",
+    "omissions": [
+      "Cloud placeholder contents were not read."
+    ]
+  },
+  "counts": {
+    "files_seen": 3,
+    "dirs_seen": 1,
+    "skipped": 1,
+    "errors": 0
+  },
+  "savings": {
+    "logical_bytes": 3221225472,
+    "allocated_bytes": 2147483648,
+    "candidate_bytes": 1073741824,
+    "selected_bytes": null,
+    "acted_bytes": 1073741824,
+    "quarantined_bytes": null,
+    "trash_retained_bytes": null,
+    "verified_reclaimed_bytes": 0,
+    "observed_free_space_delta_bytes": -4096,
+    "cloud_bytes_affected": null,
+    "legacy_verified_local_bytes": null
+  },
+  "files": [
+    {
+      "path": "/Users/example/Downloads/archive.zip",
+      "size": 1073741824,
+      "allocated_bytes": 1073741824,
+      "kind": "file",
+      "category": "archive",
+      "eligibility": "review"
+    },
+    {
+      "path": "/Users/example/Downloads/long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-long-\u8def\u5f84-.pdf",
+      "size": 12345,
+      "kind": "file",
+      "eligibility": "review"
+    }
+  ],
+  "directories": [
+    {
+      "path": "/Users/example/Downloads",
+      "size": 3221225472,
+      "allocated_bytes": 2147483648
+    }
+  ],
+  "duplicates": [
+    {
+      "id": "duplicate-1",
+      "kind": "exact",
+      "files": [
+        "/Users/example/Library/CloudStorage/a.zip",
+        "/Users/example/Library/CloudStorage/b.zip"
+      ],
+      "candidate_bytes": 1073741824,
+      "keeper": null,
+      "risk": "unknown",
+      "review_only": true
+    }
+  ],
+  "recommendations": [
+    {
+      "action": "offload",
+      "path": "/Users/example/Downloads/archive.zip",
+      "local_bytes": 67108864,
+      "cloud_bytes": null,
+      "risk": "unknown",
+      "restore_path": null,
+      "dependency_evidence": [
+        "Provider sync state is unknown."
+      ],
+      "repercussions": [
+        "Hydration may use additional local storage."
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "name": "Archives",
+      "bytes": 1073741824,
+      "risk": "unknown"
+    }
+  ],
+  "events": [
+    {
+      "time": "2026-11-20T18:00:00Z",
+      "level": "info",
+      "message": "Metadata inventory complete with omissions."
+    }
+  ],
+  "operations": [],
+  "cloud": [],
+  "caches": [
+    {
+      "path": "/Users/example/Library/Caches/Example",
+      "owner": "Example application",
+      "local_bytes": null,
+      "risk": "unknown",
+      "regeneration": "Rebuild cost is not measured.",
+      "restore_path": null
+    }
+  ],
+  "manifest": {
+    "path": "/Users/example/.files-buddy/manifests/run.json",
+    "status": "partial"
+  },
+  "normalization_warnings": [],
+  "source_digest": "sha256:48abc34652a7d06b1f1e2778cad9e43ca0d4ad5cd7fc0d232dfcb38a9727a45f"
+}

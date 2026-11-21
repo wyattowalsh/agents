@@ -1,0 +1,37 @@
+{
+  "logs": {
+    "operations": "/Users/example/.config/mole/operations.log",
+    "deletions": "/Users/example/.config/mole/deletions.log"
+  },
+  "limit": 20,
+  "sessions": [
+    {
+      "command": "clean-dry-run",
+      "run_id": "example",
+      "attribution": "run",
+      "started_at": "2026-11-20T12:00:00Z",
+      "ended_at": "2026-11-20T12:01:00Z",
+      "items": 1,
+      "size": "1.0K",
+      "operation_count": 1,
+      "failed_tasks": 0,
+      "actions": {
+        "removed": 0,
+        "trashed": 0,
+        "skipped": 1,
+        "failed": 0,
+        "rebuilt": 0,
+        "other": 0
+      }
+    }
+  ],
+  "deletions": [
+    {
+      "timestamp": "2026-11-20T12:00:00Z",
+      "mode": "permanent",
+      "status": "dry-run",
+      "size_kb": 1,
+      "path": "/Users/example/Cache/a"
+    }
+  ]
+}

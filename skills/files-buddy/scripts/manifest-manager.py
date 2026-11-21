@@ -1,437 +1,292 @@
 #!/usr/bin/env python3
-"""Manifest CRUD manager for files-buddy. Manages operation manifests in ~/.files-buddy/manifests/."""
+"""Review exact file-operation plans, execute approved mappings, and reconcile state."""
+
+from __future__ import annotations
 
 import argparse
-import glob
 import json
 import os
-import subprocess
+import platform
 import sys
-import uuid
-from datetime import UTC, datetime
 from pathlib import Path
-
-STATE_DIR = Path.home() / ".files-buddy"
-MANIFESTS_DIR = STATE_DIR / "manifests"
-RECOVERY_LOG = STATE_DIR / "recovery.log"
-
-REQUIRED_FIELDS = {"version", "created", "mode", "intent", "target_path", "status", "operations", "summary"}
-FINAL_OPERATION_STATUSES = {"completed", "failed"}
-
-
-def output_json(data):
-    print(json.dumps(data, indent=2, default=str))
-
-
-def output_error(message):
-    print(json.dumps({"error": message}))
-    sys.exit(1)
-
-
-def validate_manifest_path(path):
-    """Reject paths outside the manifests directory."""
-    try:
-        resolved = Path(path).resolve()
-        manifests_resolved = MANIFESTS_DIR.resolve()
-        if resolved != manifests_resolved and manifests_resolved not in resolved.parents:
-            output_error(f"Path outside manifests directory: {path}")
-    except (OSError, ValueError) as exc:
-        output_error(f"Invalid path: {exc}")
-
-
-def get_operation_source(operation):
-    return operation.get("source") or operation.get("path")
-
-
-def get_operation_destination(operation):
-    return operation.get("destination") or operation.get("target")
-
-
-def get_operation_hash(operation):
-    return operation.get("blake3") or operation.get("hash")
-
-
-def get_operation_size(operation):
-    op_bytes = operation.get("size_bytes", operation.get("bytes"))
-    if isinstance(op_bytes, bool) or not isinstance(op_bytes, (int, float)):
-        return None
-    return int(op_bytes)
-
-
-def summarize_operations(operations):
-    summary = {"total_ops": len(operations)}
-    total_bytes = 0
-    saw_bytes = False
-    for operation in operations:
-        if not isinstance(operation, dict):
-            continue
-        op_type = operation.get("type", "unknown")
-        summary[op_type] = summary.get(op_type, 0) + 1
-        op_bytes = get_operation_size(operation)
-        if op_bytes is not None:
-            total_bytes += op_bytes
-            saw_bytes = True
-    if saw_bytes:
-        summary["total_bytes"] = total_bytes
-    return summary
-
-
-def validate_operation_record(operation, index=None):
-    prefix = f"Operation {index}: " if index is not None else "Operation: "
-    errors = []
-
-    if not isinstance(operation, dict):
-        return [f"{prefix}must be a JSON object"]
-
-    op_type = operation.get("type")
-    if not isinstance(op_type, str) or not op_type:
-        errors.append(f"{prefix}missing required field 'type'")
-
-    status = operation.get("status")
-    if status not in FINAL_OPERATION_STATUSES:
-        errors.append(
-            f"{prefix}invalid status '{status}'; manifest-manager only records finalized rows "
-            f"({', '.join(sorted(FINAL_OPERATION_STATUSES))})"
-        )
-        return errors
-
-    if not operation.get("timestamp"):
-        errors.append(f"{prefix}missing required field 'timestamp'")
-
-    if status == "completed":
-        destination = get_operation_destination(operation)
-        if not destination:
-            errors.append(f"{prefix}missing destination/target")
-
-        if op_type != "mkdir" and not get_operation_source(operation):
-            errors.append(f"{prefix}missing source/path")
-
-        if op_type != "mkdir" and not get_operation_hash(operation):
-            errors.append(f"{prefix}missing blake3/hash")
-
-    return errors
-
-
-def atomic_write(path, data):
-    """Write JSON atomically via tmp file + rename."""
-    tmp_path = str(path) + ".tmp"
-    with open(tmp_path, "w") as f:
-        json.dump(data, f, indent=2, default=str)
-        f.write("\n")
-    os.rename(tmp_path, str(path))
-
-
-def read_manifest(path):
-    """Read and parse a manifest file with corruption recovery."""
-    validate_manifest_path(path)
-    try:
-        with open(path) as f:
-            return json.load(f)
-    except json.JSONDecodeError as exc:
-        with open(RECOVERY_LOG, "a") as log:
-            log.write(f"{datetime.now(UTC).isoformat()} CORRUPT {path}: {exc}\n")
-        output_error(f"Corrupt manifest {path}: {exc}")
-    except FileNotFoundError:
-        output_error(f"Manifest not found: {path}")
-
-
-def resolve_manifest(name_or_path):
-    """Resolve a manifest argument to an absolute path."""
-    candidate = Path(name_or_path)
-    if candidate.is_absolute() and candidate.exists():
-        return candidate
-    in_dir = MANIFESTS_DIR / name_or_path
-    if in_dir.exists():
-        return in_dir
-    matches = sorted(MANIFESTS_DIR.glob(f"*{name_or_path}*"))
-    if len(matches) == 1:
-        return matches[0]
-    if len(matches) > 1:
-        output_error(f"Ambiguous manifest '{name_or_path}': {[str(m.name) for m in matches]}")
-    output_error(f"Manifest not found: {name_or_path}")
-    return None
-
-
-def cmd_create(args):
-    """Create a new operation manifest."""
-    MANIFESTS_DIR.mkdir(parents=True, exist_ok=True, mode=0o700)
-
-    short_id = uuid.uuid4().hex[:8]
-    now = datetime.now(UTC)
-    timestamp = now.strftime("%Y-%m-%dT%H-%M-%S")
-    filename = f"{timestamp}-{short_id}-{args.mode}.json"
-    filepath = MANIFESTS_DIR / filename
-
-    manifest = {
-        "version": "1.0",
-        "created": now.isoformat(),
-        "mode": args.mode,
-        "intent": args.intent,
-        "target_path": str(Path(args.path).resolve()),
-        "cloud_tagged": args.cloud_tagged,
-        "status": "open",
-        "tools_used": args.tool_used,
-        "operations": [],
-        "summary": {},
-    }
-
-    atomic_write(filepath, manifest)
-    output_json({"manifest": str(filepath), "id": short_id})
-
-
-def cmd_append(args):
-    """Append an operation to an existing manifest."""
-    filepath = resolve_manifest(args.manifest)
-    manifest = read_manifest(filepath)
-
-    if manifest["status"] != "open":
-        output_error(f"Cannot append to manifest with status '{manifest['status']}'")
-
-    try:
-        operation = json.loads(args.op)
-    except json.JSONDecodeError as exc:
-        output_error(f"Invalid JSON in --op: {exc}")
-
-    operation_errors = validate_operation_record(operation)
-    if operation_errors:
-        output_error("; ".join(operation_errors))
-
-    manifest["operations"].append(operation)
-    manifest["summary"] = summarize_operations(manifest["operations"])
-
-    atomic_write(filepath, manifest)
-    output_json({"appended": True, "total_ops": len(manifest["operations"])})
-
-
-def cmd_list(args):
-    """List manifests, optionally filtered by status."""
-    if not MANIFESTS_DIR.exists():
-        output_json([])
-        return
-
-    results = []
-    for path in sorted(glob.glob(str(MANIFESTS_DIR / "*.json")), reverse=True):
-        try:
-            with open(path) as f:
-                data = json.load(f)
-        except (json.JSONDecodeError, OSError):
-            continue
-
-        if args.status and data.get("status") != args.status:
-            continue
-
-        total_bytes = sum(get_operation_size(op) or 0 for op in data.get("operations", []))
-        results.append({
-            "path": path,
-            "created": data.get("created"),
-            "mode": data.get("mode"),
-            "intent": data.get("intent"),
-            "status": data.get("status"),
-            "total_ops": len(data.get("operations", [])),
-            "total_bytes": total_bytes,
-        })
-
-    output_json(results)
-
-
-def cmd_search(args):
-    """Search manifests for operations matching a query string."""
-    if not MANIFESTS_DIR.exists():
-        output_json([])
-        return
-
-    query = args.query.lower()
-    matches = []
-
-    for path in sorted(glob.glob(str(MANIFESTS_DIR / "*.json"))):
-        try:
-            with open(path) as f:
-                data = json.load(f)
-        except (json.JSONDecodeError, OSError):
-            continue
-
-        for i, op in enumerate(data.get("operations", [])):
-            searchable = json.dumps(op).lower()
-            if query in searchable:
-                matches.append({
-                    "manifest": path,
-                    "operation_index": i,
-                    "original_path": op.get("source", op.get("path", "")),
-                    "current_location": op.get("destination", op.get("target", "")),
-                })
-
-    output_json(matches)
-
-
-def verify_hash(filepath, expected_hash):
-    """Verify a recorded BLAKE3 hash using b3sum."""
-    if not Path(filepath).exists():
-        return False, "file missing"
-
-    try:
-        result = subprocess.run(
-            ["b3sum", "--no-names", str(filepath)],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        )
-        if result.returncode == 0:
-            actual = result.stdout.strip()
-            if actual == expected_hash:
-                return True, None
-            return False, f"hash mismatch: expected {expected_hash}, got {actual}"
-    except (FileNotFoundError, subprocess.TimeoutExpired):
-        return False, "b3sum unavailable; cannot verify recorded BLAKE3 hash"
-    return False, "b3sum failed to compute hash"
-
-
-def cmd_validate(args):
-    """Validate a manifest's schema and verify completed operations."""
-    filepath = resolve_manifest(args.manifest)
-    manifest = read_manifest(filepath)
-
-    errors = []
-    warnings = []
-
-    missing = REQUIRED_FIELDS - set(manifest.keys())
-    if missing:
-        errors.append(f"Missing required fields: {sorted(missing)}")
-
-    if manifest.get("version") != "1.0":
-        warnings.append(f"Unknown version: {manifest.get('version')}")
-
-    if manifest.get("status") not in {"open", "closed", "partial", "undone"}:
-        errors.append(f"Invalid status: {manifest.get('status')}")
-
-    operations = manifest.get("operations", [])
-    if not isinstance(operations, list):
-        errors.append("Operations field must be a list")
-        operations = []
-
-    for i, op in enumerate(operations):
-        op_errors = validate_operation_record(op, i)
-        errors.extend(op_errors)
-        if op_errors or op.get("status") != "completed":
-            continue
-
-        dest = get_operation_destination(op)
-        if dest and not Path(dest).exists():
-            errors.append(f"Operation {i}: file missing at {dest}")
-            continue
-
-        if op.get("type") == "mkdir":
-            continue
-
-        recorded_hash = get_operation_hash(op)
-        ok, msg = verify_hash(dest, recorded_hash)
-        if not ok:
-            errors.append(f"Operation {i}: {msg}")
-
-    output_json({
-        "valid": len(errors) == 0,
-        "errors": errors,
-        "warnings": warnings,
-    })
-
-
-def cmd_close(args):
-    """Close a manifest, setting final status based on operation outcomes."""
-    filepath = resolve_manifest(args.manifest)
-    manifest = read_manifest(filepath)
-
-    if manifest["status"] != "open":
-        output_error(f"Cannot close manifest with status '{manifest['status']}'")
-
-    operations = manifest.get("operations", [])
-    if not isinstance(operations, list):
-        output_error("Cannot close manifest with non-list operations field")
-
-    operation_errors = []
-    for i, op in enumerate(operations):
-        operation_errors.extend(validate_operation_record(op, i))
-    if operation_errors:
-        output_error(f"Cannot close invalid manifest: {'; '.join(operation_errors)}")
-
-    completed = sum(1 for op in operations if op.get("status") == "completed")
-    failed = sum(1 for op in operations if op.get("status") == "failed")
-    total = len(operations)
-
-    if failed > 0 or completed < total:
-        manifest["status"] = "partial"
-    else:
-        manifest["status"] = "closed"
-
-    created_dt = datetime.fromisoformat(manifest["created"])
-    now = datetime.now(UTC)
-    duration_seconds = (now - created_dt).total_seconds()
-
-    summary = summarize_operations(operations)
-    summary["completed_ops"] = completed
-    summary["failed_ops"] = failed
-    summary["duration_seconds"] = round(duration_seconds, 2)
-    summary["closed_at"] = now.isoformat()
-    manifest["summary"] = summary
-
-    atomic_write(filepath, manifest)
-    output_json({
-        "closed": True,
-        "status": manifest["status"],
-        "completed": completed,
-        "failed": failed,
-        "duration_seconds": summary["duration_seconds"],
-    })
-
-
-def main():
-    parser = argparse.ArgumentParser(description="Manifest CRUD manager for files-buddy")
-    subparsers = parser.add_subparsers(dest="command", required=True)
-
-    # create
-    create_parser = subparsers.add_parser("create", help="Create a new manifest")
-    create_parser.add_argument("--mode", required=True, help="Operation mode (e.g. move, copy, archive)")
-    create_parser.add_argument("--path", required=True, help="Target path for operations")
-    create_parser.add_argument("--intent", required=True, help="Description of intended operations")
-    create_parser.add_argument("--cloud-tagged", action="store_true", help="Mark the manifest as cloud-backed")
-    create_parser.add_argument(
-        "--tool-used",
-        action="append",
-        default=[],
-        help="Tool name used by the operation (repeatable)",
+from typing import Any
+
+from files_buddy_execution import (
+    ContractError,
+    StateStore,
+    canonical_digest,
+    create_state,
+    execute,
+    inspect_legacy,
+    load_json,
+    make_plan,
+    reconcile,
+    reverse_plan,
+    validate_outcomes,
+    validate_state,
+)
+from files_buddy_report import ReportError, new_report, normalize_report
+
+
+def parser() -> argparse.ArgumentParser:
+    result = argparse.ArgumentParser(description=__doc__)
+    result.add_argument(
+        "--state-dir",
+        type=Path,
+        default=Path.home() / ".files-buddy",
+        help="Private state/coordination directory; all cooperating invocations must share it",
     )
+    commands = result.add_subparsers(dest="command", required=True)
+    plan = commands.add_parser("plan", help="Capture exact mapping and evidence; writes state only")
+    plan.add_argument(
+        "--mapping", required=True, type=Path, help="JSON array of {type, source, destination}; absolute paths"
+    )
+    plan.add_argument("--source-root", action="append", required=True, type=Path)
+    plan.add_argument("--destination-root", action="append", required=True, type=Path)
+    plan.add_argument("--intent", required=True)
+    plan.add_argument(
+        "--local-only", action="store_true", help="Attest roots are local, outside all provider sync folders"
+    )
+    show = commands.add_parser("show", aliases=["inspect"], help="Inspect state; persisted v1 ledgers are read-only")
+    show.add_argument("manifest")
+    report = commands.add_parser(
+        "report", help="Export a derived dashboard report; no execution authority or state write"
+    )
+    report.add_argument("manifest")
+    listing = commands.add_parser("list", help="List contained regular state files only")
+    listing.add_argument("--status")
+    search = commands.add_parser("search", help="Search contained state records without following symlinks")
+    search.add_argument("query")
+    validate = commands.add_parser(
+        "validate", help="Validate schema and current filesystem evidence; invalid returns nonzero"
+    )
+    validate.add_argument("manifest")
+    validate.add_argument("--schema-only", action="store_true")
+    run = commands.add_parser(
+        "execute", help="Execute one exact reviewed local plan on macOS; never replays started work"
+    )
+    run.add_argument("manifest")
+    run.add_argument("--approve", required=True, help="Exact digest approved by the user through the trusted caller")
+    recovery = commands.add_parser("reconcile", help="Observe interrupted effects without replaying mutations")
+    recovery.add_argument("manifest")
+    undo = commands.add_parser("undo", help="Preview reverse plan; --approve executes its exact digest on macOS")
+    undo.add_argument("manifest")
+    undo.add_argument("--approve", help="Exact reverse digest approved by the user")
+    return result
 
-    # append
-    append_parser = subparsers.add_parser("append", help="Append an operation to a manifest")
-    append_parser.add_argument("manifest", help="Manifest filename, path, or partial match")
-    append_parser.add_argument("--op", required=True, help="Operation as JSON string")
 
-    # list
-    list_parser = subparsers.add_parser("list", help="List manifests")
-    list_parser.add_argument("--status", choices=["open", "closed", "partial", "undone"], help="Filter by status")
+def _emit(value: object) -> None:
+    print(json.dumps(value, indent=2, ensure_ascii=True, allow_nan=False))
 
-    # search
-    search_parser = subparsers.add_parser("search", help="Search manifests for matching operations")
-    search_parser.add_argument("query", help="Search string (case-insensitive substring)")
 
-    # validate
-    validate_parser = subparsers.add_parser("validate", help="Validate a manifest")
-    validate_parser.add_argument("manifest", help="Manifest filename, path, or partial match")
+def _absolute(path: Path) -> Path:
+    # Do not resolve away symlinks; core traversal must reject them.
+    return Path(os.path.abspath(path.expanduser()))
 
-    # close
-    close_parser = subparsers.add_parser("close", help="Close an open manifest")
-    close_parser.add_argument("manifest", help="Manifest filename, path, or partial match")
 
-    args = parser.parse_args()
-
-    commands = {
-        "create": cmd_create,
-        "append": cmd_append,
-        "list": cmd_list,
-        "search": cmd_search,
-        "validate": cmd_validate,
-        "close": cmd_close,
+def _summary(path: Path, state: dict[str, Any]) -> dict[str, Any]:
+    if state.get("version") == "1.0":
+        inspection = inspect_legacy(state)
+        if not inspection["valid"]:
+            raise ContractError("Invalid legacy manifest: " + "; ".join(inspection["errors"]))
+        return {
+            "manifest": str(path),
+            "legacy": True,
+            "valid": inspection["valid"],
+            "status": state["status"],
+            "intent": state["intent"],
+            "execution_supported": False,
+        }
+    validate_state(state)
+    return {
+        "manifest": str(path),
+        "run_id": state["run_id"],
+        "status": state["status"],
+        "intent": state["plan"]["intent"],
+        "plan_digest": state["plan_digest"],
+        "operation_count": len(state["operations"]),
     }
-    commands[args.command](args)
+
+
+def _mutation_platform() -> None:
+    if platform.system() != "Darwin":
+        raise ContractError("Filesystem mutation is macOS-only; no platform override is exposed")
+
+
+def _report(path: Path, state: dict[str, Any]) -> dict[str, Any]:
+    """Derive a report from recorded state; do not claim fresh disk measurements."""
+    validate_state(state)
+    reversing = state["undo"] is not None and state["undo"]["approval"] is not None
+    data = state["undo"] if reversing else state
+    plan = data["plan"]
+    scope = sorted({root["path"] for root in plan["source_roots"] + plan["destination_roots"]})
+    report = new_report("undo" if reversing else "execute", scope)
+    report["run_id"] = state["run_id"]
+    report["updated_at"] = state["updated_at"]
+    report["started_at"] = state["created_at"]
+    report["status"] = {
+        "planned": "waiting-for-approval",
+        "running": "executing",
+        "completed": "completed",
+        "undone": "completed",
+        "partial": "partial",
+        "failed": "failed",
+    }[state["status"]]
+    uncertain = any(row["status"] in {"prepared", "uncertain"} for row in data["operations"])
+    report["coverage"] = {
+        "status": "partial" if uncertain else "complete",
+        "omissions": [
+            "Covers only the exact operation plan; not a disk inventory.",
+            "No physical reclaimed-space or cloud-quota measurement.",
+        ],
+    }
+    report["counts"] = {"operations_total": len(data["operations"])}
+    for status_name in sorted({row["status"] for row in data["operations"]}):
+        report["counts"][f"operations_{status_name}"] = sum(row["status"] == status_name for row in data["operations"])
+    total = sum(op["before"]["size_bytes"] for op in plan["operations"])
+    report["savings"]["logical_bytes"] = total
+    report["savings"]["selected_bytes"] = total if data["approval"] is not None else None
+    report["savings"]["acted_bytes"] = (
+        None
+        if uncertain
+        else sum(
+            op["before"]["size_bytes"]
+            for op, row in zip(plan["operations"], data["operations"], strict=True)
+            if row["status"] in {"applied", "verified"}
+        )
+    )
+    quarantine_bytes: int | None = 0
+    if reversing:
+        if uncertain:
+            quarantine_bytes = None
+        else:
+            for original in state["plan"]["operations"]:
+                if original["type"] != "copy":
+                    continue
+                quarantine = str(
+                    Path(original["destination"]).with_name(
+                        f".files-buddy-undo-{state['run_id']}-{original['operation_id']}"
+                    )
+                )
+                for op, row in zip(plan["operations"], data["operations"], strict=True):
+                    if op["destination"] == quarantine and row["status"] == "verified":
+                        quarantine_bytes += op["before"]["size_bytes"]
+    report["savings"]["quarantined_bytes"] = quarantine_bytes
+    report["manifest"] = {
+        "path": str(path),
+        "run_id": state["run_id"],
+        "plan_digest": data["plan_digest"],
+        "state_digest": "sha256:" + canonical_digest(state),
+    }
+    report["operations"] = [
+        {
+            "operation_id": op["operation_id"],
+            "type": op["type"],
+            "source": op["source"],
+            "destination": op["destination"],
+            "size_bytes": op["before"]["size_bytes"],
+            "status": row["status"],
+            "recovery": op["recovery"],
+            "error": row["error"],
+        }
+        for op, row in zip(plan["operations"], data["operations"], strict=True)
+    ]
+    report["normalization_warnings"].append(
+        "Execution receipts are historical; run validate for fresh filesystem verification. Reports cannot authorize execution."
+    )
+    return normalize_report(report)
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = parser().parse_args(argv)
+    store = StateStore(args.state_dir)
+    try:
+        if args.command == "plan":
+            if args.mapping.stat().st_size > 16 * 1024 * 1024:
+                raise ContractError("Mapping exceeds 16 MiB input limit")
+            mapping = load_json(args.mapping.read_text(encoding="utf-8"))
+            plan = make_plan(
+                mapping,
+                [_absolute(root) for root in args.source_root],
+                [_absolute(root) for root in args.destination_root],
+                args.intent,
+                local_only=args.local_only,
+            )
+            path, state = create_state(store, plan)
+            _emit({"manifest": str(path), "plan_digest": state["plan_digest"], "plan": plan, "approval_required": True})
+        elif args.command in {"list", "search"}:
+            results = []
+            candidates, errors = store.discover()
+            for path in candidates:
+                try:
+                    state = store.read(path)
+                    summary = _summary(path, state)
+                except (OSError, ContractError, UnicodeError) as exc:
+                    errors.append({"manifest": str(path), "error": str(exc)})
+                    continue
+                if args.command == "list":
+                    if args.status is None or state["status"] == args.status:
+                        results.append(summary)
+                elif args.query.casefold() in json.dumps(state).casefold():
+                    results.append(summary)
+            _emit({"valid": not errors, "results": results, "errors": errors})
+            return 0 if not errors else 1
+        elif args.command in {"show", "inspect", "validate", "report"}:
+            path = store.resolve(args.manifest)
+            state = store.read(path)
+            if state.get("version") == "1.0":
+                if args.command == "report":
+                    raise ContractError("Legacy ledgers are inspect-only; they have no v2 execution evidence")
+                result = inspect_legacy(state, verify_files=args.command == "validate" and not args.schema_only)
+                _emit(result)
+                return 0 if result["valid"] else 1
+            validate_state(state)
+            if args.command == "report":
+                _emit(_report(path, state))
+            elif args.command in {"show", "inspect"}:
+                _emit(state)
+            else:
+                errors = [] if args.schema_only else validate_outcomes(state)
+                _emit(
+                    {
+                        "valid": not errors,
+                        "schema_valid": True,
+                        "checked": "schema" if args.schema_only else "schema-and-current-filesystem",
+                        "authorization_checked": False,
+                        "errors": errors,
+                    }
+                )
+                return 0 if not errors else 1
+        elif args.command == "execute":
+            _mutation_platform()
+            state = execute(store, args.manifest, args.approve)
+            _emit(state)
+            return 0 if state["status"] == "completed" else 1
+        elif args.command == "reconcile":
+            state = reconcile(store, args.manifest)
+            _emit(state)
+            return 0 if state["status"] in {"planned", "completed", "undone"} else 1
+        elif args.command == "undo":
+            if args.approve is None:
+                state = reverse_plan(store, args.manifest)
+                _emit(
+                    {
+                        "manifest": str(store.resolve(args.manifest)),
+                        "reverse_plan": state["undo"],
+                        "approval_required": True,
+                        "copies_retained_in_quarantine": True,
+                    }
+                )
+            else:
+                _mutation_platform()
+                state = execute(store, args.manifest, args.approve, undo=True)
+                _emit(state)
+                return 0 if state["status"] == "undone" else 1
+        return 0
+    except (ContractError, ReportError, OSError, UnicodeError) as exc:
+        _emit({"valid": False, "error": str(exc)})
+        return 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

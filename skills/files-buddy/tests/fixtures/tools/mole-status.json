@@ -1,0 +1,23 @@
+{
+  "collected_at": "2026-11-20T12:00:00Z",
+  "disks": [
+    {
+      "mount": "/",
+      "total": 100000,
+      "used": 90000,
+      "fstype": "apfs"
+    }
+  ],
+  "memory": {
+    "used": 4000,
+    "total": 16000,
+    "available": 12000
+  },
+  "trash_size": 1024,
+  "trash_approx": true,
+  "top_processes": [
+    {
+      "command": "sensitive command excluded by parser"
+    }
+  ]
+}

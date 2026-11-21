@@ -4,8 +4,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import pytest
+
 from wagents.authoring_sync import (
     GENERATED_MARKER,
+    _render_frontmatter,
     sync_custom_authoring_from_skills,
 )
 from wagents.parsing import parse_frontmatter
@@ -21,6 +24,40 @@ def _write_skill(tmp_repo: Path, name: str, description: str, body: str = "Body.
     content = f"---\nname: {name}\ndescription: {description}\n---\n\n# {name}\n\n{body}\n"
     (d / "SKILL.md").write_text(content, encoding="utf-8")
     return d / "SKILL.md"
+
+
+def test_portable_metadata_projects_version_and_author():
+    source = {"name": "portable", "metadata": {"version": "2.0.0", "author": 'Wyatt "Example"\\Team\nLine'}}
+    frontmatter, _ = parse_frontmatter(_render_frontmatter(source))
+    assert frontmatter["version"] == "2.0.0"
+    assert frontmatter["author"] == source["metadata"]["author"]
+
+
+def test_legacy_top_level_metadata_has_precedence():
+    source = {
+        "name": "legacy",
+        "author": "Original author",
+        "version": "1.0",
+        "metadata": {"author": "Nested author", "version": "2.0"},
+    }
+    frontmatter, _ = parse_frontmatter(_render_frontmatter(source))
+    assert frontmatter["author"] == "Original author"
+    assert frontmatter["version"] == "1.0"
+
+
+@pytest.mark.parametrize("value", [None, "", " ", 3, True, ["2.0"], {"value": "2.0"}])
+def test_invalid_nested_metadata_is_not_projected(value):
+    source = {"name": "invalid", "metadata": {"author": value, "version": value}}
+    frontmatter, _ = parse_frontmatter(_render_frontmatter(source))
+    assert "author" not in frontmatter
+    assert "version" not in frontmatter
+
+
+@pytest.mark.parametrize("metadata", [None, [], "2.0"])
+def test_non_mapping_metadata_is_not_projected(metadata):
+    frontmatter, _ = parse_frontmatter(_render_frontmatter({"name": "invalid", "metadata": metadata}))
+    assert "author" not in frontmatter
+    assert "version" not in frontmatter
 
 
 def test_sync_custom_authoring_from_skills_writes_mdx_with_custom_kind_and_marker(tmp_repo: Path, tmp_path: Path):
